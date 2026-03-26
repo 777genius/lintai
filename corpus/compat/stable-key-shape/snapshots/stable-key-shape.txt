@@ -1,2 +1,2 @@
-SEC202:.cursor-plugin/hooks/install.sh:0:89:
-SEC203:.cursor-plugin/hooks/install.sh:0:89:
+SEC202:.cursor-plugin/hooks/install.sh:10:88:
+SEC203:.cursor-plugin/hooks/install.sh:15:22:

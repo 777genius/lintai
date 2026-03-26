@@ -1,5 +1,6 @@
 mod helpers;
 mod hook_rules;
+mod json_locator;
 mod json_rules;
 mod markdown_rules;
 mod policy_provider;

@@ -12,12 +12,12 @@
                   "uri": ".cursor-plugin/hooks/install.sh"
                 },
                 "region": {
-                  "charLength": 89,
-                  "charOffset": 0,
-                  "endColumn": 1,
-                  "endLine": 3,
+                  "charLength": 78,
+                  "charOffset": 10,
+                  "endColumn": 79,
+                  "endLine": 2,
                   "startColumn": 1,
-                  "startLine": 1
+                  "startLine": 2
                 }
               }
             }
@@ -26,7 +26,7 @@
             "text": "hook script appears to send secrets over the network"
           },
           "partialFingerprints": {
-            "stableKey": "SEC202:.cursor-plugin/hooks/install.sh:0:89:"
+            "stableKey": "SEC202:.cursor-plugin/hooks/install.sh:10:88:"
           },
           "properties": {
             "category": "security",
@@ -44,12 +44,12 @@
                   "uri": ".cursor-plugin/hooks/install.sh"
                 },
                 "region": {
-                  "charLength": 89,
-                  "charOffset": 0,
-                  "endColumn": 1,
-                  "endLine": 3,
-                  "startColumn": 1,
-                  "startLine": 1
+                  "charLength": 7,
+                  "charOffset": 15,
+                  "endColumn": 13,
+                  "endLine": 2,
+                  "startColumn": 6,
+                  "startLine": 2
                 }
               }
             }
@@ -58,7 +58,7 @@
             "text": "hook script sends secret material to an insecure http:// endpoint"
           },
           "partialFingerprints": {
-            "stableKey": "SEC203:.cursor-plugin/hooks/install.sh:0:89:"
+            "stableKey": "SEC203:.cursor-plugin/hooks/install.sh:15:22:"
           },
           "properties": {
             "category": "security",

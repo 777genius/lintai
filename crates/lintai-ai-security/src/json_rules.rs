@@ -2,6 +2,7 @@ use lintai_api::{ArtifactKind, Finding, RuleMetadata, ScanContext, Span};
 use serde_json::Value;
 
 use crate::helpers::{finding_for_region, json_semantics};
+use crate::json_locator::{JsonLocationMap, JsonPathSegment};
 
 pub(crate) fn check_mcp_shell_wrapper(ctx: &ScanContext, meta: &RuleMetadata) -> Vec<Finding> {
     if ctx.artifact.kind != ArtifactKind::McpConfig {
@@ -11,14 +12,20 @@ pub(crate) fn check_mcp_shell_wrapper(ctx: &ScanContext, meta: &RuleMetadata) ->
     let Some(value) = json_semantics(ctx).map(|json| &json.value) else {
         return Vec::new();
     };
-    if !contains_shell_wrapper(value) {
+    let Some(path) = find_shell_wrapper_path(value, &mut Vec::new()) else {
         return Vec::new();
-    }
+    };
+    let locator = JsonLocationMap::parse(&ctx.content);
+    let span = locator
+        .as_ref()
+        .and_then(|map| map.value_span(&path))
+        .cloned()
+        .unwrap_or_else(|| Span::new(0, ctx.content.len()));
 
     vec![finding_for_region(
         meta,
         ctx,
-        &Span::new(0, ctx.content.len()),
+        &span,
         "MCP configuration shells out through sh -c or bash -c",
     )]
 }
@@ -36,14 +43,20 @@ pub(crate) fn check_plain_http_config(ctx: &ScanContext, meta: &RuleMetadata) ->
     let Some(value) = json_semantics(ctx).map(|json| &json.value) else {
         return Vec::new();
     };
-    if !contains_plain_http(value) {
+    let Some(path) = find_plain_http_path(value, &mut Vec::new()) else {
         return Vec::new();
-    }
+    };
+    let locator = JsonLocationMap::parse(&ctx.content);
+    let span = locator
+        .as_ref()
+        .and_then(|map| map.value_span(&path))
+        .cloned()
+        .unwrap_or_else(|| Span::new(0, ctx.content.len()));
 
     vec![finding_for_region(
         meta,
         ctx,
-        &Span::new(0, ctx.content.len()),
+        &span,
         "configuration contains an insecure http:// endpoint",
     )]
 }
@@ -59,19 +72,28 @@ pub(crate) fn check_mcp_credential_env_passthrough(
     let Some(value) = json_semantics(ctx).map(|json| &json.value) else {
         return Vec::new();
     };
-    if !contains_credential_env_passthrough(value) {
+    let Some(path) = find_credential_env_passthrough_key_path(value, &mut Vec::new()) else {
         return Vec::new();
-    }
+    };
+    let locator = JsonLocationMap::parse(&ctx.content);
+    let span = locator
+        .as_ref()
+        .and_then(|map| map.key_span(&path))
+        .cloned()
+        .unwrap_or_else(|| Span::new(0, ctx.content.len()));
 
     vec![finding_for_region(
         meta,
         ctx,
-        &Span::new(0, ctx.content.len()),
+        &span,
         "MCP configuration passes through credential environment variables",
     )]
 }
 
-fn contains_shell_wrapper(value: &Value) -> bool {
+fn find_shell_wrapper_path(
+    value: &Value,
+    path: &mut Vec<JsonPathSegment>,
+) -> Option<Vec<JsonPathSegment>> {
     match value {
         Value::Object(map) => {
             let command = map
@@ -85,26 +107,73 @@ fn contains_shell_wrapper(value: &Value) -> bool {
                 .unwrap_or_default();
 
             if (command == "sh" || command == "bash") && args.contains(&"-c") {
-                return true;
+                let mut command_path = path.clone();
+                command_path.push(JsonPathSegment::Key("command".to_owned()));
+                return Some(command_path);
             }
 
-            map.values().any(contains_shell_wrapper)
+            for (key, nested) in map {
+                path.push(JsonPathSegment::Key(key.clone()));
+                if let Some(found) = find_shell_wrapper_path(nested, path) {
+                    path.pop();
+                    return Some(found);
+                }
+                path.pop();
+            }
+
+            None
         }
-        Value::Array(items) => items.iter().any(contains_shell_wrapper),
-        _ => false,
+        Value::Array(items) => {
+            for (index, nested) in items.iter().enumerate() {
+                path.push(JsonPathSegment::Index(index));
+                if let Some(found) = find_shell_wrapper_path(nested, path) {
+                    path.pop();
+                    return Some(found);
+                }
+                path.pop();
+            }
+            None
+        }
+        _ => None,
     }
 }
 
-fn contains_plain_http(value: &Value) -> bool {
+fn find_plain_http_path(
+    value: &Value,
+    path: &mut Vec<JsonPathSegment>,
+) -> Option<Vec<JsonPathSegment>> {
     match value {
-        Value::String(text) => text.starts_with("http://"),
-        Value::Array(items) => items.iter().any(contains_plain_http),
-        Value::Object(map) => map.values().any(contains_plain_http),
-        _ => false,
+        Value::String(text) => text.starts_with("http://").then(|| path.clone()),
+        Value::Array(items) => {
+            for (index, nested) in items.iter().enumerate() {
+                path.push(JsonPathSegment::Index(index));
+                if let Some(found) = find_plain_http_path(nested, path) {
+                    path.pop();
+                    return Some(found);
+                }
+                path.pop();
+            }
+            None
+        }
+        Value::Object(map) => {
+            for (key, nested) in map {
+                path.push(JsonPathSegment::Key(key.clone()));
+                if let Some(found) = find_plain_http_path(nested, path) {
+                    path.pop();
+                    return Some(found);
+                }
+                path.pop();
+            }
+            None
+        }
+        _ => None,
     }
 }
 
-fn contains_credential_env_passthrough(value: &Value) -> bool {
+fn find_credential_env_passthrough_key_path(
+    value: &Value,
+    path: &mut Vec<JsonPathSegment>,
+) -> Option<Vec<JsonPathSegment>> {
     const SECRET_ENV_KEYS: &[&str] = &[
         "OPENAI_API_KEY",
         "ANTHROPIC_API_KEY",
@@ -117,22 +186,42 @@ fn contains_credential_env_passthrough(value: &Value) -> bool {
         Value::Object(map) => {
             for (key, nested) in map {
                 let lowered_key = key.to_lowercase();
-                if (lowered_key == "env" || lowered_key == "environment")
-                    && nested.as_object().is_some_and(|env_map| {
-                        env_map.keys().any(|env_key| {
-                            SECRET_ENV_KEYS
+                if lowered_key == "env" || lowered_key == "environment" {
+                    if let Some(env_map) = nested.as_object() {
+                        for env_key in env_map.keys() {
+                            if SECRET_ENV_KEYS
                                 .iter()
                                 .any(|secret| env_key.eq_ignore_ascii_case(secret))
-                        })
-                    })
-                {
-                    return true;
+                            {
+                                let mut key_path = path.clone();
+                                key_path.push(JsonPathSegment::Key(key.clone()));
+                                key_path.push(JsonPathSegment::Key(env_key.clone()));
+                                return Some(key_path);
+                            }
+                        }
+                    }
                 }
-            }
 
-            map.values().any(contains_credential_env_passthrough)
+                path.push(JsonPathSegment::Key(key.clone()));
+                if let Some(found) = find_credential_env_passthrough_key_path(nested, path) {
+                    path.pop();
+                    return Some(found);
+                }
+                path.pop();
+            }
+            None
         }
-        Value::Array(items) => items.iter().any(contains_credential_env_passthrough),
-        _ => false,
+        Value::Array(items) => {
+            for (index, nested) in items.iter().enumerate() {
+                path.push(JsonPathSegment::Index(index));
+                if let Some(found) = find_credential_env_passthrough_key_path(nested, path) {
+                    path.pop();
+                    return Some(found);
+                }
+                path.pop();
+            }
+            None
+        }
+        _ => None,
     }
 }
