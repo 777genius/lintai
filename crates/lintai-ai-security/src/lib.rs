@@ -7,6 +7,8 @@ mod provider;
 mod registry;
 
 #[cfg(test)]
+mod corpus_tests;
+#[cfg(test)]
 mod tests;
 
 pub use provider::AiSecurityProvider;

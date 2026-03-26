@@ -6,7 +6,8 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 use lintai_api::{ArtifactKind, Finding, RuleProvider, RuleTier, SourceFormat};
 use lintai_engine::{
-    EngineBuilder, EngineConfig, NoopSuppressionMatcher, ScanSummary, SuppressionMatcher,
+    ConfigError, EngineBuilder, EngineConfig, EngineError, FileSuppressions,
+    NoopSuppressionMatcher, ScanSummary, SuppressionMatcher, load_workspace_config,
 };
 use serde::Deserialize;
 
@@ -265,6 +266,9 @@ impl std::error::Error for ManifestLoadError {}
 #[derive(Debug)]
 pub enum HarnessError {
     Manifest(ManifestLoadError),
+    Config(ConfigError),
+    Engine(EngineError),
+    InvalidCaseRoot { case_dir: PathBuf, entry_root: PathBuf },
     NotImplemented(&'static str),
 }
 
@@ -272,6 +276,17 @@ impl fmt::Display for HarnessError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Manifest(error) => error.fmt(f),
+            Self::Config(error) => error.fmt(f),
+            Self::Engine(error) => error.fmt(f),
+            Self::InvalidCaseRoot {
+                case_dir,
+                entry_root,
+            } => write!(
+                f,
+                "case root {} resolves to missing or invalid entry root {}",
+                case_dir.display(),
+                entry_root.display()
+            ),
             Self::NotImplemented(message) => f.write_str(message),
         }
     }
@@ -285,46 +300,217 @@ impl From<ManifestLoadError> for HarnessError {
     }
 }
 
-pub struct WorkspaceHarness {
-    config: EngineConfig,
-    suppressions: Arc<dyn SuppressionMatcher>,
+impl From<ConfigError> for HarnessError {
+    fn from(value: ConfigError) -> Self {
+        Self::Config(value)
+    }
 }
 
-impl Default for WorkspaceHarness {
+impl From<EngineError> for HarnessError {
+    fn from(value: EngineError) -> Self {
+        Self::Engine(value)
+    }
+}
+
+pub struct WorkspaceHarnessBuilder {
+    providers: Vec<Arc<dyn RuleProvider>>,
+    override_config: Option<EngineConfig>,
+    override_suppressions: Option<Arc<dyn SuppressionMatcher>>,
+}
+
+impl Default for WorkspaceHarnessBuilder {
     fn default() -> Self {
         Self {
-            config: EngineConfig::default(),
-            suppressions: Arc::new(NoopSuppressionMatcher),
+            providers: Vec::new(),
+            override_config: None,
+            override_suppressions: None,
         }
     }
 }
 
-impl WorkspaceHarness {
+impl WorkspaceHarnessBuilder {
     pub fn new() -> Self {
         Self::default()
     }
 
+    pub fn with_provider(mut self, provider: Arc<dyn RuleProvider>) -> Self {
+        self.providers.push(provider);
+        self
+    }
+
+    pub fn with_providers<I>(mut self, providers: I) -> Self
+    where
+        I: IntoIterator<Item = Arc<dyn RuleProvider>>,
+    {
+        self.providers.extend(providers);
+        self
+    }
+
     pub fn with_config(mut self, config: EngineConfig) -> Self {
-        self.config = config;
+        self.override_config = Some(config);
         self
     }
 
     pub fn with_suppressions(mut self, suppressions: Arc<dyn SuppressionMatcher>) -> Self {
-        self.suppressions = suppressions;
+        self.override_suppressions = Some(suppressions);
         self
     }
 
+    pub fn build(self) -> WorkspaceHarness {
+        WorkspaceHarness {
+            providers: self.providers,
+            override_config: self.override_config,
+            override_suppressions: self.override_suppressions,
+        }
+    }
+}
+
+pub struct WorkspaceHarness {
+    providers: Vec<Arc<dyn RuleProvider>>,
+    override_config: Option<EngineConfig>,
+    override_suppressions: Option<Arc<dyn SuppressionMatcher>>,
+}
+
+impl WorkspaceHarness {
+    pub fn builder() -> WorkspaceHarnessBuilder {
+        WorkspaceHarnessBuilder::new()
+    }
+
     pub fn load_manifest(&self, case_dir: &Path) -> Result<CaseManifest, HarnessError> {
-        let _ = &self.config;
-        let _ = &self.suppressions;
+        let _ = &self.providers;
         Ok(CaseManifest::load(case_dir)?)
     }
 
     pub fn scan_case(&self, case_dir: &Path) -> Result<ScanSummary, HarnessError> {
-        let _ = self.load_manifest(case_dir)?;
-        Err(HarnessError::NotImplemented(
-            "workspace harness scanning is introduced in iteration 2",
-        ))
+        let manifest = self.load_manifest(case_dir)?;
+        let entry_root = manifest.entry_root(case_dir);
+        if !entry_root.is_dir() {
+            return Err(HarnessError::InvalidCaseRoot {
+                case_dir: case_dir.to_path_buf(),
+                entry_root,
+            });
+        }
+
+        let workspace = load_workspace_config(&entry_root)?;
+        let effective_config = self
+            .override_config
+            .clone()
+            .unwrap_or(workspace.engine_config);
+        let suppressions: Arc<dyn SuppressionMatcher> =
+            if let Some(overridden) = self.override_suppressions.clone() {
+                overridden
+            } else {
+                Arc::new(FileSuppressions::load(&effective_config)?)
+            };
+
+        let mut builder = EngineBuilder::default()
+            .with_config(effective_config)
+            .with_suppressions(suppressions);
+        for provider in &self.providers {
+            builder = builder.with_provider(Arc::clone(provider));
+        }
+
+        Ok(builder.build().scan_path(&entry_root)?)
+    }
+}
+
+pub fn discover_case_dirs(bucket_root: &Path) -> Result<Vec<PathBuf>, HarnessError> {
+    let mut case_dirs = std::fs::read_dir(bucket_root)
+        .map_err(|source| {
+            HarnessError::Manifest(ManifestLoadError::Io {
+                path: bucket_root.to_path_buf(),
+                source,
+            })
+        })?
+        .filter_map(|entry| entry.ok())
+        .map(|entry| entry.path())
+        .filter(|path| path.is_dir() && path.join("case.toml").is_file())
+        .collect::<Vec<_>>();
+
+    case_dirs.sort_by(|left, right| {
+        let left_name = left.file_name().and_then(|v| v.to_str()).unwrap_or_default();
+        let right_name = right.file_name().and_then(|v| v.to_str()).unwrap_or_default();
+        left_name.cmp(right_name).then_with(|| left.cmp(right))
+    });
+    Ok(case_dirs)
+}
+
+pub fn assert_case_summary(manifest: &CaseManifest, summary: &ScanSummary) {
+    assert_eq!(
+        summary.runtime_errors.len(),
+        manifest.expected_runtime_errors,
+        "case `{}` runtime error count mismatch: {:?}",
+        manifest.id,
+        summary.runtime_errors
+    );
+    assert_eq!(
+        summary.diagnostics.len(),
+        manifest.expected_diagnostics,
+        "case `{}` diagnostics count mismatch: {:?}",
+        manifest.id,
+        summary.diagnostics
+    );
+
+    for expected in &manifest.expected_findings {
+        let Some(found) = summary
+            .findings
+            .iter()
+            .find(|finding| finding.rule_code == expected.rule_code)
+        else {
+            panic!(
+                "case `{}` expected finding `{}` but no such finding was emitted; got {:?}",
+                manifest.id,
+                expected.rule_code,
+                summary.findings
+            );
+        };
+
+        if let Some(expected_stable_key) = &expected.stable_key {
+            let actual = format_stable_key(&found.stable_key);
+            assert_eq!(
+                actual, *expected_stable_key,
+                "case `{}` finding `{}` stable key mismatch",
+                manifest.id, expected.rule_code
+            );
+        }
+
+        if let Some(expected_tier) = expected.tier {
+            let actual_tier = known_rule_tier(&expected.rule_code).unwrap_or_else(|| {
+                panic!(
+                    "case `{}` expected tier for unknown rule `{}`",
+                    manifest.id, expected.rule_code
+                )
+            });
+            assert_eq!(
+                actual_tier, expected_tier,
+                "case `{}` rule tier mismatch for `{}`",
+                manifest.id, expected.rule_code
+            );
+        }
+
+        if let Some(min_evidence_count) = expected.min_evidence_count {
+            assert!(
+                found.evidence.len() >= min_evidence_count,
+                "case `{}` finding `{}` evidence count too small: {} < {}",
+                manifest.id,
+                expected.rule_code,
+                found.evidence.len(),
+                min_evidence_count
+            );
+        }
+    }
+
+    for absent_rule in &manifest.expected_absent_rules {
+        assert!(
+            summary
+                .findings
+                .iter()
+                .all(|finding| finding.rule_code != *absent_rule),
+            "case `{}` expected rule `{}` to stay absent, got {:?}",
+            manifest.id,
+            absent_rule,
+            summary.findings
+        );
     }
 }
 
@@ -339,6 +525,26 @@ impl OutputHarness {
             "output harness rendering is introduced in iteration 4",
         ))
     }
+}
+
+fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
+    match rule_code {
+        "SEC101" | "SEC102" | "SEC103" | "SEC201" | "SEC202" | "SEC203" | "SEC301"
+        | "SEC302" | "SEC303" => Some(RuleTier::Stable),
+        "SEC401" | "SEC402" | "SEC403" => Some(RuleTier::Preview),
+        _ => None,
+    }
+}
+
+fn format_stable_key(stable_key: &lintai_api::StableKey) -> String {
+    format!(
+        "{}:{}:{}:{}:{}",
+        stable_key.rule_code,
+        stable_key.normalized_path,
+        stable_key.span.start_byte,
+        stable_key.span.end_byte,
+        stable_key.subject_id.as_deref().unwrap_or("")
+    )
 }
 
 fn fixture_path_for(artifact_kind: ArtifactKind, format: SourceFormat) -> &'static Path {
@@ -390,8 +596,10 @@ fn repo_root() -> PathBuf {
 #[cfg(test)]
 mod tests {
     use super::{
-        CaseManifest, HarnessOutputFormat, SnapshotKind, WorkspaceHarness, repo_root,
+        CaseManifest, HarnessOutputFormat, HarnessError, SnapshotKind, WorkspaceHarness,
+        assert_case_summary, discover_case_dirs, repo_root, unique_temp_dir,
     };
+    use lintai_api::RuleTier;
 
     #[test]
     fn parses_valid_case_manifest() {
@@ -513,9 +721,36 @@ name = "report"
     }
 
     #[test]
+    fn discover_case_dirs_returns_sorted_case_roots() {
+        let benign_root = repo_root().join("corpus/benign");
+        let cases = discover_case_dirs(&benign_root).unwrap();
+        let names = cases
+            .iter()
+            .map(|path| {
+                path.file_name()
+                    .and_then(|value| value.to_str())
+                    .unwrap()
+                    .to_owned()
+            })
+            .collect::<Vec<_>>();
+
+        assert_eq!(
+            names,
+            vec![
+                "cursor-plugin-clean-basic",
+                "mcp-safe-basic",
+                "mixed-clean-workspace",
+                "policy-truthful-basic",
+                "skill-clean-basic",
+                "skill-html-comment-safe",
+            ]
+        );
+    }
+
+    #[test]
     fn placeholder_cases_are_discoverable() {
         let root = repo_root();
-        let harness = WorkspaceHarness::new();
+        let harness = WorkspaceHarness::builder().build();
 
         for relative in [
             "corpus/benign/skill-clean-basic",
@@ -535,5 +770,185 @@ name = "report"
                 manifest.entry_root(&case_dir).display()
             );
         }
+    }
+
+    #[test]
+    fn scan_case_reports_invalid_case_root() {
+        let temp_dir = unique_temp_dir("lintai-invalid-case");
+        std::fs::create_dir_all(&temp_dir).unwrap();
+        std::fs::write(
+            temp_dir.join("case.toml"),
+            r#"
+id = "invalid-root"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[snapshot]
+kind = "none"
+name = ""
+"#,
+        )
+        .unwrap();
+
+        let error = WorkspaceHarness::builder().build().scan_case(&temp_dir).unwrap_err();
+        assert!(matches!(error, HarnessError::InvalidCaseRoot { .. }));
+    }
+
+    #[test]
+    fn scan_case_uses_real_workspace_config_path() {
+        let temp_dir = unique_temp_dir("lintai-configured-case");
+        std::fs::create_dir_all(temp_dir.join("repo/docs")).unwrap();
+        std::fs::write(
+            temp_dir.join("case.toml"),
+            r#"
+id = "configured-case"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[snapshot]
+kind = "none"
+name = ""
+"#,
+        )
+        .unwrap();
+        std::fs::write(
+            temp_dir.join("repo/lintai.toml"),
+            "[files]\ninclude = [\"docs/**/*.md\"]\n",
+        )
+        .unwrap();
+        std::fs::write(temp_dir.join("repo/docs/SKILL.md"), "# Configured\n").unwrap();
+
+        let summary = WorkspaceHarness::builder().build().scan_case(&temp_dir).unwrap();
+        assert_eq!(summary.scanned_files, 1);
+        assert!(summary.findings.is_empty());
+    }
+
+    #[test]
+    fn assert_case_summary_accepts_expected_empty_summary() {
+        let manifest = CaseManifest::from_toml(
+            r#"
+id = "empty"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = ["SEC101"]
+
+[snapshot]
+kind = "none"
+name = ""
+"#,
+        )
+        .unwrap();
+
+        assert_case_summary(&manifest, &lintai_engine::ScanSummary::default());
+    }
+
+    #[test]
+    #[should_panic(expected = "expected rule `SEC101` to stay absent")]
+    fn assert_case_summary_rejects_unexpected_present_rule() {
+        let manifest = CaseManifest::from_toml(
+            r#"
+id = "present-rule"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = ["SEC101"]
+
+[snapshot]
+kind = "none"
+name = ""
+"#,
+        )
+        .unwrap();
+
+        let finding = lintai_api::Finding::new(
+            &lintai_api::RuleMetadata::new(
+                "SEC101",
+                "demo",
+                lintai_api::Category::Security,
+                lintai_api::Severity::Warn,
+                lintai_api::Confidence::High,
+                RuleTier::Stable,
+            ),
+            lintai_api::Location::new("docs/SKILL.md", lintai_api::Span::new(0, 1)),
+            "demo",
+        );
+        let mut summary = lintai_engine::ScanSummary::default();
+        summary.findings.push(finding);
+
+        assert_case_summary(&manifest, &summary);
+    }
+
+    #[test]
+    #[should_panic(expected = "runtime error count mismatch")]
+    fn assert_case_summary_rejects_runtime_error_mismatch() {
+        let manifest = CaseManifest::from_toml(
+            r#"
+id = "runtime-errors"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[snapshot]
+kind = "none"
+name = ""
+"#,
+        )
+        .unwrap();
+
+        let mut summary = lintai_engine::ScanSummary::default();
+        summary.runtime_errors.push(lintai_engine::ScanRuntimeError {
+            normalized_path: "docs/SKILL.md".to_owned(),
+            kind: lintai_engine::RuntimeErrorKind::Read,
+            message: "boom".to_owned(),
+        });
+
+        assert_case_summary(&manifest, &summary);
+    }
+
+    #[test]
+    #[should_panic(expected = "diagnostics count mismatch")]
+    fn assert_case_summary_rejects_diagnostics_mismatch() {
+        let manifest = CaseManifest::from_toml(
+            r#"
+id = "diagnostics"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[snapshot]
+kind = "none"
+name = ""
+"#,
+        )
+        .unwrap();
+
+        let mut summary = lintai_engine::ScanSummary::default();
+        summary.diagnostics.push(lintai_engine::ScanDiagnostic {
+            normalized_path: "docs/SKILL.md".to_owned(),
+            severity: lintai_engine::DiagnosticSeverity::Warn,
+            code: Some("demo".to_owned()),
+            message: "boom".to_owned(),
+        });
+
+        assert_case_summary(&manifest, &summary);
     }
 }

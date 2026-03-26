@@ -1,11 +1,11 @@
-id = "skill-clean-basic"
+id = "mixed-clean-workspace"
 kind = "benign"
 entry_path = "repo"
 expected_output = ["text", "json", "sarif"]
 expected_runtime_errors = 0
 expected_diagnostics = 0
 expected_findings = []
-expected_absent_rules = ["SEC101", "SEC102", "SEC103"]
+expected_absent_rules = ["SEC101", "SEC102", "SEC103", "SEC201", "SEC202", "SEC203", "SEC301", "SEC302", "SEC303"]
 
 [snapshot]
 kind = "none"

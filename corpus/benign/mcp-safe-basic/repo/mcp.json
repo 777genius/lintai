@@ -1,0 +1,9 @@
+{
+  "name": "safe-mcp",
+  "tools": [
+    {
+      "name": "local-search",
+      "description": "Search local indexed content"
+    }
+  ]
+}
