@@ -24,7 +24,6 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: 1.90.0
-          profile: minimal
       - uses: Swatinem/rust-cache@v2
       - name: Run documented command integration tests
         run: cargo test --manifest-path Cargo.toml --locked -p lintai-cli --test docs_commands
