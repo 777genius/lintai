@@ -1,3 +1,3 @@
-# Clean Sample
+# Clean Workspace Skill
 
-This sample repo should stay clean.
+Review local project files and summarize the current architecture decisions.

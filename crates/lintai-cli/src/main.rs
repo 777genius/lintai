@@ -4,6 +4,8 @@ mod args;
 mod compat_tests;
 mod output;
 mod path;
+#[cfg(test)]
+mod sample_repo_tests;
 
 use std::process::ExitCode;
 

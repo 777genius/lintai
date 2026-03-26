@@ -1,0 +1,9 @@
+{
+  "name": "clean-workspace-mcp",
+  "tools": [
+    {
+      "name": "local-docs",
+      "description": "Read local documentation files"
+    }
+  ]
+}

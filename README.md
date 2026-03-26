@@ -31,6 +31,15 @@ cargo run -- explain-config SKILL.md
 cargo run -- config-schema
 ```
 
+## Sample Repos
+
+- [`sample-repos/clean`](sample-repos/clean/README.md): clean mixed-surface workspace with zero findings
+- [`sample-repos/mcp-heavy`](sample-repos/mcp-heavy/README.md): MCP-focused repo with representative MCP findings
+- [`sample-repos/cursor-plugin`](sample-repos/cursor-plugin/README.md): Cursor Plugin repo with manifest, hooks, commands, and agents
+- [`sample-repos/policy-mismatch`](sample-repos/policy-mismatch/README.md): policy mismatch repo with `explain-config` coverage
+
+Each sample repo README includes the exact commands to run from that repo's `repo/` directory so config resolution matches current CLI behavior.
+
 ## Config Highlights
 
 `lintai.toml` is strict: unknown top-level keys fail fast. The current config surface includes:

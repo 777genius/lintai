@@ -1,3 +1,4 @@
 {
-  "name": "demo-plugin"
+  "name": "release-check-plugin",
+  "version": "0.1.0"
 }

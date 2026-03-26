@@ -1,3 +1,3 @@
 # Reviewer
 
-Review code changes carefully.
+Review plugin changes and describe the safe local workflow.

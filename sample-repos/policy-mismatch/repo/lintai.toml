@@ -1,5 +1,22 @@
 [capabilities]
 exec = "none"
+network = "none"
 
 [policy]
 capability_conflicts = "deny"
+
+[categories]
+security = "warn"
+
+[rules]
+SEC201 = "allow"
+
+[[overrides]]
+files = ["custom/**/*.md"]
+categories = { security = "deny" }
+rules = { SEC201 = "deny" }
+
+[[detection.overrides]]
+files = ["custom/**/*.md"]
+kind = "cursor_plugin_agent"
+format = "markdown"

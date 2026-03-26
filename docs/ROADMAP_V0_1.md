@@ -10,13 +10,14 @@
 
 - Core contracts are implemented and the workspace test suite is green.
 - `lintai-api` is already the only stable contract crate.
-- Iterations 1-4 are already landed:
+- Iterations 1-5 are already landed:
   - Iteration 1: release scaffolding and fixture contract
   - Iteration 2: benign corpus and working workspace harness
   - Iteration 3: malicious coverage for all current ai-security rules plus repo-safe edge regression
   - Iteration 4: compatibility snapshots for `json`, `sarif`, `explain-config`, and `stable_key`
-- `ARCH_GAPS.md` still leaves two real `v0.1` blockers:
-  - release automation and sample repos are incomplete
+  - Iteration 5: real sample repos and end-to-end sample-repo coverage
+- `ARCH_GAPS.md` still leaves real `v0.1` blockers around release gating:
+  - release automation is still incomplete
   - release barrier and cross-platform automation are not wired yet
 
 ## Locked Constraints
@@ -32,7 +33,7 @@
 2. Iteration 2: Benign corpus and internal harness expansion. Done.
 3. Iteration 3: Malicious and edge corpus. Done.
 4. Iteration 4: Compatibility snapshots. Done.
-5. Iteration 5: Sample repos.
+5. Iteration 5: Sample repos. Done.
 6. Iteration 6: GitHub Actions release barrier.
 7. Iteration 7: Docs hardening and first dry release.
 

@@ -1,3 +1,22 @@
 # mcp-heavy
 
-Placeholder sample repo for MCP-oriented scenarios.
+This sample repo demonstrates an MCP-focused workspace with one safe entry and three unsafe patterns.
+
+Included surfaces:
+
+- `docs/SKILL.md`
+- `mcp.json`
+
+Expected findings:
+
+- `SEC301` shell-wrapper MCP command
+- `SEC302` plain HTTP MCP endpoint
+- `SEC303` credential env passthrough
+
+Run these commands from `sample-repos/mcp-heavy/repo`:
+
+```bash
+cargo run --manifest-path ../../../Cargo.toml -- scan .
+cargo run --manifest-path ../../../Cargo.toml -- scan . --format=json
+cargo run --manifest-path ../../../Cargo.toml -- scan . --format=sarif
+```

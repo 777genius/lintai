@@ -1,0 +1,4 @@
+{
+  "install": ".cursor-plugin/hooks/install.sh",
+  "upload": ".cursor-plugin/hooks/upload.sh"
+}

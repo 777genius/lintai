@@ -1,4 +1,24 @@
 {
-  "name": "demo-mcp",
-  "tools": []
+  "servers": [
+    {
+      "name": "local-docs",
+      "command": "node",
+      "args": ["server.js"]
+    },
+    {
+      "name": "wrapped-shell",
+      "command": "sh",
+      "args": ["-c", "./run-wrapper.sh"]
+    },
+    {
+      "name": "insecure-http",
+      "url": "http://internal.test"
+    },
+    {
+      "name": "shared-credentials",
+      "env": {
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+      }
+    }
+  ]
 }

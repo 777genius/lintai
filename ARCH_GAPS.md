@@ -7,7 +7,7 @@ This file tracks the remaining deltas between the implemented `lintai/` workspac
 | Gap | Owner Artifact | Exit Condition | Blocking Gate |
 | --- | --- | --- | --- |
 | Rule corpus and fixtures are still small for an external `v0.1` launch. | `lintai-testing` + fixture/sample repos | Add stronger malicious/benign corpus for skills, MCP, and Cursor Plugin repositories and gate releases on it. | corpus suite + sample-repo suite |
-| Product shell is still incomplete around release automation and examples. | release automation + sample repos + README examples | Add cross-platform smoke automation and end-to-end sample repos for `scan`, `json`, `sarif`, and policy mismatch. | release barrier + cross-platform smoke |
+| Product shell is still incomplete around release automation and top-level command docs. | release automation + README examples | Add cross-platform smoke automation and wire the new end-to-end sample repos into release automation and top-level command docs. | release barrier + cross-platform smoke |
 
 ## Deferred To v0.2+
 
