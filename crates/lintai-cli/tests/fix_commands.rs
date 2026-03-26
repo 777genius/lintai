@@ -67,6 +67,7 @@ fn fix_preview_reports_planned_fixes_without_mutating_files() {
     assert!(stdout.contains("plan SEC101"));
     assert!(stdout.contains("plan SEC103"));
     assert!(stdout.contains("planned 2 fix(es)"));
+    assert!(stdout.contains("surfaced 0 suggestion-bearing finding(s) and 0 suggestion(s)"));
     assert_eq!(fs::read_to_string(&skill_path).unwrap(), original);
 }
 
@@ -92,6 +93,54 @@ fn fix_apply_removes_comment_spans_and_follow_up_scan_is_clean() {
     assert_eq!(scan_output.status.code(), Some(0));
     let scan_stdout = stdout_string(&scan_output);
     assert!(scan_stdout.contains("found 0 finding(s)"));
+}
+
+#[test]
+fn fix_preview_surfaces_suggestions_for_mcp_repo_without_planning_fixes() {
+    let output = run_lintai(&sample_repo_dir("mcp-heavy"), &["fix", "."]);
+    assert_eq!(output.status.code(), Some(0));
+    let stdout = stdout_string(&output);
+    assert!(stdout.contains("no autofixable findings matched the current selection"));
+    assert!(stdout.contains("suggest SEC301"));
+    assert!(stdout.contains("suggest SEC302"));
+    assert!(stdout.contains("suggest SEC303"));
+    assert!(stdout.contains("planned 0 fix(es)"));
+    assert!(stdout.contains("surfaced 3 suggestion-bearing finding(s) and 3 suggestion(s)"));
+    assert!(stdout.contains("files changed 0"));
+}
+
+#[test]
+fn fix_apply_surfaces_suggestions_without_mutating_suggestion_only_repo() {
+    let temp_dir = unique_temp_dir("lintai-fix-suggestions-only");
+    let repo_dir = temp_dir.join("repo");
+    copy_dir_recursive(&sample_repo_dir("cursor-plugin"), &repo_dir);
+    let install = repo_dir.join(".cursor-plugin/hooks/install.sh");
+    let upload = repo_dir.join(".cursor-plugin/hooks/upload.sh");
+    let install_before = fs::read_to_string(&install).unwrap();
+    let upload_before = fs::read_to_string(&upload).unwrap();
+
+    let output = run_lintai(&repo_dir, &["fix", ".", "--apply"]);
+    assert_eq!(output.status.code(), Some(0));
+    let stdout = stdout_string(&output);
+    assert!(stdout.contains("no autofixable findings matched the current selection"));
+    assert!(stdout.contains("suggest SEC201"));
+    assert!(stdout.contains("suggest SEC202"));
+    assert!(stdout.contains("suggest SEC203"));
+    assert!(stdout.contains("applied 0 fix(es)"));
+    assert!(stdout.contains("files changed 0"));
+    assert_eq!(fs::read_to_string(&install).unwrap(), install_before);
+    assert_eq!(fs::read_to_string(&upload).unwrap(), upload_before);
+}
+
+#[test]
+fn fix_preview_rule_filter_limits_suggestions() {
+    let output = run_lintai(&sample_repo_dir("mcp-heavy"), &["fix", ".", "--rule", "SEC302"]);
+    assert_eq!(output.status.code(), Some(0));
+    let stdout = stdout_string(&output);
+    assert!(!stdout.contains("suggest SEC301"));
+    assert!(stdout.contains("suggest SEC302"));
+    assert!(!stdout.contains("suggest SEC303"));
+    assert!(stdout.contains("surfaced 1 suggestion-bearing finding(s) and 1 suggestion(s)"));
 }
 
 #[test]

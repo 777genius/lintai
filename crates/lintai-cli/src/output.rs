@@ -71,6 +71,9 @@ pub fn format_text(report: &ReportEnvelope<'_>) -> String {
             finding.location.span.end_byte,
             finding.message
         ));
+        for suggestion in &finding.suggestions {
+            output.push_str(&format!("  suggest: {}\n", suggestion.message));
+        }
     }
 
     for diagnostic in report.diagnostics {
@@ -256,5 +259,42 @@ mod tests {
 
         let json = format_json(&report).unwrap();
         assert!(json.contains("\"schema_version\": 1"));
+    }
+
+    #[test]
+    fn text_output_renders_suggestions_under_findings() {
+        let finding = lintai_api::Finding::new(
+            &lintai_api::RuleMetadata::new(
+                "SEC901",
+                "demo",
+                lintai_api::Category::Security,
+                lintai_api::Severity::Warn,
+                lintai_api::Confidence::High,
+                lintai_api::RuleTier::Stable,
+            ),
+            lintai_api::Location::new("SKILL.md", lintai_api::Span::new(0, 4)),
+            "demo finding",
+        )
+        .with_suggestion(lintai_api::Suggestion::new(
+            "convert it to inert prose",
+            None,
+        ));
+        let report = super::ReportEnvelope {
+            schema_version: 1,
+            tool: ToolMetadata { name: "lintai" },
+            config_source: None,
+            project_root: None,
+            stats: ReportStats {
+                scanned_files: 1,
+                skipped_files: 0,
+            },
+            findings: std::slice::from_ref(&finding),
+            diagnostics: &[],
+            runtime_errors: &[],
+        };
+
+        let text = super::format_text(&report);
+        assert!(text.contains("SEC901"));
+        assert!(text.contains("  suggest: convert it to inert prose"));
     }
 }

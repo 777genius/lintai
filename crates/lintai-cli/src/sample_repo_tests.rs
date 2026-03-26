@@ -195,6 +195,13 @@ fn mcp_heavy_sample_repo_emits_mcp_rule_set() {
     );
     for rule_code in ["SEC301", "SEC302", "SEC303"] {
         assert!(text.contains(rule_code));
+        assert!(text.contains("  suggest:"));
+        let finding = summary
+            .findings
+            .iter()
+            .find(|finding| finding.rule_code == rule_code)
+            .unwrap();
+        assert!(!finding.suggestions.is_empty());
     }
 }
 
@@ -239,6 +246,13 @@ fn cursor_plugin_sample_repo_emits_plugin_rule_set() {
     );
     for rule_code in ["SEC201", "SEC202", "SEC203"] {
         assert!(text.contains(rule_code));
+        assert!(text.contains("  suggest:"));
+        let finding = summary
+            .findings
+            .iter()
+            .find(|finding| finding.rule_code == rule_code)
+            .unwrap();
+        assert!(!finding.suggestions.is_empty());
     }
 }
 

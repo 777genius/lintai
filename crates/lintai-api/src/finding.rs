@@ -178,6 +178,15 @@ pub struct Suggestion {
     pub fix: Option<Fix>,
 }
 
+impl Suggestion {
+    pub fn new(message: impl Into<String>, fix: Option<Fix>) -> Self {
+        Self {
+            message: message.into(),
+            fix,
+        }
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, JsonSchema, PartialEq, Serialize)]
 #[non_exhaustive]
 pub struct Finding {

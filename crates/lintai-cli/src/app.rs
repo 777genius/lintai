@@ -92,10 +92,14 @@ fn run_fix(current_dir: &Path, args: impl Iterator<Item = String>) -> Result<Exi
     let fix_root = fix_root(&workspace, current_dir);
 
     let mut selected_findings = 0usize;
+    let mut suggestion_bearing_findings = 0usize;
     let mut grouped = BTreeMap::<String, Vec<&Finding>>::new();
     for finding in &summary.findings {
         if !rule_filters.is_empty() && !rule_filters.contains(finding.rule_code.as_str()) {
             continue;
+        }
+        if !finding.suggestions.is_empty() {
+            suggestion_bearing_findings += 1;
         }
         let Some(fix) = finding.fix.as_ref() else {
             continue;
@@ -116,6 +120,7 @@ fn run_fix(current_dir: &Path, args: impl Iterator<Item = String>) -> Result<Exi
     let mut skipped_conflicts = 0usize;
     let mut skipped_unapplied = 0usize;
     let mut files_changed = 0usize;
+    let mut surfaced_suggestions = 0usize;
 
     if selected_findings == 0 {
         output.push_str("no autofixable findings matched the current selection\n");
@@ -198,13 +203,32 @@ fn run_fix(current_dir: &Path, args: impl Iterator<Item = String>) -> Result<Exi
         }
     }
 
+    for finding in &summary.findings {
+        if !rule_filters.is_empty() && !rule_filters.contains(finding.rule_code.as_str()) {
+            continue;
+        }
+        for suggestion in &finding.suggestions {
+            surfaced_suggestions += 1;
+            output.push_str(&format!(
+                "suggest {} {}:{}-{} {}\n",
+                finding.rule_code,
+                finding.location.normalized_path,
+                finding.location.span.start_byte,
+                finding.location.span.end_byte,
+                suggestion.message
+            ));
+        }
+    }
+
     let action = if parsed.apply { "applied" } else { "planned" };
     output.push_str(&format!(
-        "scanned {} finding(s); selected {} autofixable finding(s); {} {} fix(es); skipped {} conflict(s); skipped {} unapplied fix(es); files changed {}\n",
+        "scanned {} finding(s); selected {} autofixable finding(s); {} {} fix(es); surfaced {} suggestion-bearing finding(s) and {} suggestion(s); skipped {} conflict(s); skipped {} unapplied fix(es); files changed {}\n",
         summary.findings.len(),
         selected_findings,
         action,
         applied_or_planned,
+        suggestion_bearing_findings,
+        surfaced_suggestions,
         skipped_conflicts,
         skipped_unapplied,
         files_changed

@@ -22,6 +22,7 @@ Expected result:
 - findings are expected
 - findings are blocking under the current sample config
 - every documented scan command exits `1`
+- `fix .` should preview manual remediation suggestions but not apply file changes
 
 Run these commands from `sample-repos/cursor-plugin/repo`:
 

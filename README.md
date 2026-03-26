@@ -98,6 +98,11 @@ cargo run --manifest-path ../../../Cargo.toml -- scan .
 cargo run --manifest-path ../../../Cargo.toml -- fix .
 ```
 
+`lintai fix` now serves two roles:
+
+- safe autofix where a deterministic rewrite exists
+- actionable manual remediation suggestions where automatic apply would be unsafe
+
 ## Exit Codes
 
 - `scan`: `0` means no blocking findings, `1` means blocking findings were emitted
@@ -148,7 +153,7 @@ format = "markdown"
 - findings carry structured `evidence`
 - JSON machine output is versioned through `schema_version = 1`
 - SARIF uses `stableKey` as the fingerprint source of truth
-- `lintai fix` is additive public CLI surface with limited rule-specific autofix coverage
+- `lintai fix` is additive public CLI surface with safe autofix for a narrow allowlist and suggestion-driven remediation for broader stable rules
 - root README commands are validated through the docs-command suite
 - `lintai-testing` remains internal during `v0.1`
 

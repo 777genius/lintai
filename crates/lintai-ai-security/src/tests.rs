@@ -68,6 +68,8 @@ fn finds_hook_download_exec() {
         finding.location.span,
         lintai_api::Span::new(0, content.trim_end().len())
     );
+    assert_eq!(finding.suggestions.len(), 1);
+    assert!(finding.suggestions[0].message.contains("vendor or pin"));
 }
 
 #[test]
@@ -89,6 +91,8 @@ fn finds_hook_secret_exfil() {
         finding.location.span,
         lintai_api::Span::new(0, content.trim_end().len())
     );
+    assert_eq!(finding.suggestions.len(), 1);
+    assert!(finding.suggestions[0].message.contains("keep secret access local"));
 }
 
 #[test]
@@ -123,6 +127,8 @@ fn leaves_non_fixable_markdown_download_exec_without_fix() {
         .find(|finding| finding.rule_code == "SEC102")
         .unwrap();
     assert!(finding.fix.is_none());
+    assert_eq!(finding.suggestions.len(), 1);
+    assert!(finding.suggestions[0].message.contains("inert prose"));
 }
 
 #[test]
@@ -146,6 +152,8 @@ fn finds_hook_plain_http_secret_exfil() {
         finding.location.span,
         lintai_api::Span::new(start, start + "http://".len())
     );
+    assert_eq!(finding.suggestions.len(), 1);
+    assert!(finding.suggestions[0].message.contains("HTTPS"));
 }
 
 #[test]
@@ -168,6 +176,8 @@ fn finds_shell_wrapper_in_mcp_config() {
         finding.location.span,
         lintai_api::Span::new(start, start + 2)
     );
+    assert_eq!(finding.suggestions.len(), 1);
+    assert!(finding.suggestions[0].message.contains("direct command"));
 }
 
 #[test]
@@ -190,6 +200,8 @@ fn finds_plain_http_endpoint() {
         finding.location.span,
         lintai_api::Span::new(start, start + "http://internal.test".len())
     );
+    assert_eq!(finding.suggestions.len(), 1);
+    assert!(finding.suggestions[0].message.contains("local/stdio"));
 }
 
 #[test]
@@ -212,6 +224,8 @@ fn finds_mcp_credential_env_passthrough() {
         finding.location.span,
         lintai_api::Span::new(start, start + "OPENAI_API_KEY".len())
     );
+    assert_eq!(finding.suggestions.len(), 1);
+    assert!(finding.suggestions[0].message.contains("credential env passthrough"));
 }
 
 #[test]

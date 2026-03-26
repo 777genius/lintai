@@ -34,6 +34,8 @@ This file defines the compatibility promises for the publishable `v0.1` core.
 - `fix` is additive public CLI surface.
 - The presence of the `fix` command is stable after introduction, but autofix availability is rule-specific and may expand over time.
 - The current safe autofix allowlist is limited to `SEC101` and `SEC103`.
+- `Finding.suggestions` may become more populated over time as remediation coverage expands.
+- `fix` preview may surface suggestion output for non-autofixable findings, while `fix --apply` remains safe-only.
 - No machine-readable `fix` output format is promised in this line.
 
 ## Config Contract
