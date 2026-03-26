@@ -18,8 +18,8 @@
   - Iteration 5: real sample repos and end-to-end sample-repo coverage
   - Iteration 6: release barrier workflows and cross-platform smoke
 - `ARCH_GAPS.md` still leaves final `v0.1` blockers:
-  - docs-command certification has not yet been observed green on a candidate commit
-  - final release-candidate validation has not been run yet
+  - a real candidate commit is now green across `Barrier Gate`, `Smoke Gate`, and `Docs Gate`
+  - final release-candidate validation is still incomplete because branch protection does not yet enforce those checks as required
 - Iteration 7 is intentionally split:
   - Phase A: docs hardening, docs-command gate, release checklist
   - Phase B: observe one green dry release and only then clear `ARCH_GAPS.md`
