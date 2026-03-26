@@ -1,0 +1,118 @@
+name: Release Barrier
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  core_suite:
+    name: Core Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.90.0
+          profile: minimal
+      - uses: Swatinem/rust-cache@v2
+      - name: Run core package tests
+        run: |
+          cargo test --manifest-path Cargo.toml --locked -p lintai-api
+          cargo test --manifest-path Cargo.toml --locked -p lintai-adapters
+          cargo test --manifest-path Cargo.toml --locked -p lintai-engine
+          cargo test --manifest-path Cargo.toml --locked -p lintai-testing
+          cargo test --manifest-path Cargo.toml --locked -p lintai-ai-security tests::
+          cargo test --manifest-path Cargo.toml --locked -p lintai-cli args::
+          cargo test --manifest-path Cargo.toml --locked -p lintai-cli output::
+          cargo test --manifest-path Cargo.toml --locked -p lintai-cli path::
+
+  corpus_suite:
+    name: Corpus Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.90.0
+          profile: minimal
+      - uses: Swatinem/rust-cache@v2
+      - name: Run corpus tests
+        run: cargo test --manifest-path Cargo.toml --locked -p lintai-ai-security corpus_tests::
+
+  compat_suite:
+    name: Compatibility Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.90.0
+          profile: minimal
+      - uses: Swatinem/rust-cache@v2
+      - name: Run compatibility snapshot tests
+        run: cargo test --manifest-path Cargo.toml --locked -p lintai-cli compat_
+
+  sample_repo_suite:
+    name: Sample Repo Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.90.0
+          profile: minimal
+      - uses: Swatinem/rust-cache@v2
+      - name: Run sample repo tests
+        run: cargo test --manifest-path Cargo.toml --locked -p lintai-cli sample_repo
+
+  schema_suite:
+    name: Schema Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.90.0
+          profile: minimal
+      - uses: Swatinem/rust-cache@v2
+      - name: Run config and schema focused tests
+        run: |
+          cargo test --manifest-path Cargo.toml --locked -p lintai-engine config::
+          cargo test --manifest-path Cargo.toml --locked -p lintai-engine detector::
+          cargo test --manifest-path Cargo.toml --locked -p lintai-engine normalize::
+          cargo test --manifest-path Cargo.toml --locked -p lintai-engine suppress::
+
+  barrier_gate:
+    name: Barrier Gate
+    if: ${{ always() }}
+    needs:
+      - core_suite
+      - corpus_suite
+      - compat_suite
+      - sample_repo_suite
+      - schema_suite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify barrier jobs succeeded
+        shell: bash
+        run: |
+          test "${{ needs.core_suite.result }}" = "success"
+          test "${{ needs.corpus_suite.result }}" = "success"
+          test "${{ needs.compat_suite.result }}" = "success"
+          test "${{ needs.sample_repo_suite.result }}" = "success"
+          test "${{ needs.schema_suite.result }}" = "success"

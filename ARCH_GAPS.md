@@ -6,8 +6,8 @@ This file tracks the remaining deltas between the implemented `lintai/` workspac
 
 | Gap | Owner Artifact | Exit Condition | Blocking Gate |
 | --- | --- | --- | --- |
-| Rule corpus and fixtures are still small for an external `v0.1` launch. | `lintai-testing` + fixture/sample repos | Add stronger malicious/benign corpus for skills, MCP, and Cursor Plugin repositories and gate releases on it. | corpus suite + sample-repo suite |
-| Product shell is still incomplete around release automation and top-level command docs. | release automation + README examples | Add cross-platform smoke automation and wire the new end-to-end sample repos into release automation and top-level command docs. | release barrier + cross-platform smoke |
+| Top-level docs and command guidance are not yet hardened into a release-grade contract. | README + docs command checks | Make root docs truthful, executable, and validated as part of the final release flow. | docs-command suite + dry release |
+| Final release-candidate validation has not been completed yet. | release checklist + branch protection | Run one full dry release cycle with all gates green and then clear the remaining `v0.1` gaps. | release barrier + cross-platform smoke + dry release |
 
 ## Deferred To v0.2+
 
@@ -31,3 +31,4 @@ This file tracks the remaining deltas between the implemented `lintai/` workspac
 - Findings now carry typed structured evidence and rules carry explicit `RuleTier`.
 - Checked-in config schema is now generated from the typed raw config model instead of a separate dedicated builder.
 - `lintai-testing` is no longer treated as a publishable `v0.1` crate.
+- Corpus, compatibility snapshots, sample repos, and cross-platform smoke are now wired into release workflows.
