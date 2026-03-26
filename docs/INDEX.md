@@ -7,38 +7,42 @@
 
 ## Key Decisions (summary)
 
-Краткая сводка принятых решений. Детали — в файлах по ссылкам.
+Краткая сводка принятых решений. Canonical truth lives in repo-local docs and release files, not in research notes.
 
 - **Проект**: lintai — свой проект с нуля; cc-audit (55K LOC, Ryo Ebata) = reference only, НЕ форк
 - **MVP v0.1 scope**: `SKILL.md`, `CLAUDE.md`, `.mdc/.cursorrules`, `mcp.json`, **Cursor Plugins**
 - **MVP v0.1 targets**: сборка/релиз сразу на всех таргетах (включая Windows и Linux musl)
-- **Стек**: Rust, monorepo (MVP **6–7 crates**, дальше рост до ~12–15), плоский `crates/` layout
-- **Архитектура**: FORMAT/DOMAIN split — format-парсеры (parse-markdown, parse-frontmatter) отдельно от domain-адаптеров (adapter-skill, adapter-mcp)
-- **Rules**: 3.5-layer system — Native Rust 30-40% | YAML regex 30-35% | Enhanced YAML 20-25% | WASM 5-10%
+- **Стек**: Rust monorepo, current v0.1 core in a compact internal workspace
+- **Архитектура**: `lintai-api` = stable contract, `lintai-engine` = orchestrator, `lintai-adapters` stays one internal crate in `v0.1` with logical FORMAT/DOMAIN split only
+- **Rules**: current `v0.1` core is native-Rust-first; broader YAML/WASM ecosystem work is later
 - **Макросы**: `declare_rule!` macro_rules! (НЕ proc-macro) — Clippy/Oxlint precedent, 6x быстрее компиляции
-- **Type System**: Category(6) + Severity(3) + Confidence(3) + Applicability(3)
-- **Finding location**: byte-span + (optional/derived) line/col; дедуп через stable_key, fingerprint считается на выходе (SARIF/CI)
+- **Public contracts**: typed `evidence`, explicit `RuleTier`, `stable_key`, `schema_version = 1`
+- **Finding location**: byte-span + (optional/derived) line/col; дедуп через `stable_key`, fingerprint считается на выходе (SARIF/CI)
 - **Suppress**: Mandatory rule-id + reason; в Markdown НЕ через HTML comments (attack vector!) → external .lintai/suppress.toml
 - **Prefix != Category**: SEC = стабильный namespace, Category = мутабельное поле метаданных
 - **CLI contract**: exit codes 0/1/2; Windows ANSI; SIGPIPE-safe; CRLF normalization
 - **File discovery**: `ignore` crate (gitignore semantics), symlinks not followed by default
 - **Config**: unknown keys = error, `explain-config` обязателен, JSON Schema + SchemaStore
-- **Distribution**: npm (Biome shim) + PyPI + Homebrew + cargo-binstall
-- **Killer feature**: Auto-fix (ни один конкурент не имеет)
-- **USP**: Единственный сканер в мире, который анализирует Markdown/instruction-level threats
+- **Testing/release direction**: `lintai-testing` remains internal in `v0.1`; corpus/sample-repo/release-barrier work is the current path to publishable `v0.1`
 - **Лицензия**: Dual MIT + Apache 2.0
 
 ---
 
-## CRITICAL — Читать перед началом работы
+## Read Order
+
+### Canonical first
 
 | # | Документ | Что внутри |
 |---|----------|-----------|
-| 1 | **[IMPORTANT_BEFORE_START.md](../../research/IMPORTANT_BEFORE_START.md)** | 13 TODO которые ОБЯЗАТЕЛЬНО решить до первой строки кода |
-| 2 | **[ARCHITECTURE_DECISIONS.md](ARCHITECTURE_DECISIONS.md)** | Зафиксированные архитектурные решения (canonical, living doc) |
-| 3 | **[ARCHITECTURE_BRIEF.md](../../research/ARCHITECTURE_BRIEF.md)** | Компактная сводка архитектуры (актуальна 2026-03-01) |
-| 4 | **[LINTAI_PLAN.md](../../research/LINTAI_PLAN.md)** | План реализации: 6 фаз, ~3.5 мес |
-| 5 | **[TECHNICAL_DECISIONS.md](../../research/TECHNICAL_DECISIONS.md)** | Все технические решения: naming, codebase strategy, YARA-X, LSP, distribution |
+| 1 | **[ARCHITECTURE_DECISIONS.md](ARCHITECTURE_DECISIONS.md)** | Зафиксированные архитектурные решения и invariants |
+| 2 | **[../V0_1_RELEASE_CHARTER.md](../V0_1_RELEASE_CHARTER.md)** | Release contract текущего `v0.1` |
+| 3 | **[../ARCH_GAPS.md](../ARCH_GAPS.md)** | Остаточные разрывы до release-ready состояния |
+| 4 | **[ROADMAP_V0_1.md](ROADMAP_V0_1.md)** | Операционный roadmap и sequence итераций |
+| 5 | **[FIXTURE_CONTRACT.md](FIXTURE_CONTRACT.md)** | Контракт для corpus cases и sample repos |
+
+### Research second
+
+Research files below are reference material. They are useful for background and tradeoff history, but they are not the current source of truth over repo-local canonical docs.
 
 ---
 
@@ -48,7 +52,7 @@
 
 - **[VISION.md](VISION.md)** — Зафиксированное видение продукта (v0.1, дифференциация, стратегия кода и портов)
 - **[CREDITS.md](CREDITS.md)** — Таблица: компонент → crate/репо → лицензия → что переносим / как используем
-- **[ARCHITECTURE_DECISIONS.md](ARCHITECTURE_DECISIONS.md)** — _см. CRITICAL #2_
+- **[ARCHITECTURE_DECISIONS.md](ARCHITECTURE_DECISIONS.md)** — главный canonical doc по архитектуре
 - **[FEATURE_CAPABILITIES_MANIFEST.md](FEATURE_CAPABILITIES_MANIFEST.md)** — Декларирование capabilities для снижения false positives
 - **[RULE_QUALITY_POLICY.md](RULE_QUALITY_POLICY.md)** — Политика надёжности правил: детерминизм, контекст, доказательства
 - **[GLOSSARY.md](GLOSSARY.md)** — Единые термины (Claims/Capabilities, stable_key/fingerprint, артефакты)
@@ -79,10 +83,10 @@
 
 Основные документы по проекту (`../../research/`):
 
-- **[IMPORTANT_BEFORE_START.md](../../research/IMPORTANT_BEFORE_START.md)** — _см. CRITICAL #1_
-- **[LINTAI_PLAN.md](../../research/LINTAI_PLAN.md)** — _см. CRITICAL #4_
-- **[TECHNICAL_DECISIONS.md](../../research/TECHNICAL_DECISIONS.md)** — _см. CRITICAL #5_
-- **[ARCHITECTURE_BRIEF.md](../../research/ARCHITECTURE_BRIEF.md)** — _см. CRITICAL #3_
+- **[IMPORTANT_BEFORE_START.md](../../research/IMPORTANT_BEFORE_START.md)** — ранний pre-code checklist
+- **[LINTAI_PLAN.md](../../research/LINTAI_PLAN.md)** — ранний implementation plan
+- **[TECHNICAL_DECISIONS.md](../../research/TECHNICAL_DECISIONS.md)** — historical technical decision log
+- **[ARCHITECTURE_BRIEF.md](../../research/ARCHITECTURE_BRIEF.md)** — historical architecture summary
 - [EXECUTIVE_SUMMARY.md](../../research/EXECUTIVE_SUMMARY.md) — Rust vs Go сравнение, обоснование выбора Rust
 - [README.md](../../research/README.md) — Навигация по research/
 - [SOURCES.md](../../research/SOURCES.md) — Все источники исследования
@@ -235,4 +239,4 @@
 | Research deep dive | 54 файла, ~49K строк |
 | Research agents использовано | 19+ (несколько батчей) |
 | Покрытие | Рынок, конкуренты, архитектура, rules engine, distribution, CI/CD, legal, monetization, 14 платформ, real malware, YARA-X, parser pitfalls |
-| Код | Bootstrap (Cargo.lock only) |
+| Код | Активный Rust workspace `lintai`, iterations 1-3 already landed |
