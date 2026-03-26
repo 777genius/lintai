@@ -193,6 +193,8 @@ version = "0.1.0"
 dependencies = [
  "lintai-api",
  "lintai-engine",
+ "serde",
+ "toml",
 ]
 
 [[package]]

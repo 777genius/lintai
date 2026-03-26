@@ -1,0 +1,11 @@
+id = "json-report-shape"
+kind = "compat"
+entry_path = "repo"
+expected_output = ["json"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[snapshot]
+kind = "json"
+name = "json-report-shape"

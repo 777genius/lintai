@@ -52,6 +52,8 @@
 - **[FEATURE_CAPABILITIES_MANIFEST.md](FEATURE_CAPABILITIES_MANIFEST.md)** — Декларирование capabilities для снижения false positives
 - **[RULE_QUALITY_POLICY.md](RULE_QUALITY_POLICY.md)** — Политика надёжности правил: детерминизм, контекст, доказательства
 - **[GLOSSARY.md](GLOSSARY.md)** — Единые термины (Claims/Capabilities, stable_key/fingerprint, артефакты)
+- **[ROADMAP_V0_1.md](ROADMAP_V0_1.md)** — Операционный roadmap от текущего core к publishable `v0.1`
+- **[FIXTURE_CONTRACT.md](FIXTURE_CONTRACT.md)** — Контракт для corpus cases и sample repos
 - **[PUBLIC_COMPATIBILITY_POLICY.md](../PUBLIC_COMPATIBILITY_POLICY.md)** — Политика совместимости для `lintai-api`, config, JSON и SARIF
 
 ## Workspace Meta (вне repo)
