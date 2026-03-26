@@ -15,6 +15,12 @@ Offline-first security scanner for AI agent supply chain artifacts.
 - `.cursor-plugin/commands/**/*.md`
 - `.cursor-plugin/agents/**/*.md`
 
+## Docs
+
+- Product and architecture docs live in [`docs/`](docs/).
+- Start with [`docs/INDEX.md`](docs/INDEX.md) for the canonical document map.
+- Release constraints and remaining deltas live in [`V0_1_RELEASE_CHARTER.md`](V0_1_RELEASE_CHARTER.md) and [`ARCH_GAPS.md`](ARCH_GAPS.md).
+
 ## Current Commands
 
 ```bash

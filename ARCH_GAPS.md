@@ -1,6 +1,6 @@
 # Architecture Gaps
 
-This file tracks the remaining deltas between the implemented `lintai/` workspace and the canonical decisions in [../ARCHITECTURE_DECISIONS.md](../ARCHITECTURE_DECISIONS.md) and [../VISION.md](../VISION.md).
+This file tracks the remaining deltas between the implemented `lintai/` workspace and the canonical decisions in [docs/ARCHITECTURE_DECISIONS.md](docs/ARCHITECTURE_DECISIONS.md) and [docs/VISION.md](docs/VISION.md).
 
 ## Required For v0.1
 
