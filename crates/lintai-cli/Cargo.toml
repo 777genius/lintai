@@ -1,0 +1,18 @@
+[package]
+name = "lintai-cli"
+version = "0.0.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+lintai-api.workspace = true
+lintai-engine.workspace = true
+lintai-ai-security.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+[[bin]]
+name = "lintai"
+path = "src/main.rs"

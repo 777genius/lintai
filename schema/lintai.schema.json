@@ -1,0 +1,551 @@
+{
+  "$defs": {
+    "ArtifactKind": {
+      "enum": [
+        "skill",
+        "instructions",
+        "cursor_rules",
+        "mcp_config",
+        "cursor_plugin_manifest",
+        "cursor_plugin_hooks",
+        "cursor_hook_script",
+        "cursor_plugin_command",
+        "cursor_plugin_agent"
+      ],
+      "type": "string"
+    },
+    "CapabilityConflictMode": {
+      "enum": [
+        "warn",
+        "deny"
+      ],
+      "type": "string"
+    },
+    "CapabilityProfile": {
+      "properties": {
+        "exec": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ExecCapability"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "fs": {
+          "$ref": "#/$defs/FileSystemCapability",
+          "default": {
+            "read": [],
+            "write": []
+          }
+        },
+        "mcp": {
+          "$ref": "#/$defs/McpCapability",
+          "default": {
+            "allowed_operations": []
+          }
+        },
+        "network": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NetworkCapability"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "secrets": {
+          "$ref": "#/$defs/SecretCapability",
+          "default": {
+            "read_env": false,
+            "read_files": []
+          }
+        }
+      },
+      "type": "object"
+    },
+    "Confidence": {
+      "enum": [
+        "high",
+        "medium",
+        "low"
+      ],
+      "type": "string"
+    },
+    "ExecCapability": {
+      "enum": [
+        "none",
+        "shell",
+        "subprocess"
+      ],
+      "type": "string"
+    },
+    "FileSystemCapability": {
+      "properties": {
+        "read": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "write": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "McpCapability": {
+      "properties": {
+        "allowed_operations": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "NetworkCapability": {
+      "enum": [
+        "none",
+        "outbound_https",
+        "outbound_any",
+        "inbound"
+      ],
+      "type": "string"
+    },
+    "OutputFormat": {
+      "enum": [
+        "text",
+        "json",
+        "sarif"
+      ],
+      "type": "string"
+    },
+    "RawCi": {
+      "additionalProperties": false,
+      "properties": {
+        "fail_on": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Severity"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "min_confidence": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Confidence"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "type": "object"
+    },
+    "RawDetection": {
+      "additionalProperties": false,
+      "properties": {
+        "overrides": {
+          "items": {
+            "$ref": "#/$defs/RawDetectionOverride"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "RawDetectionOverride": {
+      "additionalProperties": false,
+      "properties": {
+        "files": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "format": {
+          "$ref": "#/$defs/SourceFormat"
+        },
+        "kind": {
+          "$ref": "#/$defs/ArtifactKind"
+        }
+      },
+      "required": [
+        "files",
+        "kind",
+        "format"
+      ],
+      "type": "object"
+    },
+    "RawFiles": {
+      "additionalProperties": false,
+      "properties": {
+        "exclude": {
+          "default": null,
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "include": {
+          "default": null,
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "RawOutput": {
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OutputFormat"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "type": "object"
+    },
+    "RawOverride": {
+      "additionalProperties": false,
+      "properties": {
+        "categories": {
+          "additionalProperties": false,
+          "default": null,
+          "properties": {
+            "audit": {
+              "$ref": "#/$defs/Severity"
+            },
+            "critical": {
+              "$ref": "#/$defs/Severity"
+            },
+            "hardening": {
+              "$ref": "#/$defs/Severity"
+            },
+            "nursery": {
+              "$ref": "#/$defs/Severity"
+            },
+            "quality": {
+              "$ref": "#/$defs/Severity"
+            },
+            "security": {
+              "$ref": "#/$defs/Severity"
+            }
+          },
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "rules": {
+          "additionalProperties": {
+            "$ref": "#/$defs/Severity"
+          },
+          "default": null,
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "RawPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "capability_conflicts": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CapabilityConflictMode"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "type": "object"
+    },
+    "RawProject": {
+      "additionalProperties": false,
+      "properties": {
+        "root": {
+          "default": null,
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "RawSuppress": {
+      "additionalProperties": false,
+      "properties": {
+        "max_per_file": {
+          "default": null,
+          "format": "uint",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "report_unused": {
+          "default": null,
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "require_reason": {
+          "default": null,
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "SecretCapability": {
+      "properties": {
+        "read_env": {
+          "default": false,
+          "type": "boolean"
+        },
+        "read_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Severity": {
+      "enum": [
+        "deny",
+        "warn",
+        "allow"
+      ],
+      "type": "string"
+    },
+    "SourceFormat": {
+      "enum": [
+        "markdown",
+        "json",
+        "shell"
+      ],
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "cache": {
+      "default": null,
+      "description": "reserved but unsupported in this release",
+      "type": "object"
+    },
+    "capabilities": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CapabilityProfile"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "categories": {
+      "additionalProperties": false,
+      "default": null,
+      "properties": {
+        "audit": {
+          "$ref": "#/$defs/Severity"
+        },
+        "critical": {
+          "$ref": "#/$defs/Severity"
+        },
+        "hardening": {
+          "$ref": "#/$defs/Severity"
+        },
+        "nursery": {
+          "$ref": "#/$defs/Severity"
+        },
+        "quality": {
+          "$ref": "#/$defs/Severity"
+        },
+        "security": {
+          "$ref": "#/$defs/Severity"
+        }
+      },
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "ci": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RawCi"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "detection": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RawDetection"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "disallowed": {
+      "default": null,
+      "description": "reserved but unsupported in this release",
+      "type": "object"
+    },
+    "extends": {
+      "default": null,
+      "description": "reserved but unsupported in this release",
+      "type": "object"
+    },
+    "files": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RawFiles"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "fix": {
+      "default": null,
+      "description": "reserved but unsupported in this release",
+      "type": "object"
+    },
+    "output": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RawOutput"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "overrides": {
+      "items": {
+        "$ref": "#/$defs/RawOverride"
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "plugins": {
+      "default": null,
+      "description": "reserved but unsupported in this release",
+      "type": "array"
+    },
+    "policy": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RawPolicy"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "project": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RawProject"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "rules": {
+      "default": null,
+      "oneOf": [
+        {
+          "additionalProperties": {
+            "$ref": "#/$defs/Severity"
+          },
+          "type": "object"
+        },
+        {
+          "description": "rule parameters are reserved but unsupported in this release",
+          "type": "object"
+        }
+      ]
+    },
+    "suppress": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RawSuppress"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "title": "lintai config v0 subset",
+  "type": "object"
+}

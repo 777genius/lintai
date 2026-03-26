@@ -1,0 +1,32 @@
+[workspace]
+members = [
+    "crates/lintai-api",
+    "crates/lintai-testing",
+    "crates/lintai-engine",
+    "crates/lintai-adapters",
+    "crates/lintai-ai-security",
+    "crates/lintai-fix",
+    "crates/lintai-cli",
+]
+resolver = "2"
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.90"
+license = "MIT OR Apache-2.0"
+authors = ["lintai contributors"]
+
+[workspace.dependencies]
+globset = "0.4.18"
+ignore = "0.4.24"
+lintai-api = { path = "crates/lintai-api", version = "0.1.0" }
+lintai-testing = { path = "crates/lintai-testing", version = "0.1.0" }
+lintai-engine = { path = "crates/lintai-engine", version = "0.0.0" }
+lintai-adapters = { path = "crates/lintai-adapters", version = "0.0.0" }
+lintai-ai-security = { path = "crates/lintai-ai-security", version = "0.0.0" }
+lintai-fix = { path = "crates/lintai-fix", version = "0.0.0" }
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.145"
+serde_yaml_bw = "2.4.0"
+schemars = { version = "1.2.1", features = ["derive"] }
+toml = "0.8.23"
