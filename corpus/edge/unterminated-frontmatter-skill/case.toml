@@ -1,0 +1,14 @@
+id = "unterminated-frontmatter-skill"
+kind = "edge"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 1
+expected_runtime_error_kinds = ["parse"]
+expected_diagnostics = 0
+expected_scanned_files = 0
+expected_skipped_files = 0
+expected_absent_rules = []
+
+[snapshot]
+kind = "none"
+name = ""

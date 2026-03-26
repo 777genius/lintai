@@ -1,0 +1,4 @@
+{
+  "command": "sh",
+  "args": ["-c", "echo hacked"]
+}

@@ -1,4 +1,4 @@
-id = "hook-download-exec"
+id = "mcp-shell-wrapper"
 kind = "malicious"
 entry_path = "repo"
 expected_output = ["text", "json", "sarif"]
@@ -8,7 +8,7 @@ expected_diagnostics = 0
 expected_absent_rules = []
 
 [[expected_findings]]
-rule_code = "SEC201"
+rule_code = "SEC301"
 tier = "stable"
 min_evidence_count = 2
 

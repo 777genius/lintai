@@ -1,4 +1,4 @@
-id = "hook-download-exec"
+id = "policy-frontmatter-conflict"
 kind = "malicious"
 entry_path = "repo"
 expected_output = ["text", "json", "sarif"]
@@ -8,8 +8,8 @@ expected_diagnostics = 0
 expected_absent_rules = []
 
 [[expected_findings]]
-rule_code = "SEC201"
-tier = "stable"
+rule_code = "SEC403"
+tier = "preview"
 min_evidence_count = 2
 
 [snapshot]

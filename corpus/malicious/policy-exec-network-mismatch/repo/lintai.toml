@@ -1,0 +1,6 @@
+[capabilities]
+exec = "none"
+network = "none"
+
+[policy]
+capability_conflicts = "deny"

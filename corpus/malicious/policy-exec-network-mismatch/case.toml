@@ -1,4 +1,4 @@
-id = "hook-download-exec"
+id = "policy-exec-network-mismatch"
 kind = "malicious"
 entry_path = "repo"
 expected_output = ["text", "json", "sarif"]
@@ -10,6 +10,16 @@ expected_absent_rules = []
 [[expected_findings]]
 rule_code = "SEC201"
 tier = "stable"
+min_evidence_count = 2
+
+[[expected_findings]]
+rule_code = "SEC401"
+tier = "preview"
+min_evidence_count = 2
+
+[[expected_findings]]
+rule_code = "SEC402"
+tier = "preview"
 min_evidence_count = 2
 
 [snapshot]

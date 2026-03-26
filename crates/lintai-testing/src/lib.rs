@@ -7,9 +7,11 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use lintai_api::{ArtifactKind, Finding, RuleProvider, RuleTier, SourceFormat};
 use lintai_engine::{
     ConfigError, EngineBuilder, EngineConfig, EngineError, FileSuppressions,
-    NoopSuppressionMatcher, ScanSummary, SuppressionMatcher, load_workspace_config,
+    NoopSuppressionMatcher, RuntimeErrorKind, ScanSummary, SuppressionMatcher,
+    load_workspace_config,
 };
 use serde::Deserialize;
+use std::collections::BTreeMap;
 
 pub struct ProviderHarness;
 
@@ -176,6 +178,15 @@ pub enum SnapshotKind {
     ExplainConfig,
 }
 
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Eq, Ord, PartialOrd)]
+#[serde(rename_all = "snake_case")]
+pub enum ExpectedRuntimeErrorKind {
+    Read,
+    InvalidUtf8,
+    Parse,
+    ProviderTimeout,
+}
+
 #[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
 pub struct ExpectedFinding {
     pub rule_code: String,
@@ -197,7 +208,11 @@ pub struct CaseManifest {
     pub entry_path: PathBuf,
     pub expected_output: Vec<HarnessOutputFormat>,
     pub expected_runtime_errors: usize,
+    #[serde(default)]
+    pub expected_runtime_error_kinds: Vec<ExpectedRuntimeErrorKind>,
     pub expected_diagnostics: usize,
+    pub expected_scanned_files: Option<usize>,
+    pub expected_skipped_files: Option<usize>,
     #[serde(default)]
     pub expected_findings: Vec<ExpectedFinding>,
     pub expected_absent_rules: Vec<String>,
@@ -444,18 +459,54 @@ pub fn assert_case_summary(manifest: &CaseManifest, summary: &ScanSummary) {
         summary.runtime_errors
     );
     assert_eq!(
+        runtime_error_kind_counts(&summary.runtime_errors),
+        expected_runtime_error_kind_counts(&manifest.expected_runtime_error_kinds),
+        "case `{}` runtime error kind mismatch: {:?}",
+        manifest.id,
+        summary.runtime_errors
+    );
+    assert_eq!(
         summary.diagnostics.len(),
         manifest.expected_diagnostics,
         "case `{}` diagnostics count mismatch: {:?}",
         manifest.id,
         summary.diagnostics
     );
+    if let Some(expected_scanned_files) = manifest.expected_scanned_files {
+        assert_eq!(
+            summary.scanned_files, expected_scanned_files,
+            "case `{}` scanned file count mismatch",
+            manifest.id
+        );
+    }
+    if let Some(expected_skipped_files) = manifest.expected_skipped_files {
+        assert_eq!(
+            summary.skipped_files, expected_skipped_files,
+            "case `{}` skipped file count mismatch",
+            manifest.id
+        );
+    }
 
     for expected in &manifest.expected_findings {
         let Some(found) = summary
             .findings
             .iter()
-            .find(|finding| finding.rule_code == expected.rule_code)
+            .find(|finding| {
+                if finding.rule_code != expected.rule_code {
+                    return false;
+                }
+                if let Some(expected_stable_key) = &expected.stable_key {
+                    if format_stable_key(&finding.stable_key) != *expected_stable_key {
+                        return false;
+                    }
+                }
+                if let Some(min_evidence_count) = expected.min_evidence_count {
+                    if finding.evidence.len() < min_evidence_count {
+                        return false;
+                    }
+                }
+                true
+            })
         else {
             panic!(
                 "case `{}` expected finding `{}` but no such finding was emitted; got {:?}",
@@ -585,6 +636,32 @@ fn unique_temp_dir(prefix: &str) -> PathBuf {
     ))
 }
 
+fn expected_runtime_error_kind_counts(
+    expected_kinds: &[ExpectedRuntimeErrorKind],
+) -> BTreeMap<ExpectedRuntimeErrorKind, usize> {
+    let mut counts = BTreeMap::new();
+    for kind in expected_kinds {
+        *counts.entry(*kind).or_insert(0) += 1;
+    }
+    counts
+}
+
+fn runtime_error_kind_counts(
+    runtime_errors: &[lintai_engine::ScanRuntimeError],
+) -> BTreeMap<ExpectedRuntimeErrorKind, usize> {
+    let mut counts = BTreeMap::new();
+    for error in runtime_errors {
+        let kind = match error.kind {
+            RuntimeErrorKind::Read => ExpectedRuntimeErrorKind::Read,
+            RuntimeErrorKind::InvalidUtf8 => ExpectedRuntimeErrorKind::InvalidUtf8,
+            RuntimeErrorKind::Parse => ExpectedRuntimeErrorKind::Parse,
+            RuntimeErrorKind::ProviderTimeout => ExpectedRuntimeErrorKind::ProviderTimeout,
+        };
+        *counts.entry(kind).or_insert(0) += 1;
+    }
+    counts
+}
+
 #[cfg(test)]
 fn repo_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -600,6 +677,7 @@ mod tests {
         assert_case_summary, discover_case_dirs, repo_root, unique_temp_dir,
     };
     use lintai_api::RuleTier;
+    use lintai_engine::{RuntimeErrorKind, ScanRuntimeError};
 
     #[test]
     fn parses_valid_case_manifest() {
@@ -630,6 +708,7 @@ name = ""
                 HarnessOutputFormat::Sarif,
             ]
         );
+        assert!(manifest.expected_runtime_error_kinds.is_empty());
         assert_eq!(manifest.snapshot.kind, SnapshotKind::None);
     }
 
@@ -697,6 +776,29 @@ name = "report"
     }
 
     #[test]
+    fn rejects_manifest_with_invalid_runtime_error_kind() {
+        let error = CaseManifest::from_toml(
+            r#"
+id = "bad-runtime-kind"
+kind = "edge"
+entry_path = "repo"
+expected_output = ["text"]
+expected_runtime_errors = 1
+expected_runtime_error_kinds = ["explode"]
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[snapshot]
+kind = "none"
+name = ""
+"#,
+        )
+        .unwrap_err();
+
+        assert!(error.to_string().contains("expected_runtime_error_kinds"));
+    }
+
+    #[test]
     fn top_level_iteration_one_directories_exist() {
         let root = repo_root();
 
@@ -755,7 +857,7 @@ name = "report"
         for relative in [
             "corpus/benign/skill-clean-basic",
             "corpus/malicious/hook-download-exec",
-            "corpus/edge/crlf-skill",
+            "corpus/edge/bom-frontmatter-skill",
             "corpus/compat/json-report-shape",
             "sample-repos/clean",
             "sample-repos/mcp-heavy",
@@ -851,6 +953,37 @@ name = ""
         .unwrap();
 
         assert_case_summary(&manifest, &lintai_engine::ScanSummary::default());
+    }
+
+    #[test]
+    fn assert_case_summary_accepts_expected_parse_runtime_error() {
+        let manifest = CaseManifest::from_toml(
+            r#"
+id = "parse-error"
+kind = "edge"
+entry_path = "repo"
+expected_output = ["text"]
+expected_runtime_errors = 1
+expected_runtime_error_kinds = ["parse"]
+expected_diagnostics = 0
+expected_scanned_files = 0
+expected_skipped_files = 0
+expected_absent_rules = []
+
+[snapshot]
+kind = "none"
+name = ""
+"#,
+        )
+        .unwrap();
+        let mut summary = lintai_engine::ScanSummary::default();
+        summary.runtime_errors.push(ScanRuntimeError {
+            normalized_path: "docs/SKILL.md".to_owned(),
+            kind: RuntimeErrorKind::Parse,
+            message: "unterminated frontmatter".to_owned(),
+        });
+
+        assert_case_summary(&manifest, &summary);
     }
 
     #[test]
@@ -950,5 +1083,83 @@ name = ""
         });
 
         assert_case_summary(&manifest, &summary);
+    }
+
+    #[test]
+    #[should_panic(expected = "runtime error kind mismatch")]
+    fn assert_case_summary_rejects_wrong_runtime_error_kind() {
+        let manifest = CaseManifest::from_toml(
+            r#"
+id = "wrong-runtime-kind"
+kind = "edge"
+entry_path = "repo"
+expected_output = ["text"]
+expected_runtime_errors = 1
+expected_runtime_error_kinds = ["parse"]
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[snapshot]
+kind = "none"
+name = ""
+"#,
+        )
+        .unwrap();
+        let mut summary = lintai_engine::ScanSummary::default();
+        summary.runtime_errors.push(ScanRuntimeError {
+            normalized_path: "docs/SKILL.md".to_owned(),
+            kind: RuntimeErrorKind::Read,
+            message: "io".to_owned(),
+        });
+
+        assert_case_summary(&manifest, &summary);
+    }
+
+    #[test]
+    #[should_panic(expected = "scanned file count mismatch")]
+    fn assert_case_summary_rejects_wrong_scanned_file_count() {
+        let manifest = CaseManifest::from_toml(
+            r#"
+id = "wrong-scanned"
+kind = "edge"
+entry_path = "repo"
+expected_output = ["text"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_scanned_files = 1
+expected_absent_rules = []
+
+[snapshot]
+kind = "none"
+name = ""
+"#,
+        )
+        .unwrap();
+
+        assert_case_summary(&manifest, &lintai_engine::ScanSummary::default());
+    }
+
+    #[test]
+    #[should_panic(expected = "skipped file count mismatch")]
+    fn assert_case_summary_rejects_wrong_skipped_file_count() {
+        let manifest = CaseManifest::from_toml(
+            r#"
+id = "wrong-skipped"
+kind = "edge"
+entry_path = "repo"
+expected_output = ["text"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_skipped_files = 1
+expected_absent_rules = []
+
+[snapshot]
+kind = "none"
+name = ""
+"#,
+        )
+        .unwrap();
+
+        assert_case_summary(&manifest, &lintai_engine::ScanSummary::default());
     }
 }
