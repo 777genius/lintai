@@ -2,9 +2,15 @@ id = "json-report-shape"
 kind = "compat"
 entry_path = "repo"
 expected_output = ["json"]
-expected_runtime_errors = 0
+expected_runtime_errors = 1
+expected_runtime_error_kinds = ["parse"]
 expected_diagnostics = 0
 expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC101"
+tier = "stable"
+min_evidence_count = 2
 
 [snapshot]
 kind = "json"

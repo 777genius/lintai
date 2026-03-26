@@ -1,0 +1,13 @@
+config_source=<case-root>/lintai.toml
+normalized_path=custom/agent.md
+included=true
+detected_kind=Some(CursorPluginAgent)
+detected_format=Some(Markdown)
+output=Text
+ci_fail_on=Deny
+ci_min_confidence=Medium
+capability_conflict_mode=Deny
+project_capabilities=Some(CapabilityProfile { network: Some(None), exec: None, fs: FileSystemCapability { read: [], write: [] }, secrets: SecretCapability { read_env: false, read_files: [] }, mcp: McpCapability { allowed_operations: [] } })
+applied_overrides=[["custom/**/*.md"]]
+category_overrides={Security: Deny}
+rule_overrides={"SEC201": Deny}

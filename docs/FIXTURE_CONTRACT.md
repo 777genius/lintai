@@ -1,7 +1,7 @@
 # Fixture Contract
 
 This document is the canonical contract for checked-in corpus cases and sample repos.
-It reflects the current state after Iteration 3.
+It reflects the current state after Iteration 4.
 
 ## Layout
 
@@ -43,7 +43,7 @@ min_evidence_count = 2
 expected_absent_rules = ["SEC900", "SEC901"]
 
 [snapshot]
-kind = "none" # none | json | sarif | explain-config
+kind = "none" # none | json | sarif | explain-config | stable-key
 name = ""
 ```
 
@@ -58,6 +58,15 @@ name = ""
 - Compatibility cases use `kind = "compat"` and `snapshot.kind != "none"`.
 - Sample repos use the same manifest shape as corpus cases.
 - Only TOML is allowed for fixture manifests.
+
+## Snapshot Files
+
+Compatibility snapshots live under `snapshots/` inside the case directory.
+
+- `json` -> `snapshots/<name>.json`
+- `sarif` -> `snapshots/<name>.sarif.json`
+- `explain-config` -> `snapshots/<name>.txt`
+- `stable-key` -> `snapshots/<name>.txt`
 
 ## Edge Cases
 

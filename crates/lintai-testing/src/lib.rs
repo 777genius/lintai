@@ -176,6 +176,8 @@ pub enum SnapshotKind {
     Sarif,
     #[serde(rename = "explain-config")]
     ExplainConfig,
+    #[serde(rename = "stable-key")]
+    StableKey,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, PartialEq, Eq, Ord, PartialOrd)]
@@ -568,6 +570,56 @@ pub fn assert_case_summary(manifest: &CaseManifest, summary: &ScanSummary) {
 pub struct OutputHarness;
 
 impl OutputHarness {
+    pub fn snapshot_path(case_dir: &Path, snapshot: &SnapshotExpectation) -> Result<PathBuf, HarnessError> {
+        let file_name = match snapshot.kind {
+            SnapshotKind::None => {
+                return Err(HarnessError::NotImplemented(
+                    "snapshot path resolution requires a concrete snapshot kind",
+                ));
+            }
+            SnapshotKind::Json => format!("{}.json", snapshot.name),
+            SnapshotKind::Sarif => format!("{}.sarif.json", snapshot.name),
+            SnapshotKind::ExplainConfig | SnapshotKind::StableKey => {
+                format!("{}.txt", snapshot.name)
+            }
+        };
+        Ok(case_dir.join("snapshots").join(file_name))
+    }
+
+    pub fn assert_snapshot(
+        case_dir: &Path,
+        snapshot: &SnapshotExpectation,
+        actual: &str,
+    ) -> Result<(), HarnessError> {
+        let snapshot_path = Self::snapshot_path(case_dir, snapshot)?;
+        let expected =
+            std::fs::read_to_string(&snapshot_path).map_err(|source| HarnessError::Manifest(
+                ManifestLoadError::Io {
+                    path: snapshot_path.clone(),
+                    source,
+                },
+            ))?;
+        assert_eq!(
+            expected, actual,
+            "snapshot mismatch for {}",
+            snapshot_path.display()
+        );
+        Ok(())
+    }
+
+    pub fn stable_keys_text(summary: &ScanSummary) -> String {
+        let mut lines = summary
+            .findings
+            .iter()
+            .map(|finding| format_stable_key(&finding.stable_key))
+            .collect::<Vec<_>>();
+        if lines.is_empty() {
+            return String::new();
+        }
+        lines.push(String::new());
+        lines.join("\n")
+    }
+
     pub fn render(
         _summary: &ScanSummary,
         _format: HarnessOutputFormat,
@@ -672,11 +724,14 @@ fn repo_root() -> PathBuf {
 
 #[cfg(test)]
 mod tests {
+    use std::path::{Path, PathBuf};
+
     use super::{
-        CaseManifest, HarnessOutputFormat, HarnessError, SnapshotKind, WorkspaceHarness,
-        assert_case_summary, discover_case_dirs, repo_root, unique_temp_dir,
+        CaseManifest, HarnessOutputFormat, HarnessError, OutputHarness, SnapshotExpectation,
+        SnapshotKind, WorkspaceHarness, assert_case_summary, discover_case_dirs, repo_root,
+        unique_temp_dir,
     };
-    use lintai_api::RuleTier;
+    use lintai_api::{Category, Confidence, Finding, Location, RuleMetadata, RuleTier, Severity, Span};
     use lintai_engine::{RuntimeErrorKind, ScanRuntimeError};
 
     #[test]
@@ -773,6 +828,28 @@ name = "report"
 "#,
         )
         .unwrap_err();
+    }
+
+    #[test]
+    fn parses_manifest_with_stable_key_snapshot_kind() {
+        let manifest = CaseManifest::from_toml(
+            r#"
+id = "stable-key-shape"
+kind = "compat"
+entry_path = "repo"
+expected_output = ["json"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[snapshot]
+kind = "stable-key"
+name = "stable-key-shape"
+"#,
+        )
+        .unwrap();
+
+        assert_eq!(manifest.snapshot.kind, SnapshotKind::StableKey);
     }
 
     #[test]
@@ -953,6 +1030,115 @@ name = ""
         .unwrap();
 
         assert_case_summary(&manifest, &lintai_engine::ScanSummary::default());
+    }
+
+    #[test]
+    fn snapshot_path_uses_expected_extensions() {
+        let case_dir = Path::new("/tmp/case");
+
+        let json = OutputHarness::snapshot_path(
+            case_dir,
+            &SnapshotExpectation {
+                kind: SnapshotKind::Json,
+                name: "report".to_owned(),
+            },
+        )
+        .unwrap();
+        let sarif = OutputHarness::snapshot_path(
+            case_dir,
+            &SnapshotExpectation {
+                kind: SnapshotKind::Sarif,
+                name: "report".to_owned(),
+            },
+        )
+        .unwrap();
+        let explain = OutputHarness::snapshot_path(
+            case_dir,
+            &SnapshotExpectation {
+                kind: SnapshotKind::ExplainConfig,
+                name: "report".to_owned(),
+            },
+        )
+        .unwrap();
+        let stable_key = OutputHarness::snapshot_path(
+            case_dir,
+            &SnapshotExpectation {
+                kind: SnapshotKind::StableKey,
+                name: "report".to_owned(),
+            },
+        )
+        .unwrap();
+
+        assert_eq!(json, PathBuf::from("/tmp/case/snapshots/report.json"));
+        assert_eq!(sarif, PathBuf::from("/tmp/case/snapshots/report.sarif.json"));
+        assert_eq!(explain, PathBuf::from("/tmp/case/snapshots/report.txt"));
+        assert_eq!(stable_key, PathBuf::from("/tmp/case/snapshots/report.txt"));
+    }
+
+    #[test]
+    fn assert_snapshot_passes_on_exact_match() {
+        let temp_dir = unique_temp_dir("lintai-snapshot-match");
+        std::fs::create_dir_all(temp_dir.join("snapshots")).unwrap();
+        std::fs::write(temp_dir.join("snapshots/report.json"), "{\n  \"ok\": true\n}\n").unwrap();
+
+        OutputHarness::assert_snapshot(
+            &temp_dir,
+            &SnapshotExpectation {
+                kind: SnapshotKind::Json,
+                name: "report".to_owned(),
+            },
+            "{\n  \"ok\": true\n}\n",
+        )
+        .unwrap();
+    }
+
+    #[test]
+    #[should_panic(expected = "snapshot mismatch")]
+    fn assert_snapshot_rejects_drift() {
+        let temp_dir = unique_temp_dir("lintai-snapshot-drift");
+        std::fs::create_dir_all(temp_dir.join("snapshots")).unwrap();
+        std::fs::write(temp_dir.join("snapshots/report.txt"), "expected\n").unwrap();
+
+        OutputHarness::assert_snapshot(
+            &temp_dir,
+            &SnapshotExpectation {
+                kind: SnapshotKind::ExplainConfig,
+                name: "report".to_owned(),
+            },
+            "actual\n",
+        )
+        .unwrap();
+    }
+
+    #[test]
+    fn stable_keys_text_is_deterministic_and_ordered() {
+        let meta = RuleMetadata::new(
+            "SEC900",
+            "demo",
+            Category::Security,
+            Severity::Warn,
+            Confidence::High,
+            RuleTier::Stable,
+        );
+        let first = Finding::new(
+            &meta,
+            Location::new("a.md", Span::new(0, 1)),
+            "first",
+        );
+        let second = Finding::new(
+            &meta,
+            Location::new("b.md", Span::new(1, 2)),
+            "second",
+        );
+        let summary = lintai_engine::ScanSummary {
+            findings: vec![first, second],
+            ..lintai_engine::ScanSummary::default()
+        };
+
+        assert_eq!(
+            OutputHarness::stable_keys_text(&summary),
+            "SEC900:a.md:0:1:\nSEC900:b.md:1:2:\n"
+        );
     }
 
     #[test]

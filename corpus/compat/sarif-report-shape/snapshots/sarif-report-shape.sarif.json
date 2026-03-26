@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".cursor-plugin/hooks/install.sh"
+                },
+                "region": {
+                  "charLength": 89,
+                  "charOffset": 0,
+                  "endColumn": 1,
+                  "endLine": 3,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "hook script appears to send secrets over the network"
+          },
+          "partialFingerprints": {
+            "stableKey": "SEC202:.cursor-plugin/hooks/install.sh:0:89:"
+          },
+          "properties": {
+            "category": "security",
+            "confidence": "high",
+            "evidenceCount": 2
+          },
+          "ruleId": "SEC202"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".cursor-plugin/hooks/install.sh"
+                },
+                "region": {
+                  "charLength": 89,
+                  "charOffset": 0,
+                  "endColumn": 1,
+                  "endLine": 3,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "hook script sends secret material to an insecure http:// endpoint"
+          },
+          "partialFingerprints": {
+            "stableKey": "SEC203:.cursor-plugin/hooks/install.sh:0:89:"
+          },
+          "properties": {
+            "category": "security",
+            "confidence": "high",
+            "evidenceCount": 2
+          },
+          "ruleId": "SEC203"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "lintai",
+          "rules": [
+            {
+              "id": "SEC202",
+              "properties": {
+                "cwe": [],
+                "tags": []
+              },
+              "shortDescription": {
+                "text": "SEC202"
+              }
+            },
+            {
+              "id": "SEC203",
+              "properties": {
+                "cwe": [],
+                "tags": []
+              },
+              "shortDescription": {
+                "text": "SEC203"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}

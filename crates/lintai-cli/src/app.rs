@@ -3,7 +3,8 @@ use std::sync::Arc;
 
 use lintai_ai_security::{AiSecurityProvider, PolicyMismatchProvider};
 use lintai_engine::{
-    Engine, FileSuppressions, OutputFormat, explain_file_config, load_workspace_config,
+    Engine, FileSuppressions, OutputFormat, ResolvedFileConfig, explain_file_config,
+    load_workspace_config,
 };
 
 use crate::args::{parse_explain_config_args, parse_scan_args};
@@ -101,29 +102,50 @@ fn run_explain_config(
     validate_path_within_project(&target, workspace.engine_config.project_root.as_deref())
         .map_err(|error| format!("target validation failed: {error}"))?;
     let resolved = explain_file_config(&workspace, &target);
-    println!(
-        "config_source={}",
-        workspace
-            .source_path
-            .as_ref()
-            .map_or("<none>".to_owned(), |p| p.display().to_string())
+    print!(
+        "{}",
+        format_explain_config(workspace.source_path.as_deref(), &resolved)
     );
-    println!("normalized_path={}", resolved.normalized_path);
-    println!("included={}", resolved.included);
-    println!("detected_kind={:?}", resolved.detected_kind);
-    println!("detected_format={:?}", resolved.detected_format);
-    println!("output={:?}", resolved.output_format);
-    println!("ci_fail_on={:?}", resolved.ci_policy.fail_on);
-    println!("ci_min_confidence={:?}", resolved.ci_policy.min_confidence);
-    println!(
-        "capability_conflict_mode={:?}",
-        resolved.capability_conflict_mode
-    );
-    println!("project_capabilities={:?}", resolved.project_capabilities);
-    println!("applied_overrides={:?}", resolved.applied_overrides);
-    println!("category_overrides={:?}", resolved.category_overrides);
-    println!("rule_overrides={:?}", resolved.rule_overrides);
     Ok(ExitCode::SUCCESS)
+}
+
+pub(crate) fn format_explain_config(
+    config_source: Option<&std::path::Path>,
+    resolved: &ResolvedFileConfig,
+) -> String {
+    let mut output = String::new();
+    output.push_str(&format!(
+        "config_source={}\n",
+        config_source.map_or("<none>".to_owned(), |p| p.display().to_string())
+    ));
+    output.push_str(&format!("normalized_path={}\n", resolved.normalized_path));
+    output.push_str(&format!("included={}\n", resolved.included));
+    output.push_str(&format!("detected_kind={:?}\n", resolved.detected_kind));
+    output.push_str(&format!("detected_format={:?}\n", resolved.detected_format));
+    output.push_str(&format!("output={:?}\n", resolved.output_format));
+    output.push_str(&format!("ci_fail_on={:?}\n", resolved.ci_policy.fail_on));
+    output.push_str(&format!(
+        "ci_min_confidence={:?}\n",
+        resolved.ci_policy.min_confidence
+    ));
+    output.push_str(&format!(
+        "capability_conflict_mode={:?}\n",
+        resolved.capability_conflict_mode
+    ));
+    output.push_str(&format!(
+        "project_capabilities={:?}\n",
+        resolved.project_capabilities
+    ));
+    output.push_str(&format!(
+        "applied_overrides={:?}\n",
+        resolved.applied_overrides
+    ));
+    output.push_str(&format!(
+        "category_overrides={:?}\n",
+        resolved.category_overrides
+    ));
+    output.push_str(&format!("rule_overrides={:?}\n", resolved.rule_overrides));
+    output
 }
 
 fn print_usage() {

@@ -1,5 +1,7 @@
 mod app;
 mod args;
+#[cfg(test)]
+mod compat_tests;
 mod output;
 mod path;
 

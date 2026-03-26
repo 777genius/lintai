@@ -1,0 +1,12 @@
+id = "explain-config-detection"
+kind = "compat"
+entry_path = "repo"
+expected_output = ["text"]
+expected_runtime_errors = 0
+expected_runtime_error_kinds = []
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[snapshot]
+kind = "explain-config"
+name = "explain-config-detection"

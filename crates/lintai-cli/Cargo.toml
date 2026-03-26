@@ -13,6 +13,9 @@ lintai-ai-security.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 
+[dev-dependencies]
+lintai-testing.workspace = true
+
 [[bin]]
 name = "lintai"
 path = "src/main.rs"
