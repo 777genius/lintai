@@ -35,6 +35,7 @@ jobs:
           cargo test --manifest-path Cargo.toml --locked -p lintai-cli args::
           cargo test --manifest-path Cargo.toml --locked -p lintai-cli output::
           cargo test --manifest-path Cargo.toml --locked -p lintai-cli path::
+          cargo test --manifest-path Cargo.toml --locked -p lintai-cli --test fix_commands
 
   corpus_suite:
     name: Corpus Suite

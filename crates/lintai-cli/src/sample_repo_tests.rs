@@ -82,7 +82,13 @@ fn sample_repo_dirs_are_discoverable() {
 
     assert_eq!(
         names,
-        vec!["clean", "cursor-plugin", "mcp-heavy", "policy-mismatch"]
+        vec![
+            "clean",
+            "cursor-plugin",
+            "fixable-comments",
+            "mcp-heavy",
+            "policy-mismatch"
+        ]
     );
 }
 
@@ -189,6 +195,31 @@ fn mcp_heavy_sample_repo_emits_mcp_rule_set() {
     );
     for rule_code in ["SEC301", "SEC302", "SEC303"] {
         assert!(text.contains(rule_code));
+    }
+}
+
+#[test]
+fn fixable_comments_sample_repo_emits_fixable_comment_rules() {
+    let case_dir = sample_repo("fixable-comments");
+    let manifest = load_case(&case_dir);
+    let summary = harness().scan_case(&case_dir).unwrap();
+    let workspace = load_workspace(&manifest.entry_root(&case_dir));
+    let report = build_real_report(&summary, &workspace);
+    let text = format_text(&report);
+
+    assert_case_summary(&manifest, &summary);
+    assert_eq!(
+        sample_repo_rule_codes(&summary),
+        BTreeSet::from(["SEC101", "SEC103"])
+    );
+    for rule_code in ["SEC101", "SEC103"] {
+        assert!(text.contains(rule_code));
+        let finding = summary
+            .findings
+            .iter()
+            .find(|finding| finding.rule_code == rule_code)
+            .unwrap();
+        assert!(finding.fix.is_some());
     }
 }
 

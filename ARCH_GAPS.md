@@ -11,7 +11,7 @@ No remaining `Required For v0.1` gaps.
 - Split `lintai-adapters` into explicit FORMAT and DOMAIN crates after interfaces stabilize.
 - Add isolated provider execution for true hard timeout enforcement and future subprocess/WASM layers.
 - Expand beyond the locked `v0.1` platform scope and add broader registry/pre-install workflows.
-- Add safe-first public `lintai fix` UX after fix coverage and safety policy are wider.
+- Broaden `lintai fix` beyond the initial safe comment-removal allowlist only after fix coverage and safety policy are wider.
 - Revisit `lintai-testing` as a public crate only after it is fully decoupled from engine internals.
 
 ## Resolved By Implementation Or Contract Change
@@ -29,3 +29,4 @@ No remaining `Required For v0.1` gaps.
 - Checked-in config schema is now generated from the typed raw config model instead of a separate dedicated builder.
 - `lintai-testing` is no longer treated as a publishable `v0.1` crate.
 - Corpus, compatibility snapshots, sample repos, and cross-platform smoke are now wired into release workflows.
+- `lintai fix` now exists as a safe-first public CLI workflow with deterministic preview/apply behavior for `SEC101` and `SEC103`.

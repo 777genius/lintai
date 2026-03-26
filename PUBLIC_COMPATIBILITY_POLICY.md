@@ -7,6 +7,7 @@ This file defines the compatibility promises for the publishable `v0.1` core.
 - `lintai-api` is the only stable and publishable contract crate in `v0.1`.
 - `lintai-testing` is intentionally internal during `v0.1` because it still depends on unpublished engine internals.
 - All other crates in `lintai/` are internal-only.
+- The `lintai` CLI is public product surface, but machine-readable stability promises still attach to `scan`, `config`, JSON, and SARIF first.
 
 ## `lintai-api`
 
@@ -26,6 +27,14 @@ This file defines the compatibility promises for the publishable `v0.1` core.
 - SARIF fingerprints remain derived from `stable_key`.
 - Release-grade SARIF output must not use fake metadata placeholders.
 - Any SARIF shape changes must preserve fingerprint stability.
+
+## CLI Commands
+
+- `scan`, `explain-config`, `config-schema`, and `help` remain public CLI surface.
+- `fix` is additive public CLI surface.
+- The presence of the `fix` command is stable after introduction, but autofix availability is rule-specific and may expand over time.
+- The current safe autofix allowlist is limited to `SEC101` and `SEC103`.
+- No machine-readable `fix` output format is promised in this line.
 
 ## Config Contract
 

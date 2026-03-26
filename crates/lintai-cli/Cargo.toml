@@ -10,6 +10,7 @@ publish = false
 lintai-api.workspace = true
 lintai-engine.workspace = true
 lintai-ai-security.workspace = true
+lintai-fix.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 

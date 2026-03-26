@@ -1,4 +1,4 @@
-use lintai_api::{Finding, RuleMetadata, RuleProvider, ScanContext};
+use lintai_api::{Applicability, Finding, Fix, RuleMetadata, RuleProvider, ScanContext};
 
 use crate::registry::{RULE_METADATA, RULES};
 
@@ -29,5 +29,27 @@ impl RuleProvider for AiSecurityProvider {
             findings.extend((rule.check)(ctx, &rule.metadata));
         }
         findings
+    }
+
+    fn supports_fix(&self) -> bool {
+        true
+    }
+
+    fn fix(&self, _ctx: &ScanContext, finding: &Finding) -> Option<Fix> {
+        match finding.rule_code.as_str() {
+            "SEC101" => Some(Fix::new(
+                finding.location.span.clone(),
+                "",
+                Applicability::Safe,
+                Some("remove dangerous hidden HTML comment".to_owned()),
+            )),
+            "SEC103" => Some(Fix::new(
+                finding.location.span.clone(),
+                "",
+                Applicability::Safe,
+                Some("remove hidden HTML comment download-and-execute instruction".to_owned()),
+            )),
+            _ => None,
+        }
     }
 }

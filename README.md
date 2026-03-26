@@ -87,15 +87,27 @@ cargo run --manifest-path ../../../Cargo.toml -- scan . --format=sarif
 cargo run --manifest-path ../../../Cargo.toml -- explain-config custom/agent.md
 ```
 
+### Fixable Comments Sample
+
+Preview exit: `0`  
+Apply exit: `0`
+
+```bash
+cd sample-repos/fixable-comments/repo
+cargo run --manifest-path ../../../Cargo.toml -- scan .
+cargo run --manifest-path ../../../Cargo.toml -- fix .
+```
+
 ## Exit Codes
 
-- `0`: no blocking findings
-- `1`: blocking findings were emitted
+- `scan`: `0` means no blocking findings, `1` means blocking findings were emitted
+- `fix`: `0` means fixes were previewed or applied successfully, `1` means one or more selected fixes were skipped safely
 - `2`: execution or configuration error
 
 ## Sample Repos
 
 - [`sample-repos/clean`](sample-repos/clean/README.md): clean mixed-surface workspace with zero findings
+- [`sample-repos/fixable-comments`](sample-repos/fixable-comments/README.md): first safe-first `lintai fix` example with comment-removal fixes
 - [`sample-repos/mcp-heavy`](sample-repos/mcp-heavy/README.md): MCP-focused repo with representative MCP findings
 - [`sample-repos/cursor-plugin`](sample-repos/cursor-plugin/README.md): Cursor Plugin repo with manifest, hooks, commands, and agents
 - [`sample-repos/policy-mismatch`](sample-repos/policy-mismatch/README.md): policy mismatch repo with `explain-config` coverage
@@ -136,6 +148,7 @@ format = "markdown"
 - findings carry structured `evidence`
 - JSON machine output is versioned through `schema_version = 1`
 - SARIF uses `stableKey` as the fingerprint source of truth
+- `lintai fix` is additive public CLI surface with limited rule-specific autofix coverage
 - root README commands are validated through the docs-command suite
 - `lintai-testing` remains internal during `v0.1`
 

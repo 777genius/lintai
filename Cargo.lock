@@ -162,6 +162,7 @@ dependencies = [
  "lintai-ai-security",
  "lintai-api",
  "lintai-engine",
+ "lintai-fix",
  "lintai-testing",
  "serde",
  "serde_json",

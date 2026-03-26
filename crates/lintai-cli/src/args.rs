@@ -8,6 +8,13 @@ pub struct ScanArgs {
     pub format_override: Option<OutputFormat>,
 }
 
+#[derive(Debug)]
+pub struct FixArgs {
+    pub target: PathBuf,
+    pub apply: bool,
+    pub rule_filters: Vec<String>,
+}
+
 pub fn parse_scan_args(args: impl Iterator<Item = String>) -> Result<ScanArgs, String> {
     let mut target = None;
     let mut format_override = None;
@@ -55,6 +62,41 @@ pub fn parse_explain_config_args(
     Ok(target)
 }
 
+pub fn parse_fix_args(args: impl Iterator<Item = String>) -> Result<FixArgs, String> {
+    let mut target = None;
+    let mut apply = false;
+    let mut rule_filters = Vec::new();
+    let mut args = args.peekable();
+
+    while let Some(arg) = args.next() {
+        match arg.as_str() {
+            "--apply" => apply = true,
+            "--rule" => {
+                let Some(value) = args.next() else {
+                    return Err("missing value for --rule".to_owned());
+                };
+                rule_filters.push(value);
+            }
+            value if value.starts_with("--rule=") => {
+                rule_filters.push(value.trim_start_matches("--rule=").to_owned());
+            }
+            value if value.starts_with('-') => {
+                return Err(format!("unknown flag: {value}"));
+            }
+            value => match target {
+                Some(_) => return Err(format!("unexpected extra argument: {value}")),
+                None => target = Some(PathBuf::from(value)),
+            },
+        }
+    }
+
+    Ok(FixArgs {
+        target: target.unwrap_or_else(|| PathBuf::from(".")),
+        apply,
+        rule_filters,
+    })
+}
+
 fn parse_output_format(value: &str) -> Result<OutputFormat, String> {
     match value {
         "text" => Ok(OutputFormat::Text),
@@ -66,7 +108,7 @@ fn parse_output_format(value: &str) -> Result<OutputFormat, String> {
 
 #[cfg(test)]
 mod tests {
-    use super::{parse_explain_config_args, parse_scan_args};
+    use super::{parse_explain_config_args, parse_fix_args, parse_scan_args};
     use lintai_engine::OutputFormat;
 
     #[test]
@@ -99,6 +141,33 @@ mod tests {
         let error =
             parse_explain_config_args(["docs/SKILL.md", "extra"].into_iter().map(str::to_owned))
                 .unwrap_err();
+        assert!(error.contains("unexpected extra argument"));
+    }
+
+    #[test]
+    fn fix_defaults_to_preview_in_current_directory() {
+        let parsed = parse_fix_args(std::iter::empty()).unwrap();
+        assert_eq!(parsed.target, std::path::PathBuf::from("."));
+        assert!(!parsed.apply);
+        assert!(parsed.rule_filters.is_empty());
+    }
+
+    #[test]
+    fn fix_parses_apply_and_repeated_rules() {
+        let parsed = parse_fix_args(
+            ["--apply", "--rule", "SEC101", "--rule=SEC103", "docs"]
+                .into_iter()
+                .map(str::to_owned),
+        )
+        .unwrap();
+        assert!(parsed.apply);
+        assert_eq!(parsed.target, std::path::PathBuf::from("docs"));
+        assert_eq!(parsed.rule_filters, vec!["SEC101", "SEC103"]);
+    }
+
+    #[test]
+    fn fix_rejects_extra_positional_argument() {
+        let error = parse_fix_args(["docs", "other"].into_iter().map(str::to_owned)).unwrap_err();
         assert!(error.contains("unexpected extra argument"));
     }
 }

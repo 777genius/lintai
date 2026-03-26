@@ -6,6 +6,7 @@ enum OutputKind {
     Text,
     Json,
     Sarif,
+    FixPreview,
     ExplainConfig,
     Help,
     ConfigSchema,
@@ -48,6 +49,14 @@ fn docs_cases() -> Vec<CommandCase> {
             expected_exit: 0,
             output_kind: OutputKind::ConfigSchema,
             expected_rules: &[],
+        },
+        CommandCase {
+            name: "fixable-comments-fix-preview",
+            cwd: sample_repo_dir("fixable-comments"),
+            args: &["fix", "."],
+            expected_exit: 0,
+            output_kind: OutputKind::FixPreview,
+            expected_rules: &["SEC101", "SEC103"],
         },
         CommandCase {
             name: "clean-scan-text",
@@ -284,9 +293,33 @@ fn assert_explain_config_output(case: &CommandCase, stdout: &str) {
     }
 }
 
+fn assert_fix_preview_output(case: &CommandCase, stdout: &str) {
+    for rule in case.expected_rules {
+        assert!(
+            stdout.contains(rule),
+            "{} fix preview missing rule {}: {stdout}",
+            case.name,
+            rule
+        );
+    }
+    for expected in [
+        "selected 2 autofixable finding(s)",
+        "planned 2 fix(es)",
+        "files changed 1",
+    ] {
+        assert!(
+            stdout.contains(expected),
+            "{} fix preview missing {}: {stdout}",
+            case.name,
+            expected
+        );
+    }
+}
+
 fn assert_help_output(case: &CommandCase, stdout: &str) {
     for expected in [
         "lintai scan [path]",
+        "lintai fix [path] [--apply] [--rule CODE]",
         "lintai explain-config <file>",
         "lintai config-schema",
     ] {
@@ -328,6 +361,7 @@ fn assert_case(case: &CommandCase) {
         OutputKind::Text => assert_text_output(case, &stdout),
         OutputKind::Json => assert_json_output(case, &stdout),
         OutputKind::Sarif => assert_sarif_output(case, &stdout),
+        OutputKind::FixPreview => assert_fix_preview_output(case, &stdout),
         OutputKind::ExplainConfig => assert_explain_config_output(case, &stdout),
         OutputKind::Help => assert_help_output(case, &stdout),
         OutputKind::ConfigSchema => assert_config_schema_output(case, &stdout),

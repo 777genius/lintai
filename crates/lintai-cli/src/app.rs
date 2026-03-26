@@ -1,13 +1,18 @@
+use std::collections::{BTreeMap, BTreeSet};
+use std::fs;
+use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 use std::sync::Arc;
 
 use lintai_ai_security::{AiSecurityProvider, PolicyMismatchProvider};
+use lintai_api::{Applicability, Finding, RuleProvider};
 use lintai_engine::{
     Engine, FileSuppressions, OutputFormat, ResolvedFileConfig, explain_file_config,
     load_workspace_config,
 };
+use lintai_fix::{apply_planned_fixes, plan_fixes};
 
-use crate::args::{parse_explain_config_args, parse_scan_args};
+use crate::args::{parse_explain_config_args, parse_fix_args, parse_scan_args};
 use crate::{output, path::validate_path_within_project};
 
 pub fn run() -> Result<ExitCode, String> {
@@ -21,6 +26,7 @@ pub fn run() -> Result<ExitCode, String> {
 
     match command.as_str() {
         "scan" => run_scan(&current_dir, args),
+        "fix" => run_fix(&current_dir, args),
         "explain-config" => run_explain_config(&current_dir, args),
         "config-schema" => {
             println!("{}", lintai_engine::config_schema_pretty());
@@ -34,29 +40,11 @@ pub fn run() -> Result<ExitCode, String> {
     }
 }
 
-fn run_scan(
-    current_dir: &std::path::Path,
-    args: impl Iterator<Item = String>,
-) -> Result<ExitCode, String> {
+fn run_scan(current_dir: &Path, args: impl Iterator<Item = String>) -> Result<ExitCode, String> {
     let parsed = parse_scan_args(args)?;
-    let target = parsed.target;
-    let format_override = parsed.format_override;
-
-    let workspace = load_workspace_config(current_dir)
-        .map_err(|error| format!("config resolution failed: {error}"))?;
-    validate_path_within_project(&target, workspace.engine_config.project_root.as_deref())
-        .map_err(|error| format!("target validation failed: {error}"))?;
-    let suppressions = FileSuppressions::load(&workspace.engine_config)
-        .map_err(|error| format!("suppress loading failed: {error}"))?;
-    let engine = Engine::builder()
-        .with_config(workspace.engine_config.clone())
-        .with_suppressions(Arc::new(suppressions))
-        .with_provider(Arc::new(AiSecurityProvider::default()))
-        .with_provider(Arc::new(PolicyMismatchProvider))
-        .build();
-
-    let summary = engine
-        .scan_path(&target)
+    let workspace = load_validated_workspace(current_dir, &parsed.target)?;
+    let summary = build_engine(&workspace)?
+        .scan_path(&parsed.target)
         .map_err(|error| format!("scan failed: {error}"))?;
     let report = output::build_envelope(
         &summary,
@@ -64,7 +52,9 @@ fn run_scan(
         workspace.engine_config.project_root.as_deref(),
     );
 
-    let output_format = format_override.unwrap_or(workspace.engine_config.output_format);
+    let output_format = parsed
+        .format_override
+        .unwrap_or(workspace.engine_config.output_format);
     match output_format {
         OutputFormat::Text => {
             print!("{}", output::format_text(&report));
@@ -92,8 +82,144 @@ fn run_scan(
     }
 }
 
+fn run_fix(current_dir: &Path, args: impl Iterator<Item = String>) -> Result<ExitCode, String> {
+    let parsed = parse_fix_args(args)?;
+    let workspace = load_validated_workspace(current_dir, &parsed.target)?;
+    let summary = build_engine(&workspace)?
+        .scan_path(&parsed.target)
+        .map_err(|error| format!("scan failed: {error}"))?;
+    let rule_filters = parsed.rule_filters.into_iter().collect::<BTreeSet<_>>();
+    let fix_root = fix_root(&workspace, current_dir);
+
+    let mut selected_findings = 0usize;
+    let mut grouped = BTreeMap::<String, Vec<&Finding>>::new();
+    for finding in &summary.findings {
+        if !rule_filters.is_empty() && !rule_filters.contains(finding.rule_code.as_str()) {
+            continue;
+        }
+        let Some(fix) = finding.fix.as_ref() else {
+            continue;
+        };
+        if !matches!(fix.applicability, Applicability::Safe) {
+            continue;
+        }
+
+        selected_findings += 1;
+        grouped
+            .entry(finding.location.normalized_path.clone())
+            .or_default()
+            .push(finding);
+    }
+
+    let mut output = String::new();
+    let mut applied_or_planned = 0usize;
+    let mut skipped_conflicts = 0usize;
+    let mut skipped_unapplied = 0usize;
+    let mut files_changed = 0usize;
+
+    if selected_findings == 0 {
+        output.push_str("no autofixable findings matched the current selection\n");
+    }
+
+    for (normalized_path, findings) in grouped {
+        let fixes = findings
+            .iter()
+            .map(|finding| {
+                finding
+                    .fix
+                    .clone()
+                    .expect("fixable finding should carry a fix")
+            })
+            .collect::<Vec<_>>();
+        let plan = plan_fixes(&fixes);
+        skipped_conflicts += plan.conflicts.len();
+        let file_path = fix_root.join(Path::new(&normalized_path));
+
+        for index in &plan.conflicts {
+            let finding = findings[*index];
+            output.push_str(&format!(
+                "skip-conflict {} {}:{}-{}\n",
+                finding.rule_code,
+                normalized_path,
+                finding.location.span.start_byte,
+                finding.location.span.end_byte
+            ));
+        }
+
+        if plan.applicable.is_empty() {
+            continue;
+        }
+
+        if parsed.apply {
+            let content = fs::read_to_string(&file_path)
+                .map_err(|error| format!("fix read failed for {}: {error}", file_path.display()))?;
+            match apply_planned_fixes(&content, &fixes, &plan) {
+                Ok(updated) => {
+                    if updated != content {
+                        fs::write(&file_path, updated).map_err(|error| {
+                            format!("fix write failed for {}: {error}", file_path.display())
+                        })?;
+                        files_changed += 1;
+                    }
+                    applied_or_planned += plan.applicable.len();
+                    for index in &plan.applicable {
+                        let finding = findings[*index];
+                        output.push_str(&format!(
+                            "apply {} {}:{}-{}\n",
+                            finding.rule_code,
+                            normalized_path,
+                            finding.location.span.start_byte,
+                            finding.location.span.end_byte
+                        ));
+                    }
+                }
+                Err(error) => {
+                    skipped_unapplied += plan.applicable.len();
+                    output.push_str(&format!(
+                        "skip-unapplied {} {}\n",
+                        normalized_path,
+                        fix_error_message(&error)
+                    ));
+                }
+            }
+        } else {
+            applied_or_planned += plan.applicable.len();
+            files_changed += 1;
+            for index in &plan.applicable {
+                let finding = findings[*index];
+                output.push_str(&format!(
+                    "plan {} {}:{}-{}\n",
+                    finding.rule_code,
+                    normalized_path,
+                    finding.location.span.start_byte,
+                    finding.location.span.end_byte
+                ));
+            }
+        }
+    }
+
+    let action = if parsed.apply { "applied" } else { "planned" };
+    output.push_str(&format!(
+        "scanned {} finding(s); selected {} autofixable finding(s); {} {} fix(es); skipped {} conflict(s); skipped {} unapplied fix(es); files changed {}\n",
+        summary.findings.len(),
+        selected_findings,
+        action,
+        applied_or_planned,
+        skipped_conflicts,
+        skipped_unapplied,
+        files_changed
+    ));
+    print!("{output}");
+
+    if parsed.apply && (skipped_conflicts > 0 || skipped_unapplied > 0) {
+        Ok(ExitCode::from(1))
+    } else {
+        Ok(ExitCode::SUCCESS)
+    }
+}
+
 fn run_explain_config(
-    current_dir: &std::path::Path,
+    current_dir: &Path,
     args: impl Iterator<Item = String>,
 ) -> Result<ExitCode, String> {
     let target = parse_explain_config_args(args)?;
@@ -110,7 +236,7 @@ fn run_explain_config(
 }
 
 pub(crate) fn format_explain_config(
-    config_source: Option<&std::path::Path>,
+    config_source: Option<&Path>,
     resolved: &ResolvedFileConfig,
 ) -> String {
     let mut output = String::new();
@@ -151,8 +277,52 @@ pub(crate) fn format_explain_config(
 fn print_usage() {
     println!("lintai scan [path] [--format=text|json]");
     println!("                    [--format=sarif]");
+    println!("lintai fix [path] [--apply] [--rule CODE]");
     println!("lintai explain-config <file>");
     println!("lintai config-schema");
+}
+
+fn load_validated_workspace(
+    current_dir: &Path,
+    target: &Path,
+) -> Result<lintai_engine::WorkspaceConfig, String> {
+    let workspace = load_workspace_config(current_dir)
+        .map_err(|error| format!("config resolution failed: {error}"))?;
+    validate_path_within_project(target, workspace.engine_config.project_root.as_deref())
+        .map_err(|error| format!("target validation failed: {error}"))?;
+    Ok(workspace)
+}
+
+fn build_engine(workspace: &lintai_engine::WorkspaceConfig) -> Result<Engine, String> {
+    let suppressions = FileSuppressions::load(&workspace.engine_config)
+        .map_err(|error| format!("suppress loading failed: {error}"))?;
+    let providers: [Arc<dyn RuleProvider>; 2] = [
+        Arc::new(AiSecurityProvider::default()),
+        Arc::new(PolicyMismatchProvider),
+    ];
+    let mut builder = Engine::builder()
+        .with_config(workspace.engine_config.clone())
+        .with_suppressions(Arc::new(suppressions));
+    for provider in providers {
+        builder = builder.with_provider(provider);
+    }
+
+    Ok(builder.build())
+}
+
+fn fix_root(workspace: &lintai_engine::WorkspaceConfig, current_dir: &Path) -> PathBuf {
+    workspace
+        .engine_config
+        .project_root
+        .clone()
+        .unwrap_or_else(|| current_dir.to_path_buf())
+}
+
+fn fix_error_message(error: &lintai_fix::FixError) -> &'static str {
+    match error {
+        lintai_fix::FixError::OutOfBounds => "fix span fell outside current file contents",
+        lintai_fix::FixError::InvalidRange => "fix span used an invalid byte range",
+    }
 }
 
 fn has_blocking_findings(
