@@ -17,6 +17,12 @@ Expected findings:
 - `SEC202` secret exfiltration hook
 - `SEC203` plain HTTP secret exfiltration hook
 
+Expected result:
+
+- findings are expected
+- findings are blocking under the current sample config
+- every documented scan command exits `1`
+
 Run these commands from `sample-repos/cursor-plugin/repo`:
 
 ```bash

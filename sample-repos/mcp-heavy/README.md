@@ -13,6 +13,12 @@ Expected findings:
 - `SEC302` plain HTTP MCP endpoint
 - `SEC303` credential env passthrough
 
+Expected result:
+
+- findings are expected
+- findings are non-blocking under the current sample config
+- every documented command exits `0`
+
 Run these commands from `sample-repos/mcp-heavy/repo`:
 
 ```bash

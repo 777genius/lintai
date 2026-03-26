@@ -16,6 +16,8 @@ Expected result:
 - zero findings
 - zero diagnostics
 - zero runtime errors
+- no blocking findings
+- every documented command exits `0`
 
 Run these commands from `sample-repos/clean/repo`:
 

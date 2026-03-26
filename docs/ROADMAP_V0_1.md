@@ -18,8 +18,11 @@
   - Iteration 5: real sample repos and end-to-end sample-repo coverage
   - Iteration 6: release barrier workflows and cross-platform smoke
 - `ARCH_GAPS.md` still leaves final `v0.1` blockers:
-  - top-level docs hardening is still incomplete
+  - docs-command certification has not yet been observed green on a candidate commit
   - final release-candidate validation has not been run yet
+- Iteration 7 is intentionally split:
+  - Phase A: docs hardening, docs-command gate, release checklist
+  - Phase B: observe one green dry release and only then clear `ARCH_GAPS.md`
 
 ## Locked Constraints
 
@@ -36,7 +39,7 @@
 4. Iteration 4: Compatibility snapshots. Done.
 5. Iteration 5: Sample repos. Done.
 6. Iteration 6: GitHub Actions release barrier. Done.
-7. Iteration 7: Docs hardening, docs-command gate, and first dry release.
+7. Iteration 7: Docs hardening, docs-command gate, and first dry release. Phase A can land before final certification evidence exists.
 
 ## Definition Of Done
 

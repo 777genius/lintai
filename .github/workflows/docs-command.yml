@@ -1,0 +1,41 @@
+name: Docs Command
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  docs_command_suite:
+    name: Docs Command Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.90.0
+          profile: minimal
+      - uses: Swatinem/rust-cache@v2
+      - name: Run documented command integration tests
+        run: cargo test --manifest-path Cargo.toml --locked -p lintai-cli --test docs_commands
+
+  docs_gate:
+    name: Docs Gate
+    if: ${{ always() }}
+    needs:
+      - docs_command_suite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify docs-command job succeeded
+        shell: bash
+        run: test "${{ needs.docs_command_suite.result }}" = "success"

@@ -37,8 +37,9 @@
 | 1 | **[ARCHITECTURE_DECISIONS.md](ARCHITECTURE_DECISIONS.md)** | Зафиксированные архитектурные решения и invariants |
 | 2 | **[../V0_1_RELEASE_CHARTER.md](../V0_1_RELEASE_CHARTER.md)** | Release contract текущего `v0.1` |
 | 3 | **[../ARCH_GAPS.md](../ARCH_GAPS.md)** | Остаточные разрывы до release-ready состояния |
-| 4 | **[ROADMAP_V0_1.md](ROADMAP_V0_1.md)** | Операционный roadmap и sequence итераций |
-| 5 | **[FIXTURE_CONTRACT.md](FIXTURE_CONTRACT.md)** | Контракт для corpus cases и sample repos |
+| 4 | **[RELEASE_CHECKLIST_V0_1.md](RELEASE_CHECKLIST_V0_1.md)** | Dry release checklist и certification record для `v0.1` |
+| 5 | **[ROADMAP_V0_1.md](ROADMAP_V0_1.md)** | Операционный roadmap и sequence итераций |
+| 6 | **[FIXTURE_CONTRACT.md](FIXTURE_CONTRACT.md)** | Контракт для corpus cases и sample repos |
 
 ### Research second
 
@@ -57,6 +58,7 @@ Research files below are reference material. They are useful for background and 
 - **[RULE_QUALITY_POLICY.md](RULE_QUALITY_POLICY.md)** — Политика надёжности правил: детерминизм, контекст, доказательства
 - **[GLOSSARY.md](GLOSSARY.md)** — Единые термины (Claims/Capabilities, stable_key/fingerprint, артефакты)
 - **[ROADMAP_V0_1.md](ROADMAP_V0_1.md)** — Операционный roadmap от текущего core к publishable `v0.1`
+- **[RELEASE_CHECKLIST_V0_1.md](RELEASE_CHECKLIST_V0_1.md)** — Dry release checklist и certification record
 - **[FIXTURE_CONTRACT.md](FIXTURE_CONTRACT.md)** — Контракт для corpus cases и sample repos
 - **[PUBLIC_COMPATIBILITY_POLICY.md](../PUBLIC_COMPATIBILITY_POLICY.md)** — Политика совместимости для `lintai-api`, config, JSON и SARIF
 
@@ -239,4 +241,4 @@ Research files below are reference material. They are useful for background and 
 | Research deep dive | 54 файла, ~49K строк |
 | Research agents использовано | 19+ (несколько батчей) |
 | Покрытие | Рынок, конкуренты, архитектура, rules engine, distribution, CI/CD, legal, monetization, 14 платформ, real malware, YARA-X, parser pitfalls |
-| Код | Активный Rust workspace `lintai`, iterations 1-3 already landed |
+| Код | Активный Rust workspace `lintai`, iterations 1-6 already landed; iteration 7 = docs hardening + dry release |

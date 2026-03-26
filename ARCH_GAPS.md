@@ -6,8 +6,8 @@ This file tracks the remaining deltas between the implemented `lintai/` workspac
 
 | Gap | Owner Artifact | Exit Condition | Blocking Gate |
 | --- | --- | --- | --- |
-| Top-level docs and command guidance are not yet hardened into a release-grade contract. | README + docs command checks | Make root docs truthful, executable, and validated as part of the final release flow. | docs-command suite + dry release |
-| Final release-candidate validation has not been completed yet. | release checklist + branch protection | Run one full dry release cycle with all gates green and then clear the remaining `v0.1` gaps. | release barrier + cross-platform smoke + dry release |
+| Top-level docs and command guidance have not yet been certified as a release-grade contract on a candidate commit. | README + sample repo READMEs + docs command checks | Observe the docs-command gate green on the dry-release candidate after the docs contract rewrite. | docs-command suite + dry release |
+| Final release-candidate validation has not been completed yet. | release checklist + branch protection | Run one full dry release cycle with `Barrier Gate`, `Smoke Gate`, and `Docs Gate` green and then clear the remaining `v0.1` gaps. | release barrier + smoke gate + docs gate + dry release |
 
 ## Deferred To v0.2+
 

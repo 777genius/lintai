@@ -19,6 +19,13 @@ Expected findings:
 
 `SEC401` through `SEC403` are preview-tier rules in `v0.1`.
 
+Expected result:
+
+- findings are expected
+- the current sample config keeps scan commands non-blocking
+- every documented `scan` command exits `0`
+- the documented `explain-config` command exits `0`
+
 Run these commands from `sample-repos/policy-mismatch/repo`:
 
 ```bash

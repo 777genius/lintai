@@ -57,6 +57,7 @@ This file is the canonical source of truth for what counts as `v0.1`.
 `v0.1` is release-ready only when all of the following are true:
 
 - Every `Required For v0.1` item in `ARCH_GAPS.md` is closed.
+- Root README and sample repo commands are truthful and validated by the docs-command suite.
 - Must-scope repositories scan end-to-end.
 - `json` and `sarif` outputs are stable under snapshot/contract tests.
 - Policy mismatch coverage exists in regression tests.
