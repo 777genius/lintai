@@ -4,9 +4,9 @@ This file is the repo-owned checklist for the first `v0.1` dry release and the e
 
 ## Candidate
 
-- Commit SHA: `bb650c22ba8b7fe8d1cf633ef07b035cb992dfd9`
+- Commit SHA: `af94371ec73b56ed2d0e508748da573601d8d914`
 - Candidate date: `2026-03-27`
-- Outcome: `technically green / operationally incomplete`
+- Outcome: `pass`
 
 ## Required GitHub Checks
 
@@ -41,9 +41,9 @@ Branch protection is configured in GitHub, not in this repository. The release c
 - [x] `Barrier Gate` green on the candidate.
 - [x] `Smoke Gate` green on the candidate.
 - [x] `Docs Gate` green on the candidate.
-- [ ] `ARCH_GAPS.md` cleared only after the gates above are green.
+- [x] `ARCH_GAPS.md` cleared only after the gates above are green.
 
 ## Final Decision
 
-- Pass: `no`
-- Blocking issues: `main` is not protected in GitHub, so `Barrier Gate`, `Smoke Gate`, and `Docs Gate` are not enforced as required checks even though the candidate is technically green.
+- Pass: `yes`
+- Blocking issues: `none`

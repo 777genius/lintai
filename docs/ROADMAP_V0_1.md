@@ -10,19 +10,15 @@
 
 - Core contracts are implemented and the workspace test suite is green.
 - `lintai-api` is already the only stable contract crate.
-- Iterations 1-6 are already landed:
+- Iterations 1-7 are already landed:
   - Iteration 1: release scaffolding and fixture contract
   - Iteration 2: benign corpus and working workspace harness
   - Iteration 3: malicious coverage for all current ai-security rules plus repo-safe edge regression
   - Iteration 4: compatibility snapshots for `json`, `sarif`, `explain-config`, and `stable_key`
   - Iteration 5: real sample repos and end-to-end sample-repo coverage
   - Iteration 6: release barrier workflows and cross-platform smoke
-- `ARCH_GAPS.md` still leaves final `v0.1` blockers:
-  - a real candidate commit is now green across `Barrier Gate`, `Smoke Gate`, and `Docs Gate`
-  - final release-candidate validation is still incomplete because branch protection does not yet enforce those checks as required
-- Iteration 7 is intentionally split:
-  - Phase A: docs hardening, docs-command gate, release checklist
-  - Phase B: observe one green dry release and only then clear `ARCH_GAPS.md`
+  - Iteration 7: docs hardening, docs-command gate, branch-protection-backed dry release certification
+- `ARCH_GAPS.md` no longer has any remaining `Required For v0.1` items.
 
 ## Locked Constraints
 
@@ -39,7 +35,7 @@
 4. Iteration 4: Compatibility snapshots. Done.
 5. Iteration 5: Sample repos. Done.
 6. Iteration 6: GitHub Actions release barrier. Done.
-7. Iteration 7: Docs hardening, docs-command gate, and first dry release. Phase A can land before final certification evidence exists.
+7. Iteration 7: Docs hardening, docs-command gate, and first dry release. Done.
 
 ## Definition Of Done
 
@@ -48,6 +44,7 @@
 - Corpus suites are green.
 - Snapshot suites are green.
 - Cross-platform smoke is green.
+- Docs-command gate is green.
 
 ## Sequencing Rules
 

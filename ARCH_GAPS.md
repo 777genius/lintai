@@ -4,9 +4,7 @@ This file tracks the remaining deltas between the implemented `lintai/` workspac
 
 ## Required For v0.1
 
-| Gap | Owner Artifact | Exit Condition | Blocking Gate |
-| --- | --- | --- | --- |
-| Final release-candidate validation has not been completed yet. | release checklist + branch protection | Run one full dry release cycle with `Barrier Gate`, `Smoke Gate`, and `Docs Gate` green and then clear the remaining `v0.1` gaps. | release barrier + smoke gate + docs gate + dry release |
+No remaining `Required For v0.1` gaps.
 
 ## Deferred To v0.2+
 
