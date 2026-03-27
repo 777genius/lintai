@@ -35,3 +35,25 @@ fn index_does_not_contain_stale_iteration_seven_status() {
         "INDEX.md should not carry stale pre-certification status text"
     );
 }
+
+#[test]
+fn architecture_decisions_match_current_provider_backend_model() {
+    let text = include_str!("../../../docs/ARCHITECTURE_DECISIONS.md");
+
+    assert!(
+        !text.contains("Workspace rules use `ScanScope::{PerFile, Workspace}`"),
+        "ARCHITECTURE_DECISIONS.md should not describe scan scope as RuleProvider-owned"
+    );
+    assert!(
+        text.contains("Backend execution mode carries `ScanScope::{PerFile, Workspace}`"),
+        "ARCHITECTURE_DECISIONS.md should describe scan scope as backend-owned"
+    );
+    assert!(
+        !text.contains("logical FORMAT/DOMAIN split only for now"),
+        "ARCHITECTURE_DECISIONS.md should not describe adapters as a pre-split crate anymore"
+    );
+    assert!(
+        text.contains("`lintai-parse` (internal)") && text.contains("`lintai-adapters` (internal)"),
+        "ARCHITECTURE_DECISIONS.md should document the current parse/adapters split"
+    );
+}

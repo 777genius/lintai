@@ -83,8 +83,8 @@
 ## 7) `RuleProvider` contract
 
 - `RuleProvider` is a result-only rule authoring contract.
-- Workspace rules use `ScanScope::{PerFile, Workspace}`; the old `requires_full_scan()` path is not part of the contract anymore.
 - Engine executes providers through explicit backends, not direct raw provider injection.
+- Backend execution mode carries `ScanScope::{PerFile, Workspace}`; the old `requires_full_scan()` path is not part of the contract anymore.
 - Product path executes shipped built-in providers behind an isolated subprocess boundary for truthful hard timeouts.
 
 ## 8) Workspace (MVP → later)
@@ -94,7 +94,8 @@ MVP стартует с **6–7 крейтов**:
 - **`lintai-api` (public)**: stable contract (types + traits + макросы).
 - **`lintai-testing` (internal in v0.1)**: support harness while it still depends on engine internals.
 - **`lintai-engine` (internal)**: оркестратор/pipeline (suppress/cache как модули).
-- **`lintai-adapters` (internal)**: платформа/формат парсинг и domain нормализация (modules внутри; logical FORMAT/DOMAIN split only for now).
+- **`lintai-parse` (internal)**: format-facing parsing (`markdown/json/shell/frontmatter`).
+- **`lintai-adapters` (internal)**: artifact-kind routing and domain semantics over parsed format output.
 - **`lintai-ai-security` (internal)**: native rules provider.
 - **`lintai-fix` (internal)**: применение Fix’ов к файлам (CLI/LSP consumer).
 - **`lintai-cli` (binary)**: composition root + output (text/json/sarif как модули).
