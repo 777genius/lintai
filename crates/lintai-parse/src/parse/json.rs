@@ -1,14 +1,14 @@
-use lintai_api::{DocumentSemantics, JsonSemantics, ParsedDocument, RegionKind, Span, TextRegion};
+use lintai_api::{ParsedDocument, RegionKind, Span, TextRegion};
 use serde_json::Value;
 
-use crate::{ParseError, ParsedArtifact};
+use crate::{JsonParse, ParseError};
 
-pub fn parse(input: &str) -> Result<ParsedArtifact, ParseError> {
+pub fn parse(input: &str) -> Result<JsonParse, ParseError> {
     let value = serde_json::from_str::<Value>(input).map_err(|error| ParseError {
         message: format!("invalid JSON document: {error}"),
     })?;
 
-    Ok(ParsedArtifact::new(
+    Ok(JsonParse::new(
         ParsedDocument::new(
             vec![TextRegion::new(
                 Span::new(0, input.len()),
@@ -16,6 +16,6 @@ pub fn parse(input: &str) -> Result<ParsedArtifact, ParseError> {
             )],
             None,
         ),
-        Some(DocumentSemantics::Json(JsonSemantics::new(value))),
+        value,
     ))
 }

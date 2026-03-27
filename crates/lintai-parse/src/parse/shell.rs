@@ -1,11 +1,11 @@
-use lintai_api::{DocumentSemantics, ParsedDocument, RegionKind, ShellSemantics, Span, TextRegion};
+use lintai_api::{ParsedDocument, RegionKind, Span, TextRegion};
 
-use crate::ParsedArtifact;
+use crate::ShellParse;
 
-pub fn parse(input: &str) -> ParsedArtifact {
+pub fn parse(input: &str) -> ShellParse {
     let lines = input.lines().map(str::to_owned).collect::<Vec<_>>();
 
-    ParsedArtifact::new(
+    ShellParse::new(
         ParsedDocument::new(
             vec![TextRegion::new(
                 Span::new(0, input.len()),
@@ -13,6 +13,6 @@ pub fn parse(input: &str) -> ParsedArtifact {
             )],
             None,
         ),
-        Some(DocumentSemantics::Shell(ShellSemantics::new(lines))),
+        lines,
     )
 }

@@ -1,18 +1,16 @@
-use lintai_api::{
-    DocumentSemantics, FrontmatterFormat, FrontmatterSemantics, MarkdownSemantics, ParsedDocument,
-    RegionKind, Span, TextRegion,
-};
+use lintai_api::{FrontmatterFormat, ParsedDocument, RegionKind, Span, TextRegion};
 
 use super::frontmatter;
-use crate::{ParseError, ParsedArtifact};
+use crate::{MarkdownParse, ParseError};
 
-pub fn parse(input: &str) -> Result<ParsedArtifact, ParseError> {
+pub fn parse(input: &str) -> Result<MarkdownParse, ParseError> {
     let extraction = frontmatter::extract(input)?;
     let mut regions = Vec::new();
     let mut normal_start = 0usize;
     let mut code_block_start: Option<usize> = None;
     let mut html_comment_start: Option<usize> = None;
-    let mut markdown_semantics = MarkdownSemantics::new(None);
+    let mut frontmatter_format = None;
+    let mut frontmatter_value = None;
 
     if let Some(raw_frontmatter) = extraction.raw.as_deref() {
         let frontmatter_end = extraction.body_start.min(input.len());
@@ -21,10 +19,8 @@ pub fn parse(input: &str) -> Result<ParsedArtifact, ParseError> {
             RegionKind::Frontmatter,
         ));
         normal_start = frontmatter_end;
-        markdown_semantics.frontmatter = Some(FrontmatterSemantics::new(
-            FrontmatterFormat::Yaml,
-            frontmatter::parse_yaml(raw_frontmatter)?,
-        ));
+        frontmatter_format = Some(FrontmatterFormat::Yaml);
+        frontmatter_value = Some(frontmatter::parse_yaml(raw_frontmatter)?);
     }
 
     for (line_start, line_end, line) in line_spans(input, normal_start) {
@@ -102,9 +98,12 @@ pub fn parse(input: &str) -> Result<ParsedArtifact, ParseError> {
         ));
     }
 
-    Ok(ParsedArtifact::new(
-        ParsedDocument::new(regions, extraction.raw),
-        Some(DocumentSemantics::Markdown(markdown_semantics)),
+    let raw_frontmatter = extraction.raw;
+    Ok(MarkdownParse::new(
+        ParsedDocument::new(regions, raw_frontmatter.clone()),
+        raw_frontmatter,
+        frontmatter_format,
+        frontmatter_value,
     ))
 }
 

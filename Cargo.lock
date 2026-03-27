@@ -132,8 +132,7 @@ name = "lintai-adapters"
 version = "0.0.0"
 dependencies = [
  "lintai-api",
- "serde_json",
- "serde_yaml_bw",
+ "lintai-parse",
 ]
 
 [[package]]
@@ -187,6 +186,15 @@ name = "lintai-fix"
 version = "0.0.0"
 dependencies = [
  "lintai-api",
+]
+
+[[package]]
+name = "lintai-parse"
+version = "0.0.0"
+dependencies = [
+ "lintai-api",
+ "serde_json",
+ "serde_yaml_bw",
 ]
 
 [[package]]

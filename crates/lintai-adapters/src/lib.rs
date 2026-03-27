@@ -1,7 +1,6 @@
 mod adapter;
 mod error;
 mod model;
-pub mod parse;
 
 #[cfg(test)]
 mod tests;

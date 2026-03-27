@@ -3,6 +3,7 @@ members = [
     "crates/lintai-api",
     "crates/lintai-testing",
     "crates/lintai-engine",
+    "crates/lintai-parse",
     "crates/lintai-adapters",
     "crates/lintai-ai-security",
     "crates/lintai-fix",
@@ -22,6 +23,7 @@ ignore = "0.4.24"
 lintai-api = { path = "crates/lintai-api", version = "0.1.0" }
 lintai-testing = { path = "crates/lintai-testing", version = "0.1.0" }
 lintai-engine = { path = "crates/lintai-engine", version = "0.0.0" }
+lintai-parse = { path = "crates/lintai-parse", version = "0.0.0" }
 lintai-adapters = { path = "crates/lintai-adapters", version = "0.0.0" }
 lintai-ai-security = { path = "crates/lintai-ai-security", version = "0.0.0" }
 lintai-fix = { path = "crates/lintai-fix", version = "0.0.0" }
