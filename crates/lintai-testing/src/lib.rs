@@ -633,7 +633,7 @@ impl OutputHarness {
 fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
     match rule_code {
         "SEC101" | "SEC102" | "SEC103" | "SEC201" | "SEC202" | "SEC203" | "SEC301"
-        | "SEC302" | "SEC303" => Some(RuleTier::Stable),
+        | "SEC204" | "SEC302" | "SEC303" | "SEC304" => Some(RuleTier::Stable),
         "SEC401" | "SEC402" | "SEC403" => Some(RuleTier::Preview),
         _ => None,
     }
@@ -887,6 +887,7 @@ name = ""
             "sample-repos/clean",
             "sample-repos/mcp-heavy",
             "sample-repos/cursor-plugin",
+            "sample-repos/fixable-comments",
             "sample-repos/policy-mismatch",
             "tests/integration",
             ".github/workflows",
@@ -917,7 +918,9 @@ name = ""
             names,
             vec![
                 "cursor-plugin-clean-basic",
+                "cursor-plugin-tls-verified-basic",
                 "mcp-safe-basic",
+                "mcp-trust-verified-basic",
                 "mixed-clean-workspace",
                 "policy-truthful-basic",
                 "skill-clean-basic",
@@ -938,6 +941,7 @@ name = ""
             "corpus/compat/json-report-shape",
             "sample-repos/clean",
             "sample-repos/mcp-heavy",
+            "sample-repos/fixable-comments",
             "sample-repos/cursor-plugin",
             "sample-repos/policy-mismatch",
         ] {

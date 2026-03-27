@@ -78,9 +78,11 @@ fn remediation_message(finding: &Finding) -> Option<&'static str> {
         "SEC203" => {
             Some("remove insecure HTTP secret exfil and keep secret handling local or over HTTPS")
         }
+        "SEC204" => Some("remove TLS-bypass flags or env overrides and use normal certificate verification"),
         "SEC301" => Some("replace the shell wrapper with a direct command and explicit args"),
         "SEC302" => Some("replace the insecure http:// endpoint with https:// or a local/stdio transport"),
         "SEC303" => Some("remove credential env passthrough and configure secrets only inside the target service"),
+        "SEC304" => Some("re-enable certificate verification and use trusted HTTPS or local/stdio transport"),
         _ => None,
     }
 }

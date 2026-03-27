@@ -60,10 +60,10 @@ impl<'a> JsonLocatorParser<'a> {
             }
             '{' => self.parse_object(path),
             '[' => self.parse_array(path),
-            't' => self.consume_literal("true"),
-            'f' => self.consume_literal("false"),
-            'n' => self.consume_literal("null"),
-            '-' | '0'..='9' => self.parse_number(),
+            't' => self.parse_literal_value(path, "true"),
+            'f' => self.parse_literal_value(path, "false"),
+            'n' => self.parse_literal_value(path, "null"),
+            '-' | '0'..='9' => self.parse_number(path),
             _ => None,
         }
     }
@@ -137,7 +137,7 @@ impl<'a> JsonLocatorParser<'a> {
         None
     }
 
-    fn parse_number(&mut self) -> Option<()> {
+    fn parse_number(&mut self, path: &[JsonPathSegment]) -> Option<()> {
         let start = self.offset;
         while let Some(ch) = self.peek_char() {
             if matches!(ch, '0'..='9' | '-' | '+' | '.' | 'e' | 'E') {
@@ -146,7 +146,23 @@ impl<'a> JsonLocatorParser<'a> {
                 break;
             }
         }
-        (self.offset > start).then_some(())
+        if self.offset > start {
+            self.map
+                .value_spans
+                .insert(path.to_vec(), Span::new(start, self.offset));
+            Some(())
+        } else {
+            None
+        }
+    }
+
+    fn parse_literal_value(&mut self, path: &[JsonPathSegment], literal: &str) -> Option<()> {
+        let start = self.offset;
+        self.consume_literal(literal)?;
+        self.map
+            .value_spans
+            .insert(path.to_vec(), Span::new(start, self.offset));
+        Some(())
     }
 
     fn consume_literal(&mut self, literal: &str) -> Option<()> {
@@ -218,6 +234,26 @@ mod tests {
                 JsonPathSegment::Key("OPENAI_API_KEY".to_owned()),
             ]),
             Some(&Span::new(48, 62))
+        );
+    }
+
+    #[test]
+    fn records_boolean_value_spans() {
+        let map = JsonLocationMap::parse(r#"{"tls":{"verifyTLS":false,"strictSSL":true}}"#).unwrap();
+
+        assert_eq!(
+            map.value_span(&[
+                JsonPathSegment::Key("tls".to_owned()),
+                JsonPathSegment::Key("verifyTLS".to_owned()),
+            ]),
+            Some(&Span::new(20, 25))
+        );
+        assert_eq!(
+            map.value_span(&[
+                JsonPathSegment::Key("tls".to_owned()),
+                JsonPathSegment::Key("strictSSL".to_owned()),
+            ]),
+            Some(&Span::new(38, 42))
         );
     }
 }

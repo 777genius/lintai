@@ -5,7 +5,7 @@ expected_output = ["text", "json", "sarif"]
 expected_runtime_errors = 0
 expected_diagnostics = 0
 expected_findings = []
-expected_absent_rules = ["SEC201", "SEC202", "SEC203"]
+expected_absent_rules = ["SEC201", "SEC202", "SEC203", "SEC204"]
 
 [snapshot]
 kind = "none"

@@ -90,6 +90,41 @@ pub(crate) fn check_mcp_credential_env_passthrough(
     )]
 }
 
+pub(crate) fn check_trust_verification_disabled_config(
+    ctx: &ScanContext,
+    meta: &RuleMetadata,
+) -> Vec<Finding> {
+    if !matches!(
+        ctx.artifact.kind,
+        ArtifactKind::McpConfig
+            | ArtifactKind::CursorPluginManifest
+            | ArtifactKind::CursorPluginHooks
+    ) {
+        return Vec::new();
+    }
+
+    let Some(value) = json_semantics(ctx).map(|json| &json.value) else {
+        return Vec::new();
+    };
+    let Some(path) = find_trust_verification_disabled_path(value, &mut Vec::new()) else {
+        return Vec::new();
+    };
+    let locator = JsonLocationMap::parse(&ctx.content);
+    let span = locator
+        .as_ref()
+        .and_then(|map| map.value_span(&path))
+        .cloned()
+        .or_else(|| locator.as_ref().and_then(|map| map.key_span(&path)).cloned())
+        .unwrap_or_else(|| Span::new(0, ctx.content.len()));
+
+    vec![finding_for_region(
+        meta,
+        ctx,
+        &span,
+        "configuration disables TLS or certificate verification",
+    )]
+}
+
 fn find_shell_wrapper_path(
     value: &Value,
     path: &mut Vec<JsonPathSegment>,
@@ -215,6 +250,48 @@ fn find_credential_env_passthrough_key_path(
             for (index, nested) in items.iter().enumerate() {
                 path.push(JsonPathSegment::Index(index));
                 if let Some(found) = find_credential_env_passthrough_key_path(nested, path) {
+                    path.pop();
+                    return Some(found);
+                }
+                path.pop();
+            }
+            None
+        }
+        _ => None,
+    }
+}
+
+fn find_trust_verification_disabled_path(
+    value: &Value,
+    path: &mut Vec<JsonPathSegment>,
+) -> Option<Vec<JsonPathSegment>> {
+    match value {
+        Value::Object(map) => {
+            for (key, nested) in map {
+                let is_disabled = match (key.as_str(), nested) {
+                    ("strictSSL" | "verifyTLS" | "rejectUnauthorized", Value::Bool(false)) => true,
+                    ("insecureSkipVerify", Value::Bool(true)) => true,
+                    _ => false,
+                };
+                if is_disabled {
+                    let mut key_path = path.clone();
+                    key_path.push(JsonPathSegment::Key(key.clone()));
+                    return Some(key_path);
+                }
+
+                path.push(JsonPathSegment::Key(key.clone()));
+                if let Some(found) = find_trust_verification_disabled_path(nested, path) {
+                    path.pop();
+                    return Some(found);
+                }
+                path.pop();
+            }
+            None
+        }
+        Value::Array(items) => {
+            for (index, nested) in items.iter().enumerate() {
+                path.push(JsonPathSegment::Index(index));
+                if let Some(found) = find_trust_verification_disabled_path(nested, path) {
                     path.pop();
                     return Some(found);
                 }

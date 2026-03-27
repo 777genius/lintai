@@ -4,9 +4,11 @@ use lintai_api::{
 
 use crate::hook_rules::{
     check_hook_download_exec, check_hook_plain_http_exfil, check_hook_secret_exfil,
+    check_hook_tls_bypass,
 };
 use crate::json_rules::{
     check_mcp_credential_env_passthrough, check_mcp_shell_wrapper, check_plain_http_config,
+    check_trust_verification_disabled_config,
 };
 use crate::markdown_rules::{
     check_html_comment_directive, check_html_comment_download_exec, check_markdown_download_exec,
@@ -79,6 +81,17 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct HookTlsBypassRule {
+        code: "SEC204",
+        summary: "Hook script disables TLS or certificate verification for a network call",
+        category: Category::Security,
+        default_severity: Severity::Deny,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpShellWrapperRule {
         code: "SEC301",
         summary: "MCP configuration shells out through sh -c or bash -c",
@@ -111,13 +124,24 @@ declare_rule! {
     }
 }
 
+declare_rule! {
+    pub struct TrustVerificationDisabledConfigRule {
+        code: "SEC304",
+        summary: "Configuration disables TLS or certificate verification",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
 #[derive(Clone, Copy)]
 pub(crate) struct NativeRuleEntry {
     pub(crate) metadata: RuleMetadata,
     pub(crate) check: fn(&ScanContext, &RuleMetadata) -> Vec<Finding>,
 }
 
-pub(crate) const RULES: [NativeRuleEntry; 9] = [
+pub(crate) const RULES: [NativeRuleEntry; 11] = [
     NativeRuleEntry {
         metadata: HtmlCommentDirectiveRule::METADATA,
         check: check_html_comment_directive,
@@ -143,6 +167,10 @@ pub(crate) const RULES: [NativeRuleEntry; 9] = [
         check: check_hook_plain_http_exfil,
     },
     NativeRuleEntry {
+        metadata: HookTlsBypassRule::METADATA,
+        check: check_hook_tls_bypass,
+    },
+    NativeRuleEntry {
         metadata: McpShellWrapperRule::METADATA,
         check: check_mcp_shell_wrapper,
     },
@@ -154,16 +182,22 @@ pub(crate) const RULES: [NativeRuleEntry; 9] = [
         metadata: McpCredentialEnvPassthroughRule::METADATA,
         check: check_mcp_credential_env_passthrough,
     },
+    NativeRuleEntry {
+        metadata: TrustVerificationDisabledConfigRule::METADATA,
+        check: check_trust_verification_disabled_config,
+    },
 ];
 
-pub(crate) const RULE_METADATA: [RuleMetadata; 9] = [
+pub(crate) const RULE_METADATA: [RuleMetadata; 11] = [
     HtmlCommentDirectiveRule::METADATA,
     MarkdownDownloadExecRule::METADATA,
     HtmlCommentDownloadExecRule::METADATA,
     HookDownloadExecRule::METADATA,
     HookSecretExfilRule::METADATA,
     HookPlainHttpExfilRule::METADATA,
+    HookTlsBypassRule::METADATA,
     McpShellWrapperRule::METADATA,
     PlainHttpConfigRule::METADATA,
     McpCredentialEnvPassthroughRule::METADATA,
+    TrustVerificationDisabledConfigRule::METADATA,
 ];

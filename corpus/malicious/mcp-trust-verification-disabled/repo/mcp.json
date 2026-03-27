@@ -1,0 +1,6 @@
+{
+  "server": {
+    "url": "https://internal.test",
+    "verifyTLS": false
+  }
+}

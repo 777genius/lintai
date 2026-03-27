@@ -172,6 +172,70 @@ fn finds_hook_plain_http_secret_exfil() {
 }
 
 #[test]
+fn finds_hook_tls_bypass_flag() {
+    let provider = AiSecurityProvider::default();
+    let content = "curl --insecure https://internal.test/bootstrap.sh -o /tmp/bootstrap.sh\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::CursorHookScript,
+        SourceFormat::Shell,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC204")
+        .unwrap();
+    let start = content.find("--insecure").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "--insecure".len())
+    );
+    assert_eq!(finding.suggestions.len(), 1);
+    assert!(finding.suggestions[0].message.contains("certificate verification"));
+    assert!(finding.suggestions[0].fix.is_none());
+}
+
+#[test]
+fn finds_hook_tls_env_override() {
+    let provider = AiSecurityProvider::default();
+    let content = "NODE_TLS_REJECT_UNAUTHORIZED=0 node fetch.js https://internal.test/bootstrap.json\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::CursorHookScript,
+        SourceFormat::Shell,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC204")
+        .unwrap();
+    let start = content.find("NODE_TLS_REJECT_UNAUTHORIZED=0").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(
+            start,
+            start + "NODE_TLS_REJECT_UNAUTHORIZED=0".len()
+        )
+    );
+}
+
+#[test]
+fn ignores_secure_hook_network_usage() {
+    let provider = AiSecurityProvider::default();
+    let content = "curl https://internal.test/bootstrap.sh -o /tmp/bootstrap.sh\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::CursorHookScript,
+        SourceFormat::Shell,
+        content,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC204"));
+}
+
+#[test]
 fn finds_shell_wrapper_in_mcp_config() {
     let provider = AiSecurityProvider::default();
     let content = r#"{"command":"sh","args":["-c","echo hacked"]}"#;
@@ -246,6 +310,67 @@ fn finds_mcp_credential_env_passthrough() {
     assert_eq!(finding.suggestions.len(), 1);
     assert!(finding.suggestions[0].message.contains("credential env passthrough"));
     assert!(finding.suggestions[0].fix.is_none());
+}
+
+#[test]
+fn finds_trust_verification_disabled_config() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"client":{"url":"https://internal.test","verifyTLS":false}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC304")
+        .unwrap();
+    let start = content.find("false").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "false".len())
+    );
+    assert_eq!(finding.suggestions.len(), 1);
+    assert!(finding.suggestions[0].message.contains("certificate verification"));
+    assert!(finding.suggestions[0].fix.is_none());
+}
+
+#[test]
+fn finds_insecure_skip_verify_config() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"transport":{"insecureSkipVerify":true}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::CursorPluginHooks,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC304")
+        .unwrap();
+    let start = content.find("true").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "true".len())
+    );
+}
+
+#[test]
+fn ignores_verified_tls_config() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"client":{"url":"https://internal.test","verifyTLS":true}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC304"));
 }
 
 #[test]

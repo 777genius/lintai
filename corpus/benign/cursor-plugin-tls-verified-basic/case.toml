@@ -1,11 +1,11 @@
-id = "mixed-clean-workspace"
+id = "cursor-plugin-tls-verified-basic"
 kind = "benign"
 entry_path = "repo"
 expected_output = ["text", "json", "sarif"]
 expected_runtime_errors = 0
 expected_diagnostics = 0
 expected_findings = []
-expected_absent_rules = ["SEC101", "SEC102", "SEC103", "SEC201", "SEC202", "SEC203", "SEC204", "SEC301", "SEC302", "SEC303", "SEC304"]
+expected_absent_rules = ["SEC204"]
 
 [snapshot]
 kind = "none"

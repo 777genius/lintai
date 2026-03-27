@@ -19,7 +19,9 @@ fn benign_corpus_case_dirs_are_discoverable() {
         names,
         vec![
             "cursor-plugin-clean-basic",
+            "cursor-plugin-tls-verified-basic",
             "mcp-safe-basic",
+            "mcp-trust-verified-basic",
             "mixed-clean-workspace",
             "policy-truthful-basic",
             "skill-clean-basic",
