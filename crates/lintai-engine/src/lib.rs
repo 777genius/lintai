@@ -1,5 +1,4 @@
-#[doc(hidden)]
-pub mod artifact_view;
+mod artifact_view;
 mod builder;
 mod config;
 mod detector;
@@ -24,9 +23,14 @@ pub use detector::{DetectedArtifact, DetectionRule, FileTypeDetector};
 pub use engine::Engine;
 pub use error::EngineError;
 pub use normalize::normalize_path_string;
-pub use provider::{InProcessProviderBackend, ProviderBackend};
+pub use provider::ProviderBackend;
 pub use summary::{
     DiagnosticSeverity, ProviderExecutionPhase, RuntimeErrorKind, ScanDiagnostic, ScanRuntimeError,
     ScanSummary,
 };
 pub use suppress::{FileSuppressions, NoopSuppressionMatcher, SuppressionMatcher};
+
+#[doc(hidden)]
+pub mod internal {
+    pub use crate::provider::InProcessProviderBackend;
+}

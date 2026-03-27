@@ -103,3 +103,17 @@ fn internal_runner_schema_version_is_absent() {
         "internal runner protocol should not carry compatibility schema_version fields"
     );
 }
+
+#[test]
+fn root_engine_surface_does_not_export_internal_helpers() {
+    let engine_lib = fs::read_to_string(repo_root().join("crates/lintai-engine/src/lib.rs"))
+        .expect("engine lib should be readable");
+    assert!(
+        !engine_lib.contains("pub mod artifact_view;"),
+        "artifact_view should not be part of engine surface"
+    );
+    assert!(
+        !engine_lib.contains("pub use provider::{InProcessProviderBackend, ProviderBackend};"),
+        "InProcessProviderBackend should not be re-exported from engine root"
+    );
+}

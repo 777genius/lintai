@@ -7,7 +7,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use lintai_api::{ArtifactKind, Finding, RuleProvider, RuleTier, SourceFormat};
 use lintai_engine::{
     ConfigError, EngineBuilder, EngineConfig, EngineError, FileSuppressions,
-    InProcessProviderBackend, NoopSuppressionMatcher, ProviderBackend, RuntimeErrorKind,
+    NoopSuppressionMatcher, ProviderBackend, RuntimeErrorKind, internal::InProcessProviderBackend,
     ScanSummary, SuppressionMatcher, load_workspace_config,
 };
 use serde::Deserialize;

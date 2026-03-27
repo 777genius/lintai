@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use lintai_api::{ArtifactKind, ScanScope, Severity, SourceFormat};
 use lintai_engine::{
-    EngineBuilder, FileSuppressions, InProcessProviderBackend, load_workspace_config,
+    EngineBuilder, FileSuppressions, internal::InProcessProviderBackend, load_workspace_config,
 };
 use lintai_testing::ProviderHarness;
 

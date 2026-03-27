@@ -10,7 +10,8 @@ use lintai_api::{
 };
 
 use crate::artifact_view::ArtifactContextRef;
-use crate::{Engine, EngineBuilder, InProcessProviderBackend, ProviderBackend, SuppressionMatcher};
+use crate::internal::InProcessProviderBackend;
+use crate::{Engine, EngineBuilder, ProviderBackend, SuppressionMatcher};
 
 fn backend(provider: impl lintai_api::RuleProvider + 'static) -> Arc<dyn ProviderBackend> {
     Arc::new(InProcessProviderBackend::new(Arc::new(provider)))
