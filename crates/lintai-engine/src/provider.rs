@@ -3,17 +3,96 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use lintai_api::{
-    Finding, RuleMetadata, RuleProvider, RuleTier, ScanContext, ScanScope, Span, StableKey,
+    Finding, Fix, ProviderCapabilities, ProviderScanResult, RuleMetadata, RuleProvider, RuleTier,
+    ScanContext, ScanScope, Span, StableKey, WorkspaceScanContext,
 };
 
 use crate::{EngineError, ScanDiagnostic};
+
+pub trait ProviderBackend: Send + Sync {
+    fn id(&self) -> &str;
+    fn rules(&self) -> &[RuleMetadata];
+    fn check_result(&self, ctx: &ScanContext) -> ProviderScanResult;
+
+    fn scan_scope(&self) -> ScanScope {
+        ScanScope::PerFile
+    }
+
+    fn check_workspace_result(&self, _ctx: &WorkspaceScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(Vec::new(), Vec::new())
+    }
+
+    fn timeout(&self) -> Duration {
+        Duration::from_secs(30)
+    }
+
+    fn supports_fix(&self) -> bool {
+        false
+    }
+
+    fn fix(&self, _ctx: &ScanContext, _finding: &Finding) -> Option<Fix> {
+        None
+    }
+
+    fn capabilities(&self) -> ProviderCapabilities {
+        ProviderCapabilities::default()
+    }
+}
+
+pub struct InProcessProviderBackend {
+    provider: Arc<dyn RuleProvider>,
+}
+
+impl InProcessProviderBackend {
+    pub fn new(provider: Arc<dyn RuleProvider>) -> Self {
+        Self { provider }
+    }
+}
+
+impl ProviderBackend for InProcessProviderBackend {
+    fn id(&self) -> &str {
+        self.provider.id()
+    }
+
+    fn rules(&self) -> &[RuleMetadata] {
+        self.provider.rules()
+    }
+
+    fn check_result(&self, ctx: &ScanContext) -> ProviderScanResult {
+        self.provider.check_result(ctx)
+    }
+
+    fn scan_scope(&self) -> ScanScope {
+        self.provider.scan_scope()
+    }
+
+    fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
+        self.provider.check_workspace_result(ctx)
+    }
+
+    fn timeout(&self) -> Duration {
+        self.provider.timeout()
+    }
+
+    fn supports_fix(&self) -> bool {
+        self.provider.supports_fix()
+    }
+
+    fn fix(&self, ctx: &ScanContext, finding: &Finding) -> Option<Fix> {
+        self.provider.fix(ctx, finding)
+    }
+
+    fn capabilities(&self) -> ProviderCapabilities {
+        self.provider.capabilities()
+    }
+}
 
 pub(crate) struct ProviderCatalog<'a> {
     entries: Vec<ProviderEntry<'a>>,
 }
 
 pub(crate) struct ProviderEntry<'a> {
-    provider: &'a dyn RuleProvider,
+    backend: &'a dyn ProviderBackend,
     id: String,
     rules: BTreeMap<String, RuleMetadata>,
     supports_fix: bool,
@@ -22,26 +101,26 @@ pub(crate) struct ProviderEntry<'a> {
 }
 
 impl<'a> ProviderCatalog<'a> {
-    pub(crate) fn new(providers: &'a [Arc<dyn RuleProvider>]) -> Result<Self, EngineError> {
+    pub(crate) fn new(backends: &'a [Arc<dyn ProviderBackend>]) -> Result<Self, EngineError> {
         let mut provider_ids = BTreeSet::new();
         let mut global_rule_codes = BTreeMap::new();
-        let mut entries = Vec::with_capacity(providers.len());
+        let mut entries = Vec::with_capacity(backends.len());
 
-        for provider in providers {
-            let provider = provider.as_ref();
-            let provider_id = provider.id().to_owned();
+        for backend in backends {
+            let backend = backend.as_ref();
+            let provider_id = backend.id().to_owned();
             if !provider_ids.insert(provider_id.clone()) {
                 return Err(EngineError::ProviderContract(format!(
                     "duplicate provider id `{provider_id}`"
                 )));
             }
 
-            let timeout = provider.timeout();
+            let timeout = backend.timeout();
             validate_timeout(provider_id.as_str(), timeout)?;
-            validate_capabilities(provider)?;
+            validate_capabilities(backend)?;
 
             let mut rules = BTreeMap::new();
-            for rule in provider.rules() {
+            for rule in backend.rules() {
                 if rules.insert(rule.code.to_owned(), *rule).is_some() {
                     return Err(EngineError::ProviderContract(format!(
                         "provider `{provider_id}` declares duplicate rule code `{}`",
@@ -60,11 +139,11 @@ impl<'a> ProviderCatalog<'a> {
             }
 
             entries.push(ProviderEntry {
-                provider,
+                backend,
                 id: provider_id,
                 rules,
-                supports_fix: provider.supports_fix(),
-                scope: provider.scan_scope(),
+                supports_fix: backend.supports_fix(),
+                scope: backend.scan_scope(),
                 timeout,
             });
         }
@@ -83,40 +162,6 @@ impl<'a> ProviderCatalog<'a> {
             .iter()
             .filter(|entry| entry.scope == ScanScope::Workspace)
     }
-
-    pub(crate) fn start_all(&self) -> Result<usize, EngineError> {
-        let mut started = 0usize;
-        for entry in &self.entries {
-            if let Err(error) = entry.provider.on_start() {
-                let cleanup_result = self.finish_started(started);
-                return Err(match cleanup_result {
-                    Ok(()) => EngineError::ProviderLifecycle(error),
-                    Err(cleanup_error) => {
-                        crate::engine::combine_lifecycle_errors(error, cleanup_error)
-                    }
-                });
-            }
-
-            started += 1;
-        }
-
-        Ok(started)
-    }
-
-    pub(crate) fn finish_started(&self, count: usize) -> Result<(), EngineError> {
-        let mut first_error = None;
-        for entry in self.entries.iter().take(count).rev() {
-            if let Err(error) = entry.provider.on_finish() {
-                first_error.get_or_insert(error);
-            }
-        }
-
-        if let Some(error) = first_error {
-            Err(EngineError::ProviderLifecycle(error))
-        } else {
-            Ok(())
-        }
-    }
 }
 
 impl ProviderEntry<'_> {
@@ -124,8 +169,8 @@ impl ProviderEntry<'_> {
         &self.id
     }
 
-    pub(crate) fn provider(&self) -> &dyn RuleProvider {
-        self.provider
+    pub(crate) fn backend(&self) -> &dyn ProviderBackend {
+        self.backend
     }
 
     pub(crate) fn timeout(&self) -> Duration {
@@ -231,7 +276,7 @@ impl ProviderEntry<'_> {
 
         if self.supports_fix && finding.fix.is_none() {
             if let Some(ctx) = ctx {
-                finding.fix = self.provider.fix(ctx, finding);
+                finding.fix = self.backend.fix(ctx, finding);
             }
         }
 
@@ -264,8 +309,8 @@ fn validate_timeout(provider_id: &str, timeout: Duration) -> Result<(), EngineEr
     Ok(())
 }
 
-fn validate_capabilities(provider: &dyn RuleProvider) -> Result<(), EngineError> {
-    let _capabilities = provider.capabilities();
+fn validate_capabilities(backend: &dyn ProviderBackend) -> Result<(), EngineError> {
+    let _capabilities = backend.capabilities();
     Ok(())
 }
 

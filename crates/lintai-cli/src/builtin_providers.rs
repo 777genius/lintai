@@ -7,10 +7,11 @@ use std::time::{Duration, Instant};
 
 use lintai_ai_security::{AiSecurityProvider, PolicyMismatchProvider};
 use lintai_api::{
-    Confidence, Finding, Fix, Location, ProviderCapabilities, ProviderError,
-    ProviderScanResult, RuleMetadata, RuleProvider, RuleTier, ScanContext, ScanScope, Severity,
-    Span, WorkspaceScanContext,
+    Confidence, Finding, Fix, Location, ProviderCapabilities, ProviderError, ProviderScanResult,
+    RuleMetadata, RuleProvider, RuleTier, ScanContext, ScanScope, Severity, Span,
+    WorkspaceScanContext,
 };
+use lintai_engine::ProviderBackend;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
 #[serde(rename_all = "snake_case")]
@@ -66,10 +67,10 @@ struct RunnerResponse {
     result: ProviderScanResult,
 }
 
-pub(crate) fn product_provider_set() -> Vec<Arc<dyn RuleProvider>> {
+pub(crate) fn product_provider_set() -> Vec<Arc<dyn ProviderBackend>> {
     BuiltInProviderKind::product_kinds()
         .into_iter()
-        .map(|kind| Arc::new(IsolatedBuiltInProvider::new(kind)) as Arc<dyn RuleProvider>)
+        .map(|kind| Arc::new(IsolatedBuiltInBackend::new(kind)) as Arc<dyn ProviderBackend>)
         .collect()
 }
 
@@ -115,7 +116,7 @@ pub(crate) fn run_provider_runner(args: impl Iterator<Item = String>) -> Result<
     Ok(ExitCode::SUCCESS)
 }
 
-struct IsolatedBuiltInProvider {
+struct IsolatedBuiltInBackend {
     kind: BuiltInProviderKind,
     provider_id: String,
     rules: Box<[RuleMetadata]>,
@@ -125,7 +126,7 @@ struct IsolatedBuiltInProvider {
     capabilities: ProviderCapabilities,
 }
 
-impl IsolatedBuiltInProvider {
+impl IsolatedBuiltInBackend {
     fn new(kind: BuiltInProviderKind) -> Self {
         let provider = kind.instantiate();
         Self {
@@ -301,7 +302,7 @@ impl IsolatedBuiltInProvider {
     }
 }
 
-impl RuleProvider for IsolatedBuiltInProvider {
+impl ProviderBackend for IsolatedBuiltInBackend {
     fn id(&self) -> &str {
         &self.provider_id
     }
@@ -310,16 +311,8 @@ impl RuleProvider for IsolatedBuiltInProvider {
         &self.rules
     }
 
-    fn check(&self, ctx: &ScanContext) -> Vec<Finding> {
-        self.check_result(ctx).findings
-    }
-
     fn scan_scope(&self) -> ScanScope {
         self.scope
-    }
-
-    fn check_workspace(&self, ctx: &WorkspaceScanContext) -> Vec<Finding> {
-        self.check_workspace_result(ctx).findings
     }
 
     fn check_result(&self, ctx: &ScanContext) -> ProviderScanResult {
@@ -438,9 +431,9 @@ impl RuleProvider for TestTimeoutProvider {
         &[]
     }
 
-    fn check(&self, _ctx: &ScanContext) -> Vec<Finding> {
+    fn check_result(&self, _ctx: &ScanContext) -> ProviderScanResult {
         thread::sleep(Duration::from_millis(100));
-        Vec::new()
+        ProviderScanResult::new(Vec::new(), Vec::new())
     }
 
     fn timeout(&self) -> Duration {
@@ -461,7 +454,7 @@ impl RuleProvider for TestPanicProvider {
         &[]
     }
 
-    fn check(&self, _ctx: &ScanContext) -> Vec<Finding> {
+    fn check_result(&self, _ctx: &ScanContext) -> ProviderScanResult {
         panic!("panic inside isolated provider");
     }
 }
@@ -479,18 +472,17 @@ impl RuleProvider for TestPartialErrorProvider {
         &[TEST_RULE]
     }
 
-    fn check(&self, ctx: &ScanContext) -> Vec<Finding> {
-        vec![Finding::new(
-            &TEST_RULE,
-            Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
-            "isolated child finding",
-        )]
-    }
-
     fn check_result(&self, ctx: &ScanContext) -> ProviderScanResult {
         ProviderScanResult::new(
-            self.check(ctx),
-            vec![ProviderError::new(self.id(), "isolated child execution error")],
+            vec![Finding::new(
+                &TEST_RULE,
+                Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
+                "isolated child finding",
+            )],
+            vec![ProviderError::new(
+                self.id(),
+                "isolated child execution error",
+            )],
         )
     }
 }
@@ -498,10 +490,11 @@ impl RuleProvider for TestPartialErrorProvider {
 #[cfg(test)]
 mod tests {
     use super::{
-        BuiltInProviderKind, IsolatedBuiltInProvider, RunnerPhase, RunnerRequest,
+        BuiltInProviderKind, IsolatedBuiltInBackend, RunnerPhase, RunnerRequest,
         resolve_lintai_driver_path,
     };
-    use lintai_api::{Artifact, ArtifactKind, RuleProvider, ScanContext, SourceFormat};
+    use lintai_api::{Artifact, ArtifactKind, ScanContext, SourceFormat};
+    use lintai_engine::ProviderBackend;
 
     fn scan_context() -> ScanContext {
         let artifact = Artifact::new("SKILL.md", ArtifactKind::Skill, SourceFormat::Markdown);
@@ -518,23 +511,31 @@ mod tests {
     fn resolves_real_lintai_driver_near_test_binary() {
         let path = resolve_lintai_driver_path().unwrap();
         assert!(path.exists());
-        assert!(path.file_name().unwrap().to_string_lossy().contains("lintai"));
+        assert!(
+            path.file_name()
+                .unwrap()
+                .to_string_lossy()
+                .contains("lintai")
+        );
     }
 
     #[test]
     fn isolated_timeout_provider_returns_timeout_error() {
-        let provider = IsolatedBuiltInProvider::new(BuiltInProviderKind::TestTimeout);
+        let provider = IsolatedBuiltInBackend::new(BuiltInProviderKind::TestTimeout);
         let result = provider.check_result(&scan_context());
 
         assert!(result.findings.is_empty());
         assert_eq!(result.errors.len(), 1);
         assert_eq!(result.errors[0].provider_id, "__test-timeout");
-        assert_eq!(result.errors[0].kind, lintai_api::ProviderErrorKind::Timeout);
+        assert_eq!(
+            result.errors[0].kind,
+            lintai_api::ProviderErrorKind::Timeout
+        );
     }
 
     #[test]
     fn isolated_panic_provider_returns_execution_error() {
-        let provider = IsolatedBuiltInProvider::new(BuiltInProviderKind::TestPanic);
+        let provider = IsolatedBuiltInBackend::new(BuiltInProviderKind::TestPanic);
         let result = provider.check_result(&scan_context());
 
         assert!(result.findings.is_empty());
@@ -547,7 +548,7 @@ mod tests {
 
     #[test]
     fn isolated_partial_error_provider_preserves_findings_and_errors() {
-        let provider = IsolatedBuiltInProvider::new(BuiltInProviderKind::TestPartialError);
+        let provider = IsolatedBuiltInBackend::new(BuiltInProviderKind::TestPartialError);
         let result = provider.check_result(&scan_context());
 
         assert_eq!(result.findings.len(), 1);

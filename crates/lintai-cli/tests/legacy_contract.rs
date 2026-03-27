@@ -1,0 +1,73 @@
+use std::fs;
+use std::path::{Path, PathBuf};
+
+fn repo_root() -> PathBuf {
+    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("../..")
+        .canonicalize()
+        .expect("workspace root should be discoverable from lintai-cli")
+}
+
+fn collect_source_files(root: &Path, files: &mut Vec<PathBuf>) {
+    for entry in fs::read_dir(root).expect("source directory should be readable") {
+        let entry = entry.expect("directory entry should be readable");
+        let path = entry.path();
+        if path.is_dir() {
+            if path.file_name().and_then(|value| value.to_str()) == Some("target") {
+                continue;
+            }
+            collect_source_files(&path, files);
+            continue;
+        }
+        if matches!(
+            path.extension().and_then(|value| value.to_str()),
+            Some("rs" | "md" | "toml")
+        ) {
+            files.push(path);
+        }
+    }
+}
+
+fn repo_text() -> Vec<(PathBuf, String)> {
+    let mut files = Vec::new();
+    collect_source_files(&repo_root().join("crates"), &mut files);
+    collect_source_files(&repo_root().join("docs"), &mut files);
+    files
+        .into_iter()
+        .filter(|path| {
+            path.file_name().and_then(|value| value.to_str()) != Some("legacy_contract.rs")
+        })
+        .map(|path| {
+            let text = fs::read_to_string(&path).unwrap_or_default();
+            (path, text)
+        })
+        .collect()
+}
+
+#[test]
+fn legacy_provider_registration_strings_are_absent() {
+    for (path, text) in repo_text() {
+        assert!(
+            !text.contains("with_provider(") && !text.contains("with_providers("),
+            "legacy provider registration should be absent from {}",
+            path.display()
+        );
+    }
+}
+
+#[test]
+fn lifecycle_hooks_and_deprecated_rule_tier_are_absent() {
+    for (path, text) in repo_text() {
+        assert!(
+            !text.contains("on_start(") && !text.contains("on_finish("),
+            "lifecycle hook legacy should be absent from {}",
+            path.display()
+        );
+        assert!(
+            !text.contains("RuleTier::Deprecated")
+                && !text.contains("stable | preview | deprecated"),
+            "deprecated rule tier legacy should be absent from {}",
+            path.display()
+        );
+    }
+}

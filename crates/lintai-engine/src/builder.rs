@@ -1,13 +1,14 @@
 use std::sync::Arc;
 
-use lintai_api::RuleProvider;
-
-use crate::{Engine, EngineConfig, FileTypeDetector, NoopSuppressionMatcher, SuppressionMatcher};
+use crate::{
+    Engine, EngineConfig, FileTypeDetector, NoopSuppressionMatcher, ProviderBackend,
+    SuppressionMatcher,
+};
 
 #[derive(Default)]
 pub struct EngineBuilder {
     config: EngineConfig,
-    providers: Vec<Arc<dyn RuleProvider>>,
+    backends: Vec<Arc<dyn ProviderBackend>>,
     suppressions: Option<Arc<dyn SuppressionMatcher>>,
 }
 
@@ -17,8 +18,16 @@ impl EngineBuilder {
         self
     }
 
-    pub fn with_provider(mut self, provider: Arc<dyn RuleProvider>) -> Self {
-        self.providers.push(provider);
+    pub fn with_backend(mut self, backend: Arc<dyn ProviderBackend>) -> Self {
+        self.backends.push(backend);
+        self
+    }
+
+    pub fn with_backends<I>(mut self, backends: I) -> Self
+    where
+        I: IntoIterator<Item = Arc<dyn ProviderBackend>>,
+    {
+        self.backends.extend(backends);
         self
     }
 
@@ -32,7 +41,7 @@ impl EngineBuilder {
         Engine {
             config: self.config,
             detector,
-            providers: self.providers,
+            backends: self.backends,
             suppressions: self
                 .suppressions
                 .unwrap_or_else(|| Arc::new(NoopSuppressionMatcher)),

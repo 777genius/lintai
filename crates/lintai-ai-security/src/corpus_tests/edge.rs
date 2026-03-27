@@ -18,7 +18,10 @@ fn checked_in_edge_case_dirs_are_discoverable() {
         })
         .collect::<Vec<_>>();
 
-    assert_eq!(names, vec!["bom-frontmatter-skill", "unterminated-frontmatter-skill"]);
+    assert_eq!(
+        names,
+        vec!["bom-frontmatter-skill", "unterminated-frontmatter-skill"]
+    );
 }
 
 #[test]
@@ -98,7 +101,10 @@ name = ""
     let manifest = CaseManifest::load(&case_dir).unwrap();
     let summary = harness().scan_case(&case_dir).unwrap();
     assert_case_summary(&manifest, &summary);
-    assert_eq!(summary.runtime_errors[0].kind, RuntimeErrorKind::InvalidUtf8);
+    assert_eq!(
+        summary.runtime_errors[0].kind,
+        RuntimeErrorKind::InvalidUtf8
+    );
 }
 
 #[cfg(any(unix, windows))]
@@ -117,8 +123,8 @@ fn generated_symlink_escape_case_reports_outside_root_read_error() {
     let mut config = lintai_engine::EngineConfig::default();
     config.project_root = Some(temp_dir.clone());
     let mut builder = EngineBuilder::default().with_config(config);
-    for provider in provider_set() {
-        builder = builder.with_provider(Arc::clone(&provider));
+    for backend in provider_set() {
+        builder = builder.with_backend(Arc::clone(&backend));
     }
 
     let summary = builder

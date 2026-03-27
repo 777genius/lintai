@@ -7,8 +7,8 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use lintai_api::{ArtifactKind, Finding, RuleProvider, RuleTier, SourceFormat};
 use lintai_engine::{
     ConfigError, EngineBuilder, EngineConfig, EngineError, FileSuppressions,
-    NoopSuppressionMatcher, RuntimeErrorKind, ScanSummary, SuppressionMatcher,
-    load_workspace_config,
+    InProcessProviderBackend, NoopSuppressionMatcher, ProviderBackend, RuntimeErrorKind,
+    ScanSummary, SuppressionMatcher, load_workspace_config,
 };
 use serde::Deserialize;
 use std::collections::BTreeMap;
@@ -31,20 +31,24 @@ impl ProviderHarness {
         format: SourceFormat,
         content: impl Into<String>,
     ) -> ScanSummary {
-        ProviderHarnessBuilder::new(provider).run_summary(artifact_kind, format, content)
+        ProviderHarnessBuilder::new(Arc::new(InProcessProviderBackend::new(provider))).run_summary(
+            artifact_kind,
+            format,
+            content,
+        )
     }
 }
 
 pub struct ProviderHarnessBuilder {
-    provider: Arc<dyn RuleProvider>,
+    backend: Arc<dyn ProviderBackend>,
     config: EngineConfig,
     suppressions: Arc<dyn SuppressionMatcher>,
 }
 
 impl ProviderHarnessBuilder {
-    pub fn new(provider: Arc<dyn RuleProvider>) -> Self {
+    pub fn new(backend: Arc<dyn ProviderBackend>) -> Self {
         Self {
-            provider,
+            backend,
             config: EngineConfig::default(),
             suppressions: Arc::new(NoopSuppressionMatcher),
         }
@@ -84,7 +88,7 @@ impl ProviderHarnessBuilder {
         let engine = EngineBuilder::default()
             .with_config(config)
             .with_suppressions(self.suppressions)
-            .with_provider(self.provider)
+            .with_backend(self.backend)
             .build();
         let summary = engine
             .scan_path(&temp_dir)
@@ -229,12 +233,11 @@ impl CaseManifest {
 
     pub fn load(case_dir: &Path) -> Result<Self, ManifestLoadError> {
         let manifest_path = case_dir.join("case.toml");
-        let contents = std::fs::read_to_string(&manifest_path).map_err(|source| {
-            ManifestLoadError::Io {
+        let contents =
+            std::fs::read_to_string(&manifest_path).map_err(|source| ManifestLoadError::Io {
                 path: manifest_path.clone(),
                 source,
-            }
-        })?;
+            })?;
         Self::from_toml(&contents).map_err(|source| ManifestLoadError::Parse {
             path: manifest_path,
             source,
@@ -286,7 +289,10 @@ pub enum HarnessError {
     Manifest(ManifestLoadError),
     Config(ConfigError),
     Engine(EngineError),
-    InvalidCaseRoot { case_dir: PathBuf, entry_root: PathBuf },
+    InvalidCaseRoot {
+        case_dir: PathBuf,
+        entry_root: PathBuf,
+    },
     NotImplemented(&'static str),
 }
 
@@ -331,7 +337,7 @@ impl From<EngineError> for HarnessError {
 }
 
 pub struct WorkspaceHarnessBuilder {
-    providers: Vec<Arc<dyn RuleProvider>>,
+    backends: Vec<Arc<dyn ProviderBackend>>,
     override_config: Option<EngineConfig>,
     override_suppressions: Option<Arc<dyn SuppressionMatcher>>,
 }
@@ -339,7 +345,7 @@ pub struct WorkspaceHarnessBuilder {
 impl Default for WorkspaceHarnessBuilder {
     fn default() -> Self {
         Self {
-            providers: Vec::new(),
+            backends: Vec::new(),
             override_config: None,
             override_suppressions: None,
         }
@@ -351,16 +357,16 @@ impl WorkspaceHarnessBuilder {
         Self::default()
     }
 
-    pub fn with_provider(mut self, provider: Arc<dyn RuleProvider>) -> Self {
-        self.providers.push(provider);
+    pub fn with_backend(mut self, backend: Arc<dyn ProviderBackend>) -> Self {
+        self.backends.push(backend);
         self
     }
 
-    pub fn with_providers<I>(mut self, providers: I) -> Self
+    pub fn with_backends<I>(mut self, backends: I) -> Self
     where
-        I: IntoIterator<Item = Arc<dyn RuleProvider>>,
+        I: IntoIterator<Item = Arc<dyn ProviderBackend>>,
     {
-        self.providers.extend(providers);
+        self.backends.extend(backends);
         self
     }
 
@@ -376,7 +382,7 @@ impl WorkspaceHarnessBuilder {
 
     pub fn build(self) -> WorkspaceHarness {
         WorkspaceHarness {
-            providers: self.providers,
+            backends: self.backends,
             override_config: self.override_config,
             override_suppressions: self.override_suppressions,
         }
@@ -384,7 +390,7 @@ impl WorkspaceHarnessBuilder {
 }
 
 pub struct WorkspaceHarness {
-    providers: Vec<Arc<dyn RuleProvider>>,
+    backends: Vec<Arc<dyn ProviderBackend>>,
     override_config: Option<EngineConfig>,
     override_suppressions: Option<Arc<dyn SuppressionMatcher>>,
 }
@@ -395,7 +401,7 @@ impl WorkspaceHarness {
     }
 
     pub fn load_manifest(&self, case_dir: &Path) -> Result<CaseManifest, HarnessError> {
-        let _ = &self.providers;
+        let _ = &self.backends;
         Ok(CaseManifest::load(case_dir)?)
     }
 
@@ -424,8 +430,8 @@ impl WorkspaceHarness {
         let mut builder = EngineBuilder::default()
             .with_config(effective_config)
             .with_suppressions(suppressions);
-        for provider in &self.providers {
-            builder = builder.with_provider(Arc::clone(provider));
+        for backend in &self.backends {
+            builder = builder.with_backend(Arc::clone(backend));
         }
 
         Ok(builder.build().scan_path(&entry_root)?)
@@ -446,8 +452,14 @@ pub fn discover_case_dirs(bucket_root: &Path) -> Result<Vec<PathBuf>, HarnessErr
         .collect::<Vec<_>>();
 
     case_dirs.sort_by(|left, right| {
-        let left_name = left.file_name().and_then(|v| v.to_str()).unwrap_or_default();
-        let right_name = right.file_name().and_then(|v| v.to_str()).unwrap_or_default();
+        let left_name = left
+            .file_name()
+            .and_then(|v| v.to_str())
+            .unwrap_or_default();
+        let right_name = right
+            .file_name()
+            .and_then(|v| v.to_str())
+            .unwrap_or_default();
         left_name.cmp(right_name).then_with(|| left.cmp(right))
     });
     Ok(case_dirs)
@@ -491,31 +503,25 @@ pub fn assert_case_summary(manifest: &CaseManifest, summary: &ScanSummary) {
     }
 
     for expected in &manifest.expected_findings {
-        let Some(found) = summary
-            .findings
-            .iter()
-            .find(|finding| {
-                if finding.rule_code != expected.rule_code {
+        let Some(found) = summary.findings.iter().find(|finding| {
+            if finding.rule_code != expected.rule_code {
+                return false;
+            }
+            if let Some(expected_stable_key) = &expected.stable_key {
+                if format_stable_key(&finding.stable_key) != *expected_stable_key {
                     return false;
                 }
-                if let Some(expected_stable_key) = &expected.stable_key {
-                    if format_stable_key(&finding.stable_key) != *expected_stable_key {
-                        return false;
-                    }
+            }
+            if let Some(min_evidence_count) = expected.min_evidence_count {
+                if finding.evidence.len() < min_evidence_count {
+                    return false;
                 }
-                if let Some(min_evidence_count) = expected.min_evidence_count {
-                    if finding.evidence.len() < min_evidence_count {
-                        return false;
-                    }
-                }
-                true
-            })
-        else {
+            }
+            true
+        }) else {
             panic!(
                 "case `{}` expected finding `{}` but no such finding was emitted; got {:?}",
-                manifest.id,
-                expected.rule_code,
-                summary.findings
+                manifest.id, expected.rule_code, summary.findings
             );
         };
 
@@ -571,7 +577,10 @@ pub fn assert_case_summary(manifest: &CaseManifest, summary: &ScanSummary) {
 pub struct OutputHarness;
 
 impl OutputHarness {
-    pub fn snapshot_path(case_dir: &Path, snapshot: &SnapshotExpectation) -> Result<PathBuf, HarnessError> {
+    pub fn snapshot_path(
+        case_dir: &Path,
+        snapshot: &SnapshotExpectation,
+    ) -> Result<PathBuf, HarnessError> {
         let file_name = match snapshot.kind {
             SnapshotKind::None => {
                 return Err(HarnessError::NotImplemented(
@@ -593,15 +602,15 @@ impl OutputHarness {
         actual: &str,
     ) -> Result<(), HarnessError> {
         let snapshot_path = Self::snapshot_path(case_dir, snapshot)?;
-        let expected =
-            std::fs::read_to_string(&snapshot_path).map_err(|source| HarnessError::Manifest(
-                ManifestLoadError::Io {
-                    path: snapshot_path.clone(),
-                    source,
-                },
-            ))?;
+        let expected = std::fs::read_to_string(&snapshot_path).map_err(|source| {
+            HarnessError::Manifest(ManifestLoadError::Io {
+                path: snapshot_path.clone(),
+                source,
+            })
+        })?;
         assert_eq!(
-            expected, actual,
+            expected,
+            actual,
             "snapshot mismatch for {}",
             snapshot_path.display()
         );
@@ -633,10 +642,8 @@ impl OutputHarness {
 
 fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
     match rule_code {
-        "SEC101" | "SEC102" | "SEC103" | "SEC201" | "SEC202" | "SEC203" | "SEC301"
-        | "SEC204" | "SEC205" | "SEC302" | "SEC303" | "SEC304" | "SEC305" => {
-            Some(RuleTier::Stable)
-        }
+        "SEC101" | "SEC102" | "SEC103" | "SEC201" | "SEC202" | "SEC203" | "SEC301" | "SEC204"
+        | "SEC205" | "SEC302" | "SEC303" | "SEC304" | "SEC305" => Some(RuleTier::Stable),
         "SEC401" | "SEC402" | "SEC403" => Some(RuleTier::Preview),
         _ => None,
     }
@@ -731,11 +738,13 @@ mod tests {
     use std::path::{Path, PathBuf};
 
     use super::{
-        CaseManifest, HarnessOutputFormat, HarnessError, OutputHarness, SnapshotExpectation,
+        CaseManifest, HarnessError, HarnessOutputFormat, OutputHarness, SnapshotExpectation,
         SnapshotKind, WorkspaceHarness, assert_case_summary, discover_case_dirs, repo_root,
         unique_temp_dir,
     };
-    use lintai_api::{Category, Confidence, Finding, Location, RuleMetadata, RuleTier, Severity, Span};
+    use lintai_api::{
+        Category, Confidence, Finding, Location, RuleMetadata, RuleTier, Severity, Span,
+    };
     use lintai_engine::{RuntimeErrorKind, ScanRuntimeError};
 
     #[test]
@@ -983,7 +992,10 @@ name = ""
         )
         .unwrap();
 
-        let error = WorkspaceHarness::builder().build().scan_case(&temp_dir).unwrap_err();
+        let error = WorkspaceHarness::builder()
+            .build()
+            .scan_case(&temp_dir)
+            .unwrap_err();
         assert!(matches!(error, HarnessError::InvalidCaseRoot { .. }));
     }
 
@@ -1015,7 +1027,10 @@ name = ""
         .unwrap();
         std::fs::write(temp_dir.join("repo/docs/SKILL.md"), "# Configured\n").unwrap();
 
-        let summary = WorkspaceHarness::builder().build().scan_case(&temp_dir).unwrap();
+        let summary = WorkspaceHarness::builder()
+            .build()
+            .scan_case(&temp_dir)
+            .unwrap();
         assert_eq!(summary.scanned_files, 1);
         assert!(summary.findings.is_empty());
     }
@@ -1080,7 +1095,10 @@ name = ""
         .unwrap();
 
         assert_eq!(json, PathBuf::from("/tmp/case/snapshots/report.json"));
-        assert_eq!(sarif, PathBuf::from("/tmp/case/snapshots/report.sarif.json"));
+        assert_eq!(
+            sarif,
+            PathBuf::from("/tmp/case/snapshots/report.sarif.json")
+        );
         assert_eq!(explain, PathBuf::from("/tmp/case/snapshots/report.txt"));
         assert_eq!(stable_key, PathBuf::from("/tmp/case/snapshots/report.txt"));
     }
@@ -1089,7 +1107,11 @@ name = ""
     fn assert_snapshot_passes_on_exact_match() {
         let temp_dir = unique_temp_dir("lintai-snapshot-match");
         std::fs::create_dir_all(temp_dir.join("snapshots")).unwrap();
-        std::fs::write(temp_dir.join("snapshots/report.json"), "{\n  \"ok\": true\n}\n").unwrap();
+        std::fs::write(
+            temp_dir.join("snapshots/report.json"),
+            "{\n  \"ok\": true\n}\n",
+        )
+        .unwrap();
 
         OutputHarness::assert_snapshot(
             &temp_dir,
@@ -1130,16 +1152,8 @@ name = ""
             Confidence::High,
             RuleTier::Stable,
         );
-        let first = Finding::new(
-            &meta,
-            Location::new("a.md", Span::new(0, 1)),
-            "first",
-        );
-        let second = Finding::new(
-            &meta,
-            Location::new("b.md", Span::new(1, 2)),
-            "second",
-        );
+        let first = Finding::new(&meta, Location::new("a.md", Span::new(0, 1)), "first");
+        let second = Finding::new(&meta, Location::new("b.md", Span::new(1, 2)), "second");
         let summary = lintai_engine::ScanSummary {
             findings: vec![first, second],
             ..lintai_engine::ScanSummary::default()
@@ -1243,13 +1257,15 @@ name = ""
         .unwrap();
 
         let mut summary = lintai_engine::ScanSummary::default();
-        summary.runtime_errors.push(lintai_engine::ScanRuntimeError {
-            normalized_path: "docs/SKILL.md".to_owned(),
-            kind: lintai_engine::RuntimeErrorKind::Read,
-            provider_id: None,
-            phase: None,
-            message: "boom".to_owned(),
-        });
+        summary
+            .runtime_errors
+            .push(lintai_engine::ScanRuntimeError {
+                normalized_path: "docs/SKILL.md".to_owned(),
+                kind: lintai_engine::RuntimeErrorKind::Read,
+                provider_id: None,
+                phase: None,
+                message: "boom".to_owned(),
+            });
 
         assert_case_summary(&manifest, &summary);
     }

@@ -10,7 +10,6 @@ use crate::{Category, Confidence, Finding, Fix, ScanContext, Severity, Workspace
 pub enum RuleTier {
     Stable,
     Preview,
-    Deprecated,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, JsonSchema, PartialEq, Serialize)]
@@ -119,22 +118,14 @@ impl ProviderScanResult {
 pub trait RuleProvider: Send + Sync {
     fn id(&self) -> &str;
     fn rules(&self) -> &[RuleMetadata];
-    fn check(&self, ctx: &ScanContext) -> Vec<Finding>;
+    fn check_result(&self, ctx: &ScanContext) -> ProviderScanResult;
 
     fn scan_scope(&self) -> ScanScope {
         ScanScope::PerFile
     }
 
-    fn check_workspace(&self, _ctx: &WorkspaceScanContext) -> Vec<Finding> {
-        Vec::new()
-    }
-
-    fn check_result(&self, ctx: &ScanContext) -> ProviderScanResult {
-        ProviderScanResult::new(self.check(ctx), Vec::new())
-    }
-
-    fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
-        ProviderScanResult::new(self.check_workspace(ctx), Vec::new())
+    fn check_workspace_result(&self, _ctx: &WorkspaceScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(Vec::new(), Vec::new())
     }
 
     fn timeout(&self) -> Duration {
@@ -151,13 +142,5 @@ pub trait RuleProvider: Send + Sync {
 
     fn capabilities(&self) -> ProviderCapabilities {
         ProviderCapabilities::default()
-    }
-
-    fn on_start(&self) -> Result<(), ProviderError> {
-        Ok(())
-    }
-
-    fn on_finish(&self) -> Result<(), ProviderError> {
-        Ok(())
     }
 }

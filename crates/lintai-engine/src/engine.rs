@@ -4,8 +4,8 @@ use std::time::Instant;
 
 use lintai_adapters::parse_document;
 use lintai_api::{
-    Artifact, Finding, ProviderError, ProviderErrorKind, RuleProvider, ScanContext,
-    WorkspaceArtifact, WorkspaceScanContext,
+    Artifact, Finding, ProviderError, ProviderErrorKind, ScanContext, WorkspaceArtifact,
+    WorkspaceScanContext,
 };
 
 use crate::artifact_view::ArtifactContextRef;
@@ -14,17 +14,15 @@ use crate::discovery::{collect_files, scan_base};
 use crate::normalize::{
     looks_binary, normalize_path, normalize_path_string, normalize_text, populate_line_columns,
 };
-use crate::provider::ProviderCatalog;
-use crate::summary::{
-    ProviderExecutionPhase, RuntimeErrorKind, ScanRuntimeError, ScanSummary,
-};
+use crate::provider::{ProviderBackend, ProviderCatalog};
+use crate::summary::{ProviderExecutionPhase, RuntimeErrorKind, ScanRuntimeError, ScanSummary};
 use crate::workspace_index::{WorkspaceEntry, WorkspaceIndex, full_artifact_location};
 use crate::{EngineConfig, EngineError, ResolvedFileConfig, SuppressionMatcher};
 
 pub struct Engine {
     pub(crate) config: EngineConfig,
     pub(crate) detector: FileTypeDetector,
-    pub(crate) providers: Vec<Arc<dyn RuleProvider>>,
+    pub(crate) backends: Vec<Arc<dyn ProviderBackend>>,
     pub(crate) suppressions: Arc<dyn SuppressionMatcher>,
 }
 
@@ -36,20 +34,11 @@ impl Default for Engine {
 
 impl Engine {
     pub fn scan_path(&self, path: &Path) -> Result<ScanSummary, EngineError> {
-        let providers = ProviderCatalog::new(&self.providers)?;
-        let started_providers = providers.start_all()?;
-        let scan_result = self.scan_path_inner(path, &providers);
-        let finish_result = providers.finish_started(started_providers);
-
-        match (scan_result, finish_result) {
-            (Ok(mut summary), Ok(())) => {
-                summary.diagnostics.extend(self.suppressions.finalize());
-                summary.finalize();
-                Ok(summary)
-            }
-            (Err(error), Ok(())) => Err(error),
-            (_, Err(error)) => Err(error),
-        }
+        let providers = ProviderCatalog::new(&self.backends)?;
+        let mut summary = self.scan_path_inner(path, &providers)?;
+        summary.diagnostics.extend(self.suppressions.finalize());
+        summary.finalize();
+        Ok(summary)
     }
 
     fn scan_path_inner(
@@ -196,7 +185,7 @@ impl Engine {
     ) {
         for provider in providers.per_file() {
             let started = Instant::now();
-            let result = provider.provider().check_result(&scanned.context);
+            let result = provider.backend().check_result(&scanned.context);
             if !result
                 .errors
                 .iter()
@@ -237,7 +226,8 @@ impl Engine {
         let mut workspace_entries = Vec::with_capacity(scanned_artifacts.len());
         for scanned in scanned_artifacts {
             let normalized_path = scanned.context.artifact.normalized_path.clone();
-            let location_hint = full_artifact_location(normalized_path.clone(), &scanned.context.content);
+            let location_hint =
+                full_artifact_location(normalized_path.clone(), &scanned.context.content);
             let artifact_index = workspace_artifacts.len();
             workspace_artifacts.push(
                 WorkspaceArtifact::new(
@@ -267,7 +257,7 @@ impl Engine {
 
         for provider in providers.workspace() {
             let started = Instant::now();
-            let result = provider.provider().check_workspace_result(&workspace);
+            let result = provider.backend().check_workspace_result(&workspace);
             if !result
                 .errors
                 .iter()
@@ -290,7 +280,10 @@ impl Engine {
             for finding in result.findings {
                 let Some(scanned) = workspace_index.get(&finding.location.normalized_path) else {
                     summary.diagnostics.push(crate::ScanDiagnostic {
-                        normalized_path: workspace.project_root.clone().unwrap_or_else(|| ".".to_owned()),
+                        normalized_path: workspace
+                            .project_root
+                            .clone()
+                            .unwrap_or_else(|| ".".to_owned()),
                         severity: crate::DiagnosticSeverity::Warn,
                         code: Some("provider_contract".to_owned()),
                         message: format!(
@@ -383,18 +376,4 @@ impl Engine {
 struct ScannedArtifact {
     context: ScanContext,
     file_config: ResolvedFileConfig,
-}
-
-pub(crate) fn combine_lifecycle_errors(
-    start_error: ProviderError,
-    cleanup_error: EngineError,
-) -> EngineError {
-    let cleanup_message = cleanup_error.to_string();
-    EngineError::ProviderLifecycle(ProviderError::new(
-        start_error.provider_id,
-        format!(
-            "{}; cleanup after failed startup also failed: {cleanup_message}",
-            start_error.message
-        ),
-    ))
 }

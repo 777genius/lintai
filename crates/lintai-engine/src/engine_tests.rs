@@ -1,100 +1,19 @@
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use std::sync::atomic::AtomicU64;
-use std::sync::{
-    Arc,
-    atomic::{AtomicUsize, Ordering},
-};
+use std::sync::{Arc, atomic::Ordering};
 use std::time::Duration;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use lintai_api::{
-    Applicability, Finding, Fix, Location, ProviderCapabilities, ProviderError, RuleMetadata,
-    ProviderScanResult, RuleTier, ScanScope, Span, WorkspaceScanContext,
+    Applicability, Finding, Fix, Location, ProviderCapabilities, ProviderError, ProviderScanResult,
+    RuleMetadata, RuleTier, ScanScope, Span, WorkspaceScanContext,
 };
 
 use crate::artifact_view::ArtifactContextRef;
-use crate::{Engine, EngineBuilder, SuppressionMatcher};
+use crate::{Engine, EngineBuilder, InProcessProviderBackend, ProviderBackend, SuppressionMatcher};
 
-struct CountingProvider {
-    id: &'static str,
-    starts: Arc<AtomicUsize>,
-    finishes: Arc<AtomicUsize>,
-}
-
-impl lintai_api::RuleProvider for CountingProvider {
-    fn id(&self) -> &str {
-        self.id
-    }
-
-    fn rules(&self) -> &[RuleMetadata] {
-        &[]
-    }
-
-    fn check(&self, _ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
-        Vec::new()
-    }
-
-    fn on_start(&self) -> Result<(), ProviderError> {
-        self.starts.fetch_add(1, Ordering::SeqCst);
-        Ok(())
-    }
-
-    fn on_finish(&self) -> Result<(), ProviderError> {
-        self.finishes.fetch_add(1, Ordering::SeqCst);
-        Ok(())
-    }
-}
-
-struct FailingStartProvider {
-    starts: Arc<AtomicUsize>,
-    finishes: Arc<AtomicUsize>,
-}
-
-impl lintai_api::RuleProvider for FailingStartProvider {
-    fn id(&self) -> &str {
-        "failing-start"
-    }
-
-    fn rules(&self) -> &[RuleMetadata] {
-        &[]
-    }
-
-    fn check(&self, _ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
-        Vec::new()
-    }
-
-    fn on_start(&self) -> Result<(), ProviderError> {
-        self.starts.fetch_add(1, Ordering::SeqCst);
-        Err(ProviderError::new(self.id(), "startup failed"))
-    }
-
-    fn on_finish(&self) -> Result<(), ProviderError> {
-        self.finishes.fetch_add(1, Ordering::SeqCst);
-        Ok(())
-    }
-}
-
-struct FailingFinishProvider {
-    finishes: Arc<AtomicUsize>,
-}
-
-impl lintai_api::RuleProvider for FailingFinishProvider {
-    fn id(&self) -> &str {
-        "failing-finish"
-    }
-
-    fn rules(&self) -> &[RuleMetadata] {
-        &[]
-    }
-
-    fn check(&self, _ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
-        Vec::new()
-    }
-
-    fn on_finish(&self) -> Result<(), ProviderError> {
-        self.finishes.fetch_add(1, Ordering::SeqCst);
-        Err(ProviderError::new(self.id(), "finish failed"))
-    }
+fn backend(provider: impl lintai_api::RuleProvider + 'static) -> Arc<dyn ProviderBackend> {
+    Arc::new(InProcessProviderBackend::new(Arc::new(provider)))
 }
 
 struct EmitFindingProvider;
@@ -117,12 +36,15 @@ impl lintai_api::RuleProvider for EmitFindingProvider {
         &EMIT_RULES
     }
 
-    fn check(&self, ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
-        vec![Finding::new(
-            &self.rules()[0],
-            Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
-            "test finding",
-        )]
+    fn check_result(&self, ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(
+            vec![Finding::new(
+                &self.rules()[0],
+                Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
+                "test finding",
+            )],
+            Vec::new(),
+        )
     }
 }
 
@@ -146,12 +68,15 @@ impl lintai_api::RuleProvider for FixingProvider {
         &FIXING_RULES
     }
 
-    fn check(&self, ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
-        vec![Finding::new(
-            &self.rules()[0],
-            Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
-            "fixable finding",
-        )]
+    fn check_result(&self, ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(
+            vec![Finding::new(
+                &self.rules()[0],
+                Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
+                "fixable finding",
+            )],
+            Vec::new(),
+        )
     }
 
     fn supports_fix(&self) -> bool {
@@ -179,12 +104,15 @@ impl lintai_api::RuleProvider for UndeclaredFindingProvider {
         &[]
     }
 
-    fn check(&self, ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
-        vec![Finding::new(
-            &EMIT_RULES[0],
-            Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
-            "bad finding",
-        )]
+    fn check_result(&self, ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(
+            vec![Finding::new(
+                &EMIT_RULES[0],
+                Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
+                "bad finding",
+            )],
+            Vec::new(),
+        )
     }
 }
 
@@ -199,14 +127,14 @@ impl lintai_api::RuleProvider for WrongStableKeyProvider {
         &EMIT_RULES
     }
 
-    fn check(&self, ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
+    fn check_result(&self, ctx: &lintai_api::ScanContext) -> ProviderScanResult {
         let mut finding = Finding::new(
             &EMIT_RULES[0],
             Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
             "test finding",
         );
         finding.stable_key.normalized_path = "wrong.md".to_owned();
-        vec![finding]
+        ProviderScanResult::new(vec![finding], Vec::new())
     }
 }
 
@@ -221,8 +149,8 @@ impl lintai_api::RuleProvider for ZeroTimeoutProvider {
         &[]
     }
 
-    fn check(&self, _ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
-        Vec::new()
+    fn check_result(&self, _ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(Vec::new(), Vec::new())
     }
 
     fn timeout(&self) -> Duration {
@@ -241,8 +169,8 @@ impl lintai_api::RuleProvider for WorkspaceFindingProvider {
         &EMIT_RULES
     }
 
-    fn check(&self, _ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
-        Vec::new()
+    fn check_result(&self, _ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(Vec::new(), Vec::new())
     }
 
     fn scan_scope(&self) -> ScanScope {
@@ -253,15 +181,18 @@ impl lintai_api::RuleProvider for WorkspaceFindingProvider {
         ProviderCapabilities::new(false, false)
     }
 
-    fn check_workspace(&self, ctx: &WorkspaceScanContext) -> Vec<lintai_api::Finding> {
+    fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
         let Some(first) = ctx.artifacts.first() else {
-            return Vec::new();
+            return ProviderScanResult::new(Vec::new(), Vec::new());
         };
-        vec![Finding::new(
-            &EMIT_RULES[0],
-            Location::new(first.artifact.normalized_path.clone(), Span::new(0, 1)),
-            "workspace finding",
-        )]
+        ProviderScanResult::new(
+            vec![Finding::new(
+                &EMIT_RULES[0],
+                Location::new(first.artifact.normalized_path.clone(), Span::new(0, 1)),
+                "workspace finding",
+            )],
+            Vec::new(),
+        )
     }
 }
 
@@ -276,8 +207,8 @@ impl lintai_api::RuleProvider for DuplicateProviderId {
         &[]
     }
 
-    fn check(&self, _ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
-        Vec::new()
+    fn check_result(&self, _ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(Vec::new(), Vec::new())
     }
 }
 
@@ -292,15 +223,18 @@ impl lintai_api::RuleProvider for InvalidSpanProvider {
         &EMIT_RULES
     }
 
-    fn check(&self, ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
-        vec![Finding::new(
-            &EMIT_RULES[0],
-            Location::new(
-                ctx.artifact.normalized_path.clone(),
-                Span::new(ctx.content.len() + 1, ctx.content.len() + 3),
-            ),
-            "invalid span",
-        )]
+    fn check_result(&self, ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(
+            vec![Finding::new(
+                &EMIT_RULES[0],
+                Location::new(
+                    ctx.artifact.normalized_path.clone(),
+                    Span::new(ctx.content.len() + 1, ctx.content.len() + 3),
+                ),
+                "invalid span",
+            )],
+            Vec::new(),
+        )
     }
 }
 
@@ -315,12 +249,15 @@ impl lintai_api::RuleProvider for InvalidFixProvider {
         &FIXING_RULES
     }
 
-    fn check(&self, ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
-        vec![Finding::new(
-            &FIXING_RULES[0],
-            Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
-            "fixable finding",
-        )]
+    fn check_result(&self, ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(
+            vec![Finding::new(
+                &FIXING_RULES[0],
+                Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
+                "fixable finding",
+            )],
+            Vec::new(),
+        )
     }
 
     fn supports_fix(&self) -> bool {
@@ -348,7 +285,7 @@ impl lintai_api::RuleProvider for DuplicateFindingProvider {
         &EMIT_RULES
     }
 
-    fn check(&self, ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
+    fn check_result(&self, ctx: &lintai_api::ScanContext) -> ProviderScanResult {
         let mut weaker = Finding::new(
             &EMIT_RULES[0],
             Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
@@ -365,7 +302,7 @@ impl lintai_api::RuleProvider for DuplicateFindingProvider {
         stronger.severity = lintai_api::Severity::Deny;
         stronger.confidence = lintai_api::Confidence::High;
 
-        vec![weaker, stronger]
+        ProviderScanResult::new(vec![weaker, stronger], Vec::new())
     }
 }
 
@@ -388,8 +325,8 @@ impl lintai_api::RuleProvider for WorkspaceLineColumnProvider {
         &EMIT_RULES
     }
 
-    fn check(&self, _ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
-        Vec::new()
+    fn check_result(&self, _ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(Vec::new(), Vec::new())
     }
 
     fn scan_scope(&self) -> ScanScope {
@@ -400,17 +337,23 @@ impl lintai_api::RuleProvider for WorkspaceLineColumnProvider {
         ProviderCapabilities::new(false, false)
     }
 
-    fn check_workspace(&self, ctx: &WorkspaceScanContext) -> Vec<lintai_api::Finding> {
+    fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
         let Some(first) = ctx.artifacts.first() else {
-            return Vec::new();
+            return ProviderScanResult::new(Vec::new(), Vec::new());
         };
         let start = first.content.find("title").unwrap();
         let end = start + "title".len();
-        vec![Finding::new(
-            &EMIT_RULES[0],
-            Location::new(first.artifact.normalized_path.clone(), Span::new(start, end)),
-            "workspace finding with offset",
-        )]
+        ProviderScanResult::new(
+            vec![Finding::new(
+                &EMIT_RULES[0],
+                Location::new(
+                    first.artifact.normalized_path.clone(),
+                    Span::new(start, end),
+                ),
+                "workspace finding with offset",
+            )],
+            Vec::new(),
+        )
     }
 }
 
@@ -423,10 +366,6 @@ impl lintai_api::RuleProvider for ExecutionErrorOnlyProvider {
 
     fn rules(&self) -> &[RuleMetadata] {
         &[]
-    }
-
-    fn check(&self, _ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
-        Vec::new()
     }
 
     fn check_result(&self, _ctx: &lintai_api::ScanContext) -> ProviderScanResult {
@@ -448,14 +387,13 @@ impl lintai_api::RuleProvider for ReportedTimeoutProvider {
         &[]
     }
 
-    fn check(&self, _ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
-        Vec::new()
-    }
-
     fn check_result(&self, _ctx: &lintai_api::ScanContext) -> ProviderScanResult {
         ProviderScanResult::new(
             Vec::new(),
-            vec![ProviderError::timeout(self.id(), "isolated child terminated after timeout")],
+            vec![ProviderError::timeout(
+                self.id(),
+                "isolated child terminated after timeout",
+            )],
         )
     }
 }
@@ -471,17 +409,13 @@ impl lintai_api::RuleProvider for FindingAndExecutionErrorProvider {
         &EMIT_RULES
     }
 
-    fn check(&self, ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
-        vec![Finding::new(
-            &EMIT_RULES[0],
-            Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
-            "finding survives execution error",
-        )]
-    }
-
     fn check_result(&self, ctx: &lintai_api::ScanContext) -> ProviderScanResult {
         ProviderScanResult::new(
-            self.check(ctx),
+            vec![Finding::new(
+                &EMIT_RULES[0],
+                Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
+                "finding survives execution error",
+            )],
             vec![ProviderError::new(self.id(), "partial provider failure")],
         )
     }
@@ -498,8 +432,8 @@ impl lintai_api::RuleProvider for WorkspaceExecutionErrorProvider {
         &[]
     }
 
-    fn check(&self, _ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
-        Vec::new()
+    fn check_result(&self, _ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(Vec::new(), Vec::new())
     }
 
     fn scan_scope(&self) -> ScanScope {
@@ -513,7 +447,10 @@ impl lintai_api::RuleProvider for WorkspaceExecutionErrorProvider {
     fn check_workspace_result(&self, _ctx: &WorkspaceScanContext) -> ProviderScanResult {
         ProviderScanResult::new(
             Vec::new(),
-            vec![ProviderError::new(self.id(), "workspace provider execution failed")],
+            vec![ProviderError::new(
+                self.id(),
+                "workspace provider execution failed",
+            )],
         )
     }
 }
@@ -593,92 +530,13 @@ fn does_not_discover_symlinked_directory_outside_project_root() {
 }
 
 #[test]
-fn finish_runs_even_when_scan_setup_fails() {
-    let starts = Arc::new(AtomicUsize::new(0));
-    let finishes = Arc::new(AtomicUsize::new(0));
-    let engine = EngineBuilder::default()
-        .with_provider(Arc::new(CountingProvider {
-            id: "counting-setup",
-            starts: Arc::clone(&starts),
-            finishes: Arc::clone(&finishes),
-        }))
-        .build();
-
-    let result = engine.scan_path(Path::new("/definitely/missing/lintai"));
-
-    assert!(result.is_err());
-    assert_eq!(starts.load(Ordering::SeqCst), 1);
-    assert_eq!(finishes.load(Ordering::SeqCst), 1);
-}
-
-#[test]
-fn started_providers_are_finished_when_later_start_fails() {
-    let first_starts = Arc::new(AtomicUsize::new(0));
-    let first_finishes = Arc::new(AtomicUsize::new(0));
-    let failing_starts = Arc::new(AtomicUsize::new(0));
-    let failing_finishes = Arc::new(AtomicUsize::new(0));
-
-    let engine = EngineBuilder::default()
-        .with_provider(Arc::new(CountingProvider {
-            id: "counting-first",
-            starts: Arc::clone(&first_starts),
-            finishes: Arc::clone(&first_finishes),
-        }))
-        .with_provider(Arc::new(FailingStartProvider {
-            starts: Arc::clone(&failing_starts),
-            finishes: Arc::clone(&failing_finishes),
-        }))
-        .build();
-
-    let result = engine.scan_path(Path::new("."));
-
-    assert!(result.is_err());
-    assert_eq!(first_starts.load(Ordering::SeqCst), 1);
-    assert_eq!(first_finishes.load(Ordering::SeqCst), 1);
-    assert_eq!(failing_starts.load(Ordering::SeqCst), 1);
-    assert_eq!(failing_finishes.load(Ordering::SeqCst), 0);
-}
-
-#[test]
-fn finish_continues_after_provider_finish_error() {
-    let first_finishes = Arc::new(AtomicUsize::new(0));
-    let failing_finishes = Arc::new(AtomicUsize::new(0));
-    let last_finishes = Arc::new(AtomicUsize::new(0));
-    let temp_dir = unique_temp_dir("lintai-finish-continues");
-    std::fs::create_dir_all(&temp_dir).unwrap();
-    std::fs::write(temp_dir.join("SKILL.md"), b"# ok\n").unwrap();
-
-    let result = EngineBuilder::default()
-        .with_provider(Arc::new(CountingProvider {
-            id: "counting-before-finish",
-            starts: Arc::new(AtomicUsize::new(0)),
-            finishes: Arc::clone(&first_finishes),
-        }))
-        .with_provider(Arc::new(FailingFinishProvider {
-            finishes: Arc::clone(&failing_finishes),
-        }))
-        .with_provider(Arc::new(CountingProvider {
-            id: "counting-after-finish",
-            starts: Arc::new(AtomicUsize::new(0)),
-            finishes: Arc::clone(&last_finishes),
-        }))
-        .build()
-        .scan_path(&temp_dir);
-
-    assert!(result.is_err());
-    assert_eq!(first_finishes.load(Ordering::SeqCst), 1);
-    assert_eq!(failing_finishes.load(Ordering::SeqCst), 1);
-    assert_eq!(last_finishes.load(Ordering::SeqCst), 1);
-}
-
-#[test]
 fn suppression_hook_filters_findings() {
     let temp_dir = unique_temp_dir("lintai-suppression");
     std::fs::create_dir_all(&temp_dir).unwrap();
     std::fs::write(temp_dir.join("SKILL.md"), b"# ok\n").unwrap();
 
     let summary = EngineBuilder::default()
-        .with_provider(Arc::new(EmitFindingProvider))
+        .with_backend(backend(EmitFindingProvider))
         .with_suppressions(Arc::new(RuleIdSuppressor))
         .build()
         .scan_path(&temp_dir)
@@ -695,7 +553,7 @@ fn records_per_file_provider_execution_errors_without_findings() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# ok\n").unwrap();
 
     let summary = EngineBuilder::default()
-        .with_provider(Arc::new(ExecutionErrorOnlyProvider))
+        .with_backend(backend(ExecutionErrorOnlyProvider))
         .build()
         .scan_path(&temp_dir)
         .unwrap();
@@ -716,13 +574,16 @@ fn keeps_findings_when_provider_reports_execution_errors() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# ok\n").unwrap();
 
     let summary = EngineBuilder::default()
-        .with_provider(Arc::new(FindingAndExecutionErrorProvider))
+        .with_backend(backend(FindingAndExecutionErrorProvider))
         .build()
         .scan_path(&temp_dir)
         .unwrap();
 
     assert_eq!(summary.findings.len(), 1);
-    assert_eq!(summary.findings[0].message, "finding survives execution error");
+    assert_eq!(
+        summary.findings[0].message,
+        "finding survives execution error"
+    );
     assert_eq!(summary.runtime_errors.len(), 1);
     assert_eq!(
         summary.runtime_errors[0].kind,
@@ -741,7 +602,7 @@ fn preserves_timeout_runtime_kind_when_provider_reports_timeout() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# ok\n").unwrap();
 
     let summary = EngineBuilder::default()
-        .with_provider(Arc::new(ReportedTimeoutProvider))
+        .with_backend(backend(ReportedTimeoutProvider))
         .build()
         .scan_path(&temp_dir)
         .unwrap();
@@ -761,7 +622,7 @@ fn derives_line_columns_for_findings() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# title\n").unwrap();
 
     let summary = EngineBuilder::default()
-        .with_provider(Arc::new(EmitFindingProvider))
+        .with_backend(backend(EmitFindingProvider))
         .build()
         .scan_path(&temp_dir)
         .unwrap();
@@ -783,7 +644,7 @@ fn attaches_fix_from_provider_fix_hook() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# title\n").unwrap();
 
     let summary = EngineBuilder::default()
-        .with_provider(Arc::new(FixingProvider))
+        .with_backend(backend(FixingProvider))
         .build()
         .scan_path(&temp_dir)
         .unwrap();
@@ -799,7 +660,7 @@ fn skips_undeclared_provider_rule_and_reports_diagnostic() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# title\n").unwrap();
 
     let summary = EngineBuilder::default()
-        .with_provider(Arc::new(UndeclaredFindingProvider))
+        .with_backend(backend(UndeclaredFindingProvider))
         .build()
         .scan_path(&temp_dir)
         .unwrap();
@@ -818,7 +679,7 @@ fn normalizes_non_canonical_stable_key_and_reports_diagnostic() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# title\n").unwrap();
 
     let summary = EngineBuilder::default()
-        .with_provider(Arc::new(WrongStableKeyProvider))
+        .with_backend(backend(WrongStableKeyProvider))
         .build()
         .scan_path(&temp_dir)
         .unwrap();
@@ -838,8 +699,8 @@ fn rejects_duplicate_provider_ids() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# title\n").unwrap();
 
     let error = EngineBuilder::default()
-        .with_provider(Arc::new(EmitFindingProvider))
-        .with_provider(Arc::new(DuplicateProviderId))
+        .with_backend(backend(EmitFindingProvider))
+        .with_backend(backend(DuplicateProviderId))
         .build()
         .scan_path(&temp_dir)
         .unwrap_err();
@@ -854,7 +715,7 @@ fn rejects_zero_timeout_provider_contract() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# title\n").unwrap();
 
     let error = EngineBuilder::default()
-        .with_provider(Arc::new(ZeroTimeoutProvider))
+        .with_backend(backend(ZeroTimeoutProvider))
         .build()
         .scan_path(&temp_dir)
         .unwrap_err();
@@ -869,7 +730,7 @@ fn workspace_provider_emits_findings_after_parse_pass() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# title\n").unwrap();
 
     let summary = EngineBuilder::default()
-        .with_provider(Arc::new(WorkspaceFindingProvider))
+        .with_backend(backend(WorkspaceFindingProvider))
         .build()
         .scan_path(&temp_dir)
         .unwrap();
@@ -885,7 +746,7 @@ fn workspace_findings_derive_line_columns_without_rebuilding_scan_context() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# title\n").unwrap();
 
     let summary = EngineBuilder::default()
-        .with_provider(Arc::new(WorkspaceLineColumnProvider))
+        .with_backend(backend(WorkspaceLineColumnProvider))
         .build()
         .scan_path(&temp_dir)
         .unwrap();
@@ -893,7 +754,10 @@ fn workspace_findings_derive_line_columns_without_rebuilding_scan_context() {
     assert_eq!(summary.findings.len(), 1);
     let finding = &summary.findings[0];
     assert_eq!(finding.location.start.as_ref().map(|pos| pos.line), Some(1));
-    assert_eq!(finding.location.start.as_ref().map(|pos| pos.column), Some(3));
+    assert_eq!(
+        finding.location.start.as_ref().map(|pos| pos.column),
+        Some(3)
+    );
     assert_eq!(finding.location.end.as_ref().map(|pos| pos.line), Some(1));
     assert_eq!(finding.location.end.as_ref().map(|pos| pos.column), Some(8));
 }
@@ -905,7 +769,7 @@ fn suppression_hook_filters_workspace_findings() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# ok\n").unwrap();
 
     let summary = EngineBuilder::default()
-        .with_provider(Arc::new(WorkspaceFindingProvider))
+        .with_backend(backend(WorkspaceFindingProvider))
         .with_suppressions(Arc::new(RuleIdSuppressor))
         .build()
         .scan_path(&temp_dir)
@@ -927,7 +791,7 @@ fn records_workspace_provider_execution_errors() {
 
     let summary = EngineBuilder::default()
         .with_config(config)
-        .with_provider(Arc::new(WorkspaceExecutionErrorProvider))
+        .with_backend(backend(WorkspaceExecutionErrorProvider))
         .build()
         .scan_path(&temp_dir)
         .unwrap();
@@ -936,7 +800,10 @@ fn records_workspace_provider_execution_errors() {
     assert_eq!(summary.runtime_errors.len(), 1);
     let error = &summary.runtime_errors[0];
     assert_eq!(error.kind, crate::RuntimeErrorKind::ProviderExecution);
-    assert_eq!(error.provider_id.as_deref(), Some("workspace-execution-error"));
+    assert_eq!(
+        error.provider_id.as_deref(),
+        Some("workspace-execution-error")
+    );
     assert_eq!(error.phase, Some(crate::ProviderExecutionPhase::Workspace));
     assert_eq!(error.normalized_path, temp_dir.display().to_string());
 }
@@ -948,7 +815,7 @@ fn drops_invalid_finding_span_and_reports_diagnostic() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# title\n").unwrap();
 
     let summary = EngineBuilder::default()
-        .with_provider(Arc::new(InvalidSpanProvider))
+        .with_backend(backend(InvalidSpanProvider))
         .build()
         .scan_path(&temp_dir)
         .unwrap();
@@ -967,7 +834,7 @@ fn drops_invalid_fix_and_keeps_finding() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# title\n").unwrap();
 
     let summary = EngineBuilder::default()
-        .with_provider(Arc::new(InvalidFixProvider))
+        .with_backend(backend(InvalidFixProvider))
         .build()
         .scan_path(&temp_dir)
         .unwrap();
@@ -987,7 +854,7 @@ fn deduplicates_findings_by_stable_key_keeping_stronger_one() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# title\n").unwrap();
 
     let summary = EngineBuilder::default()
-        .with_provider(Arc::new(DuplicateFindingProvider))
+        .with_backend(backend(DuplicateFindingProvider))
         .build()
         .scan_path(&temp_dir)
         .unwrap();

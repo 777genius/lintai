@@ -1,4 +1,7 @@
-use lintai_api::{Applicability, Finding, Fix, RuleMetadata, RuleProvider, ScanContext, Suggestion};
+use lintai_api::{
+    Applicability, Finding, Fix, ProviderScanResult, RuleMetadata, RuleProvider, ScanContext,
+    Suggestion,
+};
 
 use crate::registry::{RULE_METADATA, RULES};
 
@@ -23,15 +26,18 @@ impl RuleProvider for AiSecurityProvider {
         &self.rules
     }
 
-    fn check(&self, ctx: &ScanContext) -> Vec<Finding> {
+    fn check_result(&self, ctx: &ScanContext) -> ProviderScanResult {
         let mut findings = Vec::new();
         for rule in RULES {
             findings.extend((rule.check)(ctx, &rule.metadata));
         }
-        findings
-            .into_iter()
-            .map(|finding| attach_remediation_suggestion(ctx, finding))
-            .collect()
+        ProviderScanResult::new(
+            findings
+                .into_iter()
+                .map(|finding| attach_remediation_suggestion(ctx, finding))
+                .collect(),
+            Vec::new(),
+        )
     }
 
     fn supports_fix(&self) -> bool {
@@ -74,17 +80,31 @@ fn remediation_message(finding: &Finding) -> Option<&'static str> {
         "SEC201" => {
             Some("vendor or pin the script locally instead of downloading and executing it inline")
         }
-        "SEC202" => Some("remove the secret-bearing network exfil flow and keep secret access local"),
+        "SEC202" => {
+            Some("remove the secret-bearing network exfil flow and keep secret access local")
+        }
         "SEC203" => {
             Some("remove insecure HTTP secret exfil and keep secret handling local or over HTTPS")
         }
-        "SEC204" => Some("remove TLS-bypass flags or env overrides and use normal certificate verification"),
-        "SEC205" => Some("move embedded credentials out of URLs and headers into environment or provider-local auth configuration"),
+        "SEC204" => {
+            Some("remove TLS-bypass flags or env overrides and use normal certificate verification")
+        }
+        "SEC205" => Some(
+            "move embedded credentials out of URLs and headers into environment or provider-local auth configuration",
+        ),
         "SEC301" => Some("replace the shell wrapper with a direct command and explicit args"),
-        "SEC302" => Some("replace the insecure http:// endpoint with https:// or a local/stdio transport"),
-        "SEC303" => Some("remove credential env passthrough and configure secrets only inside the target service"),
-        "SEC304" => Some("re-enable certificate verification and use trusted HTTPS or local/stdio transport"),
-        "SEC305" => Some("remove embedded credentials from config values and source auth from environment or provider-local secret configuration"),
+        "SEC302" => {
+            Some("replace the insecure http:// endpoint with https:// or a local/stdio transport")
+        }
+        "SEC303" => Some(
+            "remove credential env passthrough and configure secrets only inside the target service",
+        ),
+        "SEC304" => Some(
+            "re-enable certificate verification and use trusted HTTPS or local/stdio transport",
+        ),
+        "SEC305" => Some(
+            "remove embedded credentials from config values and source auth from environment or provider-local secret configuration",
+        ),
         _ => None,
     }
 }
@@ -181,5 +201,8 @@ fn first_download_exec_span(content: &str) -> Option<lintai_api::Span> {
     if !(tail.contains("| sh") || tail.contains("| bash")) {
         return None;
     }
-    Some(lintai_api::Span::new(start, content.trim_end_matches(['\r', '\n']).len()))
+    Some(lintai_api::Span::new(
+        start,
+        content.trim_end_matches(['\r', '\n']).len(),
+    ))
 }

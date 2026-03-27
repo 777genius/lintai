@@ -82,10 +82,10 @@
 
 ## 7) `RuleProvider` contract
 
-- **3 core methods** + extension points с дефолтами (timeout/capabilities/hooks/fix).
+- `RuleProvider` is a result-only rule authoring contract.
 - Workspace rules use `ScanScope::{PerFile, Workspace}`; the old `requires_full_scan()` path is not part of the contract anymore.
-- Engine отвечает за таймауты, параллелизм, кэш, suppress, агрегацию.
-- Product path may execute shipped built-in providers behind an isolated subprocess boundary for truthful hard timeouts; legacy arbitrary injected providers may still run in-process.
+- Engine executes providers through explicit backends, not direct raw provider injection.
+- Product path executes shipped built-in providers behind an isolated subprocess boundary for truthful hard timeouts.
 
 ## 8) Workspace (MVP → later)
 
@@ -146,20 +146,22 @@ MVP стартует с **6–7 крейтов**:
 - **Без proc-macro на MVP**: используем `declare_rule!` (macro_rules) для метадаты + `impl Rule`.
 - Причина: compile time и dependency surface (syn/quote/proc-macro2) не окупаются на старте.
 
-## 11) `RuleProvider` trait: сразу “полный” с default-методами
+## 11) `RuleProvider` trait: result-only rule authoring contract
 
-Добавление методов в trait позже = breaking change, поэтому фиксируем extension points заранее (все с дефолтами):
+`RuleProvider` фиксируется как rule-authoring contract:
 
+- `check_result()` обязателен
+- `check_workspace_result()` остаётся default-empty для non-workspace providers
 - `timeout()`
 - `capabilities()`
 - `supports_fix()` + `fix()`
-- `on_start()` / `on_finish()`
-- additive result-style execution hooks for findings plus non-fatal provider execution errors
+
+Engine execution model вынесен отдельно в backend layer; lifecycle hooks больше не используются.
 
 ### Timeout model (current)
 
 - **Shipped built-in providers** use isolated execution in product/runtime composition and can be terminated on timeout.
-- **Arbitrary injected `Arc<dyn RuleProvider>`** remain a legacy in-process path and therefore only have truthful soft-budget accounting today.
+- **In-process execution** remains available only through an explicit backend wrapper, not as hidden raw provider injection.
 
 ### Native rules registration (зафиксировано)
 

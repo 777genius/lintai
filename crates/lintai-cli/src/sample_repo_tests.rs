@@ -32,7 +32,7 @@ fn load_case(case_dir: &Path) -> CaseManifest {
 
 fn harness() -> WorkspaceHarness {
     WorkspaceHarness::builder()
-        .with_providers(product_provider_set())
+        .with_backends(product_provider_set())
         .build()
 }
 

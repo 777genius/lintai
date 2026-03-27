@@ -22,7 +22,7 @@ No remaining `Required For v0.1` gaps.
 - JSON output now uses `schema_version` instead of a loose `"v0"` string.
 - Cursor Plugin scope now includes manifests, hooks config, hook scripts, command docs, and agent docs.
 - Capabilities/policy now exists as a real config contract and a working mismatch rule layer.
-- Shipped built-in providers now run behind an isolated execution boundary with real hard timeout enforcement; arbitrary injected providers remain a legacy in-process path.
+- Shipped built-in providers now run behind an isolated execution boundary with real hard timeout enforcement, while explicit in-process backends remain available for internal rule/testing execution.
 - `FileTypeDetector` remains an orchestration concern, but routing rules are declared in adapters and can be overridden through config.
 - Explain-config now reports detection and policy state, not just severity overrides.
 - Findings now carry typed structured evidence and rules carry explicit `RuleTier`.

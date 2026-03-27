@@ -338,12 +338,10 @@ fn load_validated_workspace(
 fn build_engine(workspace: &lintai_engine::WorkspaceConfig) -> Result<Engine, String> {
     let suppressions = FileSuppressions::load(&workspace.engine_config)
         .map_err(|error| format!("suppress loading failed: {error}"))?;
-    let mut builder = Engine::builder()
+    let builder = Engine::builder()
         .with_config(workspace.engine_config.clone())
-        .with_suppressions(std::sync::Arc::new(suppressions));
-    for provider in product_provider_set() {
-        builder = builder.with_provider(provider);
-    }
+        .with_suppressions(std::sync::Arc::new(suppressions))
+        .with_backends(product_provider_set());
 
     Ok(builder.build())
 }

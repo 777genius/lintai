@@ -37,7 +37,7 @@ expected_skipped_files = 0
 [[expected_findings]]
 rule_code = "SEC201"
 stable_key = "optional canonical stable key string"
-tier = "stable" # stable | preview | deprecated
+tier = "stable" # stable | preview
 min_evidence_count = 2
 
 expected_absent_rules = ["SEC900", "SEC901"]

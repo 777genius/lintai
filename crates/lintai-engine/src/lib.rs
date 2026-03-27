@@ -24,8 +24,9 @@ pub use detector::{DetectedArtifact, DetectionRule, FileTypeDetector};
 pub use engine::Engine;
 pub use error::EngineError;
 pub use normalize::normalize_path_string;
+pub use provider::{InProcessProviderBackend, ProviderBackend};
 pub use summary::{
-    DiagnosticSeverity, ProviderExecutionPhase, RuntimeErrorKind, ScanDiagnostic,
-    ScanRuntimeError, ScanSummary,
+    DiagnosticSeverity, ProviderExecutionPhase, RuntimeErrorKind, ScanDiagnostic, ScanRuntimeError,
+    ScanSummary,
 };
 pub use suppress::{FileSuppressions, NoopSuppressionMatcher, SuppressionMatcher};

@@ -1,7 +1,7 @@
 use lintai_api::{
     ArtifactKind, CapabilityConflictMode, CapabilityProfile, Evidence, EvidenceKind,
-    ExecCapability, Finding, Location, NetworkCapability, RuleMetadata, RuleProvider, RuleTier,
-    ScanContext, ScanScope, Span, WorkspaceArtifact, WorkspaceScanContext, declare_rule,
+    ExecCapability, Finding, Location, NetworkCapability, ProviderScanResult, RuleMetadata,
+    RuleProvider, RuleTier, ScanScope, Span, WorkspaceArtifact, WorkspaceScanContext, declare_rule,
 };
 
 use crate::helpers::workspace_json_semantics;
@@ -56,17 +56,17 @@ impl RuleProvider for PolicyMismatchProvider {
         &POLICY_RULES
     }
 
-    fn check(&self, _ctx: &ScanContext) -> Vec<Finding> {
-        Vec::new()
+    fn check_result(&self, _ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(Vec::new(), Vec::new())
     }
 
     fn scan_scope(&self) -> ScanScope {
         ScanScope::Workspace
     }
 
-    fn check_workspace(&self, ctx: &WorkspaceScanContext) -> Vec<Finding> {
+    fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
         let Some(project_capabilities) = ctx.project_capabilities.as_ref() else {
-            return Vec::new();
+            return ProviderScanResult::new(Vec::new(), Vec::new());
         };
 
         let mut findings = Vec::new();
@@ -101,7 +101,7 @@ impl RuleProvider for PolicyMismatchProvider {
             }
         }
 
-        findings
+        ProviderScanResult::new(findings, Vec::new())
     }
 }
 
@@ -187,8 +187,7 @@ fn capabilities_conflict(project: &CapabilityProfile, skill: &CapabilityProfile)
     if exec_forbidden(project) && !matches!(skill.exec, None | Some(ExecCapability::None)) {
         return true;
     }
-    if network_forbidden(project)
-        && !matches!(skill.network, None | Some(NetworkCapability::None))
+    if network_forbidden(project) && !matches!(skill.network, None | Some(NetworkCapability::None))
     {
         return true;
     }
@@ -206,16 +205,29 @@ fn observed_location(ctx: &WorkspaceArtifact) -> Option<Location> {
 
     if matches!(
         ctx.artifact.kind,
-        ArtifactKind::McpConfig | ArtifactKind::CursorPluginManifest | ArtifactKind::CursorPluginHooks
+        ArtifactKind::McpConfig
+            | ArtifactKind::CursorPluginManifest
+            | ArtifactKind::CursorPluginHooks
     ) {
         return first_match_location(
             &ctx.artifact.normalized_path,
             &ctx.content,
-            &["http://", "https://", "\"command\"", "\"args\"", "\"sh\"", "\"bash\""],
+            &[
+                "http://",
+                "https://",
+                "\"command\"",
+                "\"args\"",
+                "\"sh\"",
+                "\"bash\"",
+            ],
         );
     }
 
-    first_match_location(&ctx.artifact.normalized_path, &ctx.content, &["capabilities"])
+    first_match_location(
+        &ctx.artifact.normalized_path,
+        &ctx.content,
+        &["capabilities"],
+    )
 }
 
 fn first_match_location(
@@ -223,7 +235,10 @@ fn first_match_location(
     content: &str,
     needles: &[&str],
 ) -> Option<Location> {
-    let start = needles.iter().filter_map(|needle| content.find(needle)).min()?;
+    let start = needles
+        .iter()
+        .filter_map(|needle| content.find(needle))
+        .min()?;
     let end = needles
         .iter()
         .filter_map(|needle| content.find(needle).map(|offset| offset + needle.len()))

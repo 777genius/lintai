@@ -1,7 +1,5 @@
 use std::io;
 
-use lintai_api::ProviderError;
-
 use crate::ConfigError;
 
 #[derive(Debug)]
@@ -9,7 +7,6 @@ pub enum EngineError {
     Io(io::Error),
     Config(ConfigError),
     ProviderContract(String),
-    ProviderLifecycle(ProviderError),
 }
 
 impl std::fmt::Display for EngineError {
@@ -18,13 +15,6 @@ impl std::fmt::Display for EngineError {
             Self::Io(error) => write!(f, "{error}"),
             Self::Config(error) => write!(f, "{error}"),
             Self::ProviderContract(message) => write!(f, "{message}"),
-            Self::ProviderLifecycle(error) => {
-                write!(
-                    f,
-                    "provider {} failed: {}",
-                    error.provider_id, error.message
-                )
-            }
         }
     }
 }

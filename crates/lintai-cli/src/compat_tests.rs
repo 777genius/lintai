@@ -1,6 +1,6 @@
-use std::path::PathBuf;
 use lintai_engine::{explain_file_config, load_workspace_config};
 use lintai_testing::{OutputHarness, WorkspaceHarness, discover_case_dirs};
+use std::path::PathBuf;
 
 use crate::app::format_explain_config;
 use crate::builtin_providers::product_provider_set;
@@ -23,7 +23,7 @@ fn compat_case(case_name: &str) -> PathBuf {
 
 fn harness() -> WorkspaceHarness {
     WorkspaceHarness::builder()
-        .with_providers(product_provider_set())
+        .with_backends(product_provider_set())
         .build()
 }
 
@@ -122,7 +122,13 @@ fn format_explain_config_preserves_current_line_order() {
     let formatted = format_explain_config(workspace.source_path.as_deref(), &resolved);
 
     let lines = formatted.lines().collect::<Vec<_>>();
-    assert_eq!(lines[0], format!("config_source={}", workspace.source_path.as_ref().unwrap().display()));
+    assert_eq!(
+        lines[0],
+        format!(
+            "config_source={}",
+            workspace.source_path.as_ref().unwrap().display()
+        )
+    );
     assert_eq!(lines[1], "normalized_path=custom/agent.md");
     assert!(lines[2].starts_with("included="));
     assert!(lines[3].starts_with("detected_kind="));

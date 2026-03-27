@@ -3,7 +3,7 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{SystemTime, UNIX_EPOCH};
 
-use lintai_api::RuleProvider;
+use lintai_engine::{InProcessProviderBackend, ProviderBackend};
 use lintai_testing::{CaseManifest, WorkspaceHarness};
 
 use crate::{AiSecurityProvider, PolicyMismatchProvider};
@@ -12,10 +12,14 @@ mod benign;
 mod edge;
 mod malicious;
 
-fn provider_set() -> Vec<Arc<dyn RuleProvider>> {
+fn provider_set() -> Vec<Arc<dyn ProviderBackend>> {
     vec![
-        Arc::new(AiSecurityProvider::default()),
-        Arc::new(PolicyMismatchProvider),
+        Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))),
+        Arc::new(InProcessProviderBackend::new(Arc::new(
+            PolicyMismatchProvider,
+        ))),
     ]
 }
 
@@ -40,7 +44,7 @@ fn load_case(case_dir: &Path) -> CaseManifest {
 
 fn harness() -> WorkspaceHarness {
     WorkspaceHarness::builder()
-        .with_providers(provider_set())
+        .with_backends(provider_set())
         .build()
 }
 

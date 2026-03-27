@@ -1,6 +1,6 @@
 # lintai Public Compatibility Policy
 
-This file defines the compatibility promises for the publishable `v0.1` core.
+This file defines the compatibility promises for the publishable `v0.1` core after the pre-release cleanup phase.
 
 ## Stable Surface
 
@@ -11,10 +11,10 @@ This file defines the compatibility promises for the publishable `v0.1` core.
 
 ## `lintai-api`
 
-- Changes are additive-only during the `v0.1` line.
+- Before the first release, pre-release cleanup may still remove legacy shapes that have not shipped.
+- After release, changes are additive-only during the `v0.1` line.
 - `RuleProvider`, `Finding`, `StableKey`, `ScanContext`, `WorkspaceScanContext`, and `RuleMetadata` do not change shape without a new charter decision.
-- `RuleProvider` may gain additive default methods during the `v0.1` line when they preserve backward compatibility for existing providers.
-- Shipped built-in providers may execute behind an internal isolated runtime boundary; arbitrary `RuleProvider` injections remain compatibility-supported but are not promised the same execution model.
+- Shipped built-in providers execute behind an internal isolated runtime boundary.
 - Rule codes are stable after release.
 
 ## JSON Output
