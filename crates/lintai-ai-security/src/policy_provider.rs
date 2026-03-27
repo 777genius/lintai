@@ -1,7 +1,7 @@
 use lintai_api::{
     ArtifactKind, CapabilityConflictMode, CapabilityProfile, Evidence, EvidenceKind,
     ExecCapability, Finding, Location, NetworkCapability, ProviderScanResult, RuleMetadata,
-    RuleProvider, RuleTier, ScanScope, Span, WorkspaceArtifact, WorkspaceScanContext, declare_rule,
+    RuleProvider, RuleTier, Span, WorkspaceArtifact, WorkspaceScanContext, declare_rule,
 };
 
 use crate::helpers::workspace_json_semantics;
@@ -58,10 +58,6 @@ impl RuleProvider for PolicyMismatchProvider {
 
     fn check_result(&self, _ctx: &lintai_api::ScanContext) -> ProviderScanResult {
         ProviderScanResult::new(Vec::new(), Vec::new())
-    }
-
-    fn scan_scope(&self) -> ScanScope {
-        ScanScope::Workspace
     }
 
     fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {

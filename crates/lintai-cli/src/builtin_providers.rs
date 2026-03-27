@@ -52,6 +52,15 @@ impl BuiltInProviderKind {
             Self::TestPanic | Self::TestPartialError => Duration::from_secs(30),
         }
     }
+
+    fn scope(self) -> ScanScope {
+        match self {
+            Self::AiSecurity => ScanScope::PerFile,
+            Self::PolicyMismatch => ScanScope::Workspace,
+            #[cfg(debug_assertions)]
+            Self::TestTimeout | Self::TestPanic | Self::TestPartialError => ScanScope::PerFile,
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
@@ -130,7 +139,7 @@ impl IsolatedBuiltInBackend {
             provider_id: provider.id().to_owned(),
             rules: provider.rules().to_vec().into_boxed_slice(),
             timeout: kind.timeout(),
-            scope: provider.scan_scope(),
+            scope: kind.scope(),
         }
     }
 

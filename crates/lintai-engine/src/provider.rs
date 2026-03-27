@@ -29,16 +29,33 @@ pub trait ProviderBackend: Send + Sync {
 
 pub struct InProcessProviderBackend {
     provider: Arc<dyn RuleProvider>,
+    scope: ScanScope,
     timeout: Duration,
 }
 
 impl InProcessProviderBackend {
     pub fn new(provider: Arc<dyn RuleProvider>) -> Self {
-        Self::with_timeout(provider, Duration::from_secs(30))
+        Self::with_scope_and_timeout(provider, ScanScope::PerFile, Duration::from_secs(30))
+    }
+
+    pub fn with_scope(provider: Arc<dyn RuleProvider>, scope: ScanScope) -> Self {
+        Self::with_scope_and_timeout(provider, scope, Duration::from_secs(30))
     }
 
     pub fn with_timeout(provider: Arc<dyn RuleProvider>, timeout: Duration) -> Self {
-        Self { provider, timeout }
+        Self::with_scope_and_timeout(provider, ScanScope::PerFile, timeout)
+    }
+
+    pub fn with_scope_and_timeout(
+        provider: Arc<dyn RuleProvider>,
+        scope: ScanScope,
+        timeout: Duration,
+    ) -> Self {
+        Self {
+            provider,
+            scope,
+            timeout,
+        }
     }
 }
 
@@ -56,7 +73,7 @@ impl ProviderBackend for InProcessProviderBackend {
     }
 
     fn scan_scope(&self) -> ScanScope {
-        self.provider.scan_scope()
+        self.scope
     }
 
     fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {

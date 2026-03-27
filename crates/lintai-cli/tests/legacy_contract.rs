@@ -86,8 +86,10 @@ fn provider_capabilities_and_ruleprovider_execution_knobs_are_absent() {
     assert!(!api_lib.contains("ProviderCapabilities"));
     assert!(!api_rule.contains("fn timeout(&self)"));
     assert!(!api_rule.contains("fn capabilities(&self)"));
+    assert!(!api_rule.contains("fn scan_scope(&self)"));
     assert!(!engine_provider.contains("provider.timeout()"));
     assert!(!engine_provider.contains("provider.capabilities()"));
+    assert!(!engine_provider.contains("provider.scan_scope()"));
 }
 
 #[test]

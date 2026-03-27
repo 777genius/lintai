@@ -152,11 +152,10 @@ MVP стартует с **6–7 крейтов**:
 
 - `check_result()` обязателен
 - `check_workspace_result()` остаётся default-empty для non-workspace providers
-- `scan_scope()` остаётся частью rule logic
 - remediation lives on `Finding.fix` / `Suggestion.fix`, not on a provider fix hook
 
 Engine execution model вынесен отдельно в backend layer; lifecycle hooks больше не используются.
-Timeout policy belongs to `ProviderBackend`, not to `RuleProvider`.
+Execution policy belongs to `ProviderBackend`, not to `RuleProvider`, including timeout and scan scope.
 
 ### Timeout model (current)
 

@@ -16,6 +16,13 @@ fn backend(provider: impl lintai_api::RuleProvider + 'static) -> Arc<dyn Provide
     Arc::new(InProcessProviderBackend::new(Arc::new(provider)))
 }
 
+fn backend_with_scope(
+    provider: impl lintai_api::RuleProvider + 'static,
+    scope: ScanScope,
+) -> Arc<dyn ProviderBackend> {
+    Arc::new(InProcessProviderBackend::with_scope(Arc::new(provider), scope))
+}
+
 fn backend_with_timeout(
     provider: impl lintai_api::RuleProvider + 'static,
     timeout: Duration,
@@ -174,10 +181,6 @@ impl lintai_api::RuleProvider for WorkspaceFindingProvider {
         ProviderScanResult::new(Vec::new(), Vec::new())
     }
 
-    fn scan_scope(&self) -> ScanScope {
-        ScanScope::Workspace
-    }
-
     fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
         let Some(first) = ctx.artifacts.first() else {
             return ProviderScanResult::new(Vec::new(), Vec::new());
@@ -321,10 +324,6 @@ impl lintai_api::RuleProvider for WorkspaceLineColumnProvider {
         ProviderScanResult::new(Vec::new(), Vec::new())
     }
 
-    fn scan_scope(&self) -> ScanScope {
-        ScanScope::Workspace
-    }
-
     fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
         let Some(first) = ctx.artifacts.first() else {
             return ProviderScanResult::new(Vec::new(), Vec::new());
@@ -422,10 +421,6 @@ impl lintai_api::RuleProvider for WorkspaceExecutionErrorProvider {
 
     fn check_result(&self, _ctx: &lintai_api::ScanContext) -> ProviderScanResult {
         ProviderScanResult::new(Vec::new(), Vec::new())
-    }
-
-    fn scan_scope(&self) -> ScanScope {
-        ScanScope::Workspace
     }
 
     fn check_workspace_result(&self, _ctx: &WorkspaceScanContext) -> ProviderScanResult {
@@ -714,7 +709,10 @@ fn workspace_provider_emits_findings_after_parse_pass() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# title\n").unwrap();
 
     let summary = EngineBuilder::default()
-        .with_backend(backend(WorkspaceFindingProvider))
+        .with_backend(backend_with_scope(
+            WorkspaceFindingProvider,
+            ScanScope::Workspace,
+        ))
         .build()
         .scan_path(&temp_dir)
         .unwrap();
@@ -730,7 +728,10 @@ fn workspace_findings_derive_line_columns_without_rebuilding_scan_context() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# title\n").unwrap();
 
     let summary = EngineBuilder::default()
-        .with_backend(backend(WorkspaceLineColumnProvider))
+        .with_backend(backend_with_scope(
+            WorkspaceLineColumnProvider,
+            ScanScope::Workspace,
+        ))
         .build()
         .scan_path(&temp_dir)
         .unwrap();
@@ -753,7 +754,10 @@ fn suppression_hook_filters_workspace_findings() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# ok\n").unwrap();
 
     let summary = EngineBuilder::default()
-        .with_backend(backend(WorkspaceFindingProvider))
+        .with_backend(backend_with_scope(
+            WorkspaceFindingProvider,
+            ScanScope::Workspace,
+        ))
         .with_suppressions(Arc::new(RuleIdSuppressor))
         .build()
         .scan_path(&temp_dir)
@@ -775,7 +779,10 @@ fn records_workspace_provider_execution_errors() {
 
     let summary = EngineBuilder::default()
         .with_config(config)
-        .with_backend(backend(WorkspaceExecutionErrorProvider))
+        .with_backend(backend_with_scope(
+            WorkspaceExecutionErrorProvider,
+            ScanScope::Workspace,
+        ))
         .build()
         .scan_path(&temp_dir)
         .unwrap();

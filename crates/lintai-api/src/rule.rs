@@ -102,10 +102,6 @@ pub trait RuleProvider: Send + Sync {
     fn rules(&self) -> &[RuleMetadata];
     fn check_result(&self, ctx: &ScanContext) -> ProviderScanResult;
 
-    fn scan_scope(&self) -> ScanScope {
-        ScanScope::PerFile
-    }
-
     fn check_workspace_result(&self, _ctx: &WorkspaceScanContext) -> ProviderScanResult {
         ProviderScanResult::new(Vec::new(), Vec::new())
     }

@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use lintai_api::{ArtifactKind, Severity, SourceFormat};
+use lintai_api::{ArtifactKind, ScanScope, Severity, SourceFormat};
 use lintai_engine::{
     EngineBuilder, FileSuppressions, InProcessProviderBackend, load_workspace_config,
 };
@@ -574,9 +574,10 @@ capability_conflicts = "deny"
         .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
-            PolicyMismatchProvider,
-        ))))
+        .with_backend(Arc::new(InProcessProviderBackend::with_scope(
+            Arc::new(PolicyMismatchProvider),
+            ScanScope::Workspace,
+        )))
         .build()
         .scan_path(&temp_dir)
         .unwrap();
@@ -644,9 +645,10 @@ capabilities:
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
-            PolicyMismatchProvider,
-        ))))
+        .with_backend(Arc::new(InProcessProviderBackend::with_scope(
+            Arc::new(PolicyMismatchProvider),
+            ScanScope::Workspace,
+        )))
         .build()
         .scan_path(&temp_dir)
         .unwrap();
