@@ -1,3 +1,5 @@
+#[doc(hidden)]
+pub mod artifact_view;
 mod builder;
 mod config;
 mod detector;
@@ -23,6 +25,7 @@ pub use engine::Engine;
 pub use error::EngineError;
 pub use normalize::normalize_path_string;
 pub use summary::{
-    DiagnosticSeverity, RuntimeErrorKind, ScanDiagnostic, ScanRuntimeError, ScanSummary,
+    DiagnosticSeverity, ProviderExecutionPhase, RuntimeErrorKind, ScanDiagnostic,
+    ScanRuntimeError, ScanSummary,
 };
 pub use suppress::{FileSuppressions, NoopSuppressionMatcher, SuppressionMatcher};

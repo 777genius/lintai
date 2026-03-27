@@ -86,10 +86,21 @@ pub fn format_text(report: &ReportEnvelope<'_>) -> String {
     }
 
     for error in report.runtime_errors {
+        let provider_fragment = error
+            .provider_id
+            .as_deref()
+            .map(|provider_id| format!(" provider={provider_id}"))
+            .unwrap_or_default();
+        let phase_fragment = error
+            .phase
+            .map(|phase| format!(" phase={}", provider_execution_phase_label(phase)))
+            .unwrap_or_default();
         output.push_str(&format!(
-            "error [{}] {} {}\n",
+            "error [{}] {}{}{} {}\n",
             error_kind_label(error.kind),
             error.normalized_path,
+            provider_fragment,
+            phase_fragment,
             error.message
         ));
     }
@@ -191,7 +202,15 @@ fn error_kind_label(kind: RuntimeErrorKind) -> &'static str {
         RuntimeErrorKind::Read => "read",
         RuntimeErrorKind::InvalidUtf8 => "invalid_utf8",
         RuntimeErrorKind::Parse => "parse",
+        RuntimeErrorKind::ProviderExecution => "provider_execution",
         RuntimeErrorKind::ProviderTimeout => "provider_timeout",
+    }
+}
+
+fn provider_execution_phase_label(phase: lintai_engine::ProviderExecutionPhase) -> &'static str {
+    match phase {
+        lintai_engine::ProviderExecutionPhase::File => "file",
+        lintai_engine::ProviderExecutionPhase::Workspace => "workspace",
     }
 }
 
@@ -339,5 +358,34 @@ mod tests {
         assert!(json.contains("\"suggestions\""));
         assert!(json.contains("\"replacement\": \"https://\""));
         assert!(json.contains("\"applicability\": \"suggestion\""));
+    }
+
+    #[test]
+    fn text_output_renders_provider_execution_metadata() {
+        let runtime_error = lintai_engine::ScanRuntimeError {
+            normalized_path: "SKILL.md".to_owned(),
+            kind: lintai_engine::RuntimeErrorKind::ProviderExecution,
+            provider_id: Some("demo-provider".to_owned()),
+            phase: Some(lintai_engine::ProviderExecutionPhase::File),
+            message: "provider execution failed".to_owned(),
+        };
+        let report = super::ReportEnvelope {
+            schema_version: 1,
+            tool: ToolMetadata { name: "lintai" },
+            config_source: None,
+            project_root: None,
+            stats: ReportStats {
+                scanned_files: 1,
+                skipped_files: 0,
+            },
+            findings: &[],
+            diagnostics: &[],
+            runtime_errors: std::slice::from_ref(&runtime_error),
+        };
+
+        let text = super::format_text(&report);
+        assert!(text.contains("error [provider_execution] SKILL.md"));
+        assert!(text.contains("provider=demo-provider"));
+        assert!(text.contains("phase=file"));
     }
 }

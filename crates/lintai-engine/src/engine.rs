@@ -8,13 +8,16 @@ use lintai_api::{
     WorkspaceScanContext,
 };
 
+use crate::artifact_view::ArtifactContextRef;
 use crate::detector::FileTypeDetector;
 use crate::discovery::{collect_files, scan_base};
 use crate::normalize::{
     looks_binary, normalize_path, normalize_path_string, normalize_text, populate_line_columns,
 };
 use crate::provider::ProviderCatalog;
-use crate::summary::{RuntimeErrorKind, ScanRuntimeError, ScanSummary};
+use crate::summary::{
+    ProviderExecutionPhase, RuntimeErrorKind, ScanRuntimeError, ScanSummary,
+};
 use crate::workspace_index::{WorkspaceEntry, WorkspaceIndex, full_artifact_location};
 use crate::{EngineConfig, EngineError, ResolvedFileConfig, SuppressionMatcher};
 
@@ -77,7 +80,7 @@ impl Engine {
             }
         }
 
-        self.run_workspace_providers(providers, &scanned_artifacts, &mut summary);
+        self.run_workspace_providers(providers, scanned_artifacts, &mut summary);
         Ok(summary)
     }
 
@@ -101,6 +104,8 @@ impl Engine {
                         summary.runtime_errors.push(ScanRuntimeError {
                             normalized_path,
                             kind: RuntimeErrorKind::Read,
+                            provider_id: None,
+                            phase: None,
                             message: format!(
                                 "path resolves outside project root {}",
                                 project_root.display()
@@ -113,6 +118,8 @@ impl Engine {
                     summary.runtime_errors.push(ScanRuntimeError {
                         normalized_path,
                         kind: RuntimeErrorKind::Read,
+                        provider_id: None,
+                        phase: None,
                         message: error.to_string(),
                     });
                     return None;
@@ -130,6 +137,8 @@ impl Engine {
                 summary.runtime_errors.push(ScanRuntimeError {
                     normalized_path,
                     kind: RuntimeErrorKind::Read,
+                    provider_id: None,
+                    phase: None,
                     message: error.to_string(),
                 });
                 return None;
@@ -147,6 +156,8 @@ impl Engine {
                 summary.runtime_errors.push(ScanRuntimeError {
                     normalized_path,
                     kind: RuntimeErrorKind::InvalidUtf8,
+                    provider_id: None,
+                    phase: None,
                     message: error.to_string(),
                 });
                 return None;
@@ -160,6 +171,8 @@ impl Engine {
                 summary.runtime_errors.push(ScanRuntimeError {
                     normalized_path,
                     kind: RuntimeErrorKind::Parse,
+                    provider_id: None,
+                    phase: None,
                     message: error.message,
                 });
                 return None;
@@ -183,7 +196,7 @@ impl Engine {
     ) {
         for provider in providers.per_file() {
             let started = Instant::now();
-            let findings = provider.provider().check(&scanned.context);
+            let result = provider.provider().check_result(&scanned.context);
             self.record_budget_overrun(
                 &scanned.context.artifact.normalized_path,
                 provider.id(),
@@ -191,11 +204,19 @@ impl Engine {
                 started.elapsed(),
                 summary,
             );
-            for finding in findings {
+            self.record_provider_execution_errors(
+                &scanned.context.artifact.normalized_path,
+                provider.id(),
+                ProviderExecutionPhase::File,
+                result.errors,
+                summary,
+            );
+            for finding in result.findings {
                 if let Some(finding) =
                     provider.prepare_finding(&scanned.context, finding, &mut summary.diagnostics)
                 {
-                    self.collect_finding(&scanned.context, &scanned.file_config, finding, summary);
+                    let artifact_view = ArtifactContextRef::from_scan_context(&scanned.context);
+                    self.collect_finding(&artifact_view, &scanned.file_config, finding, summary);
                 }
             }
         }
@@ -204,40 +225,44 @@ impl Engine {
     fn run_workspace_providers(
         &self,
         providers: &ProviderCatalog<'_>,
-        scanned_artifacts: &[ScannedArtifact],
+        scanned_artifacts: Vec<ScannedArtifact>,
         summary: &mut ScanSummary,
     ) {
-        let workspace_index = WorkspaceIndex::new(
-            scanned_artifacts
-                .iter()
-                .map(|scanned| WorkspaceEntry {
-                    artifact: WorkspaceArtifact::new(
-                        scanned.context.artifact.clone(),
-                        scanned.context.content.clone(),
-                        scanned.context.document.clone(),
-                        scanned.context.semantics.clone(),
-                    )
-                    .with_location_hint(full_artifact_location(
-                        scanned.context.artifact.normalized_path.clone(),
-                        &scanned.context.content,
-                    )),
-                    file_config: scanned.file_config.clone(),
-                })
-                .collect(),
-        );
+        let mut workspace_artifacts = Vec::with_capacity(scanned_artifacts.len());
+        let mut workspace_entries = Vec::with_capacity(scanned_artifacts.len());
+        for scanned in scanned_artifacts {
+            let normalized_path = scanned.context.artifact.normalized_path.clone();
+            let location_hint = full_artifact_location(normalized_path.clone(), &scanned.context.content);
+            let artifact_index = workspace_artifacts.len();
+            workspace_artifacts.push(
+                WorkspaceArtifact::new(
+                    scanned.context.artifact,
+                    scanned.context.content,
+                    scanned.context.document,
+                    scanned.context.semantics,
+                )
+                .with_location_hint(location_hint),
+            );
+            workspace_entries.push(WorkspaceEntry {
+                artifact_index,
+                normalized_path,
+                file_config: scanned.file_config,
+            });
+        }
+        let workspace_index = WorkspaceIndex::new(workspace_entries);
         let workspace = WorkspaceScanContext::new(
             self.config
                 .project_root
                 .as_ref()
                 .map(|path| normalize_path_string(path)),
-            workspace_index.artifacts(),
+            workspace_artifacts,
             self.config.capability_profile.clone(),
             self.config.capability_conflict_mode,
         );
 
         for provider in providers.workspace() {
             let started = Instant::now();
-            let findings = provider.provider().check_workspace(&workspace);
+            let result = provider.provider().check_workspace_result(&workspace);
             self.record_budget_overrun(
                 workspace.project_root.as_deref().unwrap_or("."),
                 provider.id(),
@@ -245,7 +270,14 @@ impl Engine {
                 started.elapsed(),
                 summary,
             );
-            for finding in findings {
+            self.record_provider_execution_errors(
+                workspace.project_root.as_deref().unwrap_or("."),
+                provider.id(),
+                ProviderExecutionPhase::Workspace,
+                result.errors,
+                summary,
+            );
+            for finding in result.findings {
                 let Some(scanned) = workspace_index.get(&finding.location.normalized_path) else {
                     summary.diagnostics.push(crate::ScanDiagnostic {
                         normalized_path: workspace.project_root.clone().unwrap_or_else(|| ".".to_owned()),
@@ -260,19 +292,15 @@ impl Engine {
                     continue;
                 };
 
+                let artifact = &workspace.artifacts[scanned.artifact_index];
+                let artifact_view = ArtifactContextRef::from_workspace_artifact(artifact);
                 if let Some(finding) = provider.prepare_workspace_finding(
-                    &scanned.artifact.artifact.normalized_path,
-                    &scanned.artifact.content,
+                    &artifact_view.artifact.normalized_path,
+                    artifact_view.content,
                     finding,
                     &mut summary.diagnostics,
                 ) {
-                    let context = ScanContext::new(
-                        scanned.artifact.artifact.clone(),
-                        scanned.artifact.content.clone(),
-                        scanned.artifact.document.clone(),
-                        scanned.artifact.semantics.clone(),
-                    );
-                    self.collect_finding(&context, &scanned.file_config, finding, summary);
+                    self.collect_finding(&artifact_view, &scanned.file_config, finding, summary);
                 }
             }
         }
@@ -280,12 +308,14 @@ impl Engine {
 
     fn collect_finding(
         &self,
-        context: &ScanContext,
+        context: &ArtifactContextRef<'_>,
         file_config: &ResolvedFileConfig,
         mut finding: Finding,
         summary: &mut ScanSummary,
     ) {
-        populate_line_columns(&context.content, &mut finding);
+        let _ = context.document;
+        let _ = context.semantics;
+        populate_line_columns(context.content, &mut finding);
         finding.severity =
             file_config.severity_for(&finding.rule_code, finding.category, finding.severity);
         if !self.suppressions.is_suppressed(context, &finding) {
@@ -308,11 +338,32 @@ impl Engine {
         summary.runtime_errors.push(ScanRuntimeError {
             normalized_path: normalized_path.to_owned(),
             kind: RuntimeErrorKind::ProviderTimeout,
+            provider_id: Some(provider_id.to_owned()),
+            phase: None,
             message: format!(
                 "provider `{provider_id}` exceeded its soft time budget: {:?} > {:?}",
                 elapsed, timeout
             ),
         });
+    }
+
+    fn record_provider_execution_errors(
+        &self,
+        normalized_path: &str,
+        provider_id: &str,
+        phase: ProviderExecutionPhase,
+        errors: Vec<ProviderError>,
+        summary: &mut ScanSummary,
+    ) {
+        for error in errors {
+            summary.runtime_errors.push(ScanRuntimeError {
+                normalized_path: normalized_path.to_owned(),
+                kind: RuntimeErrorKind::ProviderExecution,
+                provider_id: Some(provider_id.to_owned()),
+                phase: Some(phase),
+                message: error.message,
+            });
+        }
     }
 }
 

@@ -1,12 +1,13 @@
 use std::collections::BTreeMap;
 
-use lintai_api::{Location, Span, WorkspaceArtifact};
+use lintai_api::{Location, Span};
 
 use crate::ResolvedFileConfig;
 
 #[derive(Clone)]
 pub(crate) struct WorkspaceEntry {
-    pub(crate) artifact: WorkspaceArtifact,
+    pub(crate) artifact_index: usize,
+    pub(crate) normalized_path: String,
     pub(crate) file_config: ResolvedFileConfig,
 }
 
@@ -20,13 +21,9 @@ impl WorkspaceIndex {
         let by_path = entries
             .iter()
             .enumerate()
-            .map(|(index, entry)| (entry.artifact.artifact.normalized_path.clone(), index))
+            .map(|(index, entry)| (entry.normalized_path.clone(), index))
             .collect();
         Self { entries, by_path }
-    }
-
-    pub(crate) fn artifacts(&self) -> Vec<WorkspaceArtifact> {
-        self.entries.iter().map(|entry| entry.artifact.clone()).collect()
     }
 
     pub(crate) fn get(&self, normalized_path: &str) -> Option<&WorkspaceEntry> {

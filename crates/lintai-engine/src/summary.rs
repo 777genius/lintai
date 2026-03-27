@@ -64,6 +64,8 @@ impl ScanSummary {
             seen.insert((
                 error.normalized_path.clone(),
                 error.kind,
+                error.provider_id.clone(),
+                error.phase,
                 error.message.clone(),
             ))
         });
@@ -71,11 +73,15 @@ impl ScanSummary {
             (
                 left.normalized_path.as_str(),
                 runtime_error_rank(left.kind),
+                left.provider_id.as_deref().unwrap_or(""),
+                left.phase,
                 left.message.as_str(),
             )
                 .cmp(&(
                     right.normalized_path.as_str(),
                     runtime_error_rank(right.kind),
+                    right.provider_id.as_deref().unwrap_or(""),
+                    right.phase,
                     right.message.as_str(),
                 ))
         });
@@ -101,7 +107,18 @@ pub enum DiagnosticSeverity {
 pub struct ScanRuntimeError {
     pub normalized_path: String,
     pub kind: RuntimeErrorKind,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub provider_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub phase: Option<ProviderExecutionPhase>,
     pub message: String,
+}
+
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ProviderExecutionPhase {
+    File,
+    Workspace,
 }
 
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize)]
@@ -110,6 +127,7 @@ pub enum RuntimeErrorKind {
     Read,
     InvalidUtf8,
     Parse,
+    ProviderExecution,
     ProviderTimeout,
 }
 
@@ -158,7 +176,8 @@ fn runtime_error_rank(kind: RuntimeErrorKind) -> u8 {
         RuntimeErrorKind::Read => 0,
         RuntimeErrorKind::InvalidUtf8 => 1,
         RuntimeErrorKind::Parse => 2,
-        RuntimeErrorKind::ProviderTimeout => 3,
+        RuntimeErrorKind::ProviderExecution => 3,
+        RuntimeErrorKind::ProviderTimeout => 4,
     }
 }
 

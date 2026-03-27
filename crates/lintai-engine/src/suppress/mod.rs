@@ -5,12 +5,13 @@ use std::collections::BTreeMap;
 use std::sync::Mutex;
 
 use globset::{Glob, GlobSet, GlobSetBuilder};
-use lintai_api::{Finding, ScanContext};
+use lintai_api::Finding;
 
+use crate::artifact_view::ArtifactContextRef;
 use crate::{DiagnosticSeverity, EngineConfig, ScanDiagnostic, config::ConfigError};
 
 pub trait SuppressionMatcher: Send + Sync {
-    fn is_suppressed(&self, ctx: &ScanContext, finding: &Finding) -> bool;
+    fn is_suppressed(&self, ctx: &ArtifactContextRef<'_>, finding: &Finding) -> bool;
     fn finalize(&self) -> Vec<ScanDiagnostic> {
         Vec::new()
     }
@@ -20,7 +21,7 @@ pub trait SuppressionMatcher: Send + Sync {
 pub struct NoopSuppressionMatcher;
 
 impl SuppressionMatcher for NoopSuppressionMatcher {
-    fn is_suppressed(&self, _ctx: &ScanContext, _finding: &Finding) -> bool {
+    fn is_suppressed(&self, _ctx: &ArtifactContextRef<'_>, _finding: &Finding) -> bool {
         false
     }
 }
@@ -89,7 +90,7 @@ impl FileSuppressions {
 }
 
 impl SuppressionMatcher for FileSuppressions {
-    fn is_suppressed(&self, ctx: &ScanContext, finding: &Finding) -> bool {
+    fn is_suppressed(&self, ctx: &ArtifactContextRef<'_>, finding: &Finding) -> bool {
         for (index, entry) in self.entries.iter().enumerate() {
             if entry.rule == finding.rule_code
                 && entry.matcher.is_match(&ctx.artifact.normalized_path)

@@ -153,6 +153,7 @@ MVP стартует с **6–7 крейтов**:
 - `capabilities()`
 - `supports_fix()` + `fix()`
 - `on_start()` / `on_finish()`
+- additive result-style execution hooks for findings plus non-fatal provider execution errors
 
 ### Native rules registration (зафиксировано)
 

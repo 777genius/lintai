@@ -13,6 +13,7 @@ This file defines the compatibility promises for the publishable `v0.1` core.
 
 - Changes are additive-only during the `v0.1` line.
 - `RuleProvider`, `Finding`, `StableKey`, `ScanContext`, `WorkspaceScanContext`, and `RuleMetadata` do not change shape without a new charter decision.
+- `RuleProvider` may gain additive default methods during the `v0.1` line when they preserve backward compatibility for existing providers.
 - Rule codes are stable after release.
 
 ## JSON Output

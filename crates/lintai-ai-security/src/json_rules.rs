@@ -1,8 +1,11 @@
-use lintai_api::{ArtifactKind, Finding, RuleMetadata, ScanContext, Span};
-use serde_json::Value;
+use lintai_api::{ArtifactKind, Finding, RuleMetadata, ScanContext};
 
-use crate::helpers::{contains_dynamic_reference, find_url_userinfo_span, finding_for_region, json_semantics};
-use crate::json_locator::{JsonLocationMap, JsonPathSegment};
+use crate::helpers::{finding_for_region, json_semantics};
+use crate::json_locator::JsonLocationMap;
+use crate::matchers::{
+    first_json_credential_env_passthrough, first_json_plain_http_endpoint, first_json_shell_wrapper,
+    first_json_static_auth_exposure, first_json_trust_verification_disabled,
+};
 
 pub(crate) fn check_mcp_shell_wrapper(ctx: &ScanContext, meta: &RuleMetadata) -> Vec<Finding> {
     if ctx.artifact.kind != ArtifactKind::McpConfig {
@@ -12,15 +15,11 @@ pub(crate) fn check_mcp_shell_wrapper(ctx: &ScanContext, meta: &RuleMetadata) ->
     let Some(value) = json_semantics(ctx).map(|json| &json.value) else {
         return Vec::new();
     };
-    let Some(path) = find_shell_wrapper_path(value, &mut Vec::new()) else {
+    let Some(matched) = first_json_shell_wrapper(value) else {
         return Vec::new();
     };
     let locator = JsonLocationMap::parse(&ctx.content);
-    let span = locator
-        .as_ref()
-        .and_then(|map| map.value_span(&path))
-        .cloned()
-        .unwrap_or_else(|| Span::new(0, ctx.content.len()));
+    let span = matched.resolve_span(locator.as_ref(), ctx.content.len());
 
     vec![finding_for_region(
         meta,
@@ -43,15 +42,11 @@ pub(crate) fn check_plain_http_config(ctx: &ScanContext, meta: &RuleMetadata) ->
     let Some(value) = json_semantics(ctx).map(|json| &json.value) else {
         return Vec::new();
     };
-    let Some(path) = find_plain_http_path(value, &mut Vec::new()) else {
+    let Some(matched) = first_json_plain_http_endpoint(value) else {
         return Vec::new();
     };
     let locator = JsonLocationMap::parse(&ctx.content);
-    let span = locator
-        .as_ref()
-        .and_then(|map| map.value_span(&path))
-        .cloned()
-        .unwrap_or_else(|| Span::new(0, ctx.content.len()));
+    let span = matched.resolve_span(locator.as_ref(), ctx.content.len());
 
     vec![finding_for_region(
         meta,
@@ -72,15 +67,11 @@ pub(crate) fn check_mcp_credential_env_passthrough(
     let Some(value) = json_semantics(ctx).map(|json| &json.value) else {
         return Vec::new();
     };
-    let Some(path) = find_credential_env_passthrough_key_path(value, &mut Vec::new()) else {
+    let Some(matched) = first_json_credential_env_passthrough(value) else {
         return Vec::new();
     };
     let locator = JsonLocationMap::parse(&ctx.content);
-    let span = locator
-        .as_ref()
-        .and_then(|map| map.key_span(&path))
-        .cloned()
-        .unwrap_or_else(|| Span::new(0, ctx.content.len()));
+    let span = matched.resolve_span(locator.as_ref(), ctx.content.len());
 
     vec![finding_for_region(
         meta,
@@ -106,16 +97,11 @@ pub(crate) fn check_trust_verification_disabled_config(
     let Some(value) = json_semantics(ctx).map(|json| &json.value) else {
         return Vec::new();
     };
-    let Some(path) = find_trust_verification_disabled_path(value, &mut Vec::new()) else {
+    let Some(matched) = first_json_trust_verification_disabled(value) else {
         return Vec::new();
     };
     let locator = JsonLocationMap::parse(&ctx.content);
-    let span = locator
-        .as_ref()
-        .and_then(|map| map.value_span(&path))
-        .cloned()
-        .or_else(|| locator.as_ref().and_then(|map| map.key_span(&path)).cloned())
-        .unwrap_or_else(|| Span::new(0, ctx.content.len()));
+    let span = matched.resolve_span(locator.as_ref(), ctx.content.len());
 
     vec![finding_for_region(
         meta,
@@ -141,20 +127,11 @@ pub(crate) fn check_static_auth_exposure_config(
     let Some(value) = json_semantics(ctx).map(|json| &json.value) else {
         return Vec::new();
     };
-    let Some((path, relative_span)) = find_static_auth_exposure_path(value, &mut Vec::new()) else {
+    let Some(matched) = first_json_static_auth_exposure(value) else {
         return Vec::new();
     };
     let locator = JsonLocationMap::parse(&ctx.content);
-    let span = locator
-        .as_ref()
-        .and_then(|map| map.value_span(&path))
-        .map(|value_span| {
-            Span::new(
-                value_span.start_byte + relative_span.start_byte,
-                value_span.start_byte + relative_span.end_byte,
-            )
-        })
-        .unwrap_or_else(|| Span::new(0, ctx.content.len()));
+    let span = matched.resolve_span(locator.as_ref(), ctx.content.len());
 
     vec![finding_for_region(
         meta,
@@ -162,236 +139,4 @@ pub(crate) fn check_static_auth_exposure_config(
         &span,
         "configuration embeds static authentication material in a connection or auth value",
     )]
-}
-
-fn find_shell_wrapper_path(
-    value: &Value,
-    path: &mut Vec<JsonPathSegment>,
-) -> Option<Vec<JsonPathSegment>> {
-    match value {
-        Value::Object(map) => {
-            let command = map
-                .get("command")
-                .and_then(Value::as_str)
-                .unwrap_or_default();
-            let args = map
-                .get("args")
-                .and_then(Value::as_array)
-                .map(|items| items.iter().filter_map(Value::as_str).collect::<Vec<_>>())
-                .unwrap_or_default();
-
-            if (command == "sh" || command == "bash") && args.contains(&"-c") {
-                let mut command_path = path.clone();
-                command_path.push(JsonPathSegment::Key("command".to_owned()));
-                return Some(command_path);
-            }
-
-            for (key, nested) in map {
-                path.push(JsonPathSegment::Key(key.clone()));
-                if let Some(found) = find_shell_wrapper_path(nested, path) {
-                    path.pop();
-                    return Some(found);
-                }
-                path.pop();
-            }
-
-            None
-        }
-        Value::Array(items) => {
-            for (index, nested) in items.iter().enumerate() {
-                path.push(JsonPathSegment::Index(index));
-                if let Some(found) = find_shell_wrapper_path(nested, path) {
-                    path.pop();
-                    return Some(found);
-                }
-                path.pop();
-            }
-            None
-        }
-        _ => None,
-    }
-}
-
-fn find_plain_http_path(
-    value: &Value,
-    path: &mut Vec<JsonPathSegment>,
-) -> Option<Vec<JsonPathSegment>> {
-    match value {
-        Value::String(text) => text.starts_with("http://").then(|| path.clone()),
-        Value::Array(items) => {
-            for (index, nested) in items.iter().enumerate() {
-                path.push(JsonPathSegment::Index(index));
-                if let Some(found) = find_plain_http_path(nested, path) {
-                    path.pop();
-                    return Some(found);
-                }
-                path.pop();
-            }
-            None
-        }
-        Value::Object(map) => {
-            for (key, nested) in map {
-                path.push(JsonPathSegment::Key(key.clone()));
-                if let Some(found) = find_plain_http_path(nested, path) {
-                    path.pop();
-                    return Some(found);
-                }
-                path.pop();
-            }
-            None
-        }
-        _ => None,
-    }
-}
-
-fn find_credential_env_passthrough_key_path(
-    value: &Value,
-    path: &mut Vec<JsonPathSegment>,
-) -> Option<Vec<JsonPathSegment>> {
-    const SECRET_ENV_KEYS: &[&str] = &[
-        "OPENAI_API_KEY",
-        "ANTHROPIC_API_KEY",
-        "AWS_SECRET_ACCESS_KEY",
-        "GITHUB_TOKEN",
-        "AUTHORIZATION",
-    ];
-
-    match value {
-        Value::Object(map) => {
-            for (key, nested) in map {
-                let lowered_key = key.to_lowercase();
-                if lowered_key == "env" || lowered_key == "environment" {
-                    if let Some(env_map) = nested.as_object() {
-                        for env_key in env_map.keys() {
-                            if SECRET_ENV_KEYS
-                                .iter()
-                                .any(|secret| env_key.eq_ignore_ascii_case(secret))
-                            {
-                                let mut key_path = path.clone();
-                                key_path.push(JsonPathSegment::Key(key.clone()));
-                                key_path.push(JsonPathSegment::Key(env_key.clone()));
-                                return Some(key_path);
-                            }
-                        }
-                    }
-                }
-
-                path.push(JsonPathSegment::Key(key.clone()));
-                if let Some(found) = find_credential_env_passthrough_key_path(nested, path) {
-                    path.pop();
-                    return Some(found);
-                }
-                path.pop();
-            }
-            None
-        }
-        Value::Array(items) => {
-            for (index, nested) in items.iter().enumerate() {
-                path.push(JsonPathSegment::Index(index));
-                if let Some(found) = find_credential_env_passthrough_key_path(nested, path) {
-                    path.pop();
-                    return Some(found);
-                }
-                path.pop();
-            }
-            None
-        }
-        _ => None,
-    }
-}
-
-fn find_trust_verification_disabled_path(
-    value: &Value,
-    path: &mut Vec<JsonPathSegment>,
-) -> Option<Vec<JsonPathSegment>> {
-    match value {
-        Value::Object(map) => {
-            for (key, nested) in map {
-                let is_disabled = match (key.as_str(), nested) {
-                    ("strictSSL" | "verifyTLS" | "rejectUnauthorized", Value::Bool(false)) => true,
-                    ("insecureSkipVerify", Value::Bool(true)) => true,
-                    _ => false,
-                };
-                if is_disabled {
-                    let mut key_path = path.clone();
-                    key_path.push(JsonPathSegment::Key(key.clone()));
-                    return Some(key_path);
-                }
-
-                path.push(JsonPathSegment::Key(key.clone()));
-                if let Some(found) = find_trust_verification_disabled_path(nested, path) {
-                    path.pop();
-                    return Some(found);
-                }
-                path.pop();
-            }
-            None
-        }
-        Value::Array(items) => {
-            for (index, nested) in items.iter().enumerate() {
-                path.push(JsonPathSegment::Index(index));
-                if let Some(found) = find_trust_verification_disabled_path(nested, path) {
-                    path.pop();
-                    return Some(found);
-                }
-                path.pop();
-            }
-            None
-        }
-        _ => None,
-    }
-}
-
-fn find_static_auth_exposure_path(
-    value: &Value,
-    path: &mut Vec<JsonPathSegment>,
-) -> Option<(Vec<JsonPathSegment>, Span)> {
-    match value {
-        Value::Object(map) => {
-            for (key, nested) in map {
-                if key.eq_ignore_ascii_case("authorization") {
-                    if let Some(text) = nested.as_str() {
-                        if let Some(relative_span) = find_static_authorization_value_span(text) {
-                            let mut found_path = path.clone();
-                            found_path.push(JsonPathSegment::Key(key.clone()));
-                            return Some((found_path, relative_span));
-                        }
-                    }
-                }
-
-                path.push(JsonPathSegment::Key(key.clone()));
-                if let Some(found) = find_static_auth_exposure_path(nested, path) {
-                    path.pop();
-                    return Some(found);
-                }
-                path.pop();
-            }
-            None
-        }
-        Value::Array(items) => {
-            for (index, nested) in items.iter().enumerate() {
-                path.push(JsonPathSegment::Index(index));
-                if let Some(found) = find_static_auth_exposure_path(nested, path) {
-                    path.pop();
-                    return Some(found);
-                }
-                path.pop();
-            }
-            None
-        }
-        Value::String(text) => find_url_userinfo_span(text).map(|relative_span| (path.clone(), relative_span)),
-        _ => None,
-    }
-}
-
-fn find_static_authorization_value_span(text: &str) -> Option<Span> {
-    for prefix in ["Bearer ", "Basic "] {
-        if let Some(value) = text.strip_prefix(prefix) {
-            if !value.is_empty() && !contains_dynamic_reference(value) {
-                return Some(Span::new(prefix.len(), text.len()));
-            }
-        }
-    }
-
-    None
 }

@@ -9,9 +9,10 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 use lintai_api::{
     Applicability, Finding, Fix, Location, ProviderCapabilities, ProviderError, RuleMetadata,
-    RuleTier, ScanScope, Span, WorkspaceScanContext,
+    ProviderScanResult, RuleTier, ScanScope, Span, WorkspaceScanContext,
 };
 
+use crate::artifact_view::ArtifactContextRef;
 use crate::{Engine, EngineBuilder, SuppressionMatcher};
 
 struct CountingProvider {
@@ -371,8 +372,126 @@ impl lintai_api::RuleProvider for DuplicateFindingProvider {
 struct RuleIdSuppressor;
 
 impl SuppressionMatcher for RuleIdSuppressor {
-    fn is_suppressed(&self, _ctx: &lintai_api::ScanContext, finding: &Finding) -> bool {
+    fn is_suppressed(&self, _ctx: &ArtifactContextRef<'_>, finding: &Finding) -> bool {
         finding.rule_code == "SEC001"
+    }
+}
+
+struct WorkspaceLineColumnProvider;
+
+impl lintai_api::RuleProvider for WorkspaceLineColumnProvider {
+    fn id(&self) -> &str {
+        "workspace-line-columns"
+    }
+
+    fn rules(&self) -> &[RuleMetadata] {
+        &EMIT_RULES
+    }
+
+    fn check(&self, _ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
+        Vec::new()
+    }
+
+    fn scan_scope(&self) -> ScanScope {
+        ScanScope::Workspace
+    }
+
+    fn capabilities(&self) -> ProviderCapabilities {
+        ProviderCapabilities::new(false, false)
+    }
+
+    fn check_workspace(&self, ctx: &WorkspaceScanContext) -> Vec<lintai_api::Finding> {
+        let Some(first) = ctx.artifacts.first() else {
+            return Vec::new();
+        };
+        let start = first.content.find("title").unwrap();
+        let end = start + "title".len();
+        vec![Finding::new(
+            &EMIT_RULES[0],
+            Location::new(first.artifact.normalized_path.clone(), Span::new(start, end)),
+            "workspace finding with offset",
+        )]
+    }
+}
+
+struct ExecutionErrorOnlyProvider;
+
+impl lintai_api::RuleProvider for ExecutionErrorOnlyProvider {
+    fn id(&self) -> &str {
+        "execution-error-only"
+    }
+
+    fn rules(&self) -> &[RuleMetadata] {
+        &[]
+    }
+
+    fn check(&self, _ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
+        Vec::new()
+    }
+
+    fn check_result(&self, _ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(
+            Vec::new(),
+            vec![ProviderError::new(self.id(), "provider execution failed")],
+        )
+    }
+}
+
+struct FindingAndExecutionErrorProvider;
+
+impl lintai_api::RuleProvider for FindingAndExecutionErrorProvider {
+    fn id(&self) -> &str {
+        "finding-and-execution-error"
+    }
+
+    fn rules(&self) -> &[RuleMetadata] {
+        &EMIT_RULES
+    }
+
+    fn check(&self, ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
+        vec![Finding::new(
+            &EMIT_RULES[0],
+            Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
+            "finding survives execution error",
+        )]
+    }
+
+    fn check_result(&self, ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(
+            self.check(ctx),
+            vec![ProviderError::new(self.id(), "partial provider failure")],
+        )
+    }
+}
+
+struct WorkspaceExecutionErrorProvider;
+
+impl lintai_api::RuleProvider for WorkspaceExecutionErrorProvider {
+    fn id(&self) -> &str {
+        "workspace-execution-error"
+    }
+
+    fn rules(&self) -> &[RuleMetadata] {
+        &[]
+    }
+
+    fn check(&self, _ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
+        Vec::new()
+    }
+
+    fn scan_scope(&self) -> ScanScope {
+        ScanScope::Workspace
+    }
+
+    fn capabilities(&self) -> ProviderCapabilities {
+        ProviderCapabilities::new(false, false)
+    }
+
+    fn check_workspace_result(&self, _ctx: &WorkspaceScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(
+            Vec::new(),
+            vec![ProviderError::new(self.id(), "workspace provider execution failed")],
+        )
     }
 }
 
@@ -547,6 +666,52 @@ fn suppression_hook_filters_findings() {
 }
 
 #[test]
+fn records_per_file_provider_execution_errors_without_findings() {
+    let temp_dir = unique_temp_dir("lintai-provider-execution-error");
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    std::fs::write(temp_dir.join("SKILL.md"), b"# ok\n").unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_provider(Arc::new(ExecutionErrorOnlyProvider))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(summary.findings.is_empty());
+    assert_eq!(summary.runtime_errors.len(), 1);
+    let error = &summary.runtime_errors[0];
+    assert_eq!(error.kind, crate::RuntimeErrorKind::ProviderExecution);
+    assert_eq!(error.provider_id.as_deref(), Some("execution-error-only"));
+    assert_eq!(error.phase, Some(crate::ProviderExecutionPhase::File));
+    assert_eq!(error.normalized_path, "SKILL.md");
+}
+
+#[test]
+fn keeps_findings_when_provider_reports_execution_errors() {
+    let temp_dir = unique_temp_dir("lintai-provider-findings-and-errors");
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    std::fs::write(temp_dir.join("SKILL.md"), b"# ok\n").unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_provider(Arc::new(FindingAndExecutionErrorProvider))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert_eq!(summary.findings.len(), 1);
+    assert_eq!(summary.findings[0].message, "finding survives execution error");
+    assert_eq!(summary.runtime_errors.len(), 1);
+    assert_eq!(
+        summary.runtime_errors[0].kind,
+        crate::RuntimeErrorKind::ProviderExecution
+    );
+    assert_eq!(
+        summary.runtime_errors[0].provider_id.as_deref(),
+        Some("finding-and-execution-error")
+    );
+}
+
+#[test]
 fn derives_line_columns_for_findings() {
     let temp_dir = unique_temp_dir("lintai-line-columns");
     std::fs::create_dir_all(&temp_dir).unwrap();
@@ -668,6 +833,69 @@ fn workspace_provider_emits_findings_after_parse_pass() {
 
     assert_eq!(summary.findings.len(), 1);
     assert_eq!(summary.findings[0].message, "workspace finding");
+}
+
+#[test]
+fn workspace_findings_derive_line_columns_without_rebuilding_scan_context() {
+    let temp_dir = unique_temp_dir("lintai-workspace-line-columns");
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    std::fs::write(temp_dir.join("SKILL.md"), b"# title\n").unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_provider(Arc::new(WorkspaceLineColumnProvider))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert_eq!(summary.findings.len(), 1);
+    let finding = &summary.findings[0];
+    assert_eq!(finding.location.start.as_ref().map(|pos| pos.line), Some(1));
+    assert_eq!(finding.location.start.as_ref().map(|pos| pos.column), Some(3));
+    assert_eq!(finding.location.end.as_ref().map(|pos| pos.line), Some(1));
+    assert_eq!(finding.location.end.as_ref().map(|pos| pos.column), Some(8));
+}
+
+#[test]
+fn suppression_hook_filters_workspace_findings() {
+    let temp_dir = unique_temp_dir("lintai-workspace-suppression");
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    std::fs::write(temp_dir.join("SKILL.md"), b"# ok\n").unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_provider(Arc::new(WorkspaceFindingProvider))
+        .with_suppressions(Arc::new(RuleIdSuppressor))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert_eq!(summary.findings.len(), 0);
+    assert_eq!(summary.scanned_files, 1);
+}
+
+#[test]
+fn records_workspace_provider_execution_errors() {
+    let temp_dir = unique_temp_dir("lintai-workspace-provider-execution-error");
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    std::fs::write(temp_dir.join("SKILL.md"), b"# ok\n").unwrap();
+    let config = crate::EngineConfig {
+        project_root: Some(temp_dir.clone()),
+        ..crate::EngineConfig::default()
+    };
+
+    let summary = EngineBuilder::default()
+        .with_config(config)
+        .with_provider(Arc::new(WorkspaceExecutionErrorProvider))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(summary.findings.is_empty());
+    assert_eq!(summary.runtime_errors.len(), 1);
+    let error = &summary.runtime_errors[0];
+    assert_eq!(error.kind, crate::RuntimeErrorKind::ProviderExecution);
+    assert_eq!(error.provider_id.as_deref(), Some("workspace-execution-error"));
+    assert_eq!(error.phase, Some(crate::ProviderExecutionPhase::Workspace));
+    assert_eq!(error.normalized_path, temp_dir.display().to_string());
 }
 
 #[test]

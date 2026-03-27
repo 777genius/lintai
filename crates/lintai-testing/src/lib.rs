@@ -186,6 +186,7 @@ pub enum ExpectedRuntimeErrorKind {
     Read,
     InvalidUtf8,
     Parse,
+    ProviderExecution,
     ProviderTimeout,
 }
 
@@ -709,6 +710,7 @@ fn runtime_error_kind_counts(
             RuntimeErrorKind::Read => ExpectedRuntimeErrorKind::Read,
             RuntimeErrorKind::InvalidUtf8 => ExpectedRuntimeErrorKind::InvalidUtf8,
             RuntimeErrorKind::Parse => ExpectedRuntimeErrorKind::Parse,
+            RuntimeErrorKind::ProviderExecution => ExpectedRuntimeErrorKind::ProviderExecution,
             RuntimeErrorKind::ProviderTimeout => ExpectedRuntimeErrorKind::ProviderTimeout,
         };
         *counts.entry(kind).or_insert(0) += 1;
@@ -1174,6 +1176,8 @@ name = ""
         summary.runtime_errors.push(ScanRuntimeError {
             normalized_path: "docs/SKILL.md".to_owned(),
             kind: RuntimeErrorKind::Parse,
+            provider_id: None,
+            phase: None,
             message: "unterminated frontmatter".to_owned(),
         });
 
@@ -1242,6 +1246,8 @@ name = ""
         summary.runtime_errors.push(lintai_engine::ScanRuntimeError {
             normalized_path: "docs/SKILL.md".to_owned(),
             kind: lintai_engine::RuntimeErrorKind::Read,
+            provider_id: None,
+            phase: None,
             message: "boom".to_owned(),
         });
 
@@ -1303,6 +1309,8 @@ name = ""
         summary.runtime_errors.push(ScanRuntimeError {
             normalized_path: "docs/SKILL.md".to_owned(),
             kind: RuntimeErrorKind::Read,
+            provider_id: None,
+            phase: None,
             message: "io".to_owned(),
         });
 

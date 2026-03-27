@@ -84,6 +84,19 @@ impl ProviderError {
     }
 }
 
+#[derive(Clone, Debug, Default, Deserialize, Eq, JsonSchema, PartialEq, Serialize)]
+#[non_exhaustive]
+pub struct ProviderScanResult {
+    pub findings: Vec<Finding>,
+    pub errors: Vec<ProviderError>,
+}
+
+impl ProviderScanResult {
+    pub fn new(findings: Vec<Finding>, errors: Vec<ProviderError>) -> Self {
+        Self { findings, errors }
+    }
+}
+
 pub trait RuleProvider: Send + Sync {
     fn id(&self) -> &str;
     fn rules(&self) -> &[RuleMetadata];
@@ -95,6 +108,14 @@ pub trait RuleProvider: Send + Sync {
 
     fn check_workspace(&self, _ctx: &WorkspaceScanContext) -> Vec<Finding> {
         Vec::new()
+    }
+
+    fn check_result(&self, ctx: &ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(self.check(ctx), Vec::new())
+    }
+
+    fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(self.check_workspace(ctx), Vec::new())
     }
 
     fn timeout(&self) -> Duration {

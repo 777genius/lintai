@@ -6,6 +6,7 @@ use lintai_api::{
     RuleMetadata, RuleTier, ScanContext, Severity, SourceFormat, Span, TextRegion,
 };
 
+use crate::artifact_view::ArtifactContextRef;
 use crate::{SuppressionMatcher, load_workspace_config};
 
 use super::FileSuppressions;
@@ -68,8 +69,9 @@ reason = "legacy exception"
     let ctx = sample_context("docs/SKILL.md");
     let finding = sample_finding("docs/SKILL.md");
 
-    assert!(suppressions.is_suppressed(&ctx, &finding));
-    assert!(suppressions.is_suppressed(&ctx, &finding));
+    let ctx_ref = ArtifactContextRef::from_scan_context(&ctx);
+    assert!(suppressions.is_suppressed(&ctx_ref, &finding));
+    assert!(suppressions.is_suppressed(&ctx_ref, &finding));
 
     let errors = suppressions.finalize();
     assert!(
