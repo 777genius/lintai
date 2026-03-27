@@ -4,8 +4,8 @@ use std::time::Instant;
 
 use lintai_adapters::parse_document;
 use lintai_api::{
-    Artifact, Finding, ProviderError, RuleProvider, ScanContext, WorkspaceArtifact,
-    WorkspaceScanContext,
+    Artifact, Finding, ProviderError, ProviderErrorKind, RuleProvider, ScanContext,
+    WorkspaceArtifact, WorkspaceScanContext,
 };
 
 use crate::artifact_view::ArtifactContextRef;
@@ -197,16 +197,21 @@ impl Engine {
         for provider in providers.per_file() {
             let started = Instant::now();
             let result = provider.provider().check_result(&scanned.context);
-            self.record_budget_overrun(
-                &scanned.context.artifact.normalized_path,
-                provider.id(),
-                provider.timeout(),
-                started.elapsed(),
-                summary,
-            );
+            if !result
+                .errors
+                .iter()
+                .any(|error| matches!(error.kind, ProviderErrorKind::Timeout))
+            {
+                self.record_budget_overrun(
+                    &scanned.context.artifact.normalized_path,
+                    provider.id(),
+                    provider.timeout(),
+                    started.elapsed(),
+                    summary,
+                );
+            }
             self.record_provider_execution_errors(
                 &scanned.context.artifact.normalized_path,
-                provider.id(),
                 ProviderExecutionPhase::File,
                 result.errors,
                 summary,
@@ -263,16 +268,21 @@ impl Engine {
         for provider in providers.workspace() {
             let started = Instant::now();
             let result = provider.provider().check_workspace_result(&workspace);
-            self.record_budget_overrun(
-                workspace.project_root.as_deref().unwrap_or("."),
-                provider.id(),
-                provider.timeout(),
-                started.elapsed(),
-                summary,
-            );
+            if !result
+                .errors
+                .iter()
+                .any(|error| matches!(error.kind, ProviderErrorKind::Timeout))
+            {
+                self.record_budget_overrun(
+                    workspace.project_root.as_deref().unwrap_or("."),
+                    provider.id(),
+                    provider.timeout(),
+                    started.elapsed(),
+                    summary,
+                );
+            }
             self.record_provider_execution_errors(
                 workspace.project_root.as_deref().unwrap_or("."),
-                provider.id(),
                 ProviderExecutionPhase::Workspace,
                 result.errors,
                 summary,
@@ -350,7 +360,6 @@ impl Engine {
     fn record_provider_execution_errors(
         &self,
         normalized_path: &str,
-        provider_id: &str,
         phase: ProviderExecutionPhase,
         errors: Vec<ProviderError>,
         summary: &mut ScanSummary,
@@ -358,8 +367,11 @@ impl Engine {
         for error in errors {
             summary.runtime_errors.push(ScanRuntimeError {
                 normalized_path: normalized_path.to_owned(),
-                kind: RuntimeErrorKind::ProviderExecution,
-                provider_id: Some(provider_id.to_owned()),
+                kind: match error.kind {
+                    ProviderErrorKind::Execution => RuntimeErrorKind::ProviderExecution,
+                    ProviderErrorKind::Timeout => RuntimeErrorKind::ProviderTimeout,
+                },
+                provider_id: Some(error.provider_id),
                 phase: Some(phase),
                 message: error.message,
             });

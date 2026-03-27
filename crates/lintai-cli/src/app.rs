@@ -2,10 +2,8 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
-use std::sync::Arc;
 
-use lintai_ai_security::{AiSecurityProvider, PolicyMismatchProvider};
-use lintai_api::{Applicability, Finding, RuleProvider};
+use lintai_api::{Applicability, Finding};
 use lintai_engine::{
     Engine, FileSuppressions, OutputFormat, ResolvedFileConfig, explain_file_config,
     load_workspace_config,
@@ -13,6 +11,7 @@ use lintai_engine::{
 use lintai_fix::{apply_planned_fixes, plan_fixes};
 
 use crate::args::{parse_explain_config_args, parse_fix_args, parse_scan_args};
+use crate::builtin_providers::{product_provider_set, run_provider_runner};
 use crate::{output, path::validate_path_within_project};
 
 pub fn run() -> Result<ExitCode, String> {
@@ -28,6 +27,7 @@ pub fn run() -> Result<ExitCode, String> {
         "scan" => run_scan(&current_dir, args),
         "fix" => run_fix(&current_dir, args),
         "explain-config" => run_explain_config(&current_dir, args),
+        "__provider-runner" => run_provider_runner(args),
         "config-schema" => {
             println!("{}", lintai_engine::config_schema_pretty());
             Ok(ExitCode::SUCCESS)
@@ -338,14 +338,10 @@ fn load_validated_workspace(
 fn build_engine(workspace: &lintai_engine::WorkspaceConfig) -> Result<Engine, String> {
     let suppressions = FileSuppressions::load(&workspace.engine_config)
         .map_err(|error| format!("suppress loading failed: {error}"))?;
-    let providers: [Arc<dyn RuleProvider>; 2] = [
-        Arc::new(AiSecurityProvider::default()),
-        Arc::new(PolicyMismatchProvider),
-    ];
     let mut builder = Engine::builder()
         .with_config(workspace.engine_config.clone())
-        .with_suppressions(Arc::new(suppressions));
-    for provider in providers {
+        .with_suppressions(std::sync::Arc::new(suppressions));
+    for provider in product_provider_set() {
         builder = builder.with_provider(provider);
     }
 

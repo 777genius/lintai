@@ -85,6 +85,7 @@
 - **3 core methods** + extension points с дефолтами (timeout/capabilities/hooks/fix).
 - Workspace rules use `ScanScope::{PerFile, Workspace}`; the old `requires_full_scan()` path is not part of the contract anymore.
 - Engine отвечает за таймауты, параллелизм, кэш, suppress, агрегацию.
+- Product path may execute shipped built-in providers behind an isolated subprocess boundary for truthful hard timeouts; legacy arbitrary injected providers may still run in-process.
 
 ## 8) Workspace (MVP → later)
 
@@ -154,6 +155,11 @@ MVP стартует с **6–7 крейтов**:
 - `supports_fix()` + `fix()`
 - `on_start()` / `on_finish()`
 - additive result-style execution hooks for findings plus non-fatal provider execution errors
+
+### Timeout model (current)
+
+- **Shipped built-in providers** use isolated execution in product/runtime composition and can be terminated on timeout.
+- **Arbitrary injected `Arc<dyn RuleProvider>`** remain a legacy in-process path and therefore only have truthful soft-budget accounting today.
 
 ### Native rules registration (зафиксировано)
 

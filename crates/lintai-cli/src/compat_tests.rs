@@ -1,20 +1,10 @@
 use std::path::PathBuf;
-use std::sync::Arc;
-
-use lintai_ai_security::{AiSecurityProvider, PolicyMismatchProvider};
-use lintai_api::RuleProvider;
 use lintai_engine::{explain_file_config, load_workspace_config};
 use lintai_testing::{OutputHarness, WorkspaceHarness, discover_case_dirs};
 
 use crate::app::format_explain_config;
+use crate::builtin_providers::product_provider_set;
 use crate::output::{build_envelope, format_json, format_sarif};
-
-fn provider_set() -> Vec<Arc<dyn RuleProvider>> {
-    vec![
-        Arc::new(AiSecurityProvider::default()),
-        Arc::new(PolicyMismatchProvider),
-    ]
-}
 
 fn repo_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -33,7 +23,7 @@ fn compat_case(case_name: &str) -> PathBuf {
 
 fn harness() -> WorkspaceHarness {
     WorkspaceHarness::builder()
-        .with_providers(provider_set())
+        .with_providers(product_provider_set())
         .build()
 }
 

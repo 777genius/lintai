@@ -437,6 +437,29 @@ impl lintai_api::RuleProvider for ExecutionErrorOnlyProvider {
     }
 }
 
+struct ReportedTimeoutProvider;
+
+impl lintai_api::RuleProvider for ReportedTimeoutProvider {
+    fn id(&self) -> &str {
+        "reported-timeout"
+    }
+
+    fn rules(&self) -> &[RuleMetadata] {
+        &[]
+    }
+
+    fn check(&self, _ctx: &lintai_api::ScanContext) -> Vec<lintai_api::Finding> {
+        Vec::new()
+    }
+
+    fn check_result(&self, _ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(
+            Vec::new(),
+            vec![ProviderError::timeout(self.id(), "isolated child terminated after timeout")],
+        )
+    }
+}
+
 struct FindingAndExecutionErrorProvider;
 
 impl lintai_api::RuleProvider for FindingAndExecutionErrorProvider {
@@ -709,6 +732,26 @@ fn keeps_findings_when_provider_reports_execution_errors() {
         summary.runtime_errors[0].provider_id.as_deref(),
         Some("finding-and-execution-error")
     );
+}
+
+#[test]
+fn preserves_timeout_runtime_kind_when_provider_reports_timeout() {
+    let temp_dir = unique_temp_dir("lintai-provider-reported-timeout");
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    std::fs::write(temp_dir.join("SKILL.md"), b"# ok\n").unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_provider(Arc::new(ReportedTimeoutProvider))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(summary.findings.is_empty());
+    assert_eq!(summary.runtime_errors.len(), 1);
+    let error = &summary.runtime_errors[0];
+    assert_eq!(error.kind, crate::RuntimeErrorKind::ProviderTimeout);
+    assert_eq!(error.provider_id.as_deref(), Some("reported-timeout"));
+    assert_eq!(error.phase, Some(crate::ProviderExecutionPhase::File));
 }
 
 #[test]

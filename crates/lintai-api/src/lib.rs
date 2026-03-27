@@ -21,8 +21,8 @@ pub use parsed::{
     TextRegion,
 };
 pub use rule::{
-    ProviderCapabilities, ProviderError, ProviderScanResult, RuleMetadata, RuleProvider,
-    RuleTier, ScanScope,
+    ProviderCapabilities, ProviderError, ProviderErrorKind, ProviderScanResult, RuleMetadata,
+    RuleProvider, RuleTier, ScanScope,
 };
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, JsonSchema, Ord, PartialEq, PartialOrd, Serialize)]

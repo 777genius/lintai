@@ -1,23 +1,15 @@
 use std::collections::BTreeSet;
 use std::path::{Path, PathBuf};
-use std::sync::Arc;
 
-use lintai_ai_security::{AiSecurityProvider, PolicyMismatchProvider};
-use lintai_api::{EvidenceKind, RuleProvider};
+use lintai_api::EvidenceKind;
 use lintai_engine::{WorkspaceConfig, explain_file_config, load_workspace_config};
 use lintai_testing::{
     CaseManifest, OutputHarness, WorkspaceHarness, assert_case_summary, discover_case_dirs,
 };
 
 use crate::app::format_explain_config;
+use crate::builtin_providers::product_provider_set;
 use crate::output::{build_envelope, format_json, format_sarif, format_text};
-
-fn provider_set() -> Vec<Arc<dyn RuleProvider>> {
-    vec![
-        Arc::new(AiSecurityProvider::default()),
-        Arc::new(PolicyMismatchProvider),
-    ]
-}
 
 fn repo_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -40,7 +32,7 @@ fn load_case(case_dir: &Path) -> CaseManifest {
 
 fn harness() -> WorkspaceHarness {
     WorkspaceHarness::builder()
-        .with_providers(provider_set())
+        .with_providers(product_provider_set())
         .build()
 }
 

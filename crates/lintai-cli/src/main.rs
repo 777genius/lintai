@@ -1,5 +1,6 @@
 mod app;
 mod args;
+mod builtin_providers;
 #[cfg(test)]
 mod compat_tests;
 mod output;

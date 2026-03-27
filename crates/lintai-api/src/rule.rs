@@ -72,6 +72,8 @@ pub enum ScanScope {
 #[non_exhaustive]
 pub struct ProviderError {
     pub provider_id: String,
+    #[serde(default)]
+    pub kind: ProviderErrorKind,
     pub message: String,
 }
 
@@ -79,9 +81,26 @@ impl ProviderError {
     pub fn new(provider_id: impl Into<String>, message: impl Into<String>) -> Self {
         Self {
             provider_id: provider_id.into(),
+            kind: ProviderErrorKind::Execution,
             message: message.into(),
         }
     }
+
+    pub fn timeout(provider_id: impl Into<String>, message: impl Into<String>) -> Self {
+        Self {
+            provider_id: provider_id.into(),
+            kind: ProviderErrorKind::Timeout,
+            message: message.into(),
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, JsonSchema, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ProviderErrorKind {
+    #[default]
+    Execution,
+    Timeout,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, JsonSchema, PartialEq, Serialize)]
