@@ -39,14 +39,14 @@ impl ProviderHarness {
     }
 }
 
-pub struct ProviderHarnessBuilder {
+struct ProviderHarnessBuilder {
     backend: Arc<dyn ProviderBackend>,
     config: EngineConfig,
     suppressions: Arc<dyn SuppressionMatcher>,
 }
 
 impl ProviderHarnessBuilder {
-    pub fn new(backend: Arc<dyn ProviderBackend>) -> Self {
+    fn new(backend: Arc<dyn ProviderBackend>) -> Self {
         Self {
             backend,
             config: EngineConfig::default(),
@@ -54,17 +54,7 @@ impl ProviderHarnessBuilder {
         }
     }
 
-    pub fn with_config(mut self, config: EngineConfig) -> Self {
-        self.config = config;
-        self
-    }
-
-    pub fn with_suppressions(mut self, suppressions: Arc<dyn SuppressionMatcher>) -> Self {
-        self.suppressions = suppressions;
-        self
-    }
-
-    pub fn run_summary(
+    fn run_summary(
         self,
         artifact_kind: ArtifactKind,
         format: SourceFormat,
@@ -101,57 +91,6 @@ impl ProviderHarnessBuilder {
         );
 
         summary
-    }
-}
-
-pub struct RuleTester {
-    provider: Arc<dyn RuleProvider>,
-}
-
-impl RuleTester {
-    pub fn new(provider: Arc<dyn RuleProvider>) -> Self {
-        Self { provider }
-    }
-
-    pub fn run_fixture(
-        &self,
-        artifact_kind: ArtifactKind,
-        format: SourceFormat,
-        content: impl Into<String>,
-    ) -> Vec<Finding> {
-        ProviderHarness::run(Arc::clone(&self.provider), artifact_kind, format, content)
-    }
-
-    pub fn assert_triggers(
-        &self,
-        artifact_kind: ArtifactKind,
-        format: SourceFormat,
-        content: impl Into<String>,
-        rule_code: &str,
-    ) {
-        let findings = self.run_fixture(artifact_kind, format, content);
-        assert!(
-            findings
-                .iter()
-                .any(|finding| finding.rule_code == rule_code),
-            "expected rule {rule_code} to trigger, got {findings:?}"
-        );
-    }
-
-    pub fn assert_not_triggers(
-        &self,
-        artifact_kind: ArtifactKind,
-        format: SourceFormat,
-        content: impl Into<String>,
-        rule_code: &str,
-    ) {
-        let findings = self.run_fixture(artifact_kind, format, content);
-        assert!(
-            findings
-                .iter()
-                .all(|finding| finding.rule_code != rule_code),
-            "expected rule {rule_code} not to trigger, got {findings:?}"
-        );
     }
 }
 
@@ -577,7 +516,7 @@ pub fn assert_case_summary(manifest: &CaseManifest, summary: &ScanSummary) {
 pub struct OutputHarness;
 
 impl OutputHarness {
-    pub fn snapshot_path(
+    fn snapshot_path(
         case_dir: &Path,
         snapshot: &SnapshotExpectation,
     ) -> Result<PathBuf, HarnessError> {
@@ -628,15 +567,6 @@ impl OutputHarness {
         }
         lines.push(String::new());
         lines.join("\n")
-    }
-
-    pub fn render(
-        _summary: &ScanSummary,
-        _format: HarnessOutputFormat,
-    ) -> Result<String, HarnessError> {
-        Err(HarnessError::NotImplemented(
-            "output harness rendering is introduced in iteration 4",
-        ))
     }
 }
 

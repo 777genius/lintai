@@ -117,3 +117,22 @@ fn root_engine_surface_does_not_export_internal_helpers() {
         "InProcessProviderBackend should not be re-exported from engine root"
     );
 }
+
+#[test]
+fn lintai_testing_surface_does_not_export_dead_helpers() {
+    let testing_lib = fs::read_to_string(repo_root().join("crates/lintai-testing/src/lib.rs"))
+        .expect("lintai-testing lib should be readable");
+    assert!(
+        !testing_lib.contains("pub struct RuleTester"),
+        "RuleTester should not remain in lintai-testing surface"
+    );
+    assert!(
+        !testing_lib.contains("pub struct ProviderHarnessBuilder"),
+        "ProviderHarnessBuilder should not be public"
+    );
+    assert!(
+        !testing_lib.contains("pub fn snapshot_path(")
+            && !testing_lib.contains("pub fn render("),
+        "dead output helper surface should not remain public"
+    );
+}
