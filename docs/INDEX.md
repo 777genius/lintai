@@ -23,7 +23,8 @@
 - **CLI contract**: exit codes 0/1/2; Windows ANSI; SIGPIPE-safe; CRLF normalization
 - **File discovery**: `ignore` crate (gitignore semantics), symlinks not followed by default
 - **Config**: unknown keys = error, `explain-config` обязателен, JSON Schema + SchemaStore
-- **Testing/release direction**: `lintai-testing` remains internal in `v0.1`; corpus/sample-repo/release-barrier work is the current path to publishable `v0.1`
+- **Testing/release direction**: `lintai-testing` remains internal in `v0.1`; corpus, sample repos, compat snapshots, release barrier, docs gate, and dry release are already wired
+- **Remediation**: `lintai fix` is public CLI surface with safe autofix, message suggestions, and preview-only candidate patch edits
 - **Лицензия**: Dual MIT + Apache 2.0
 
 ---
@@ -241,4 +242,4 @@ Research files below are reference material. They are useful for background and 
 | Research deep dive | 54 файла, ~49K строк |
 | Research agents использовано | 19+ (несколько батчей) |
 | Покрытие | Рынок, конкуренты, архитектура, rules engine, distribution, CI/CD, legal, monetization, 14 платформ, real malware, YARA-X, parser pitfalls |
-| Код | Активный Rust workspace `lintai`, iterations 1-6 already landed; iteration 7 = docs hardening + dry release |
+| Код | Активный Rust workspace `lintai`; `v0.1` delivery cycle completed, current work is post-`v0.1` rule and remediation expansion |
