@@ -44,14 +44,27 @@ pub(crate) struct ArtifactSignals {
     markdown: Option<MarkdownSignals>,
     hook: Option<HookSignals>,
     json: Option<JsonSignals>,
+    metrics: SignalWorkBudget,
+}
+
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[cfg_attr(not(test), allow(dead_code))]
+pub struct SignalWorkBudget {
+    pub(crate) markdown_regions_visited: usize,
+    pub(crate) hook_lines_visited: usize,
+    pub(crate) hook_tokens_visited: usize,
+    pub(crate) json_values_visited: usize,
+    pub(crate) json_locator_builds: usize,
 }
 
 impl ArtifactSignals {
     pub(crate) fn from_context(ctx: &ScanContext) -> Self {
+        let mut metrics = SignalWorkBudget::default();
         Self {
-            markdown: MarkdownSignals::from_context(ctx),
-            hook: HookSignals::from_context(ctx),
-            json: JsonSignals::from_context(ctx),
+            markdown: MarkdownSignals::from_context(ctx, &mut metrics),
+            hook: HookSignals::from_context(ctx, &mut metrics),
+            json: JsonSignals::from_context(ctx, &mut metrics),
+            metrics,
         }
     }
 
@@ -66,6 +79,10 @@ impl ArtifactSignals {
     pub(crate) fn json(&self) -> Option<&JsonSignals> {
         self.json.as_ref()
     }
+
+    pub(crate) fn metrics(&self) -> SignalWorkBudget {
+        self.metrics
+    }
 }
 
 #[derive(Clone, Debug, Default)]
@@ -78,7 +95,7 @@ pub(crate) struct MarkdownSignals {
 }
 
 impl MarkdownSignals {
-    fn from_context(ctx: &ScanContext) -> Option<Self> {
+    fn from_context(ctx: &ScanContext, metrics: &mut SignalWorkBudget) -> Option<Self> {
         if !matches!(
             ctx.artifact.kind,
             ArtifactKind::Skill
@@ -93,6 +110,7 @@ impl MarkdownSignals {
         let mut signals = Self::default();
 
         for region in &ctx.document.regions {
+            metrics.markdown_regions_visited += 1;
             let Some(snippet) = span_text(&ctx.content, &region.span) else {
                 continue;
             };
@@ -144,7 +162,7 @@ pub(crate) struct HookSignals {
 }
 
 impl HookSignals {
-    fn from_context(ctx: &ScanContext) -> Option<Self> {
+    fn from_context(ctx: &ScanContext, metrics: &mut SignalWorkBudget) -> Option<Self> {
         if ctx.artifact.kind != ArtifactKind::CursorHookScript {
             return None;
         }
@@ -155,12 +173,12 @@ impl HookSignals {
         for segment in ctx.content.split_inclusive('\n') {
             let line = segment.strip_suffix('\n').unwrap_or(segment);
             let next_start = start + segment.len();
-            collect_hook_line(&mut signals, line, start);
+            collect_hook_line(&mut signals, line, start, metrics);
             start = next_start;
         }
 
         if start < ctx.content.len() {
-            collect_hook_line(&mut signals, &ctx.content[start..], start);
+            collect_hook_line(&mut signals, &ctx.content[start..], start, metrics);
         }
 
         Some(signals)
@@ -181,7 +199,7 @@ pub(crate) struct JsonSignals {
 }
 
 impl JsonSignals {
-    fn from_context(ctx: &ScanContext) -> Option<Self> {
+    fn from_context(ctx: &ScanContext, metrics: &mut SignalWorkBudget) -> Option<Self> {
         if !matches!(
             ctx.artifact.kind,
             ArtifactKind::McpConfig
@@ -193,6 +211,9 @@ impl JsonSignals {
 
         let value = &json_semantics(ctx)?.value;
         let locator = JsonLocationMap::parse(&ctx.content);
+        if locator.is_some() {
+            metrics.json_locator_builds += 1;
+        }
         let fallback_len = ctx.content.len();
         let mut signals = Self::default();
         let mut path = Vec::new();
@@ -202,6 +223,7 @@ impl JsonSignals {
             locator.as_ref(),
             fallback_len,
             &mut signals,
+            metrics,
         );
         signals.locator = locator;
         Some(signals)
@@ -215,7 +237,13 @@ struct HookToken<'a> {
     end: usize,
 }
 
-fn collect_hook_line(signals: &mut HookSignals, line: &str, offset: usize) {
+fn collect_hook_line(
+    signals: &mut HookSignals,
+    line: &str,
+    offset: usize,
+    metrics: &mut SignalWorkBudget,
+) {
+    metrics.hook_lines_visited += 1;
     if line.trim_start().starts_with('#') {
         return;
     }
@@ -225,6 +253,7 @@ fn collect_hook_line(signals: &mut HookSignals, line: &str, offset: usize) {
 
     let lowered = line.to_ascii_lowercase();
     let tokens = shell_tokens(line);
+    metrics.hook_tokens_visited += tokens.len();
 
     if signals.download_exec_span.is_none() && has_download_exec(&lowered) {
         signals.download_exec_span = Some(line_span.clone());
@@ -324,136 +353,118 @@ fn visit_json_value(
     locator: Option<&JsonLocationMap>,
     fallback_len: usize,
     signals: &mut JsonSignals,
+    metrics: &mut SignalWorkBudget,
 ) {
+    metrics.json_values_visited += 1;
     if let Value::Object(map) = value {
-        if signals.shell_wrapper_span.is_none() {
-            let command = map
-                .get("command")
-                .and_then(Value::as_str)
-                .unwrap_or_default();
-            let args = map
-                .get("args")
-                .and_then(Value::as_array)
-                .map(|items| items.iter().filter_map(Value::as_str).collect::<Vec<_>>())
-                .unwrap_or_default();
-            if (command == "sh" || command == "bash") && args.contains(&"-c") {
-                let mut matched_path = path.clone();
-                matched_path.push(JsonPathSegment::Key("command".to_owned()));
-                signals.shell_wrapper_span =
-                    Some(resolve_value_span(&matched_path, locator, fallback_len));
-            }
-        }
+        let mut shell_command_key = None;
+        let mut shell_has_dash_c = false;
 
-        if signals.credential_env_passthrough_span.is_none() {
-            for (key, nested) in map {
-                let lowered_key = key.to_ascii_lowercase();
-                if lowered_key != "env" && lowered_key != "environment" {
-                    continue;
-                }
-                let Some(env_map) = nested.as_object() else {
-                    continue;
-                };
-                for env_key in env_map.keys() {
-                    if JSON_SECRET_ENV_KEYS
-                        .iter()
-                        .any(|secret| env_key.eq_ignore_ascii_case(secret))
+        for (key, nested) in map {
+            if signals.shell_wrapper_span.is_none() {
+                if key == "command" {
+                    if nested
+                        .as_str()
+                        .is_some_and(|command| command == "sh" || command == "bash")
                     {
-                        let mut matched_path = path.clone();
-                        matched_path.push(JsonPathSegment::Key(key.clone()));
-                        matched_path.push(JsonPathSegment::Key(env_key.clone()));
-                        signals.credential_env_passthrough_span =
-                            Some(resolve_key_span(&matched_path, locator, fallback_len));
-                        break;
+                        shell_command_key = Some(key.as_str());
+                    }
+                } else if key == "args" {
+                    shell_has_dash_c = nested
+                        .as_array()
+                        .is_some_and(|items| items.iter().any(|item| item.as_str() == Some("-c")));
+                }
+            }
+
+            if is_env_container_key(key) {
+                if let Some(env_map) = nested.as_object() {
+                    for (env_key, env_value) in env_map {
+                        if signals.credential_env_passthrough_span.is_none()
+                            && JSON_SECRET_ENV_KEYS
+                                .iter()
+                                .any(|secret| env_key.eq_ignore_ascii_case(secret))
+                        {
+                            signals.credential_env_passthrough_span = Some(resolve_child_key_span(
+                                path,
+                                key,
+                                env_key,
+                                locator,
+                                fallback_len,
+                            ));
+                        }
+
+                        if signals.sensitive_env_reference_span.is_none()
+                            && !is_sensitive_env_var_name(env_key)
+                        {
+                            if let Some(text) = env_value.as_str() {
+                                if let Some(relative) =
+                                    find_sensitive_env_reference_relative_span(text)
+                                {
+                                    signals.sensitive_env_reference_span =
+                                        Some(resolve_child_relative_value_span(
+                                            path,
+                                            key,
+                                            env_key,
+                                            relative,
+                                            locator,
+                                            fallback_len,
+                                        ));
+                                }
+                            }
+                        }
+
+                        if signals.credential_env_passthrough_span.is_some()
+                            && signals.sensitive_env_reference_span.is_some()
+                        {
+                            break;
+                        }
                     }
                 }
-                if signals.credential_env_passthrough_span.is_some() {
-                    break;
-                }
             }
-        }
 
-        if signals.sensitive_env_reference_span.is_none() {
-            for (key, nested) in map {
-                let lowered_key = key.to_ascii_lowercase();
-                if lowered_key != "env" && lowered_key != "environment" {
-                    continue;
-                }
-                let Some(env_map) = nested.as_object() else {
-                    continue;
-                };
-                for (env_key, env_value) in env_map {
-                    if is_sensitive_env_var_name(env_key) {
-                        continue;
-                    }
-                    let Some(text) = env_value.as_str() else {
-                        continue;
-                    };
-                    let Some(relative) = find_sensitive_env_reference_relative_span(text) else {
-                        continue;
-                    };
-
-                    let mut matched_path = path.clone();
-                    matched_path.push(JsonPathSegment::Key(key.clone()));
-                    matched_path.push(JsonPathSegment::Key(env_key.clone()));
-                    signals.sensitive_env_reference_span = Some(resolve_relative_value_span(
-                        &matched_path,
-                        relative,
-                        locator,
-                        fallback_len,
-                    ));
-                    break;
-                }
-                if signals.sensitive_env_reference_span.is_some() {
-                    break;
-                }
-            }
-        }
-
-        if signals.trust_verification_disabled_span.is_none() {
-            for (key, nested) in map {
-                let is_disabled = match (key.as_str(), nested) {
-                    ("strictSSL" | "verifyTLS" | "rejectUnauthorized", Value::Bool(false)) => true,
-                    ("insecureSkipVerify", Value::Bool(true)) => true,
-                    _ => false,
-                };
-                if is_disabled {
-                    let mut matched_path = path.clone();
-                    matched_path.push(JsonPathSegment::Key(key.clone()));
-                    signals.trust_verification_disabled_span = Some(resolve_value_or_key_span(
-                        &matched_path,
-                        locator,
-                        fallback_len,
-                    ));
-                    break;
-                }
-            }
-        }
-
-        if signals.static_auth_exposure_span.is_none() {
-            for (key, nested) in map {
-                if !key.eq_ignore_ascii_case("authorization") {
-                    continue;
-                }
-                let Some(text) = nested.as_str() else {
-                    continue;
-                };
-                let Some(relative) = find_literal_value_after_prefixes_case_insensitive(
-                    text,
-                    &["Bearer ", "Basic "],
-                ) else {
-                    continue;
-                };
-
-                let mut matched_path = path.clone();
-                matched_path.push(JsonPathSegment::Key(key.clone()));
-                signals.static_auth_exposure_span = Some(resolve_relative_value_span(
-                    &matched_path,
-                    relative,
+            if signals.trust_verification_disabled_span.is_none()
+                && is_trust_verification_disabled_key_value(key, nested)
+            {
+                signals.trust_verification_disabled_span = Some(resolve_child_value_or_key_span(
+                    path,
+                    key,
                     locator,
                     fallback_len,
                 ));
-                break;
             }
+
+            if signals.static_auth_exposure_span.is_none()
+                && key.eq_ignore_ascii_case("authorization")
+            {
+                if let Some(text) = nested.as_str() {
+                    if let Some(relative) = find_literal_value_after_prefixes_case_insensitive(
+                        text,
+                        &["Bearer ", "Basic "],
+                    ) {
+                        signals.static_auth_exposure_span =
+                            Some(resolve_child_relative_value_span(
+                                path,
+                                key,
+                                key,
+                                relative,
+                                locator,
+                                fallback_len,
+                            ));
+                    }
+                }
+            }
+        }
+
+        if signals.shell_wrapper_span.is_none()
+            && shell_has_dash_c
+            && let Some(command_key) = shell_command_key
+        {
+            signals.shell_wrapper_span = Some(resolve_child_value_span(
+                path,
+                command_key,
+                locator,
+                fallback_len,
+            ));
         }
     }
 
@@ -461,14 +472,14 @@ fn visit_json_value(
         Value::Object(map) => {
             for (key, nested) in map {
                 path.push(JsonPathSegment::Key(key.clone()));
-                visit_json_value(nested, path, locator, fallback_len, signals);
+                visit_json_value(nested, path, locator, fallback_len, signals, metrics);
                 path.pop();
             }
         }
         Value::Array(items) => {
             for (index, nested) in items.iter().enumerate() {
                 path.push(JsonPathSegment::Index(index));
-                visit_json_value(nested, path, locator, fallback_len, signals);
+                visit_json_value(nested, path, locator, fallback_len, signals, metrics);
                 path.pop();
             }
         }
@@ -582,6 +593,19 @@ fn resolve_key_span(
         .unwrap_or_else(|| Span::new(0, fallback_len))
 }
 
+fn resolve_child_key_span(
+    path: &[JsonPathSegment],
+    parent_key: &str,
+    child_key: &str,
+    locator: Option<&JsonLocationMap>,
+    fallback_len: usize,
+) -> Span {
+    let mut matched_path = path.to_vec();
+    matched_path.push(JsonPathSegment::Key(parent_key.to_owned()));
+    matched_path.push(JsonPathSegment::Key(child_key.to_owned()));
+    resolve_key_span(&matched_path, locator, fallback_len)
+}
+
 fn resolve_value_span(
     path: &[JsonPathSegment],
     locator: Option<&JsonLocationMap>,
@@ -590,6 +614,17 @@ fn resolve_value_span(
     locator
         .and_then(|locator| locator.value_span(path).cloned())
         .unwrap_or_else(|| Span::new(0, fallback_len))
+}
+
+fn resolve_child_value_span(
+    path: &[JsonPathSegment],
+    key: &str,
+    locator: Option<&JsonLocationMap>,
+    fallback_len: usize,
+) -> Span {
+    let mut matched_path = path.to_vec();
+    matched_path.push(JsonPathSegment::Key(key.to_owned()));
+    resolve_value_span(&matched_path, locator, fallback_len)
 }
 
 fn resolve_value_or_key_span(
@@ -605,6 +640,17 @@ fn resolve_value_or_key_span(
                 .or_else(|| locator.key_span(path).cloned())
         })
         .unwrap_or_else(|| Span::new(0, fallback_len))
+}
+
+fn resolve_child_value_or_key_span(
+    path: &[JsonPathSegment],
+    key: &str,
+    locator: Option<&JsonLocationMap>,
+    fallback_len: usize,
+) -> Span {
+    let mut matched_path = path.to_vec();
+    matched_path.push(JsonPathSegment::Key(key.to_owned()));
+    resolve_value_or_key_span(&matched_path, locator, fallback_len)
 }
 
 fn resolve_relative_value_span(
@@ -625,15 +671,29 @@ fn resolve_relative_value_span(
         .unwrap_or_else(|| Span::new(0, fallback_len))
 }
 
+fn resolve_child_relative_value_span(
+    path: &[JsonPathSegment],
+    parent_key: &str,
+    child_key: &str,
+    relative: Span,
+    locator: Option<&JsonLocationMap>,
+    fallback_len: usize,
+) -> Span {
+    let mut matched_path = path.to_vec();
+    matched_path.push(JsonPathSegment::Key(parent_key.to_owned()));
+    if parent_key != child_key {
+        matched_path.push(JsonPathSegment::Key(child_key.to_owned()));
+    }
+    resolve_relative_value_span(&matched_path, relative, locator, fallback_len)
+}
+
 fn find_literal_value_after_prefixes_case_insensitive(
     text: &str,
     prefixes: &[&str],
 ) -> Option<Span> {
-    let lowered = text.to_ascii_lowercase();
     for prefix in prefixes {
-        let lowered_prefix = prefix.to_ascii_lowercase();
         let mut search_start = 0usize;
-        while let Some(relative) = lowered[search_start..].find(&lowered_prefix) {
+        while let Some(relative) = find_ascii_case_insensitive(&text[search_start..], prefix) {
             let value_start = search_start + relative + prefix.len();
             let value_end = text[value_start..]
                 .char_indices()
@@ -655,25 +715,37 @@ fn find_literal_value_after_prefixes_case_insensitive(
     None
 }
 
+fn is_env_container_key(key: &str) -> bool {
+    key.eq_ignore_ascii_case("env") || key.eq_ignore_ascii_case("environment")
+}
+
+fn is_trust_verification_disabled_key_value(key: &str, value: &Value) -> bool {
+    (matches!(key, "strictSSL" | "verifyTLS" | "rejectUnauthorized")
+        && value.as_bool() == Some(false))
+        || (key == "insecureSkipVerify" && value.as_bool() == Some(true))
+}
+
 fn is_descriptive_json_key(key: &str) -> bool {
-    matches!(
-        key.to_ascii_lowercase().as_str(),
-        "description" | "instructions" | "instruction" | "prompt" | "message" | "summary"
-    )
+    key.eq_ignore_ascii_case("description")
+        || key.eq_ignore_ascii_case("instructions")
+        || key.eq_ignore_ascii_case("instruction")
+        || key.eq_ignore_ascii_case("prompt")
+        || key.eq_ignore_ascii_case("message")
+        || key.eq_ignore_ascii_case("summary")
 }
 
 fn is_endpointish_json_key(key: &str) -> bool {
-    matches!(
-        key.to_ascii_lowercase().as_str(),
-        "url" | "uri" | "endpoint" | "server" | "baseurl" | "base_url"
-    )
+    key.eq_ignore_ascii_case("url")
+        || key.eq_ignore_ascii_case("uri")
+        || key.eq_ignore_ascii_case("endpoint")
+        || key.eq_ignore_ascii_case("server")
+        || key.eq_ignore_ascii_case("baseurl")
+        || key.eq_ignore_ascii_case("base_url")
 }
 
 fn find_hidden_instruction_relative_span(text: &str) -> Option<Span> {
-    let lowered = text.to_ascii_lowercase();
     HTML_COMMENT_DIRECTIVE_MARKERS.iter().find_map(|needle| {
-        lowered
-            .find(needle)
+        find_ascii_case_insensitive(text, needle)
             .map(|start| Span::new(start, start + needle.len()))
     })
 }
@@ -725,26 +797,24 @@ fn find_sensitive_env_reference_relative_span(text: &str) -> Option<Span> {
 }
 
 fn is_sensitive_env_var_name(var_name: &str) -> bool {
-    let lowered = var_name.to_ascii_lowercase();
-    lowered.contains("secret")
-        || lowered.contains("token")
-        || lowered.contains("password")
-        || lowered.contains("passwd")
-        || lowered.contains("auth")
-        || lowered.contains("credential")
-        || lowered.contains("session")
-        || lowered.contains("cookie")
-        || lowered.contains("bearer")
-        || lowered.contains("api_key")
-        || lowered.ends_with("_key")
-        || lowered == "key"
+    contains_ascii_case_insensitive(var_name, "secret")
+        || contains_ascii_case_insensitive(var_name, "token")
+        || contains_ascii_case_insensitive(var_name, "password")
+        || contains_ascii_case_insensitive(var_name, "passwd")
+        || contains_ascii_case_insensitive(var_name, "auth")
+        || contains_ascii_case_insensitive(var_name, "credential")
+        || contains_ascii_case_insensitive(var_name, "session")
+        || contains_ascii_case_insensitive(var_name, "cookie")
+        || contains_ascii_case_insensitive(var_name, "bearer")
+        || contains_ascii_case_insensitive(var_name, "api_key")
+        || ends_with_ascii_case_insensitive(var_name, "_key")
+        || var_name.eq_ignore_ascii_case("key")
 }
 
 fn find_suspicious_remote_endpoint_relative_span(text: &str) -> Option<Span> {
-    let lowered = text.to_ascii_lowercase();
-    let scheme_len = if lowered.starts_with("https://") {
+    let scheme_len = if starts_with_ascii_case_insensitive(text, "https://") {
         "https://".len()
-    } else if lowered.starts_with("http://") {
+    } else if starts_with_ascii_case_insensitive(text, "http://") {
         "http://".len()
     } else {
         return None;
@@ -761,14 +831,41 @@ fn find_suspicious_remote_endpoint_relative_span(text: &str) -> Option<Span> {
     let host_start = authority
         .rfind('@')
         .map_or(scheme_len, |index| scheme_len + index + 1);
-    let host = &lowered[host_start..authority_end];
+    let host = &text[host_start..authority_end];
 
     JSON_SUSPICIOUS_DOMAIN_MARKERS.iter().find_map(|marker| {
-        host.find(marker).map(|relative| {
+        find_ascii_case_insensitive(host, marker).map(|relative| {
             let start = host_start + relative;
             Span::new(start, start + marker.len())
         })
     })
+}
+
+fn starts_with_ascii_case_insensitive(text: &str, prefix: &str) -> bool {
+    text.as_bytes()
+        .get(..prefix.len())
+        .is_some_and(|candidate| candidate.eq_ignore_ascii_case(prefix.as_bytes()))
+}
+
+fn ends_with_ascii_case_insensitive(text: &str, suffix: &str) -> bool {
+    text.as_bytes()
+        .get(text.len().saturating_sub(suffix.len())..)
+        .is_some_and(|candidate| candidate.eq_ignore_ascii_case(suffix.as_bytes()))
+}
+
+fn contains_ascii_case_insensitive(text: &str, needle: &str) -> bool {
+    find_ascii_case_insensitive(text, needle).is_some()
+}
+
+fn find_ascii_case_insensitive(text: &str, needle: &str) -> Option<usize> {
+    let needle_bytes = needle.as_bytes();
+    if needle_bytes.is_empty() {
+        return Some(0);
+    }
+
+    text.as_bytes()
+        .windows(needle_bytes.len())
+        .position(|window| window.eq_ignore_ascii_case(needle_bytes))
 }
 
 #[cfg(test)]

@@ -1,0 +1,34 @@
+repo=clean
+scanned_files=6
+findings=0
+provider_metrics=provider=lintai-ai-security phase=file invocations=6 findings=0 errors=0
+provider=lintai-policy-mismatch phase=workspace invocations=1 findings=0 errors=0
+ai_security_work_budget=signal_builds:6 markdown_regions:9 hook_lines:0 hook_tokens:0 json_values:11 json_locator_builds:3
+
+repo=cursor-plugin
+scanned_files=6
+findings=4
+provider_metrics=provider=lintai-ai-security phase=file invocations=6 findings=4 errors=0
+provider=lintai-policy-mismatch phase=workspace invocations=1 findings=0 errors=0
+ai_security_work_budget=signal_builds:6 markdown_regions:6 hook_lines:4 hook_tokens:12 json_values:6 json_locator_builds:2
+
+repo=fixable-comments
+scanned_files=1
+findings=2
+provider_metrics=provider=lintai-ai-security phase=file invocations=1 findings=2 errors=0
+provider=lintai-policy-mismatch phase=workspace invocations=1 findings=0 errors=0
+ai_security_work_budget=signal_builds:1 markdown_regions:6 hook_lines:0 hook_tokens:0 json_values:0 json_locator_builds:0
+
+repo=mcp-heavy
+scanned_files=2
+findings=3
+provider_metrics=provider=lintai-ai-security phase=file invocations=2 findings=3 errors=0
+provider=lintai-policy-mismatch phase=workspace invocations=1 findings=0 errors=0
+ai_security_work_budget=signal_builds:2 markdown_regions:3 hook_lines:0 hook_tokens:0 json_values:20 json_locator_builds:1
+
+repo=policy-mismatch
+scanned_files=4
+findings=4
+provider_metrics=provider=lintai-ai-security phase=file invocations=4 findings=1 errors=0
+provider=lintai-policy-mismatch phase=workspace invocations=1 findings=3 errors=0
+ai_security_work_budget=signal_builds:4 markdown_regions:7 hook_lines:2 hook_tokens:4 json_values:2 json_locator_builds:1

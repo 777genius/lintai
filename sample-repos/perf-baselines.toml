@@ -1,0 +1,59 @@
+[repo.clean]
+max_file_provider_invocations = 6
+max_workspace_provider_invocations = 1
+max_file_findings = 0
+max_workspace_findings = 0
+max_signal_builds = 6
+max_markdown_regions_visited = 9
+max_hook_lines_visited = 0
+max_hook_tokens_visited = 0
+max_json_values_visited = 11
+max_json_locator_builds = 3
+
+[repo.cursor-plugin]
+max_file_provider_invocations = 6
+max_workspace_provider_invocations = 1
+max_file_findings = 4
+max_workspace_findings = 0
+max_signal_builds = 6
+max_markdown_regions_visited = 6
+max_hook_lines_visited = 4
+max_hook_tokens_visited = 12
+max_json_values_visited = 6
+max_json_locator_builds = 2
+
+[repo.fixable-comments]
+max_file_provider_invocations = 1
+max_workspace_provider_invocations = 1
+max_file_findings = 2
+max_workspace_findings = 0
+max_signal_builds = 1
+max_markdown_regions_visited = 6
+max_hook_lines_visited = 0
+max_hook_tokens_visited = 0
+max_json_values_visited = 0
+max_json_locator_builds = 0
+
+[repo.mcp-heavy]
+max_file_provider_invocations = 2
+max_workspace_provider_invocations = 1
+max_file_findings = 3
+max_workspace_findings = 0
+max_signal_builds = 2
+max_markdown_regions_visited = 3
+max_hook_lines_visited = 0
+max_hook_tokens_visited = 0
+max_json_values_visited = 20
+max_json_locator_builds = 1
+
+[repo.policy-mismatch]
+max_file_provider_invocations = 4
+max_workspace_provider_invocations = 1
+max_file_findings = 1
+max_workspace_findings = 3
+max_signal_builds = 4
+max_markdown_regions_visited = 7
+max_hook_lines_visited = 2
+max_hook_tokens_visited = 4
+max_json_values_visited = 2
+max_json_locator_builds = 1

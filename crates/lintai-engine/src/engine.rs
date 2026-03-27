@@ -15,7 +15,10 @@ use crate::normalize::{
     looks_binary, normalize_path, normalize_path_string, normalize_text, populate_line_columns,
 };
 use crate::provider::{ProviderBackend, ProviderCatalog};
-use crate::summary::{ProviderExecutionPhase, RuntimeErrorKind, ScanRuntimeError, ScanSummary};
+use crate::summary::{
+    ProviderExecutionMetric, ProviderExecutionPhase, RuntimeErrorKind, ScanRuntimeError,
+    ScanSummary,
+};
 use crate::workspace_index::{WorkspaceEntry, WorkspaceIndex, full_artifact_location};
 use crate::{EngineConfig, EngineError, ResolvedFileConfig, SuppressionMatcher};
 
@@ -186,6 +189,7 @@ impl Engine {
         for provider in providers.per_file() {
             let started = Instant::now();
             let result = provider.backend().check_result(&scanned.context);
+            let elapsed = started.elapsed();
             if !result
                 .errors
                 .iter()
@@ -195,10 +199,19 @@ impl Engine {
                     &scanned.context.artifact.normalized_path,
                     provider.id(),
                     provider.timeout(),
-                    started.elapsed(),
+                    elapsed,
                     summary,
                 );
             }
+            self.record_provider_metric(
+                &scanned.context.artifact.normalized_path,
+                provider.id(),
+                ProviderExecutionPhase::File,
+                elapsed,
+                result.findings.len(),
+                result.errors.len(),
+                summary,
+            );
             self.record_provider_execution_errors(
                 &scanned.context.artifact.normalized_path,
                 ProviderExecutionPhase::File,
@@ -258,6 +271,7 @@ impl Engine {
         for provider in providers.workspace() {
             let started = Instant::now();
             let result = provider.backend().check_workspace_result(&workspace);
+            let elapsed = started.elapsed();
             if !result
                 .errors
                 .iter()
@@ -267,10 +281,19 @@ impl Engine {
                     workspace.project_root.as_deref().unwrap_or("."),
                     provider.id(),
                     provider.timeout(),
-                    started.elapsed(),
+                    elapsed,
                     summary,
                 );
             }
+            self.record_provider_metric(
+                workspace.project_root.as_deref().unwrap_or("."),
+                provider.id(),
+                ProviderExecutionPhase::Workspace,
+                elapsed,
+                result.findings.len(),
+                result.errors.len(),
+                summary,
+            );
             self.record_provider_execution_errors(
                 workspace.project_root.as_deref().unwrap_or("."),
                 ProviderExecutionPhase::Workspace,
@@ -369,6 +392,26 @@ impl Engine {
                 message: error.message,
             });
         }
+    }
+
+    fn record_provider_metric(
+        &self,
+        normalized_path: &str,
+        provider_id: &str,
+        phase: ProviderExecutionPhase,
+        elapsed: std::time::Duration,
+        findings_emitted: usize,
+        errors_emitted: usize,
+        summary: &mut ScanSummary,
+    ) {
+        summary.provider_metrics.push(ProviderExecutionMetric {
+            normalized_path: normalized_path.to_owned(),
+            provider_id: provider_id.to_owned(),
+            phase,
+            elapsed_us: elapsed.as_micros(),
+            findings_emitted,
+            errors_emitted,
+        });
     }
 }
 

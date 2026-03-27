@@ -25,8 +25,8 @@ pub use error::EngineError;
 pub use normalize::normalize_path_string;
 pub use provider::ProviderBackend;
 pub use summary::{
-    DiagnosticSeverity, ProviderExecutionPhase, RuntimeErrorKind, ScanDiagnostic, ScanRuntimeError,
-    ScanSummary,
+    DiagnosticSeverity, ProviderExecutionMetric, ProviderExecutionPhase, RuntimeErrorKind,
+    ScanDiagnostic, ScanRuntimeError, ScanSummary,
 };
 pub use suppress::{FileSuppressions, NoopSuppressionMatcher, SuppressionMatcher};
 

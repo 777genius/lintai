@@ -7,8 +7,8 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use lintai_api::{ArtifactKind, Finding, RuleProvider, RuleTier, SourceFormat};
 use lintai_engine::{
     ConfigError, EngineBuilder, EngineConfig, EngineError, FileSuppressions,
-    NoopSuppressionMatcher, ProviderBackend, RuntimeErrorKind, ScanSummary, SuppressionMatcher,
-    internal::InProcessProviderBackend, load_workspace_config,
+    NoopSuppressionMatcher, ProviderBackend, ProviderExecutionPhase, RuntimeErrorKind, ScanSummary,
+    SuppressionMatcher, internal::InProcessProviderBackend, load_workspace_config,
 };
 use serde::Deserialize;
 use std::collections::BTreeMap;
@@ -567,6 +567,46 @@ impl OutputHarness {
         }
         lines.push(String::new());
         lines.join("\n")
+    }
+
+    pub fn provider_metrics_text(summary: &ScanSummary) -> String {
+        let mut buckets: BTreeMap<(&str, ProviderExecutionPhase), (usize, usize, usize)> =
+            BTreeMap::new();
+        for metric in &summary.provider_metrics {
+            let entry = buckets
+                .entry((metric.provider_id.as_str(), metric.phase))
+                .or_default();
+            entry.0 += 1;
+            entry.1 += metric.findings_emitted;
+            entry.2 += metric.errors_emitted;
+        }
+
+        if buckets.is_empty() {
+            return String::new();
+        }
+
+        let mut lines = buckets
+            .into_iter()
+            .map(|((provider_id, phase), (invocations, findings, errors))| {
+                format!(
+                    "provider={} phase={} invocations={} findings={} errors={}",
+                    provider_id,
+                    provider_phase_label(phase),
+                    invocations,
+                    findings,
+                    errors
+                )
+            })
+            .collect::<Vec<_>>();
+        lines.push(String::new());
+        lines.join("\n")
+    }
+}
+
+fn provider_phase_label(phase: ProviderExecutionPhase) -> &'static str {
+    match phase {
+        ProviderExecutionPhase::File => "file",
+        ProviderExecutionPhase::Workspace => "workspace",
     }
 }
 

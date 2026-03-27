@@ -9,6 +9,7 @@ pub struct ScanSummary {
     pub findings: Vec<Finding>,
     pub diagnostics: Vec<ScanDiagnostic>,
     pub runtime_errors: Vec<ScanRuntimeError>,
+    pub provider_metrics: Vec<ProviderExecutionMetric>,
 }
 
 impl ScanSummary {
@@ -16,6 +17,7 @@ impl ScanSummary {
         self.dedup_and_sort_findings();
         self.dedup_and_sort_diagnostics();
         self.dedup_and_sort_runtime_errors();
+        self.sort_provider_metrics();
     }
 
     fn dedup_and_sort_findings(&mut self) {
@@ -86,6 +88,27 @@ impl ScanSummary {
                 ))
         });
     }
+
+    fn sort_provider_metrics(&mut self) {
+        self.provider_metrics.sort_by(|left, right| {
+            (
+                left.normalized_path.as_str(),
+                left.provider_id.as_str(),
+                left.phase,
+                left.findings_emitted,
+                left.errors_emitted,
+                left.elapsed_us,
+            )
+                .cmp(&(
+                    right.normalized_path.as_str(),
+                    right.provider_id.as_str(),
+                    right.phase,
+                    right.findings_emitted,
+                    right.errors_emitted,
+                    right.elapsed_us,
+                ))
+        });
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
@@ -119,6 +142,16 @@ pub struct ScanRuntimeError {
 pub enum ProviderExecutionPhase {
     File,
     Workspace,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+pub struct ProviderExecutionMetric {
+    pub normalized_path: String,
+    pub provider_id: String,
+    pub phase: ProviderExecutionPhase,
+    pub elapsed_us: u128,
+    pub findings_emitted: usize,
+    pub errors_emitted: usize,
 }
 
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize)]

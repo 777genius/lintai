@@ -13,6 +13,18 @@ serde_json.workspace = true
 [dev-dependencies]
 lintai-testing.workspace = true
 lintai-engine.workspace = true
+lintai-adapters.workspace = true
+serde.workspace = true
+toml.workspace = true
+criterion = "0.5.1"
 
 [lib]
 path = "src/lib.rs"
+
+[[bench]]
+name = "provider_perf"
+harness = false
+
+[[bench]]
+name = "signals_hot_paths"
+harness = false

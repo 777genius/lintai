@@ -170,6 +170,7 @@ Execution policy belongs to `ProviderBackend`, not to `RuleProvider`, including 
   metadata + surface + detection class + remediation + suggestion fix.
 - Provider only iterates specs and attaches remediation from the spec itself; provider-wide `match rule_code` remediation tables не допускаются.
 - Rules read **per-artifact signals** (`MarkdownSignals`, `HookSignals`, `JsonSignals`), вычисленные один раз на файл.
+- Perf regressions guard-rail: internal **work-budget tests** verify one signal build per scan and single-pass surface analysis; checked-in sample-repo perf baselines and a `criterion` bench harness remain available for profiling and regression review.
 
 ### Stable / Preview policy for native rules (зафиксировано)
 

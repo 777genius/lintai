@@ -132,6 +132,43 @@ impl lintai_api::RuleProvider for UndeclaredFindingProvider {
     }
 }
 
+struct WorkspaceMetricProvider;
+
+static WORKSPACE_METRIC_RULES: [RuleMetadata; 1] = [lintai_api::RuleMetadata::new(
+    "SECWS",
+    "emits one workspace finding",
+    lintai_api::Category::Security,
+    lintai_api::Severity::Warn,
+    lintai_api::Confidence::High,
+    RuleTier::Preview,
+)];
+
+impl lintai_api::RuleProvider for WorkspaceMetricProvider {
+    fn id(&self) -> &str {
+        "workspace-metric"
+    }
+
+    fn rules(&self) -> &[RuleMetadata] {
+        &WORKSPACE_METRIC_RULES
+    }
+
+    fn check_result(&self, _ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(Vec::new(), Vec::new())
+    }
+
+    fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
+        let artifact = &ctx.artifacts[0];
+        ProviderScanResult::new(
+            vec![Finding::new(
+                &self.rules()[0],
+                Location::new(artifact.artifact.normalized_path.clone(), Span::new(0, 1)),
+                "workspace metric finding",
+            )],
+            Vec::new(),
+        )
+    }
+}
+
 struct WrongStableKeyProvider;
 
 impl lintai_api::RuleProvider for WrongStableKeyProvider {
@@ -857,6 +894,47 @@ fn deduplicates_findings_by_stable_key_keeping_stronger_one() {
     assert_eq!(summary.findings.len(), 1);
     assert_eq!(summary.findings[0].severity, lintai_api::Severity::Deny);
     assert_eq!(summary.findings[0].message, "stronger duplicate");
+}
+
+#[test]
+fn summary_records_provider_metrics_for_file_and_workspace_phases() {
+    let temp_dir = unique_temp_dir("lintai-provider-metrics");
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    std::fs::write(temp_dir.join("SKILL.md"), b"# title\n").unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_backend(backend(EmitFindingProvider))
+        .with_backend(backend_with_scope(
+            WorkspaceMetricProvider,
+            ScanScope::Workspace,
+        ))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert_eq!(summary.provider_metrics.len(), 2);
+
+    let file_metric = summary
+        .provider_metrics
+        .iter()
+        .find(|metric| metric.provider_id == "emit")
+        .unwrap();
+    assert_eq!(file_metric.phase, crate::ProviderExecutionPhase::File);
+    assert_eq!(file_metric.normalized_path, "SKILL.md");
+    assert_eq!(file_metric.findings_emitted, 1);
+    assert_eq!(file_metric.errors_emitted, 0);
+
+    let workspace_metric = summary
+        .provider_metrics
+        .iter()
+        .find(|metric| metric.provider_id == "workspace-metric")
+        .unwrap();
+    assert_eq!(
+        workspace_metric.phase,
+        crate::ProviderExecutionPhase::Workspace
+    );
+    assert_eq!(workspace_metric.findings_emitted, 1);
+    assert_eq!(workspace_metric.errors_emitted, 0);
 }
 
 fn unique_temp_dir(prefix: &str) -> PathBuf {
