@@ -19,6 +19,9 @@ use crate::markdown_rules::{
 };
 use crate::signals::ArtifactSignals;
 
+#[cfg_attr(not(test), allow(dead_code))]
+pub(crate) const PROVIDER_ID: &str = "lintai-ai-security";
+
 declare_rule! {
     pub struct HtmlCommentDirectiveRule {
         code: "SEC101",
@@ -270,12 +273,38 @@ pub(crate) enum DetectionClass {
     Heuristic,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) enum RuleLifecycle {
+    Preview {
+        blocker: &'static str,
+        promotion_requirements: &'static str,
+    },
+    Stable {
+        rationale: &'static str,
+        malicious_case_ids: &'static [&'static str],
+        benign_case_ids: &'static [&'static str],
+        requires_structured_evidence: bool,
+        remediation_reviewed: bool,
+        deterministic_signal_basis: &'static str,
+    },
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[cfg_attr(not(test), allow(dead_code))]
+pub(crate) enum RemediationSupport {
+    SafeFix,
+    Suggestion,
+    MessageOnly,
+    None,
+}
+
 #[derive(Clone, Copy)]
 pub(crate) struct NativeRuleSpec {
     pub(crate) metadata: RuleMetadata,
     pub(crate) surface: Surface,
     #[cfg_attr(not(test), allow(dead_code))]
     pub(crate) detection_class: DetectionClass,
+    pub(crate) lifecycle: RuleLifecycle,
     pub(crate) check: CheckFn,
     safe_fix: Option<SafeFixFn>,
     suggestion_message: Option<&'static str>,
@@ -298,13 +327,33 @@ impl NativeRuleSpec {
             None => finding,
         }
     }
+
+    #[cfg_attr(not(test), allow(dead_code))]
+    pub(crate) fn remediation_support(self) -> RemediationSupport {
+        if self.safe_fix.is_some() {
+            RemediationSupport::SafeFix
+        } else if self.suggestion_fix.is_some() {
+            RemediationSupport::Suggestion
+        } else if self.suggestion_message.is_some() {
+            RemediationSupport::MessageOnly
+        } else {
+            RemediationSupport::None
+        }
+    }
 }
+
+pub(crate) const HEURISTIC_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.";
+pub(crate) const WORKSPACE_PREVIEW_REQUIREMENTS: &str = "Needs workspace precision review, linked benign/malicious corpus proof, and completed stable checklist metadata.";
 
 pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
         detection_class: DetectionClass::Heuristic,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Depends on suspicious phrase heuristics inside hidden HTML comments.",
+            promotion_requirements: HEURISTIC_PREVIEW_REQUIREMENTS,
+        },
         check: check_html_comment_directive,
         safe_fix: Some(remove_hidden_comment_fix),
         suggestion_message: None,
@@ -314,6 +363,10 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: MarkdownDownloadExecRule::METADATA,
         surface: Surface::Markdown,
         detection_class: DetectionClass::Heuristic,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Depends on prose command heuristics outside code blocks.",
+            promotion_requirements: HEURISTIC_PREVIEW_REQUIREMENTS,
+        },
         check: check_markdown_download_exec,
         safe_fix: None,
         suggestion_message: Some(
@@ -325,6 +378,10 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: HtmlCommentDownloadExecRule::METADATA,
         surface: Surface::Markdown,
         detection_class: DetectionClass::Heuristic,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Depends on hidden-comment command heuristics rather than a structural execution model.",
+            promotion_requirements: HEURISTIC_PREVIEW_REQUIREMENTS,
+        },
         check: check_html_comment_download_exec,
         safe_fix: Some(remove_hidden_download_exec_comment_fix),
         suggestion_message: None,
@@ -334,6 +391,10 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: MarkdownBase64ExecRule::METADATA,
         surface: Surface::Markdown,
         detection_class: DetectionClass::Heuristic,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Depends on prose base64-and-exec text heuristics.",
+            promotion_requirements: HEURISTIC_PREVIEW_REQUIREMENTS,
+        },
         check: check_markdown_base64_exec,
         safe_fix: None,
         suggestion_message: Some(
@@ -345,6 +406,10 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: MarkdownPathTraversalRule::METADATA,
         surface: Surface::Markdown,
         detection_class: DetectionClass::Heuristic,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Depends on prose path-traversal and access-verb heuristics.",
+            promotion_requirements: HEURISTIC_PREVIEW_REQUIREMENTS,
+        },
         check: check_markdown_path_traversal,
         safe_fix: None,
         suggestion_message: Some(
@@ -356,6 +421,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: HookDownloadExecRule::METADATA,
         surface: Surface::Hook,
         detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit remote download-and-execute behavior in hook shell lines, not prose text.",
+            malicious_case_ids: &["hook-download-exec"],
+            benign_case_ids: &["cursor-plugin-clean-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "HookSignals download-and-execute observation over non-comment hook lines.",
+        },
         check: check_hook_download_exec,
         safe_fix: None,
         suggestion_message: Some(
@@ -367,6 +440,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: HookSecretExfilRule::METADATA,
         surface: Surface::Hook,
         detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches secret-bearing network exfil behavior in executable hook lines.",
+            malicious_case_ids: &["hook-secret-exfil"],
+            benign_case_ids: &["cursor-plugin-clean-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "HookSignals secret exfil observation from network markers plus secret markers on non-comment lines.",
+        },
         check: check_hook_secret_exfil,
         safe_fix: None,
         suggestion_message: Some(
@@ -378,6 +459,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: HookPlainHttpExfilRule::METADATA,
         surface: Surface::Hook,
         detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches insecure HTTP transport on a secret-bearing hook exfil path.",
+            malicious_case_ids: &["hook-plain-http-secret-exfil"],
+            benign_case_ids: &["cursor-plugin-clean-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "HookSignals precise http:// span observation gated by concurrent secret exfil markers.",
+        },
         check: check_hook_plain_http_exfil,
         safe_fix: None,
         suggestion_message: Some(
@@ -389,6 +478,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: HookTlsBypassRule::METADATA,
         surface: Surface::Hook,
         detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit TLS verification bypass tokens in executable hook network context.",
+            malicious_case_ids: &["hook-tls-bypass"],
+            benign_case_ids: &["cursor-plugin-tls-verified-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "HookSignals TLS-bypass token observation over parsed hook line tokens and network context.",
+        },
         check: check_hook_tls_bypass,
         safe_fix: None,
         suggestion_message: Some(
@@ -400,6 +497,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: HookStaticAuthExposureRule::METADATA,
         surface: Surface::Hook,
         detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches literal static auth material in hook URLs or authorization headers.",
+            malicious_case_ids: &["hook-static-auth-userinfo"],
+            benign_case_ids: &["hook-auth-dynamic-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "HookSignals userinfo/header literal extraction excluding dynamic references.",
+        },
         check: check_hook_static_auth_exposure,
         safe_fix: None,
         suggestion_message: Some(
@@ -411,6 +516,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: HookBase64ExecRule::METADATA,
         surface: Surface::Hook,
         detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit base64 decode-and-execute behavior in executable hook lines.",
+            malicious_case_ids: &["hook-base64-exec"],
+            benign_case_ids: &["hook-base64-decode-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "HookSignals base64-decode plus exec observation over non-comment hook lines.",
+        },
         check: check_hook_base64_exec,
         safe_fix: None,
         suggestion_message: Some(
@@ -422,6 +535,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
         detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit shell-wrapper command structure in JSON config.",
+            malicious_case_ids: &["mcp-shell-wrapper"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command and args structure observation for sh -c or bash -c wrappers.",
+        },
         check: check_mcp_shell_wrapper,
         safe_fix: None,
         suggestion_message: Some(
@@ -433,6 +554,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: PlainHttpConfigRule::METADATA,
         surface: Surface::Json,
         detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit insecure http:// endpoints in configuration values.",
+            malicious_case_ids: &["mcp-plain-http"],
+            benign_case_ids: &["mcp-trusted-endpoint-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals precise http:// endpoint span resolution from parsed JSON location map.",
+        },
         check: check_plain_http_config,
         safe_fix: None,
         suggestion_message: Some(
@@ -444,6 +573,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: McpCredentialEnvPassthroughRule::METADATA,
         surface: Surface::Json,
         detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit credential env passthrough by key inside configuration env maps.",
+            malicious_case_ids: &["mcp-credential-env-passthrough"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals env-map key observation for credential passthrough keys.",
+        },
         check: check_mcp_credential_env_passthrough,
         safe_fix: None,
         suggestion_message: Some(
@@ -455,6 +592,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: TrustVerificationDisabledConfigRule::METADATA,
         surface: Surface::Json,
         detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit TLS or certificate verification disable flags in configuration.",
+            malicious_case_ids: &["mcp-trust-verification-disabled"],
+            benign_case_ids: &["mcp-trust-verified-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals boolean and key observation for trust-verification disable settings.",
+        },
         check: check_trust_verification_disabled_config,
         safe_fix: None,
         suggestion_message: Some(
@@ -466,6 +611,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: StaticAuthExposureConfigRule::METADATA,
         surface: Surface::Json,
         detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches literal static auth material embedded directly in configuration values.",
+            malicious_case_ids: &["mcp-static-authorization"],
+            benign_case_ids: &["mcp-authorization-placeholder-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals literal authorization or userinfo span extraction excluding dynamic placeholders.",
+        },
         check: check_static_auth_exposure_config,
         safe_fix: None,
         suggestion_message: Some(
@@ -477,6 +630,10 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: JsonHiddenInstructionRule::METADATA,
         surface: Surface::Json,
         detection_class: DetectionClass::Heuristic,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Depends on descriptive-field phrase heuristics in JSON text.",
+            promotion_requirements: HEURISTIC_PREVIEW_REQUIREMENTS,
+        },
         check: check_json_hidden_instruction,
         safe_fix: None,
         suggestion_message: Some(
@@ -488,6 +645,10 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: JsonSensitiveEnvReferenceRule::METADATA,
         surface: Surface::Json,
         detection_class: DetectionClass::Heuristic,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Depends on sensitive env-name heuristics in forwarded references.",
+            promotion_requirements: HEURISTIC_PREVIEW_REQUIREMENTS,
+        },
         check: check_json_sensitive_env_reference,
         safe_fix: None,
         suggestion_message: Some(
@@ -499,6 +660,10 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         metadata: JsonSuspiciousRemoteEndpointRule::METADATA,
         surface: Surface::Json,
         detection_class: DetectionClass::Heuristic,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Depends on suspicious host-marker heuristics for remote endpoints.",
+            promotion_requirements: HEURISTIC_PREVIEW_REQUIREMENTS,
+        },
         check: check_json_suspicious_remote_endpoint,
         safe_fix: None,
         suggestion_message: Some(

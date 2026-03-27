@@ -176,6 +176,9 @@ Execution policy belongs to `ProviderBackend`, not to `RuleProvider`, including 
 - `Stable` reserved for **structural/high-precision** checks with deterministic evidence.
 - `Preview` is the required staging lane for **heuristic text-led** checks even if they are useful.
 - Phrase-list, env-name, domain-marker, or similar heuristic rules must not ship as canonical `Stable` until they graduate from that lane.
+- Graduation to `Stable` requires completed lifecycle metadata in the rule spec:
+  rationale, deterministic signal basis, linked benign/malicious corpus proof, and explicit structured-evidence requirement.
+- `Preview` rules must carry explicit blockers and promotion requirements in the rule spec.
 
 ## 12) Markdown suppress: primary = external file
 

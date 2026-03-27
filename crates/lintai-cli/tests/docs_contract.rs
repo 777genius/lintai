@@ -37,6 +37,36 @@ fn index_does_not_contain_stale_iteration_seven_status() {
 }
 
 #[test]
+fn index_links_security_rules_catalog() {
+    let text = include_str!("../../../docs/INDEX.md");
+
+    assert!(
+        text.contains("[SECURITY_RULES.md](SECURITY_RULES.md)"),
+        "INDEX.md should link the generated security rules catalog"
+    );
+}
+
+#[test]
+fn docs_policy_mentions_graduation_gates() {
+    let quality = include_str!("../../../docs/RULE_QUALITY_POLICY.md");
+    let architecture = include_str!("../../../docs/ARCHITECTURE_DECISIONS.md");
+
+    assert!(
+        quality.contains("Stable` требует **completed graduation metadata**")
+            || quality.contains("`Stable` требует **completed graduation metadata**"),
+        "RULE_QUALITY_POLICY.md should document stable graduation metadata"
+    );
+    assert!(
+        quality.contains("`Preview` требует **explicit blocker**"),
+        "RULE_QUALITY_POLICY.md should document preview blockers"
+    );
+    assert!(
+        architecture.contains("Graduation to `Stable` requires completed lifecycle metadata"),
+        "ARCHITECTURE_DECISIONS.md should document lifecycle graduation gates"
+    );
+}
+
+#[test]
 fn architecture_decisions_match_current_provider_backend_model() {
     let text = include_str!("../../../docs/ARCHITECTURE_DECISIONS.md");
 

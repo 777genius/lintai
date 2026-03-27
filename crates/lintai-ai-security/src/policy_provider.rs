@@ -5,6 +5,11 @@ use lintai_api::{
 };
 
 use crate::helpers::workspace_json_semantics;
+use crate::registry::{
+    DetectionClass, RemediationSupport, RuleLifecycle, Surface, WORKSPACE_PREVIEW_REQUIREMENTS,
+};
+
+pub(crate) const PROVIDER_ID: &str = "lintai-policy-mismatch";
 
 declare_rule! {
     pub struct ProjectExecMismatchRule {
@@ -39,17 +44,61 @@ declare_rule! {
     }
 }
 
+#[derive(Clone, Copy)]
+#[cfg_attr(not(test), allow(dead_code))]
+pub(crate) struct PolicyRuleSpec {
+    pub(crate) metadata: RuleMetadata,
+    pub(crate) surface: Surface,
+    pub(crate) detection_class: DetectionClass,
+    pub(crate) lifecycle: RuleLifecycle,
+    pub(crate) remediation_support: RemediationSupport,
+}
+
+#[cfg_attr(not(test), allow(dead_code))]
+pub(crate) const POLICY_RULE_SPECS: [PolicyRuleSpec; 3] = [
+    PolicyRuleSpec {
+        metadata: ProjectExecMismatchRule::METADATA,
+        surface: Surface::Workspace,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Needs workspace-level precision review and linked graduation corpus before promotion to Stable.",
+            promotion_requirements: WORKSPACE_PREVIEW_REQUIREMENTS,
+        },
+        remediation_support: RemediationSupport::None,
+    },
+    PolicyRuleSpec {
+        metadata: ProjectNetworkMismatchRule::METADATA,
+        surface: Surface::Workspace,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Needs workspace-level network precision review and linked graduation corpus before promotion to Stable.",
+            promotion_requirements: WORKSPACE_PREVIEW_REQUIREMENTS,
+        },
+        remediation_support: RemediationSupport::None,
+    },
+    PolicyRuleSpec {
+        metadata: CapabilityConflictRule::METADATA,
+        surface: Surface::Workspace,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Needs workspace-level capability-conflict precision review and linked graduation corpus before promotion to Stable.",
+            promotion_requirements: WORKSPACE_PREVIEW_REQUIREMENTS,
+        },
+        remediation_support: RemediationSupport::None,
+    },
+];
+
 const POLICY_RULES: [RuleMetadata; 3] = [
-    ProjectExecMismatchRule::METADATA,
-    ProjectNetworkMismatchRule::METADATA,
-    CapabilityConflictRule::METADATA,
+    POLICY_RULE_SPECS[0].metadata,
+    POLICY_RULE_SPECS[1].metadata,
+    POLICY_RULE_SPECS[2].metadata,
 ];
 
 pub struct PolicyMismatchProvider;
 
 impl RuleProvider for PolicyMismatchProvider {
     fn id(&self) -> &str {
-        "lintai-policy-mismatch"
+        PROVIDER_ID
     }
 
     fn rules(&self) -> &[RuleMetadata] {

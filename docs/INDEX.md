@@ -41,6 +41,7 @@
 | 4 | **[RELEASE_CHECKLIST_V0_1.md](RELEASE_CHECKLIST_V0_1.md)** | Dry release checklist и certification record для `v0.1` |
 | 5 | **[ROADMAP_V0_1.md](ROADMAP_V0_1.md)** | Операционный roadmap и sequence итераций |
 | 6 | **[FIXTURE_CONTRACT.md](FIXTURE_CONTRACT.md)** | Контракт для corpus cases и sample repos |
+| 7 | **[SECURITY_RULES.md](SECURITY_RULES.md)** | Generated catalog of current shipped security rules |
 
 ### Research second
 
@@ -57,6 +58,7 @@ Research files below are reference material. They are useful for background and 
 - **[ARCHITECTURE_DECISIONS.md](ARCHITECTURE_DECISIONS.md)** — главный canonical doc по архитектуре
 - **[FEATURE_CAPABILITIES_MANIFEST.md](FEATURE_CAPABILITIES_MANIFEST.md)** — Декларирование capabilities для снижения false positives
 - **[RULE_QUALITY_POLICY.md](RULE_QUALITY_POLICY.md)** — Политика надёжности правил: детерминизм, контекст, доказательства
+- **[SECURITY_RULES.md](SECURITY_RULES.md)** — Сгенерированный canonical catalog текущих security rules и их remediation support
 - **[GLOSSARY.md](GLOSSARY.md)** — Единые термины (Claims/Capabilities, stable_key/fingerprint, артефакты)
 - **[ROADMAP_V0_1.md](ROADMAP_V0_1.md)** — Операционный roadmap от текущего core к publishable `v0.1`
 - **[RELEASE_CHECKLIST_V0_1.md](RELEASE_CHECKLIST_V0_1.md)** — Dry release checklist и certification record

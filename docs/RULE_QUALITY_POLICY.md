@@ -26,6 +26,19 @@
   - env-name heuristics or similar signals that may need FP tuning
 - Эвристическое правило может быть полезным, но пока оно зависит от phrase/domain marker lists, оно не считается canonical `Stable`.
 
+## Graduation gates
+
+- `Stable` требует **completed graduation metadata**, а не только `tier = Stable` в metadata.
+- `Preview` требует **explicit blocker** и понятные promotion requirements.
+- Для security rules graduation proof живёт рядом с rule spec:
+  - rationale
+  - deterministic signal basis
+  - linked malicious corpus ids
+  - linked benign corpus ids
+  - structured evidence requirement
+  - remediation review state
+- Hard gates enforce это через tests; prose сама по себе не считается достаточной защитой от дрейфа quality bar.
+
 ## Запрещённые подходы (anti-patterns)
 
 - “Хардкод текста” как основа правила: правила не должны опираться на одну-две фразы, которые легко перефразировать и которые дают FP.
