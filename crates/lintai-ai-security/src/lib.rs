@@ -1,9 +1,9 @@
 mod helpers;
 mod hook_rules;
-mod matchers;
 mod json_locator;
 mod json_rules;
 mod markdown_rules;
+mod matchers;
 mod policy_provider;
 mod provider;
 mod registry;
@@ -13,5 +13,5 @@ mod corpus_tests;
 #[cfg(test)]
 mod tests;
 
-pub use provider::AiSecurityProvider;
 pub use policy_provider::PolicyMismatchProvider;
+pub use provider::AiSecurityProvider;

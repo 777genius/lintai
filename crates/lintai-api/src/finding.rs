@@ -72,11 +72,7 @@ pub struct Evidence {
 }
 
 impl Evidence {
-    pub fn new(
-        kind: EvidenceKind,
-        message: impl Into<String>,
-        location: Option<Location>,
-    ) -> Self {
+    pub fn new(kind: EvidenceKind, message: impl Into<String>, location: Option<Location>) -> Self {
         Self {
             kind,
             message: message.into(),
@@ -97,7 +93,9 @@ impl Evidence {
     }
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, JsonSchema, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(
+    Clone, Copy, Debug, Deserialize, Eq, JsonSchema, Ord, PartialEq, PartialOrd, Serialize,
+)]
 #[serde(rename_all = "lowercase")]
 pub enum Severity {
     Deny,

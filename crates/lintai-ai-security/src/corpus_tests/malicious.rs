@@ -58,8 +58,18 @@ fn hook_plain_http_secret_exfil_triggers_both_rules() {
     let summary = harness().scan_case(&case_dir).unwrap();
 
     assert_case_summary(&manifest, &summary);
-    assert!(summary.findings.iter().any(|finding| finding.rule_code == "SEC202"));
-    assert!(summary.findings.iter().any(|finding| finding.rule_code == "SEC203"));
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC202")
+    );
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC203")
+    );
 }
 
 #[test]

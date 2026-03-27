@@ -126,7 +126,10 @@ mod tests {
         );
         assert_eq!(
             detector
-                .detect(Path::new("/tmp/.cursor/rules/demo.mdc"), ".cursor/rules/demo.mdc")
+                .detect(
+                    Path::new("/tmp/.cursor/rules/demo.mdc"),
+                    ".cursor/rules/demo.mdc"
+                )
                 .unwrap()
                 .kind,
             ArtifactKind::CursorRules

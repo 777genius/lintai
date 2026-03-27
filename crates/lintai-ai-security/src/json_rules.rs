@@ -3,8 +3,9 @@ use lintai_api::{ArtifactKind, Finding, RuleMetadata, ScanContext};
 use crate::helpers::{finding_for_region, json_semantics};
 use crate::json_locator::JsonLocationMap;
 use crate::matchers::{
-    first_json_credential_env_passthrough, first_json_plain_http_endpoint, first_json_shell_wrapper,
-    first_json_static_auth_exposure, first_json_trust_verification_disabled,
+    first_json_credential_env_passthrough, first_json_plain_http_endpoint,
+    first_json_shell_wrapper, first_json_static_auth_exposure,
+    first_json_trust_verification_disabled,
 };
 
 pub(crate) fn check_mcp_shell_wrapper(ctx: &ScanContext, meta: &RuleMetadata) -> Vec<Finding> {

@@ -18,7 +18,8 @@ pub(crate) fn parse_document(
         | (ArtifactKind::CursorPluginAgent, SourceFormat::Markdown) => {
             let parsed = parse::markdown::parse(content)?;
             let mut markdown_semantics = MarkdownSemantics::new(None);
-            if let (Some(format), Some(value)) = (parsed.frontmatter_format, parsed.frontmatter_value)
+            if let (Some(format), Some(value)) =
+                (parsed.frontmatter_format, parsed.frontmatter_value)
             {
                 markdown_semantics.frontmatter = Some(FrontmatterSemantics::new(format, value));
             }

@@ -7,9 +7,8 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 pub use context::{
-    CapabilityConflictMode, CapabilityProfile, ExecCapability, FileSystemCapability,
-    McpCapability, NetworkCapability, ScanContext, SecretCapability, WorkspaceArtifact,
-    WorkspaceScanContext,
+    CapabilityConflictMode, CapabilityProfile, ExecCapability, FileSystemCapability, McpCapability,
+    NetworkCapability, ScanContext, SecretCapability, WorkspaceArtifact, WorkspaceScanContext,
 };
 pub use finding::{
     Applicability, Evidence, EvidenceKind, Finding, Fix, LineColumn, Location, RelatedFinding,
@@ -25,7 +24,9 @@ pub use rule::{
     RuleProvider, RuleTier, ScanScope,
 };
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, JsonSchema, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(
+    Clone, Copy, Debug, Deserialize, Eq, JsonSchema, Ord, PartialEq, PartialOrd, Serialize,
+)]
 #[serde(rename_all = "lowercase")]
 pub enum Category {
     Critical,
@@ -36,7 +37,9 @@ pub enum Category {
     Nursery,
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, JsonSchema, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(
+    Clone, Copy, Debug, Deserialize, Eq, JsonSchema, Ord, PartialEq, PartialOrd, Serialize,
+)]
 #[serde(rename_all = "lowercase")]
 pub enum Confidence {
     High,

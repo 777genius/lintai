@@ -3,8 +3,7 @@ use lintai_api::{ArtifactKind, Finding, RuleMetadata, ScanContext};
 use crate::helpers::finding_for_region;
 use crate::matchers::{
     first_hook_download_exec_span, first_hook_plain_http_secret_exfil_span,
-    first_hook_secret_exfil_span, first_hook_static_auth_exposure_span,
-    first_hook_tls_bypass_span,
+    first_hook_secret_exfil_span, first_hook_static_auth_exposure_span, first_hook_tls_bypass_span,
 };
 
 pub(crate) fn check_hook_download_exec(ctx: &ScanContext, meta: &RuleMetadata) -> Vec<Finding> {

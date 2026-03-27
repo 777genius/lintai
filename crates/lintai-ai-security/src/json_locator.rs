@@ -239,7 +239,8 @@ mod tests {
 
     #[test]
     fn records_boolean_value_spans() {
-        let map = JsonLocationMap::parse(r#"{"tls":{"verifyTLS":false,"strictSSL":true}}"#).unwrap();
+        let map =
+            JsonLocationMap::parse(r#"{"tls":{"verifyTLS":false,"strictSSL":true}}"#).unwrap();
 
         assert_eq!(
             map.value_span(&[

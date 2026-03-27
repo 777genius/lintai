@@ -4,10 +4,9 @@ use crate::parse;
 
 #[test]
 fn markdown_keeps_frontmatter_as_region_and_raw_value() {
-    let parsed = parse::markdown::parse(
-        "---\nname: demo\ncapabilities:\n  exec: shell\n---\n# Heading\n",
-    )
-    .unwrap();
+    let parsed =
+        parse::markdown::parse("---\nname: demo\ncapabilities:\n  exec: shell\n---\n# Heading\n")
+            .unwrap();
 
     assert_eq!(parsed.document.regions.len(), 2);
     assert_eq!(
@@ -67,5 +66,8 @@ fn json_rejects_invalid_document() {
 #[test]
 fn shell_extracts_lines() {
     let parsed = parse::shell::parse("echo one\necho two\n");
-    assert_eq!(parsed.lines, vec!["echo one".to_owned(), "echo two".to_owned()]);
+    assert_eq!(
+        parsed.lines,
+        vec!["echo one".to_owned(), "echo two".to_owned()]
+    );
 }

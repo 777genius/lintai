@@ -144,7 +144,10 @@ fn fix_apply_surfaces_suggestions_without_mutating_suggestion_only_repo() {
 
 #[test]
 fn fix_preview_rule_filter_limits_suggestions() {
-    let output = run_lintai(&sample_repo_dir("mcp-heavy"), &["fix", ".", "--rule", "SEC302"]);
+    let output = run_lintai(
+        &sample_repo_dir("mcp-heavy"),
+        &["fix", ".", "--rule", "SEC302"],
+    );
     assert_eq!(output.status.code(), Some(0));
     let stdout = stdout_string(&output);
     assert!(!stdout.contains("suggest SEC301"));

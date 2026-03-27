@@ -123,7 +123,10 @@ format = "markdown"
     let resolved = explain_file_config(&workspace, &temp_dir.join("custom/agent.md"));
 
     assert_eq!(
-        resolved.project_capabilities.as_ref().and_then(|value| value.network),
+        resolved
+            .project_capabilities
+            .as_ref()
+            .and_then(|value| value.network),
         Some(lintai_api::NetworkCapability::None)
     );
     assert_eq!(

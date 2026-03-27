@@ -1,6 +1,6 @@
 use schemars::JsonSchema;
-use serde_json::Value;
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
 use crate::{Artifact, DocumentSemantics, Location, ParsedDocument};
 
@@ -29,7 +29,9 @@ impl ScanContext {
     }
 }
 
-fn declared_capabilities_from_semantics(semantics: Option<&DocumentSemantics>) -> Option<CapabilityProfile> {
+fn declared_capabilities_from_semantics(
+    semantics: Option<&DocumentSemantics>,
+) -> Option<CapabilityProfile> {
     let frontmatter = semantics
         .and_then(DocumentSemantics::as_markdown)
         .and_then(|markdown| markdown.frontmatter.as_ref())?;
