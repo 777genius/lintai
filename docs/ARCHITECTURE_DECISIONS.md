@@ -154,7 +154,7 @@ MVP стартует с **6–7 крейтов**:
 - `check_workspace_result()` остаётся default-empty для non-workspace providers
 - `timeout()`
 - `capabilities()`
-- `supports_fix()` + `fix()`
+- remediation lives on `Finding.fix` / `Suggestion.fix`, not on a provider fix hook
 
 Engine execution model вынесен отдельно в backend layer; lifecycle hooks больше не используются.
 

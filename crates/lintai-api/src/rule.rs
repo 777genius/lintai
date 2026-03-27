@@ -3,7 +3,7 @@ use std::time::Duration;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use crate::{Category, Confidence, Finding, Fix, ScanContext, Severity, WorkspaceScanContext};
+use crate::{Category, Confidence, Finding, ScanContext, Severity, WorkspaceScanContext};
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, JsonSchema, PartialEq, Serialize)]
 #[serde(rename_all = "lowercase")]
@@ -130,14 +130,6 @@ pub trait RuleProvider: Send + Sync {
 
     fn timeout(&self) -> Duration {
         Duration::from_secs(30)
-    }
-
-    fn supports_fix(&self) -> bool {
-        false
-    }
-
-    fn fix(&self, _ctx: &ScanContext, _finding: &Finding) -> Option<Fix> {
-        None
     }
 
     fn capabilities(&self) -> ProviderCapabilities {

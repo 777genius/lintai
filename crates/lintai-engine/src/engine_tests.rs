@@ -70,26 +70,21 @@ impl lintai_api::RuleProvider for FixingProvider {
 
     fn check_result(&self, ctx: &lintai_api::ScanContext) -> ProviderScanResult {
         ProviderScanResult::new(
-            vec![Finding::new(
-                &self.rules()[0],
-                Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
-                "fixable finding",
-            )],
+            vec![
+                Finding::new(
+                    &self.rules()[0],
+                    Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
+                    "fixable finding",
+                )
+                .with_fix(Fix::new(
+                    Span::new(0, 1),
+                    "X",
+                    Applicability::Safe,
+                    Some("replace first byte".to_owned()),
+                )),
+            ],
             Vec::new(),
         )
-    }
-
-    fn supports_fix(&self) -> bool {
-        true
-    }
-
-    fn fix(&self, _ctx: &lintai_api::ScanContext, _finding: &Finding) -> Option<Fix> {
-        Some(Fix::new(
-            Span::new(0, 1),
-            "X",
-            Applicability::Safe,
-            Some("replace first byte".to_owned()),
-        ))
     }
 }
 
@@ -251,26 +246,21 @@ impl lintai_api::RuleProvider for InvalidFixProvider {
 
     fn check_result(&self, ctx: &lintai_api::ScanContext) -> ProviderScanResult {
         ProviderScanResult::new(
-            vec![Finding::new(
-                &FIXING_RULES[0],
-                Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
-                "fixable finding",
-            )],
+            vec![
+                Finding::new(
+                    &FIXING_RULES[0],
+                    Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
+                    "fixable finding",
+                )
+                .with_fix(Fix::new(
+                    Span::new(0, ctx.content.len() + 5),
+                    "X",
+                    Applicability::Safe,
+                    Some("invalid fix".to_owned()),
+                )),
+            ],
             Vec::new(),
         )
-    }
-
-    fn supports_fix(&self) -> bool {
-        true
-    }
-
-    fn fix(&self, ctx: &lintai_api::ScanContext, _finding: &Finding) -> Option<Fix> {
-        Some(Fix::new(
-            Span::new(0, ctx.content.len() + 5),
-            "X",
-            Applicability::Safe,
-            Some("invalid fix".to_owned()),
-        ))
     }
 }
 
@@ -638,7 +628,7 @@ fn derives_line_columns_for_findings() {
 }
 
 #[test]
-fn attaches_fix_from_provider_fix_hook() {
+fn keeps_fix_when_finding_carries_safe_fix() {
     let temp_dir = unique_temp_dir("lintai-fix-hook");
     std::fs::create_dir_all(&temp_dir).unwrap();
     std::fs::write(temp_dir.join("SKILL.md"), b"# title\n").unwrap();

@@ -34,42 +34,46 @@ impl RuleProvider for AiSecurityProvider {
         ProviderScanResult::new(
             findings
                 .into_iter()
-                .map(|finding| attach_remediation_suggestion(ctx, finding))
+                .map(|finding| attach_remediation(ctx, finding))
                 .collect(),
             Vec::new(),
         )
     }
-
-    fn supports_fix(&self) -> bool {
-        true
-    }
-
-    fn fix(&self, _ctx: &ScanContext, finding: &Finding) -> Option<Fix> {
-        match finding.rule_code.as_str() {
-            "SEC101" => Some(Fix::new(
-                finding.location.span.clone(),
-                "",
-                Applicability::Safe,
-                Some("remove dangerous hidden HTML comment".to_owned()),
-            )),
-            "SEC103" => Some(Fix::new(
-                finding.location.span.clone(),
-                "",
-                Applicability::Safe,
-                Some("remove hidden HTML comment download-and-execute instruction".to_owned()),
-            )),
-            _ => None,
-        }
-    }
 }
 
-fn attach_remediation_suggestion(ctx: &ScanContext, finding: Finding) -> Finding {
+fn attach_remediation(ctx: &ScanContext, finding: Finding) -> Finding {
+    let finding = attach_safe_fix(finding);
     let Some(message) = remediation_message(&finding) else {
         return finding;
     };
     let candidate_fix = remediation_candidate_fix(ctx, &finding);
 
     finding.with_suggestion(Suggestion::new(message, candidate_fix))
+}
+
+fn attach_safe_fix(finding: Finding) -> Finding {
+    let Some(fix) = safe_fix(&finding) else {
+        return finding;
+    };
+    finding.with_fix(fix)
+}
+
+fn safe_fix(finding: &Finding) -> Option<Fix> {
+    match finding.rule_code.as_str() {
+        "SEC101" => Some(Fix::new(
+            finding.location.span.clone(),
+            "",
+            Applicability::Safe,
+            Some("remove dangerous hidden HTML comment".to_owned()),
+        )),
+        "SEC103" => Some(Fix::new(
+            finding.location.span.clone(),
+            "",
+            Applicability::Safe,
+            Some("remove hidden HTML comment download-and-execute instruction".to_owned()),
+        )),
+        _ => None,
+    }
 }
 
 fn remediation_message(finding: &Finding) -> Option<&'static str> {

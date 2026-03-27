@@ -3,7 +3,7 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use lintai_api::{
-    Finding, Fix, ProviderCapabilities, ProviderScanResult, RuleMetadata, RuleProvider, RuleTier,
+    Finding, ProviderCapabilities, ProviderScanResult, RuleMetadata, RuleProvider, RuleTier,
     ScanContext, ScanScope, Span, StableKey, WorkspaceScanContext,
 };
 
@@ -24,14 +24,6 @@ pub trait ProviderBackend: Send + Sync {
 
     fn timeout(&self) -> Duration {
         Duration::from_secs(30)
-    }
-
-    fn supports_fix(&self) -> bool {
-        false
-    }
-
-    fn fix(&self, _ctx: &ScanContext, _finding: &Finding) -> Option<Fix> {
-        None
     }
 
     fn capabilities(&self) -> ProviderCapabilities {
@@ -74,14 +66,6 @@ impl ProviderBackend for InProcessProviderBackend {
         self.provider.timeout()
     }
 
-    fn supports_fix(&self) -> bool {
-        self.provider.supports_fix()
-    }
-
-    fn fix(&self, ctx: &ScanContext, finding: &Finding) -> Option<Fix> {
-        self.provider.fix(ctx, finding)
-    }
-
     fn capabilities(&self) -> ProviderCapabilities {
         self.provider.capabilities()
     }
@@ -95,7 +79,6 @@ pub(crate) struct ProviderEntry<'a> {
     backend: &'a dyn ProviderBackend,
     id: String,
     rules: BTreeMap<String, RuleMetadata>,
-    supports_fix: bool,
     scope: ScanScope,
     timeout: Duration,
 }
@@ -142,7 +125,6 @@ impl<'a> ProviderCatalog<'a> {
                 backend,
                 id: provider_id,
                 rules,
-                supports_fix: backend.supports_fix(),
                 scope: backend.scan_scope(),
                 timeout,
             });
@@ -188,7 +170,6 @@ impl ProviderEntry<'_> {
             &ctx.content,
             &mut finding,
             diagnostics,
-            Some(ctx),
         )
     }
 
@@ -199,7 +180,7 @@ impl ProviderEntry<'_> {
         mut finding: Finding,
         diagnostics: &mut Vec<ScanDiagnostic>,
     ) -> Option<Finding> {
-        self.prepare_finding_internal(artifact_path, content, &mut finding, diagnostics, None)
+        self.prepare_finding_internal(artifact_path, content, &mut finding, diagnostics)
     }
 
     fn prepare_finding_internal(
@@ -208,7 +189,6 @@ impl ProviderEntry<'_> {
         content: &str,
         finding: &mut Finding,
         diagnostics: &mut Vec<ScanDiagnostic>,
-        ctx: Option<&ScanContext>,
     ) -> Option<Finding> {
         let Some(rule) = self.rules.get(&finding.rule_code) else {
             diagnostics.push(provider_diagnostic(
@@ -272,12 +252,6 @@ impl ProviderEntry<'_> {
                 ),
             ));
             finding.stable_key = normalized_key;
-        }
-
-        if self.supports_fix && finding.fix.is_none() {
-            if let Some(ctx) = ctx {
-                finding.fix = self.backend.fix(ctx, finding);
-            }
         }
 
         normalize_evidence(finding, content, artifact_path, &self.id, diagnostics);

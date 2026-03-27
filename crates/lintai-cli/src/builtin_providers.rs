@@ -7,7 +7,7 @@ use std::time::{Duration, Instant};
 
 use lintai_ai_security::{AiSecurityProvider, PolicyMismatchProvider};
 use lintai_api::{
-    Confidence, Finding, Fix, Location, ProviderCapabilities, ProviderError, ProviderScanResult,
+    Confidence, Finding, Location, ProviderCapabilities, ProviderError, ProviderScanResult,
     RuleMetadata, RuleProvider, RuleTier, ScanContext, ScanScope, Severity, Span,
     WorkspaceScanContext,
 };
@@ -121,7 +121,6 @@ struct IsolatedBuiltInBackend {
     provider_id: String,
     rules: Box<[RuleMetadata]>,
     timeout: Duration,
-    supports_fix: bool,
     scope: ScanScope,
     capabilities: ProviderCapabilities,
 }
@@ -134,7 +133,6 @@ impl IsolatedBuiltInBackend {
             provider_id: provider.id().to_owned(),
             rules: provider.rules().to_vec().into_boxed_slice(),
             timeout: provider.timeout(),
-            supports_fix: provider.supports_fix(),
             scope: provider.scan_scope(),
             capabilities: provider.capabilities(),
         }
@@ -337,14 +335,6 @@ impl ProviderBackend for IsolatedBuiltInBackend {
 
     fn timeout(&self) -> Duration {
         self.timeout
-    }
-
-    fn supports_fix(&self) -> bool {
-        self.supports_fix
-    }
-
-    fn fix(&self, ctx: &ScanContext, finding: &Finding) -> Option<Fix> {
-        self.kind.instantiate().fix(ctx, finding)
     }
 
     fn capabilities(&self) -> ProviderCapabilities {
