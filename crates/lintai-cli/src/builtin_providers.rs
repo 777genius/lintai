@@ -7,9 +7,8 @@ use std::time::{Duration, Instant};
 
 use lintai_ai_security::{AiSecurityProvider, PolicyMismatchProvider};
 use lintai_api::{
-    Confidence, Finding, Location, ProviderCapabilities, ProviderError, ProviderScanResult,
-    RuleMetadata, RuleProvider, RuleTier, ScanContext, ScanScope, Severity, Span,
-    WorkspaceScanContext,
+    Confidence, Finding, Location, ProviderError, ProviderScanResult, RuleMetadata,
+    RuleProvider, RuleTier, ScanContext, ScanScope, Severity, Span, WorkspaceScanContext,
 };
 use lintai_engine::ProviderBackend;
 
@@ -43,6 +42,16 @@ impl BuiltInProviderKind {
     fn product_kinds() -> [Self; 2] {
         [Self::AiSecurity, Self::PolicyMismatch]
     }
+
+    fn timeout(self) -> Duration {
+        match self {
+            Self::AiSecurity | Self::PolicyMismatch => Duration::from_secs(30),
+            #[cfg(debug_assertions)]
+            Self::TestTimeout => Duration::from_millis(30),
+            #[cfg(debug_assertions)]
+            Self::TestPanic | Self::TestPartialError => Duration::from_secs(30),
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
@@ -54,7 +63,6 @@ enum RunnerPhase {
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 struct RunnerRequest {
-    schema_version: u32,
     provider: BuiltInProviderKind,
     phase: RunnerPhase,
     scan: Option<ScanContext>,
@@ -63,7 +71,6 @@ struct RunnerRequest {
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 struct RunnerResponse {
-    schema_version: u32,
     result: ProviderScanResult,
 }
 
@@ -85,12 +92,6 @@ pub(crate) fn run_provider_runner(args: impl Iterator<Item = String>) -> Result<
         .map_err(|error| format!("provider runner failed to read stdin: {error}"))?;
     let request: RunnerRequest = serde_json::from_str(&input)
         .map_err(|error| format!("provider runner request decode failed: {error}"))?;
-    if request.schema_version != 1 {
-        return Err(format!(
-            "provider runner schema mismatch: expected 1, got {}",
-            request.schema_version
-        ));
-    }
 
     let provider = request.provider.instantiate();
     let result = match request.phase {
@@ -107,10 +108,7 @@ pub(crate) fn run_provider_runner(args: impl Iterator<Item = String>) -> Result<
                 .ok_or_else(|| "provider runner missing workspace scan context".to_owned())?,
         ),
     };
-    let response = RunnerResponse {
-        schema_version: 1,
-        result,
-    };
+    let response = RunnerResponse { result };
     serde_json::to_writer(std::io::stdout(), &response)
         .map_err(|error| format!("provider runner response encode failed: {error}"))?;
     Ok(ExitCode::SUCCESS)
@@ -122,7 +120,6 @@ struct IsolatedBuiltInBackend {
     rules: Box<[RuleMetadata]>,
     timeout: Duration,
     scope: ScanScope,
-    capabilities: ProviderCapabilities,
 }
 
 impl IsolatedBuiltInBackend {
@@ -132,9 +129,8 @@ impl IsolatedBuiltInBackend {
             kind,
             provider_id: provider.id().to_owned(),
             rules: provider.rules().to_vec().into_boxed_slice(),
-            timeout: provider.timeout(),
+            timeout: kind.timeout(),
             scope: provider.scan_scope(),
-            capabilities: provider.capabilities(),
         }
     }
 
@@ -253,18 +249,6 @@ impl IsolatedBuiltInBackend {
                             );
                         }
                     };
-                    if response.schema_version != 1 {
-                        return ProviderScanResult::new(
-                            Vec::new(),
-                            vec![ProviderError::new(
-                                self.id(),
-                                format!(
-                                    "provider runner schema mismatch: expected 1, got {}",
-                                    response.schema_version
-                                ),
-                            )],
-                        );
-                    }
                     return response.result;
                 }
                 Ok(None) => {
@@ -315,7 +299,6 @@ impl ProviderBackend for IsolatedBuiltInBackend {
 
     fn check_result(&self, ctx: &ScanContext) -> ProviderScanResult {
         self.run_child(RunnerRequest {
-            schema_version: 1,
             provider: self.kind,
             phase: RunnerPhase::File,
             scan: Some(ctx.clone()),
@@ -325,7 +308,6 @@ impl ProviderBackend for IsolatedBuiltInBackend {
 
     fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
         self.run_child(RunnerRequest {
-            schema_version: 1,
             provider: self.kind,
             phase: RunnerPhase::Workspace,
             scan: None,
@@ -335,10 +317,6 @@ impl ProviderBackend for IsolatedBuiltInBackend {
 
     fn timeout(&self) -> Duration {
         self.timeout
-    }
-
-    fn capabilities(&self) -> ProviderCapabilities {
-        self.capabilities.clone()
     }
 }
 
@@ -424,10 +402,6 @@ impl RuleProvider for TestTimeoutProvider {
     fn check_result(&self, _ctx: &ScanContext) -> ProviderScanResult {
         thread::sleep(Duration::from_millis(100));
         ProviderScanResult::new(Vec::new(), Vec::new())
-    }
-
-    fn timeout(&self) -> Duration {
-        Duration::from_millis(30)
     }
 }
 
@@ -550,14 +524,12 @@ mod tests {
     #[test]
     fn runner_request_serializes_schema_and_phase() {
         let request = RunnerRequest {
-            schema_version: 1,
             provider: BuiltInProviderKind::TestTimeout,
             phase: RunnerPhase::File,
             scan: Some(scan_context()),
             workspace: None,
         };
         let json = serde_json::to_string(&request).unwrap();
-        assert!(json.contains("\"schema_version\":1"));
         assert!(json.contains("\"phase\":\"file\""));
     }
 }

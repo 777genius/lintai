@@ -1,5 +1,3 @@
-use std::time::Duration;
-
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
@@ -39,22 +37,6 @@ impl RuleMetadata {
             default_severity,
             default_confidence,
             tier,
-        }
-    }
-}
-
-#[derive(Clone, Debug, Default, Deserialize, Eq, JsonSchema, PartialEq, Serialize)]
-#[non_exhaustive]
-pub struct ProviderCapabilities {
-    pub supports_incremental: bool,
-    pub supports_streaming: bool,
-}
-
-impl ProviderCapabilities {
-    pub fn new(supports_incremental: bool, supports_streaming: bool) -> Self {
-        Self {
-            supports_incremental,
-            supports_streaming,
         }
     }
 }
@@ -126,13 +108,5 @@ pub trait RuleProvider: Send + Sync {
 
     fn check_workspace_result(&self, _ctx: &WorkspaceScanContext) -> ProviderScanResult {
         ProviderScanResult::new(Vec::new(), Vec::new())
-    }
-
-    fn timeout(&self) -> Duration {
-        Duration::from_secs(30)
-    }
-
-    fn capabilities(&self) -> ProviderCapabilities {
-        ProviderCapabilities::default()
     }
 }

@@ -20,8 +20,8 @@ pub use parsed::{
     TextRegion,
 };
 pub use rule::{
-    ProviderCapabilities, ProviderError, ProviderErrorKind, ProviderScanResult, RuleMetadata,
-    RuleProvider, RuleTier, ScanScope,
+    ProviderError, ProviderErrorKind, ProviderScanResult, RuleMetadata, RuleProvider, RuleTier,
+    ScanScope,
 };
 
 #[derive(

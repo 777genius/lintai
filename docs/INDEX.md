@@ -13,7 +13,7 @@
 - **MVP v0.1 scope**: `SKILL.md`, `CLAUDE.md`, `.mdc/.cursorrules`, `mcp.json`, **Cursor Plugins**
 - **MVP v0.1 targets**: сборка/релиз сразу на всех таргетах (включая Windows и Linux musl)
 - **Стек**: Rust monorepo, current v0.1 core in a compact internal workspace
-- **Архитектура**: `lintai-api` = stable contract, `lintai-engine` = orchestrator, `lintai-adapters` stays one internal crate in `v0.1` with logical FORMAT/DOMAIN split only
+- **Архитектура**: `lintai-api` = stable contract, `lintai-engine` = orchestrator, `lintai-parse` = format parsing, `lintai-adapters` = domain routing/semantics
 - **Rules**: current `v0.1` core is native-Rust-first; broader YAML/WASM ecosystem work is later
 - **Макросы**: `declare_rule!` macro_rules! (НЕ proc-macro) — Clippy/Oxlint precedent, 6x быстрее компиляции
 - **Public contracts**: typed `evidence`, explicit `RuleTier`, `stable_key`, `schema_version = 1`

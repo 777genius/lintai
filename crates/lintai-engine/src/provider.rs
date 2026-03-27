@@ -3,8 +3,8 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use lintai_api::{
-    Finding, ProviderCapabilities, ProviderScanResult, RuleMetadata, RuleProvider, RuleTier,
-    ScanContext, ScanScope, Span, StableKey, WorkspaceScanContext,
+    Finding, ProviderScanResult, RuleMetadata, RuleProvider, RuleTier, ScanContext, ScanScope,
+    Span, StableKey, WorkspaceScanContext,
 };
 
 use crate::{EngineError, ScanDiagnostic};
@@ -25,19 +25,20 @@ pub trait ProviderBackend: Send + Sync {
     fn timeout(&self) -> Duration {
         Duration::from_secs(30)
     }
-
-    fn capabilities(&self) -> ProviderCapabilities {
-        ProviderCapabilities::default()
-    }
 }
 
 pub struct InProcessProviderBackend {
     provider: Arc<dyn RuleProvider>,
+    timeout: Duration,
 }
 
 impl InProcessProviderBackend {
     pub fn new(provider: Arc<dyn RuleProvider>) -> Self {
-        Self { provider }
+        Self::with_timeout(provider, Duration::from_secs(30))
+    }
+
+    pub fn with_timeout(provider: Arc<dyn RuleProvider>, timeout: Duration) -> Self {
+        Self { provider, timeout }
     }
 }
 
@@ -63,11 +64,7 @@ impl ProviderBackend for InProcessProviderBackend {
     }
 
     fn timeout(&self) -> Duration {
-        self.provider.timeout()
-    }
-
-    fn capabilities(&self) -> ProviderCapabilities {
-        self.provider.capabilities()
+        self.timeout
     }
 }
 
@@ -100,7 +97,6 @@ impl<'a> ProviderCatalog<'a> {
 
             let timeout = backend.timeout();
             validate_timeout(provider_id.as_str(), timeout)?;
-            validate_capabilities(backend)?;
 
             let mut rules = BTreeMap::new();
             for rule in backend.rules() {
@@ -280,11 +276,6 @@ fn validate_timeout(provider_id: &str, timeout: Duration) -> Result<(), EngineEr
         )));
     }
 
-    Ok(())
-}
-
-fn validate_capabilities(backend: &dyn ProviderBackend) -> Result<(), EngineError> {
-    let _capabilities = backend.capabilities();
     Ok(())
 }
 

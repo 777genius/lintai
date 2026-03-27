@@ -41,7 +41,6 @@ This file is the canonical source of truth for what counts as `v0.1`.
 
 - `stable` rules define the release baseline and must emit structured evidence.
 - `preview` rules are tested but do not define the release baseline.
-- `deprecated` rules preserve compatibility only.
 
 ## Explicit Non-Goals For v0.1
 

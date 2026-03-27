@@ -71,3 +71,33 @@ fn lifecycle_hooks_and_deprecated_rule_tier_are_absent() {
         );
     }
 }
+
+#[test]
+fn provider_capabilities_and_ruleprovider_execution_knobs_are_absent() {
+    let api_rule = fs::read_to_string(repo_root().join("crates/lintai-api/src/rule.rs"))
+        .expect("lintai-api rule contract should be readable");
+    let api_lib = fs::read_to_string(repo_root().join("crates/lintai-api/src/lib.rs"))
+        .expect("lintai-api lib should be readable");
+    let engine_provider =
+        fs::read_to_string(repo_root().join("crates/lintai-engine/src/provider.rs"))
+            .expect("engine provider backend should be readable");
+
+    assert!(!api_rule.contains("ProviderCapabilities"));
+    assert!(!api_lib.contains("ProviderCapabilities"));
+    assert!(!api_rule.contains("fn timeout(&self)"));
+    assert!(!api_rule.contains("fn capabilities(&self)"));
+    assert!(!engine_provider.contains("provider.timeout()"));
+    assert!(!engine_provider.contains("provider.capabilities()"));
+}
+
+#[test]
+fn internal_runner_schema_version_is_absent() {
+    let text = fs::read_to_string(
+        repo_root().join("crates/lintai-cli/src/builtin_providers.rs"),
+    )
+    .expect("builtin provider runtime source should be readable");
+    assert!(
+        !text.contains("schema_version"),
+        "internal runner protocol should not carry compatibility schema_version fields"
+    );
+}

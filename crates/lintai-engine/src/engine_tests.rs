@@ -5,8 +5,8 @@ use std::time::Duration;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use lintai_api::{
-    Applicability, Finding, Fix, Location, ProviderCapabilities, ProviderError, ProviderScanResult,
-    RuleMetadata, RuleTier, ScanScope, Span, WorkspaceScanContext,
+    Applicability, Finding, Fix, Location, ProviderError, ProviderScanResult, RuleMetadata,
+    RuleTier, ScanScope, Span, WorkspaceScanContext,
 };
 
 use crate::artifact_view::ArtifactContextRef;
@@ -14,6 +14,16 @@ use crate::{Engine, EngineBuilder, InProcessProviderBackend, ProviderBackend, Su
 
 fn backend(provider: impl lintai_api::RuleProvider + 'static) -> Arc<dyn ProviderBackend> {
     Arc::new(InProcessProviderBackend::new(Arc::new(provider)))
+}
+
+fn backend_with_timeout(
+    provider: impl lintai_api::RuleProvider + 'static,
+    timeout: Duration,
+) -> Arc<dyn ProviderBackend> {
+    Arc::new(InProcessProviderBackend::with_timeout(
+        Arc::new(provider),
+        timeout,
+    ))
 }
 
 struct EmitFindingProvider;
@@ -147,10 +157,6 @@ impl lintai_api::RuleProvider for ZeroTimeoutProvider {
     fn check_result(&self, _ctx: &lintai_api::ScanContext) -> ProviderScanResult {
         ProviderScanResult::new(Vec::new(), Vec::new())
     }
-
-    fn timeout(&self) -> Duration {
-        Duration::ZERO
-    }
 }
 
 struct WorkspaceFindingProvider;
@@ -170,10 +176,6 @@ impl lintai_api::RuleProvider for WorkspaceFindingProvider {
 
     fn scan_scope(&self) -> ScanScope {
         ScanScope::Workspace
-    }
-
-    fn capabilities(&self) -> ProviderCapabilities {
-        ProviderCapabilities::new(false, false)
     }
 
     fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
@@ -323,10 +325,6 @@ impl lintai_api::RuleProvider for WorkspaceLineColumnProvider {
         ScanScope::Workspace
     }
 
-    fn capabilities(&self) -> ProviderCapabilities {
-        ProviderCapabilities::new(false, false)
-    }
-
     fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
         let Some(first) = ctx.artifacts.first() else {
             return ProviderScanResult::new(Vec::new(), Vec::new());
@@ -428,10 +426,6 @@ impl lintai_api::RuleProvider for WorkspaceExecutionErrorProvider {
 
     fn scan_scope(&self) -> ScanScope {
         ScanScope::Workspace
-    }
-
-    fn capabilities(&self) -> ProviderCapabilities {
-        ProviderCapabilities::new(false, false)
     }
 
     fn check_workspace_result(&self, _ctx: &WorkspaceScanContext) -> ProviderScanResult {
@@ -705,7 +699,7 @@ fn rejects_zero_timeout_provider_contract() {
     std::fs::write(temp_dir.join("SKILL.md"), b"# title\n").unwrap();
 
     let error = EngineBuilder::default()
-        .with_backend(backend(ZeroTimeoutProvider))
+        .with_backend(backend_with_timeout(ZeroTimeoutProvider, Duration::ZERO))
         .build()
         .scan_path(&temp_dir)
         .unwrap_err();

@@ -21,6 +21,7 @@ This file defines the compatibility promises for the publishable `v0.1` core aft
 
 - JSON machine output is a public contract.
 - The envelope uses `schema_version = 1`.
+- Internal runner protocols are not public compatibility surface.
 - Changes are additive-only during the `v0.1` line.
 - `stable_key` remains the source of truth for deduplication semantics.
 
