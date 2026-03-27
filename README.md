@@ -154,6 +154,8 @@ format = "markdown"
 - findings carry structured `evidence`
 - JSON machine output is versioned through `schema_version = 1`
 - SARIF uses `stableKey` as the fingerprint source of truth
+- shipped built-in providers run behind an internal isolated backend with hard timeout enforcement
+- in-process provider backends and internal runner protocol details are not public product contract
 - `lintai fix` is additive public CLI surface with safe autofix for a narrow allowlist, message suggestions, and preview-only candidate patch edits for selected stable rules
 - root README commands are validated through the docs-command suite
 - `lintai-testing` remains internal during `v0.1`

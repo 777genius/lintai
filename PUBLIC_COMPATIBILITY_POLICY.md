@@ -14,7 +14,8 @@ This file defines the compatibility promises for the publishable `v0.1` core aft
 - Before the first release, pre-release cleanup may still remove legacy shapes that have not shipped.
 - After release, changes are additive-only during the `v0.1` line.
 - `RuleProvider`, `Finding`, `StableKey`, `ScanContext`, `WorkspaceScanContext`, and `RuleMetadata` do not change shape without a new charter decision.
-- Shipped built-in providers execute behind an internal isolated runtime boundary.
+- Shipped built-in providers execute behind an internal isolated backend.
+- Provider backend composition and internal runner protocol details are not public compatibility surface.
 - Rule codes are stable after release.
 
 ## JSON Output
