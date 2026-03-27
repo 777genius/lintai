@@ -6,7 +6,7 @@ expected_runtime_errors = 0
 expected_runtime_error_kinds = []
 expected_diagnostics = 0
 expected_findings = []
-expected_absent_rules = ["SEC101", "SEC102", "SEC103", "SEC201", "SEC202", "SEC203", "SEC204", "SEC301", "SEC302", "SEC303", "SEC304", "SEC401", "SEC402", "SEC403"]
+expected_absent_rules = ["SEC101", "SEC102", "SEC103", "SEC201", "SEC202", "SEC203", "SEC204", "SEC205", "SEC301", "SEC302", "SEC303", "SEC304", "SEC305", "SEC401", "SEC402", "SEC403"]
 
 [snapshot]
 kind = "none"

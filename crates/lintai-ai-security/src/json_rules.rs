@@ -1,7 +1,7 @@
 use lintai_api::{ArtifactKind, Finding, RuleMetadata, ScanContext, Span};
 use serde_json::Value;
 
-use crate::helpers::{finding_for_region, json_semantics};
+use crate::helpers::{contains_dynamic_reference, find_url_userinfo_span, finding_for_region, json_semantics};
 use crate::json_locator::{JsonLocationMap, JsonPathSegment};
 
 pub(crate) fn check_mcp_shell_wrapper(ctx: &ScanContext, meta: &RuleMetadata) -> Vec<Finding> {
@@ -122,6 +122,45 @@ pub(crate) fn check_trust_verification_disabled_config(
         ctx,
         &span,
         "configuration disables TLS or certificate verification",
+    )]
+}
+
+pub(crate) fn check_static_auth_exposure_config(
+    ctx: &ScanContext,
+    meta: &RuleMetadata,
+) -> Vec<Finding> {
+    if !matches!(
+        ctx.artifact.kind,
+        ArtifactKind::McpConfig
+            | ArtifactKind::CursorPluginManifest
+            | ArtifactKind::CursorPluginHooks
+    ) {
+        return Vec::new();
+    }
+
+    let Some(value) = json_semantics(ctx).map(|json| &json.value) else {
+        return Vec::new();
+    };
+    let Some((path, relative_span)) = find_static_auth_exposure_path(value, &mut Vec::new()) else {
+        return Vec::new();
+    };
+    let locator = JsonLocationMap::parse(&ctx.content);
+    let span = locator
+        .as_ref()
+        .and_then(|map| map.value_span(&path))
+        .map(|value_span| {
+            Span::new(
+                value_span.start_byte + relative_span.start_byte,
+                value_span.start_byte + relative_span.end_byte,
+            )
+        })
+        .unwrap_or_else(|| Span::new(0, ctx.content.len()));
+
+    vec![finding_for_region(
+        meta,
+        ctx,
+        &span,
+        "configuration embeds static authentication material in a connection or auth value",
     )]
 }
 
@@ -301,4 +340,58 @@ fn find_trust_verification_disabled_path(
         }
         _ => None,
     }
+}
+
+fn find_static_auth_exposure_path(
+    value: &Value,
+    path: &mut Vec<JsonPathSegment>,
+) -> Option<(Vec<JsonPathSegment>, Span)> {
+    match value {
+        Value::Object(map) => {
+            for (key, nested) in map {
+                if key.eq_ignore_ascii_case("authorization") {
+                    if let Some(text) = nested.as_str() {
+                        if let Some(relative_span) = find_static_authorization_value_span(text) {
+                            let mut found_path = path.clone();
+                            found_path.push(JsonPathSegment::Key(key.clone()));
+                            return Some((found_path, relative_span));
+                        }
+                    }
+                }
+
+                path.push(JsonPathSegment::Key(key.clone()));
+                if let Some(found) = find_static_auth_exposure_path(nested, path) {
+                    path.pop();
+                    return Some(found);
+                }
+                path.pop();
+            }
+            None
+        }
+        Value::Array(items) => {
+            for (index, nested) in items.iter().enumerate() {
+                path.push(JsonPathSegment::Index(index));
+                if let Some(found) = find_static_auth_exposure_path(nested, path) {
+                    path.pop();
+                    return Some(found);
+                }
+                path.pop();
+            }
+            None
+        }
+        Value::String(text) => find_url_userinfo_span(text).map(|relative_span| (path.clone(), relative_span)),
+        _ => None,
+    }
+}
+
+fn find_static_authorization_value_span(text: &str) -> Option<Span> {
+    for prefix in ["Bearer ", "Basic "] {
+        if let Some(value) = text.strip_prefix(prefix) {
+            if !value.is_empty() && !contains_dynamic_reference(value) {
+                return Some(Span::new(prefix.len(), text.len()));
+            }
+        }
+    }
+
+    None
 }

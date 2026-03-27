@@ -4,11 +4,11 @@ use lintai_api::{
 
 use crate::hook_rules::{
     check_hook_download_exec, check_hook_plain_http_exfil, check_hook_secret_exfil,
-    check_hook_tls_bypass,
+    check_hook_static_auth_exposure, check_hook_tls_bypass,
 };
 use crate::json_rules::{
     check_mcp_credential_env_passthrough, check_mcp_shell_wrapper, check_plain_http_config,
-    check_trust_verification_disabled_config,
+    check_static_auth_exposure_config, check_trust_verification_disabled_config,
 };
 use crate::markdown_rules::{
     check_html_comment_directive, check_html_comment_download_exec, check_markdown_download_exec,
@@ -92,6 +92,17 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct HookStaticAuthExposureRule {
+        code: "SEC205",
+        summary: "Hook script embeds static authentication material in a network call",
+        category: Category::Security,
+        default_severity: Severity::Deny,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpShellWrapperRule {
         code: "SEC301",
         summary: "MCP configuration shells out through sh -c or bash -c",
@@ -135,13 +146,24 @@ declare_rule! {
     }
 }
 
+declare_rule! {
+    pub struct StaticAuthExposureConfigRule {
+        code: "SEC305",
+        summary: "Configuration embeds static authentication material in a connection or auth value",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
 #[derive(Clone, Copy)]
 pub(crate) struct NativeRuleEntry {
     pub(crate) metadata: RuleMetadata,
     pub(crate) check: fn(&ScanContext, &RuleMetadata) -> Vec<Finding>,
 }
 
-pub(crate) const RULES: [NativeRuleEntry; 11] = [
+pub(crate) const RULES: [NativeRuleEntry; 13] = [
     NativeRuleEntry {
         metadata: HtmlCommentDirectiveRule::METADATA,
         check: check_html_comment_directive,
@@ -171,6 +193,10 @@ pub(crate) const RULES: [NativeRuleEntry; 11] = [
         check: check_hook_tls_bypass,
     },
     NativeRuleEntry {
+        metadata: HookStaticAuthExposureRule::METADATA,
+        check: check_hook_static_auth_exposure,
+    },
+    NativeRuleEntry {
         metadata: McpShellWrapperRule::METADATA,
         check: check_mcp_shell_wrapper,
     },
@@ -186,9 +212,13 @@ pub(crate) const RULES: [NativeRuleEntry; 11] = [
         metadata: TrustVerificationDisabledConfigRule::METADATA,
         check: check_trust_verification_disabled_config,
     },
+    NativeRuleEntry {
+        metadata: StaticAuthExposureConfigRule::METADATA,
+        check: check_static_auth_exposure_config,
+    },
 ];
 
-pub(crate) const RULE_METADATA: [RuleMetadata; 11] = [
+pub(crate) const RULE_METADATA: [RuleMetadata; 13] = [
     HtmlCommentDirectiveRule::METADATA,
     MarkdownDownloadExecRule::METADATA,
     HtmlCommentDownloadExecRule::METADATA,
@@ -196,8 +226,10 @@ pub(crate) const RULE_METADATA: [RuleMetadata; 11] = [
     HookSecretExfilRule::METADATA,
     HookPlainHttpExfilRule::METADATA,
     HookTlsBypassRule::METADATA,
+    HookStaticAuthExposureRule::METADATA,
     McpShellWrapperRule::METADATA,
     PlainHttpConfigRule::METADATA,
     McpCredentialEnvPassthroughRule::METADATA,
     TrustVerificationDisabledConfigRule::METADATA,
+    StaticAuthExposureConfigRule::METADATA,
 ];

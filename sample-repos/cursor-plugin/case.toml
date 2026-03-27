@@ -5,7 +5,7 @@ expected_output = ["text", "json", "sarif"]
 expected_runtime_errors = 0
 expected_runtime_error_kinds = []
 expected_diagnostics = 0
-expected_absent_rules = ["SEC101", "SEC102", "SEC103", "SEC204", "SEC301", "SEC302", "SEC303", "SEC304", "SEC401", "SEC402", "SEC403"]
+expected_absent_rules = ["SEC101", "SEC102", "SEC103", "SEC204", "SEC301", "SEC302", "SEC303", "SEC304", "SEC305", "SEC401", "SEC402", "SEC403"]
 
 [[expected_findings]]
 rule_code = "SEC201"
@@ -19,6 +19,11 @@ min_evidence_count = 2
 
 [[expected_findings]]
 rule_code = "SEC203"
+tier = "stable"
+min_evidence_count = 2
+
+[[expected_findings]]
+rule_code = "SEC205"
 tier = "stable"
 min_evidence_count = 2
 

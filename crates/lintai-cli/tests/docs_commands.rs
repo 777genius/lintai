@@ -112,7 +112,7 @@ fn docs_cases() -> Vec<CommandCase> {
             args: &["scan", "."],
             expected_exit: 1,
             output_kind: OutputKind::Text,
-            expected_rules: &["SEC201", "SEC202", "SEC203"],
+            expected_rules: &["SEC201", "SEC202", "SEC203", "SEC205"],
         },
         CommandCase {
             name: "cursor-plugin-scan-json",
@@ -120,7 +120,7 @@ fn docs_cases() -> Vec<CommandCase> {
             args: &["scan", ".", "--format=json"],
             expected_exit: 1,
             output_kind: OutputKind::Json,
-            expected_rules: &["SEC201", "SEC202", "SEC203"],
+            expected_rules: &["SEC201", "SEC202", "SEC203", "SEC205"],
         },
         CommandCase {
             name: "cursor-plugin-scan-sarif",
@@ -128,7 +128,7 @@ fn docs_cases() -> Vec<CommandCase> {
             args: &["scan", ".", "--format=sarif"],
             expected_exit: 1,
             output_kind: OutputKind::Sarif,
-            expected_rules: &["SEC201", "SEC202", "SEC203"],
+            expected_rules: &["SEC201", "SEC202", "SEC203", "SEC205"],
         },
         CommandCase {
             name: "policy-mismatch-scan-text",

@@ -16,6 +16,7 @@ Expected findings:
 - `SEC201` download-and-exec hook
 - `SEC202` secret exfiltration hook
 - `SEC203` plain HTTP secret exfiltration hook
+- `SEC205` static auth material embedded in a hook network call
 
 Expected result:
 

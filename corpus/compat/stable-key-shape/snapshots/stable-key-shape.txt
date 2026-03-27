@@ -1,2 +1,3 @@
 SEC202:.cursor-plugin/hooks/install.sh:10:88:
 SEC203:.cursor-plugin/hooks/install.sh:15:22:
+SEC205:.cursor-plugin/hooks/install.sh:65:66:

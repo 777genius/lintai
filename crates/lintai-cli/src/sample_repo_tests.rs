@@ -246,9 +246,9 @@ fn cursor_plugin_sample_repo_emits_plugin_rule_set() {
     assert_case_summary(&manifest, &summary);
     assert_eq!(
         sample_repo_rule_codes(&summary),
-        BTreeSet::from(["SEC201", "SEC202", "SEC203"])
+        BTreeSet::from(["SEC201", "SEC202", "SEC203", "SEC205"])
     );
-    for rule_code in ["SEC201", "SEC202", "SEC203"] {
+    for rule_code in ["SEC201", "SEC202", "SEC203", "SEC205"] {
         assert!(text.contains(rule_code));
         assert!(text.contains("  suggest:"));
         let finding = summary
@@ -257,7 +257,10 @@ fn cursor_plugin_sample_repo_emits_plugin_rule_set() {
             .find(|finding| finding.rule_code == rule_code)
             .unwrap();
         assert!(!finding.suggestions.is_empty());
-        assert!(finding.suggestions[0].fix.is_some());
+        match rule_code {
+            "SEC205" => assert!(finding.suggestions[0].fix.is_none()),
+            _ => assert!(finding.suggestions[0].fix.is_some()),
+        }
     }
 }
 

@@ -236,6 +236,68 @@ fn ignores_secure_hook_network_usage() {
 }
 
 #[test]
+fn finds_hook_url_userinfo_static_auth_exposure() {
+    let provider = AiSecurityProvider::default();
+    let content = "curl https://deploy-token@internal.test/bootstrap.sh -o /tmp/bootstrap.sh\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::CursorHookScript,
+        SourceFormat::Shell,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC205")
+        .unwrap();
+    let start = content.find("deploy-token").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "deploy-token".len())
+    );
+    assert_eq!(finding.suggestions.len(), 1);
+    assert!(finding.suggestions[0].message.contains("embedded credentials"));
+    assert!(finding.suggestions[0].fix.is_none());
+}
+
+#[test]
+fn finds_hook_literal_authorization_header_auth_exposure() {
+    let provider = AiSecurityProvider::default();
+    let content =
+        "curl -H 'Authorization: Bearer static-token-value' https://internal.test/bootstrap.sh\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::CursorHookScript,
+        SourceFormat::Shell,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC205")
+        .unwrap();
+    let start = content.find("static-token-value").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "static-token-value".len())
+    );
+}
+
+#[test]
+fn ignores_hook_dynamic_auth_exposure() {
+    let provider = AiSecurityProvider::default();
+    let content = "curl https://${DEPLOY_TOKEN}@internal.test/bootstrap.sh -o /tmp/bootstrap.sh\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::CursorHookScript,
+        SourceFormat::Shell,
+        content,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC205"));
+}
+
+#[test]
 fn finds_shell_wrapper_in_mcp_config() {
     let provider = AiSecurityProvider::default();
     let content = r#"{"command":"sh","args":["-c","echo hacked"]}"#;
@@ -371,6 +433,67 @@ fn ignores_verified_tls_config() {
     );
 
     assert!(!findings.iter().any(|finding| finding.rule_code == "SEC304"));
+}
+
+#[test]
+fn finds_json_url_userinfo_static_auth_exposure() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"endpoint":"https://deploy-token@internal.test/bootstrap"}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC305")
+        .unwrap();
+    let start = content.find("deploy-token").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "deploy-token".len())
+    );
+    assert_eq!(finding.suggestions.len(), 1);
+    assert!(finding.suggestions[0].message.contains("embedded credentials"));
+    assert!(finding.suggestions[0].fix.is_none());
+}
+
+#[test]
+fn finds_json_literal_authorization_static_auth_exposure() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"authorization":"Bearer static-token-value"}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::CursorPluginHooks,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC305")
+        .unwrap();
+    let start = content.find("static-token-value").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "static-token-value".len())
+    );
+}
+
+#[test]
+fn ignores_json_dynamic_authorization_placeholder() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"authorization":"Bearer ${SERVICE_TOKEN}"}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC305"));
 }
 
 #[test]

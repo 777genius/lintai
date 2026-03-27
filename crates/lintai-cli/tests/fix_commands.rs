@@ -131,8 +131,12 @@ fn fix_apply_surfaces_suggestions_without_mutating_suggestion_only_repo() {
     assert!(stdout.contains("suggest-edit SEC201"));
     assert!(stdout.contains("suggest-edit SEC202"));
     assert!(stdout.contains("suggest-edit SEC203"));
+    assert!(stdout.contains("suggest SEC205"));
     assert!(stdout.contains("replacement: \"# lintai: remove download-and-exec behavior\""));
     assert!(stdout.contains("applied 0 fix(es)"));
+    assert!(stdout.contains("surfaced 4 suggestion-bearing finding(s)"));
+    assert!(stdout.contains("surfaced 3 suggestion edit(s)"));
+    assert!(stdout.contains("surfaced 1 message-only suggestion(s)"));
     assert!(stdout.contains("files changed 0"));
     assert_eq!(fs::read_to_string(&install).unwrap(), install_before);
     assert_eq!(fs::read_to_string(&upload).unwrap(), upload_before);

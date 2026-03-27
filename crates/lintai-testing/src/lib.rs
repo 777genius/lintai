@@ -633,7 +633,9 @@ impl OutputHarness {
 fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
     match rule_code {
         "SEC101" | "SEC102" | "SEC103" | "SEC201" | "SEC202" | "SEC203" | "SEC301"
-        | "SEC204" | "SEC302" | "SEC303" | "SEC304" => Some(RuleTier::Stable),
+        | "SEC204" | "SEC205" | "SEC302" | "SEC303" | "SEC304" | "SEC305" => {
+            Some(RuleTier::Stable)
+        }
         "SEC401" | "SEC402" | "SEC403" => Some(RuleTier::Preview),
         _ => None,
     }
@@ -919,6 +921,8 @@ name = ""
             vec![
                 "cursor-plugin-clean-basic",
                 "cursor-plugin-tls-verified-basic",
+                "hook-auth-dynamic-safe",
+                "mcp-authorization-placeholder-safe",
                 "mcp-safe-basic",
                 "mcp-trust-verified-basic",
                 "mixed-clean-workspace",

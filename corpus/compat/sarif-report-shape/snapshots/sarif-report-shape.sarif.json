@@ -66,6 +66,38 @@
             "evidenceCount": 2
           },
           "ruleId": "SEC203"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".cursor-plugin/hooks/install.sh"
+                },
+                "region": {
+                  "charLength": 1,
+                  "charOffset": 65,
+                  "endColumn": 57,
+                  "endLine": 2,
+                  "startColumn": 56,
+                  "startLine": 2
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "hook script embeds static authentication material in a network call"
+          },
+          "partialFingerprints": {
+            "stableKey": "SEC205:.cursor-plugin/hooks/install.sh:65:66:"
+          },
+          "properties": {
+            "category": "security",
+            "confidence": "high",
+            "evidenceCount": 2
+          },
+          "ruleId": "SEC205"
         }
       ],
       "tool": {
@@ -90,6 +122,16 @@
               },
               "shortDescription": {
                 "text": "SEC203"
+              }
+            },
+            {
+              "id": "SEC205",
+              "properties": {
+                "cwe": [],
+                "tags": []
+              },
+              "shortDescription": {
+                "text": "SEC205"
               }
             }
           ]

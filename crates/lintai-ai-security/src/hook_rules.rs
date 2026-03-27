@@ -1,6 +1,6 @@
 use lintai_api::{ArtifactKind, Finding, RuleMetadata, ScanContext, Span};
 
-use crate::helpers::finding_for_region;
+use crate::helpers::{contains_dynamic_reference, find_url_userinfo_span, finding_for_region};
 
 pub(crate) fn check_hook_download_exec(ctx: &ScanContext, meta: &RuleMetadata) -> Vec<Finding> {
     if ctx.artifact.kind != ArtifactKind::CursorHookScript {
@@ -100,6 +100,26 @@ pub(crate) fn check_hook_tls_bypass(ctx: &ScanContext, meta: &RuleMetadata) -> V
     )]
 }
 
+pub(crate) fn check_hook_static_auth_exposure(
+    ctx: &ScanContext,
+    meta: &RuleMetadata,
+) -> Vec<Finding> {
+    if ctx.artifact.kind != ArtifactKind::CursorHookScript {
+        return Vec::new();
+    }
+
+    let Some(span) = first_static_auth_exposure_span(&ctx.content) else {
+        return Vec::new();
+    };
+
+    vec![finding_for_region(
+        meta,
+        ctx,
+        &span,
+        "hook script embeds static authentication material in a network call",
+    )]
+}
+
 fn first_matching_line_span(content: &str, predicate: impl Fn(&str) -> bool) -> Option<Span> {
     let mut start = 0usize;
     for segment in content.split_inclusive('\n') {
@@ -193,6 +213,76 @@ fn tls_bypass_span_in_line(line: &str, line_offset: usize) -> Option<Span> {
                     line_offset + token.end,
                 ));
             }
+        }
+    }
+
+    None
+}
+
+fn first_static_auth_exposure_span(content: &str) -> Option<Span> {
+    let mut start = 0usize;
+    for segment in content.split_inclusive('\n') {
+        let line = segment.strip_suffix('\n').unwrap_or(segment);
+        if let Some(span) = static_auth_span_in_line(line, start) {
+            return Some(span);
+        }
+        start += segment.len();
+    }
+
+    if start < content.len() {
+        let line = &content[start..];
+        return static_auth_span_in_line(line, start);
+    }
+
+    None
+}
+
+fn static_auth_span_in_line(line: &str, line_offset: usize) -> Option<Span> {
+    let trimmed = line.trim_start();
+    if trimmed.starts_with('#') {
+        return None;
+    }
+
+    if let Some(relative) = find_url_userinfo_span(line) {
+        return Some(Span::new(
+            line_offset + relative.start_byte,
+            line_offset + relative.end_byte,
+        ));
+    }
+
+    let lowered = line.to_lowercase();
+    if !lowered.contains("curl ") {
+        return None;
+    }
+
+    find_static_authorization_value_span(line).map(|relative| {
+        Span::new(
+            line_offset + relative.start_byte,
+            line_offset + relative.end_byte,
+        )
+    })
+}
+
+fn find_static_authorization_value_span(line: &str) -> Option<Span> {
+    let lowered = line.to_lowercase();
+    for prefix in ["authorization: bearer ", "authorization: basic "] {
+        let mut search_start = 0usize;
+        while let Some(relative) = lowered[search_start..].find(prefix) {
+            let credential_start = search_start + relative + prefix.len();
+            let credential_end = line[credential_start..]
+                .char_indices()
+                .find_map(|(index, ch)| match ch {
+                    '"' | '\'' | ' ' | '\t' | '\r' | '\n' => Some(credential_start + index),
+                    _ => None,
+                })
+                .unwrap_or(line.len());
+            if credential_end > credential_start {
+                let value = &line[credential_start..credential_end];
+                if !contains_dynamic_reference(value) {
+                    return Some(Span::new(credential_start, credential_end));
+                }
+            }
+            search_start = credential_start;
         }
     }
 

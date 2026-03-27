@@ -20,6 +20,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
         vec![
             "cursor-plugin-clean-basic",
             "cursor-plugin-tls-verified-basic",
+            "hook-auth-dynamic-safe",
+            "mcp-authorization-placeholder-safe",
             "mcp-safe-basic",
             "mcp-trust-verified-basic",
             "mixed-clean-workspace",
