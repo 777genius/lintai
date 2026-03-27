@@ -14,11 +14,29 @@
 - **Контекстно-осведомлённое**: учитывает `regions` (например, code blocks vs normal text), чтобы не матчить примеры.
 - **Имеет тесты**: минимум 1 positive + 1 negative, плюс регрессионные кейсы из корпуса.
 
+## Stable vs Preview lane
+
+- **`Stable`** reserved only for **structural / high-precision** checks:
+  - hooks/scripts/config structure
+  - explicit regions/zones boundaries
+  - deterministic key/value or token observations
+- **`Preview`** is the staging lane for **heuristic / text-led** checks:
+  - suspicious phrases in descriptive text
+  - suspicious host markers
+  - env-name heuristics or similar signals that may need FP tuning
+- Эвристическое правило может быть полезным, но пока оно зависит от phrase/domain marker lists, оно не считается canonical `Stable`.
+
 ## Запрещённые подходы (anti-patterns)
 
 - “Хардкод текста” как основа правила: правила не должны опираться на одну-две фразы, которые легко перефразировать и которые дают FP.
 - “Скрытые” правила без доказательств (нет ссылок на конкретные места).
 - Правила, которые нельзя стабильно протестировать и которые зависят от окружения/сети.
+
+## Source of truth for native rules
+
+- Metadata, detection surface, tier, remediation message и candidate fix должны жить **рядом с правилом** в одном native rule spec.
+- Provider не должен держать отдельные `match rule_code => remediation`.
+- Per-artifact signals/analyzers вычисляются **один раз на файл**, а rules читают уже готовые observations.
 
 ## Как делаем семантику без LLM
 
@@ -43,4 +61,3 @@
 - **Safe auto-fix**: примерно **10–25** правил.
 - **Unsafe (только с флагом)**: примерно **15–40** правил.
 - Остальное: **Suggestion** (IDE/репорт), без автоматического применения.
-

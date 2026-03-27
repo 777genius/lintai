@@ -7,8 +7,8 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use lintai_api::{ArtifactKind, Finding, RuleProvider, RuleTier, SourceFormat};
 use lintai_engine::{
     ConfigError, EngineBuilder, EngineConfig, EngineError, FileSuppressions,
-    NoopSuppressionMatcher, ProviderBackend, RuntimeErrorKind, internal::InProcessProviderBackend,
-    ScanSummary, SuppressionMatcher, load_workspace_config,
+    NoopSuppressionMatcher, ProviderBackend, RuntimeErrorKind, ScanSummary, SuppressionMatcher,
+    internal::InProcessProviderBackend, load_workspace_config,
 };
 use serde::Deserialize;
 use std::collections::BTreeMap;
@@ -572,9 +572,10 @@ impl OutputHarness {
 
 fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
     match rule_code {
-        "SEC101" | "SEC102" | "SEC103" | "SEC201" | "SEC202" | "SEC203" | "SEC301" | "SEC204"
-        | "SEC205" | "SEC302" | "SEC303" | "SEC304" | "SEC305" => Some(RuleTier::Stable),
-        "SEC401" | "SEC402" | "SEC403" => Some(RuleTier::Preview),
+        "SEC201" | "SEC202" | "SEC203" | "SEC204" | "SEC205" | "SEC206" | "SEC301" | "SEC302"
+        | "SEC303" | "SEC304" | "SEC305" => Some(RuleTier::Stable),
+        "SEC101" | "SEC102" | "SEC103" | "SEC104" | "SEC105" | "SEC306" | "SEC307" | "SEC308"
+        | "SEC401" | "SEC402" | "SEC403" => Some(RuleTier::Preview),
         _ => None,
     }
 }

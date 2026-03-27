@@ -7,8 +7,8 @@ use std::time::{Duration, Instant};
 
 use lintai_ai_security::{AiSecurityProvider, PolicyMismatchProvider};
 use lintai_api::{
-    Confidence, Finding, Location, ProviderError, ProviderScanResult, RuleMetadata,
-    RuleProvider, RuleTier, ScanContext, ScanScope, Severity, Span, WorkspaceScanContext,
+    Confidence, Finding, Location, ProviderError, ProviderScanResult, RuleMetadata, RuleProvider,
+    RuleTier, ScanContext, ScanScope, Severity, Span, WorkspaceScanContext,
 };
 use lintai_engine::ProviderBackend;
 

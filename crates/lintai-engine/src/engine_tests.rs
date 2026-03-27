@@ -21,7 +21,10 @@ fn backend_with_scope(
     provider: impl lintai_api::RuleProvider + 'static,
     scope: ScanScope,
 ) -> Arc<dyn ProviderBackend> {
-    Arc::new(InProcessProviderBackend::with_scope(Arc::new(provider), scope))
+    Arc::new(InProcessProviderBackend::with_scope(
+        Arc::new(provider),
+        scope,
+    ))
 }
 
 fn backend_with_timeout(

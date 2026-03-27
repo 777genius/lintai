@@ -1,0 +1,5 @@
+{
+  "env": {
+    "FORWARDER": "$ANOTHER_SECRET"
+  }
+}

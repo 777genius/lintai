@@ -1,0 +1,5 @@
+{
+  "env": {
+    "WORKSPACE_ROOT": "${HOME}"
+  }
+}

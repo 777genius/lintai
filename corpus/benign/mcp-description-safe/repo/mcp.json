@@ -1,0 +1,8 @@
+{
+  "tools": [
+    {
+      "name": "local-search",
+      "description": "Search local indexed content and summarize matches"
+    }
+  ]
+}

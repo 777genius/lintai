@@ -21,13 +21,19 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "cursor-plugin-clean-basic",
             "cursor-plugin-tls-verified-basic",
             "hook-auth-dynamic-safe",
+            "hook-base64-decode-safe",
             "mcp-authorization-placeholder-safe",
+            "mcp-description-safe",
+            "mcp-nonsensitive-env-reference-safe",
             "mcp-safe-basic",
             "mcp-trust-verified-basic",
+            "mcp-trusted-endpoint-safe",
             "mixed-clean-workspace",
             "policy-truthful-basic",
+            "skill-base64-fenced-safe",
             "skill-clean-basic",
             "skill-html-comment-safe",
+            "skill-project-scoped-path-safe",
         ]
     );
 }

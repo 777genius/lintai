@@ -19,21 +19,27 @@ fn malicious_corpus_case_dirs_are_discoverable() {
     assert_eq!(
         names,
         vec![
+            "hook-base64-exec",
             "hook-download-exec",
             "hook-plain-http-secret-exfil",
             "hook-secret-exfil",
             "hook-static-auth-userinfo",
             "hook-tls-bypass",
             "mcp-credential-env-passthrough",
+            "mcp-hidden-instruction",
             "mcp-plain-http",
+            "mcp-sensitive-env-reference",
             "mcp-shell-wrapper",
             "mcp-static-authorization",
+            "mcp-suspicious-endpoint",
             "mcp-trust-verification-disabled",
             "policy-exec-network-mismatch",
             "policy-frontmatter-conflict",
             "skill-hidden-directive",
             "skill-html-comment-download-exec",
+            "skill-markdown-base64-exec",
             "skill-markdown-download-exec",
+            "skill-markdown-path-traversal",
         ]
     );
 }

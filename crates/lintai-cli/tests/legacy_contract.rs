@@ -94,10 +94,8 @@ fn provider_capabilities_and_ruleprovider_execution_knobs_are_absent() {
 
 #[test]
 fn internal_runner_schema_version_is_absent() {
-    let text = fs::read_to_string(
-        repo_root().join("crates/lintai-cli/src/builtin_providers.rs"),
-    )
-    .expect("builtin provider runtime source should be readable");
+    let text = fs::read_to_string(repo_root().join("crates/lintai-cli/src/builtin_providers.rs"))
+        .expect("builtin provider runtime source should be readable");
     assert!(
         !text.contains("schema_version"),
         "internal runner protocol should not carry compatibility schema_version fields"
@@ -131,8 +129,7 @@ fn lintai_testing_surface_does_not_export_dead_helpers() {
         "ProviderHarnessBuilder should not be public"
     );
     assert!(
-        !testing_lib.contains("pub fn snapshot_path(")
-            && !testing_lib.contains("pub fn render("),
+        !testing_lib.contains("pub fn snapshot_path(") && !testing_lib.contains("pub fn render("),
         "dead output helper surface should not remain public"
     );
 }

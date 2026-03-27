@@ -166,6 +166,16 @@ Execution policy belongs to `ProviderBackend`, not to `RuleProvider`, including 
 ### Native rules registration (зафиксировано)
 
 - В native provider’е правила регистрируются через **явный список/массив** (без `inventory`-магии).
+- Источник истины для native rules = **единый rule spec**:
+  metadata + surface + detection class + remediation + suggestion fix.
+- Provider only iterates specs and attaches remediation from the spec itself; provider-wide `match rule_code` remediation tables не допускаются.
+- Rules read **per-artifact signals** (`MarkdownSignals`, `HookSignals`, `JsonSignals`), вычисленные один раз на файл.
+
+### Stable / Preview policy for native rules (зафиксировано)
+
+- `Stable` reserved for **structural/high-precision** checks with deterministic evidence.
+- `Preview` is the required staging lane for **heuristic text-led** checks even if they are useful.
+- Phrase-list, env-name, domain-marker, or similar heuristic rules must not ship as canonical `Stable` until they graduate from that lane.
 
 ## 12) Markdown suppress: primary = external file
 

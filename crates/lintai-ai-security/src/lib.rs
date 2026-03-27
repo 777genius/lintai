@@ -3,10 +3,10 @@ mod hook_rules;
 mod json_locator;
 mod json_rules;
 mod markdown_rules;
-mod matchers;
 mod policy_provider;
 mod provider;
 mod registry;
+mod signals;
 
 #[cfg(test)]
 mod corpus_tests;
