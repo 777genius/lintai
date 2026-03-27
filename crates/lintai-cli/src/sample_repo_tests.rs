@@ -202,6 +202,10 @@ fn mcp_heavy_sample_repo_emits_mcp_rule_set() {
             .find(|finding| finding.rule_code == rule_code)
             .unwrap();
         assert!(!finding.suggestions.is_empty());
+        match rule_code {
+            "SEC302" => assert!(finding.suggestions[0].fix.is_some()),
+            _ => assert!(finding.suggestions[0].fix.is_none()),
+        }
     }
 }
 
@@ -253,6 +257,7 @@ fn cursor_plugin_sample_repo_emits_plugin_rule_set() {
             .find(|finding| finding.rule_code == rule_code)
             .unwrap();
         assert!(!finding.suggestions.is_empty());
+        assert!(finding.suggestions[0].fix.is_some());
     }
 }
 

@@ -297,4 +297,47 @@ mod tests {
         assert!(text.contains("SEC901"));
         assert!(text.contains("  suggest: convert it to inert prose"));
     }
+
+    #[test]
+    fn json_output_preserves_suggestion_fix_payload() {
+        let finding = lintai_api::Finding::new(
+            &lintai_api::RuleMetadata::new(
+                "SEC902",
+                "demo",
+                lintai_api::Category::Security,
+                lintai_api::Severity::Warn,
+                lintai_api::Confidence::High,
+                lintai_api::RuleTier::Stable,
+            ),
+            lintai_api::Location::new("mcp.json", lintai_api::Span::new(0, 7)),
+            "demo finding",
+        )
+        .with_suggestion(lintai_api::Suggestion::new(
+            "upgrade transport",
+            Some(lintai_api::Fix::new(
+                lintai_api::Span::new(0, 7),
+                "https://",
+                lintai_api::Applicability::Suggestion,
+                Some("rewrite the endpoint to HTTPS".to_owned()),
+            )),
+        ));
+        let report = super::ReportEnvelope {
+            schema_version: 1,
+            tool: ToolMetadata { name: "lintai" },
+            config_source: None,
+            project_root: None,
+            stats: ReportStats {
+                scanned_files: 1,
+                skipped_files: 0,
+            },
+            findings: std::slice::from_ref(&finding),
+            diagnostics: &[],
+            runtime_errors: &[],
+        };
+
+        let json = format_json(&report).unwrap();
+        assert!(json.contains("\"suggestions\""));
+        assert!(json.contains("\"replacement\": \"https://\""));
+        assert!(json.contains("\"applicability\": \"suggestion\""));
+    }
 }

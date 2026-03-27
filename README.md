@@ -102,6 +102,7 @@ cargo run --manifest-path ../../../Cargo.toml -- fix .
 
 - safe autofix where a deterministic rewrite exists
 - actionable manual remediation suggestions where automatic apply would be unsafe
+- candidate patch previews for a narrow set of preview-only remediations
 
 ## Exit Codes
 
@@ -153,7 +154,7 @@ format = "markdown"
 - findings carry structured `evidence`
 - JSON machine output is versioned through `schema_version = 1`
 - SARIF uses `stableKey` as the fingerprint source of truth
-- `lintai fix` is additive public CLI surface with safe autofix for a narrow allowlist and suggestion-driven remediation for broader stable rules
+- `lintai fix` is additive public CLI surface with safe autofix for a narrow allowlist, message suggestions, and preview-only candidate patch edits for selected stable rules
 - root README commands are validated through the docs-command suite
 - `lintai-testing` remains internal during `v0.1`
 

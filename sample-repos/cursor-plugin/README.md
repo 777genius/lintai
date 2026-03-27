@@ -23,6 +23,7 @@ Expected result:
 - findings are blocking under the current sample config
 - every documented scan command exits `1`
 - `fix .` should preview manual remediation suggestions but not apply file changes
+- `fix .` should show candidate disabling edits for unsafe hook lines
 
 Run these commands from `sample-repos/cursor-plugin/repo`:
 

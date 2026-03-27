@@ -67,7 +67,9 @@ fn fix_preview_reports_planned_fixes_without_mutating_files() {
     assert!(stdout.contains("plan SEC101"));
     assert!(stdout.contains("plan SEC103"));
     assert!(stdout.contains("planned 2 fix(es)"));
-    assert!(stdout.contains("surfaced 0 suggestion-bearing finding(s) and 0 suggestion(s)"));
+    assert!(stdout.contains("surfaced 0 suggestion-bearing finding(s)"));
+    assert!(stdout.contains("surfaced 0 suggestion edit(s)"));
+    assert!(stdout.contains("surfaced 0 message-only suggestion(s)"));
     assert_eq!(fs::read_to_string(&skill_path).unwrap(), original);
 }
 
@@ -102,10 +104,13 @@ fn fix_preview_surfaces_suggestions_for_mcp_repo_without_planning_fixes() {
     let stdout = stdout_string(&output);
     assert!(stdout.contains("no autofixable findings matched the current selection"));
     assert!(stdout.contains("suggest SEC301"));
-    assert!(stdout.contains("suggest SEC302"));
+    assert!(stdout.contains("suggest-edit SEC302"));
     assert!(stdout.contains("suggest SEC303"));
+    assert!(stdout.contains("replacement: \"https://\""));
     assert!(stdout.contains("planned 0 fix(es)"));
-    assert!(stdout.contains("surfaced 3 suggestion-bearing finding(s) and 3 suggestion(s)"));
+    assert!(stdout.contains("surfaced 3 suggestion-bearing finding(s)"));
+    assert!(stdout.contains("surfaced 1 suggestion edit(s)"));
+    assert!(stdout.contains("surfaced 2 message-only suggestion(s)"));
     assert!(stdout.contains("files changed 0"));
 }
 
@@ -123,9 +128,10 @@ fn fix_apply_surfaces_suggestions_without_mutating_suggestion_only_repo() {
     assert_eq!(output.status.code(), Some(0));
     let stdout = stdout_string(&output);
     assert!(stdout.contains("no autofixable findings matched the current selection"));
-    assert!(stdout.contains("suggest SEC201"));
-    assert!(stdout.contains("suggest SEC202"));
-    assert!(stdout.contains("suggest SEC203"));
+    assert!(stdout.contains("suggest-edit SEC201"));
+    assert!(stdout.contains("suggest-edit SEC202"));
+    assert!(stdout.contains("suggest-edit SEC203"));
+    assert!(stdout.contains("replacement: \"# lintai: remove download-and-exec behavior\""));
     assert!(stdout.contains("applied 0 fix(es)"));
     assert!(stdout.contains("files changed 0"));
     assert_eq!(fs::read_to_string(&install).unwrap(), install_before);
@@ -138,9 +144,11 @@ fn fix_preview_rule_filter_limits_suggestions() {
     assert_eq!(output.status.code(), Some(0));
     let stdout = stdout_string(&output);
     assert!(!stdout.contains("suggest SEC301"));
-    assert!(stdout.contains("suggest SEC302"));
+    assert!(stdout.contains("suggest-edit SEC302"));
     assert!(!stdout.contains("suggest SEC303"));
-    assert!(stdout.contains("surfaced 1 suggestion-bearing finding(s) and 1 suggestion(s)"));
+    assert!(stdout.contains("surfaced 1 suggestion-bearing finding(s)"));
+    assert!(stdout.contains("surfaced 1 suggestion edit(s)"));
+    assert!(stdout.contains("surfaced 0 message-only suggestion(s)"));
 }
 
 #[test]

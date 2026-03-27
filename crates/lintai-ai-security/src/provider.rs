@@ -28,7 +28,10 @@ impl RuleProvider for AiSecurityProvider {
         for rule in RULES {
             findings.extend((rule.check)(ctx, &rule.metadata));
         }
-        findings.into_iter().map(attach_remediation_suggestion).collect()
+        findings
+            .into_iter()
+            .map(|finding| attach_remediation_suggestion(ctx, finding))
+            .collect()
     }
 
     fn supports_fix(&self) -> bool {
@@ -54,15 +57,16 @@ impl RuleProvider for AiSecurityProvider {
     }
 }
 
-fn attach_remediation_suggestion(finding: Finding) -> Finding {
-    let Some(message) = remediation_suggestion(&finding) else {
+fn attach_remediation_suggestion(ctx: &ScanContext, finding: Finding) -> Finding {
+    let Some(message) = remediation_message(&finding) else {
         return finding;
     };
+    let candidate_fix = remediation_candidate_fix(ctx, &finding);
 
-    finding.with_suggestion(Suggestion::new(message, None))
+    finding.with_suggestion(Suggestion::new(message, candidate_fix))
 }
 
-fn remediation_suggestion(finding: &Finding) -> Option<&'static str> {
+fn remediation_message(finding: &Finding) -> Option<&'static str> {
     match finding.rule_code.as_str() {
         "SEC102" => {
             Some("rewrite the command as inert prose or move it into a fenced example block")
@@ -79,4 +83,99 @@ fn remediation_suggestion(finding: &Finding) -> Option<&'static str> {
         "SEC303" => Some("remove credential env passthrough and configure secrets only inside the target service"),
         _ => None,
     }
+}
+
+fn remediation_candidate_fix(ctx: &ScanContext, finding: &Finding) -> Option<Fix> {
+    match finding.rule_code.as_str() {
+        "SEC102" => markdown_inline_code_fix(ctx, finding),
+        "SEC201" => replace_line_with_comment_fix(
+            ctx,
+            finding,
+            "# lintai: remove download-and-exec behavior",
+        ),
+        "SEC202" => replace_line_with_comment_fix(
+            ctx,
+            finding,
+            "# lintai: remove secret exfiltration command",
+        ),
+        "SEC203" => replace_line_with_comment_fix(
+            ctx,
+            finding,
+            "# lintai: remove insecure secret exfiltration command",
+        ),
+        "SEC302" => https_rewrite_fix(ctx, finding),
+        _ => None,
+    }
+}
+
+fn markdown_inline_code_fix(ctx: &ScanContext, finding: &Finding) -> Option<Fix> {
+    let span = &finding.location.span;
+    let snippet = ctx.content.get(span.start_byte..span.end_byte)?;
+    let command = first_download_exec_span(snippet)?;
+    let absolute_start = span.start_byte + command.start_byte;
+    let absolute_end = span.start_byte + command.end_byte;
+    let original = ctx.content.get(absolute_start..absolute_end)?;
+    Some(Fix::new(
+        lintai_api::Span::new(absolute_start, absolute_end),
+        format!("`{original}`"),
+        Applicability::Suggestion,
+        Some("render the command as inert inline code".to_owned()),
+    ))
+}
+
+fn replace_line_with_comment_fix(
+    ctx: &ScanContext,
+    finding: &Finding,
+    replacement: &str,
+) -> Option<Fix> {
+    let span = line_span_for_offset(&ctx.content, finding.location.span.start_byte)?;
+    Some(Fix::new(
+        span,
+        replacement,
+        Applicability::Suggestion,
+        Some("disable the unsafe hook command".to_owned()),
+    ))
+}
+
+fn https_rewrite_fix(ctx: &ScanContext, finding: &Finding) -> Option<Fix> {
+    let start = finding.location.span.start_byte;
+    let snippet = ctx.content.get(start..finding.location.span.end_byte)?;
+    let relative = snippet.find("http://")?;
+    let absolute_start = start + relative;
+    let absolute_end = absolute_start + "http://".len();
+    Some(Fix::new(
+        lintai_api::Span::new(absolute_start, absolute_end),
+        "https://",
+        Applicability::Suggestion,
+        Some("rewrite the endpoint to HTTPS".to_owned()),
+    ))
+}
+
+fn line_span_for_offset(content: &str, offset: usize) -> Option<lintai_api::Span> {
+    if offset > content.len() {
+        return None;
+    }
+
+    let line_start = content[..offset].rfind('\n').map_or(0, |index| index + 1);
+    let line_end = content[offset..]
+        .find('\n')
+        .map_or(content.len(), |index| offset + index);
+    Some(lintai_api::Span::new(line_start, line_end))
+}
+
+fn first_download_exec_span(content: &str) -> Option<lintai_api::Span> {
+    let lowered = content.to_lowercase();
+    let curl = lowered.find("curl ");
+    let wget = lowered.find("wget ");
+    let start = match (curl, wget) {
+        (Some(left), Some(right)) => left.min(right),
+        (Some(left), None) => left,
+        (None, Some(right)) => right,
+        (None, None) => return None,
+    };
+    let tail = &lowered[start..];
+    if !(tail.contains("| sh") || tail.contains("| bash")) {
+        return None;
+    }
+    Some(lintai_api::Span::new(start, content.trim_end_matches(['\r', '\n']).len()))
 }

@@ -120,7 +120,8 @@ fn run_fix(current_dir: &Path, args: impl Iterator<Item = String>) -> Result<Exi
     let mut skipped_conflicts = 0usize;
     let mut skipped_unapplied = 0usize;
     let mut files_changed = 0usize;
-    let mut surfaced_suggestions = 0usize;
+    let mut surfaced_suggestion_edits = 0usize;
+    let mut surfaced_message_only_suggestions = 0usize;
 
     if selected_findings == 0 {
         output.push_str("no autofixable findings matched the current selection\n");
@@ -208,27 +209,44 @@ fn run_fix(current_dir: &Path, args: impl Iterator<Item = String>) -> Result<Exi
             continue;
         }
         for suggestion in &finding.suggestions {
-            surfaced_suggestions += 1;
-            output.push_str(&format!(
-                "suggest {} {}:{}-{} {}\n",
-                finding.rule_code,
-                finding.location.normalized_path,
-                finding.location.span.start_byte,
-                finding.location.span.end_byte,
-                suggestion.message
-            ));
+            if let Some(fix) = &suggestion.fix {
+                surfaced_suggestion_edits += 1;
+                output.push_str(&format!(
+                    "suggest-edit {} {}:{}-{} {}\n",
+                    finding.rule_code,
+                    finding.location.normalized_path,
+                    fix.span.start_byte,
+                    fix.span.end_byte,
+                    suggestion.message
+                ));
+                output.push_str(&format!(
+                    "  replacement: {}\n",
+                    clipped_debug_string(&fix.replacement)
+                ));
+            } else {
+                surfaced_message_only_suggestions += 1;
+                output.push_str(&format!(
+                    "suggest {} {}:{}-{} {}\n",
+                    finding.rule_code,
+                    finding.location.normalized_path,
+                    finding.location.span.start_byte,
+                    finding.location.span.end_byte,
+                    suggestion.message
+                ));
+            }
         }
     }
 
     let action = if parsed.apply { "applied" } else { "planned" };
     output.push_str(&format!(
-        "scanned {} finding(s); selected {} autofixable finding(s); {} {} fix(es); surfaced {} suggestion-bearing finding(s) and {} suggestion(s); skipped {} conflict(s); skipped {} unapplied fix(es); files changed {}\n",
+        "scanned {} finding(s); selected {} autofixable finding(s); {} {} fix(es); surfaced {} suggestion-bearing finding(s); surfaced {} suggestion edit(s); surfaced {} message-only suggestion(s); skipped {} conflict(s); skipped {} unapplied fix(es); files changed {}\n",
         summary.findings.len(),
         selected_findings,
         action,
         applied_or_planned,
         suggestion_bearing_findings,
-        surfaced_suggestions,
+        surfaced_suggestion_edits,
+        surfaced_message_only_suggestions,
         skipped_conflicts,
         skipped_unapplied,
         files_changed
@@ -347,6 +365,18 @@ fn fix_error_message(error: &lintai_fix::FixError) -> &'static str {
         lintai_fix::FixError::OutOfBounds => "fix span fell outside current file contents",
         lintai_fix::FixError::InvalidRange => "fix span used an invalid byte range",
     }
+}
+
+fn clipped_debug_string(value: &str) -> String {
+    const MAX_PREVIEW_CHARS: usize = 80;
+    let clipped = if value.chars().count() > MAX_PREVIEW_CHARS {
+        let mut preview = value.chars().take(MAX_PREVIEW_CHARS).collect::<String>();
+        preview.push_str("...");
+        preview
+    } else {
+        value.to_owned()
+    };
+    format!("{clipped:?}")
 }
 
 fn has_blocking_findings(
