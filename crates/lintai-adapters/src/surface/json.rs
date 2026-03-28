@@ -1,0 +1,221 @@
+use lintai_api::{ArtifactKind, SourceFormat};
+
+use super::{SurfaceSpec, parse_json_surface};
+use crate::detection::DetectionRuleSpec;
+
+const MCP_CONFIG_RULES: &[DetectionRuleSpec] = &[
+    DetectionRuleSpec {
+        priority: 1,
+        file_name: Some("mcp.json"),
+        file_name_fragment: None,
+        suffix: None,
+        parent_dir: None,
+        path_fragment: Some(".cursor/"),
+        artifact_kind: ArtifactKind::McpConfig,
+        format: SourceFormat::Json,
+    },
+    DetectionRuleSpec {
+        priority: 1,
+        file_name: Some("mcp.json"),
+        file_name_fragment: None,
+        suffix: None,
+        parent_dir: None,
+        path_fragment: Some(".vscode/"),
+        artifact_kind: ArtifactKind::McpConfig,
+        format: SourceFormat::Json,
+    },
+    DetectionRuleSpec {
+        priority: 1,
+        file_name: Some("mcp.json"),
+        file_name_fragment: None,
+        suffix: None,
+        parent_dir: None,
+        path_fragment: Some(".roo/"),
+        artifact_kind: ArtifactKind::McpConfig,
+        format: SourceFormat::Json,
+    },
+    DetectionRuleSpec {
+        priority: 1,
+        file_name: Some("mcp.json"),
+        file_name_fragment: None,
+        suffix: None,
+        parent_dir: None,
+        path_fragment: Some(".kiro/settings/"),
+        artifact_kind: ArtifactKind::McpConfig,
+        format: SourceFormat::Json,
+    },
+    DetectionRuleSpec {
+        priority: 1,
+        file_name: Some("mcp.json"),
+        file_name_fragment: None,
+        suffix: None,
+        parent_dir: None,
+        path_fragment: None,
+        artifact_kind: ArtifactKind::McpConfig,
+        format: SourceFormat::Json,
+    },
+    DetectionRuleSpec {
+        priority: 1,
+        file_name: Some(".mcp.json"),
+        file_name_fragment: None,
+        suffix: None,
+        parent_dir: None,
+        path_fragment: None,
+        artifact_kind: ArtifactKind::McpConfig,
+        format: SourceFormat::Json,
+    },
+    DetectionRuleSpec {
+        priority: 1,
+        file_name: None,
+        file_name_fragment: None,
+        suffix: Some(".json"),
+        parent_dir: None,
+        path_fragment: Some(".claude/mcp/"),
+        artifact_kind: ArtifactKind::McpConfig,
+        format: SourceFormat::Json,
+    },
+];
+
+const SERVER_REGISTRY_RULES: &[DetectionRuleSpec] = &[DetectionRuleSpec {
+    priority: 1,
+    file_name: Some("server.json"),
+    file_name_fragment: None,
+    suffix: None,
+    parent_dir: None,
+    path_fragment: None,
+    artifact_kind: ArtifactKind::ServerRegistryConfig,
+    format: SourceFormat::Json,
+}];
+
+const CLAUDE_SETTINGS_RULES: &[DetectionRuleSpec] = &[
+    DetectionRuleSpec {
+        priority: 1,
+        file_name: Some("settings.json"),
+        file_name_fragment: None,
+        suffix: None,
+        parent_dir: Some(".claude"),
+        path_fragment: None,
+        artifact_kind: ArtifactKind::ClaudeSettings,
+        format: SourceFormat::Json,
+    },
+    DetectionRuleSpec {
+        priority: 1,
+        file_name: Some("settings.json"),
+        file_name_fragment: None,
+        suffix: None,
+        parent_dir: Some("claude"),
+        path_fragment: None,
+        artifact_kind: ArtifactKind::ClaudeSettings,
+        format: SourceFormat::Json,
+    },
+];
+
+const CURSOR_PLUGIN_MANIFEST_RULES: &[DetectionRuleSpec] = &[DetectionRuleSpec {
+    priority: 1,
+    file_name: Some("plugin.json"),
+    file_name_fragment: None,
+    suffix: None,
+    parent_dir: None,
+    path_fragment: Some(".cursor-plugin/"),
+    artifact_kind: ArtifactKind::CursorPluginManifest,
+    format: SourceFormat::Json,
+}];
+
+const CURSOR_PLUGIN_HOOKS_RULES: &[DetectionRuleSpec] = &[DetectionRuleSpec {
+    priority: 1,
+    file_name: Some("hooks.json"),
+    file_name_fragment: None,
+    suffix: None,
+    parent_dir: None,
+    path_fragment: Some(".cursor-plugin/"),
+    artifact_kind: ArtifactKind::CursorPluginHooks,
+    format: SourceFormat::Json,
+}];
+
+const TOOL_DESCRIPTOR_RULES: &[DetectionRuleSpec] = &[
+    DetectionRuleSpec {
+        priority: 2,
+        file_name: Some("tools.json"),
+        file_name_fragment: None,
+        suffix: None,
+        parent_dir: None,
+        path_fragment: None,
+        artifact_kind: ArtifactKind::ToolDescriptorJson,
+        format: SourceFormat::Json,
+    },
+    DetectionRuleSpec {
+        priority: 2,
+        file_name: None,
+        file_name_fragment: Some("tools"),
+        suffix: Some(".json"),
+        parent_dir: None,
+        path_fragment: None,
+        artifact_kind: ArtifactKind::ToolDescriptorJson,
+        format: SourceFormat::Json,
+    },
+    DetectionRuleSpec {
+        priority: 2,
+        file_name: None,
+        file_name_fragment: None,
+        suffix: Some(".tool.json"),
+        parent_dir: None,
+        path_fragment: None,
+        artifact_kind: ArtifactKind::ToolDescriptorJson,
+        format: SourceFormat::Json,
+    },
+    DetectionRuleSpec {
+        priority: 2,
+        file_name: None,
+        file_name_fragment: None,
+        suffix: Some(".tools.json"),
+        parent_dir: None,
+        path_fragment: None,
+        artifact_kind: ArtifactKind::ToolDescriptorJson,
+        format: SourceFormat::Json,
+    },
+];
+
+pub(super) const SURFACE_SPECS: [SurfaceSpec; 6] = [
+    SurfaceSpec {
+        id: "mcp_config_json",
+        artifact_kind: ArtifactKind::McpConfig,
+        format: SourceFormat::Json,
+        detection_rules: MCP_CONFIG_RULES,
+        parse_fn: parse_json_surface,
+    },
+    SurfaceSpec {
+        id: "server_registry_json",
+        artifact_kind: ArtifactKind::ServerRegistryConfig,
+        format: SourceFormat::Json,
+        detection_rules: SERVER_REGISTRY_RULES,
+        parse_fn: parse_json_surface,
+    },
+    SurfaceSpec {
+        id: "claude_settings_json",
+        artifact_kind: ArtifactKind::ClaudeSettings,
+        format: SourceFormat::Json,
+        detection_rules: CLAUDE_SETTINGS_RULES,
+        parse_fn: parse_json_surface,
+    },
+    SurfaceSpec {
+        id: "cursor_plugin_manifest_json",
+        artifact_kind: ArtifactKind::CursorPluginManifest,
+        format: SourceFormat::Json,
+        detection_rules: CURSOR_PLUGIN_MANIFEST_RULES,
+        parse_fn: parse_json_surface,
+    },
+    SurfaceSpec {
+        id: "cursor_plugin_hooks_json",
+        artifact_kind: ArtifactKind::CursorPluginHooks,
+        format: SourceFormat::Json,
+        detection_rules: CURSOR_PLUGIN_HOOKS_RULES,
+        parse_fn: parse_json_surface,
+    },
+    SurfaceSpec {
+        id: "tool_descriptor_json",
+        artifact_kind: ArtifactKind::ToolDescriptorJson,
+        format: SourceFormat::Json,
+        detection_rules: TOOL_DESCRIPTOR_RULES,
+        parse_fn: parse_json_surface,
+    },
+];

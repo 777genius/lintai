@@ -1,4 +1,88 @@
+use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
+
 use super::*;
+use crate::markdown_rules::{
+    check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
+    check_markdown_download_exec, check_markdown_fenced_pipe_shell, check_markdown_path_traversal,
+    check_markdown_private_key_pem,
+};
+
+declare_rule! {
+    pub struct HtmlCommentDirectiveRule {
+        code: "SEC101",
+        summary: "Hidden HTML comment contains dangerous agent instructions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownDownloadExecRule {
+        code: "SEC102",
+        summary: "Markdown contains remote download-and-execute instruction outside code blocks",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct HtmlCommentDownloadExecRule {
+        code: "SEC103",
+        summary: "Hidden HTML comment contains remote download-and-execute instruction",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownBase64ExecRule {
+        code: "SEC104",
+        summary: "Markdown contains a base64-decoded executable payload outside code blocks",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownPathTraversalRule {
+        code: "SEC105",
+        summary: "Markdown instructions reference parent-directory traversal for file access",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownPrivateKeyPemRule {
+        code: "SEC312",
+        summary: "Markdown contains committed private key material",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownFencedPipeShellRule {
+        code: "SEC313",
+        summary: "Fenced shell example pipes remote content directly into a shell",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
 
 pub(crate) const RULE_SPECS: [NativeRuleSpec; 7] = [
     NativeRuleSpec {

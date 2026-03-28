@@ -1,4 +1,43 @@
+use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
+
 use super::*;
+use crate::claude_settings_rules::{
+    check_claude_settings_inline_download_exec, check_claude_settings_mutable_launcher,
+    check_claude_settings_network_tls_bypass,
+};
+
+declare_rule! {
+    pub struct ClaudeSettingsMutableLauncherRule {
+        code: "SEC340",
+        summary: "Claude settings command hook uses a mutable package launcher",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsInlineDownloadExecRule {
+        code: "SEC341",
+        summary: "Claude settings command hook downloads remote content and pipes it into a shell",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsNetworkTlsBypassRule {
+        code: "SEC342",
+        summary: "Claude settings command hook disables TLS verification in a network-capable execution path",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
 
 pub(crate) const RULE_SPECS: [NativeRuleSpec; 3] = [
     NativeRuleSpec {

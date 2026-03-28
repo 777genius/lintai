@@ -183,3 +183,30 @@ fn every_detection_rule_resolves_to_a_surface_spec() {
         );
     }
 }
+
+#[test]
+fn surface_specs_assemble_in_fixed_order() {
+    let ids = all_surface_specs()
+        .iter()
+        .map(|spec| spec.id)
+        .collect::<Vec<_>>();
+
+    assert_eq!(
+        ids,
+        vec![
+            "skill_markdown",
+            "instructions_markdown",
+            "cursor_rules_markdown",
+            "cursor_plugin_command_markdown",
+            "cursor_plugin_agent_markdown",
+            "mcp_config_json",
+            "server_registry_json",
+            "claude_settings_json",
+            "cursor_plugin_manifest_json",
+            "cursor_plugin_hooks_json",
+            "tool_descriptor_json",
+            "github_workflow_yaml",
+            "cursor_hook_script_shell",
+        ]
+    );
+}

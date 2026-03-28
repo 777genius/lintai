@@ -1,4 +1,67 @@
+use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
+
 use super::*;
+use crate::github_workflow_rules::{
+    check_github_workflow_pull_request_target_head_checkout,
+    check_github_workflow_unpinned_third_party_action,
+    check_github_workflow_untrusted_run_interpolation, check_github_workflow_write_all_permissions,
+    check_github_workflow_write_capable_third_party_action,
+};
+
+declare_rule! {
+    pub struct GithubWorkflowUnpinnedThirdPartyActionRule {
+        code: "SEC324",
+        summary: "GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct GithubWorkflowUntrustedRunInterpolationRule {
+        code: "SEC325",
+        summary: "GitHub Actions workflow interpolates untrusted expression data directly inside a run command",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GithubWorkflowPullRequestTargetHeadCheckoutRule {
+        code: "SEC326",
+        summary: "GitHub Actions pull_request_target workflow checks out untrusted pull request head content",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct GithubWorkflowWriteAllPermissionsRule {
+        code: "SEC327",
+        summary: "GitHub Actions workflow grants GITHUB_TOKEN write-all permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct GithubWorkflowWriteCapableThirdPartyActionRule {
+        code: "SEC328",
+        summary: "GitHub Actions workflow combines explicit write-capable permissions with a third-party action",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
 
 pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {

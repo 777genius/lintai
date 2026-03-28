@@ -1,4 +1,248 @@
+use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
+
 use super::*;
+use crate::json_rules::{
+    check_json_dangerous_endpoint_host, check_json_hidden_instruction, check_json_literal_secret,
+    check_json_sensitive_env_reference, check_json_suspicious_remote_endpoint,
+    check_json_unsafe_plugin_path, check_mcp_broad_env_file, check_mcp_credential_env_passthrough,
+    check_mcp_dangerous_docker_flag, check_mcp_inline_download_exec, check_mcp_mutable_launcher,
+    check_mcp_network_tls_bypass_command, check_mcp_sensitive_docker_mount,
+    check_mcp_shell_wrapper, check_mcp_unpinned_docker_image, check_plain_http_config,
+    check_plugin_hook_inline_download_exec, check_plugin_hook_mutable_launcher,
+    check_plugin_hook_network_tls_bypass, check_static_auth_exposure_config,
+    check_trust_verification_disabled_config,
+};
+
+declare_rule! {
+    pub struct McpShellWrapperRule {
+        code: "SEC301",
+        summary: "MCP configuration shells out through sh -c or bash -c",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PlainHttpConfigRule {
+        code: "SEC302",
+        summary: "Configuration contains an insecure http:// endpoint",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpCredentialEnvPassthroughRule {
+        code: "SEC303",
+        summary: "MCP configuration passes through credential environment variables",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct TrustVerificationDisabledConfigRule {
+        code: "SEC304",
+        summary: "Configuration disables TLS or certificate verification",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct StaticAuthExposureConfigRule {
+        code: "SEC305",
+        summary: "Configuration embeds static authentication material in a connection or auth value",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct JsonHiddenInstructionRule {
+        code: "SEC306",
+        summary: "JSON configuration description contains override-style hidden instructions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct JsonSensitiveEnvReferenceRule {
+        code: "SEC307",
+        summary: "Configuration forwards sensitive environment variable references",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct JsonSuspiciousRemoteEndpointRule {
+        code: "SEC308",
+        summary: "Configuration points at a suspicious remote endpoint",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct JsonLiteralSecretRule {
+        code: "SEC309",
+        summary: "Configuration commits literal secret material in env, auth, or header values",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct JsonDangerousEndpointHostRule {
+        code: "SEC310",
+        summary: "Configuration endpoint targets a metadata or private-network host literal",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct CursorPluginUnsafePathRule {
+        code: "SEC311",
+        summary: "Cursor plugin manifest contains an unsafe absolute or parent-traversing path",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpMutableLauncherRule {
+        code: "SEC329",
+        summary: "MCP configuration launches tooling through a mutable package runner",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpInlineDownloadExecRule {
+        code: "SEC330",
+        summary: "MCP configuration command downloads remote content and pipes it into a shell",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpNetworkTlsBypassCommandRule {
+        code: "SEC331",
+        summary: "MCP configuration command disables TLS verification in a network-capable execution path",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpBroadEnvFileRule {
+        code: "SEC336",
+        summary: "Repo-local MCP client config loads a broad dotenv-style envFile",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct McpUnpinnedDockerImageRule {
+        code: "SEC337",
+        summary: "MCP configuration launches Docker with an image reference that is not digest-pinned",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpSensitiveDockerMountRule {
+        code: "SEC338",
+        summary: "MCP configuration launches Docker with a bind mount of sensitive host material",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpDangerousDockerFlagRule {
+        code: "SEC339",
+        summary: "MCP configuration launches Docker with a host-escape or privileged runtime flag",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookMutableLauncherRule {
+        code: "SEC343",
+        summary: "Plugin hook command uses a mutable package launcher",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookInlineDownloadExecRule {
+        code: "SEC344",
+        summary: "Plugin hook command downloads remote content and pipes it into a shell",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookNetworkTlsBypassRule {
+        code: "SEC345",
+        summary: "Plugin hook command disables TLS verification in a network-capable execution path",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
 
 pub(crate) const RULE_SPECS: [NativeRuleSpec; 21] = [
     NativeRuleSpec {

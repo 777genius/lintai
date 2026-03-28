@@ -1,4 +1,76 @@
+use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
+
 use super::*;
+use crate::hook_rules::{
+    check_hook_base64_exec, check_hook_download_exec, check_hook_plain_http_exfil,
+    check_hook_secret_exfil, check_hook_static_auth_exposure, check_hook_tls_bypass,
+};
+
+declare_rule! {
+    pub struct HookDownloadExecRule {
+        code: "SEC201",
+        summary: "Hook script downloads remote code and executes it",
+        category: Category::Security,
+        default_severity: Severity::Deny,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct HookSecretExfilRule {
+        code: "SEC202",
+        summary: "Hook script appears to exfiltrate secrets through a network call",
+        category: Category::Security,
+        default_severity: Severity::Deny,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct HookPlainHttpExfilRule {
+        code: "SEC203",
+        summary: "Hook script sends secret material to an insecure http:// endpoint",
+        category: Category::Security,
+        default_severity: Severity::Deny,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct HookTlsBypassRule {
+        code: "SEC204",
+        summary: "Hook script disables TLS or certificate verification for a network call",
+        category: Category::Security,
+        default_severity: Severity::Deny,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct HookStaticAuthExposureRule {
+        code: "SEC205",
+        summary: "Hook script embeds static authentication material in a network call",
+        category: Category::Security,
+        default_severity: Severity::Deny,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct HookBase64ExecRule {
+        code: "SEC206",
+        summary: "Hook script decodes a base64 payload and executes it",
+        category: Category::Security,
+        default_severity: Severity::Deny,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
 
 pub(crate) const RULE_SPECS: [NativeRuleSpec; 6] = [
     NativeRuleSpec {

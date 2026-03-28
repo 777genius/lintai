@@ -90,14 +90,18 @@ impl Engine {
         files: Vec<std::path::PathBuf>,
         providers: &ProviderCatalog<'_>,
     ) -> (ScanSummary, Vec<ScannedArtifact>) {
-        let worker_count = files
-            .len()
-            .min(
-                thread::available_parallelism()
-                    .map(usize::from)
-                    .unwrap_or(1),
-            )
-            .max(1);
+        let worker_count = worker_count_for_scan(files.len());
+        if worker_count == 1 {
+            let result = self.scan_file_batch(
+                base_path,
+                canonical_project_root,
+                detector,
+                files,
+                providers,
+            );
+            return (result.summary, result.scanned_artifacts);
+        }
+
         let mut chunks = vec![Vec::new(); worker_count];
         for (index, file) in files.into_iter().enumerate() {
             chunks[index % worker_count].push(file);
@@ -107,24 +111,13 @@ impl Engine {
             let mut handles = Vec::with_capacity(chunks.len());
             for chunk in chunks {
                 handles.push(scope.spawn(move || {
-                    let mut summary = ScanSummary::default();
-                    let mut scanned_artifacts = Vec::new();
-                    for file in chunk {
-                        if let Some(scanned) = self.scan_file(
-                            base_path,
-                            canonical_project_root,
-                            detector,
-                            &file,
-                            &mut summary,
-                        ) {
-                            self.run_per_file_providers(providers, &scanned, &mut summary);
-                            scanned_artifacts.push(scanned);
-                        }
-                    }
-                    WorkerScanResult {
-                        summary,
-                        scanned_artifacts,
-                    }
+                    self.scan_file_batch(
+                        base_path,
+                        canonical_project_root,
+                        detector,
+                        chunk,
+                        providers,
+                    )
                 }));
             }
 
@@ -142,6 +135,34 @@ impl Engine {
         }
 
         (summary, scanned_artifacts)
+    }
+
+    fn scan_file_batch(
+        &self,
+        base_path: &Path,
+        canonical_project_root: Option<&Path>,
+        detector: &FileTypeDetector,
+        files: Vec<PathBuf>,
+        providers: &ProviderCatalog<'_>,
+    ) -> WorkerScanResult {
+        let mut summary = ScanSummary::default();
+        let mut scanned_artifacts = Vec::new();
+        for file in files {
+            if let Some(scanned) = self.scan_file(
+                base_path,
+                canonical_project_root,
+                detector,
+                &file,
+                &mut summary,
+            ) {
+                self.run_per_file_providers(providers, &scanned, &mut summary);
+                scanned_artifacts.push(scanned);
+            }
+        }
+        WorkerScanResult {
+            summary,
+            scanned_artifacts,
+        }
     }
 
     fn scan_file(
@@ -621,6 +642,34 @@ fn resolve_manifest_target_directory(
     }
     let normalized = normalize_path(base_path, &resolved);
     is_repo_local_normalized_path(&normalized).then_some(normalized)
+}
+
+const FORCE_SEQUENTIAL_SCAN_ENV: &str = "LINTAI_FORCE_SEQUENTIAL_SCAN";
+const MIN_FILES_FOR_PARALLEL_SCAN: usize = 4;
+
+fn worker_count_for_scan(file_count: usize) -> usize {
+    if should_scan_sequentially(file_count) {
+        1
+    } else {
+        file_count
+            .min(
+                thread::available_parallelism()
+                    .map(usize::from)
+                    .unwrap_or(1),
+            )
+            .max(1)
+    }
+}
+
+fn should_scan_sequentially(file_count: usize) -> bool {
+    file_count < MIN_FILES_FOR_PARALLEL_SCAN || force_sequential_scans()
+}
+
+fn force_sequential_scans() -> bool {
+    matches!(
+        std::env::var(FORCE_SEQUENTIAL_SCAN_ENV),
+        Ok(value) if matches!(value.as_str(), "1" | "true" | "TRUE" | "yes" | "YES")
+    )
 }
 
 fn contains_semantic_plugin_hook_commands(text: &str) -> bool {

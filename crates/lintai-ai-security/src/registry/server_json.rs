@@ -1,4 +1,66 @@
+use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
+
 use super::*;
+use crate::server_json_rules::{
+    check_server_json_auth_header_policy_mismatch, check_server_json_insecure_remote_url,
+    check_server_json_literal_auth_header, check_server_json_unresolved_header_variable,
+    check_server_json_unresolved_remote_variable,
+};
+
+declare_rule! {
+    pub struct ServerJsonInsecureRemoteUrlRule {
+        code: "SEC319",
+        summary: "server.json remotes entry uses an insecure or non-public remote URL",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ServerJsonUnresolvedRemoteVariableRule {
+        code: "SEC320",
+        summary: "server.json remotes URL references an undefined template variable",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ServerJsonLiteralAuthHeaderRule {
+        code: "SEC321",
+        summary: "server.json remotes header commits literal authentication material",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ServerJsonUnresolvedHeaderVariableRule {
+        code: "SEC322",
+        summary: "server.json remotes header value references an undefined template variable",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ServerJsonAuthHeaderPolicyMismatchRule {
+        code: "SEC323",
+        summary: "server.json auth header carries material without an explicit secret flag",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
 
 pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {

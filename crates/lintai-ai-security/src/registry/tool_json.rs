@@ -1,4 +1,67 @@
+use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
+
 use super::*;
+use crate::tool_json_rules::{
+    check_tool_json_anthropic_strict_locked_input_schema, check_tool_json_duplicate_mcp_tool_names,
+    check_tool_json_mcp_missing_machine_fields,
+    check_tool_json_openai_strict_additional_properties,
+    check_tool_json_openai_strict_required_coverage,
+};
+
+declare_rule! {
+    pub struct McpToolRequiredFieldsRule {
+        code: "SEC314",
+        summary: "MCP-style tool descriptor is missing required machine fields",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpDuplicateToolNamesRule {
+        code: "SEC315",
+        summary: "MCP-style tool descriptor collection contains duplicate tool names",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct OpenAiStrictAdditionalPropertiesRule {
+        code: "SEC316",
+        summary: "OpenAI strict tool schema omits recursive additionalProperties: false",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct OpenAiStrictRequiredCoverageRule {
+        code: "SEC317",
+        summary: "OpenAI strict tool schema does not require every declared property",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct AnthropicStrictInputSchemaRule {
+        code: "SEC318",
+        summary: "Anthropic strict tool input schema omits additionalProperties: false",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
 
 pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {

@@ -1,6 +1,6 @@
 use std::io::{Read, Write};
 use std::path::PathBuf;
-use std::process::{Command, Stdio};
+use std::process::{Child, ChildStderr, ChildStdout, Command, ExitStatus, Stdio};
 use std::sync::Arc;
 use std::thread;
 use std::time::{Duration, Instant};
@@ -50,152 +50,166 @@ impl<S> SubprocessProviderBackend<S> {
     where
         S: Clone + Send + Sync + Serialize,
     {
-        let executable = match (self.resolve_executable)() {
+        let executable = match self.resolve_executable_path() {
             Ok(path) => path,
-            Err(message) => {
-                return ProviderScanResult::new(
-                    Vec::new(),
-                    vec![ProviderError::new(self.id(), message)],
-                );
-            }
+            Err(error) => return self.error_result(error),
         };
-        let request_json = match serde_json::to_vec(&request) {
+        let request_json = match self.encode_request(&request) {
             Ok(value) => value,
-            Err(error) => {
-                return ProviderScanResult::new(
-                    Vec::new(),
-                    vec![ProviderError::new(
-                        self.id(),
-                        format!("provider runner request encode failed: {error}"),
-                    )],
-                );
-            }
+            Err(error) => return self.error_result(error),
         };
-        let mut child = match Command::new(executable)
+        let mut child = match self.spawn_child(&executable) {
+            Ok(child) => child,
+            Err(error) => return self.error_result(error),
+        };
+        if let Err(error) = self.write_request(&mut child, &request_json) {
+            terminate_child(&mut child.child);
+            return self.error_result(error);
+        }
+
+        self.wait_for_child(child)
+    }
+
+    fn resolve_executable_path(&self) -> Result<PathBuf, ProviderError> {
+        (self.resolve_executable)()
+            .map_err(|message| ProviderError::new(self.provider_id.as_str(), message))
+    }
+
+    fn encode_request(&self, request: &RunnerRequest<S>) -> Result<Vec<u8>, ProviderError>
+    where
+        S: Serialize,
+    {
+        serde_json::to_vec(request).map_err(|error| {
+            ProviderError::new(
+                self.provider_id.as_str(),
+                format!("provider runner request encode failed: {error}"),
+            )
+        })
+    }
+
+    fn spawn_child(&self, executable: &PathBuf) -> Result<RunningChild, ProviderError> {
+        let mut child = Command::new(executable)
             .arg(&self.runner_arg)
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped())
             .spawn()
-        {
-            Ok(child) => child,
-            Err(error) => {
-                return ProviderScanResult::new(
-                    Vec::new(),
-                    vec![ProviderError::new(
-                        self.id(),
-                        format!("provider runner spawn failed: {error}"),
-                    )],
-                );
-            }
-        };
+            .map_err(|error| {
+                ProviderError::new(
+                    self.provider_id.as_str(),
+                    format!("provider runner spawn failed: {error}"),
+                )
+            })?;
 
-        let mut stdin = match child.stdin.take() {
-            Some(stdin) => stdin,
-            None => {
-                return ProviderScanResult::new(
-                    Vec::new(),
-                    vec![ProviderError::new(
-                        self.id(),
-                        "provider runner stdin was unavailable".to_owned(),
-                    )],
-                );
-            }
-        };
-        if let Err(error) = stdin.write_all(&request_json) {
-            let _ = child.kill();
-            let _ = child.wait();
-            return ProviderScanResult::new(
-                Vec::new(),
-                vec![ProviderError::new(
-                    self.id(),
-                    format!("provider runner request write failed: {error}"),
-                )],
-            );
-        }
+        let stdout = child.stdout.take().ok_or_else(|| {
+            ProviderError::new(
+                self.provider_id.as_str(),
+                "provider runner stdout was unavailable".to_owned(),
+            )
+        })?;
+        let stderr = child.stderr.take();
+
+        Ok(RunningChild {
+            child,
+            stdout,
+            stderr,
+        })
+    }
+
+    fn write_request(
+        &self,
+        child: &mut RunningChild,
+        request_json: &[u8],
+    ) -> Result<(), ProviderError> {
+        let mut stdin = child.child.stdin.take().ok_or_else(|| {
+            ProviderError::new(
+                self.provider_id.as_str(),
+                "provider runner stdin was unavailable".to_owned(),
+            )
+        })?;
+        stdin.write_all(request_json).map_err(|error| {
+            ProviderError::new(
+                self.provider_id.as_str(),
+                format!("provider runner request write failed: {error}"),
+            )
+        })?;
         drop(stdin);
+        Ok(())
+    }
 
-        let mut stdout = match child.stdout.take() {
-            Some(stdout) => stdout,
-            None => {
-                let _ = child.kill();
-                let _ = child.wait();
-                return ProviderScanResult::new(
-                    Vec::new(),
-                    vec![ProviderError::new(
-                        self.id(),
-                        "provider runner stdout was unavailable".to_owned(),
-                    )],
-                );
-            }
-        };
-        let mut stderr = child.stderr.take();
+    fn wait_for_child(&self, mut child: RunningChild) -> ProviderScanResult {
         let started = Instant::now();
 
         loop {
-            match child.try_wait() {
-                Ok(Some(status)) => {
-                    let mut output = String::new();
-                    let _ = stdout.read_to_string(&mut output);
-                    let stderr_output = read_optional_stderr(&mut stderr);
-                    if !status.success() {
-                        let suffix = if stderr_output.is_empty() {
-                            String::new()
-                        } else {
-                            format!(": {stderr_output}")
-                        };
-                        return ProviderScanResult::new(
-                            Vec::new(),
-                            vec![ProviderError::new(
-                                self.id(),
-                                format!("provider runner exited unsuccessfully{suffix}"),
-                            )],
-                        );
-                    }
-                    let response: RunnerResponse = match serde_json::from_str(&output) {
-                        Ok(response) => response,
-                        Err(error) => {
-                            return ProviderScanResult::new(
-                                Vec::new(),
-                                vec![ProviderError::new(
-                                    self.id(),
-                                    format!("provider runner response decode failed: {error}"),
-                                )],
-                            );
-                        }
-                    };
-                    return response.result;
-                }
-                Ok(None) => {
-                    if started.elapsed() >= self.timeout {
-                        let _ = child.kill();
-                        let _ = child.wait();
-                        return ProviderScanResult::new(
-                            Vec::new(),
-                            vec![ProviderError::timeout(
-                                self.id(),
-                                format!(
-                                    "isolated provider child was terminated after exceeding timeout {:?}",
-                                    self.timeout
-                                ),
-                            )],
-                        );
-                    }
-                    thread::sleep(Duration::from_millis(5));
-                }
+            match self.poll_child_exit(&mut child.child, started) {
+                Ok(Some(status)) => return self.handle_completed_child(status, child),
+                Ok(None) => thread::sleep(Duration::from_millis(5)),
                 Err(error) => {
-                    let _ = child.kill();
-                    let _ = child.wait();
-                    return ProviderScanResult::new(
-                        Vec::new(),
-                        vec![ProviderError::new(
-                            self.id(),
-                            format!("provider runner wait failed: {error}"),
-                        )],
-                    );
+                    terminate_child(&mut child.child);
+                    return self.error_result(error);
                 }
             }
         }
+    }
+
+    fn poll_child_exit(
+        &self,
+        child: &mut Child,
+        started: Instant,
+    ) -> Result<Option<ExitStatus>, ProviderError> {
+        match child.try_wait() {
+            Ok(Some(status)) => Ok(Some(status)),
+            Ok(None) => {
+                if started.elapsed() >= self.timeout {
+                    terminate_child(child);
+                    Err(ProviderError::timeout(
+                        self.provider_id.as_str(),
+                        format!(
+                            "isolated provider child was terminated after exceeding timeout {:?}",
+                            self.timeout
+                        ),
+                    ))
+                } else {
+                    Ok(None)
+                }
+            }
+            Err(error) => Err(ProviderError::new(
+                self.provider_id.as_str(),
+                format!("provider runner wait failed: {error}"),
+            )),
+        }
+    }
+
+    fn handle_completed_child(
+        &self,
+        status: ExitStatus,
+        mut child: RunningChild,
+    ) -> ProviderScanResult {
+        let output = read_stdout(&mut child.stdout);
+        let stderr_output = read_optional_stderr(&mut child.stderr);
+        if !status.success() {
+            let suffix = if stderr_output.is_empty() {
+                String::new()
+            } else {
+                format!(": {stderr_output}")
+            };
+            return self.error_result(ProviderError::new(
+                self.provider_id.as_str(),
+                format!("provider runner exited unsuccessfully{suffix}"),
+            ));
+        }
+
+        match serde_json::from_str::<RunnerResponse>(&output) {
+            Ok(response) => response.result,
+            Err(error) => self.error_result(ProviderError::new(
+                self.provider_id.as_str(),
+                format!("provider runner response decode failed: {error}"),
+            )),
+        }
+    }
+
+    fn error_result(&self, error: ProviderError) -> ProviderScanResult {
+        ProviderScanResult::new(Vec::new(), vec![error])
     }
 }
 
@@ -245,4 +259,21 @@ fn read_optional_stderr(stderr: &mut Option<std::process::ChildStderr>) -> Strin
     let mut output = String::new();
     let _ = stderr.read_to_string(&mut output);
     output.trim().to_owned()
+}
+
+struct RunningChild {
+    child: Child,
+    stdout: ChildStdout,
+    stderr: Option<ChildStderr>,
+}
+
+fn read_stdout(stdout: &mut ChildStdout) -> String {
+    let mut output = String::new();
+    let _ = stdout.read_to_string(&mut output);
+    output
+}
+
+fn terminate_child(child: &mut Child) {
+    let _ = child.kill();
+    let _ = child.wait();
 }
