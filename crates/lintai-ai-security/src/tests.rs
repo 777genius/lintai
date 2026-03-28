@@ -2,7 +2,8 @@ use std::sync::Arc;
 
 use lintai_api::{ArtifactKind, RuleProvider, RuleTier, ScanScope, Severity, SourceFormat};
 use lintai_engine::{
-    EngineBuilder, FileSuppressions, internal::InProcessProviderBackend, load_workspace_config,
+    EngineBuilder, EngineConfig, FileSuppressions, NoopSuppressionMatcher,
+    internal::InProcessProviderBackend, load_workspace_config,
 };
 use lintai_testing::ProviderHarness;
 
@@ -589,6 +590,207 @@ fn finds_json_literal_secret_in_env_value() {
         finding.location.span,
         lintai_api::Span::new(start, start + "sk-test-secret".len())
     );
+}
+
+#[test]
+fn finds_mcp_tool_missing_machine_fields() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"[
+  {
+    "name": "list_clusters",
+    "description": "List clusters"
+  }
+]"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::ToolDescriptorJson,
+        SourceFormat::Json,
+        content,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC314"));
+}
+
+#[test]
+fn finds_duplicate_mcp_tool_names() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"[
+  {
+    "name": "list_clusters",
+    "inputSchema": { "type": "object", "properties": {}, "additionalProperties": false }
+  },
+  {
+    "name": "list_clusters",
+    "inputSchema": { "type": "object", "properties": {}, "additionalProperties": false }
+  }
+]"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::ToolDescriptorJson,
+        SourceFormat::Json,
+        content,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC315"));
+}
+
+#[test]
+fn finds_openai_strict_missing_recursive_additional_properties() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"[
+  {
+    "type": "function",
+    "function": {
+      "name": "weather",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "city": { "type": "string" }
+        },
+        "required": ["city"]
+      }
+    }
+  }
+]"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::ToolDescriptorJson,
+        SourceFormat::Json,
+        content,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC316"));
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC317"));
+}
+
+#[test]
+fn finds_openai_strict_required_coverage_gap() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"[
+  {
+    "type": "function",
+    "function": {
+      "name": "weather",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "city": { "type": "string" },
+          "units": { "type": "string" }
+        },
+        "required": ["city"],
+        "additionalProperties": false
+      }
+    }
+  }
+]"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::ToolDescriptorJson,
+        SourceFormat::Json,
+        content,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC317"));
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC316"));
+}
+
+#[test]
+fn finds_anthropic_strict_open_input_schema() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"[
+  {
+    "name": "weather",
+    "strict": true,
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "city": { "type": "string" }
+      },
+      "required": ["city"]
+    }
+  }
+]"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::ToolDescriptorJson,
+        SourceFormat::Json,
+        content,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC318"));
+}
+
+#[test]
+fn existing_mcp_rules_apply_to_claude_mcp_json_variants() {
+    let temp_dir = unique_temp_dir("lintai-claude-mcp-variant");
+    std::fs::create_dir_all(temp_dir.join(".claude/mcp")).unwrap();
+    std::fs::write(
+        temp_dir.join(".claude/mcp/chrome-devtools.json"),
+        br#"{"url":"http://example.test/mcp"}"#,
+    )
+    .unwrap();
+
+    let mut config = EngineConfig::default();
+    config.project_root = Some(temp_dir.clone());
+    let engine = EngineBuilder::default()
+        .with_config(config)
+        .with_suppressions(Arc::new(NoopSuppressionMatcher))
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build();
+    let summary = engine.scan_path(&temp_dir).unwrap();
+
+    assert!(summary.findings.iter().any(|finding| finding.rule_code == "SEC302"));
+}
+
+#[test]
+fn fixture_like_tool_json_paths_do_not_emit_tool_descriptor_findings() {
+    let temp_dir = unique_temp_dir("lintai-tool-json-fixture-path");
+    std::fs::create_dir_all(temp_dir.join("tests/fixtures")).unwrap();
+    std::fs::write(
+        temp_dir.join("tests/fixtures/invalid-tools.json"),
+        br#"[
+  {
+    "name": "weather",
+    "description": "Missing inputSchema"
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "lookup",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "city": { "type": "string" }
+        }
+      }
+    }
+  }
+]"#,
+    )
+    .unwrap();
+
+    let mut config = EngineConfig::default();
+    config.project_root = Some(temp_dir.clone());
+    let engine = EngineBuilder::default()
+        .with_config(config)
+        .with_suppressions(Arc::new(NoopSuppressionMatcher))
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build();
+    let summary = engine.scan_path(&temp_dir).unwrap();
+
+    assert!(summary.findings.iter().all(|finding| {
+        !matches!(
+            finding.rule_code.as_str(),
+            "SEC314" | "SEC315" | "SEC316" | "SEC317" | "SEC318"
+        )
+    }));
 }
 
 #[test]

@@ -61,6 +61,7 @@ pub(crate) struct ArtifactSignals {
     markdown: Option<MarkdownSignals>,
     hook: Option<HookSignals>,
     json: Option<JsonSignals>,
+    tool_json: Option<ToolJsonSignals>,
     metrics: SignalWorkBudget,
 }
 
@@ -81,6 +82,7 @@ impl ArtifactSignals {
             markdown: MarkdownSignals::from_context(ctx, &mut metrics),
             hook: HookSignals::from_context(ctx, &mut metrics),
             json: JsonSignals::from_context(ctx, &mut metrics),
+            tool_json: ToolJsonSignals::from_context(ctx, &mut metrics),
             metrics,
         }
     }
@@ -95,6 +97,10 @@ impl ArtifactSignals {
 
     pub(crate) fn json(&self) -> Option<&JsonSignals> {
         self.json.as_ref()
+    }
+
+    pub(crate) fn tool_json(&self) -> Option<&ToolJsonSignals> {
+        self.tool_json.as_ref()
     }
 
     pub(crate) fn metrics(&self) -> SignalWorkBudget {
@@ -277,6 +283,50 @@ impl JsonSignals {
             metrics,
         );
         signals.locator = locator;
+        Some(signals)
+    }
+}
+
+#[derive(Clone, Debug, Default)]
+pub(crate) struct ToolJsonSignals {
+    #[cfg_attr(not(test), allow(dead_code))]
+    pub(crate) locator: Option<JsonLocationMap>,
+    pub(crate) fixture_like_path: bool,
+    pub(crate) mcp_missing_machine_field_span: Option<Span>,
+    pub(crate) duplicate_mcp_tool_name_span: Option<Span>,
+    pub(crate) openai_strict_additional_properties_span: Option<Span>,
+    pub(crate) openai_strict_required_span: Option<Span>,
+    pub(crate) anthropic_strict_locked_input_schema_span: Option<Span>,
+}
+
+impl ToolJsonSignals {
+    fn from_context(ctx: &ScanContext, metrics: &mut SignalWorkBudget) -> Option<Self> {
+        if ctx.artifact.kind != ArtifactKind::ToolDescriptorJson {
+            return None;
+        }
+
+        let value = &json_semantics(ctx)?.value;
+        let locator = JsonLocationMap::parse(&ctx.content);
+        if locator.is_some() {
+            metrics.json_locator_builds += 1;
+        }
+        let locator_ref = locator.clone();
+
+        let mut signals = Self {
+            locator,
+            fixture_like_path: is_fixture_like_tool_json_path(&ctx.artifact.normalized_path),
+            ..Self::default()
+        };
+
+        visit_tool_json_value(
+            value,
+            &ctx.artifact.normalized_path,
+            locator_ref.as_ref(),
+            ctx.content.len(),
+            &mut signals,
+            metrics,
+        );
+
         Some(signals)
     }
 }
@@ -675,6 +725,427 @@ fn visit_json_value(
     }
 }
 
+fn visit_tool_json_value(
+    value: &Value,
+    normalized_path: &str,
+    locator: Option<&JsonLocationMap>,
+    fallback_len: usize,
+    signals: &mut ToolJsonSignals,
+    metrics: &mut SignalWorkBudget,
+) {
+    let collections = collect_tool_descriptor_collections(value, metrics);
+    if collections.is_empty() || signals.fixture_like_path {
+        return;
+    }
+
+    for collection in collections {
+        let mut seen_mcp_names = std::collections::BTreeSet::new();
+        for path in collection {
+            let Some(object) = json_object_at_path(value, &path) else {
+                continue;
+            };
+
+            if is_mcp_style_tool_descriptor_object(object) {
+                if signals.mcp_missing_machine_field_span.is_none()
+                    && let Some(span) = find_mcp_missing_machine_field_span(
+                        &path,
+                        object,
+                        locator,
+                        fallback_len,
+                    )
+                {
+                    signals.mcp_missing_machine_field_span = Some(span);
+                }
+
+                if signals.duplicate_mcp_tool_name_span.is_none()
+                    && let Some(name) = object.get("name").and_then(Value::as_str)
+                    && !seen_mcp_names.insert(name.to_owned())
+                {
+                    signals.duplicate_mcp_tool_name_span =
+                        Some(resolve_child_value_span(&path, "name", locator, fallback_len));
+                }
+            }
+
+            if let Some(function_object) = openai_function_object(object) {
+                let strict_enabled = object.get("strict").and_then(Value::as_bool) == Some(true)
+                    || function_object.get("strict").and_then(Value::as_bool) == Some(true);
+                if strict_enabled {
+                    let parameters_key = "parameters";
+                    if let Some(parameters) = function_object.get(parameters_key) {
+                        if signals.openai_strict_additional_properties_span.is_none()
+                            && let Some(relative_path) = find_open_object_schema_lock_span_path(
+                                parameters,
+                                metrics,
+                            )
+                        {
+                            signals.openai_strict_additional_properties_span = Some(
+                                resolve_openai_relative_schema_span(
+                                    &path,
+                                    parameters_key,
+                                    &relative_path,
+                                    locator,
+                                    fallback_len,
+                                ),
+                            );
+                        }
+
+                        if signals.openai_strict_required_span.is_none()
+                            && let Some(relative_path) =
+                                find_required_coverage_mismatch_span_path(parameters, metrics)
+                        {
+                            signals.openai_strict_required_span = Some(
+                                resolve_openai_relative_schema_span(
+                                    &path,
+                                    parameters_key,
+                                    &relative_path,
+                                    locator,
+                                    fallback_len,
+                                ),
+                            );
+                        }
+                    }
+                }
+            }
+
+            if signals.anthropic_strict_locked_input_schema_span.is_none()
+                && object.get("name").and_then(Value::as_str).is_some()
+                && object.get("strict").and_then(Value::as_bool) == Some(true)
+                && let Some(input_schema) = object.get("input_schema")
+                && let Some(relative_path) =
+                    find_open_object_schema_lock_span_path(input_schema, metrics)
+            {
+                signals.anthropic_strict_locked_input_schema_span = Some(
+                    resolve_relative_schema_span(
+                        &path,
+                        "input_schema",
+                        &relative_path,
+                        locator,
+                        fallback_len,
+                    ),
+                );
+            }
+        }
+    }
+
+    let _ = normalized_path;
+}
+
+fn collect_tool_descriptor_collections(
+    value: &Value,
+    metrics: &mut SignalWorkBudget,
+) -> Vec<Vec<Vec<JsonPathSegment>>> {
+    metrics.json_values_visited += 1;
+    let mut collections = Vec::new();
+
+    match value {
+        Value::Array(items) => {
+            let paths = items
+                .iter()
+                .enumerate()
+                .filter_map(|(index, item)| {
+                    item.as_object()
+                        .filter(|object| looks_like_tool_descriptor_object(object))
+                        .map(|_| vec![JsonPathSegment::Index(index)])
+                })
+                .collect::<Vec<_>>();
+            if !paths.is_empty() {
+                collections.push(paths);
+            }
+        }
+        Value::Object(map) => {
+            if looks_like_tool_descriptor_object(map) {
+                collections.push(vec![Vec::new()]);
+            }
+
+            for key in ["tools", "functions"] {
+                let Some(items) = map.get(key).and_then(Value::as_array) else {
+                    continue;
+                };
+                let paths = items
+                    .iter()
+                    .enumerate()
+                    .filter_map(|(index, item)| {
+                        item.as_object()
+                            .filter(|object| looks_like_tool_descriptor_object(object))
+                            .map(|_| {
+                                vec![
+                                    JsonPathSegment::Key(key.to_owned()),
+                                    JsonPathSegment::Index(index),
+                                ]
+                            })
+                    })
+                    .collect::<Vec<_>>();
+                if !paths.is_empty() {
+                    collections.push(paths);
+                }
+            }
+        }
+        Value::Null | Value::Bool(_) | Value::Number(_) | Value::String(_) => {}
+    }
+
+    collections
+}
+
+fn json_object_at_path<'a>(
+    value: &'a Value,
+    path: &[JsonPathSegment],
+) -> Option<&'a serde_json::Map<String, Value>> {
+    let mut current = value;
+    for segment in path {
+        match segment {
+            JsonPathSegment::Key(key) => {
+                current = current.as_object()?.get(key)?;
+            }
+            JsonPathSegment::Index(index) => {
+                current = current.as_array()?.get(*index)?;
+            }
+        }
+    }
+    current.as_object()
+}
+
+fn looks_like_tool_descriptor_object(object: &serde_json::Map<String, Value>) -> bool {
+    object.contains_key("inputSchema")
+        || object.contains_key("input_schema")
+        || object.contains_key("parameters")
+        || object.contains_key("function")
+        || object.contains_key("name")
+}
+
+fn is_mcp_style_tool_descriptor_object(object: &serde_json::Map<String, Value>) -> bool {
+    if object.contains_key("inputSchema") {
+        return true;
+    }
+
+    object.get("name").and_then(Value::as_str).is_some()
+        && !object.contains_key("function")
+        && !object.contains_key("input_schema")
+        && !object.contains_key("parameters")
+}
+
+fn find_mcp_missing_machine_field_span(
+    path: &[JsonPathSegment],
+    object: &serde_json::Map<String, Value>,
+    locator: Option<&JsonLocationMap>,
+    fallback_len: usize,
+) -> Option<Span> {
+    let has_name = object.get("name").and_then(Value::as_str).is_some();
+    let has_input_schema = object.contains_key("inputSchema");
+
+    if has_input_schema && !has_name {
+        return Some(resolve_child_value_or_key_span(
+            path,
+            "inputSchema",
+            locator,
+            fallback_len,
+        ));
+    }
+
+    if !has_input_schema
+        && has_name
+        && (object.get("description").and_then(Value::as_str).is_some()
+            || object.get("title").and_then(Value::as_str).is_some()
+            || object.get("annotations").and_then(Value::as_object).is_some())
+    {
+        return Some(resolve_child_value_span(path, "name", locator, fallback_len));
+    }
+
+    None
+}
+
+fn openai_function_object<'a>(
+    object: &'a serde_json::Map<String, Value>,
+) -> Option<&'a serde_json::Map<String, Value>> {
+    (object.get("type").and_then(Value::as_str) == Some("function"))
+        .then(|| object.get("function").and_then(Value::as_object))
+        .flatten()
+}
+
+fn find_open_object_schema_lock_span_path(
+    value: &Value,
+    metrics: &mut SignalWorkBudget,
+) -> Option<Vec<JsonPathSegment>> {
+    let mut path = Vec::new();
+    find_open_object_schema_lock_span_path_inner(value, &mut path, metrics)
+}
+
+fn find_open_object_schema_lock_span_path_inner(
+    value: &Value,
+    path: &mut Vec<JsonPathSegment>,
+    metrics: &mut SignalWorkBudget,
+) -> Option<Vec<JsonPathSegment>> {
+    metrics.json_values_visited += 1;
+    let object = value.as_object()?;
+    let has_properties = object.get("properties").and_then(Value::as_object).is_some();
+    if has_properties {
+        match object.get("additionalProperties") {
+            Some(Value::Bool(false)) => {}
+            Some(_) => {
+                let mut offending = path.clone();
+                offending.push(JsonPathSegment::Key("additionalProperties".to_owned()));
+                return Some(offending);
+            }
+            None => {
+                let mut offending = path.clone();
+                offending.push(JsonPathSegment::Key("properties".to_owned()));
+                return Some(offending);
+            }
+        }
+    }
+
+    if let Some(properties) = object.get("properties").and_then(Value::as_object) {
+        for (key, nested) in properties {
+            path.push(JsonPathSegment::Key("properties".to_owned()));
+            path.push(JsonPathSegment::Key(key.clone()));
+            if let Some(offending) =
+                find_open_object_schema_lock_span_path_inner(nested, path, metrics)
+            {
+                return Some(offending);
+            }
+            path.pop();
+            path.pop();
+        }
+    }
+
+    if let Some(items) = object.get("items") {
+        path.push(JsonPathSegment::Key("items".to_owned()));
+        if let Some(offending) = find_open_object_schema_lock_span_path_inner(items, path, metrics)
+        {
+            return Some(offending);
+        }
+        path.pop();
+    }
+
+    for key in ["oneOf", "anyOf", "allOf"] {
+        if let Some(variants) = object.get(key).and_then(Value::as_array) {
+            for (index, nested) in variants.iter().enumerate() {
+                path.push(JsonPathSegment::Key(key.to_owned()));
+                path.push(JsonPathSegment::Index(index));
+                if let Some(offending) =
+                    find_open_object_schema_lock_span_path_inner(nested, path, metrics)
+                {
+                    return Some(offending);
+                }
+                path.pop();
+                path.pop();
+            }
+        }
+    }
+
+    None
+}
+
+fn find_required_coverage_mismatch_span_path(
+    value: &Value,
+    metrics: &mut SignalWorkBudget,
+) -> Option<Vec<JsonPathSegment>> {
+    let mut path = Vec::new();
+    find_required_coverage_mismatch_span_path_inner(value, &mut path, metrics)
+}
+
+fn find_required_coverage_mismatch_span_path_inner(
+    value: &Value,
+    path: &mut Vec<JsonPathSegment>,
+    metrics: &mut SignalWorkBudget,
+) -> Option<Vec<JsonPathSegment>> {
+    metrics.json_values_visited += 1;
+    let object = value.as_object()?;
+    if let Some(properties) = object.get("properties").and_then(Value::as_object) {
+        let property_keys = properties
+            .keys()
+            .map(String::as_str)
+            .collect::<std::collections::BTreeSet<_>>();
+        let required_keys = object
+            .get("required")
+            .and_then(Value::as_array)
+            .map(|items| {
+                items.iter()
+                    .filter_map(Value::as_str)
+                    .collect::<std::collections::BTreeSet<_>>()
+            })
+            .unwrap_or_default();
+        if property_keys != required_keys {
+            let mut offending = path.clone();
+            offending.push(JsonPathSegment::Key(
+                if object.get("required").is_some() {
+                    "required"
+                } else {
+                    "properties"
+                }
+                .to_owned(),
+            ));
+            return Some(offending);
+        }
+
+        for (key, nested) in properties {
+            path.push(JsonPathSegment::Key("properties".to_owned()));
+            path.push(JsonPathSegment::Key(key.clone()));
+            if let Some(offending) =
+                find_required_coverage_mismatch_span_path_inner(nested, path, metrics)
+            {
+                return Some(offending);
+            }
+            path.pop();
+            path.pop();
+        }
+    }
+
+    if let Some(items) = object.get("items") {
+        path.push(JsonPathSegment::Key("items".to_owned()));
+        if let Some(offending) =
+            find_required_coverage_mismatch_span_path_inner(items, path, metrics)
+        {
+            return Some(offending);
+        }
+        path.pop();
+    }
+
+    for key in ["oneOf", "anyOf", "allOf"] {
+        if let Some(variants) = object.get(key).and_then(Value::as_array) {
+            for (index, nested) in variants.iter().enumerate() {
+                path.push(JsonPathSegment::Key(key.to_owned()));
+                path.push(JsonPathSegment::Index(index));
+                if let Some(offending) =
+                    find_required_coverage_mismatch_span_path_inner(nested, path, metrics)
+                {
+                    return Some(offending);
+                }
+                path.pop();
+                path.pop();
+            }
+        }
+    }
+
+    None
+}
+
+fn resolve_relative_schema_span(
+    path: &[JsonPathSegment],
+    schema_key: &str,
+    relative_path: &[JsonPathSegment],
+    locator: Option<&JsonLocationMap>,
+    fallback_len: usize,
+) -> Span {
+    let mut full_path = path.to_vec();
+    full_path.push(JsonPathSegment::Key(schema_key.to_owned()));
+    full_path.extend_from_slice(relative_path);
+    resolve_value_or_key_span(&full_path, locator, fallback_len)
+}
+
+fn resolve_openai_relative_schema_span(
+    path: &[JsonPathSegment],
+    schema_key: &str,
+    relative_path: &[JsonPathSegment],
+    locator: Option<&JsonLocationMap>,
+    fallback_len: usize,
+) -> Span {
+    let mut full_path = path.to_vec();
+    full_path.push(JsonPathSegment::Key("function".to_owned()));
+    full_path.push(JsonPathSegment::Key(schema_key.to_owned()));
+    full_path.extend_from_slice(relative_path);
+    resolve_value_or_key_span(&full_path, locator, fallback_len)
+}
+
 fn has_download_exec(lowered: &str) -> bool {
     let has_download = lowered.contains("curl ") || lowered.contains("wget ");
     let has_pipe_exec = lowered.contains("| sh") || lowered.contains("| bash");
@@ -826,6 +1297,23 @@ fn normalized_parent_segments(normalized_path: &str) -> Vec<String> {
         .collect::<Vec<_>>();
     parts.pop();
     parts
+}
+
+fn is_fixture_like_tool_json_path(normalized_path: &str) -> bool {
+    normalized_path.split('/').any(|segment| {
+        matches!(
+            segment.to_ascii_lowercase().as_str(),
+            "test"
+                | "tests"
+                | "testdata"
+                | "fixture"
+                | "fixtures"
+                | "example"
+                | "examples"
+                | "sample"
+                | "samples"
+        )
+    })
 }
 
 fn shell_tokens(line: &str) -> Vec<HookToken<'_>> {

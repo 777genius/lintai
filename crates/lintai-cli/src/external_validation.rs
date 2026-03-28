@@ -277,6 +277,8 @@ fn render_report_from_ledgers(
     let fp_clusters = top_clusters(current, ClusterKind::FalsePositive);
     let fn_clusters = top_clusters(current, ClusterKind::FalseNegative);
     let preview_signal_repos = preview_signal_repos(current);
+    let expanded_surface_counts = expanded_surface_counts(current);
+    let tool_rule_hits = rule_count(current, &["SEC314", "SEC315", "SEC316", "SEC317", "SEC318"]);
 
     let datadog_status = phase_target_status(
         baseline,
@@ -346,6 +348,33 @@ fn render_report_from_ledgers(
         "- `{}` diagnostics\n\n",
         current_counts.diagnostics
     ));
+
+    output.push_str("## Hybrid Scope Expansion Results\n\n");
+    output.push_str("Current wave inventory for the newly expanded JSON lanes:\n\n");
+    output.push_str(&format!(
+        "- repos with `.mcp.json`: `{}`\n",
+        expanded_surface_counts.dot_mcp
+    ));
+    output.push_str(&format!(
+        "- repos with `.claude/mcp/*.json`: `{}`\n",
+        expanded_surface_counts.claude_mcp
+    ));
+    output.push_str(&format!(
+        "- repos with `tool_descriptor_json`: `{}`\n",
+        expanded_surface_counts.tool_descriptor_json
+    ));
+    output.push_str(&format!(
+        "- findings from `SEC314`-`SEC318`: `{}`\n",
+        tool_rule_hits
+    ));
+    if tool_rule_hits == 0 {
+        output.push_str(
+            "- no non-fixture external `Stable` hits were produced yet on committed tool-descriptor JSON\n",
+        );
+    }
+    output.push_str(
+        "- fixture/testdata/example suppression stayed active; this batch did not create a fake `Stable` usefulness signal from fixture-like paths\n\n",
+    );
 
     output.push_str("## Delta From Previous Wave\n\n");
     output.push_str(&format!(
@@ -500,6 +529,43 @@ fn category_counts(ledger: &ExternalValidationLedger) -> BTreeMap<String, usize>
         *counts.entry(entry.category.clone()).or_insert(0usize) += 1;
     }
     counts
+}
+
+struct ExpandedSurfaceCounts {
+    dot_mcp: usize,
+    claude_mcp: usize,
+    tool_descriptor_json: usize,
+}
+
+fn expanded_surface_counts(ledger: &ExternalValidationLedger) -> ExpandedSurfaceCounts {
+    ExpandedSurfaceCounts {
+        dot_mcp: count_surface_presence(ledger, ".mcp.json"),
+        claude_mcp: count_surface_presence(ledger, ".claude/mcp/*.json"),
+        tool_descriptor_json: count_surface_presence(ledger, "tool_descriptor_json"),
+    }
+}
+
+fn count_surface_presence(ledger: &ExternalValidationLedger, surface: &str) -> usize {
+    ledger
+        .evaluations
+        .iter()
+        .filter(|entry| entry.surfaces_present.iter().any(|present| present == surface))
+        .count()
+}
+
+fn rule_count(ledger: &ExternalValidationLedger, rules: &[&str]) -> usize {
+    let wanted = rules.iter().copied().collect::<BTreeSet<_>>();
+    ledger
+        .evaluations
+        .iter()
+        .map(|entry| {
+            entry.stable_rule_codes
+                .iter()
+                .chain(entry.preview_rule_codes.iter())
+                .filter(|rule_code| wanted.contains(rule_code.as_str()))
+                .count()
+        })
+        .sum()
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -677,6 +743,25 @@ fn inventory_surfaces(repo_root: &Path) -> Result<InventoryArtifact, String> {
         }
         if normalized.ends_with("mcp.json") {
             surfaces.insert("mcp.json".to_owned());
+        }
+        if normalized.ends_with(".mcp.json") {
+            surfaces.insert(".mcp.json".to_owned());
+        }
+        if normalized.ends_with(".cursor/mcp.json") {
+            surfaces.insert(".cursor/mcp.json".to_owned());
+        }
+        if normalized.contains(".claude/mcp/") && normalized.ends_with(".json") {
+            surfaces.insert(".claude/mcp/*.json".to_owned());
+        }
+        if normalized.ends_with("tools.json")
+            || normalized.ends_with(".tool.json")
+            || normalized.ends_with(".tools.json")
+            || normalized
+                .rsplit('/')
+                .next()
+                .is_some_and(|file_name| file_name.ends_with(".json") && file_name.contains("tools"))
+        {
+            surfaces.insert("tool_descriptor_json".to_owned());
         }
         if normalized.ends_with(".cursor-plugin/plugin.json") {
             surfaces.insert(".cursor-plugin/plugin.json".to_owned());
@@ -1088,12 +1173,17 @@ rationale = "demo"
             evaluations: vec![
                 EvaluationEntry {
                     repo: "datadog-labs/cursor-plugin".to_owned(),
+                    surfaces_present: vec![".mcp.json".to_owned()],
                     ..default_entry_from_shortlist(&sample_shortlist().repos[0])
                 },
                 EvaluationEntry {
                     repo: "zebbern/claude-code-guide".to_owned(),
                     preview_findings: 2,
                     preview_rule_codes: vec!["SEC313".to_owned()],
+                    surfaces_present: vec![
+                        ".claude/mcp/*.json".to_owned(),
+                        "tool_descriptor_json".to_owned(),
+                    ],
                     ..default_entry_from_shortlist(&sample_shortlist().repos[0])
                 },
                 EvaluationEntry {
@@ -1120,6 +1210,10 @@ rationale = "demo"
         };
 
         let markdown = render_report_from_ledgers(&baseline, &current);
+        assert!(markdown.contains("## Hybrid Scope Expansion Results"));
+        assert!(markdown.contains("- repos with `.mcp.json`: `1`"));
+        assert!(markdown.contains("- repos with `.claude/mcp/*.json`: `1`"));
+        assert!(markdown.contains("- repos with `tool_descriptor_json`: `1`"));
         assert!(markdown.contains("## Delta From Previous Wave"));
         assert!(markdown.contains("`datadog-labs/cursor-plugin`: `improved`"));
         assert!(markdown.contains("`zebbern/claude-code-guide`: `2` preview finding(s) via `SEC313`"));

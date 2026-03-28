@@ -45,6 +45,11 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "skill-markdown-download-exec",
             "skill-markdown-path-traversal",
             "skill-private-key-pem",
+            "tool-json-anthropic-strict-open-schema",
+            "tool-json-duplicate-tool-names",
+            "tool-json-mcp-missing-machine-fields",
+            "tool-json-openai-strict-additional-properties",
+            "tool-json-openai-strict-required-coverage",
         ]
     );
 }

@@ -39,6 +39,11 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-html-comment-safe",
             "skill-project-scoped-path-safe",
             "skill-public-key-pem-safe",
+            "tool-json-anthropic-strict-locked",
+            "tool-json-mcp-valid-tool",
+            "tool-json-openai-strict-locked",
+            "tool-json-openai-strict-required-complete",
+            "tool-json-unique-tool-names",
         ]
     );
 }

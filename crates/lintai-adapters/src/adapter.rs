@@ -31,6 +31,7 @@ pub(crate) fn parse_document(
         }
         (
             ArtifactKind::McpConfig
+            | ArtifactKind::ToolDescriptorJson
             | ArtifactKind::CursorPluginManifest
             | ArtifactKind::CursorPluginHooks,
             SourceFormat::Json,

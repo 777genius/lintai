@@ -9,7 +9,10 @@ pinned_ref = "df06f9de9cb98e0aef1008926ab1f5b12e427937"
 category = "mcp"
 subtype = "stress"
 status = "evaluated"
-surfaces_present = ["mcp.json"]
+surfaces_present = [
+    "mcp.json",
+    "tool_descriptor_json",
+]
 stable_findings = 0
 preview_findings = 0
 stable_rule_codes = []
@@ -163,8 +166,10 @@ category = "mcp"
 subtype = "control"
 status = "evaluated"
 surfaces_present = [
+    ".claude/mcp/*.json",
     "CLAUDE.md",
     "SKILL.md",
+    "tool_descriptor_json",
 ]
 stable_findings = 0
 preview_findings = 0
@@ -341,6 +346,7 @@ subtype = "control"
 status = "evaluated"
 surfaces_present = [
     ".cursor-plugin/plugin.json",
+    ".mcp.json",
     ".mdc",
     "SKILL.md",
     "mcp.json",
@@ -391,10 +397,12 @@ subtype = "stress"
 status = "evaluated"
 surfaces_present = [
     ".cursorrules",
+    ".mcp.json",
     ".mdc",
     "CLAUDE.md",
     "SKILL.md",
     "mcp.json",
+    "tool_descriptor_json",
 ]
 stable_findings = 0
 preview_findings = 0
@@ -465,6 +473,7 @@ category = "skills"
 subtype = "control"
 status = "evaluated"
 surfaces_present = [
+    ".mcp.json",
     "CLAUDE.md",
     "SKILL.md",
     "mcp.json",

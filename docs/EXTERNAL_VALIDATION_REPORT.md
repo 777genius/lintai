@@ -22,6 +22,17 @@ Current checked-in wave 2 results:
 - `0` runtime parser errors
 - `2` diagnostics
 
+## Hybrid Scope Expansion Results
+
+Current wave inventory for the newly expanded JSON lanes:
+
+- repos with `.mcp.json`: `3`
+- repos with `.claude/mcp/*.json`: `1`
+- repos with `tool_descriptor_json`: `3`
+- findings from `SEC314`-`SEC318`: `0`
+- no non-fixture external `Stable` hits were produced yet on committed tool-descriptor JSON
+- fixture/testdata/example suppression stayed active; this batch did not create a fake `Stable` usefulness signal from fixture-like paths
+
 ## Delta From Previous Wave
 
 - stable findings: `0` -> `0`

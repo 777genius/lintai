@@ -69,7 +69,7 @@ pub(crate) fn security_rule_catalog_entries() -> Vec<SecurityRuleCatalogEntry> {
     entries
 }
 
-pub(crate) fn render_security_rules_markdown() -> String {
+pub fn render_security_rules_markdown() -> String {
     let entries = security_rule_catalog_entries();
     let mut lines = vec![
         "# Security Rules Catalog".to_owned(),
@@ -223,6 +223,7 @@ fn format_surface(surface: Surface) -> &'static str {
         Surface::Markdown => "markdown",
         Surface::Hook => "hook",
         Surface::Json => "json",
+        Surface::ToolJson => "tool_json",
         Surface::Workspace => "workspace",
     }
 }
@@ -359,6 +360,11 @@ mod tests {
                     | "SEC310"
                     | "SEC311"
                     | "SEC312"
+                    | "SEC314"
+                    | "SEC315"
+                    | "SEC316"
+                    | "SEC317"
+                    | "SEC318"
             ) {
                 assert_eq!(entry.metadata.tier, RuleTier::Stable);
                 assert_eq!(entry.detection_class, DetectionClass::Structural);

@@ -1,0 +1,16 @@
+[
+  {
+    "name": "weather",
+    "strict": true,
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "city": {
+          "type": "string"
+        }
+      },
+      "required": ["city"],
+      "additionalProperties": false
+    }
+  }
+]

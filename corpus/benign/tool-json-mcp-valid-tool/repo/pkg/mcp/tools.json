@@ -1,0 +1,11 @@
+[
+  {
+    "name": "list_clusters",
+    "description": "List clusters",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    }
+  }
+]
