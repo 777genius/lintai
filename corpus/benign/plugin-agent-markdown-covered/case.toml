@@ -1,0 +1,12 @@
+id = "plugin-agent-markdown-covered"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC101", "SEC102", "SEC103", "SEC104", "SEC105", "SEC312", "SEC313", "SEC335"]
+
+[snapshot]
+kind = "none"
+name = ""

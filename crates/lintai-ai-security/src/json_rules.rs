@@ -123,6 +123,51 @@ pub(crate) fn check_mcp_dangerous_docker_flag(
     )
 }
 
+pub(crate) fn check_plugin_hook_mutable_launcher(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.mutable_plugin_hook_launcher_span.clone()),
+        "plugin hook command uses a mutable package launcher in committed hooks.json",
+    )
+}
+
+pub(crate) fn check_plugin_hook_inline_download_exec(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.inline_download_exec_plugin_hook_span.clone()),
+        "plugin hook command downloads remote content and pipes it directly into a shell",
+    )
+}
+
+pub(crate) fn check_plugin_hook_network_tls_bypass(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.network_tls_bypass_plugin_hook_span.clone()),
+        "plugin hook command disables TLS verification in a network-capable execution path",
+    )
+}
+
 pub(crate) fn check_plain_http_config(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

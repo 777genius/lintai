@@ -48,6 +48,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "mcp-trusted-endpoint-safe",
             "mcp-vscode-placeholder-envfile-safe",
             "mixed-clean-workspace",
+            "plugin-agent-markdown-covered",
+            "plugin-hook-command-safe",
             "policy-truthful-basic",
             "server-json-auth-header-placeholder-safe",
             "server-json-header-variable-defined",

@@ -65,6 +65,7 @@ surfaces_present = [
     ".github/workflows/*.yml",
     "CLAUDE.md",
     "SKILL.md",
+    "plugin_root_agents/*.md",
 ]
 stable_findings = 3
 preview_findings = 2
@@ -124,6 +125,7 @@ surfaces_present = [
     ".claude/settings.json",
     "CLAUDE.md",
     "SKILL.md",
+    "plugin_root_agents/*.md",
     "tool_descriptor_json",
 ]
 stable_findings = 1
@@ -177,6 +179,8 @@ surfaces_present = [
     ".github/workflows/*.yml",
     ".mdc",
     "SKILL.md",
+    "plugin_root_agents/*.md",
+    "plugin_root_hooks.json",
 ]
 stable_findings = 0
 preview_findings = 0

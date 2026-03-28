@@ -26,7 +26,9 @@ use crate::json_rules::{
     check_mcp_dangerous_docker_flag, check_mcp_inline_download_exec, check_mcp_mutable_launcher,
     check_mcp_network_tls_bypass_command, check_mcp_sensitive_docker_mount,
     check_mcp_shell_wrapper, check_mcp_unpinned_docker_image, check_plain_http_config,
-    check_static_auth_exposure_config, check_trust_verification_disabled_config,
+    check_plugin_hook_inline_download_exec, check_plugin_hook_mutable_launcher,
+    check_plugin_hook_network_tls_bypass, check_static_auth_exposure_config,
+    check_trust_verification_disabled_config,
 };
 use crate::markdown_rules::{
     check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
@@ -589,6 +591,39 @@ declare_rule! {
     pub struct ClaudeSettingsNetworkTlsBypassRule {
         code: "SEC342",
         summary: "Claude settings command hook disables TLS verification in a network-capable execution path",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookMutableLauncherRule {
+        code: "SEC343",
+        summary: "Plugin hook command uses a mutable package launcher",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookInlineDownloadExecRule {
+        code: "SEC344",
+        summary: "Plugin hook command downloads remote content and pipes it into a shell",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookNetworkTlsBypassRule {
+        code: "SEC345",
+        summary: "Plugin hook command disables TLS verification in a network-capable execution path",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,

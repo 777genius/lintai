@@ -269,6 +269,9 @@ pub(crate) struct JsonSignals {
     pub(crate) mutable_mcp_launcher_span: Option<Span>,
     pub(crate) inline_download_exec_command_span: Option<Span>,
     pub(crate) network_tls_bypass_command_span: Option<Span>,
+    pub(crate) mutable_plugin_hook_launcher_span: Option<Span>,
+    pub(crate) inline_download_exec_plugin_hook_span: Option<Span>,
+    pub(crate) network_tls_bypass_plugin_hook_span: Option<Span>,
     pub(crate) mutable_docker_image_span: Option<Span>,
     pub(crate) sensitive_docker_mount_span: Option<Span>,
     pub(crate) dangerous_docker_flag_span: Option<Span>,
@@ -967,6 +970,51 @@ fn visit_json_value(
             }
         }
 
+        if artifact_kind == ArtifactKind::CursorPluginHooks && is_plugin_hook_command_path(path) {
+            if signals.mutable_plugin_hook_launcher_span.is_none()
+                && let Some(command) = command
+                && let Some(relative) = find_mutable_launcher_relative_span(command)
+            {
+                signals.mutable_plugin_hook_launcher_span =
+                    Some(resolve_child_relative_value_span(
+                        path,
+                        "command",
+                        "command",
+                        relative,
+                        locator,
+                        fallback_len,
+                    ));
+            }
+
+            if signals.inline_download_exec_plugin_hook_span.is_none()
+                && let Some(command) = command
+                && has_inline_download_pipe_exec(&command.to_ascii_lowercase())
+            {
+                signals.inline_download_exec_plugin_hook_span = Some(resolve_child_value_span(
+                    path,
+                    "command",
+                    locator,
+                    fallback_len,
+                ));
+            }
+
+            if signals.network_tls_bypass_plugin_hook_span.is_none()
+                && let Some(command) = command
+                && looks_like_network_capable_command(&command.to_ascii_lowercase())
+                && let Some(relative) = find_command_tls_bypass_relative_span(command)
+            {
+                signals.network_tls_bypass_plugin_hook_span =
+                    Some(resolve_child_relative_value_span(
+                        path,
+                        "command",
+                        "command",
+                        relative,
+                        locator,
+                        fallback_len,
+                    ));
+            }
+        }
+
         if signals.shell_wrapper_span.is_none()
             && shell_has_dash_c
             && let Some(command_key) = shell_command_key
@@ -1628,6 +1676,15 @@ fn find_mutable_launcher_relative_span(command: &str) -> Option<Span> {
         }
     }
     None
+}
+
+fn is_plugin_hook_command_path(path: &[JsonPathSegment]) -> bool {
+    path.iter().any(|segment| {
+        matches!(
+            segment,
+            JsonPathSegment::Key(key) if key.eq_ignore_ascii_case("hooks")
+        )
+    })
 }
 
 fn find_mcp_command_signal_span(

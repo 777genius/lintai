@@ -1187,7 +1187,8 @@ fn render_ai_native_discovery_report(
 ) -> String {
     const AI_NATIVE_RULE_CODES: &[&str] = &[
         "SEC301", "SEC302", "SEC303", "SEC304", "SEC305", "SEC309", "SEC310", "SEC329", "SEC330",
-        "SEC331", "SEC336", "SEC337", "SEC338", "SEC339", "SEC340", "SEC341", "SEC342",
+        "SEC331", "SEC336", "SEC337", "SEC338", "SEC339", "SEC340", "SEC341", "SEC342", "SEC343",
+        "SEC344", "SEC345",
     ];
     let counts = aggregate_counts(ledger);
     let subtype_counts = shortlist
@@ -1259,6 +1260,14 @@ fn render_ai_native_discovery_report(
         "- `{}` repos are discovery-only under current detector coverage\n\n",
         coverage.discovery_only_repos.len()
     ));
+    output.push_str(&format!(
+        "- `{}` plugin-root hook admission paths are now covered\n",
+        coverage.plugin_root_hook_paths
+    ));
+    output.push_str(&format!(
+        "- `{}` plugin-root agent markdown admission paths are now covered\n\n",
+        coverage.plugin_root_agent_paths
+    ));
     if !coverage.covered_repos.is_empty() {
         output.push_str("Currently covered admission paths:\n\n");
         for (repo, paths) in &coverage.covered_repos {
@@ -1299,9 +1308,7 @@ fn render_ai_native_discovery_report(
             "- no new current-rule hits were observed on the admitted AI-native execution paths in this wave\n\n",
         );
     } else {
-        output.push_str(
-            "- some repo-level hits were observed, but current scan output still needs path-attribution work before claiming they came from discovery-only admission paths rather than sibling scanned surfaces\n\n",
-        );
+        output.push_str("- repo-level AI-native rule hits were observed after the latest detector expansion. Treat these as repo-scope evidence first, then inspect path attribution before claiming they all came from newly covered admission paths.\n\n");
     }
 
     output.push_str("## Preview Hits\n\n");
@@ -1331,8 +1338,19 @@ fn render_ai_native_discovery_report(
         output.push('\n');
     }
 
+    let plugin_repo_entry = ledger
+        .evaluations
+        .iter()
+        .find(|entry| entry.repo == "cursor/plugins");
+    if let Some(entry) = plugin_repo_entry {
+        output.push_str(&format!(
+            "- `cursor/plugins` currently reports `{}` stable and `{}` preview findings at repo scope after plugin-root target coverage expansion\n\n",
+            entry.stable_findings, entry.preview_findings
+        ));
+    }
+
     output.push_str("## Recommended Next Step\n\n");
-    output.push_str("Use this package as discovery evidence for the next detector expansion. The immediate product work should target currently uncovered `.claude/settings.json`, plugin-root `hooks.json` / `agents/*.md`, and committed Docker-oriented client config files before widening non-AI-native surfaces.\n");
+    output.push_str("Use this package as discovery evidence for the next detector expansion. Plugin-root `hooks.json` and `agents/*.md` are now partially covered through manifest-backed detection, so the remaining AI-native gaps are committed Gemini-style client configs plus deferred plugin surfaces such as `commands` and `mcpServers`.\n");
 
     output
 }
@@ -1342,6 +1360,8 @@ struct AiNativeCoverageSummary {
     total_admission_paths: usize,
     covered_admission_paths: usize,
     discovery_only_admission_paths: usize,
+    plugin_root_hook_paths: usize,
+    plugin_root_agent_paths: usize,
     covered_repos: Vec<(String, Vec<String>)>,
     discovery_only_repos: Vec<(String, Vec<String>)>,
 }
@@ -1354,8 +1374,16 @@ fn ai_native_coverage_summary(shortlist: &RepoShortlist) -> AiNativeCoverageSumm
         let mut discovery_only = Vec::new();
         for path in &repo.admission_paths {
             summary.total_admission_paths += 1;
-            if detector.detect(Path::new(path), path).is_some() {
+            if detector.detect(Path::new(path), path).is_some()
+                || is_manifest_backed_plugin_target_path(path)
+            {
                 summary.covered_admission_paths += 1;
+                if is_manifest_backed_plugin_hooks_path(path) {
+                    summary.plugin_root_hook_paths += 1;
+                }
+                if is_manifest_backed_plugin_agent_path(path) {
+                    summary.plugin_root_agent_paths += 1;
+                }
                 covered.push(path.clone());
             } else {
                 summary.discovery_only_admission_paths += 1;
@@ -1372,6 +1400,18 @@ fn ai_native_coverage_summary(shortlist: &RepoShortlist) -> AiNativeCoverageSumm
         }
     }
     summary
+}
+
+fn is_manifest_backed_plugin_target_path(path: &str) -> bool {
+    is_manifest_backed_plugin_hooks_path(path) || is_manifest_backed_plugin_agent_path(path)
+}
+
+fn is_manifest_backed_plugin_hooks_path(path: &str) -> bool {
+    path.ends_with("/hooks.json") && !path.contains("/.cursor-plugin/")
+}
+
+fn is_manifest_backed_plugin_agent_path(path: &str) -> bool {
+    path.contains("/agents/") && path.ends_with(".md") && !path.contains("/.cursor-plugin/agents/")
 }
 
 fn preview_signal_repos(ledger: &ExternalValidationLedger) -> Vec<(String, usize, Vec<String>)> {
@@ -1888,6 +1928,13 @@ fn inventory_surfaces(repo_root: &Path) -> Result<InventoryArtifact, String> {
         if normalized.ends_with(".cursor-plugin/hooks.json") {
             surfaces.insert(".cursor-plugin/hooks.json".to_owned());
         }
+        if normalized.ends_with("/hooks.json")
+            && !normalized.contains("/.cursor-plugin/")
+            && let Ok(text) = std::fs::read_to_string(entry.path())
+            && contains_semantic_plugin_hook_commands(&text)
+        {
+            surfaces.insert("plugin_root_hooks.json".to_owned());
+        }
         if normalized.contains(".cursor-plugin/hooks/") && normalized.ends_with(".sh") {
             surfaces.insert(".cursor-plugin/hooks/**/*.sh".to_owned());
         }
@@ -1896,6 +1943,12 @@ fn inventory_surfaces(repo_root: &Path) -> Result<InventoryArtifact, String> {
         }
         if normalized.contains(".cursor-plugin/agents/") && normalized.ends_with(".md") {
             surfaces.insert(".cursor-plugin/agents/**/*.md".to_owned());
+        }
+        if normalized.contains("/agents/")
+            && normalized.ends_with(".md")
+            && !normalized.contains("/.cursor-plugin/agents/")
+        {
+            surfaces.insert("plugin_root_agents/*.md".to_owned());
         }
     }
 
@@ -2280,18 +2333,6 @@ fn contains_semantic_docker_mcp_launch(text: &str) -> bool {
     })
 }
 
-fn contains_semantic_mcp_command_config(text: &str) -> bool {
-    let Ok(value) = serde_json::from_str::<Value>(text) else {
-        return false;
-    };
-    json_descendants(&value).any(|candidate| {
-        let Some(object) = candidate.as_object() else {
-            return false;
-        };
-        object.get("command").and_then(Value::as_str).is_some()
-    })
-}
-
 fn contains_semantic_server_json(text: &str) -> bool {
     let Ok(value) = serde_json::from_str::<Value>(text) else {
         return false;
@@ -2366,7 +2407,7 @@ fn admitted_plugin_execution_targets(
     };
     let plugin_root_fs = repo_root.join(plugin_root_relative);
 
-    for key in ["hooks", "agents", "commands", "mcpServers"] {
+    for key in ["hooks", "agents"] {
         let Some(target) = object.get(key).and_then(Value::as_str) else {
             continue;
         };
@@ -2391,7 +2432,6 @@ fn admitted_plugin_execution_targets(
             })?;
             let semantic = match key {
                 "hooks" => contains_semantic_plugin_hook_commands(&file_text),
-                "mcpServers" => contains_semantic_mcp_command_config(&file_text),
                 _ => false,
             };
             if semantic {
@@ -2399,7 +2439,7 @@ fn admitted_plugin_execution_targets(
             }
             continue;
         }
-        if resolved.is_dir() && matches!(key, "agents" | "commands") {
+        if resolved.is_dir() && key == "agents" {
             let mut builder = WalkBuilder::new(&resolved);
             builder
                 .hidden(false)

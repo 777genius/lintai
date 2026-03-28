@@ -1034,6 +1034,115 @@ fn repeated_multi_file_scans_stay_deterministic() {
     assert_eq!(first_metrics, second_metrics);
 }
 
+#[test]
+fn manifest_backed_plugin_targets_are_scanned() {
+    let temp_dir = unique_temp_dir("lintai-plugin-manifest-targets");
+    std::fs::create_dir_all(temp_dir.join("plugin/.cursor-plugin")).unwrap();
+    std::fs::create_dir_all(temp_dir.join("plugin/hooks")).unwrap();
+    std::fs::create_dir_all(temp_dir.join("plugin/agents")).unwrap();
+    std::fs::write(
+        temp_dir.join("plugin/.cursor-plugin/plugin.json"),
+        r#"{
+  "name": "demo-plugin",
+  "version": "1.0.0",
+  "hooks": "./hooks/hooks.json",
+  "agents": "./agents/"
+}"#,
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("plugin/hooks/hooks.json"),
+        r#"{"version":1,"hooks":{"stop":[{"command":"node ./hooks/cleanup.js"}]}}"#,
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("plugin/agents/reviewer.md"),
+        "# Reviewer\n\nReview repo-local plugin behavior.\n",
+    )
+    .unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_backend(backend(EmitFindingProvider))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    let paths = summary
+        .findings
+        .iter()
+        .map(|finding| finding.location.normalized_path.as_str())
+        .collect::<Vec<_>>();
+    assert!(paths.contains(&"plugin/.cursor-plugin/plugin.json"));
+    assert!(paths.contains(&"plugin/hooks/hooks.json"));
+    assert!(paths.contains(&"plugin/agents/reviewer.md"));
+}
+
+#[test]
+fn manifest_backed_plugin_targets_ignore_missing_or_escaping_paths() {
+    let temp_dir = unique_temp_dir("lintai-plugin-manifest-missing");
+    std::fs::create_dir_all(temp_dir.join("plugin/.cursor-plugin")).unwrap();
+    std::fs::write(
+        temp_dir.join("plugin/.cursor-plugin/plugin.json"),
+        r#"{
+  "name": "demo-plugin",
+  "version": "1.0.0",
+  "hooks": "../outside/hooks.json",
+  "agents": "./missing-agents/"
+}"#,
+    )
+    .unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_backend(backend(EmitFindingProvider))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    let paths = summary
+        .findings
+        .iter()
+        .map(|finding| finding.location.normalized_path.as_str())
+        .collect::<Vec<_>>();
+    assert!(paths.contains(&"plugin/.cursor-plugin/plugin.json"));
+    assert!(!paths.iter().any(|path| path.ends_with("hooks.json")));
+    assert!(!paths.iter().any(|path| path.contains("/agents/")));
+}
+
+#[test]
+fn manifest_backed_plugin_hooks_require_semantic_command_shape() {
+    let temp_dir = unique_temp_dir("lintai-plugin-hook-shape");
+    std::fs::create_dir_all(temp_dir.join("plugin/.cursor-plugin")).unwrap();
+    std::fs::create_dir_all(temp_dir.join("plugin/hooks")).unwrap();
+    std::fs::write(
+        temp_dir.join("plugin/.cursor-plugin/plugin.json"),
+        r#"{
+  "name": "demo-plugin",
+  "version": "1.0.0",
+  "hooks": "./hooks/hooks.json"
+}"#,
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("plugin/hooks/hooks.json"),
+        r#"{"version":1,"hooks":{"stop":[{"note":"no command here"}]}}"#,
+    )
+    .unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_backend(backend(EmitFindingProvider))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    let paths = summary
+        .findings
+        .iter()
+        .map(|finding| finding.location.normalized_path.as_str())
+        .collect::<Vec<_>>();
+    assert!(paths.contains(&"plugin/.cursor-plugin/plugin.json"));
+    assert!(!paths.contains(&"plugin/hooks/hooks.json"));
+}
+
 fn unique_temp_dir(prefix: &str) -> PathBuf {
     static NEXT_TEMP_ID: AtomicU64 = AtomicU64::new(0);
     let nanos = SystemTime::now()

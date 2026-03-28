@@ -60,6 +60,9 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC340` | Claude settings command hook uses a mutable package launcher | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` |
 | `SEC341` | Claude settings command hook downloads remote content and pipes it into a shell | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` |
 | `SEC342` | Claude settings command hook disables TLS verification in a network-capable execution path | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` |
+| `SEC343` | Plugin hook command uses a mutable package launcher | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
+| `SEC344` | Plugin hook command downloads remote content and pipes it into a shell | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
+| `SEC345` | Plugin hook command disables TLS verification in a network-capable execution path | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
 | `SEC401` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC402` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC403` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
@@ -941,6 +944,63 @@ Canonical catalog for the shipped security rules currently exposed by:
 - Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command, gated by network markers plus TLS-bypass tokens.
 - Malicious Corpus: `claude-settings-command-tls-bypass`
 - Benign Corpus: `claude-settings-network-tls-verified-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC343` — Plugin hook command uses a mutable package launcher
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for mutable package launchers such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks objects limited to actual hook command values.
+- Malicious Corpus: `plugin-hook-command-mutable-launcher`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC344` — Plugin hook command downloads remote content and pipes it into a shell
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit curl|shell or wget|shell execution chains.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks objects, limited to explicit download-pipe-shell patterns.
+- Malicious Corpus: `plugin-hook-command-inline-download-exec`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC345` — Plugin hook command disables TLS verification in a network-capable execution path
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit TLS-bypass tokens in a network-capable execution context.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks objects gated by network markers plus TLS-bypass tokens.
+- Malicious Corpus: `plugin-hook-command-tls-bypass`
+- Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

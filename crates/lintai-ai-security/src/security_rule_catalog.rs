@@ -328,7 +328,7 @@ mod tests {
             .iter()
             .map(|entry| (entry.provider_id, entry.metadata.code))
             .collect();
-        let expected: Vec<_> = rule_specs()
+        let mut expected: Vec<_> = rule_specs()
             .iter()
             .map(|spec| (NATIVE_PROVIDER_ID, spec.metadata.code))
             .chain(
@@ -337,6 +337,7 @@ mod tests {
                     .map(|spec| (POLICY_PROVIDER_ID, spec.metadata.code)),
             )
             .collect();
+        expected.sort_by_key(|(provider_id, code)| (super::provider_sort_key(provider_id), *code));
 
         assert_eq!(actual, expected);
     }

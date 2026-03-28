@@ -24,10 +24,13 @@
 ## Coverage Status
 
 - `15` total admitted paths
-- `5` admitted paths are currently covered by shipped detector kinds
-- `10` admitted paths are discovery-only and not directly scanned by current detector kinds
-- `5` repos have at least one currently covered admission path
-- `3` repos are discovery-only under current detector coverage
+- `13` admitted paths are currently covered by shipped detector kinds
+- `2` admitted paths are discovery-only and not directly scanned by current detector kinds
+- `6` repos have at least one currently covered admission path
+- `2` repos are discovery-only under current detector coverage
+
+- `2` plugin-root hook admission paths are now covered
+- `6` plugin-root agent markdown admission paths are now covered
 
 Currently covered admission paths:
 
@@ -35,25 +38,25 @@ Currently covered admission paths:
 - `blockscout/mcp-server`: `.claude/settings.json`
 - `centminmod/my-claude-code-setup`: `.claude/settings.json`
 - `buildingopen/claude-setup`: `claude/settings.json`
+- `cursor/plugins`: `agent-compatibility/agents/compatibility-scan-review.md`, `agent-compatibility/agents/startup-review.md`, `agent-compatibility/agents/validation-review.md`, `continual-learning/agents/agents-memory-updater.md`, `continual-learning/hooks/hooks.json`, `create-plugin/agents/plugin-architect.md`, `cursor-team-kit/agents/ci-watcher.md`, `ralph-loop/hooks/hooks.json`
 - `tldraw/tldraw`: `.claude/settings.json`
 
 Discovery-only admission paths:
 
 - `hashicorp/terraform-mcp-server`: `gemini-extension.json`
 - `SonarSource/sonarqube-mcp-server`: `gemini-extension.json`
-- `cursor/plugins`: `agent-compatibility/agents/compatibility-scan-review.md`, `agent-compatibility/agents/startup-review.md`, `agent-compatibility/agents/validation-review.md`, `continual-learning/agents/agents-memory-updater.md`, `continual-learning/hooks/hooks.json`, `create-plugin/agents/plugin-architect.md`, `cursor-team-kit/agents/ci-watcher.md`, `ralph-loop/hooks/hooks.json`
 
 ## Overall Counts
 
-- `39` stable findings across whole-repo scans
+- `41` stable findings across whole-repo scans
 - `24` preview findings across whole-repo scans
 - `0` runtime parser errors
 - `1` diagnostics
 
 ## Stable Hits
 
-- current AI-native MCP rule families produced `3` repo-level rule-code hits in this discovery wave
-- some repo-level hits were observed, but current scan output still needs path-attribution work before claiming they came from discovery-only admission paths rather than sibling scanned surfaces
+- current AI-native MCP rule families produced `5` repo-level rule-code hits in this discovery wave
+- repo-level AI-native rule hits were observed after the latest detector expansion. Treat these as repo-scope evidence first, then inspect path attribution before claiming they all came from newly covered admission paths.
 
 ## Preview Hits
 
@@ -63,6 +66,8 @@ Discovery-only admission paths:
 
 - `cursor/plugins`: `0` runtime parser errors, `1` diagnostics (non-admission-path issue)
 
+- `cursor/plugins` currently reports `0` stable and `0` preview findings at repo scope after plugin-root target coverage expansion
+
 ## Recommended Next Step
 
-Use this package as discovery evidence for the next detector expansion. The immediate product work should target currently uncovered `.claude/settings.json`, plugin-root `hooks.json` / `agents/*.md`, and committed Docker-oriented client config files before widening non-AI-native surfaces.
+Use this package as discovery evidence for the next detector expansion. Plugin-root `hooks.json` and `agents/*.md` are now partially covered through manifest-backed detection, so the remaining AI-native gaps are committed Gemini-style client configs plus deferred plugin surfaces such as `commands` and `mcpServers`.

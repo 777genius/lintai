@@ -1,6 +1,6 @@
 use super::*;
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 18] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 21] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -324,6 +324,63 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 18] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove privileged or host-namespace flags from the committed MCP Docker launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookMutableLauncherRule::METADATA,
+        surface: Surface::Json,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for mutable package launchers such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.",
+            malicious_case_ids: &["plugin-hook-command-mutable-launcher"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks objects limited to actual hook command values.",
+        },
+        check: check_plugin_hook_mutable_launcher,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace the mutable hook launcher with a vendored, pinned, or otherwise reproducible execution path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookInlineDownloadExecRule::METADATA,
+        surface: Surface::Json,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit curl|shell or wget|shell execution chains.",
+            malicious_case_ids: &["plugin-hook-command-inline-download-exec"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks objects, limited to explicit download-pipe-shell patterns.",
+        },
+        check: check_plugin_hook_inline_download_exec,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the inline download-and-exec flow from the plugin hook command and pin or vendor the fetched content instead",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookNetworkTlsBypassRule::METADATA,
+        surface: Surface::Json,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit TLS-bypass tokens in a network-capable execution context.",
+            malicious_case_ids: &["plugin-hook-command-tls-bypass"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks objects gated by network markers plus TLS-bypass tokens.",
+        },
+        check: check_plugin_hook_network_tls_bypass,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove TLS-bypass flags or NODE_TLS_REJECT_UNAUTHORIZED=0 from the network-capable plugin hook command",
         ),
         suggestion_fix: None,
     },

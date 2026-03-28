@@ -1,14 +1,17 @@
+use std::collections::BTreeMap;
 use std::path::Path;
+use std::path::PathBuf;
 use std::sync::Arc;
 use std::thread;
 use std::time::Instant;
 
 use lintai_adapters::parse_document;
 use lintai_api::{
-    Artifact, Finding, ProviderError, ProviderErrorKind, ScanContext, WorkspaceArtifact,
-    WorkspaceScanContext,
+    Artifact, ArtifactKind, Finding, ProviderError, ProviderErrorKind, ScanContext, SourceFormat,
+    WorkspaceArtifact, WorkspaceScanContext,
 };
 use lintai_runtime::ProviderBackend;
+use serde_json::Value;
 
 use crate::artifact_view::ArtifactContextRef;
 use crate::detector::FileTypeDetector;
@@ -53,6 +56,7 @@ impl Engine {
     ) -> Result<ScanSummary, EngineError> {
         let files = collect_files(path, &self.config)?;
         let base_path = scan_base(path, &self.config);
+        let detector = self.detector_for_scan(&base_path, &files);
         let canonical_project_root = self
             .config
             .project_root
@@ -62,6 +66,7 @@ impl Engine {
         let (mut summary, mut scanned_artifacts) = self.scan_files_in_parallel(
             &base_path,
             canonical_project_root.as_deref(),
+            &detector,
             files,
             providers,
         );
@@ -81,6 +86,7 @@ impl Engine {
         &self,
         base_path: &Path,
         canonical_project_root: Option<&Path>,
+        detector: &FileTypeDetector,
         files: Vec<std::path::PathBuf>,
         providers: &ProviderCatalog<'_>,
     ) -> (ScanSummary, Vec<ScannedArtifact>) {
@@ -104,9 +110,13 @@ impl Engine {
                     let mut summary = ScanSummary::default();
                     let mut scanned_artifacts = Vec::new();
                     for file in chunk {
-                        if let Some(scanned) =
-                            self.scan_file(base_path, canonical_project_root, &file, &mut summary)
-                        {
+                        if let Some(scanned) = self.scan_file(
+                            base_path,
+                            canonical_project_root,
+                            detector,
+                            &file,
+                            &mut summary,
+                        ) {
                             self.run_per_file_providers(providers, &scanned, &mut summary);
                             scanned_artifacts.push(scanned);
                         }
@@ -138,6 +148,7 @@ impl Engine {
         &self,
         base_path: &Path,
         canonical_project_root: Option<&Path>,
+        detector: &FileTypeDetector,
         path: &Path,
         summary: &mut ScanSummary,
     ) -> Option<ScannedArtifact> {
@@ -176,7 +187,7 @@ impl Engine {
                 }
             }
         }
-        let Some(detected) = self.detector.detect(path, &normalized_path) else {
+        let Some(detected) = detector.detect(path, &normalized_path) else {
             summary.skipped_files += 1;
             return None;
         };
@@ -484,6 +495,21 @@ impl Engine {
             errors_emitted,
         });
     }
+
+    fn detector_for_scan(&self, base_path: &Path, files: &[PathBuf]) -> FileTypeDetector {
+        let dynamic_patterns = manifest_backed_plugin_detection_patterns(base_path, files);
+        if dynamic_patterns.is_empty() {
+            return self.detector.clone();
+        }
+
+        let mut config = self.config.clone();
+        for override_spec in dynamic_patterns {
+            let escaped = globset::escape(&override_spec.normalized_path);
+            let _ =
+                config.add_detection_override(&[escaped], override_spec.kind, override_spec.format);
+        }
+        FileTypeDetector::new(&config)
+    }
 }
 
 #[derive(Clone)]
@@ -495,4 +521,133 @@ struct ScannedArtifact {
 struct WorkerScanResult {
     summary: ScanSummary,
     scanned_artifacts: Vec<ScannedArtifact>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct DynamicDetectionOverride {
+    normalized_path: String,
+    kind: ArtifactKind,
+    format: SourceFormat,
+}
+
+fn manifest_backed_plugin_detection_patterns(
+    base_path: &Path,
+    files: &[PathBuf],
+) -> Vec<DynamicDetectionOverride> {
+    let normalized_to_path = files
+        .iter()
+        .map(|path| (normalize_path(base_path, path), path.clone()))
+        .collect::<BTreeMap<_, _>>();
+    let mut overrides = BTreeMap::new();
+
+    for (normalized_manifest_path, manifest_path) in &normalized_to_path {
+        if !normalized_manifest_path.ends_with(".cursor-plugin/plugin.json") {
+            continue;
+        }
+
+        let Ok(text) = std::fs::read_to_string(manifest_path) else {
+            continue;
+        };
+        let Ok(value) = serde_json::from_str::<Value>(&text) else {
+            continue;
+        };
+        let Some(object) = value.as_object() else {
+            continue;
+        };
+        let Some(plugin_root_fs) = manifest_path.parent().and_then(Path::parent) else {
+            continue;
+        };
+
+        if let Some(target) = object.get("hooks").and_then(Value::as_str)
+            && let Some(normalized_target) =
+                resolve_manifest_target_path(base_path, plugin_root_fs, target, &normalized_to_path)
+            && let Some(target_path) = normalized_to_path.get(&normalized_target)
+            && let Ok(target_text) = std::fs::read_to_string(target_path)
+            && contains_semantic_plugin_hook_commands(&target_text)
+        {
+            overrides.insert(
+                normalized_target.clone(),
+                DynamicDetectionOverride {
+                    normalized_path: normalized_target,
+                    kind: ArtifactKind::CursorPluginHooks,
+                    format: SourceFormat::Json,
+                },
+            );
+        }
+
+        if let Some(target) = object.get("agents").and_then(Value::as_str)
+            && let Some(normalized_dir) =
+                resolve_manifest_target_directory(base_path, plugin_root_fs, target)
+        {
+            let prefix = format!("{normalized_dir}/");
+            for normalized_file in normalized_to_path.keys() {
+                if normalized_file.starts_with(&prefix) && normalized_file.ends_with(".md") {
+                    overrides.insert(
+                        normalized_file.clone(),
+                        DynamicDetectionOverride {
+                            normalized_path: normalized_file.clone(),
+                            kind: ArtifactKind::CursorPluginAgent,
+                            format: SourceFormat::Markdown,
+                        },
+                    );
+                }
+            }
+        }
+    }
+
+    overrides.into_values().collect()
+}
+
+fn resolve_manifest_target_path(
+    base_path: &Path,
+    plugin_root_fs: &Path,
+    target: &str,
+    normalized_to_path: &BTreeMap<String, PathBuf>,
+) -> Option<String> {
+    let resolved = plugin_root_fs.join(target);
+    let normalized = normalize_path(base_path, &resolved);
+    (is_repo_local_normalized_path(&normalized) && normalized_to_path.contains_key(&normalized))
+        .then_some(normalized)
+}
+
+fn resolve_manifest_target_directory(
+    base_path: &Path,
+    plugin_root_fs: &Path,
+    target: &str,
+) -> Option<String> {
+    let resolved = plugin_root_fs.join(target);
+    if !resolved.is_dir() {
+        return None;
+    }
+    let normalized = normalize_path(base_path, &resolved);
+    is_repo_local_normalized_path(&normalized).then_some(normalized)
+}
+
+fn contains_semantic_plugin_hook_commands(text: &str) -> bool {
+    let Ok(value) = serde_json::from_str::<Value>(text) else {
+        return false;
+    };
+    let Some(object) = value.as_object() else {
+        return false;
+    };
+    object
+        .get("hooks")
+        .and_then(Value::as_object)
+        .is_some_and(|hooks| {
+            hooks.values().any(|entries| {
+                entries.as_array().is_some_and(|entries| {
+                    entries.iter().any(|entry| {
+                        entry
+                            .as_object()
+                            .and_then(|entry| entry.get("command"))
+                            .and_then(Value::as_str)
+                            .is_some()
+                    })
+                })
+            })
+        })
+}
+
+fn is_repo_local_normalized_path(path: &str) -> bool {
+    !path.starts_with('/') && !path.starts_with("../") && path != ".."
 }
