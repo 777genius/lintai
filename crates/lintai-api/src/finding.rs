@@ -169,6 +169,20 @@ pub struct RelatedFinding {
     pub span: Span,
 }
 
+impl RelatedFinding {
+    pub fn new(
+        rule_code: impl Into<String>,
+        normalized_path: impl Into<String>,
+        span: Span,
+    ) -> Self {
+        Self {
+            rule_code: rule_code.into(),
+            normalized_path: normalized_path.into(),
+            span,
+        }
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, JsonSchema, PartialEq, Serialize)]
 #[non_exhaustive]
 pub struct Suggestion {

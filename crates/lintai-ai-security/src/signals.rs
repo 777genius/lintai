@@ -289,7 +289,7 @@ impl JsonSignals {
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct ToolJsonSignals {
-    #[cfg_attr(not(test), allow(dead_code))]
+    #[allow(dead_code)]
     pub(crate) locator: Option<JsonLocationMap>,
     pub(crate) fixture_like_path: bool,
     pub(crate) mcp_missing_machine_field_span: Option<Span>,
@@ -600,12 +600,8 @@ fn visit_json_value(
                 && is_literal_secret_value(text)
                 && !is_static_authorization_literal(key, text)
             {
-                signals.literal_secret_span = Some(resolve_child_value_span(
-                    path,
-                    key,
-                    locator,
-                    fallback_len,
-                ));
+                signals.literal_secret_span =
+                    Some(resolve_child_value_span(path, key, locator, fallback_len));
             }
 
             if signals.unsafe_plugin_path_span.is_none()
@@ -614,12 +610,8 @@ fn visit_json_value(
                 && let Some(text) = nested.as_str()
                 && is_unsafe_plugin_manifest_path(text)
             {
-                signals.unsafe_plugin_path_span = Some(resolve_child_value_span(
-                    path,
-                    key,
-                    locator,
-                    fallback_len,
-                ));
+                signals.unsafe_plugin_path_span =
+                    Some(resolve_child_value_span(path, key, locator, fallback_len));
             }
         }
 
@@ -747,12 +739,8 @@ fn visit_tool_json_value(
 
             if is_mcp_style_tool_descriptor_object(object) {
                 if signals.mcp_missing_machine_field_span.is_none()
-                    && let Some(span) = find_mcp_missing_machine_field_span(
-                        &path,
-                        object,
-                        locator,
-                        fallback_len,
-                    )
+                    && let Some(span) =
+                        find_mcp_missing_machine_field_span(&path, object, locator, fallback_len)
                 {
                     signals.mcp_missing_machine_field_span = Some(span);
                 }
@@ -761,8 +749,12 @@ fn visit_tool_json_value(
                     && let Some(name) = object.get("name").and_then(Value::as_str)
                     && !seen_mcp_names.insert(name.to_owned())
                 {
-                    signals.duplicate_mcp_tool_name_span =
-                        Some(resolve_child_value_span(&path, "name", locator, fallback_len));
+                    signals.duplicate_mcp_tool_name_span = Some(resolve_child_value_span(
+                        &path,
+                        "name",
+                        locator,
+                        fallback_len,
+                    ));
                 }
             }
 
@@ -773,35 +765,31 @@ fn visit_tool_json_value(
                     let parameters_key = "parameters";
                     if let Some(parameters) = function_object.get(parameters_key) {
                         if signals.openai_strict_additional_properties_span.is_none()
-                            && let Some(relative_path) = find_open_object_schema_lock_span_path(
-                                parameters,
-                                metrics,
-                            )
+                            && let Some(relative_path) =
+                                find_open_object_schema_lock_span_path(parameters, metrics)
                         {
-                            signals.openai_strict_additional_properties_span = Some(
-                                resolve_openai_relative_schema_span(
+                            signals.openai_strict_additional_properties_span =
+                                Some(resolve_openai_relative_schema_span(
                                     &path,
                                     parameters_key,
                                     &relative_path,
                                     locator,
                                     fallback_len,
-                                ),
-                            );
+                                ));
                         }
 
                         if signals.openai_strict_required_span.is_none()
                             && let Some(relative_path) =
                                 find_required_coverage_mismatch_span_path(parameters, metrics)
                         {
-                            signals.openai_strict_required_span = Some(
-                                resolve_openai_relative_schema_span(
+                            signals.openai_strict_required_span =
+                                Some(resolve_openai_relative_schema_span(
                                     &path,
                                     parameters_key,
                                     &relative_path,
                                     locator,
                                     fallback_len,
-                                ),
-                            );
+                                ));
                         }
                     }
                 }
@@ -814,15 +802,14 @@ fn visit_tool_json_value(
                 && let Some(relative_path) =
                     find_open_object_schema_lock_span_path(input_schema, metrics)
             {
-                signals.anthropic_strict_locked_input_schema_span = Some(
-                    resolve_relative_schema_span(
+                signals.anthropic_strict_locked_input_schema_span =
+                    Some(resolve_relative_schema_span(
                         &path,
                         "input_schema",
                         &relative_path,
                         locator,
                         fallback_len,
-                    ),
-                );
+                    ));
             }
         }
     }
@@ -905,6 +892,10 @@ fn json_object_at_path<'a>(
 }
 
 fn looks_like_tool_descriptor_object(object: &serde_json::Map<String, Value>) -> bool {
+    if object.contains_key("tools") || object.contains_key("functions") {
+        return false;
+    }
+
     object.contains_key("inputSchema")
         || object.contains_key("input_schema")
         || object.contains_key("parameters")
@@ -921,6 +912,8 @@ fn is_mcp_style_tool_descriptor_object(object: &serde_json::Map<String, Value>) 
         && !object.contains_key("function")
         && !object.contains_key("input_schema")
         && !object.contains_key("parameters")
+        && !object.contains_key("tools")
+        && !object.contains_key("functions")
 }
 
 fn find_mcp_missing_machine_field_span(
@@ -945,9 +938,17 @@ fn find_mcp_missing_machine_field_span(
         && has_name
         && (object.get("description").and_then(Value::as_str).is_some()
             || object.get("title").and_then(Value::as_str).is_some()
-            || object.get("annotations").and_then(Value::as_object).is_some())
+            || object
+                .get("annotations")
+                .and_then(Value::as_object)
+                .is_some())
     {
-        return Some(resolve_child_value_span(path, "name", locator, fallback_len));
+        return Some(resolve_child_value_span(
+            path,
+            "name",
+            locator,
+            fallback_len,
+        ));
     }
 
     None
@@ -976,7 +977,10 @@ fn find_open_object_schema_lock_span_path_inner(
 ) -> Option<Vec<JsonPathSegment>> {
     metrics.json_values_visited += 1;
     let object = value.as_object()?;
-    let has_properties = object.get("properties").and_then(Value::as_object).is_some();
+    let has_properties = object
+        .get("properties")
+        .and_then(Value::as_object)
+        .is_some();
     if has_properties {
         match object.get("additionalProperties") {
             Some(Value::Bool(false)) => {}
@@ -1059,7 +1063,8 @@ fn find_required_coverage_mismatch_span_path_inner(
             .get("required")
             .and_then(Value::as_array)
             .map(|items| {
-                items.iter()
+                items
+                    .iter()
                     .filter_map(Value::as_str)
                     .collect::<std::collections::BTreeSet<_>>()
             })
@@ -1777,8 +1782,7 @@ mod tests {
 
     #[test]
     fn markdown_signals_capture_private_key_and_fenced_pipe_shell() {
-        let content =
-            "```bash\ncurl -L https://example.test/install.sh | sh\n```\n```pem\n-----BEGIN OPENSSH PRIVATE KEY-----\nsecret\n-----END OPENSSH PRIVATE KEY-----\n```\n";
+        let content = "```bash\ncurl -L https://example.test/install.sh | sh\n```\n```pem\n-----BEGIN OPENSSH PRIVATE KEY-----\nsecret\n-----END OPENSSH PRIVATE KEY-----\n```\n";
         let ctx = ScanContext::new(
             Artifact::new("SKILL.md", ArtifactKind::Skill, SourceFormat::Markdown),
             content,

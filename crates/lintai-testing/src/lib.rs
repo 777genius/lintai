@@ -613,10 +613,8 @@ fn provider_phase_label(phase: ProviderExecutionPhase) -> &'static str {
 fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
     match rule_code {
         "SEC201" | "SEC202" | "SEC203" | "SEC204" | "SEC205" | "SEC206" | "SEC301" | "SEC302"
-        | "SEC303" | "SEC304" | "SEC305" | "SEC309" | "SEC310" | "SEC311" | "SEC312"
-        | "SEC314" | "SEC315" | "SEC316" | "SEC317" | "SEC318" => {
-            Some(RuleTier::Stable)
-        }
+        | "SEC303" | "SEC304" | "SEC305" | "SEC309" | "SEC310" | "SEC311" | "SEC312" | "SEC314"
+        | "SEC315" | "SEC316" | "SEC317" | "SEC318" => Some(RuleTier::Stable),
         "SEC101" | "SEC102" | "SEC103" | "SEC104" | "SEC105" | "SEC306" | "SEC307" | "SEC308"
         | "SEC313" | "SEC401" | "SEC402" | "SEC403" => Some(RuleTier::Preview),
         _ => None,

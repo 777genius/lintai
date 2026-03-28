@@ -8,21 +8,20 @@ use crate::hook_rules::{
     check_hook_secret_exfil, check_hook_static_auth_exposure, check_hook_tls_bypass,
 };
 use crate::json_rules::{
-    check_json_dangerous_endpoint_host, check_json_hidden_instruction,
-    check_json_literal_secret, check_json_sensitive_env_reference,
-    check_json_suspicious_remote_endpoint, check_json_unsafe_plugin_path,
-    check_mcp_credential_env_passthrough, check_mcp_shell_wrapper, check_plain_http_config,
-    check_static_auth_exposure_config, check_trust_verification_disabled_config,
+    check_json_dangerous_endpoint_host, check_json_hidden_instruction, check_json_literal_secret,
+    check_json_sensitive_env_reference, check_json_suspicious_remote_endpoint,
+    check_json_unsafe_plugin_path, check_mcp_credential_env_passthrough, check_mcp_shell_wrapper,
+    check_plain_http_config, check_static_auth_exposure_config,
+    check_trust_verification_disabled_config,
 };
 use crate::markdown_rules::{
     check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
-    check_markdown_download_exec, check_markdown_fenced_pipe_shell,
-    check_markdown_path_traversal, check_markdown_private_key_pem,
+    check_markdown_download_exec, check_markdown_fenced_pipe_shell, check_markdown_path_traversal,
+    check_markdown_private_key_pem,
 };
 use crate::signals::ArtifactSignals;
 use crate::tool_json_rules::{
-    check_tool_json_anthropic_strict_locked_input_schema,
-    check_tool_json_duplicate_mcp_tool_names,
+    check_tool_json_anthropic_strict_locked_input_schema, check_tool_json_duplicate_mcp_tool_names,
     check_tool_json_mcp_missing_machine_fields,
     check_tool_json_openai_strict_additional_properties,
     check_tool_json_openai_strict_required_coverage,

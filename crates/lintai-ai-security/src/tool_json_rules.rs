@@ -71,11 +71,9 @@ pub(crate) fn check_tool_json_anthropic_strict_locked_input_schema(
     tool_finding_from_span(
         ctx,
         meta,
-        signals.tool_json().and_then(|signals| {
-            signals
-                .anthropic_strict_locked_input_schema_span
-                .clone()
-        }),
+        signals
+            .tool_json()
+            .and_then(|signals| signals.anthropic_strict_locked_input_schema_span.clone()),
         "Anthropic strict tool input_schema omits additionalProperties: false",
     )
 }
