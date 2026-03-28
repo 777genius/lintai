@@ -3,8 +3,8 @@ use std::path::Path;
 use crate::normalize::normalize_path;
 
 use super::{
-    DEFAULT_EXCLUDE_PATTERNS, DEFAULT_INCLUDE_PATTERNS, EngineConfig, ResolvedFileConfig,
-    WorkspaceConfig,
+    EngineConfig, ResolvedFileConfig, WorkspaceConfig, DEFAULT_EXCLUDE_PATTERNS,
+    DEFAULT_INCLUDE_PATTERNS,
 };
 
 impl Default for EngineConfig {
@@ -38,6 +38,31 @@ impl Default for EngineConfig {
 }
 
 impl EngineConfig {
+    pub fn add_include_patterns(&mut self, patterns: &[String]) -> Result<(), super::ConfigError> {
+        let mut changed = false;
+        for pattern in patterns {
+            if self.include_patterns.contains(pattern) {
+                continue;
+            }
+            self.include_patterns.push(pattern.clone());
+            changed = true;
+        }
+
+        if changed {
+            let mut builder = globset::GlobSetBuilder::new();
+            for pattern in &self.include_patterns {
+                let glob = globset::Glob::new(pattern).map_err(|error| {
+                    super::ConfigError::new(format!("invalid glob `{pattern}`: {error}"))
+                })?;
+                builder.add(glob);
+            }
+            self.include_matcher = builder
+                .build()
+                .map_err(|error| super::ConfigError::new(format!("invalid globset: {error}")))?;
+        }
+        Ok(())
+    }
+
     pub fn set_project_root(&mut self, project_root: Option<std::path::PathBuf>) {
         self.project_root = project_root;
     }

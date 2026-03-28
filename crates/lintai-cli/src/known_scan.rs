@@ -5,7 +5,7 @@ use std::sync::OnceLock;
 
 use ignore::WalkBuilder;
 use lintai_api::{ArtifactKind, Finding, SourceFormat};
-use lintai_engine::{FileTypeDetector, ScanSummary, WorkspaceConfig, normalize_path_string};
+use lintai_engine::{normalize_path_string, FileTypeDetector, ScanSummary, WorkspaceConfig};
 use serde::{Deserialize, Serialize};
 
 const KNOWN_ROOTS_MANIFEST: &str = include_str!("../known_roots.toml");
@@ -281,18 +281,30 @@ pub(crate) fn workspace_for_known_root(
     let Some(artifact_kind) = root.artifact_kind_hint else {
         return Ok(workspace);
     };
-    if artifact_kind != ArtifactKind::McpConfig {
-        return Ok(workspace);
-    }
-
-    let patterns = mcp_detection_override_patterns(root, &workspace)?;
+    let (patterns, format) = match artifact_kind {
+        ArtifactKind::McpConfig => (
+            mcp_detection_override_patterns(root, &workspace)?,
+            SourceFormat::Json,
+        ),
+        ArtifactKind::Instructions | ArtifactKind::CursorRules => (
+            markdown_detection_override_patterns(root, &workspace),
+            SourceFormat::Markdown,
+        ),
+        _ => return Ok(workspace),
+    };
     if patterns.is_empty() {
         return Ok(workspace);
+    }
+    if artifact_kind == ArtifactKind::CursorRules {
+        workspace
+            .engine_config
+            .add_include_patterns(&patterns)
+            .map_err(|error| format!("include override failed: {error}"))?;
     }
 
     workspace
         .engine_config
-        .add_detection_override(&patterns, ArtifactKind::McpConfig, SourceFormat::Json)
+        .add_detection_override(&patterns, artifact_kind, format)
         .map_err(|error| format!("detection override failed: {error}"))?;
     Ok(workspace)
 }
@@ -554,6 +566,26 @@ fn mcp_detection_override_patterns(
     Ok(patterns.into_iter().collect())
 }
 
+fn markdown_detection_override_patterns(
+    root: &KnownRoot,
+    workspace: &WorkspaceConfig,
+) -> Vec<String> {
+    if !root.path.is_file() {
+        return Vec::new();
+    }
+
+    let Some(base_path) = workspace.engine_config.project_root.as_deref() else {
+        return Vec::new();
+    };
+    let normalized_path = normalize_known_path(base_path, &root.path);
+    let detector = FileTypeDetector::new(&workspace.engine_config);
+    if detector.detect(&root.path, &normalized_path).is_some() {
+        return Vec::new();
+    }
+
+    vec![normalized_path]
+}
+
 fn mcp_candidate_files(
     root: &KnownRoot,
     workspace: &WorkspaceConfig,
@@ -803,16 +835,12 @@ artifact_kind_hint = "skill"
         .unwrap();
 
         assert_eq!(roots.len(), 2);
-        assert!(
-            roots
-                .iter()
-                .any(|root| root.client == "codex" && root.scope == KnownRootScope::Project)
-        );
-        assert!(
-            roots
-                .iter()
-                .any(|root| root.client == "opencode" && root.scope == KnownRootScope::Global)
-        );
+        assert!(roots
+            .iter()
+            .any(|root| root.client == "codex" && root.scope == KnownRootScope::Project));
+        assert!(roots
+            .iter()
+            .any(|root| root.client == "opencode" && root.scope == KnownRootScope::Global));
     }
 
     #[test]

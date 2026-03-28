@@ -5,8 +5,8 @@ use std::process::ExitCode;
 
 use lintai_api::{Applicability, Finding};
 use lintai_engine::{
-    Engine, EngineConfig, FileSuppressions, OutputFormat, ResolvedFileConfig, WorkspaceConfig,
-    explain_file_config, load_workspace_config,
+    explain_file_config, load_workspace_config, Engine, EngineConfig, FileSuppressions,
+    OutputFormat, ResolvedFileConfig, WorkspaceConfig,
 };
 use lintai_fix::{apply_planned_fixes, plan_fixes};
 
@@ -15,9 +15,9 @@ use crate::args::{
 };
 use crate::builtin_providers::{product_provider_set, run_provider_runner};
 use crate::known_scan::{
-    ArtifactMode, DiscoveredRoot, DiscoveryStats, KnownRootScope, absolute_base_for_scan,
-    discover_known_roots, inventory_lintable_root, merge_summary_with_absolute_paths,
-    workspace_for_known_root,
+    absolute_base_for_scan, discover_known_roots, inventory_lintable_root,
+    merge_summary_with_absolute_paths, workspace_for_known_root, ArtifactMode, DiscoveredRoot,
+    DiscoveryStats, KnownRootScope,
 };
 use crate::{output, path::validate_path_within_project};
 
@@ -95,7 +95,7 @@ fn run_scan_known(
     args: impl Iterator<Item = String>,
 ) -> Result<ExitCode, String> {
     let parsed = parse_scan_known_args(args)?;
-    let project_workspace = if parsed.scope.includes_project() {
+    let mut project_workspace = if parsed.scope.includes_project() {
         Some(
             load_workspace_config(current_dir)
                 .map_err(|error| format!("config resolution failed: {error}"))?,
@@ -103,6 +103,13 @@ fn run_scan_known(
     } else {
         None
     };
+    if let Some(workspace) = project_workspace.as_mut() {
+        if workspace.engine_config.project_root.is_none() {
+            workspace
+                .engine_config
+                .set_project_root(Some(current_dir.to_path_buf()));
+        }
+    }
     let project_root = project_workspace
         .as_ref()
         .and_then(|workspace| workspace.engine_config.project_root.as_deref())

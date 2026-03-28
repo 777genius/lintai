@@ -172,6 +172,15 @@ Current MCP-family `lintable` roots include:
 - Continue `~/.continue/mcpServers/**/*.json`
 - GitHub Copilot CLI `mcp-config.json`
 
+Current markdown compatibility `lintable` roots include:
+
+- Windsurf `.windsurfrules`
+- Cline `.clinerules`
+- Zed `.rules`
+- GitHub Copilot `.github/copilot-instructions.md`
+- Junie `.junie/guidelines.md`
+- Amp `AGENT.md`
+
 Examples:
 
 ```bash
