@@ -7,6 +7,7 @@ mod internal_bin;
 mod known_scan;
 mod output;
 mod path;
+mod policy_os;
 #[cfg(test)]
 mod sample_repo_tests;
 

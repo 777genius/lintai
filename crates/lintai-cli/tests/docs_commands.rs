@@ -321,6 +321,7 @@ fn assert_help_output(case: &CommandCase, stdout: &str) {
         "lintai scan [path]",
         "lintai scan-known [--scope=project|global|both] [--client NAME]",
         "lintai inventory-os [--scope=user|system|both] [--client NAME]",
+        "lintai policy-os --policy FILE [--scope=user|system|both] [--client NAME]",
         "lintai fix [path] [--apply] [--rule CODE]",
         "lintai explain-config <file>",
         "lintai config-schema",

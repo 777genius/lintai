@@ -11,8 +11,8 @@ use lintai_engine::{
 use lintai_fix::{apply_planned_fixes, plan_fixes};
 
 use crate::args::{
-    parse_explain_config_args, parse_fix_args, parse_inventory_os_args, parse_scan_args,
-    parse_scan_known_args,
+    parse_explain_config_args, parse_fix_args, parse_inventory_os_args, parse_policy_os_args,
+    parse_scan_args, parse_scan_known_args,
 };
 use crate::builtin_providers::{product_provider_set, run_provider_runner};
 use crate::known_scan::{
@@ -22,7 +22,15 @@ use crate::known_scan::{
     write_inventory_snapshot, ArtifactMode, DiscoveredRoot, DiscoveryStats, InventoryRoot,
     InventoryStats, KnownRootScope,
 };
+use crate::policy_os::{evaluate_machine_policy, load_machine_policy, PolicyMatch};
 use crate::{output, path::validate_path_within_project};
+
+struct InventoryCollection {
+    aggregate: lintai_engine::ScanSummary,
+    report_roots: Vec<InventoryRoot>,
+    inventory_stats: InventoryStats,
+    blocking: bool,
+}
 
 pub fn run() -> Result<ExitCode, String> {
     let current_dir =
@@ -37,6 +45,7 @@ pub fn run() -> Result<ExitCode, String> {
         "scan" => run_scan(&current_dir, args),
         "scan-known" => run_scan_known(&current_dir, args),
         "inventory-os" => run_inventory_os(args),
+        "policy-os" => run_policy_os(args),
         "fix" => run_fix(&current_dir, args),
         "explain-config" => run_explain_config(&current_dir, args),
         "__provider-runner" => run_provider_runner(args),
@@ -96,46 +105,17 @@ fn run_scan(current_dir: &Path, args: impl Iterator<Item = String>) -> Result<Ex
 
 fn run_inventory_os(args: impl Iterator<Item = String>) -> Result<ExitCode, String> {
     let parsed = parse_inventory_os_args(args)?;
-    let discovered_roots = discover_inventory_roots(
+    let output_format = parsed.format_override.unwrap_or(OutputFormat::Text);
+    let inventory = collect_inventory_os(
         parsed.scope,
         &parsed.client_filters,
         parsed.path_root.as_deref(),
     )?;
-
-    let output_format = parsed.format_override.unwrap_or(OutputFormat::Text);
-    let default_workspace = WorkspaceConfig {
-        source_path: None,
-        engine_config: EngineConfig::default(),
-    };
-
-    let mut aggregate = lintai_engine::ScanSummary::default();
-    let mut report_roots = Vec::<InventoryRoot>::with_capacity(discovered_roots.len());
-    let mut inventory_stats = InventoryStats::default();
-    let mut blocking = false;
-
-    for root in discovered_roots {
-        inventory_stats.record_root(&root);
-        report_roots.push(root.to_inventory_report());
-        if matches!(root.mode, ArtifactMode::DiscoveredOnly) {
-            continue;
-        }
-
-        let workspace = workspace_for_known_root(&root, &default_workspace)?;
-        let engine = build_engine(&workspace)?;
-        let inventory = inventory_lintable_root(&root, &workspace)
-            .map_err(|error| format!("inventory failed for {}: {error}", root.path.display()))?;
-        inventory_stats.record_lintable_inventory(&inventory);
-
-        let summary = engine
-            .scan_path(&root.path)
-            .map_err(|error| format!("scan failed for {}: {error}", root.path.display()))?;
-        blocking |= has_blocking_findings(&summary.findings, &workspace.engine_config.ci_policy);
-        inventory_stats.supported_artifacts_scanned += summary.scanned_files;
-        let absolute_base = absolute_base_for_scan(&root.path, &workspace);
-        merge_summary_with_absolute_paths(&mut aggregate, summary, &absolute_base);
-    }
-
-    let snapshot = build_inventory_snapshot(&report_roots, &inventory_stats, &aggregate.findings);
+    let snapshot = build_inventory_snapshot(
+        &inventory.report_roots,
+        &inventory.inventory_stats,
+        &inventory.aggregate.findings,
+    );
     let inventory_diff = if let Some(baseline_path) = parsed.diff_against.as_deref() {
         let baseline = load_inventory_snapshot(baseline_path)?;
         Some(diff_inventory_snapshots(&baseline, &snapshot))
@@ -148,12 +128,14 @@ fn run_inventory_os(args: impl Iterator<Item = String>) -> Result<ExitCode, Stri
     }
 
     let report = output::build_envelope_with_inventory(
-        &aggregate,
+        &inventory.aggregate,
         None,
         None,
-        report_roots,
-        Some(inventory_stats),
+        inventory.report_roots,
+        Some(inventory.inventory_stats),
         inventory_diff,
+        Vec::new(),
+        None,
     );
 
     match output_format {
@@ -176,7 +158,60 @@ fn run_inventory_os(args: impl Iterator<Item = String>) -> Result<ExitCode, Stri
         }
     }
 
-    if blocking {
+    if inventory.blocking {
+        Ok(ExitCode::from(1))
+    } else {
+        Ok(ExitCode::SUCCESS)
+    }
+}
+
+fn run_policy_os(args: impl Iterator<Item = String>) -> Result<ExitCode, String> {
+    let parsed = parse_policy_os_args(args)?;
+    let inventory = collect_inventory_os(
+        parsed.scope,
+        &parsed.client_filters,
+        parsed.path_root.as_deref(),
+    )?;
+    let policy = load_machine_policy(&parsed.policy_path)?;
+    let (policy_matches, policy_stats) = evaluate_machine_policy(
+        &policy,
+        &inventory.report_roots,
+        &inventory.aggregate.findings,
+    );
+
+    let output_format = parsed.format_override.unwrap_or(OutputFormat::Text);
+    let report = output::build_envelope_with_inventory(
+        &inventory.aggregate,
+        Some(&parsed.policy_path),
+        None,
+        inventory.report_roots,
+        Some(inventory.inventory_stats),
+        None,
+        policy_matches.clone(),
+        Some(policy_stats),
+    );
+
+    match output_format {
+        OutputFormat::Text => {
+            print!("{}", output::format_text(&report));
+        }
+        OutputFormat::Json => {
+            println!(
+                "{}",
+                output::format_json(&report)
+                    .map_err(|error| format!("json output failed: {error}"))?
+            );
+        }
+        OutputFormat::Sarif => {
+            println!(
+                "{}",
+                output::format_sarif(&report)
+                    .map_err(|error| format!("sarif output failed: {error}"))?
+            );
+        }
+    }
+
+    if inventory.blocking || has_deny_policy_matches(&policy_matches) {
         Ok(ExitCode::from(1))
     } else {
         Ok(ExitCode::SUCCESS)
@@ -533,6 +568,8 @@ fn print_usage() {
     println!("lintai inventory-os [--scope=user|system|both] [--client NAME]");
     println!("                    [--path-root DIR] [--write-baseline FILE]");
     println!("                    [--diff-against FILE] [--format=text|json|sarif]");
+    println!("lintai policy-os --policy FILE [--scope=user|system|both] [--client NAME]");
+    println!("                    [--path-root DIR] [--format=text|json|sarif]");
     println!("lintai fix [path] [--apply] [--rule CODE]");
     println!("lintai explain-config <file>");
     println!("lintai config-schema");
@@ -597,6 +634,58 @@ fn has_blocking_findings(
             confidence_rank(finding.confidence) >= confidence_rank(ci_policy.min_confidence)
         })
         .any(|finding| severity_rank(finding.severity) >= severity_rank(ci_policy.fail_on))
+}
+
+fn collect_inventory_os(
+    scope: crate::known_scan::InventoryOsScope,
+    client_filters: &BTreeSet<String>,
+    path_root: Option<&Path>,
+) -> Result<InventoryCollection, String> {
+    let discovered_roots = discover_inventory_roots(scope, client_filters, path_root)?;
+    let default_workspace = WorkspaceConfig {
+        source_path: None,
+        engine_config: EngineConfig::default(),
+    };
+
+    let mut aggregate = lintai_engine::ScanSummary::default();
+    let mut report_roots = Vec::<InventoryRoot>::with_capacity(discovered_roots.len());
+    let mut inventory_stats = InventoryStats::default();
+    let mut blocking = false;
+
+    for root in discovered_roots {
+        inventory_stats.record_root(&root);
+        report_roots.push(root.to_inventory_report());
+        if matches!(root.mode, ArtifactMode::DiscoveredOnly) {
+            continue;
+        }
+
+        let workspace = workspace_for_known_root(&root, &default_workspace)?;
+        let engine = build_engine(&workspace)?;
+        let inventory = inventory_lintable_root(&root, &workspace)
+            .map_err(|error| format!("inventory failed for {}: {error}", root.path.display()))?;
+        inventory_stats.record_lintable_inventory(&inventory);
+
+        let summary = engine
+            .scan_path(&root.path)
+            .map_err(|error| format!("scan failed for {}: {error}", root.path.display()))?;
+        blocking |= has_blocking_findings(&summary.findings, &workspace.engine_config.ci_policy);
+        inventory_stats.supported_artifacts_scanned += summary.scanned_files;
+        let absolute_base = absolute_base_for_scan(&root.path, &workspace);
+        merge_summary_with_absolute_paths(&mut aggregate, summary, &absolute_base);
+    }
+
+    Ok(InventoryCollection {
+        aggregate,
+        report_roots,
+        inventory_stats,
+        blocking,
+    })
+}
+
+fn has_deny_policy_matches(matches: &[PolicyMatch]) -> bool {
+    matches
+        .iter()
+        .any(|policy_match| policy_match.severity == "deny")
 }
 
 fn severity_rank(severity: lintai_api::Severity) -> usize {

@@ -11,6 +11,7 @@ use crate::known_scan::{
     DiscoveredRoot, DiscoveryStats, InventoryChangedRoot, InventoryDiff, InventoryRoot,
     InventoryStats,
 };
+use crate::policy_os::{PolicyMatch, PolicyStats};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct ReportEnvelope<'a> {
@@ -28,6 +29,10 @@ pub struct ReportEnvelope<'a> {
     pub inventory_stats: Option<InventoryStats>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub inventory_diff: Option<InventoryDiff>,
+    #[serde(skip_serializing_if = "Vec::is_empty", default)]
+    pub policy_matches: Vec<PolicyMatch>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub policy_stats: Option<PolicyStats>,
     pub stats: ReportStats,
     pub findings: &'a [Finding],
     pub diagnostics: &'a [ScanDiagnostic],
@@ -70,6 +75,8 @@ pub fn build_envelope_with_discovery<'a>(
         inventory_roots: Vec::new(),
         inventory_stats: None,
         inventory_diff: None,
+        policy_matches: Vec::new(),
+        policy_stats: None,
         stats: ReportStats {
             scanned_files: summary.scanned_files,
             skipped_files: summary.skipped_files,
@@ -87,6 +94,8 @@ pub fn build_envelope_with_inventory<'a>(
     inventory_roots: Vec<InventoryRoot>,
     inventory_stats: Option<InventoryStats>,
     inventory_diff: Option<InventoryDiff>,
+    policy_matches: Vec<PolicyMatch>,
+    policy_stats: Option<PolicyStats>,
 ) -> ReportEnvelope<'a> {
     ReportEnvelope {
         schema_version: 1,
@@ -98,6 +107,8 @@ pub fn build_envelope_with_inventory<'a>(
         inventory_roots,
         inventory_stats,
         inventory_diff,
+        policy_matches,
+        policy_stats,
         stats: ReportStats {
             scanned_files: summary.scanned_files,
             skipped_files: summary.skipped_files,
@@ -110,7 +121,34 @@ pub fn build_envelope_with_inventory<'a>(
 
 pub fn format_text(report: &ReportEnvelope<'_>) -> String {
     let mut output = String::new();
-    if let Some(inventory_diff) = &report.inventory_diff {
+    if let Some(policy_stats) = &report.policy_stats {
+        output.push_str(&format!(
+            "policy matched {} root(s), deny {}, warn {}, inventory roots {}, findings {}\n",
+            policy_stats.matched_roots,
+            policy_stats.deny_matches,
+            policy_stats.warn_matches,
+            report.inventory_roots.len(),
+            report.findings.len()
+        ));
+        if let Some(inventory_stats) = &report.inventory_stats {
+            output.push_str(&format!(
+                "inventory counters: user={} system={} lintable={} discovered_only={} high={} medium={} low={} scanned={} non_target={} excluded={} binary={} unreadable={} unrecognized={}\n",
+                inventory_stats.user_roots,
+                inventory_stats.system_roots,
+                inventory_stats.lintable_roots,
+                inventory_stats.discovered_only_roots,
+                inventory_stats.high_risk_roots,
+                inventory_stats.medium_risk_roots,
+                inventory_stats.low_risk_roots,
+                inventory_stats.supported_artifacts_scanned,
+                inventory_stats.non_target_files_in_lintable_roots,
+                inventory_stats.excluded_files,
+                inventory_stats.binary_files,
+                inventory_stats.unreadable_files,
+                inventory_stats.unrecognized_files,
+            ));
+        }
+    } else if let Some(inventory_diff) = &report.inventory_diff {
         let inventory_stats = report
             .inventory_stats
             .as_ref()
@@ -216,6 +254,21 @@ pub fn format_text(report: &ReportEnvelope<'_>) -> String {
         ));
     }
 
+    for policy_match in &report.policy_matches {
+        output.push_str(&format!(
+            "policy [{}] {} {} {} {} {}\n",
+            policy_match.severity,
+            policy_match.policy_id,
+            policy_match.client,
+            policy_match.surface,
+            policy_match.path,
+            policy_match.message
+        ));
+        for rule_code in &policy_match.matched_findings {
+            output.push_str(&format!("  matched: {rule_code}\n"));
+        }
+    }
+
     if let Some(inventory_diff) = &report.inventory_diff {
         for root in &inventory_diff.new_roots {
             output.push_str(&format!(
@@ -315,7 +368,7 @@ pub fn format_json(report: &ReportEnvelope<'_>) -> Result<String, serde_json::Er
 }
 
 pub fn format_sarif(report: &ReportEnvelope<'_>) -> Result<String, serde_json::Error> {
-    let results = report
+    let mut results = report
         .findings
         .iter()
         .map(|finding| {
@@ -354,7 +407,35 @@ pub fn format_sarif(report: &ReportEnvelope<'_>) -> Result<String, serde_json::E
             })
         })
         .collect::<Vec<_>>();
-    let rules = report
+    results.extend(report.policy_matches.iter().map(|policy_match| {
+        serde_json::json!({
+            "ruleId": format!("policy:{}", policy_match.policy_id),
+            "level": sarif_policy_level(policy_match.severity.as_str()),
+            "message": { "text": policy_match.message },
+            "locations": [{
+                "physicalLocation": {
+                    "artifactLocation": { "uri": policy_match.path },
+                }
+            }],
+            "partialFingerprints": {
+                "stableKey": format!(
+                    "policy:{}:{}:{}:{}",
+                    policy_match.policy_id,
+                    policy_match.client,
+                    policy_match.surface,
+                    policy_match.path
+                )
+            },
+            "properties": {
+                "client": policy_match.client,
+                "surface": policy_match.surface,
+                "mode": policy_match.mode,
+                "riskLevel": policy_match.risk_level,
+                "matchedFindings": policy_match.matched_findings,
+            }
+        })
+    }));
+    let mut rules = report
         .findings
         .iter()
         .map(|finding| {
@@ -368,6 +449,19 @@ pub fn format_sarif(report: &ReportEnvelope<'_>) -> Result<String, serde_json::E
             })
         })
         .collect::<Vec<_>>();
+    let mut seen_policy_rules = std::collections::BTreeSet::new();
+    for policy_match in &report.policy_matches {
+        if !seen_policy_rules.insert(policy_match.policy_id.clone()) {
+            continue;
+        }
+        rules.push(serde_json::json!({
+            "id": format!("policy:{}", policy_match.policy_id),
+            "shortDescription": { "text": policy_match.policy_id },
+            "properties": {
+                "policy": true,
+            }
+        }));
+    }
 
     serde_json::to_string_pretty(&serde_json::json!({
         "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
@@ -421,6 +515,14 @@ fn sarif_level(severity: lintai_api::Severity) -> &'static str {
         lintai_api::Severity::Deny => "error",
         lintai_api::Severity::Warn => "warning",
         lintai_api::Severity::Allow => "note",
+    }
+}
+
+fn sarif_policy_level(severity: &str) -> &'static str {
+    match severity {
+        "deny" => "error",
+        "warn" => "warning",
+        _ => "note",
     }
 }
 
@@ -504,6 +606,8 @@ mod tests {
             inventory_roots: Vec::new(),
             inventory_stats: None,
             inventory_diff: None,
+            policy_matches: Vec::new(),
+            policy_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 0,
@@ -531,6 +635,8 @@ mod tests {
             inventory_roots: Vec::new(),
             inventory_stats: None,
             inventory_diff: None,
+            policy_matches: Vec::new(),
+            policy_stats: None,
             stats: ReportStats {
                 scanned_files: 0,
                 skipped_files: 0,
@@ -572,6 +678,8 @@ mod tests {
             inventory_roots: Vec::new(),
             inventory_stats: None,
             inventory_diff: None,
+            policy_matches: Vec::new(),
+            policy_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 0,
@@ -619,6 +727,8 @@ mod tests {
             inventory_roots: Vec::new(),
             inventory_stats: None,
             inventory_diff: None,
+            policy_matches: Vec::new(),
+            policy_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 0,
@@ -653,6 +763,8 @@ mod tests {
             inventory_roots: Vec::new(),
             inventory_stats: None,
             inventory_diff: None,
+            policy_matches: Vec::new(),
+            policy_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 0,
@@ -686,6 +798,8 @@ mod tests {
             inventory_roots: Vec::new(),
             inventory_stats: None,
             inventory_diff: None,
+            policy_matches: Vec::new(),
+            policy_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 0,
@@ -728,6 +842,8 @@ mod tests {
             inventory_roots: Vec::new(),
             inventory_stats: None,
             inventory_diff: None,
+            policy_matches: Vec::new(),
+            policy_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 6,
@@ -782,6 +898,8 @@ mod tests {
                 unrecognized_files: 0,
             }),
             inventory_diff: None,
+            policy_matches: Vec::new(),
+            policy_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 0,
@@ -870,6 +988,8 @@ mod tests {
                 risk_increased_roots: Vec::new(),
                 new_findings: vec![finding.clone()],
             }),
+            policy_matches: Vec::new(),
+            policy_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 0,

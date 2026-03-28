@@ -3,6 +3,7 @@ use std::path::PathBuf;
 use lintai_engine::OutputFormat;
 
 use crate::known_scan::{InventoryOsArgs, InventoryOsScope, KnownScope, ScanKnownArgs};
+use crate::policy_os::PolicyOsArgs;
 
 #[derive(Debug)]
 pub struct ScanArgs {
@@ -15,6 +16,82 @@ pub struct FixArgs {
     pub target: PathBuf,
     pub apply: bool,
     pub rule_filters: Vec<String>,
+}
+
+pub fn parse_policy_os_args(args: impl Iterator<Item = String>) -> Result<PolicyOsArgs, String> {
+    let mut format_override = None;
+    let mut scope = InventoryOsScope::Both;
+    let mut client_filters = std::collections::BTreeSet::new();
+    let mut path_root = None;
+    let mut policy_path = None;
+    let mut args = args.peekable();
+
+    while let Some(arg) = args.next() {
+        match arg.as_str() {
+            "--format" => {
+                let Some(value) = args.next() else {
+                    return Err("missing value for --format".to_owned());
+                };
+                format_override = Some(parse_output_format(&value)?);
+            }
+            "--scope" => {
+                let Some(value) = args.next() else {
+                    return Err("missing value for --scope".to_owned());
+                };
+                scope = parse_inventory_scope(&value)?;
+            }
+            "--client" => {
+                let Some(value) = args.next() else {
+                    return Err("missing value for --client".to_owned());
+                };
+                client_filters.insert(normalize_client_filter(&value));
+            }
+            "--path-root" => {
+                let Some(value) = args.next() else {
+                    return Err("missing value for --path-root".to_owned());
+                };
+                path_root = Some(PathBuf::from(value));
+            }
+            "--policy" => {
+                let Some(value) = args.next() else {
+                    return Err("missing value for --policy".to_owned());
+                };
+                policy_path = Some(PathBuf::from(value));
+            }
+            value if value.starts_with("--format=") => {
+                let value = value.trim_start_matches("--format=");
+                format_override = Some(parse_output_format(value)?);
+            }
+            value if value.starts_with("--scope=") => {
+                let value = value.trim_start_matches("--scope=");
+                scope = parse_inventory_scope(value)?;
+            }
+            value if value.starts_with("--client=") => {
+                client_filters.insert(normalize_client_filter(
+                    value.trim_start_matches("--client="),
+                ));
+            }
+            value if value.starts_with("--path-root=") => {
+                path_root = Some(PathBuf::from(value.trim_start_matches("--path-root=")));
+            }
+            value if value.starts_with("--policy=") => {
+                policy_path = Some(PathBuf::from(value.trim_start_matches("--policy=")));
+            }
+            value if value.starts_with('-') => {
+                return Err(format!("unknown flag: {value}"));
+            }
+            value => return Err(format!("unexpected extra argument: {value}")),
+        }
+    }
+
+    let policy_path = policy_path.ok_or_else(|| "missing required --policy".to_owned())?;
+    Ok(PolicyOsArgs {
+        format_override,
+        scope,
+        client_filters,
+        path_root,
+        policy_path,
+    })
 }
 
 pub fn parse_inventory_os_args(
@@ -274,8 +351,8 @@ fn normalize_client_filter(value: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::{
-        parse_explain_config_args, parse_fix_args, parse_inventory_os_args, parse_scan_args,
-        parse_scan_known_args,
+        parse_explain_config_args, parse_fix_args, parse_inventory_os_args, parse_policy_os_args,
+        parse_scan_args, parse_scan_known_args,
     };
     use crate::known_scan::{InventoryOsScope, KnownScope};
     use lintai_engine::OutputFormat;
@@ -348,6 +425,38 @@ mod tests {
         assert_eq!(
             parsed.diff_against,
             Some(std::path::PathBuf::from("/tmp/previous.json"))
+        );
+    }
+
+    #[test]
+    fn policy_os_requires_policy_path() {
+        let error = parse_policy_os_args(std::iter::empty()).unwrap_err();
+        assert!(error.contains("missing required --policy"));
+    }
+
+    #[test]
+    fn policy_os_parses_scope_client_path_root_and_policy() {
+        let parsed = parse_policy_os_args(
+            [
+                "--scope=user",
+                "--client",
+                "Cursor",
+                "--path-root=/tmp/machine",
+                "--policy=/tmp/policy.toml",
+            ]
+            .into_iter()
+            .map(str::to_owned),
+        )
+        .unwrap();
+        assert_eq!(parsed.scope, InventoryOsScope::User);
+        assert!(parsed.client_filters.contains("cursor"));
+        assert_eq!(
+            parsed.path_root,
+            Some(std::path::PathBuf::from("/tmp/machine"))
+        );
+        assert_eq!(
+            parsed.policy_path,
+            std::path::PathBuf::from("/tmp/policy.toml")
         );
     }
 

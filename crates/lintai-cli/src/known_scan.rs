@@ -1207,7 +1207,11 @@ fn inventory_provenance_for_path(scope: KnownRootScope, path: &Path) -> Inventor
 
 fn risk_level_for_root(root: &KnownRoot) -> RiskLevel {
     if matches!(root.mode, ArtifactMode::DiscoveredOnly) {
-        return RiskLevel::Low;
+        return match root.surface.as_str() {
+            "plugin-root" | "project-agents" | "global-agents" => RiskLevel::High,
+            "config" | "config-yaml" | "settings" | "profiles" => RiskLevel::Medium,
+            _ => RiskLevel::Low,
+        };
     }
 
     match root.artifact_kind_hint {
