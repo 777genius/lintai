@@ -1187,7 +1187,7 @@ fn render_ai_native_discovery_report(
 ) -> String {
     const AI_NATIVE_RULE_CODES: &[&str] = &[
         "SEC301", "SEC302", "SEC303", "SEC304", "SEC305", "SEC309", "SEC310", "SEC329", "SEC330",
-        "SEC331", "SEC336", "SEC337", "SEC338", "SEC339",
+        "SEC331", "SEC336", "SEC337", "SEC338", "SEC339", "SEC340", "SEC341", "SEC342",
     ];
     let counts = aggregate_counts(ledger);
     let subtype_counts = shortlist
@@ -1852,6 +1852,12 @@ fn inventory_surfaces(repo_root: &Path) -> Result<InventoryArtifact, String> {
         }
         if normalized.contains(".claude/mcp/") && normalized.ends_with(".json") {
             surfaces.insert(".claude/mcp/*.json".to_owned());
+        }
+        if normalized == ".claude/settings.json" {
+            surfaces.insert(".claude/settings.json".to_owned());
+        }
+        if normalized == "claude/settings.json" {
+            surfaces.insert("claude/settings.json".to_owned());
         }
         if is_mcp_config_path(&normalized)
             && let Ok(text) = std::fs::read_to_string(entry.path())

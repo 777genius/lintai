@@ -1,3 +1,4 @@
+mod claude_settings_rules;
 mod github_workflow_rules;
 mod helpers;
 mod hook_rules;

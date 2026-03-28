@@ -19,6 +19,9 @@ fn malicious_corpus_case_dirs_are_discoverable() {
     assert_eq!(
         names,
         vec![
+            "claude-settings-command-tls-bypass",
+            "claude-settings-inline-download-exec",
+            "claude-settings-mutable-launcher",
             "cursor-plugin-unsafe-path",
             "github-workflow-direct-run-interpolation",
             "github-workflow-pull-request-target-head-checkout",

@@ -31,7 +31,7 @@ pub(crate) fn collect_files(path: &Path, config: &EngineConfig) -> io::Result<Ve
     walker.follow_links(config.follow_symlinks);
     walker.parents(false);
     walker.git_ignore(true);
-    walker.git_global(true);
+    walker.git_global(false);
     walker.git_exclude(true);
     if let Some(project_root) = canonical_project_root {
         walker.filter_entry(move |entry| {

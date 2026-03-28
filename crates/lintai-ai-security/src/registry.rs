@@ -3,6 +3,10 @@ use lintai_api::{
     ScanContext, Severity, Suggestion, declare_rule,
 };
 
+use crate::claude_settings_rules::{
+    check_claude_settings_inline_download_exec, check_claude_settings_mutable_launcher,
+    check_claude_settings_network_tls_bypass,
+};
 use crate::github_workflow_rules::{
     check_github_workflow_pull_request_target_head_checkout,
     check_github_workflow_unpinned_third_party_action,
@@ -549,6 +553,39 @@ declare_rule! {
     }
 }
 
+declare_rule! {
+    pub struct ClaudeSettingsMutableLauncherRule {
+        code: "SEC340",
+        summary: "Claude settings command hook uses a mutable package launcher",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsInlineDownloadExecRule {
+        code: "SEC341",
+        summary: "Claude settings command hook downloads remote content and pipes it into a shell",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsNetworkTlsBypassRule {
+        code: "SEC342",
+        summary: "Claude settings command hook disables TLS verification in a network-capable execution path",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
 type CheckFn = fn(&ScanContext, &ArtifactSignals, RuleMetadata) -> Vec<Finding>;
 type SafeFixFn = fn(&Finding) -> Fix;
 type SuggestionFixFn = fn(&ScanContext, &Finding) -> Option<Fix>;
@@ -559,6 +596,7 @@ pub(crate) enum Surface {
     Markdown,
     Hook,
     Json,
+    ClaudeSettings,
     ToolJson,
     ServerJson,
     GithubWorkflow,
@@ -583,6 +621,7 @@ impl Surface {
                     | ArtifactKind::CursorPluginManifest
                     | ArtifactKind::CursorPluginHooks
             ),
+            Self::ClaudeSettings => artifact_kind == ArtifactKind::ClaudeSettings,
             Self::ToolJson => artifact_kind == ArtifactKind::ToolDescriptorJson,
             Self::ServerJson => artifact_kind == ArtifactKind::ServerRegistryConfig,
             Self::GithubWorkflow => artifact_kind == ArtifactKind::GitHubWorkflow,
@@ -670,7 +709,7 @@ pub(crate) const HEURISTIC_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed pre
 pub(crate) const STRUCTURAL_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.";
 pub(crate) const WORKSPACE_PREVIEW_REQUIREMENTS: &str = "Needs workspace precision review, linked benign/malicious corpus proof, and completed stable checklist metadata.";
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 46] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 49] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1486,6 +1525,63 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 46] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove privileged or host-namespace flags from the committed MCP Docker launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsMutableLauncherRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for mutable package launcher forms such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.",
+            malicious_case_ids: &["claude-settings-mutable-launcher"],
+            benign_case_ids: &["claude-settings-pinned-launcher-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook analysis over committed .claude/settings.json or claude/settings.json objects with type == command under hooks.",
+        },
+        check: check_claude_settings_mutable_launcher,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace the mutable package launcher in the committed Claude hook with a vendored, pinned, or otherwise reproducible execution path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsInlineDownloadExecRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit curl|shell or wget|shell execution chains.",
+            malicious_case_ids: &["claude-settings-inline-download-exec"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command, limited to explicit download-pipe-shell patterns.",
+        },
+        check: check_claude_settings_inline_download_exec,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the inline download-and-exec flow from the committed Claude hook command and pin or vendor the fetched content instead",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsNetworkTlsBypassRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit TLS-bypass tokens in a network-capable execution context.",
+            malicious_case_ids: &["claude-settings-command-tls-bypass"],
+            benign_case_ids: &["claude-settings-network-tls-verified-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command, gated by network markers plus TLS-bypass tokens.",
+        },
+        check: check_claude_settings_network_tls_bypass,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove TLS-bypass flags or NODE_TLS_REJECT_UNAUTHORIZED=0 from the network-capable Claude hook command",
         ),
         suggestion_fix: None,
     },

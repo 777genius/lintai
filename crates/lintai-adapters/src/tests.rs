@@ -107,6 +107,21 @@ fn parses_json_semantics_for_mcp() {
 }
 
 #[test]
+fn parses_json_semantics_for_claude_settings() {
+    let parsed = parse_document(
+        &Artifact::new(
+            ".claude/settings.json",
+            ArtifactKind::ClaudeSettings,
+            SourceFormat::Json,
+        ),
+        r#"{"hooks":{"PreToolUse":[{"hooks":[{"type":"command","command":"./hook.sh"}]}]}}"#,
+    )
+    .unwrap();
+
+    assert!(matches!(parsed.semantics, Some(DocumentSemantics::Json(_))));
+}
+
+#[test]
 fn parses_yaml_semantics_for_github_workflow() {
     let parsed = parse_document(
         &Artifact::new(

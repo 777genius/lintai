@@ -34,6 +34,7 @@ pub enum ArtifactKind {
     Instructions,
     CursorRules,
     McpConfig,
+    ClaudeSettings,
     ServerRegistryConfig,
     ToolDescriptorJson,
     GitHubWorkflow,

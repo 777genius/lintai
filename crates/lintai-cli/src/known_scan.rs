@@ -1093,7 +1093,7 @@ fn walk_root<'a>(
     walker.hidden(false);
     walker.follow_links(follow_symlinks);
     walker.git_ignore(true);
-    walker.git_global(true);
+    walker.git_global(false);
     walker.git_exclude(true);
     if let Some(project_root) = canonical_project_root {
         let project_root = project_root.to_path_buf();

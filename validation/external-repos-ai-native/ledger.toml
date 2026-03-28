@@ -61,13 +61,17 @@ category = "ai_native"
 subtype = "claude_settings_command"
 status = "evaluated"
 surfaces_present = [
+    ".claude/settings.json",
     ".github/workflows/*.yml",
     "CLAUDE.md",
     "SKILL.md",
 ]
-stable_findings = 2
+stable_findings = 3
 preview_findings = 2
-stable_rule_codes = ["SEC324"]
+stable_rule_codes = [
+    "SEC324",
+    "SEC340",
+]
 preview_rule_codes = ["SEC328"]
 repo_verdict = "strong_fit"
 stable_precision_notes = ""
@@ -86,6 +90,7 @@ category = "ai_native"
 subtype = "claude_settings_command"
 status = "evaluated"
 surfaces_present = [
+    ".claude/settings.json",
     ".github/workflows/*.yml",
     ".mdc",
     "SKILL.md",
@@ -116,13 +121,14 @@ subtype = "claude_settings_command"
 status = "evaluated"
 surfaces_present = [
     ".claude/mcp/*.json",
+    ".claude/settings.json",
     "CLAUDE.md",
     "SKILL.md",
     "tool_descriptor_json",
 ]
-stable_findings = 0
+stable_findings = 1
 preview_findings = 0
-stable_rule_codes = []
+stable_rule_codes = ["SEC329"]
 preview_rule_codes = []
 repo_verdict = "strong_fit"
 stable_precision_notes = ""
@@ -144,6 +150,7 @@ surfaces_present = [
     ".mcp.json",
     "CLAUDE.md",
     "SKILL.md",
+    "claude/settings.json",
 ]
 stable_findings = 1
 preview_findings = 0
@@ -197,6 +204,7 @@ category = "ai_native"
 subtype = "claude_settings_command"
 status = "evaluated"
 surfaces_present = [
+    ".claude/settings.json",
     ".cursor-plugin/plugin.json",
     ".github/workflows/*.yml",
     ".mdc",

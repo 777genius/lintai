@@ -218,6 +218,26 @@ mod tests {
         assert_eq!(
             detector
                 .detect(
+                    Path::new("/tmp/project/.claude/settings.json"),
+                    ".claude/settings.json"
+                )
+                .unwrap()
+                .kind,
+            ArtifactKind::ClaudeSettings
+        );
+        assert_eq!(
+            detector
+                .detect(
+                    Path::new("/tmp/project/claude/settings.json"),
+                    "claude/settings.json"
+                )
+                .unwrap()
+                .kind,
+            ArtifactKind::ClaudeSettings
+        );
+        assert_eq!(
+            detector
+                .detect(
                     Path::new("/tmp/project/.claude/mcp/chrome-devtools.json"),
                     ".claude/mcp/chrome-devtools.json"
                 )

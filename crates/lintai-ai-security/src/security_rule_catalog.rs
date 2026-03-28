@@ -226,6 +226,7 @@ fn format_surface(surface: Surface) -> &'static str {
         Surface::Markdown => "markdown",
         Surface::Hook => "hook",
         Surface::Json => "json",
+        Surface::ClaudeSettings => "claude_settings",
         Surface::ToolJson => "tool_json",
         Surface::ServerJson => "server_json",
         Surface::GithubWorkflow => "github_workflow",

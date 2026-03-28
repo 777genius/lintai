@@ -18,6 +18,9 @@ fn benign_corpus_case_dirs_are_discoverable() {
     assert_eq!(
         names,
         vec![
+            "claude-settings-network-command-safe",
+            "claude-settings-network-tls-verified-safe",
+            "claude-settings-pinned-launcher-safe",
             "cursor-plugin-clean-basic",
             "cursor-plugin-safe-paths",
             "cursor-plugin-tls-verified-basic",

@@ -56,11 +56,17 @@ const MARKDOWN_PRIVATE_KEY_MARKERS: &[&str] = &[
     "BEGIN PRIVATE KEY",
 ];
 
+const FIXTURE_PATH_SEGMENTS: &[&str] = &[
+    "test", "tests", "testdata", "fixture", "fixtures", "example", "examples", "sample",
+    "samples",
+];
+
 #[derive(Clone, Debug, Default)]
 pub(crate) struct ArtifactSignals {
     markdown: Option<MarkdownSignals>,
     hook: Option<HookSignals>,
     json: Option<JsonSignals>,
+    claude_settings: Option<ClaudeSettingsSignals>,
     server_json: Option<ServerJsonSignals>,
     tool_json: Option<ToolJsonSignals>,
     github_workflow: Option<GithubWorkflowSignals>,
@@ -84,6 +90,7 @@ impl ArtifactSignals {
             markdown: MarkdownSignals::from_context(ctx, &mut metrics),
             hook: HookSignals::from_context(ctx, &mut metrics),
             json: JsonSignals::from_context(ctx, &mut metrics),
+            claude_settings: ClaudeSettingsSignals::from_context(ctx, &mut metrics),
             server_json: ServerJsonSignals::from_context(ctx, &mut metrics),
             tool_json: ToolJsonSignals::from_context(ctx, &mut metrics),
             github_workflow: GithubWorkflowSignals::from_context(ctx, &mut metrics),
@@ -101,6 +108,10 @@ impl ArtifactSignals {
 
     pub(crate) fn json(&self) -> Option<&JsonSignals> {
         self.json.as_ref()
+    }
+
+    pub(crate) fn claude_settings(&self) -> Option<&ClaudeSettingsSignals> {
+        self.claude_settings.as_ref()
     }
 
     pub(crate) fn server_json(&self) -> Option<&ServerJsonSignals> {
@@ -315,6 +326,50 @@ impl JsonSignals {
             metrics,
         );
         signals.locator = locator;
+        Some(signals)
+    }
+}
+
+#[derive(Clone, Debug, Default)]
+pub(crate) struct ClaudeSettingsSignals {
+    #[allow(dead_code)]
+    pub(crate) locator: Option<JsonLocationMap>,
+    pub(crate) fixture_like_path: bool,
+    pub(crate) mutable_launcher_span: Option<Span>,
+    pub(crate) inline_download_exec_span: Option<Span>,
+    pub(crate) network_tls_bypass_span: Option<Span>,
+}
+
+impl ClaudeSettingsSignals {
+    fn from_context(ctx: &ScanContext, metrics: &mut SignalWorkBudget) -> Option<Self> {
+        if ctx.artifact.kind != ArtifactKind::ClaudeSettings {
+            return None;
+        }
+
+        let value = &json_semantics(ctx)?.value;
+        let locator = JsonLocationMap::parse(&ctx.content);
+        if locator.is_some() {
+            metrics.json_locator_builds += 1;
+        }
+        let fallback_len = ctx.content.len();
+        let locator_ref = locator.clone();
+        let mut signals = Self {
+            locator,
+            fixture_like_path: is_fixture_like_claude_settings_path(&ctx.artifact.normalized_path),
+            ..Self::default()
+        };
+        if signals.fixture_like_path {
+            return Some(signals);
+        }
+        let mut path = Vec::new();
+        visit_claude_settings_value(
+            value,
+            &mut path,
+            locator_ref.as_ref(),
+            fallback_len,
+            &mut signals,
+            metrics,
+        );
         Some(signals)
     }
 }
@@ -1015,6 +1070,79 @@ fn visit_json_value(
     }
 }
 
+fn visit_claude_settings_value(
+    value: &Value,
+    path: &mut Vec<JsonPathSegment>,
+    locator: Option<&JsonLocationMap>,
+    fallback_len: usize,
+    signals: &mut ClaudeSettingsSignals,
+    metrics: &mut SignalWorkBudget,
+) {
+    metrics.json_values_visited += 1;
+
+    if let Value::Object(map) = value
+        && path_contains_key(path, "hooks")
+        && map.get("type").and_then(Value::as_str) == Some("command")
+        && let Some(command) = map.get("command").and_then(Value::as_str)
+    {
+        if signals.mutable_launcher_span.is_none()
+            && let Some(relative) = find_mutable_launcher_relative_span(command)
+        {
+            signals.mutable_launcher_span = Some(resolve_child_relative_value_span(
+                path,
+                "command",
+                "command",
+                relative,
+                locator,
+                fallback_len,
+            ));
+        }
+
+        let lowered = command.to_ascii_lowercase();
+        if signals.inline_download_exec_span.is_none() && has_inline_download_pipe_exec(&lowered) {
+            signals.inline_download_exec_span = Some(resolve_child_value_span(
+                path,
+                "command",
+                locator,
+                fallback_len,
+            ));
+        }
+
+        let has_network_context = looks_like_network_capable_command(&lowered);
+        if signals.network_tls_bypass_span.is_none()
+            && has_network_context
+            && let Some(relative) = find_command_tls_bypass_relative_span(command)
+        {
+            signals.network_tls_bypass_span = Some(resolve_child_relative_value_span(
+                path,
+                "command",
+                "command",
+                relative,
+                locator,
+                fallback_len,
+            ));
+        }
+    }
+
+    match value {
+        Value::Object(map) => {
+            for (key, nested) in map {
+                path.push(JsonPathSegment::Key(key.clone()));
+                visit_claude_settings_value(nested, path, locator, fallback_len, signals, metrics);
+                path.pop();
+            }
+        }
+        Value::Array(items) => {
+            for (index, nested) in items.iter().enumerate() {
+                path.push(JsonPathSegment::Index(index));
+                visit_claude_settings_value(nested, path, locator, fallback_len, signals, metrics);
+                path.pop();
+            }
+        }
+        _ => {}
+    }
+}
+
 fn visit_tool_json_value(
     value: &Value,
     normalized_path: &str,
@@ -1476,6 +1604,31 @@ fn is_mutable_mcp_launcher(command: &str, args: Option<&Vec<Value>>) -> bool {
     ((command.eq_ignore_ascii_case("pnpm") || command.eq_ignore_ascii_case("yarn"))
         && first_arg.eq_ignore_ascii_case("dlx"))
         || (command.eq_ignore_ascii_case("pipx") && first_arg.eq_ignore_ascii_case("run"))
+}
+
+fn find_mutable_launcher_relative_span(command: &str) -> Option<Span> {
+    let tokens = shell_tokens(command);
+    for index in 0..tokens.len() {
+        let text = tokens[index].text;
+        if text.eq_ignore_ascii_case("npx") || text.eq_ignore_ascii_case("uvx") {
+            return Some(Span::new(tokens[index].start, tokens[index].end));
+        }
+        if (text.eq_ignore_ascii_case("pnpm") || text.eq_ignore_ascii_case("yarn"))
+            && tokens
+                .get(index + 1)
+                .is_some_and(|next| next.text.eq_ignore_ascii_case("dlx"))
+        {
+            return Some(Span::new(tokens[index].start, tokens[index].end));
+        }
+        if text.eq_ignore_ascii_case("pipx")
+            && tokens
+                .get(index + 1)
+                .is_some_and(|next| next.text.eq_ignore_ascii_case("run"))
+        {
+            return Some(Span::new(tokens[index].start, tokens[index].end));
+        }
+    }
+    None
 }
 
 fn find_mcp_command_signal_span(
@@ -1943,6 +2096,12 @@ fn is_expanded_mcp_client_variant_path(normalized_path: &str) -> bool {
         || normalized_path.ends_with(".kiro/settings/mcp.json")
 }
 
+fn is_fixture_like_claude_settings_path(normalized_path: &str) -> bool {
+    normalized_path
+        .split('/')
+        .any(|segment| FIXTURE_PATH_SEGMENTS.contains(&segment.to_ascii_lowercase().as_str()))
+}
+
 fn is_fixture_like_expanded_mcp_client_variant_path(normalized_path: &str) -> bool {
     is_expanded_mcp_client_variant_path(normalized_path)
         && normalized_path.split('/').any(|segment| {
@@ -2211,6 +2370,15 @@ fn with_child_index(path: &[JsonPathSegment], index: usize) -> Vec<JsonPathSegme
     let mut next = path.to_vec();
     next.push(JsonPathSegment::Index(index));
     next
+}
+
+fn path_contains_key(path: &[JsonPathSegment], wanted: &str) -> bool {
+    path.iter().any(|segment| {
+        matches!(
+            segment,
+            JsonPathSegment::Key(key) if key.eq_ignore_ascii_case(wanted)
+        )
+    })
 }
 
 fn find_literal_value_after_prefixes_case_insensitive(

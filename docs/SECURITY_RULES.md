@@ -57,6 +57,9 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC337` | MCP configuration launches Docker with an image reference that is not digest-pinned | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
 | `SEC338` | MCP configuration launches Docker with a bind mount of sensitive host material | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
 | `SEC339` | MCP configuration launches Docker with a host-escape or privileged runtime flag | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
+| `SEC340` | Claude settings command hook uses a mutable package launcher | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` |
+| `SEC341` | Claude settings command hook downloads remote content and pipes it into a shell | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` |
+| `SEC342` | Claude settings command hook disables TLS verification in a network-capable execution path | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` |
 | `SEC401` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC402` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC403` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
@@ -881,6 +884,63 @@ Canonical catalog for the shipped security rules currently exposed by:
 - Deterministic Signal Basis: JsonSignals docker run argument analysis over ArtifactKind::McpConfig objects, limited to explicit privileged and host namespace flags.
 - Malicious Corpus: `mcp-docker-host-escape`
 - Benign Corpus: `mcp-docker-safe-run`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC340` — Claude settings command hook uses a mutable package launcher
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for mutable package launcher forms such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook analysis over committed .claude/settings.json or claude/settings.json objects with type == command under hooks.
+- Malicious Corpus: `claude-settings-mutable-launcher`
+- Benign Corpus: `claude-settings-pinned-launcher-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC341` — Claude settings command hook downloads remote content and pipes it into a shell
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit curl|shell or wget|shell execution chains.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command, limited to explicit download-pipe-shell patterns.
+- Malicious Corpus: `claude-settings-inline-download-exec`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC342` — Claude settings command hook disables TLS verification in a network-capable execution path
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit TLS-bypass tokens in a network-capable execution context.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command, gated by network markers plus TLS-bypass tokens.
+- Malicious Corpus: `claude-settings-command-tls-bypass`
+- Benign Corpus: `claude-settings-network-tls-verified-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

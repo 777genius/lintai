@@ -24,21 +24,24 @@
 ## Coverage Status
 
 - `15` total admitted paths
-- `0` admitted paths are currently covered by shipped detector kinds
-- `15` admitted paths are discovery-only and not directly scanned by current detector kinds
-- `0` repos have at least one currently covered admission path
-- `8` repos are discovery-only under current detector coverage
+- `5` admitted paths are currently covered by shipped detector kinds
+- `10` admitted paths are discovery-only and not directly scanned by current detector kinds
+- `5` repos have at least one currently covered admission path
+- `3` repos are discovery-only under current detector coverage
+
+Currently covered admission paths:
+
+- `airmcp-com/mcp-standards`: `.claude/settings.json`
+- `blockscout/mcp-server`: `.claude/settings.json`
+- `centminmod/my-claude-code-setup`: `.claude/settings.json`
+- `buildingopen/claude-setup`: `claude/settings.json`
+- `tldraw/tldraw`: `.claude/settings.json`
 
 Discovery-only admission paths:
 
 - `hashicorp/terraform-mcp-server`: `gemini-extension.json`
 - `SonarSource/sonarqube-mcp-server`: `gemini-extension.json`
-- `airmcp-com/mcp-standards`: `.claude/settings.json`
-- `blockscout/mcp-server`: `.claude/settings.json`
-- `centminmod/my-claude-code-setup`: `.claude/settings.json`
-- `buildingopen/claude-setup`: `claude/settings.json`
 - `cursor/plugins`: `agent-compatibility/agents/compatibility-scan-review.md`, `agent-compatibility/agents/startup-review.md`, `agent-compatibility/agents/validation-review.md`, `continual-learning/agents/agents-memory-updater.md`, `continual-learning/hooks/hooks.json`, `create-plugin/agents/plugin-architect.md`, `cursor-team-kit/agents/ci-watcher.md`, `ralph-loop/hooks/hooks.json`
-- `tldraw/tldraw`: `.claude/settings.json`
 
 ## Overall Counts
 
