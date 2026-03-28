@@ -570,20 +570,53 @@ fn markdown_detection_override_patterns(
     root: &KnownRoot,
     workspace: &WorkspaceConfig,
 ) -> Vec<String> {
-    if !root.path.is_file() {
-        return Vec::new();
-    }
-
     let Some(base_path) = workspace.engine_config.project_root.as_deref() else {
         return Vec::new();
     };
-    let normalized_path = normalize_known_path(base_path, &root.path);
     let detector = FileTypeDetector::new(&workspace.engine_config);
-    if detector.detect(&root.path, &normalized_path).is_some() {
-        return Vec::new();
+    let mut patterns = BTreeSet::new();
+
+    if root.path.is_file() {
+        let normalized_path = normalize_known_path(base_path, &root.path);
+        if detector.detect(&root.path, &normalized_path).is_none() {
+            patterns.insert(normalized_path);
+        }
+        return patterns.into_iter().collect();
     }
 
-    vec![normalized_path]
+    let canonical_project_root = workspace
+        .engine_config
+        .project_root
+        .as_deref()
+        .and_then(|project_root| std::fs::canonicalize(project_root).ok());
+    for entry in walk_root(
+        &root.path,
+        workspace.engine_config.follow_symlinks,
+        canonical_project_root.as_deref(),
+    ) {
+        let entry = match entry {
+            Ok(entry) => entry,
+            Err(_) => continue,
+        };
+        let path = entry.path();
+        if !path.is_file() {
+            continue;
+        }
+        if !path
+            .extension()
+            .is_some_and(|extension| extension.eq_ignore_ascii_case("md"))
+        {
+            continue;
+        }
+
+        let normalized_path = normalize_known_path(base_path, path);
+        if detector.detect(path, &normalized_path).is_some() {
+            continue;
+        }
+        patterns.insert(normalized_path);
+    }
+
+    patterns.into_iter().collect()
 }
 
 fn mcp_candidate_files(
