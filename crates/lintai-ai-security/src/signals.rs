@@ -259,6 +259,9 @@ pub(crate) struct JsonSignals {
     pub(crate) mutable_mcp_launcher_span: Option<Span>,
     pub(crate) inline_download_exec_command_span: Option<Span>,
     pub(crate) network_tls_bypass_command_span: Option<Span>,
+    pub(crate) mutable_docker_image_span: Option<Span>,
+    pub(crate) sensitive_docker_mount_span: Option<Span>,
+    pub(crate) dangerous_docker_flag_span: Option<Span>,
     pub(crate) broad_env_file_span: Option<Span>,
     pub(crate) plain_http_endpoint_span: Option<Span>,
     pub(crate) credential_env_passthrough_span: Option<Span>,
@@ -575,6 +578,9 @@ struct HookToken<'a> {
 struct McpCommandSignalSpan {
     inline_download_exec: Option<Span>,
     network_tls_bypass: Option<Span>,
+    mutable_docker_image: Option<Span>,
+    sensitive_docker_mount: Option<Span>,
+    dangerous_docker_flag: Option<Span>,
 }
 
 fn collect_hook_line(
@@ -881,7 +887,10 @@ fn visit_json_value(
             }
 
             if (signals.inline_download_exec_command_span.is_none()
-                || signals.network_tls_bypass_command_span.is_none())
+                || signals.network_tls_bypass_command_span.is_none()
+                || signals.mutable_docker_image_span.is_none()
+                || signals.sensitive_docker_mount_span.is_none()
+                || signals.dangerous_docker_flag_span.is_none())
                 && let Some(command_signals) =
                     find_mcp_command_signal_span(path, command, args, locator, fallback_len)
             {
@@ -891,6 +900,15 @@ fn visit_json_value(
                 }
                 if signals.network_tls_bypass_command_span.is_none() {
                     signals.network_tls_bypass_command_span = command_signals.network_tls_bypass;
+                }
+                if signals.mutable_docker_image_span.is_none() {
+                    signals.mutable_docker_image_span = command_signals.mutable_docker_image;
+                }
+                if signals.sensitive_docker_mount_span.is_none() {
+                    signals.sensitive_docker_mount_span = command_signals.sensitive_docker_mount;
+                }
+                if signals.dangerous_docker_flag_span.is_none() {
+                    signals.dangerous_docker_flag_span = command_signals.dangerous_docker_flag;
                 }
             }
         }
@@ -1502,6 +1520,26 @@ fn find_mcp_command_signal_span(
     }
 
     if let Some(args) = args {
+        if command.is_some_and(|value| value.eq_ignore_ascii_case("docker"))
+            && let Some(docker) = analyze_docker_run_args(args)
+        {
+            if let Some(index) = docker.mutable_image_arg_index {
+                let arg_path = with_child_index(&with_child_key(path, "args"), index);
+                spans.mutable_docker_image =
+                    Some(resolve_value_span(&arg_path, locator, fallback_len));
+            }
+            if let Some(index) = docker.sensitive_mount_arg_index {
+                let arg_path = with_child_index(&with_child_key(path, "args"), index);
+                spans.sensitive_docker_mount =
+                    Some(resolve_value_span(&arg_path, locator, fallback_len));
+            }
+            if let Some(index) = docker.dangerous_flag_arg_index {
+                let arg_path = with_child_index(&with_child_key(path, "args"), index);
+                spans.dangerous_docker_flag =
+                    Some(resolve_value_span(&arg_path, locator, fallback_len));
+            }
+        }
+
         for (index, item) in args.iter().enumerate() {
             let Some(text) = item.as_str() else {
                 continue;
@@ -1528,7 +1566,189 @@ fn find_mcp_command_signal_span(
         }
     }
 
-    (spans.inline_download_exec.is_some() || spans.network_tls_bypass.is_some()).then_some(spans)
+    (spans.inline_download_exec.is_some()
+        || spans.network_tls_bypass.is_some()
+        || spans.mutable_docker_image.is_some()
+        || spans.sensitive_docker_mount.is_some()
+        || spans.dangerous_docker_flag.is_some())
+    .then_some(spans)
+}
+
+#[derive(Clone, Copy, Debug, Default)]
+struct DockerRunAnalysis {
+    mutable_image_arg_index: Option<usize>,
+    sensitive_mount_arg_index: Option<usize>,
+    dangerous_flag_arg_index: Option<usize>,
+}
+
+fn analyze_docker_run_args(args: &Vec<Value>) -> Option<DockerRunAnalysis> {
+    let first_arg = args.first().and_then(Value::as_str)?;
+    if !first_arg.eq_ignore_ascii_case("run") {
+        return None;
+    }
+
+    let mut analysis = DockerRunAnalysis::default();
+    let mut index = 1usize;
+    while index < args.len() {
+        let Some(text) = args[index].as_str() else {
+            index += 1;
+            continue;
+        };
+
+        if analysis.dangerous_flag_arg_index.is_none()
+            && is_dangerous_docker_flag(text, args, index)
+        {
+            analysis.dangerous_flag_arg_index = Some(index);
+        }
+
+        if analysis.sensitive_mount_arg_index.is_none() {
+            if matches!(text, "-v" | "--volume")
+                && let Some(spec) = args.get(index + 1).and_then(Value::as_str)
+                && is_sensitive_docker_volume_spec(spec)
+            {
+                analysis.sensitive_mount_arg_index = Some(index + 1);
+            } else if text.starts_with("--volume=")
+                && is_sensitive_docker_volume_spec(
+                    text.split_once('=')
+                        .map(|(_, value)| value)
+                        .unwrap_or_default(),
+                )
+            {
+                analysis.sensitive_mount_arg_index = Some(index);
+            } else if text.starts_with("-v")
+                && text.len() > 2
+                && is_sensitive_docker_volume_spec(&text[2..])
+            {
+                analysis.sensitive_mount_arg_index = Some(index);
+            } else if matches!(text, "--mount")
+                && let Some(spec) = args.get(index + 1).and_then(Value::as_str)
+                && is_sensitive_docker_mount_spec(spec)
+            {
+                analysis.sensitive_mount_arg_index = Some(index + 1);
+            } else if text.starts_with("--mount=")
+                && is_sensitive_docker_mount_spec(
+                    text.split_once('=')
+                        .map(|(_, value)| value)
+                        .unwrap_or_default(),
+                )
+            {
+                analysis.sensitive_mount_arg_index = Some(index);
+            }
+        }
+
+        if !text.starts_with('-') {
+            if analysis.mutable_image_arg_index.is_none()
+                && !contains_dynamic_reference(text)
+                && !contains_template_placeholder(text)
+                && !is_digest_pinned_docker_image(text)
+            {
+                analysis.mutable_image_arg_index = Some(index);
+            }
+            break;
+        }
+
+        index += docker_option_consumed_len(text, args, index);
+    }
+
+    Some(analysis)
+}
+
+fn docker_option_consumed_len(text: &str, args: &[Value], index: usize) -> usize {
+    if text.starts_with("--volume=")
+        || text.starts_with("--mount=")
+        || text.starts_with("--network=")
+        || text.starts_with("--pid=")
+        || text.starts_with("--ipc=")
+        || (text.starts_with("-v") && text.len() > 2)
+    {
+        return 1;
+    }
+
+    if matches!(
+        text,
+        "-v" | "--volume"
+            | "--mount"
+            | "-e"
+            | "--env"
+            | "--env-file"
+            | "-p"
+            | "--publish"
+            | "--network"
+            | "--pid"
+            | "--ipc"
+            | "--name"
+            | "-w"
+            | "--workdir"
+            | "-u"
+            | "--user"
+            | "--entrypoint"
+            | "--platform"
+    ) && args.get(index + 1).and_then(Value::as_str).is_some()
+    {
+        return 2;
+    }
+
+    1
+}
+
+fn is_dangerous_docker_flag(text: &str, args: &[Value], index: usize) -> bool {
+    text == "--privileged"
+        || matches!(text, "--network=host" | "--pid=host" | "--ipc=host")
+        || matches!(text, "--network" | "--pid" | "--ipc")
+            && args
+                .get(index + 1)
+                .and_then(Value::as_str)
+                .is_some_and(|value| value.eq_ignore_ascii_case("host"))
+}
+
+fn is_digest_pinned_docker_image(text: &str) -> bool {
+    text.to_ascii_lowercase().contains("@sha256:")
+}
+
+fn is_sensitive_docker_volume_spec(spec: &str) -> bool {
+    let source = spec.split(':').next().unwrap_or_default();
+    is_sensitive_host_path(source)
+}
+
+fn is_sensitive_docker_mount_spec(spec: &str) -> bool {
+    let mut is_bind = false;
+    let mut source = None;
+    for part in spec.split(',') {
+        let trimmed = part.trim();
+        if let Some((key, value)) = trimmed.split_once('=') {
+            let lowered_key = key.trim().to_ascii_lowercase();
+            let trimmed_value = value.trim();
+            match lowered_key.as_str() {
+                "type" => is_bind = trimmed_value.eq_ignore_ascii_case("bind"),
+                "source" | "src" => source = Some(trimmed_value),
+                _ => {}
+            }
+        }
+    }
+    is_bind && source.is_some_and(is_sensitive_host_path)
+}
+
+fn is_sensitive_host_path(source: &str) -> bool {
+    let normalized = source.trim().replace('\\', "/").to_ascii_lowercase();
+    if normalized.is_empty() {
+        return false;
+    }
+
+    if normalized.contains("/var/run/docker.sock") {
+        return true;
+    }
+
+    let path_like = normalized.starts_with('/')
+        || normalized.starts_with('~')
+        || normalized.starts_with('.')
+        || normalized.starts_with("$home")
+        || normalized.starts_with("${home}")
+        || normalized.contains('/');
+    path_like
+        && (normalized.contains(".ssh")
+            || normalized.contains(".aws")
+            || normalized.contains(".kube")
+            || normalized.contains(".config/gcloud"))
 }
 
 fn looks_like_network_capable_command(lowered: &str) -> bool {

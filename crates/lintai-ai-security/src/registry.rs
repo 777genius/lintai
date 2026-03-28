@@ -17,8 +17,9 @@ use crate::json_rules::{
     check_json_dangerous_endpoint_host, check_json_hidden_instruction, check_json_literal_secret,
     check_json_sensitive_env_reference, check_json_suspicious_remote_endpoint,
     check_json_unsafe_plugin_path, check_mcp_broad_env_file, check_mcp_credential_env_passthrough,
-    check_mcp_inline_download_exec, check_mcp_mutable_launcher,
-    check_mcp_network_tls_bypass_command, check_mcp_shell_wrapper, check_plain_http_config,
+    check_mcp_dangerous_docker_flag, check_mcp_inline_download_exec, check_mcp_mutable_launcher,
+    check_mcp_network_tls_bypass_command, check_mcp_sensitive_docker_mount,
+    check_mcp_shell_wrapper, check_mcp_unpinned_docker_image, check_plain_http_config,
     check_static_auth_exposure_config, check_trust_verification_disabled_config,
 };
 use crate::markdown_rules::{
@@ -515,6 +516,39 @@ declare_rule! {
     }
 }
 
+declare_rule! {
+    pub struct McpUnpinnedDockerImageRule {
+        code: "SEC337",
+        summary: "MCP configuration launches Docker with an image reference that is not digest-pinned",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpSensitiveDockerMountRule {
+        code: "SEC338",
+        summary: "MCP configuration launches Docker with a bind mount of sensitive host material",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpDangerousDockerFlagRule {
+        code: "SEC339",
+        summary: "MCP configuration launches Docker with a host-escape or privileged runtime flag",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
 type CheckFn = fn(&ScanContext, &ArtifactSignals, RuleMetadata) -> Vec<Finding>;
 type SafeFixFn = fn(&Finding) -> Fix;
 type SuggestionFixFn = fn(&ScanContext, &Finding) -> Option<Fix>;
@@ -636,7 +670,7 @@ pub(crate) const HEURISTIC_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed pre
 pub(crate) const STRUCTURAL_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.";
 pub(crate) const WORKSPACE_PREVIEW_REQUIREMENTS: &str = "Needs workspace precision review, linked benign/malicious corpus proof, and completed stable checklist metadata.";
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 43] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 46] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1395,6 +1429,63 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 43] = [
         safe_fix: None,
         suggestion_message: Some(
             "prefer narrower env injection over broad repo-local .env files for committed MCP client configs",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpUnpinnedDockerImageRule::METADATA,
+        surface: Surface::Json,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP config Docker launch paths for image references that are not pinned by digest, including tag-only refs such as :latest or :1.2.3.",
+            malicious_case_ids: &["mcp-docker-unpinned-image"],
+            benign_case_ids: &["mcp-docker-digest-pinned-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals docker run argument analysis over ArtifactKind::McpConfig objects, limited to command == docker plus args beginning with run.",
+        },
+        check: check_mcp_unpinned_docker_image,
+        safe_fix: None,
+        suggestion_message: Some(
+            "pin the Docker image by digest in the committed MCP launch path instead of relying on a mutable tag or floating reference",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpSensitiveDockerMountRule::METADATA,
+        surface: Surface::Json,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP config Docker launch paths for bind mounts of sensitive host sources such as docker.sock, SSH material, cloud credentials, and kubeconfig directories.",
+            malicious_case_ids: &["mcp-docker-sensitive-mount"],
+            benign_case_ids: &["mcp-docker-named-volume-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals docker run argument analysis over ArtifactKind::McpConfig objects, limited to -v/--volume and --mount bind forms with sensitive host-path markers.",
+        },
+        check: check_mcp_sensitive_docker_mount,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the sensitive host bind mount from the MCP Docker launch path or replace it with a narrower, non-secret volume strategy",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpDangerousDockerFlagRule::METADATA,
+        surface: Surface::Json,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP config Docker launch paths for privileged or host-escape runtime flags such as --privileged, --network host, --pid host, and --ipc host.",
+            malicious_case_ids: &["mcp-docker-host-escape"],
+            benign_case_ids: &["mcp-docker-safe-run"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals docker run argument analysis over ArtifactKind::McpConfig objects, limited to explicit privileged and host namespace flags.",
+        },
+        check: check_mcp_dangerous_docker_flag,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove privileged or host-namespace flags from the committed MCP Docker launch path",
         ),
         suggestion_fix: None,
     },

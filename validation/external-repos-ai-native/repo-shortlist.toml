@@ -1,0 +1,103 @@
+version = 1
+
+[cohort]
+total = 8
+category = "ai_native"
+category_semantics = "ai_native means the repo was admitted because it contains real repository-local MCP Docker config or AI-native execution surfaces such as Claude settings hooks or plugin-root hook/agent references"
+
+[[repos]]
+repo = "hashicorp/terraform-mcp-server"
+url = "https://github.com/hashicorp/terraform-mcp-server"
+pinned_ref = "617ba91b86a87e07cad2ca5374ee4149ce75ebb4"
+category = "ai_native"
+subtype = "mcp_docker"
+status = "evaluated"
+surfaces_present = ["gemini-extension.json"]
+admission_paths = ["gemini-extension.json"]
+rationale = "Committed Gemini extension config launches the MCP server via docker run from a repo-local JSON file."
+
+[[repos]]
+repo = "SonarSource/sonarqube-mcp-server"
+url = "https://github.com/SonarSource/sonarqube-mcp-server"
+pinned_ref = "ae3dbfa0330e430c10d28760b56136da2b15e653"
+category = "ai_native"
+subtype = "mcp_docker"
+status = "evaluated"
+surfaces_present = ["gemini-extension.json"]
+admission_paths = ["gemini-extension.json"]
+rationale = "Committed Gemini extension config launches the MCP server via docker run and represents a real repo-local client execution surface."
+
+[[repos]]
+repo = "airmcp-com/mcp-standards"
+url = "https://github.com/airmcp-com/mcp-standards"
+pinned_ref = "5904a55c01f45de48ffacd59d768a85abdd7464a"
+category = "ai_native"
+subtype = "claude_settings_command"
+status = "evaluated"
+surfaces_present = [".claude/settings.json"]
+admission_paths = [".claude/settings.json"]
+rationale = "Repository-local Claude settings file contains multiple command-type hook definitions under hooks."
+
+[[repos]]
+repo = "blockscout/mcp-server"
+url = "https://github.com/blockscout/mcp-server"
+pinned_ref = "00cc9302d74faa3c880fdf0c1650e7dabecd4ad2"
+category = "ai_native"
+subtype = "claude_settings_command"
+status = "evaluated"
+surfaces_present = [".claude/settings.json"]
+admission_paths = [".claude/settings.json"]
+rationale = "Committed .claude/settings.json contains command hook execution entries under hooks."
+
+[[repos]]
+repo = "centminmod/my-claude-code-setup"
+url = "https://github.com/centminmod/my-claude-code-setup"
+pinned_ref = "204c03f7984180be35c2e52fa9703475cdb2f118"
+category = "ai_native"
+subtype = "claude_settings_command"
+status = "evaluated"
+surfaces_present = [".claude/settings.json"]
+admission_paths = [".claude/settings.json"]
+rationale = "Committed .claude/settings.json exposes command-type hooks in a real user-facing Claude setup repo."
+
+[[repos]]
+repo = "buildingopen/claude-setup"
+url = "https://github.com/buildingopen/claude-setup"
+pinned_ref = "69cc9c8fd0f81782cb90dc51c95dbcbb4d346d5c"
+category = "ai_native"
+subtype = "claude_settings_command"
+status = "evaluated"
+surfaces_present = ["claude/settings.json"]
+admission_paths = ["claude/settings.json"]
+rationale = "Committed claude/settings.json contains multiple command hook entries and represents a real repo-local Claude execution surface."
+
+[[repos]]
+repo = "cursor/plugins"
+url = "https://github.com/cursor/plugins"
+pinned_ref = "08c2bbe2ae8a022a21dc6c32faf611f14a6e8343"
+category = "ai_native"
+subtype = "plugin_execution_reference"
+status = "evaluated"
+surfaces_present = ["plugin_root_hooks.json", "plugin_root_agents/*.md"]
+admission_paths = [
+    "agent-compatibility/agents/compatibility-scan-review.md",
+    "agent-compatibility/agents/startup-review.md",
+    "agent-compatibility/agents/validation-review.md",
+    "continual-learning/agents/agents-memory-updater.md",
+    "continual-learning/hooks/hooks.json",
+    "create-plugin/agents/plugin-architect.md",
+    "cursor-team-kit/agents/ci-watcher.md",
+    "ralph-loop/hooks/hooks.json",
+]
+rationale = "Plugin manifests in the marketplace repo point to real repo-root hook registries and agent markdown files outside the currently shipped .cursor-plugin-only detector paths."
+
+[[repos]]
+repo = "tldraw/tldraw"
+url = "https://github.com/tldraw/tldraw"
+pinned_ref = "a8785621b3271f55ab972cfac658b11a93cb252f"
+category = "ai_native"
+subtype = "claude_settings_command"
+status = "evaluated"
+surfaces_present = [".claude/settings.json"]
+admission_paths = [".claude/settings.json"]
+rationale = "Large real-world repo with a committed .claude/settings.json containing command hook execution entries."

@@ -78,6 +78,51 @@ pub(crate) fn check_mcp_broad_env_file(
     )
 }
 
+pub(crate) fn check_mcp_unpinned_docker_image(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.mutable_docker_image_span.clone()),
+        "MCP configuration launches Docker with an image reference that is not digest-pinned",
+    )
+}
+
+pub(crate) fn check_mcp_sensitive_docker_mount(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.sensitive_docker_mount_span.clone()),
+        "MCP configuration launches Docker with a bind mount of sensitive host material",
+    )
+}
+
+pub(crate) fn check_mcp_dangerous_docker_flag(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.dangerous_docker_flag_span.clone()),
+        "MCP configuration launches Docker with a host-escape or privileged runtime flag",
+    )
+}
+
 pub(crate) fn check_plain_http_config(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

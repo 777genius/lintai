@@ -1,0 +1,4 @@
+{
+  "command": "docker",
+  "args": ["run", "ghcr.io/acme/mcp-server@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"]
+}

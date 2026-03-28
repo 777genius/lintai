@@ -1,0 +1,9 @@
+{
+  "command": "docker",
+  "args": [
+    "run",
+    "-v",
+    "mcp-cache:/cache",
+    "ghcr.io/acme/mcp-server@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  ]
+}

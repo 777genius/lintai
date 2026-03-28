@@ -26,12 +26,25 @@ Current checked-in wave 2 results:
 
 Current wave inventory for the newly expanded JSON lanes:
 
+- repos with root `mcp.json`: `10`
 - repos with `.mcp.json`: `3`
+- repos with `.cursor/mcp.json`: `0`
+- repos with `.vscode/mcp.json`: `0`
+- repos with `.roo/mcp.json`: `0`
+- repos with `.kiro/settings/mcp.json`: `0`
 - repos with `.claude/mcp/*.json`: `1`
+- repos with Docker-based MCP launch configs: `0`
+- MCP findings from expanded client-config coverage (`SEC301`-`SEC331`, `SEC337`-`SEC339`): `0`
+- findings from `SEC336`: `0`
+- findings from `SEC337`-`SEC339`: `0`
 - repos with `tool_descriptor_json`: `3`
 - findings from `SEC314`-`SEC318`: `0`
+- repos where new MCP client-config variants existed only under fixture-like paths: `0`
+- repos where Docker-based MCP launch existed only under fixture-like client-config variants: `0`
+- expanded MCP client-config coverage produced no external MCP hits on the canonical cohort yet
+- no external hits were produced yet from Docker-based MCP launch hardening on the canonical cohort
 - no non-fixture external `Stable` hits were produced yet on committed tool-descriptor JSON
-- fixture/testdata/example suppression stayed active; this batch did not create a fake `Stable` usefulness signal from fixture-like paths
+- fixture/testdata/example suppression stayed active for the newly added MCP client-config variants and did not create a fake usefulness signal from fixture-like paths
 
 ## Delta From Previous Wave
 

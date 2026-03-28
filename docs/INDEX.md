@@ -51,7 +51,8 @@
 | 13 | **[EXTERNAL_VALIDATION_TOOL_JSON_REPORT.md](EXTERNAL_VALIDATION_TOOL_JSON_REPORT.md)** | Wave 3 extension evidence for `ToolDescriptorJson` usefulness under the stricter operational gate |
 | 14 | **[EXTERNAL_VALIDATION_SERVER_JSON_REPORT.md](EXTERNAL_VALIDATION_SERVER_JSON_REPORT.md)** | Focused extension evidence for MCP Registry `server.json` surfaces and `SEC319`/`SEC320` |
 | 15 | **[EXTERNAL_VALIDATION_GITHUB_ACTIONS_REPORT.md](EXTERNAL_VALIDATION_GITHUB_ACTIONS_REPORT.md)** | Focused extension evidence for GitHub Actions workflows and `SEC324`/`SEC325` |
-| 16 | **[BETA_TO_1_0_ROADMAP.md](BETA_TO_1_0_ROADMAP.md)** | Большой post-`v0.1` roadmap: precision hardening, beta, structural growth, `1.0` gate |
+| 16 | **[EXTERNAL_VALIDATION_AI_NATIVE_DISCOVERY_REPORT.md](EXTERNAL_VALIDATION_AI_NATIVE_DISCOVERY_REPORT.md)** | Focused discovery evidence for real AI-native MCP/plugin execution surfaces that are only partially covered today |
+| 17 | **[BETA_TO_1_0_ROADMAP.md](BETA_TO_1_0_ROADMAP.md)** | Большой post-`v0.1` roadmap: precision hardening, beta, structural growth, `1.0` gate |
 
 ### Research second
 

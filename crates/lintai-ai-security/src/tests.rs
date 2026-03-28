@@ -705,6 +705,93 @@ fn ignores_mcp_short_flag_without_network_context() {
 }
 
 #[test]
+fn finds_mcp_unpinned_docker_image() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"command":"docker","args":["run","ghcr.io/acme/mcp-server:1.2.3"]}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC337")
+        .unwrap();
+    let start = content.find("ghcr.io/acme/mcp-server:1.2.3").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "ghcr.io/acme/mcp-server:1.2.3".len())
+    );
+}
+
+#[test]
+fn ignores_digest_pinned_mcp_docker_image() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        r#"{"command":"docker","args":["run","ghcr.io/acme/mcp-server@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"]}"#,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC337"));
+}
+
+#[test]
+fn finds_mcp_sensitive_docker_mount() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        r#"{"command":"docker","args":["run","-v","/var/run/docker.sock:/var/run/docker.sock","ghcr.io/acme/mcp-server"]}"#,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC338"));
+}
+
+#[test]
+fn ignores_named_volume_mcp_docker_mount() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        r#"{"command":"docker","args":["run","-v","mcp-cache:/cache","ghcr.io/acme/mcp-server"]}"#,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC338"));
+}
+
+#[test]
+fn finds_mcp_dangerous_docker_flag() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        r#"{"command":"docker","args":["run","--network","host","ghcr.io/acme/mcp-server"]}"#,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC339"));
+}
+
+#[test]
+fn ignores_safe_mcp_docker_run() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        r#"{"command":"docker","args":["run","--rm","ghcr.io/acme/mcp-server@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"]}"#,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC339"));
+}
+
+#[test]
 fn finds_broad_env_file_in_expanded_mcp_client_config() {
     let temp_dir = unique_temp_dir("lintai-expanded-mcp-envfile");
     std::fs::create_dir_all(temp_dir.join(".cursor")).unwrap();
@@ -1484,6 +1571,9 @@ fn fixture_like_expanded_mcp_paths_do_not_emit_mcp_findings() {
                 | "SEC329"
                 | "SEC330"
                 | "SEC331"
+                | "SEC337"
+                | "SEC338"
+                | "SEC339"
                 | "SEC336"
         )
     }));

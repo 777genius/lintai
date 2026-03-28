@@ -29,6 +29,9 @@ const GITHUB_ACTIONS_EXTENSION_SHORTLIST_PATH: &str =
     "validation/external-repos-github-actions/repo-shortlist.toml";
 const GITHUB_ACTIONS_EXTENSION_LEDGER_PATH: &str =
     "validation/external-repos-github-actions/ledger.toml";
+const AI_NATIVE_DISCOVERY_SHORTLIST_PATH: &str =
+    "validation/external-repos-ai-native/repo-shortlist.toml";
+const AI_NATIVE_DISCOVERY_LEDGER_PATH: &str = "validation/external-repos-ai-native/ledger.toml";
 const FIXTURE_PATH_SEGMENTS: &[&str] = &[
     "test", "tests", "testdata", "fixture", "fixtures", "example", "examples", "sample", "samples",
 ];
@@ -49,6 +52,7 @@ pub(crate) enum ValidationPackage {
     ToolJsonExtension,
     ServerJsonExtension,
     GithubActionsExtension,
+    AiNativeDiscovery,
 }
 
 impl ValidationPackage {
@@ -58,6 +62,7 @@ impl ValidationPackage {
             "tool-json-extension" => Ok(Self::ToolJsonExtension),
             "server-json-extension" => Ok(Self::ServerJsonExtension),
             "github-actions-extension" => Ok(Self::GithubActionsExtension),
+            "ai-native-discovery" => Ok(Self::AiNativeDiscovery),
             _ => Err(format!("unknown external validation package `{value}`")),
         }
     }
@@ -68,6 +73,7 @@ impl ValidationPackage {
             Self::ToolJsonExtension => TOOL_JSON_EXTENSION_SHORTLIST_PATH,
             Self::ServerJsonExtension => SERVER_JSON_EXTENSION_SHORTLIST_PATH,
             Self::GithubActionsExtension => GITHUB_ACTIONS_EXTENSION_SHORTLIST_PATH,
+            Self::AiNativeDiscovery => AI_NATIVE_DISCOVERY_SHORTLIST_PATH,
         }
     }
 
@@ -77,6 +83,7 @@ impl ValidationPackage {
             Self::ToolJsonExtension => TOOL_JSON_EXTENSION_LEDGER_PATH,
             Self::ServerJsonExtension => SERVER_JSON_EXTENSION_LEDGER_PATH,
             Self::GithubActionsExtension => GITHUB_ACTIONS_EXTENSION_LEDGER_PATH,
+            Self::AiNativeDiscovery => AI_NATIVE_DISCOVERY_LEDGER_PATH,
         }
     }
 
@@ -86,6 +93,7 @@ impl ValidationPackage {
             Self::ToolJsonExtension => Some("archive/wave3-ledger.toml"),
             Self::ServerJsonExtension => Some("archive/wave1-ledger.toml"),
             Self::GithubActionsExtension => None,
+            Self::AiNativeDiscovery => None,
         }
     }
 
@@ -101,6 +109,9 @@ impl ValidationPackage {
             Self::GithubActionsExtension => {
                 "target/external-validation/github-actions-extension/candidate-ledger.toml"
             }
+            Self::AiNativeDiscovery => {
+                "target/external-validation/ai-native-discovery/candidate-ledger.toml"
+            }
         }
     }
 
@@ -112,6 +123,7 @@ impl ValidationPackage {
             Self::GithubActionsExtension => {
                 "target/external-validation/github-actions-extension/raw"
             }
+            Self::AiNativeDiscovery => "target/external-validation/ai-native-discovery/raw",
         }
     }
     fn default_wave(self) -> u32 {
@@ -120,6 +132,7 @@ impl ValidationPackage {
             Self::ToolJsonExtension => 4,
             Self::ServerJsonExtension => 2,
             Self::GithubActionsExtension => 1,
+            Self::AiNativeDiscovery => 1,
         }
     }
 }
@@ -406,6 +419,11 @@ pub(crate) fn render_report(options: RenderReportOptions) -> Result<String, Stri
             let current = load_ledger(&options.workspace_root.join(options.package.ledger_path()))?;
             Ok(render_github_actions_extension_report(&shortlist, &current))
         }
+        ValidationPackage::AiNativeDiscovery => {
+            let shortlist = load_shortlist(&options.workspace_root, options.package)?;
+            let current = load_ledger(&options.workspace_root.join(options.package.ledger_path()))?;
+            Ok(render_ai_native_discovery_report(&shortlist, &current))
+        }
     }
 }
 
@@ -438,10 +456,11 @@ fn render_report_from_ledgers(
         current,
         &[
             "SEC301", "SEC302", "SEC303", "SEC304", "SEC305", "SEC306", "SEC307", "SEC308",
-            "SEC309", "SEC310", "SEC329", "SEC330", "SEC331",
+            "SEC309", "SEC310", "SEC329", "SEC330", "SEC331", "SEC337", "SEC338", "SEC339",
         ],
     );
     let env_file_hits = rule_count(current, &["SEC336"]);
+    let docker_rule_hits = rule_count(current, &["SEC337", "SEC338", "SEC339"]);
 
     let datadog_status = phase_target_status(
         baseline,
@@ -543,10 +562,18 @@ fn render_report_from_ledgers(
         expanded_surface_counts.claude_mcp
     ));
     output.push_str(&format!(
-        "- MCP findings from expanded client-config coverage (`SEC301`-`SEC331`): `{}`\n",
+        "- repos with Docker-based MCP launch configs: `{}`\n",
+        expanded_surface_counts.docker_mcp_launch
+    ));
+    output.push_str(&format!(
+        "- MCP findings from expanded client-config coverage (`SEC301`-`SEC331`, `SEC337`-`SEC339`): `{}`\n",
         mcp_rule_hits
     ));
     output.push_str(&format!("- findings from `SEC336`: `{}`\n", env_file_hits));
+    output.push_str(&format!(
+        "- findings from `SEC337`-`SEC339`: `{}`\n",
+        docker_rule_hits
+    ));
     output.push_str(&format!(
         "- repos with `tool_descriptor_json`: `{}`\n",
         expanded_surface_counts.tool_descriptor_json
@@ -559,9 +586,18 @@ fn render_report_from_ledgers(
         "- repos where new MCP client-config variants existed only under fixture-like paths: `{}`\n",
         expanded_surface_counts.fixture_only_client_variants
     ));
+    output.push_str(&format!(
+        "- repos where Docker-based MCP launch existed only under fixture-like client-config variants: `{}`\n",
+        expanded_surface_counts.fixture_only_docker_client_variants
+    ));
     if env_file_hits == 0 && mcp_rule_hits == 0 {
         output.push_str(
             "- expanded MCP client-config coverage produced no external MCP hits on the canonical cohort yet\n",
+        );
+    }
+    if docker_rule_hits == 0 {
+        output.push_str(
+            "- no external hits were produced yet from Docker-based MCP launch hardening on the canonical cohort\n",
         );
     }
     if tool_rule_hits == 0 {
@@ -1145,6 +1181,199 @@ fn render_github_actions_extension_report(
     output
 }
 
+fn render_ai_native_discovery_report(
+    shortlist: &RepoShortlist,
+    ledger: &ExternalValidationLedger,
+) -> String {
+    const AI_NATIVE_RULE_CODES: &[&str] = &[
+        "SEC301", "SEC302", "SEC303", "SEC304", "SEC305", "SEC309", "SEC310", "SEC329", "SEC330",
+        "SEC331", "SEC336", "SEC337", "SEC338", "SEC339",
+    ];
+    let counts = aggregate_counts(ledger);
+    let subtype_counts = shortlist
+        .repos
+        .iter()
+        .fold(BTreeMap::new(), |mut counts, repo| {
+            *counts.entry(repo.subtype.as_str()).or_insert(0usize) += 1;
+            counts
+        });
+    let coverage = ai_native_coverage_summary(shortlist);
+    let runtime_issue_repos = repos_with_runtime_issues(ledger, shortlist);
+    let ai_native_rule_hits = rule_count(ledger, AI_NATIVE_RULE_CODES);
+
+    let mut output = String::new();
+    output.push_str("# External Validation AI-Native Discovery Report\n\n");
+    output.push_str("> Wave 1 discovery report for real AI-native execution surfaces that are only partially covered by the current shipped detector.\n");
+    output.push_str("> Source of truth lives in [validation/external-repos-ai-native/repo-shortlist.toml](../validation/external-repos-ai-native/repo-shortlist.toml) and [validation/external-repos-ai-native/ledger.toml](../validation/external-repos-ai-native/ledger.toml).\n\n");
+
+    output.push_str("## Cohort Composition\n\n");
+    output.push_str(&format!("- `{}` repos evaluated\n", shortlist.repos.len()));
+    output.push_str(&format!(
+        "- `{}` `mcp_docker` repos\n",
+        subtype_counts.get("mcp_docker").copied().unwrap_or(0)
+    ));
+    output.push_str(&format!(
+        "- `{}` `claude_settings_command` repos\n",
+        subtype_counts
+            .get("claude_settings_command")
+            .copied()
+            .unwrap_or(0)
+    ));
+    output.push_str(&format!(
+        "- `{}` `plugin_execution_reference` repos\n\n",
+        subtype_counts
+            .get("plugin_execution_reference")
+            .copied()
+            .unwrap_or(0)
+    ));
+
+    output.push_str("## Admission Results\n\n");
+    for repo in &shortlist.repos {
+        output.push_str(&format!(
+            "- `{}` via {}. {}\n",
+            repo.repo,
+            format_rule_codes(&repo.admission_paths),
+            repo.rationale
+        ));
+    }
+    output.push('\n');
+
+    output.push_str("## Coverage Status\n\n");
+    output.push_str(&format!(
+        "- `{}` total admitted paths\n",
+        coverage.total_admission_paths
+    ));
+    output.push_str(&format!(
+        "- `{}` admitted paths are currently covered by shipped detector kinds\n",
+        coverage.covered_admission_paths
+    ));
+    output.push_str(&format!(
+        "- `{}` admitted paths are discovery-only and not directly scanned by current detector kinds\n",
+        coverage.discovery_only_admission_paths
+    ));
+    output.push_str(&format!(
+        "- `{}` repos have at least one currently covered admission path\n",
+        coverage.covered_repos.len()
+    ));
+    output.push_str(&format!(
+        "- `{}` repos are discovery-only under current detector coverage\n\n",
+        coverage.discovery_only_repos.len()
+    ));
+    if !coverage.covered_repos.is_empty() {
+        output.push_str("Currently covered admission paths:\n\n");
+        for (repo, paths) in &coverage.covered_repos {
+            output.push_str(&format!("- `{repo}`: {}\n", format_rule_codes(paths)));
+        }
+        output.push('\n');
+    }
+    if !coverage.discovery_only_repos.is_empty() {
+        output.push_str("Discovery-only admission paths:\n\n");
+        for (repo, paths) in &coverage.discovery_only_repos {
+            output.push_str(&format!("- `{repo}`: {}\n", format_rule_codes(paths)));
+        }
+        output.push('\n');
+    }
+
+    output.push_str("## Overall Counts\n\n");
+    output.push_str(&format!(
+        "- `{}` stable findings across whole-repo scans\n",
+        counts.stable_findings
+    ));
+    output.push_str(&format!(
+        "- `{}` preview findings across whole-repo scans\n",
+        counts.preview_findings
+    ));
+    output.push_str(&format!(
+        "- `{}` runtime parser errors\n",
+        counts.runtime_errors
+    ));
+    output.push_str(&format!("- `{}` diagnostics\n\n", counts.diagnostics));
+
+    output.push_str("## Stable Hits\n\n");
+    output.push_str(&format!(
+        "- current AI-native MCP rule families produced `{}` repo-level rule-code hits in this discovery wave\n",
+        ai_native_rule_hits
+    ));
+    if ai_native_rule_hits == 0 {
+        output.push_str(
+            "- no new current-rule hits were observed on the admitted AI-native execution paths in this wave\n\n",
+        );
+    } else {
+        output.push_str(
+            "- some repo-level hits were observed, but current scan output still needs path-attribution work before claiming they came from discovery-only admission paths rather than sibling scanned surfaces\n\n",
+        );
+    }
+
+    output.push_str("## Preview Hits\n\n");
+    if counts.preview_findings == 0 {
+        output.push_str("- no preview hits were observed in this discovery wave\n\n");
+    } else {
+        output.push_str(&format!(
+            "- `{}` preview hit(s) were observed at repo scope; these should not yet be interpreted as proof on discovery-only admission paths\n\n",
+            counts.preview_findings
+        ));
+    }
+
+    output.push_str("## Runtime / Diagnostic Notes\n\n");
+    if runtime_issue_repos.is_empty() {
+        output.push_str(
+            "- no runtime parser errors or diagnostics were emitted in this discovery wave\n\n",
+        );
+    } else {
+        for (repo, runtime_count, diagnostic_count, labels) in runtime_issue_repos {
+            output.push_str(&format!(
+                "- `{repo}`: `{}` runtime parser errors, `{}` diagnostics ({})\n",
+                runtime_count,
+                diagnostic_count,
+                labels.join(", ")
+            ));
+        }
+        output.push('\n');
+    }
+
+    output.push_str("## Recommended Next Step\n\n");
+    output.push_str("Use this package as discovery evidence for the next detector expansion. The immediate product work should target currently uncovered `.claude/settings.json`, plugin-root `hooks.json` / `agents/*.md`, and committed Docker-oriented client config files before widening non-AI-native surfaces.\n");
+
+    output
+}
+
+#[derive(Clone, Debug, Default)]
+struct AiNativeCoverageSummary {
+    total_admission_paths: usize,
+    covered_admission_paths: usize,
+    discovery_only_admission_paths: usize,
+    covered_repos: Vec<(String, Vec<String>)>,
+    discovery_only_repos: Vec<(String, Vec<String>)>,
+}
+
+fn ai_native_coverage_summary(shortlist: &RepoShortlist) -> AiNativeCoverageSummary {
+    let detector = FileTypeDetector::default();
+    let mut summary = AiNativeCoverageSummary::default();
+    for repo in &shortlist.repos {
+        let mut covered = Vec::new();
+        let mut discovery_only = Vec::new();
+        for path in &repo.admission_paths {
+            summary.total_admission_paths += 1;
+            if detector.detect(Path::new(path), path).is_some() {
+                summary.covered_admission_paths += 1;
+                covered.push(path.clone());
+            } else {
+                summary.discovery_only_admission_paths += 1;
+                discovery_only.push(path.clone());
+            }
+        }
+        if !covered.is_empty() {
+            summary.covered_repos.push((repo.repo.clone(), covered));
+        }
+        if !discovery_only.is_empty() {
+            summary
+                .discovery_only_repos
+                .push((repo.repo.clone(), discovery_only));
+        }
+    }
+    summary
+}
+
 fn preview_signal_repos(ledger: &ExternalValidationLedger) -> Vec<(String, usize, Vec<String>)> {
     ledger
         .evaluations
@@ -1228,6 +1457,8 @@ struct ExpandedSurfaceCounts {
     kiro_mcp: usize,
     claude_mcp: usize,
     fixture_only_client_variants: usize,
+    docker_mcp_launch: usize,
+    fixture_only_docker_client_variants: usize,
     tool_descriptor_json: usize,
 }
 
@@ -1258,6 +1489,14 @@ fn expanded_surface_counts(ledger: &ExternalValidationLedger) -> ExpandedSurface
         fixture_only_client_variants: count_surface_presence(
             ledger,
             "expanded_mcp_client_variant_fixture_only",
+        ),
+        docker_mcp_launch: count_any_surface_presence(
+            ledger,
+            &["docker_mcp_launch", "docker_mcp_launch (fixture-like)"],
+        ),
+        fixture_only_docker_client_variants: count_surface_presence(
+            ledger,
+            "docker_mcp_launch_fixture_only",
         ),
         tool_descriptor_json: count_surface_presence(ledger, "tool_descriptor_json"),
     }
@@ -1614,6 +1853,12 @@ fn inventory_surfaces(repo_root: &Path) -> Result<InventoryArtifact, String> {
         if normalized.contains(".claude/mcp/") && normalized.ends_with(".json") {
             surfaces.insert(".claude/mcp/*.json".to_owned());
         }
+        if is_mcp_config_path(&normalized)
+            && let Ok(text) = std::fs::read_to_string(entry.path())
+            && contains_semantic_docker_mcp_launch(&text)
+        {
+            insert_docker_mcp_launch_surface(&mut surfaces, &normalized);
+        }
         if normalized.ends_with("server.json") {
             surfaces.insert("server.json".to_owned());
         }
@@ -1669,6 +1914,36 @@ fn insert_expanded_mcp_variant_surface(
     }
 }
 
+fn insert_docker_mcp_launch_surface(surfaces: &mut BTreeSet<String>, normalized_path: &str) {
+    if is_expanded_mcp_client_variant_path(normalized_path)
+        && normalized_path
+            .split('/')
+            .any(|segment| FIXTURE_PATH_SEGMENTS.contains(&segment.to_ascii_lowercase().as_str()))
+    {
+        surfaces.insert("docker_mcp_launch (fixture-like)".to_owned());
+        surfaces.insert("docker_mcp_launch_fixture_only".to_owned());
+    } else {
+        surfaces.insert("docker_mcp_launch".to_owned());
+    }
+}
+
+fn is_mcp_config_path(normalized_path: &str) -> bool {
+    normalized_path == "mcp.json"
+        || normalized_path.ends_with(".mcp.json")
+        || normalized_path.ends_with(".cursor/mcp.json")
+        || normalized_path.ends_with(".vscode/mcp.json")
+        || normalized_path.ends_with(".roo/mcp.json")
+        || normalized_path.ends_with(".kiro/settings/mcp.json")
+        || (normalized_path.contains(".claude/mcp/") && normalized_path.ends_with(".json"))
+}
+
+fn is_expanded_mcp_client_variant_path(normalized_path: &str) -> bool {
+    normalized_path.ends_with(".cursor/mcp.json")
+        || normalized_path.ends_with(".vscode/mcp.json")
+        || normalized_path.ends_with(".roo/mcp.json")
+        || normalized_path.ends_with(".kiro/settings/mcp.json")
+}
+
 fn verify_repo_admission(
     package: ValidationPackage,
     repo: &ShortlistRepo,
@@ -1679,6 +1954,7 @@ fn verify_repo_admission(
         ValidationPackage::ToolJsonExtension => admitted_tool_descriptor_paths(repo_root)?,
         ValidationPackage::ServerJsonExtension => admitted_server_json_paths(repo_root)?,
         ValidationPackage::GithubActionsExtension => admitted_github_workflow_paths(repo_root)?,
+        ValidationPackage::AiNativeDiscovery => admitted_ai_native_paths(repo_root)?,
     };
 
     if repo.admission_paths.is_empty() {
@@ -1860,12 +2136,83 @@ fn admitted_github_workflow_paths(repo_root: &Path) -> Result<Vec<String>, Strin
     Ok(admitted)
 }
 
+fn admitted_ai_native_paths(repo_root: &Path) -> Result<Vec<String>, String> {
+    let mut admitted = Vec::new();
+    let mut builder = WalkBuilder::new(repo_root);
+    builder
+        .hidden(false)
+        .git_ignore(false)
+        .git_exclude(false)
+        .parents(false);
+    for result in builder.build() {
+        let entry = result.map_err(|error| format!("ai-native admission walk failed: {error}"))?;
+        if !entry
+            .file_type()
+            .is_some_and(|file_type| file_type.is_file())
+        {
+            continue;
+        }
+        let relative = entry
+            .path()
+            .strip_prefix(repo_root)
+            .map_err(|error| format!("failed to relativize ai-native path: {error}"))?;
+        let normalized = normalize_rel_path(relative);
+        if is_generic_validation_excluded_path(&normalized) {
+            continue;
+        }
+        if is_ai_native_docker_config_path(&normalized) {
+            let text = fs::read_to_string(entry.path()).map_err(|error| {
+                format!(
+                    "failed to read candidate AI-native docker config {}: {error}",
+                    entry.path().display()
+                )
+            })?;
+            if contains_semantic_docker_mcp_launch(&text) {
+                admitted.push(normalized);
+            }
+            continue;
+        }
+        if is_ai_native_claude_settings_path(&normalized) {
+            let text = fs::read_to_string(entry.path()).map_err(|error| {
+                format!(
+                    "failed to read candidate Claude settings {}: {error}",
+                    entry.path().display()
+                )
+            })?;
+            if contains_semantic_claude_command_settings(&text) {
+                admitted.push(normalized);
+            }
+            continue;
+        }
+        if normalized.ends_with(".cursor-plugin/plugin.json") {
+            let text = fs::read_to_string(entry.path()).map_err(|error| {
+                format!(
+                    "failed to read candidate plugin manifest {}: {error}",
+                    entry.path().display()
+                )
+            })?;
+            admitted.extend(admitted_plugin_execution_targets(
+                repo_root, relative, &text,
+            )?);
+        }
+    }
+    admitted.sort();
+    admitted.dedup();
+    if admitted.is_empty() {
+        return Err(
+            "no AI-native docker or plugin execution paths passed discovery admission".to_owned(),
+        );
+    }
+    Ok(admitted)
+}
+
 fn package_label(package: ValidationPackage) -> &'static str {
     match package {
         ValidationPackage::Canonical => "canonical",
         ValidationPackage::ToolJsonExtension => "tool-json extension",
         ValidationPackage::ServerJsonExtension => "server-json extension",
         ValidationPackage::GithubActionsExtension => "github-actions extension",
+        ValidationPackage::AiNativeDiscovery => "ai-native discovery",
     }
 }
 
@@ -1887,11 +2234,56 @@ fn is_tool_json_excluded_path(normalized_path: &str) -> bool {
     is_generic_validation_excluded_path(normalized_path)
 }
 
+fn is_ai_native_docker_config_path(normalized_path: &str) -> bool {
+    normalized_path.ends_with("gemini-extension.json")
+        || normalized_path.ends_with("gemini.settings.json")
+        || normalized_path.ends_with("vscode.settings.json")
+}
+
+fn is_ai_native_claude_settings_path(normalized_path: &str) -> bool {
+    normalized_path == ".claude/settings.json" || normalized_path == "claude/settings.json"
+}
+
 fn contains_semantic_tool_descriptor_json(text: &str) -> bool {
     let Ok(value) = serde_json::from_str::<Value>(text) else {
         return false;
     };
     json_descendants(&value).any(is_tool_descriptor_shape)
+}
+
+fn contains_semantic_docker_mcp_launch(text: &str) -> bool {
+    let Ok(value) = serde_json::from_str::<Value>(text) else {
+        return false;
+    };
+    json_descendants(&value).any(|candidate| {
+        let Some(object) = candidate.as_object() else {
+            return false;
+        };
+        let Some(command) = object.get("command").and_then(Value::as_str) else {
+            return false;
+        };
+        if !command.eq_ignore_ascii_case("docker") {
+            return false;
+        }
+        object
+            .get("args")
+            .and_then(Value::as_array)
+            .and_then(|args| args.first())
+            .and_then(Value::as_str)
+            .is_some_and(|arg| arg.eq_ignore_ascii_case("run"))
+    })
+}
+
+fn contains_semantic_mcp_command_config(text: &str) -> bool {
+    let Ok(value) = serde_json::from_str::<Value>(text) else {
+        return false;
+    };
+    json_descendants(&value).any(|candidate| {
+        let Some(object) = candidate.as_object() else {
+            return false;
+        };
+        object.get("command").and_then(Value::as_str).is_some()
+    })
 }
 
 fn contains_semantic_server_json(text: &str) -> bool {
@@ -1905,6 +2297,137 @@ fn contains_semantic_server_json(text: &str) -> bool {
         && object.get("version").and_then(Value::as_str).is_some()
         && (object.get("remotes").and_then(Value::as_array).is_some()
             || object.get("packages").and_then(Value::as_array).is_some())
+}
+
+fn contains_semantic_claude_command_settings(text: &str) -> bool {
+    let Ok(value) = serde_json::from_str::<Value>(text) else {
+        return false;
+    };
+    json_descendants(&value).any(|candidate| {
+        let Some(object) = candidate.as_object() else {
+            return false;
+        };
+        let Some(kind) = object.get("type").and_then(Value::as_str) else {
+            return false;
+        };
+        kind.eq_ignore_ascii_case("command")
+            && object.get("command").and_then(Value::as_str).is_some()
+    })
+}
+
+fn contains_semantic_plugin_hook_commands(text: &str) -> bool {
+    let Ok(value) = serde_json::from_str::<Value>(text) else {
+        return false;
+    };
+    let Some(object) = value.as_object() else {
+        return false;
+    };
+    object
+        .get("hooks")
+        .and_then(Value::as_object)
+        .is_some_and(|hooks| {
+            hooks.values().any(|entries| {
+                entries.as_array().is_some_and(|entries| {
+                    entries.iter().any(|entry| {
+                        entry
+                            .as_object()
+                            .and_then(|entry| entry.get("command"))
+                            .and_then(Value::as_str)
+                            .is_some()
+                    })
+                })
+            })
+        })
+}
+
+fn admitted_plugin_execution_targets(
+    repo_root: &Path,
+    manifest_relative: &Path,
+    text: &str,
+) -> Result<Vec<String>, String> {
+    let mut admitted = Vec::new();
+    let Ok(value) = serde_json::from_str::<Value>(text) else {
+        return Ok(admitted);
+    };
+    let Some(object) = value.as_object() else {
+        return Ok(admitted);
+    };
+    let Some(dot_cursor_plugin_dir) = manifest_relative.parent() else {
+        return Ok(admitted);
+    };
+    let Some(plugin_root_relative) = dot_cursor_plugin_dir.parent() else {
+        return Ok(admitted);
+    };
+    let plugin_root_fs = repo_root.join(plugin_root_relative);
+
+    for key in ["hooks", "agents", "commands", "mcpServers"] {
+        let Some(target) = object.get(key).and_then(Value::as_str) else {
+            continue;
+        };
+        let resolved = plugin_root_fs.join(target);
+        if !resolved.exists() {
+            continue;
+        }
+        if resolved.is_file() {
+            let normalized = normalize_rel_path(
+                resolved
+                    .strip_prefix(repo_root)
+                    .map_err(|error| format!("failed to relativize plugin target: {error}"))?,
+            );
+            if is_generic_validation_excluded_path(&normalized) {
+                continue;
+            }
+            let file_text = fs::read_to_string(&resolved).map_err(|error| {
+                format!(
+                    "failed to read plugin execution target {}: {error}",
+                    resolved.display()
+                )
+            })?;
+            let semantic = match key {
+                "hooks" => contains_semantic_plugin_hook_commands(&file_text),
+                "mcpServers" => contains_semantic_mcp_command_config(&file_text),
+                _ => false,
+            };
+            if semantic {
+                admitted.push(normalized);
+            }
+            continue;
+        }
+        if resolved.is_dir() && matches!(key, "agents" | "commands") {
+            let mut builder = WalkBuilder::new(&resolved);
+            builder
+                .hidden(false)
+                .git_ignore(false)
+                .git_exclude(false)
+                .parents(false);
+            for result in builder.build() {
+                let entry = result.map_err(|error| {
+                    format!(
+                        "plugin target walk failed for {}: {error}",
+                        resolved.display()
+                    )
+                })?;
+                if !entry
+                    .file_type()
+                    .is_some_and(|file_type| file_type.is_file())
+                {
+                    continue;
+                }
+                if entry.path().extension().and_then(|ext| ext.to_str()) != Some("md") {
+                    continue;
+                }
+                let normalized =
+                    normalize_rel_path(entry.path().strip_prefix(repo_root).map_err(|error| {
+                        format!("failed to relativize plugin markdown target: {error}")
+                    })?);
+                if !is_generic_validation_excluded_path(&normalized) {
+                    admitted.push(normalized);
+                }
+            }
+        }
+    }
+
+    Ok(admitted)
 }
 
 fn contains_semantic_github_workflow_yaml(text: &str) -> bool {
@@ -2422,10 +2945,15 @@ rationale = "demo"
         assert!(markdown.contains("- repos with `.roo/mcp.json`: `0`"));
         assert!(markdown.contains("- repos with `.kiro/settings/mcp.json`: `0`"));
         assert!(markdown.contains("- repos with `.claude/mcp/*.json`: `1`"));
+        assert!(markdown.contains("- repos with Docker-based MCP launch configs: `0`"));
         assert!(markdown.contains("- findings from `SEC336`: `0`"));
+        assert!(markdown.contains("- findings from `SEC337`-`SEC339`: `0`"));
         assert!(markdown.contains("- repos with `tool_descriptor_json`: `1`"));
         assert!(markdown.contains(
             "- repos where new MCP client-config variants existed only under fixture-like paths: `0`"
+        ));
+        assert!(markdown.contains(
+            "- repos where Docker-based MCP launch existed only under fixture-like client-config variants: `0`"
         ));
         assert!(markdown.contains("## Delta From Previous Wave"));
         assert!(markdown.contains("`datadog-labs/cursor-plugin`: `improved`"));
@@ -2466,6 +2994,27 @@ rationale = "demo"
             parse_package_flag(&["--package=github-actions-extension".to_owned()]).unwrap(),
             ValidationPackage::GithubActionsExtension
         );
+    }
+
+    #[test]
+    fn package_flag_parses_ai_native_discovery() {
+        assert_eq!(
+            parse_package_flag(&["--package=ai-native-discovery".to_owned()]).unwrap(),
+            ValidationPackage::AiNativeDiscovery
+        );
+    }
+
+    #[test]
+    fn semantic_docker_mcp_launch_requires_docker_run_shape() {
+        assert!(contains_semantic_docker_mcp_launch(
+            r#"{"servers":{"demo":{"command":"docker","args":["run","ghcr.io/acme/mcp-server"]}}}"#
+        ));
+        assert!(!contains_semantic_docker_mcp_launch(
+            r#"{"servers":{"demo":{"command":"docker","args":["pull","ghcr.io/acme/mcp-server"]}}}"#
+        ));
+        assert!(!contains_semantic_docker_mcp_launch(
+            r#"{"servers":{"demo":{"command":"node","args":["server.js"]}}}"#
+        ));
     }
 
     #[test]
@@ -2527,6 +3076,26 @@ rationale = "demo"
         ));
         assert!(!contains_semantic_server_json(
             r#"{"version":"1.0.0","packages":[{"name":"demo"}]}"#
+        ));
+    }
+
+    #[test]
+    fn semantic_claude_settings_require_command_hooks() {
+        assert!(contains_semantic_claude_command_settings(
+            r#"{"hooks":{"PreToolUse":[{"hooks":[{"type":"command","command":"./hook.sh"}]}]}}"#
+        ));
+        assert!(!contains_semantic_claude_command_settings(
+            r#"{"hooks":{"PreToolUse":[{"hooks":[{"type":"notification","message":"hi"}]}]}}"#
+        ));
+    }
+
+    #[test]
+    fn semantic_plugin_hooks_require_command_entries() {
+        assert!(contains_semantic_plugin_hook_commands(
+            r#"{"hooks":{"stop":[{"command":"./hooks/stop.sh"}]}}"#
+        ));
+        assert!(!contains_semantic_plugin_hook_commands(
+            r#"{"hooks":{"stop":[{"message":"no command"}]}}"#
         ));
     }
 
@@ -2735,5 +3304,60 @@ rationale = "demo"
         assert!(markdown.contains("`SEC325`"));
         assert!(markdown.contains("`SEC327`"));
         assert!(markdown.contains("`SEC328`"));
+    }
+
+    #[test]
+    fn ai_native_discovery_report_has_required_sections() {
+        let shortlist = RepoShortlist {
+            version: 1,
+            repos: vec![ShortlistRepo {
+                repo: "owner/ai-native".to_owned(),
+                url: "https://github.com/owner/ai-native".to_owned(),
+                pinned_ref: "abc123".to_owned(),
+                category: "ai_native".to_owned(),
+                subtype: "claude_settings_command".to_owned(),
+                status: "evaluated".to_owned(),
+                surfaces_present: vec![".claude/settings.json".to_owned()],
+                admission_paths: vec![".claude/settings.json".to_owned()],
+                rationale: "Committed Claude settings hooks.".to_owned(),
+            }],
+        };
+        let ledger = ExternalValidationLedger {
+            version: 1,
+            wave: 1,
+            baseline: None,
+            evaluations: vec![EvaluationEntry {
+                repo: "owner/ai-native".to_owned(),
+                url: "https://github.com/owner/ai-native".to_owned(),
+                pinned_ref: "abc123".to_owned(),
+                category: "ai_native".to_owned(),
+                subtype: "claude_settings_command".to_owned(),
+                status: "evaluated".to_owned(),
+                surfaces_present: vec!["SKILL.md".to_owned()],
+                stable_findings: 0,
+                preview_findings: 0,
+                stable_rule_codes: Vec::new(),
+                preview_rule_codes: Vec::new(),
+                repo_verdict: "strong_fit".to_owned(),
+                stable_precision_notes: String::new(),
+                preview_signal_notes: String::new(),
+                false_positive_notes: Vec::new(),
+                possible_false_negative_notes: Vec::new(),
+                follow_up_action: "no_action".to_owned(),
+                runtime_errors: Vec::new(),
+                diagnostics: Vec::new(),
+            }],
+        };
+
+        let markdown = render_ai_native_discovery_report(&shortlist, &ledger);
+        assert!(markdown.contains("## Cohort Composition"));
+        assert!(markdown.contains("## Admission Results"));
+        assert!(markdown.contains("## Coverage Status"));
+        assert!(markdown.contains("## Overall Counts"));
+        assert!(markdown.contains("## Stable Hits"));
+        assert!(markdown.contains("## Preview Hits"));
+        assert!(markdown.contains("## Runtime / Diagnostic Notes"));
+        assert!(markdown.contains("## Recommended Next Step"));
+        assert!(markdown.contains("discovery-only"));
     }
 }

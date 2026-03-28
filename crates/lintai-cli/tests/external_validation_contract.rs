@@ -29,6 +29,12 @@ fn parse_toml(path: &str) -> toml::Value {
         "github_actions_ledger" => {
             include_str!("../../../validation/external-repos-github-actions/ledger.toml")
         }
+        "ai_native_shortlist" => {
+            include_str!("../../../validation/external-repos-ai-native/repo-shortlist.toml")
+        }
+        "ai_native_ledger" => {
+            include_str!("../../../validation/external-repos-ai-native/ledger.toml")
+        }
         _ => unreachable!(),
     };
     text.parse::<toml::Value>()
@@ -135,6 +141,9 @@ fn external_validation_docs_are_linked_from_index() {
     assert!(text.contains(
         "[EXTERNAL_VALIDATION_GITHUB_ACTIONS_REPORT.md](EXTERNAL_VALIDATION_GITHUB_ACTIONS_REPORT.md)"
     ));
+    assert!(text.contains(
+        "[EXTERNAL_VALIDATION_AI_NATIVE_DISCOVERY_REPORT.md](EXTERNAL_VALIDATION_AI_NATIVE_DISCOVERY_REPORT.md)"
+    ));
 }
 
 #[test]
@@ -189,6 +198,54 @@ fn external_validation_wave_markers_are_present() {
         Some("archive/wave1-ledger.toml")
     );
     assert_eq!(archive["wave"].as_integer(), Some(1));
+}
+
+#[test]
+fn ai_native_discovery_shortlist_has_expected_shape() {
+    let value = parse_toml("ai_native_shortlist");
+    let repos = value["repos"].as_array().expect("repos array");
+    let cohort = value["cohort"].as_table().expect("cohort table");
+
+    assert_eq!(value["version"].as_integer(), Some(1));
+    assert_eq!(cohort["total"].as_integer(), Some(8));
+    assert_eq!(repos.len(), 8);
+
+    let valid_subtypes = BTreeSet::from([
+        "mcp_docker",
+        "claude_settings_command",
+        "plugin_execution_reference",
+    ]);
+
+    for repo in repos {
+        assert_eq!(repo["category"].as_str(), Some("ai_native"));
+        assert!(valid_subtypes.contains(repo["subtype"].as_str().unwrap()));
+        assert_eq!(repo["status"].as_str(), Some("evaluated"));
+        assert!(
+            !repo["admission_paths"].as_array().unwrap().is_empty(),
+            "ai-native discovery repos must record at least one admitted path"
+        );
+    }
+}
+
+#[test]
+fn ai_native_discovery_ledger_starts_at_wave_one() {
+    let ledger = parse_toml("ai_native_ledger");
+    assert_eq!(ledger["wave"].as_integer(), Some(1));
+    assert!(ledger["evaluations"].as_array().is_some());
+}
+
+#[test]
+fn ai_native_discovery_report_has_required_sections() {
+    let report = include_str!("../../../docs/EXTERNAL_VALIDATION_AI_NATIVE_DISCOVERY_REPORT.md");
+
+    assert!(report.contains("## Cohort Composition"));
+    assert!(report.contains("## Admission Results"));
+    assert!(report.contains("## Coverage Status"));
+    assert!(report.contains("## Overall Counts"));
+    assert!(report.contains("## Stable Hits"));
+    assert!(report.contains("## Preview Hits"));
+    assert!(report.contains("## Runtime / Diagnostic Notes"));
+    assert!(report.contains("## Recommended Next Step"));
 }
 
 #[test]

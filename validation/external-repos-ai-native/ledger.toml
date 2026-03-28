@@ -1,0 +1,221 @@
+version = 1
+wave = 1
+
+[[evaluations]]
+repo = "hashicorp/terraform-mcp-server"
+url = "https://github.com/hashicorp/terraform-mcp-server"
+pinned_ref = "617ba91b86a87e07cad2ca5374ee4149ce75ebb4"
+category = "ai_native"
+subtype = "mcp_docker"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "server.json",
+]
+stable_findings = 5
+preview_findings = 1
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = ["SEC328"]
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "SonarSource/sonarqube-mcp-server"
+url = "https://github.com/SonarSource/sonarqube-mcp-server"
+pinned_ref = "ae3dbfa0330e430c10d28760b56136da2b15e653"
+category = "ai_native"
+subtype = "mcp_docker"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "server.json",
+]
+stable_findings = 12
+preview_findings = 10
+stable_rule_codes = [
+    "SEC309",
+    "SEC324",
+    "SEC337",
+]
+preview_rule_codes = ["SEC328"]
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "airmcp-com/mcp-standards"
+url = "https://github.com/airmcp-com/mcp-standards"
+pinned_ref = "5904a55c01f45de48ffacd59d768a85abdd7464a"
+category = "ai_native"
+subtype = "claude_settings_command"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "CLAUDE.md",
+    "SKILL.md",
+]
+stable_findings = 2
+preview_findings = 2
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = ["SEC328"]
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "blockscout/mcp-server"
+url = "https://github.com/blockscout/mcp-server"
+pinned_ref = "00cc9302d74faa3c880fdf0c1650e7dabecd4ad2"
+category = "ai_native"
+subtype = "claude_settings_command"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    ".mdc",
+    "SKILL.md",
+    "server.json",
+]
+stable_findings = 5
+preview_findings = 4
+stable_rule_codes = [
+    "SEC324",
+    "SEC327",
+]
+preview_rule_codes = ["SEC328"]
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "centminmod/my-claude-code-setup"
+url = "https://github.com/centminmod/my-claude-code-setup"
+pinned_ref = "204c03f7984180be35c2e52fa9703475cdb2f118"
+category = "ai_native"
+subtype = "claude_settings_command"
+status = "evaluated"
+surfaces_present = [
+    ".claude/mcp/*.json",
+    "CLAUDE.md",
+    "SKILL.md",
+    "tool_descriptor_json",
+]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "buildingopen/claude-setup"
+url = "https://github.com/buildingopen/claude-setup"
+pinned_ref = "69cc9c8fd0f81782cb90dc51c95dbcbb4d346d5c"
+category = "ai_native"
+subtype = "claude_settings_command"
+status = "evaluated"
+surfaces_present = [
+    ".mcp.json",
+    "CLAUDE.md",
+    "SKILL.md",
+]
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "cursor/plugins"
+url = "https://github.com/cursor/plugins"
+pinned_ref = "08c2bbe2ae8a022a21dc6c32faf611f14a6e8343"
+category = "ai_native"
+subtype = "plugin_execution_reference"
+status = "evaluated"
+surfaces_present = [
+    ".cursor-plugin/plugin.json",
+    ".github/workflows/*.yml",
+    ".mdc",
+    "SKILL.md",
+]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations.diagnostics]]
+path = "agent-compatibility/skills/check-agent-compatibility/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 56)"
+
+[[evaluations]]
+repo = "tldraw/tldraw"
+url = "https://github.com/tldraw/tldraw"
+pinned_ref = "a8785621b3271f55ab972cfac658b11a93cb252f"
+category = "ai_native"
+subtype = "claude_settings_command"
+status = "evaluated"
+surfaces_present = [
+    ".cursor-plugin/plugin.json",
+    ".github/workflows/*.yml",
+    ".mdc",
+    "CLAUDE.md",
+    "SKILL.md",
+    "server.json",
+]
+stable_findings = 14
+preview_findings = 7
+stable_rule_codes = [
+    "SEC324",
+    "SEC327",
+]
+preview_rule_codes = ["SEC328"]
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
