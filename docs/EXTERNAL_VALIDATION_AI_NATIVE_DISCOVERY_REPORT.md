@@ -24,16 +24,20 @@
 ## Coverage Status
 
 - `15` total admitted paths
-- `13` admitted paths are currently covered by shipped detector kinds
-- `2` admitted paths are discovery-only and not directly scanned by current detector kinds
-- `6` repos have at least one currently covered admission path
-- `2` repos are discovery-only under current detector coverage
+- `15` admitted paths are currently covered by shipped detector kinds
+- `0` admitted paths are discovery-only and not directly scanned by current detector kinds
+- `8` repos have at least one currently covered admission path
+- `0` repos are discovery-only under current detector coverage
 
 - `2` plugin-root hook admission paths are now covered
 - `6` plugin-root agent markdown admission paths are now covered
 
+- `2` Gemini-style MCP client admission paths are now covered
+
 Currently covered admission paths:
 
+- `hashicorp/terraform-mcp-server`: `gemini-extension.json`
+- `SonarSource/sonarqube-mcp-server`: `gemini-extension.json`
 - `airmcp-com/mcp-standards`: `.claude/settings.json`
 - `blockscout/mcp-server`: `.claude/settings.json`
 - `centminmod/my-claude-code-setup`: `.claude/settings.json`
@@ -41,22 +45,22 @@ Currently covered admission paths:
 - `cursor/plugins`: `agent-compatibility/agents/compatibility-scan-review.md`, `agent-compatibility/agents/startup-review.md`, `agent-compatibility/agents/validation-review.md`, `continual-learning/agents/agents-memory-updater.md`, `continual-learning/hooks/hooks.json`, `create-plugin/agents/plugin-architect.md`, `cursor-team-kit/agents/ci-watcher.md`, `ralph-loop/hooks/hooks.json`
 - `tldraw/tldraw`: `.claude/settings.json`
 
-Discovery-only admission paths:
-
-- `hashicorp/terraform-mcp-server`: `gemini-extension.json`
-- `SonarSource/sonarqube-mcp-server`: `gemini-extension.json`
+- `hashicorp/terraform-mcp-server` is now `covered` under shipped AI-native detector coverage
+- `SonarSource/sonarqube-mcp-server` is now `covered` under shipped AI-native detector coverage
 
 ## Overall Counts
 
-- `41` stable findings across whole-repo scans
+- `45` stable findings across whole-repo scans
 - `24` preview findings across whole-repo scans
 - `0` runtime parser errors
 - `1` diagnostics
 
 ## Stable Hits
 
-- current AI-native MCP rule families produced `5` repo-level rule-code hits in this discovery wave
+- current AI-native MCP rule families produced `7` repo-level rule-code hits in this discovery wave
 - repo-level AI-native rule hits were observed after the latest detector expansion. Treat these as repo-scope evidence first, then inspect path attribution before claiming they all came from newly covered admission paths.
+
+- `SonarSource/sonarqube-mcp-server`: `1` repo-level stable finding(s) via `SEC346`
 
 ## Preview Hits
 

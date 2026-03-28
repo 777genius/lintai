@@ -457,10 +457,11 @@ fn render_report_from_ledgers(
         &[
             "SEC301", "SEC302", "SEC303", "SEC304", "SEC305", "SEC306", "SEC307", "SEC308",
             "SEC309", "SEC310", "SEC329", "SEC330", "SEC331", "SEC337", "SEC338", "SEC339",
+            "SEC346",
         ],
     );
     let env_file_hits = rule_count(current, &["SEC336"]);
-    let docker_rule_hits = rule_count(current, &["SEC337", "SEC338", "SEC339"]);
+    let docker_rule_hits = rule_count(current, &["SEC337", "SEC338", "SEC339", "SEC346"]);
 
     let datadog_status = phase_target_status(
         baseline,
@@ -558,6 +559,22 @@ fn render_report_from_ledgers(
         expanded_surface_counts.kiro_mcp
     ));
     output.push_str(&format!(
+        "- repos with `gemini-extension.json`: `{}`\n",
+        expanded_surface_counts.gemini_extension
+    ));
+    output.push_str(&format!(
+        "- repos with `gemini.settings.json`: `{}`\n",
+        expanded_surface_counts.gemini_settings
+    ));
+    output.push_str(&format!(
+        "- repos with `.gemini/settings.json`: `{}`\n",
+        expanded_surface_counts.dot_gemini_settings
+    ));
+    output.push_str(&format!(
+        "- repos with `vscode.settings.json`: `{}`\n",
+        expanded_surface_counts.vscode_settings
+    ));
+    output.push_str(&format!(
         "- repos with `.claude/mcp/*.json`: `{}`\n",
         expanded_surface_counts.claude_mcp
     ));
@@ -566,12 +583,12 @@ fn render_report_from_ledgers(
         expanded_surface_counts.docker_mcp_launch
     ));
     output.push_str(&format!(
-        "- MCP findings from expanded client-config coverage (`SEC301`-`SEC331`, `SEC337`-`SEC339`): `{}`\n",
+        "- MCP findings from expanded client-config coverage (`SEC301`-`SEC331`, `SEC337`-`SEC339`, `SEC346`): `{}`\n",
         mcp_rule_hits
     ));
     output.push_str(&format!("- findings from `SEC336`: `{}`\n", env_file_hits));
     output.push_str(&format!(
-        "- findings from `SEC337`-`SEC339`: `{}`\n",
+        "- findings from `SEC337`-`SEC339`, `SEC346`: `{}`\n",
         docker_rule_hits
     ));
     output.push_str(&format!(
@@ -1188,7 +1205,7 @@ fn render_ai_native_discovery_report(
     const AI_NATIVE_RULE_CODES: &[&str] = &[
         "SEC301", "SEC302", "SEC303", "SEC304", "SEC305", "SEC309", "SEC310", "SEC329", "SEC330",
         "SEC331", "SEC336", "SEC337", "SEC338", "SEC339", "SEC340", "SEC341", "SEC342", "SEC343",
-        "SEC344", "SEC345",
+        "SEC344", "SEC345", "SEC346",
     ];
     let counts = aggregate_counts(ledger);
     let subtype_counts = shortlist
@@ -1201,6 +1218,7 @@ fn render_ai_native_discovery_report(
     let coverage = ai_native_coverage_summary(shortlist);
     let runtime_issue_repos = repos_with_runtime_issues(ledger, shortlist);
     let ai_native_rule_hits = rule_count(ledger, AI_NATIVE_RULE_CODES);
+    let sec346_repos = repos_with_rule_hits(ledger, &["SEC346"], true);
 
     let mut output = String::new();
     output.push_str("# External Validation AI-Native Discovery Report\n\n");
@@ -1268,6 +1286,10 @@ fn render_ai_native_discovery_report(
         "- `{}` plugin-root agent markdown admission paths are now covered\n\n",
         coverage.plugin_root_agent_paths
     ));
+    output.push_str(&format!(
+        "- `{}` Gemini-style MCP client admission paths are now covered\n\n",
+        coverage.gemini_client_paths
+    ));
     if !coverage.covered_repos.is_empty() {
         output.push_str("Currently covered admission paths:\n\n");
         for (repo, paths) in &coverage.covered_repos {
@@ -1282,6 +1304,25 @@ fn render_ai_native_discovery_report(
         }
         output.push('\n');
     }
+
+    for repo_name in [
+        "hashicorp/terraform-mcp-server",
+        "SonarSource/sonarqube-mcp-server",
+    ] {
+        let status = if coverage
+            .covered_repos
+            .iter()
+            .any(|(repo, _)| repo == repo_name)
+        {
+            "covered"
+        } else {
+            "discovery-only"
+        };
+        output.push_str(&format!(
+            "- `{repo_name}` is now `{status}` under shipped AI-native detector coverage\n"
+        ));
+    }
+    output.push('\n');
 
     output.push_str("## Overall Counts\n\n");
     output.push_str(&format!(
@@ -1309,6 +1350,17 @@ fn render_ai_native_discovery_report(
         );
     } else {
         output.push_str("- repo-level AI-native rule hits were observed after the latest detector expansion. Treat these as repo-scope evidence first, then inspect path attribution before claiming they all came from newly covered admission paths.\n\n");
+    }
+    if sec346_repos.is_empty() {
+        output.push_str("- `SEC346` produced no repo-level external hits in this wave\n\n");
+    } else {
+        for (repo, count, rule_codes) in sec346_repos {
+            output.push_str(&format!(
+                "- `{repo}`: `{count}` repo-level stable finding(s) via {}\n",
+                format_rule_codes(&rule_codes)
+            ));
+        }
+        output.push('\n');
     }
 
     output.push_str("## Preview Hits\n\n");
@@ -1362,6 +1414,7 @@ struct AiNativeCoverageSummary {
     discovery_only_admission_paths: usize,
     plugin_root_hook_paths: usize,
     plugin_root_agent_paths: usize,
+    gemini_client_paths: usize,
     covered_repos: Vec<(String, Vec<String>)>,
     discovery_only_repos: Vec<(String, Vec<String>)>,
 }
@@ -1376,6 +1429,7 @@ fn ai_native_coverage_summary(shortlist: &RepoShortlist) -> AiNativeCoverageSumm
             summary.total_admission_paths += 1;
             if detector.detect(Path::new(path), path).is_some()
                 || is_manifest_backed_plugin_target_path(path)
+                || is_ai_native_docker_config_path(path)
             {
                 summary.covered_admission_paths += 1;
                 if is_manifest_backed_plugin_hooks_path(path) {
@@ -1383,6 +1437,9 @@ fn ai_native_coverage_summary(shortlist: &RepoShortlist) -> AiNativeCoverageSumm
                 }
                 if is_manifest_backed_plugin_agent_path(path) {
                     summary.plugin_root_agent_paths += 1;
+                }
+                if is_ai_native_docker_config_path(path) {
+                    summary.gemini_client_paths += 1;
                 }
                 covered.push(path.clone());
             } else {
@@ -1495,6 +1552,10 @@ struct ExpandedSurfaceCounts {
     vscode_mcp: usize,
     roo_mcp: usize,
     kiro_mcp: usize,
+    gemini_extension: usize,
+    gemini_settings: usize,
+    dot_gemini_settings: usize,
+    vscode_settings: usize,
     claude_mcp: usize,
     fixture_only_client_variants: usize,
     docker_mcp_launch: usize,
@@ -1523,6 +1584,34 @@ fn expanded_surface_counts(ledger: &ExternalValidationLedger) -> ExpandedSurface
             &[
                 ".kiro/settings/mcp.json",
                 ".kiro/settings/mcp.json (fixture-like)",
+            ],
+        ),
+        gemini_extension: count_any_surface_presence(
+            ledger,
+            &[
+                "gemini-extension.json",
+                "gemini-extension.json (fixture-like)",
+            ],
+        ),
+        gemini_settings: count_any_surface_presence(
+            ledger,
+            &[
+                "gemini.settings.json",
+                "gemini.settings.json (fixture-like)",
+            ],
+        ),
+        dot_gemini_settings: count_any_surface_presence(
+            ledger,
+            &[
+                ".gemini/settings.json",
+                ".gemini/settings.json (fixture-like)",
+            ],
+        ),
+        vscode_settings: count_any_surface_presence(
+            ledger,
+            &[
+                "vscode.settings.json",
+                "vscode.settings.json (fixture-like)",
             ],
         ),
         claude_mcp: count_surface_presence(ledger, ".claude/mcp/*.json"),
@@ -1890,6 +1979,16 @@ fn inventory_surfaces(repo_root: &Path) -> Result<InventoryArtifact, String> {
                 ".kiro/settings/mcp.json",
             );
         }
+        if is_ai_native_docker_config_path(&normalized)
+            && let Ok(text) = std::fs::read_to_string(entry.path())
+            && contains_semantic_gemini_mcp_config(&text)
+        {
+            insert_expanded_mcp_variant_surface(
+                &mut surfaces,
+                &normalized,
+                gemini_surface_label(&normalized),
+            );
+        }
         if normalized.contains(".claude/mcp/") && normalized.ends_with(".json") {
             surfaces.insert(".claude/mcp/*.json".to_owned());
         }
@@ -1993,6 +2092,10 @@ fn is_mcp_config_path(normalized_path: &str) -> bool {
         || normalized_path.ends_with(".vscode/mcp.json")
         || normalized_path.ends_with(".roo/mcp.json")
         || normalized_path.ends_with(".kiro/settings/mcp.json")
+        || normalized_path.ends_with("gemini-extension.json")
+        || normalized_path.ends_with("gemini.settings.json")
+        || normalized_path.ends_with(".gemini/settings.json")
+        || normalized_path.ends_with("vscode.settings.json")
         || (normalized_path.contains(".claude/mcp/") && normalized_path.ends_with(".json"))
 }
 
@@ -2001,6 +2104,22 @@ fn is_expanded_mcp_client_variant_path(normalized_path: &str) -> bool {
         || normalized_path.ends_with(".vscode/mcp.json")
         || normalized_path.ends_with(".roo/mcp.json")
         || normalized_path.ends_with(".kiro/settings/mcp.json")
+        || normalized_path.ends_with("gemini-extension.json")
+        || normalized_path.ends_with("gemini.settings.json")
+        || normalized_path.ends_with(".gemini/settings.json")
+        || normalized_path.ends_with("vscode.settings.json")
+}
+
+fn gemini_surface_label(normalized_path: &str) -> &'static str {
+    if normalized_path.ends_with(".gemini/settings.json") {
+        ".gemini/settings.json"
+    } else if normalized_path.ends_with("gemini.settings.json") {
+        "gemini.settings.json"
+    } else if normalized_path.ends_with("vscode.settings.json") {
+        "vscode.settings.json"
+    } else {
+        "gemini-extension.json"
+    }
 }
 
 fn verify_repo_admission(
@@ -2331,6 +2450,27 @@ fn contains_semantic_docker_mcp_launch(text: &str) -> bool {
             .and_then(Value::as_str)
             .is_some_and(|arg| arg.eq_ignore_ascii_case("run"))
     })
+}
+
+fn contains_semantic_gemini_mcp_config(text: &str) -> bool {
+    let Ok(value) = serde_json::from_str::<Value>(text) else {
+        return false;
+    };
+    let Some(object) = value.as_object() else {
+        return false;
+    };
+    object
+        .get("mcpServers")
+        .and_then(Value::as_object)
+        .is_some_and(|servers| {
+            servers.values().any(|server| {
+                server
+                    .as_object()
+                    .and_then(|entry| entry.get("command"))
+                    .and_then(Value::as_str)
+                    .is_some()
+            })
+        })
 }
 
 fn contains_semantic_server_json(text: &str) -> bool {
@@ -2990,10 +3130,14 @@ rationale = "demo"
         assert!(markdown.contains("- repos with `.vscode/mcp.json`: `0`"));
         assert!(markdown.contains("- repos with `.roo/mcp.json`: `0`"));
         assert!(markdown.contains("- repos with `.kiro/settings/mcp.json`: `0`"));
+        assert!(markdown.contains("- repos with `gemini-extension.json`: `0`"));
+        assert!(markdown.contains("- repos with `gemini.settings.json`: `0`"));
+        assert!(markdown.contains("- repos with `.gemini/settings.json`: `0`"));
+        assert!(markdown.contains("- repos with `vscode.settings.json`: `0`"));
         assert!(markdown.contains("- repos with `.claude/mcp/*.json`: `1`"));
         assert!(markdown.contains("- repos with Docker-based MCP launch configs: `0`"));
         assert!(markdown.contains("- findings from `SEC336`: `0`"));
-        assert!(markdown.contains("- findings from `SEC337`-`SEC339`: `0`"));
+        assert!(markdown.contains("- findings from `SEC337`-`SEC339`, `SEC346`: `0`"));
         assert!(markdown.contains("- repos with `tool_descriptor_json`: `1`"));
         assert!(markdown.contains(
             "- repos where new MCP client-config variants existed only under fixture-like paths: `0`"
@@ -3060,6 +3204,19 @@ rationale = "demo"
         ));
         assert!(!contains_semantic_docker_mcp_launch(
             r#"{"servers":{"demo":{"command":"node","args":["server.js"]}}}"#
+        ));
+    }
+
+    #[test]
+    fn semantic_gemini_mcp_config_requires_top_level_mcp_servers_with_command() {
+        assert!(contains_semantic_gemini_mcp_config(
+            r#"{"mcpServers":{"demo":{"command":"docker","args":["run","ghcr.io/acme/mcp-server"]}}}"#
+        ));
+        assert!(!contains_semantic_gemini_mcp_config(
+            r#"{"mcpServers":{"demo":{"args":["run","ghcr.io/acme/mcp-server"]}}}"#
+        ));
+        assert!(!contains_semantic_gemini_mcp_config(
+            r#"{"servers":{"demo":{"command":"docker"}}}"#
         ));
     }
 

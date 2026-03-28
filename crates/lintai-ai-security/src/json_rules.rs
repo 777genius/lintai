@@ -108,6 +108,21 @@ pub(crate) fn check_mcp_sensitive_docker_mount(
     )
 }
 
+pub(crate) fn check_mcp_mutable_docker_pull(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.mutable_docker_pull_span.clone()),
+        "MCP configuration launches Docker with a forced mutable pull policy",
+    )
+}
+
 pub(crate) fn check_mcp_dangerous_docker_flag(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

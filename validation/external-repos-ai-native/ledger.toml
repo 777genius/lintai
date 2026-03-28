@@ -10,11 +10,16 @@ subtype = "mcp_docker"
 status = "evaluated"
 surfaces_present = [
     ".github/workflows/*.yml",
+    "docker_mcp_launch",
+    "gemini-extension.json",
     "server.json",
 ]
-stable_findings = 5
+stable_findings = 6
 preview_findings = 1
-stable_rule_codes = ["SEC324"]
+stable_rule_codes = [
+    "SEC324",
+    "SEC337",
+]
 preview_rule_codes = ["SEC328"]
 repo_verdict = "strong_fit"
 stable_precision_notes = ""
@@ -34,14 +39,17 @@ subtype = "mcp_docker"
 status = "evaluated"
 surfaces_present = [
     ".github/workflows/*.yml",
+    "docker_mcp_launch",
+    "gemini-extension.json",
     "server.json",
 ]
-stable_findings = 12
+stable_findings = 15
 preview_findings = 10
 stable_rule_codes = [
     "SEC309",
     "SEC324",
     "SEC337",
+    "SEC346",
 ]
 preview_rule_codes = ["SEC328"]
 repo_verdict = "strong_fit"

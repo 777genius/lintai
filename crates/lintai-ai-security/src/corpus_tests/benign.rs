@@ -24,6 +24,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "cursor-plugin-clean-basic",
             "cursor-plugin-safe-paths",
             "cursor-plugin-tls-verified-basic",
+            "gemini-mcp-docker-digest-pinned-safe",
             "github-workflow-env-indirected-safe",
             "github-workflow-pinned-third-party-action",
             "github-workflow-pull-request-target-safe-checkout",

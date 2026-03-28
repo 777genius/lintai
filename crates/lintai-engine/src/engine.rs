@@ -518,7 +518,7 @@ impl Engine {
     }
 
     fn detector_for_scan(&self, base_path: &Path, files: &[PathBuf]) -> FileTypeDetector {
-        let dynamic_patterns = manifest_backed_plugin_detection_patterns(base_path, files);
+        let dynamic_patterns = dynamic_detection_patterns(base_path, files);
         if dynamic_patterns.is_empty() {
             return self.detector.clone();
         }
@@ -549,6 +549,20 @@ struct DynamicDetectionOverride {
     normalized_path: String,
     kind: ArtifactKind,
     format: SourceFormat,
+}
+
+fn dynamic_detection_patterns(
+    base_path: &Path,
+    files: &[PathBuf],
+) -> Vec<DynamicDetectionOverride> {
+    let mut overrides = manifest_backed_plugin_detection_patterns(base_path, files)
+        .into_iter()
+        .map(|override_spec| (override_spec.normalized_path.clone(), override_spec))
+        .collect::<BTreeMap<_, _>>();
+    for override_spec in gemini_mcp_detection_patterns(base_path, files) {
+        overrides.insert(override_spec.normalized_path.clone(), override_spec);
+    }
+    overrides.into_values().collect()
 }
 
 fn manifest_backed_plugin_detection_patterns(
@@ -614,6 +628,41 @@ fn manifest_backed_plugin_detection_patterns(
                 }
             }
         }
+    }
+
+    overrides.into_values().collect()
+}
+
+fn gemini_mcp_detection_patterns(
+    base_path: &Path,
+    files: &[PathBuf],
+) -> Vec<DynamicDetectionOverride> {
+    let normalized_to_path = files
+        .iter()
+        .map(|path| (normalize_path(base_path, path), path.clone()))
+        .collect::<BTreeMap<_, _>>();
+    let mut overrides = BTreeMap::new();
+
+    for (normalized_path, file_path) in &normalized_to_path {
+        if !is_gemini_mcp_config_candidate_path(normalized_path) {
+            continue;
+        }
+
+        let Ok(text) = std::fs::read_to_string(file_path) else {
+            continue;
+        };
+        if !contains_semantic_gemini_mcp_config(&text) {
+            continue;
+        }
+
+        overrides.insert(
+            normalized_path.clone(),
+            DynamicDetectionOverride {
+                normalized_path: normalized_path.clone(),
+                kind: ArtifactKind::McpConfig,
+                format: SourceFormat::Json,
+            },
+        );
     }
 
     overrides.into_values().collect()
@@ -697,6 +746,34 @@ fn contains_semantic_plugin_hook_commands(text: &str) -> bool {
         })
 }
 
+fn contains_semantic_gemini_mcp_config(text: &str) -> bool {
+    let Ok(value) = serde_json::from_str::<Value>(text) else {
+        return false;
+    };
+    let Some(object) = value.as_object() else {
+        return false;
+    };
+    object
+        .get("mcpServers")
+        .and_then(Value::as_object)
+        .is_some_and(|servers| {
+            servers.values().any(|server| {
+                server
+                    .as_object()
+                    .and_then(|entry| entry.get("command"))
+                    .and_then(Value::as_str)
+                    .is_some()
+            })
+        })
+}
+
 fn is_repo_local_normalized_path(path: &str) -> bool {
     !path.starts_with('/') && !path.starts_with("../") && path != ".."
+}
+
+fn is_gemini_mcp_config_candidate_path(normalized_path: &str) -> bool {
+    normalized_path.ends_with("gemini-extension.json")
+        || normalized_path.ends_with("gemini.settings.json")
+        || normalized_path.ends_with(".gemini/settings.json")
+        || normalized_path.ends_with("vscode.settings.json")
 }

@@ -273,6 +273,7 @@ pub(crate) struct JsonSignals {
     pub(crate) inline_download_exec_plugin_hook_span: Option<Span>,
     pub(crate) network_tls_bypass_plugin_hook_span: Option<Span>,
     pub(crate) mutable_docker_image_span: Option<Span>,
+    pub(crate) mutable_docker_pull_span: Option<Span>,
     pub(crate) sensitive_docker_mount_span: Option<Span>,
     pub(crate) dangerous_docker_flag_span: Option<Span>,
     pub(crate) broad_env_file_span: Option<Span>,
@@ -636,6 +637,7 @@ struct McpCommandSignalSpan {
     inline_download_exec: Option<Span>,
     network_tls_bypass: Option<Span>,
     mutable_docker_image: Option<Span>,
+    mutable_docker_pull: Option<Span>,
     sensitive_docker_mount: Option<Span>,
     dangerous_docker_flag: Option<Span>,
 }
@@ -946,6 +948,7 @@ fn visit_json_value(
             if (signals.inline_download_exec_command_span.is_none()
                 || signals.network_tls_bypass_command_span.is_none()
                 || signals.mutable_docker_image_span.is_none()
+                || signals.mutable_docker_pull_span.is_none()
                 || signals.sensitive_docker_mount_span.is_none()
                 || signals.dangerous_docker_flag_span.is_none())
                 && let Some(command_signals) =
@@ -960,6 +963,9 @@ fn visit_json_value(
                 }
                 if signals.mutable_docker_image_span.is_none() {
                     signals.mutable_docker_image_span = command_signals.mutable_docker_image;
+                }
+                if signals.mutable_docker_pull_span.is_none() {
+                    signals.mutable_docker_pull_span = command_signals.mutable_docker_pull;
                 }
                 if signals.sensitive_docker_mount_span.is_none() {
                     signals.sensitive_docker_mount_span = command_signals.sensitive_docker_mount;
@@ -1737,6 +1743,11 @@ fn find_mcp_command_signal_span(
                 spans.mutable_docker_image =
                     Some(resolve_value_span(&arg_path, locator, fallback_len));
             }
+            if let Some(index) = docker.mutable_pull_arg_index {
+                let arg_path = with_child_index(&with_child_key(path, "args"), index);
+                spans.mutable_docker_pull =
+                    Some(resolve_value_span(&arg_path, locator, fallback_len));
+            }
             if let Some(index) = docker.sensitive_mount_arg_index {
                 let arg_path = with_child_index(&with_child_key(path, "args"), index);
                 spans.sensitive_docker_mount =
@@ -1778,6 +1789,7 @@ fn find_mcp_command_signal_span(
     (spans.inline_download_exec.is_some()
         || spans.network_tls_bypass.is_some()
         || spans.mutable_docker_image.is_some()
+        || spans.mutable_docker_pull.is_some()
         || spans.sensitive_docker_mount.is_some()
         || spans.dangerous_docker_flag.is_some())
     .then_some(spans)
@@ -1786,6 +1798,7 @@ fn find_mcp_command_signal_span(
 #[derive(Clone, Copy, Debug, Default)]
 struct DockerRunAnalysis {
     mutable_image_arg_index: Option<usize>,
+    mutable_pull_arg_index: Option<usize>,
     sensitive_mount_arg_index: Option<usize>,
     dangerous_flag_arg_index: Option<usize>,
 }
@@ -1808,6 +1821,12 @@ fn analyze_docker_run_args(args: &Vec<Value>) -> Option<DockerRunAnalysis> {
             && is_dangerous_docker_flag(text, args, index)
         {
             analysis.dangerous_flag_arg_index = Some(index);
+        }
+
+        if analysis.mutable_pull_arg_index.is_none()
+            && is_mutable_docker_pull_flag(text, args, index)
+        {
+            analysis.mutable_pull_arg_index = Some(index);
         }
 
         if analysis.sensitive_mount_arg_index.is_none() {
@@ -1908,6 +1927,15 @@ fn is_dangerous_docker_flag(text: &str, args: &[Value], index: usize) -> bool {
                 .get(index + 1)
                 .and_then(Value::as_str)
                 .is_some_and(|value| value.eq_ignore_ascii_case("host"))
+}
+
+fn is_mutable_docker_pull_flag(text: &str, args: &[Value], index: usize) -> bool {
+    text.eq_ignore_ascii_case("--pull=always")
+        || text.eq_ignore_ascii_case("--pull")
+            && args
+                .get(index + 1)
+                .and_then(Value::as_str)
+                .is_some_and(|value| value.eq_ignore_ascii_case("always"))
 }
 
 fn is_digest_pinned_docker_image(text: &str) -> bool {
@@ -2150,6 +2178,10 @@ fn is_expanded_mcp_client_variant_path(normalized_path: &str) -> bool {
         || normalized_path.ends_with(".vscode/mcp.json")
         || normalized_path.ends_with(".roo/mcp.json")
         || normalized_path.ends_with(".kiro/settings/mcp.json")
+        || normalized_path.ends_with("gemini-extension.json")
+        || normalized_path.ends_with("gemini.settings.json")
+        || normalized_path.ends_with(".gemini/settings.json")
+        || normalized_path.ends_with("vscode.settings.json")
 }
 
 fn is_fixture_like_claude_settings_path(normalized_path: &str) -> bool {

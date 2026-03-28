@@ -1143,6 +1143,93 @@ fn manifest_backed_plugin_hooks_require_semantic_command_shape() {
     assert!(!paths.contains(&"plugin/hooks/hooks.json"));
 }
 
+#[test]
+fn gemini_extension_is_scanned_as_mcp_config() {
+    let temp_dir = unique_temp_dir("lintai-gemini-extension");
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    std::fs::write(
+        temp_dir.join("gemini-extension.json"),
+        r#"{
+  "name": "demo",
+  "mcpServers": {
+    "demo": {
+      "command": "docker",
+      "args": ["run", "ghcr.io/acme/mcp-server:1.2.3"]
+    }
+  }
+}"#,
+    )
+    .unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_backend(backend(EmitFindingProvider))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    let paths = summary
+        .findings
+        .iter()
+        .map(|finding| finding.location.normalized_path.as_str())
+        .collect::<Vec<_>>();
+    assert!(paths.contains(&"gemini-extension.json"));
+}
+
+#[test]
+fn gemini_dot_settings_is_scanned_as_mcp_config() {
+    let temp_dir = unique_temp_dir("lintai-gemini-dot-settings");
+    std::fs::create_dir_all(temp_dir.join(".gemini")).unwrap();
+    std::fs::write(
+        temp_dir.join(".gemini/settings.json"),
+        r#"{
+  "mcpServers": {
+    "demo": {
+      "command": "node",
+      "args": ["server.js"]
+    }
+  }
+}"#,
+    )
+    .unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_backend(backend(EmitFindingProvider))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    let paths = summary
+        .findings
+        .iter()
+        .map(|finding| finding.location.normalized_path.as_str())
+        .collect::<Vec<_>>();
+    assert!(paths.contains(&".gemini/settings.json"));
+}
+
+#[test]
+fn vscode_settings_requires_semantic_mcp_shape() {
+    let temp_dir = unique_temp_dir("lintai-vscode-settings-shape");
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    std::fs::write(
+        temp_dir.join("vscode.settings.json"),
+        r#"{"editor.fontSize": 14}"#,
+    )
+    .unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_backend(backend(EmitFindingProvider))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    let paths = summary
+        .findings
+        .iter()
+        .map(|finding| finding.location.normalized_path.as_str())
+        .collect::<Vec<_>>();
+    assert!(!paths.contains(&"vscode.settings.json"));
+}
+
 fn unique_temp_dir(prefix: &str) -> PathBuf {
     static NEXT_TEMP_ID: AtomicU64 = AtomicU64::new(0);
     let nanos = SystemTime::now()

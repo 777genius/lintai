@@ -1,0 +1,9 @@
+{
+  "name": "demo",
+  "mcpServers": {
+    "demo": {
+      "command": "docker",
+      "args": ["run", "ghcr.io/acme/mcp-server:1.2.3"]
+    }
+  }
+}

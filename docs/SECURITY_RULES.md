@@ -63,6 +63,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC343` | Plugin hook command uses a mutable package launcher | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
 | `SEC344` | Plugin hook command downloads remote content and pipes it into a shell | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
 | `SEC345` | Plugin hook command disables TLS verification in a network-capable execution path | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
+| `SEC346` | MCP configuration forces Docker to refresh from a mutable registry source | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
 | `SEC401` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC402` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC403` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
@@ -1001,6 +1002,25 @@ Canonical catalog for the shipped security rules currently exposed by:
 - Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks objects gated by network markers plus TLS-bypass tokens.
 - Malicious Corpus: `plugin-hook-command-tls-bypass`
 - Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC346` — MCP configuration forces Docker to refresh from a mutable registry source
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP config Docker launch paths for explicit --pull always refresh policies that force a mutable registry fetch at runtime.
+- Deterministic Signal Basis: JsonSignals docker run argument analysis over ArtifactKind::McpConfig objects, limited to explicit --pull=always or --pull always forms.
+- Malicious Corpus: `gemini-mcp-docker-pull-always`
+- Benign Corpus: `gemini-mcp-docker-digest-pinned-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

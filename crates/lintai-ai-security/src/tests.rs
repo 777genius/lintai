@@ -792,6 +792,55 @@ fn ignores_safe_mcp_docker_run() {
 }
 
 #[test]
+fn finds_mcp_mutable_docker_pull_equals_always() {
+    let provider = AiSecurityProvider::default();
+    let content =
+        r#"{"command":"docker","args":["run","--pull=always","ghcr.io/acme/mcp-server:1.2.3"]}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC346")
+        .unwrap();
+    let start = content.find("--pull=always").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "--pull=always".len())
+    );
+}
+
+#[test]
+fn finds_mcp_mutable_docker_pull_separate_always() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        r#"{"command":"docker","args":["run","--pull","always","ghcr.io/acme/mcp-server:1.2.3"]}"#,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC346"));
+}
+
+#[test]
+fn ignores_mcp_non_mutable_docker_pull_policy() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        r#"{"command":"docker","args":["run","--pull=missing","ghcr.io/acme/mcp-server@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"]}"#,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC346"));
+}
+
+#[test]
 fn finds_claude_settings_mutable_launcher() {
     let provider = AiSecurityProvider::default();
     let content = r#"{"hooks":{"PreToolUse":[{"hooks":[{"type":"command","command":"cat | xargs -0 -I {} npx claude-flow@alpha hooks pre-command --command '{}'"}]}]}}"#;
@@ -1666,10 +1715,86 @@ fn fixture_like_expanded_mcp_paths_do_not_emit_mcp_findings() {
                 | "SEC337"
                 | "SEC338"
                 | "SEC339"
+                | "SEC346"
                 | "SEC340"
                 | "SEC341"
                 | "SEC342"
                 | "SEC336"
+        )
+    }));
+}
+
+#[test]
+fn existing_mcp_rules_apply_to_gemini_extension_variants() {
+    let temp_dir = unique_temp_dir("lintai-gemini-extension-variant");
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    std::fs::write(
+        temp_dir.join("gemini-extension.json"),
+        br#"{"mcpServers":{"demo":{"command":"docker","args":["run","ghcr.io/acme/mcp-server:1.2.3"]}}}"#,
+    )
+    .unwrap();
+
+    let mut config = EngineConfig::default();
+    config.project_root = Some(temp_dir.clone());
+    let engine = EngineBuilder::default()
+        .with_config(config)
+        .with_suppressions(Arc::new(NoopSuppressionMatcher))
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build();
+    let summary = engine.scan_path(&temp_dir).unwrap();
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC337")
+    );
+}
+
+#[test]
+fn fixture_like_gemini_paths_do_not_emit_mcp_findings() {
+    let temp_dir = unique_temp_dir("lintai-gemini-fixture-path");
+    std::fs::create_dir_all(temp_dir.join("tests/fixtures")).unwrap();
+    std::fs::write(
+        temp_dir.join("tests/fixtures/gemini-extension.json"),
+        br#"{"mcpServers":{"demo":{"command":"docker","args":["run","--pull=always","ghcr.io/acme/mcp-server:1.2.3"]}}}"#,
+    )
+    .unwrap();
+
+    let mut config = EngineConfig::default();
+    config.project_root = Some(temp_dir.clone());
+    let engine = EngineBuilder::default()
+        .with_config(config)
+        .with_suppressions(Arc::new(NoopSuppressionMatcher))
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build();
+    let summary = engine.scan_path(&temp_dir).unwrap();
+
+    assert!(summary.findings.iter().all(|finding| {
+        !matches!(
+            finding.rule_code.as_str(),
+            "SEC301"
+                | "SEC302"
+                | "SEC303"
+                | "SEC304"
+                | "SEC305"
+                | "SEC306"
+                | "SEC307"
+                | "SEC308"
+                | "SEC309"
+                | "SEC310"
+                | "SEC329"
+                | "SEC330"
+                | "SEC331"
+                | "SEC336"
+                | "SEC337"
+                | "SEC338"
+                | "SEC339"
+                | "SEC346"
         )
     }));
 }

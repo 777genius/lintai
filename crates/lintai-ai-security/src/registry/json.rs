@@ -5,12 +5,12 @@ use crate::json_rules::{
     check_json_dangerous_endpoint_host, check_json_hidden_instruction, check_json_literal_secret,
     check_json_sensitive_env_reference, check_json_suspicious_remote_endpoint,
     check_json_unsafe_plugin_path, check_mcp_broad_env_file, check_mcp_credential_env_passthrough,
-    check_mcp_dangerous_docker_flag, check_mcp_inline_download_exec, check_mcp_mutable_launcher,
-    check_mcp_network_tls_bypass_command, check_mcp_sensitive_docker_mount,
-    check_mcp_shell_wrapper, check_mcp_unpinned_docker_image, check_plain_http_config,
-    check_plugin_hook_inline_download_exec, check_plugin_hook_mutable_launcher,
-    check_plugin_hook_network_tls_bypass, check_static_auth_exposure_config,
-    check_trust_verification_disabled_config,
+    check_mcp_dangerous_docker_flag, check_mcp_inline_download_exec, check_mcp_mutable_docker_pull,
+    check_mcp_mutable_launcher, check_mcp_network_tls_bypass_command,
+    check_mcp_sensitive_docker_mount, check_mcp_shell_wrapper, check_mcp_unpinned_docker_image,
+    check_plain_http_config, check_plugin_hook_inline_download_exec,
+    check_plugin_hook_mutable_launcher, check_plugin_hook_network_tls_bypass,
+    check_static_auth_exposure_config, check_trust_verification_disabled_config,
 };
 
 declare_rule! {
@@ -212,6 +212,17 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpMutableDockerPullRule {
+        code: "SEC346",
+        summary: "MCP configuration forces Docker to refresh from a mutable registry source",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct PluginHookMutableLauncherRule {
         code: "SEC343",
         summary: "Plugin hook command uses a mutable package launcher",
@@ -244,7 +255,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 21] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -568,6 +579,25 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 21] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove privileged or host-namespace flags from the committed MCP Docker launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpMutableDockerPullRule::METADATA,
+        surface: Surface::Json,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP config Docker launch paths for explicit --pull always refresh policies that force a mutable registry fetch at runtime.",
+            malicious_case_ids: &["gemini-mcp-docker-pull-always"],
+            benign_case_ids: &["gemini-mcp-docker-digest-pinned-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals docker run argument analysis over ArtifactKind::McpConfig objects, limited to explicit --pull=always or --pull always forms.",
+        },
+        check: check_mcp_mutable_docker_pull,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the forced Docker pull policy from the committed MCP client config and prefer pinned, reproducible image references",
         ),
         suggestion_fix: None,
     },
