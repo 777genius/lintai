@@ -57,8 +57,7 @@ const MARKDOWN_PRIVATE_KEY_MARKERS: &[&str] = &[
 ];
 
 const FIXTURE_PATH_SEGMENTS: &[&str] = &[
-    "test", "tests", "testdata", "fixture", "fixtures", "example", "examples", "sample",
-    "samples",
+    "test", "tests", "testdata", "fixture", "fixtures", "example", "examples", "sample", "samples",
 ];
 
 #[derive(Clone, Debug, Default)]

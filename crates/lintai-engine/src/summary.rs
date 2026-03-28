@@ -13,6 +13,15 @@ pub struct ScanSummary {
 }
 
 impl ScanSummary {
+    pub(crate) fn merge(&mut self, mut other: ScanSummary) {
+        self.scanned_files += other.scanned_files;
+        self.skipped_files += other.skipped_files;
+        self.findings.append(&mut other.findings);
+        self.diagnostics.append(&mut other.diagnostics);
+        self.runtime_errors.append(&mut other.runtime_errors);
+        self.provider_metrics.append(&mut other.provider_metrics);
+    }
+
     pub(crate) fn finalize(&mut self) {
         self.dedup_and_sort_findings();
         self.dedup_and_sort_diagnostics();

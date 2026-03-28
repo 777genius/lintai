@@ -4,7 +4,7 @@ use std::sync::Arc;
 use criterion::{Criterion, criterion_group, criterion_main};
 use lintai_ai_security::{AiSecurityProvider, PolicyMismatchProvider};
 use lintai_api::ScanScope;
-use lintai_engine::internal::InProcessProviderBackend;
+use lintai_runtime::InProcessProviderBackend;
 use lintai_testing::{WorkspaceHarness, discover_case_dirs};
 
 fn criterion_benchmark(c: &mut Criterion) {

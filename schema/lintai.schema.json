@@ -6,6 +6,10 @@
         "instructions",
         "cursor_rules",
         "mcp_config",
+        "claude_settings",
+        "server_registry_config",
+        "tool_descriptor_json",
+        "git_hub_workflow",
         "cursor_plugin_manifest",
         "cursor_plugin_hooks",
         "cursor_hook_script",
@@ -379,6 +383,7 @@
       "enum": [
         "markdown",
         "json",
+        "yaml",
         "shell"
       ],
       "type": "string"

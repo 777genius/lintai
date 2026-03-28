@@ -9,14 +9,14 @@ use lintai_api::{
     Artifact, ArtifactKind, DocumentSemantics, JsonSemantics, ParsedDocument, RegionKind,
     ScanContext, ScanScope, SourceFormat, Span, TextRegion,
 };
-use lintai_engine::internal::InProcessProviderBackend;
 use lintai_engine::{FileTypeDetector, ProviderExecutionPhase, normalize_path_string};
+use lintai_runtime::InProcessProviderBackend;
 use lintai_testing::{OutputHarness, WorkspaceHarness, discover_case_dirs};
 use serde::Deserialize;
 use serde_json::json;
 
 use crate::provider::profile_scan_context;
-use crate::registry::RULE_SPECS;
+use crate::registry::rule_specs;
 use crate::{AiSecurityProvider, PolicyMismatchProvider};
 
 #[test]
@@ -50,7 +50,7 @@ fn markdown_provider_perf_budget_stays_single_pass() {
     assert_eq!(profile.signal_builds, 1);
     assert_eq!(
         profile.applicable_rules,
-        RULE_SPECS
+        rule_specs()
             .iter()
             .filter(|spec| spec.surface.matches(ArtifactKind::Skill))
             .count()
@@ -85,7 +85,7 @@ fn hook_provider_perf_budget_stays_single_pass() {
     assert_eq!(profile.signal_builds, 1);
     assert_eq!(
         profile.applicable_rules,
-        RULE_SPECS
+        rule_specs()
             .iter()
             .filter(|spec| spec.surface.matches(ArtifactKind::CursorHookScript))
             .count()
@@ -116,7 +116,7 @@ fn json_provider_perf_budget_stays_single_pass() {
     assert_eq!(profile.signal_builds, 1);
     assert_eq!(
         profile.applicable_rules,
-        RULE_SPECS
+        rule_specs()
             .iter()
             .filter(|spec| spec.surface.matches(ArtifactKind::McpConfig))
             .count()

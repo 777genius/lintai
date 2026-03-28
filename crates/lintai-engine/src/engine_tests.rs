@@ -8,10 +8,10 @@ use lintai_api::{
     Applicability, Finding, Fix, Location, ProviderError, ProviderScanResult, RuleMetadata,
     RuleTier, ScanScope, Span, WorkspaceScanContext,
 };
+use lintai_runtime::{InProcessProviderBackend, ProviderBackend};
 
 use crate::artifact_view::ArtifactContextRef;
-use crate::internal::InProcessProviderBackend;
-use crate::{Engine, EngineBuilder, ProviderBackend, SuppressionMatcher};
+use crate::{Engine, EngineBuilder, SuppressionMatcher};
 
 fn backend(provider: impl lintai_api::RuleProvider + 'static) -> Arc<dyn ProviderBackend> {
     Arc::new(InProcessProviderBackend::new(Arc::new(provider)))
@@ -961,6 +961,77 @@ fn summary_records_provider_metrics_for_file_and_workspace_phases() {
     );
     assert_eq!(workspace_metric.findings_emitted, 1);
     assert_eq!(workspace_metric.errors_emitted, 0);
+}
+
+#[test]
+fn repeated_multi_file_scans_stay_deterministic() {
+    let temp_dir = unique_temp_dir("lintai-deterministic-parallel-scan");
+    std::fs::create_dir_all(temp_dir.join("nested")).unwrap();
+    std::fs::write(temp_dir.join("SKILL.md"), b"# root\n").unwrap();
+    std::fs::write(temp_dir.join("nested/CLAUDE.md"), b"# nested\n").unwrap();
+
+    let engine = EngineBuilder::default()
+        .with_backend(backend(EmitFindingProvider))
+        .with_backend(backend_with_scope(
+            WorkspaceMetricProvider,
+            ScanScope::Workspace,
+        ))
+        .build();
+
+    let first = engine.scan_path(&temp_dir).unwrap();
+    let second = engine.scan_path(&temp_dir).unwrap();
+
+    let first_findings: Vec<_> = first
+        .findings
+        .iter()
+        .map(|finding| {
+            (
+                finding.rule_code.clone(),
+                finding.location.normalized_path.clone(),
+                finding.message.clone(),
+            )
+        })
+        .collect();
+    let second_findings: Vec<_> = second
+        .findings
+        .iter()
+        .map(|finding| {
+            (
+                finding.rule_code.clone(),
+                finding.location.normalized_path.clone(),
+                finding.message.clone(),
+            )
+        })
+        .collect();
+    assert_eq!(first_findings, second_findings);
+
+    let first_metrics: Vec<_> = first
+        .provider_metrics
+        .iter()
+        .map(|metric| {
+            (
+                metric.normalized_path.clone(),
+                metric.provider_id.clone(),
+                metric.phase,
+                metric.findings_emitted,
+                metric.errors_emitted,
+            )
+        })
+        .collect();
+    let second_metrics: Vec<_> = second
+        .provider_metrics
+        .iter()
+        .map(|metric| {
+            (
+                metric.normalized_path.clone(),
+                metric.provider_id.clone(),
+                metric.phase,
+                metric.findings_emitted,
+                metric.errors_emitted,
+            )
+        })
+        .collect();
+    assert_eq!(first_metrics, second_metrics);
 }
 
 fn unique_temp_dir(prefix: &str) -> PathBuf {

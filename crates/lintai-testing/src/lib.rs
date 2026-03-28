@@ -7,9 +7,10 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use lintai_api::{ArtifactKind, Finding, RuleProvider, RuleTier, SourceFormat};
 use lintai_engine::{
     ConfigError, EngineBuilder, EngineConfig, EngineError, FileSuppressions,
-    NoopSuppressionMatcher, ProviderBackend, ProviderExecutionPhase, RuntimeErrorKind, ScanSummary,
-    SuppressionMatcher, internal::InProcessProviderBackend, load_workspace_config,
+    NoopSuppressionMatcher, ProviderExecutionPhase, RuntimeErrorKind, ScanSummary,
+    SuppressionMatcher, load_workspace_config,
 };
+use lintai_runtime::{InProcessProviderBackend, ProviderBackend};
 use serde::Deserialize;
 use std::collections::BTreeMap;
 

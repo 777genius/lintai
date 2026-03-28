@@ -9,6 +9,7 @@ publish = false
 [dependencies]
 lintai-api.workspace = true
 lintai-engine.workspace = true
+lintai-runtime.workspace = true
 serde.workspace = true
 toml.workspace = true
 

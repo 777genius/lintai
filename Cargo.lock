@@ -326,6 +326,7 @@ dependencies = [
  "lintai-adapters",
  "lintai-api",
  "lintai-engine",
+ "lintai-runtime",
  "lintai-testing",
  "serde",
  "serde_json",
@@ -350,6 +351,7 @@ dependencies = [
  "lintai-api",
  "lintai-engine",
  "lintai-fix",
+ "lintai-runtime",
  "lintai-testing",
  "serde",
  "serde_json",
@@ -365,6 +367,7 @@ dependencies = [
  "ignore",
  "lintai-adapters",
  "lintai-api",
+ "lintai-runtime",
  "schemars",
  "serde",
  "serde_json",
@@ -388,11 +391,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "lintai-runtime"
+version = "0.0.0"
+dependencies = [
+ "lintai-api",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "lintai-testing"
 version = "0.1.0"
 dependencies = [
  "lintai-api",
  "lintai-engine",
+ "lintai-runtime",
  "serde",
  "toml",
 ]

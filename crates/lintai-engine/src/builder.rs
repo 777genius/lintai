@@ -1,9 +1,8 @@
 use std::sync::Arc;
 
-use crate::{
-    Engine, EngineConfig, FileTypeDetector, NoopSuppressionMatcher, ProviderBackend,
-    SuppressionMatcher,
-};
+use lintai_runtime::ProviderBackend;
+
+use crate::{Engine, EngineConfig, FileTypeDetector, NoopSuppressionMatcher, SuppressionMatcher};
 
 #[derive(Default)]
 pub struct EngineBuilder {

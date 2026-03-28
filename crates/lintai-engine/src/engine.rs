@@ -1,5 +1,6 @@
 use std::path::Path;
 use std::sync::Arc;
+use std::thread;
 use std::time::Instant;
 
 use lintai_adapters::parse_document;
@@ -7,6 +8,7 @@ use lintai_api::{
     Artifact, Finding, ProviderError, ProviderErrorKind, ScanContext, WorkspaceArtifact,
     WorkspaceScanContext,
 };
+use lintai_runtime::ProviderBackend;
 
 use crate::artifact_view::ArtifactContextRef;
 use crate::detector::FileTypeDetector;
@@ -14,7 +16,7 @@ use crate::discovery::{collect_files, scan_base};
 use crate::normalize::{
     looks_binary, normalize_path, normalize_path_string, normalize_text, populate_line_columns,
 };
-use crate::provider::{ProviderBackend, ProviderCatalog};
+use crate::provider::ProviderCatalog;
 use crate::summary::{
     ProviderExecutionMetric, ProviderExecutionPhase, RuntimeErrorKind, ScanRuntimeError,
     ScanSummary,
@@ -49,8 +51,6 @@ impl Engine {
         path: &Path,
         providers: &ProviderCatalog<'_>,
     ) -> Result<ScanSummary, EngineError> {
-        let mut summary = ScanSummary::default();
-        let mut scanned_artifacts = Vec::new();
         let files = collect_files(path, &self.config)?;
         let base_path = scan_base(path, &self.config);
         let canonical_project_root = self
@@ -59,21 +59,79 @@ impl Engine {
             .as_deref()
             .map(std::fs::canonicalize)
             .transpose()?;
+        let (mut summary, mut scanned_artifacts) = self.scan_files_in_parallel(
+            &base_path,
+            canonical_project_root.as_deref(),
+            files,
+            providers,
+        );
 
-        for file in files {
-            if let Some(scanned) = self.scan_file(
-                &base_path,
-                canonical_project_root.as_deref(),
-                &file,
-                &mut summary,
-            ) {
-                self.run_per_file_providers(providers, &scanned, &mut summary);
-                scanned_artifacts.push(scanned);
-            }
-        }
+        scanned_artifacts.sort_by(|left, right| {
+            left.context
+                .artifact
+                .normalized_path
+                .cmp(&right.context.artifact.normalized_path)
+        });
 
         self.run_workspace_providers(providers, scanned_artifacts, &mut summary);
         Ok(summary)
+    }
+
+    fn scan_files_in_parallel(
+        &self,
+        base_path: &Path,
+        canonical_project_root: Option<&Path>,
+        files: Vec<std::path::PathBuf>,
+        providers: &ProviderCatalog<'_>,
+    ) -> (ScanSummary, Vec<ScannedArtifact>) {
+        let worker_count = files
+            .len()
+            .min(
+                thread::available_parallelism()
+                    .map(usize::from)
+                    .unwrap_or(1),
+            )
+            .max(1);
+        let mut chunks = vec![Vec::new(); worker_count];
+        for (index, file) in files.into_iter().enumerate() {
+            chunks[index % worker_count].push(file);
+        }
+
+        let results = thread::scope(|scope| {
+            let mut handles = Vec::with_capacity(chunks.len());
+            for chunk in chunks {
+                handles.push(scope.spawn(move || {
+                    let mut summary = ScanSummary::default();
+                    let mut scanned_artifacts = Vec::new();
+                    for file in chunk {
+                        if let Some(scanned) =
+                            self.scan_file(base_path, canonical_project_root, &file, &mut summary)
+                        {
+                            self.run_per_file_providers(providers, &scanned, &mut summary);
+                            scanned_artifacts.push(scanned);
+                        }
+                    }
+                    WorkerScanResult {
+                        summary,
+                        scanned_artifacts,
+                    }
+                }));
+            }
+
+            handles
+                .into_iter()
+                .map(|handle| handle.join().expect("file scan worker panicked"))
+                .collect::<Vec<_>>()
+        });
+
+        let mut summary = ScanSummary::default();
+        let mut scanned_artifacts = Vec::new();
+        for mut result in results {
+            summary.merge(result.summary);
+            scanned_artifacts.append(&mut result.scanned_artifacts);
+        }
+
+        (summary, scanned_artifacts)
     }
 
     fn scan_file(
@@ -432,4 +490,9 @@ impl Engine {
 struct ScannedArtifact {
     context: ScanContext,
     file_config: ResolvedFileConfig,
+}
+
+struct WorkerScanResult {
+    summary: ScanSummary,
+    scanned_artifacts: Vec<ScannedArtifact>,
 }

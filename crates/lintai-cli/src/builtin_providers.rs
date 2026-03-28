@@ -1,15 +1,18 @@
-use std::io::{Read, Write};
-use std::process::{Command, ExitCode, Stdio};
+use std::io::Read;
+use std::process::ExitCode;
 use std::sync::Arc;
 use std::thread;
-use std::time::{Duration, Instant};
+use std::time::Duration;
 
 use lintai_ai_security::{AiSecurityProvider, PolicyMismatchProvider};
 use lintai_api::{
     Confidence, Finding, Location, ProviderError, ProviderScanResult, RuleMetadata, RuleProvider,
     RuleTier, ScanContext, ScanScope, Severity, Span, WorkspaceScanContext,
 };
-use lintai_engine::ProviderBackend;
+use lintai_runtime::{
+    ExecutableResolver, ProviderBackend, RunnerPhase, RunnerRequest, RunnerResponse,
+    SubprocessProviderBackend,
+};
 
 use crate::internal_bin::resolve_lintai_driver_path;
 
@@ -64,26 +67,6 @@ impl BuiltInProviderKind {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
-#[serde(rename_all = "snake_case")]
-enum RunnerPhase {
-    File,
-    Workspace,
-}
-
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
-struct RunnerRequest {
-    provider: BuiltInProviderKind,
-    phase: RunnerPhase,
-    scan: Option<ScanContext>,
-    workspace: Option<WorkspaceScanContext>,
-}
-
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
-struct RunnerResponse {
-    result: ProviderScanResult,
-}
-
 pub(crate) fn product_provider_set() -> Vec<Arc<dyn ProviderBackend>> {
     BuiltInProviderKind::product_kinds()
         .into_iter()
@@ -100,7 +83,7 @@ pub(crate) fn run_provider_runner(args: impl Iterator<Item = String>) -> Result<
     std::io::stdin()
         .read_to_string(&mut input)
         .map_err(|error| format!("provider runner failed to read stdin: {error}"))?;
-    let request: RunnerRequest = serde_json::from_str(&input)
+    let request: RunnerRequest<BuiltInProviderKind> = serde_json::from_str(&input)
         .map_err(|error| format!("provider runner request decode failed: {error}"))?;
 
     let provider = request.provider.instantiate();
@@ -124,219 +107,48 @@ pub(crate) fn run_provider_runner(args: impl Iterator<Item = String>) -> Result<
     Ok(ExitCode::SUCCESS)
 }
 
-struct IsolatedBuiltInBackend {
-    kind: BuiltInProviderKind,
-    provider_id: String,
-    rules: Box<[RuleMetadata]>,
-    timeout: Duration,
-    scope: ScanScope,
-}
+struct IsolatedBuiltInBackend(SubprocessProviderBackend<BuiltInProviderKind>);
 
 impl IsolatedBuiltInBackend {
     fn new(kind: BuiltInProviderKind) -> Self {
         let provider = kind.instantiate();
-        Self {
+        let resolver: ExecutableResolver = Arc::new(resolve_lintai_driver_path);
+        Self(SubprocessProviderBackend::new(
             kind,
-            provider_id: provider.id().to_owned(),
-            rules: provider.rules().to_vec().into_boxed_slice(),
-            timeout: kind.timeout(),
-            scope: kind.scope(),
-        }
-    }
-
-    fn run_child(&self, request: RunnerRequest) -> ProviderScanResult {
-        let executable = match resolve_lintai_driver_path() {
-            Ok(path) => path,
-            Err(message) => {
-                return ProviderScanResult::new(
-                    Vec::new(),
-                    vec![ProviderError::new(self.id(), message)],
-                );
-            }
-        };
-        let request_json = match serde_json::to_vec(&request) {
-            Ok(value) => value,
-            Err(error) => {
-                return ProviderScanResult::new(
-                    Vec::new(),
-                    vec![ProviderError::new(
-                        self.id(),
-                        format!("provider runner request encode failed: {error}"),
-                    )],
-                );
-            }
-        };
-        let mut child = match Command::new(executable)
-            .arg("__provider-runner")
-            .stdin(Stdio::piped())
-            .stdout(Stdio::piped())
-            .stderr(Stdio::piped())
-            .spawn()
-        {
-            Ok(child) => child,
-            Err(error) => {
-                return ProviderScanResult::new(
-                    Vec::new(),
-                    vec![ProviderError::new(
-                        self.id(),
-                        format!("provider runner spawn failed: {error}"),
-                    )],
-                );
-            }
-        };
-
-        let mut stdin = match child.stdin.take() {
-            Some(stdin) => stdin,
-            None => {
-                return ProviderScanResult::new(
-                    Vec::new(),
-                    vec![ProviderError::new(
-                        self.id(),
-                        "provider runner stdin was unavailable".to_owned(),
-                    )],
-                );
-            }
-        };
-        if let Err(error) = stdin.write_all(&request_json) {
-            let _ = child.kill();
-            let _ = child.wait();
-            return ProviderScanResult::new(
-                Vec::new(),
-                vec![ProviderError::new(
-                    self.id(),
-                    format!("provider runner request write failed: {error}"),
-                )],
-            );
-        }
-        drop(stdin);
-
-        let mut stdout = match child.stdout.take() {
-            Some(stdout) => stdout,
-            None => {
-                let _ = child.kill();
-                let _ = child.wait();
-                return ProviderScanResult::new(
-                    Vec::new(),
-                    vec![ProviderError::new(
-                        self.id(),
-                        "provider runner stdout was unavailable".to_owned(),
-                    )],
-                );
-            }
-        };
-        let mut stderr = child.stderr.take();
-        let started = Instant::now();
-
-        loop {
-            match child.try_wait() {
-                Ok(Some(status)) => {
-                    let mut output = String::new();
-                    let _ = stdout.read_to_string(&mut output);
-                    let stderr_output = read_optional_stderr(&mut stderr);
-                    if !status.success() {
-                        let suffix = if stderr_output.is_empty() {
-                            String::new()
-                        } else {
-                            format!(": {stderr_output}")
-                        };
-                        return ProviderScanResult::new(
-                            Vec::new(),
-                            vec![ProviderError::new(
-                                self.id(),
-                                format!("provider runner exited unsuccessfully{suffix}"),
-                            )],
-                        );
-                    }
-                    let response: RunnerResponse = match serde_json::from_str(&output) {
-                        Ok(response) => response,
-                        Err(error) => {
-                            return ProviderScanResult::new(
-                                Vec::new(),
-                                vec![ProviderError::new(
-                                    self.id(),
-                                    format!("provider runner response decode failed: {error}"),
-                                )],
-                            );
-                        }
-                    };
-                    return response.result;
-                }
-                Ok(None) => {
-                    if started.elapsed() >= self.timeout {
-                        let _ = child.kill();
-                        let _ = child.wait();
-                        return ProviderScanResult::new(
-                            Vec::new(),
-                            vec![ProviderError::timeout(
-                                self.id(),
-                                format!(
-                                    "isolated provider child was terminated after exceeding timeout {:?}",
-                                    self.timeout
-                                ),
-                            )],
-                        );
-                    }
-                    thread::sleep(Duration::from_millis(5));
-                }
-                Err(error) => {
-                    let _ = child.kill();
-                    let _ = child.wait();
-                    return ProviderScanResult::new(
-                        Vec::new(),
-                        vec![ProviderError::new(
-                            self.id(),
-                            format!("provider runner wait failed: {error}"),
-                        )],
-                    );
-                }
-            }
-        }
+            provider.id().to_owned(),
+            provider.rules().to_vec(),
+            kind.timeout(),
+            kind.scope(),
+            resolver,
+            "__provider-runner",
+        ))
     }
 }
 
 impl ProviderBackend for IsolatedBuiltInBackend {
     fn id(&self) -> &str {
-        &self.provider_id
+        self.0.id()
     }
 
     fn rules(&self) -> &[RuleMetadata] {
-        &self.rules
+        self.0.rules()
     }
 
     fn scan_scope(&self) -> ScanScope {
-        self.scope
+        self.0.scan_scope()
     }
 
     fn check_result(&self, ctx: &ScanContext) -> ProviderScanResult {
-        self.run_child(RunnerRequest {
-            provider: self.kind,
-            phase: RunnerPhase::File,
-            scan: Some(ctx.clone()),
-            workspace: None,
-        })
+        self.0.check_result(ctx)
     }
 
     fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
-        self.run_child(RunnerRequest {
-            provider: self.kind,
-            phase: RunnerPhase::Workspace,
-            scan: None,
-            workspace: Some(ctx.clone()),
-        })
+        self.0.check_workspace_result(ctx)
     }
 
     fn timeout(&self) -> Duration {
-        self.timeout
+        self.0.timeout()
     }
-}
-
-fn read_optional_stderr(stderr: &mut Option<std::process::ChildStderr>) -> String {
-    let Some(stderr) = stderr.as_mut() else {
-        return String::new();
-    };
-    let mut output = String::new();
-    let _ = stderr.read_to_string(&mut output);
-    output.trim().to_owned()
 }
 
 #[cfg(debug_assertions)]
@@ -421,7 +233,7 @@ mod tests {
         resolve_lintai_driver_path,
     };
     use lintai_api::{Artifact, ArtifactKind, ScanContext, SourceFormat};
-    use lintai_engine::ProviderBackend;
+    use lintai_runtime::ProviderBackend;
 
     fn scan_context() -> ScanContext {
         let artifact = Artifact::new("SKILL.md", ArtifactKind::Skill, SourceFormat::Markdown);

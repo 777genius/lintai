@@ -1,6 +1,8 @@
 use lintai_api::{Artifact, ArtifactKind, DocumentSemantics, RegionKind, SourceFormat};
 
+use crate::detection_rules;
 use crate::parse_document;
+use crate::surface::{all_surface_specs, surface_spec};
 
 #[test]
 fn keeps_frontmatter_as_a_region_and_semantics() {
@@ -151,4 +153,33 @@ fn keeps_multiline_html_comment_as_single_region() {
             .iter()
             .any(|region| region.kind == RegionKind::HtmlComment && region.span.start_byte == 0)
     );
+}
+
+#[test]
+fn surface_specs_are_unique_by_id_and_surface_pair() {
+    let mut ids = std::collections::BTreeSet::new();
+    let mut pairs = std::collections::BTreeSet::new();
+
+    for spec in all_surface_specs() {
+        assert!(ids.insert(spec.id), "duplicate surface id {}", spec.id);
+        assert!(
+            pairs.insert(format!("{:?}/{:?}", spec.artifact_kind, spec.format)),
+            "duplicate surface pair {:?}/{:?}",
+            spec.artifact_kind,
+            spec.format
+        );
+    }
+}
+
+#[test]
+fn every_detection_rule_resolves_to_a_surface_spec() {
+    for rule in detection_rules() {
+        let spec = surface_spec(rule.artifact_kind, rule.format);
+        assert!(
+            spec.is_some(),
+            "missing surface spec for {:?}/{:?}",
+            rule.artifact_kind,
+            rule.format
+        );
+    }
 }

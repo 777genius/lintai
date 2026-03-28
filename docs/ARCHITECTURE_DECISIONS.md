@@ -1,6 +1,6 @@
 # lintai — Architecture Decisions (canonical)
 
-> Статус: **зафиксировано** (последнее обновление: 2026-02-28)
+> Статус: **зафиксировано** (последнее обновление: 2026-03-28)
 > Цель: сохранить фундаментальные решения, которые дорого менять после 5K+ LOC.
 
 ## 0) Invariants (не меняем)
@@ -77,7 +77,8 @@
 ## 6) File type detection
 
 - `FileTypeDetector` живёт в engine (router).
-- Адаптеры регистрируют detection rules (filename/path/ext + optional content probe).
+- Адаптеры регистрируют surfaces через единый `SurfaceSpec` registry:
+  detection rules (filename/path/ext + optional content probe) и parse wiring собираются из одного источника истины.
 - Пользователь может override детекцию через `lintai.toml` (для edge cases вроде `SKILL.md` как docs).
 
 ## 7) `RuleProvider` contract
@@ -94,6 +95,7 @@ MVP стартует с **6–7 крейтов**:
 - **`lintai-api` (public)**: stable contract (types + traits + макросы).
 - **`lintai-testing` (internal in v0.1)**: support harness while it still depends on engine internals.
 - **`lintai-engine` (internal)**: оркестратор/pipeline (suppress/cache как модули).
+- **`lintai-runtime` (internal)**: execution backends + subprocess protocol + timeout plumbing.
 - **`lintai-parse` (internal)**: format-facing parsing (`markdown/json/shell/frontmatter`).
 - **`lintai-adapters` (internal)**: artifact-kind routing and domain semantics over parsed format output.
 - **`lintai-ai-security` (internal)**: native rules provider.
@@ -156,21 +158,31 @@ MVP стартует с **6–7 крейтов**:
 - remediation lives on `Finding.fix` / `Suggestion.fix`, not on a provider fix hook
 
 Engine execution model вынесен отдельно в backend layer; lifecycle hooks больше не используются.
+`lintai-engine` владеет orchestration/validation/finalize semantics, а `lintai-runtime` владеет backend execution и subprocess protocol.
 Execution policy belongs to `ProviderBackend`, not to `RuleProvider`, including timeout and scan scope.
 
 ### Timeout model (current)
 
 - **Shipped built-in providers** use isolated execution in product/runtime composition and can be terminated on timeout.
+- **Single binary invariant** сохраняется: isolated provider execution uses self-reentry into the same `lintai` executable (`__provider-runner`), not a second shipped binary.
 - **In-process execution** remains available only through an explicit backend wrapper, not as hidden raw provider injection.
 
 ### Native rules registration (зафиксировано)
 
-- В native provider’е правила регистрируются через **явный список/массив** (без `inventory`-магии).
+- В native provider’е правила собираются через **явный deterministic aggregator** (без `inventory`-магии).
 - Источник истины для native rules = **единый rule spec**:
   metadata + surface + detection class + remediation + suggestion fix.
+- Rule specs хранятся в surface-local modules; корневой registry only aggregates them in fixed order.
 - Provider only iterates specs and attaches remediation from the spec itself; provider-wide `match rule_code` remediation tables не допускаются.
 - Rules read **per-artifact signals** (`MarkdownSignals`, `HookSignals`, `JsonSignals`), вычисленные один раз на файл.
 - Perf regressions guard-rail: internal **work-budget tests** verify one signal build per scan and single-pass surface analysis; checked-in sample-repo perf baselines and a `criterion` bench harness remain available for profiling and regression review.
+
+## 11.1) Per-file execution model (current)
+
+- Discovery stays separate and deterministic.
+- Per-file scan phase runs with **bounded thread-based parallelism**.
+- Each worker builds a local `ScanSummary`; the engine performs central merge + `finalize()` to preserve deterministic output.
+- Workspace providers still run in a separate sequential phase after `WorkspaceIndex` construction.
 
 ### Stable / Preview policy for native rules (зафиксировано)
 

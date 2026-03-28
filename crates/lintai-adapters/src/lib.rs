@@ -1,6 +1,7 @@
 mod adapter;
 mod error;
 mod model;
+mod surface;
 
 #[cfg(test)]
 mod tests;

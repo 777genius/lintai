@@ -2,14 +2,14 @@ use std::sync::Arc;
 
 use lintai_api::{ArtifactKind, RuleProvider, RuleTier, ScanScope, Severity, SourceFormat};
 use lintai_engine::{
-    EngineBuilder, EngineConfig, FileSuppressions, NoopSuppressionMatcher,
-    internal::InProcessProviderBackend, load_workspace_config,
+    EngineBuilder, EngineConfig, FileSuppressions, NoopSuppressionMatcher, load_workspace_config,
 };
+use lintai_runtime::InProcessProviderBackend;
 use lintai_testing::ProviderHarness;
 
 use crate::{
     AiSecurityProvider, PolicyMismatchProvider,
-    registry::{DetectionClass, RULE_SPECS},
+    registry::{DetectionClass, rule_specs},
 };
 
 #[test]
@@ -2313,7 +2313,7 @@ fn provider_rules_are_derived_from_rule_specs() {
         .iter()
         .map(|meta| (meta.code, meta.tier))
         .collect();
-    let spec_rules: Vec<_> = RULE_SPECS
+    let spec_rules: Vec<_> = rule_specs()
         .iter()
         .map(|spec| (spec.metadata.code, spec.metadata.tier))
         .collect();
@@ -2323,7 +2323,7 @@ fn provider_rules_are_derived_from_rule_specs() {
 
 #[test]
 fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
-    for spec in RULE_SPECS {
+    for spec in rule_specs() {
         match spec.detection_class {
             DetectionClass::Heuristic => {
                 assert_eq!(

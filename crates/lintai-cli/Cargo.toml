@@ -9,6 +9,7 @@ publish = false
 [dependencies]
 lintai-api.workspace = true
 lintai-engine.workspace = true
+lintai-runtime.workspace = true
 lintai-ai-security.workspace = true
 lintai-fix.workspace = true
 ignore.workspace = true

@@ -1,6 +1,6 @@
 use lintai_api::{ProviderScanResult, RuleMetadata, RuleProvider, ScanContext};
 
-use crate::registry::RULE_SPECS;
+use crate::registry::rule_specs;
 use crate::signals::{ArtifactSignals, SignalWorkBudget};
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
@@ -18,7 +18,7 @@ pub struct AiSecurityProvider {
 impl Default for AiSecurityProvider {
     fn default() -> Self {
         Self {
-            rules: RULE_SPECS.iter().map(|spec| spec.metadata).collect(),
+            rules: rule_specs().iter().map(|spec| spec.metadata).collect(),
         }
     }
 }
@@ -46,7 +46,7 @@ pub fn profile_scan_context(ctx: &ScanContext) -> ProviderPerfProfile {
 
 fn scan_rule_specs(ctx: &ScanContext) -> (Vec<lintai_api::Finding>, ProviderPerfProfile) {
     let signals = ArtifactSignals::from_context(ctx);
-    let applicable_specs = RULE_SPECS
+    let applicable_specs = rule_specs()
         .iter()
         .filter(|spec| spec.surface.matches(ctx.artifact.kind))
         .copied()

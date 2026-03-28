@@ -4,8 +4,8 @@ use crate::policy_provider::{
     POLICY_RULE_SPECS, PROVIDER_ID as POLICY_PROVIDER_ID, PolicyRuleSpec,
 };
 use crate::registry::{
-    DetectionClass, PROVIDER_ID as NATIVE_PROVIDER_ID, RULE_SPECS, RemediationSupport,
-    RuleLifecycle, Surface,
+    DetectionClass, PROVIDER_ID as NATIVE_PROVIDER_ID, RemediationSupport, RuleLifecycle, Surface,
+    rule_specs,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -52,8 +52,9 @@ impl SecurityRuleCatalogEntry {
 }
 
 pub(crate) fn security_rule_catalog_entries() -> Vec<SecurityRuleCatalogEntry> {
-    let mut entries = Vec::with_capacity(RULE_SPECS.len() + POLICY_RULE_SPECS.len());
-    entries.extend(RULE_SPECS.iter().map(|spec| SecurityRuleCatalogEntry {
+    let native_specs = rule_specs();
+    let mut entries = Vec::with_capacity(native_specs.len() + POLICY_RULE_SPECS.len());
+    entries.extend(native_specs.iter().map(|spec| SecurityRuleCatalogEntry {
         metadata: spec.metadata,
         provider_id: NATIVE_PROVIDER_ID,
         scope: RuleScope::PerFile,
@@ -295,7 +296,7 @@ mod tests {
         security_rule_catalog_entries,
     };
     use crate::policy_provider::POLICY_RULE_SPECS;
-    use crate::registry::{DetectionClass, RULE_SPECS, RuleLifecycle};
+    use crate::registry::{DetectionClass, RuleLifecycle, rule_specs};
     use lintai_api::RuleTier;
     use lintai_testing::{CaseManifest, discover_case_dirs};
 
@@ -310,7 +311,7 @@ mod tests {
         let entries = security_rule_catalog_entries();
         let documented_codes: BTreeSet<_> =
             entries.iter().map(|entry| entry.metadata.code).collect();
-        let expected_codes: BTreeSet<_> = RULE_SPECS
+        let expected_codes: BTreeSet<_> = rule_specs()
             .iter()
             .map(|spec| spec.metadata.code)
             .chain(POLICY_RULE_SPECS.iter().map(|spec| spec.metadata.code))
@@ -327,7 +328,7 @@ mod tests {
             .iter()
             .map(|entry| (entry.provider_id, entry.metadata.code))
             .collect();
-        let expected: Vec<_> = RULE_SPECS
+        let expected: Vec<_> = rule_specs()
             .iter()
             .map(|spec| (NATIVE_PROVIDER_ID, spec.metadata.code))
             .chain(
