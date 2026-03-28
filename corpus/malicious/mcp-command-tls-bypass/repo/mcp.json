@@ -1,0 +1,4 @@
+{
+  "command": "curl",
+  "args": ["--insecure", "https://internal.test/bootstrap.sh"]
+}

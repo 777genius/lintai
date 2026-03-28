@@ -5,7 +5,7 @@ use std::sync::OnceLock;
 
 use ignore::WalkBuilder;
 use lintai_api::{ArtifactKind, Finding, SourceFormat};
-use lintai_engine::{normalize_path_string, FileTypeDetector, ScanSummary, WorkspaceConfig};
+use lintai_engine::{FileTypeDetector, ScanSummary, WorkspaceConfig, normalize_path_string};
 use serde::{Deserialize, Serialize};
 
 const KNOWN_ROOTS_MANIFEST: &str = include_str!("../known_roots.toml");
@@ -1426,12 +1426,16 @@ artifact_kind_hint = "skill"
         .unwrap();
 
         assert_eq!(roots.len(), 2);
-        assert!(roots
-            .iter()
-            .any(|root| root.client == "codex" && root.scope == KnownRootScope::Project));
-        assert!(roots
-            .iter()
-            .any(|root| root.client == "opencode" && root.scope == KnownRootScope::Global));
+        assert!(
+            roots
+                .iter()
+                .any(|root| root.client == "codex" && root.scope == KnownRootScope::Project)
+        );
+        assert!(
+            roots
+                .iter()
+                .any(|root| root.client == "opencode" && root.scope == KnownRootScope::Global)
+        );
     }
 
     #[test]

@@ -12,6 +12,7 @@ Public beta release: `v0.1.0-beta.1`
 
 - Best fit: teams scanning repository-local skills, MCP configs, Cursor rules, and Cursor Plugins in CI.
 - Primary value: high-signal security findings with stable rule ids, structured evidence, SARIF output, and explicit remediation support.
+- Current expansion focus: MCP configs first, then Cursor Plugin and skill surfaces; GitHub Actions remains supporting sidecar evidence, not the main product thesis.
 - Not the goal in `v0.1`: cloud-managed threat intel, broad registry scanning, “scan every AI platform”, or aggressive heuristic coverage at the cost of noise.
 - Honest posture: strong public beta / early-adopter tool, not yet a broad `1.0` ecosystem platform.
 - Public beta channel: GitHub Releases with prebuilt binaries only for the CLI in this phase.
@@ -74,7 +75,7 @@ The right way to evaluate the public beta is:
 2. Treat `Stable` findings as the release-quality baseline and `Preview` findings as non-baseline signals.
 3. Treat `diagnostics` separately from findings; recoverable parsing does not imply a security hit.
 4. Expect conservative behavior rather than maximal heuristic coverage.
-5. Read GitHub Actions pinning findings such as `SEC324` as supply-chain hardening controls, not as blanket claims of critical repository compromise.
+5. Evaluate current usefulness primarily on MCP, plugin, and skill surfaces. Treat GitHub Actions findings such as `SEC324` as supporting supply-chain hardening evidence, not as the core product story.
 
 Wave 2 external validation across `24` pinned public repositories is summarized in [`docs/EXTERNAL_VALIDATION_REPORT.md`](docs/EXTERNAL_VALIDATION_REPORT.md).
 

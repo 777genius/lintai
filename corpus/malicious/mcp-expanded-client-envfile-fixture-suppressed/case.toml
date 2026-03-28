@@ -1,0 +1,13 @@
+id = "mcp-expanded-client-envfile-fixture-suppressed"
+kind = "malicious"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_runtime_error_kinds = []
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC302", "SEC329", "SEC336"]
+
+[snapshot]
+kind = "none"
+name = ""

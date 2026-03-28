@@ -18,6 +18,66 @@ pub(crate) fn check_mcp_shell_wrapper(
     )
 }
 
+pub(crate) fn check_mcp_mutable_launcher(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.mutable_mcp_launcher_span.clone()),
+        "MCP configuration uses a mutable package launcher in committed config",
+    )
+}
+
+pub(crate) fn check_mcp_inline_download_exec(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.inline_download_exec_command_span.clone()),
+        "MCP configuration command downloads remote content and pipes it directly into a shell",
+    )
+}
+
+pub(crate) fn check_mcp_network_tls_bypass_command(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.network_tls_bypass_command_span.clone()),
+        "MCP configuration command disables TLS verification in a network-capable execution path",
+    )
+}
+
+pub(crate) fn check_mcp_broad_env_file(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.broad_env_file_span.clone()),
+        "repo-local MCP client config loads a broad dotenv-style envFile value",
+    )
+}
+
 pub(crate) fn check_plain_http_config(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

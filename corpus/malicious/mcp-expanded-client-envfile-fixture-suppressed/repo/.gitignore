@@ -1,0 +1,4 @@
+!tests/
+!tests/fixtures/
+!tests/fixtures/.roo/
+!tests/fixtures/.roo/mcp.json

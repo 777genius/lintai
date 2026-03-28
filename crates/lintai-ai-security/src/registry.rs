@@ -4,8 +4,10 @@ use lintai_api::{
 };
 
 use crate::github_workflow_rules::{
+    check_github_workflow_pull_request_target_head_checkout,
     check_github_workflow_unpinned_third_party_action,
-    check_github_workflow_untrusted_run_interpolation,
+    check_github_workflow_untrusted_run_interpolation, check_github_workflow_write_all_permissions,
+    check_github_workflow_write_capable_third_party_action,
 };
 use crate::hook_rules::{
     check_hook_base64_exec, check_hook_download_exec, check_hook_plain_http_exfil,
@@ -14,9 +16,10 @@ use crate::hook_rules::{
 use crate::json_rules::{
     check_json_dangerous_endpoint_host, check_json_hidden_instruction, check_json_literal_secret,
     check_json_sensitive_env_reference, check_json_suspicious_remote_endpoint,
-    check_json_unsafe_plugin_path, check_mcp_credential_env_passthrough, check_mcp_shell_wrapper,
-    check_plain_http_config, check_static_auth_exposure_config,
-    check_trust_verification_disabled_config,
+    check_json_unsafe_plugin_path, check_mcp_broad_env_file, check_mcp_credential_env_passthrough,
+    check_mcp_inline_download_exec, check_mcp_mutable_launcher,
+    check_mcp_network_tls_bypass_command, check_mcp_shell_wrapper, check_plain_http_config,
+    check_static_auth_exposure_config, check_trust_verification_disabled_config,
 };
 use crate::markdown_rules::{
     check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
@@ -435,6 +438,83 @@ declare_rule! {
     }
 }
 
+declare_rule! {
+    pub struct GithubWorkflowPullRequestTargetHeadCheckoutRule {
+        code: "SEC326",
+        summary: "GitHub Actions pull_request_target workflow checks out untrusted pull request head content",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct GithubWorkflowWriteAllPermissionsRule {
+        code: "SEC327",
+        summary: "GitHub Actions workflow grants GITHUB_TOKEN write-all permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct GithubWorkflowWriteCapableThirdPartyActionRule {
+        code: "SEC328",
+        summary: "GitHub Actions workflow combines explicit write-capable permissions with a third-party action",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct McpMutableLauncherRule {
+        code: "SEC329",
+        summary: "MCP configuration launches tooling through a mutable package runner",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpInlineDownloadExecRule {
+        code: "SEC330",
+        summary: "MCP configuration command downloads remote content and pipes it into a shell",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpNetworkTlsBypassCommandRule {
+        code: "SEC331",
+        summary: "MCP configuration command disables TLS verification in a network-capable execution path",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpBroadEnvFileRule {
+        code: "SEC336",
+        summary: "Repo-local MCP client config loads a broad dotenv-style envFile",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
 type CheckFn = fn(&ScanContext, &ArtifactSignals, RuleMetadata) -> Vec<Finding>;
 type SafeFixFn = fn(&Finding) -> Fix;
 type SuggestionFixFn = fn(&ScanContext, &Finding) -> Option<Fix>;
@@ -556,7 +636,7 @@ pub(crate) const HEURISTIC_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed pre
 pub(crate) const STRUCTURAL_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.";
 pub(crate) const WORKSPACE_PREVIEW_REQUIREMENTS: &str = "Needs workspace precision review, linked benign/malicious corpus proof, and completed stable checklist metadata.";
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 36] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 43] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1164,7 +1244,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 36] = [
         surface: Surface::GithubWorkflow,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
-            rationale: "Checks workflow uses: entries for third-party actions that are not pinned to immutable commit SHAs.",
+            rationale: "Checks workflow uses: entries for third-party actions that rely on mutable refs instead of immutable commit SHAs; positioned as a supply-chain hardening control rather than a direct exploit claim.",
             malicious_case_ids: &["github-workflow-third-party-unpinned-action"],
             benign_case_ids: &["github-workflow-pinned-third-party-action"],
             requires_structured_evidence: true,
@@ -1190,6 +1270,131 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 36] = [
         safe_fix: None,
         suggestion_message: Some(
             "avoid interpolating github.event or inputs values directly inside run commands; route them through validated env handling first",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GithubWorkflowPullRequestTargetHeadCheckoutRule::METADATA,
+        surface: Surface::GithubWorkflow,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks pull_request_target workflows for actions/checkout steps that explicitly pull untrusted pull request head refs instead of the safer default merge context.",
+            malicious_case_ids: &["github-workflow-pull-request-target-head-checkout"],
+            benign_case_ids: &["github-workflow-pull-request-target-safe-checkout"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "GithubWorkflowSignals event gating plus line-level checkout ref extraction for pull_request_target workflows.",
+        },
+        check: check_github_workflow_pull_request_target_head_checkout,
+        safe_fix: None,
+        suggestion_message: Some(
+            "avoid checking out github.event.pull_request.head.* or github.head_ref in pull_request_target workflows",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GithubWorkflowWriteAllPermissionsRule::METADATA,
+        surface: Surface::GithubWorkflow,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks workflow permissions for the explicit write-all shortcut, which exceeds least-privilege guidance for GITHUB_TOKEN.",
+            malicious_case_ids: &["github-workflow-write-all-permissions"],
+            benign_case_ids: &["github-workflow-read-only-permissions"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "GithubWorkflowSignals line-level permissions extraction for semantically confirmed workflow YAML.",
+        },
+        check: check_github_workflow_write_all_permissions,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace write-all with the minimal explicit permissions your workflow actually needs",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GithubWorkflowWriteCapableThirdPartyActionRule::METADATA,
+        surface: Surface::GithubWorkflow,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Write-capable token scopes and third-party action usage are compositional and need more corpus-backed precision review before a stable launch.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_github_workflow_write_capable_third_party_action,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether write-capable token permissions are necessary when the workflow runs third-party actions",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpMutableLauncherRule::METADATA,
+        surface: Surface::Json,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP config command launchers for mutable package-runner forms such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.",
+            malicious_case_ids: &["mcp-mutable-launcher"],
+            benign_case_ids: &["mcp-pinned-launcher-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command/args analysis over ArtifactKind::McpConfig objects with launcher-specific argument gating.",
+        },
+        check: check_mcp_mutable_launcher,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace the mutable launcher with a vendored, pinned, or otherwise reproducible MCP execution path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpInlineDownloadExecRule::METADATA,
+        surface: Surface::Json,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP config command and args values for explicit curl|shell or wget|shell execution chains.",
+            malicious_case_ids: &["mcp-inline-download-exec"],
+            benign_case_ids: &["mcp-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command/args string analysis over ArtifactKind::McpConfig objects, limited to explicit download-pipe-shell patterns.",
+        },
+        check: check_mcp_inline_download_exec,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the inline download-and-exec flow from the MCP command and pin or vendor the fetched content instead",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpNetworkTlsBypassCommandRule::METADATA,
+        surface: Surface::Json,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP config command and args values for explicit TLS-bypass tokens in a network-capable execution context.",
+            malicious_case_ids: &["mcp-command-tls-bypass"],
+            benign_case_ids: &["mcp-network-tls-verified-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command/args string analysis over ArtifactKind::McpConfig objects gated by network markers plus TLS-bypass tokens.",
+        },
+        check: check_mcp_network_tls_bypass_command,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove TLS-bypass flags or NODE_TLS_REJECT_UNAUTHORIZED=0 from the network-capable MCP command path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpBroadEnvFileRule::METADATA,
+        surface: Surface::Json,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Broad envFile loading is useful review signal, but whether it is materially risky still depends on repo-local review policy and env contents.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_mcp_broad_env_file,
+        safe_fix: None,
+        suggestion_message: Some(
+            "prefer narrower env injection over broad repo-local .env files for committed MCP client configs",
         ),
         suggestion_fix: None,
     },

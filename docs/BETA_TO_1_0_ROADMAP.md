@@ -112,8 +112,10 @@ Prioritized next areas:
 
 - more MCP structural auth/config misuse patterns
 - plugin hook execution/network patterns
+- conservative skills/instructions expansion where signals stay deterministic enough for `Preview`
 - workspace policy mismatches with stronger evidence
 - parser-aware instruction misuse that can stay in `Preview` until validated
+- keep GitHub Actions shipped as sidecar evidence, but do not use it as the main post-beta expansion track until AI-native usefulness is stronger
 
 ### Governance
 

@@ -1,0 +1,7 @@
+{
+  "servers": {
+    "demo": {
+      "envFile": "${workspaceFolder}/.env"
+    }
+  }
+}

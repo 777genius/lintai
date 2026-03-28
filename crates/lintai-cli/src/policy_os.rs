@@ -406,7 +406,7 @@ fn policy_stats(matches: &[PolicyMatch]) -> PolicyStats {
 #[cfg(test)]
 mod tests {
     use super::{
-        evaluate_machine_policy, load_machine_policy, PolicyAction, MACHINE_POLICY_SCHEMA_VERSION,
+        MACHINE_POLICY_SCHEMA_VERSION, PolicyAction, evaluate_machine_policy, load_machine_policy,
     };
     use crate::known_scan::{InventoryProvenance, InventoryRoot};
     use lintai_api::Severity;

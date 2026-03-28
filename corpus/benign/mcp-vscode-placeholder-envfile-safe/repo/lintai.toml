@@ -1,0 +1,10 @@
+[project]
+root = true
+
+[files]
+include = [
+  "*.json",
+  "**/*.json",
+  ".vscode/**/*.json",
+  "**/.vscode/**/*.json",
+]

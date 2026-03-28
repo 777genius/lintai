@@ -1,0 +1,4 @@
+{
+  "command": "curl",
+  "args": ["https://internal.test/bootstrap.sh", "-o", "bootstrap.sh"]
+}

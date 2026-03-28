@@ -1,6 +1,6 @@
 # lintai — Project Index
 
-> Offline-first security scanner для AI Agent Skills, MCP servers, IDE plugins (Rust).
+> Offline-first security scanner для repository-local AI agent artifacts: skills, MCP configs, Cursor rules, Cursor Plugin surfaces (Rust).
 > Единая точка входа: все документы проекта со ссылками и описаниями.
 
 ---
@@ -10,7 +10,7 @@
 Краткая сводка принятых решений. Canonical truth lives in repo-local docs and release files, not in research notes.
 
 - **Проект**: lintai — свой проект с нуля; cc-audit (55K LOC, Ryo Ebata) = reference only, НЕ форк
-- **MVP v0.1 scope**: `SKILL.md`, `CLAUDE.md`, `.mdc/.cursorrules`, `mcp.json`, **Cursor Plugins**
+- **MVP v0.1 scope**: `SKILL.md`, `CLAUDE.md`, `.mdc/.cursorrules`, `mcp.json`, **Cursor Plugin surfaces**
 - **MVP v0.1 targets**: сборка/релиз сразу на всех таргетах (включая Windows и Linux musl)
 - **Стек**: Rust monorepo, current v0.1 core in a compact internal workspace
 - **Архитектура**: `lintai-api` = stable contract, `lintai-engine` = orchestrator, `lintai-parse` = format parsing, `lintai-adapters` = domain routing/semantics
@@ -147,7 +147,7 @@ Research files below are reference material. They are useful for background and 
 
 ## Research — Deep Dive (../../research/deep/)
 
-54 файла глубоких исследований, сгруппированные по 7 темам.
+55 файлов глубоких исследований, сгруппированные по 7 темам.
 
 ### Architecture & Design (13 файлов)
 
@@ -165,38 +165,38 @@ Research files below are reference material. They are useful for background and 
 - [plugin-system-lessons.md](../../research/deep/plugin-system-lessons.md) — Уроки из ESLint, Webpack, Babel, Jenkins
 - [plugin-ecosystem-failures.md](../../research/deep/plugin-ecosystem-failures.md) — Post-mortems: WordPress, Babel, Jenkins anti-patterns
 
-### Parsers, Rules & Detection (8 файлов)
+### Parsers, Rules & Detection (7 файлов)
 
 - `[start]` **[markdown-parsing-pitfalls.md](../../research/deep/markdown-parsing-pitfalls.md)** — 28 граблей MD парсинга. HTML comments = 10/10 attack surface. 25 уникальных правил
 - `[start]` **[auto-fix-architecture.md](../../research/deep/auto-fix-architecture.md)** — Auto-fix = killer feature (ни один конкурент не имеет)
-- [fixable-patterns-catalog.md](../../research/deep/fixable-patterns-catalog.md) — Каталог 250+ portable правил из OSS
 - [false-positive-reduction.md](../../research/deep/false-positive-reduction.md) — Google Tricorder, 3-pass стратегии снижения FP
 - [real-malware-samples.md](../../research/deep/real-malware-samples.md) — ClawHavoc 824, postmark-mcp, CVEs — реальные образцы
 - [security-detection-libraries.md](../../research/deep/security-detection-libraries.md) — Nosey Parker, Gitleaks, GuardDog, Vigil
 - [existing-malicious-detectors.md](../../research/deep/existing-malicious-detectors.md) — Обзор существующих детекторов
 - [yara-x-verified-implementation.md](../../research/deep/yara-x-verified-implementation.md) — YARA-X v1.13: build.rs, serialize, wasmtime
 
-### Performance, Config & Pitfalls (8 файлов)
+### Performance, Config & Pitfalls (9 файлов)
 
 - `[start]` **[config-design-failures.md](../../research/deep/config-design-failures.md)** — Unknown keys = error, кэш хэширования, explain-config CLI
 - `[start]` **[linter-postmortems.md](../../research/deep/linter-postmortems.md)** — Post-mortems: Ruff 0.x, ESLint flat config, Clippy
 - **[rust-cli-pitfalls.md](../../research/deep/rust-cli-pitfalls.md)** — SIGPIPE, CRLF, atty, UNC paths, exit codes
 - **[sarif-ci-pitfalls.md](../../research/deep/sarif-ci-pitfalls.md)** — SARIF в CI/CD: 5K limit, 10MB, fingerprints
+- [lintai-engineering-performance-security-ci.md](../../research/deep/lintai-engineering-performance-security-ci.md) — Constraints по performance, parser security и CI с первичными источниками
 - [performance-pitfalls.md](../../research/deep/performance-pitfalls.md) — RegexSet, mimalloc +15-30%, rayon 3-5x
 - [monorepo-versioning-pitfalls.md](../../research/deep/monorepo-versioning-pitfalls.md) — publish=false для internal, release-plz bugs
 - [sarif-and-annotations.md](../../research/deep/sarif-and-annotations.md) — SARIF 2.1.0 спецификация, примеры
 - [cicd-integration-patterns.md](../../research/deep/cicd-integration-patterns.md) — Semgrep/Trivy/CodeQL паттерны CI/CD
 
-### Competitive Analysis (9 файлов)
+### Competitive Analysis (10 файлов)
 
 - `[start]` **[honest-threat-assessment.md](../../research/deep/honest-threat-assessment.md)** — Честная оценка угроз и позиционирования
-- **[snyk-agent-scan-deep-dive.md](../../research/deep/snyk-agent-scan-deep-dive.md)** — Snyk купил Invariant Labs. ~1,971★ (март 2026), Apache-2.0
-- **[cisco-scanners-deep-dive.md](../../research/deep/cisco-scanners-deep-dive.md)** — Cisco: 3 сканера (mcp-scanner, skill-scanner, a2a-scanner)
+- **[snyk-agent-scan-deep-dive.md](../../research/deep/snyk-agent-scan-deep-dive.md)** — Snyk agent-scan: acquisition context, OSS posture и продуктовые ограничения
+- **[cisco-scanners-deep-dive.md](../../research/deep/cisco-scanners-deep-dive.md)** — Семейство Cisco scanner-ов для MCP/skills/A2A и их trade-offs
 - [cisco-scanners-analysis.md](../../research/deep/cisco-scanners-analysis.md) — Cisco 95% FP, YARA rules, Meta-Analyzer
 - [new-competitors-deep-dive.md](../../research/deep/new-competitors-deep-dive.md) — MEDUSA, Agentic Radar, Ant Group MCPScan
 - [missed-oss-competitors.md](../../research/deep/missed-oss-competitors.md) — Упущенные OSS конкуренты
 - [niche-competitors-triple-agent-synthesis.md](../../research/deep/niche-competitors-triple-agent-synthesis.md) — Ниша lintai: синтез 3 агентов (skillscan-security, mcphound, CI/IDE слой, catch-up)
-- [tencent-ai-infra-guard-deep-dive.md](../../research/deep/tencent-ai-infra-guard-deep-dive.md) — Tencent A.I.G: ~3,321★ (март 2026), Docker-only, LLM-dependent
+- [tencent-ai-infra-guard-deep-dive.md](../../research/deep/tencent-ai-infra-guard-deep-dive.md) — Tencent A.I.G: Docker-first, LLM-dependent posture и ограничения
 - [enterprise-ai-security-landscape.md](../../research/deep/enterprise-ai-security-landscape.md) — Корпоративный ландшафт AI security
 - [mcp-scan-deep-analysis.md](../../research/deep/mcp-scan-deep-analysis.md) — mcp-scan internals, 5 critical bugs
 
@@ -260,8 +260,9 @@ Research files below are reference material. They are useful for background and 
 
 | Метрика | Значение |
 |---------|----------|
-| Всего документов | 86+ |
-| Research deep dive | 54 файла, ~49K строк |
-| Research agents использовано | 19+ (несколько батчей) |
+| Canonical docs (`lintai/docs`) | 22 файла |
+| Research docs (`research/`) | 90 файлов |
+| Research deep dive | 55 файлов, ~47.5K строк |
+| Research agents использовано | 19 (исторические батчи) |
 | Покрытие | Рынок, конкуренты, архитектура, rules engine, distribution, CI/CD, legal, monetization, 14 платформ, real malware, YARA-X, parser pitfalls |
 | Код | Активный Rust workspace `lintai`; `v0.1` delivery cycle completed, current work is post-`v0.1` rule and remediation expansion |

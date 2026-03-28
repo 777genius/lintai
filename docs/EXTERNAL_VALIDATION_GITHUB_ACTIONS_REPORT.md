@@ -37,7 +37,11 @@
 - `2` runtime parser errors
 - `2` diagnostics
 
+Interpretation note: the stable signal in this wave is dominated by `SEC324`. That rule is intentionally positioned as a supply-chain hardening control for mutable third-party action refs, not as a blanket claim that the affected repositories are critically compromised.
+
 ## Stable Hits
+
+Most stable hits in this wave are `SEC324` supply-chain hardening findings on third-party actions pinned to tags or versions instead of immutable full SHAs.
 
 - `IO-Aerospace-software-engineering/mcp-server`: `1` stable finding(s) via `SEC324`
 - `TencentCloudBase/CloudBase-MCP`: `1` stable finding(s) via `SEC324`
@@ -66,4 +70,4 @@
 
 ## Recommended Next Step
 
-Promote the highest-signal GitHub Actions repos into future usefulness evidence sets and expand workflow checks conservatively.
+Keep this package as supporting sidecar evidence only. The next expansion batches should return to MCP, Cursor Plugin, and skill surfaces rather than extending GitHub Actions further right now.

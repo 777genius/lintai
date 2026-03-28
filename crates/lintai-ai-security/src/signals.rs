@@ -253,7 +253,13 @@ impl HookSignals {
 #[derive(Clone, Debug, Default)]
 pub(crate) struct JsonSignals {
     pub(crate) locator: Option<JsonLocationMap>,
+    pub(crate) expanded_mcp_client_variant: bool,
+    pub(crate) fixture_like_expanded_mcp_client_variant: bool,
     pub(crate) shell_wrapper_span: Option<Span>,
+    pub(crate) mutable_mcp_launcher_span: Option<Span>,
+    pub(crate) inline_download_exec_command_span: Option<Span>,
+    pub(crate) network_tls_bypass_command_span: Option<Span>,
+    pub(crate) broad_env_file_span: Option<Span>,
     pub(crate) plain_http_endpoint_span: Option<Span>,
     pub(crate) credential_env_passthrough_span: Option<Span>,
     pub(crate) trust_verification_disabled_span: Option<Span>,
@@ -283,7 +289,18 @@ impl JsonSignals {
             metrics.json_locator_builds += 1;
         }
         let fallback_len = ctx.content.len();
-        let mut signals = Self::default();
+        let mut signals = Self {
+            expanded_mcp_client_variant: is_expanded_mcp_client_variant_path(
+                &ctx.artifact.normalized_path,
+            ),
+            fixture_like_expanded_mcp_client_variant:
+                is_fixture_like_expanded_mcp_client_variant_path(&ctx.artifact.normalized_path),
+            ..Self::default()
+        };
+        if signals.fixture_like_expanded_mcp_client_variant {
+            signals.locator = locator;
+            return Some(signals);
+        }
         let mut path = Vec::new();
         visit_json_value(
             value,
@@ -493,6 +510,9 @@ impl ServerJsonSignals {
 pub(crate) struct GithubWorkflowSignals {
     pub(crate) unpinned_third_party_action_spans: Vec<Span>,
     pub(crate) direct_untrusted_run_interpolation_spans: Vec<Span>,
+    pub(crate) pull_request_target_head_checkout_spans: Vec<Span>,
+    pub(crate) write_all_permission_spans: Vec<Span>,
+    pub(crate) write_capable_third_party_action_spans: Vec<Span>,
 }
 
 impl GithubWorkflowSignals {
@@ -510,15 +530,35 @@ impl GithubWorkflowSignals {
         }
 
         let mut signals = Self::default();
+        let has_pull_request_target = workflow_has_event(root.get("on"), "pull_request_target");
+        let has_explicit_write_permissions = workflow_has_explicit_write_permissions(root);
+        let mut saw_checkout_step = false;
+        let mut current_checkout_indent = None;
         let mut offset = 0usize;
         for segment in ctx.content.split_inclusive('\n') {
             let line = segment.strip_suffix('\n').unwrap_or(segment);
             metrics.markdown_regions_visited += 1;
-            collect_github_workflow_line(&mut signals, line, offset);
+            collect_github_workflow_line(
+                &mut signals,
+                line,
+                offset,
+                has_pull_request_target,
+                has_explicit_write_permissions,
+                &mut saw_checkout_step,
+                &mut current_checkout_indent,
+            );
             offset += segment.len();
         }
         if offset < ctx.content.len() {
-            collect_github_workflow_line(&mut signals, &ctx.content[offset..], offset);
+            collect_github_workflow_line(
+                &mut signals,
+                &ctx.content[offset..],
+                offset,
+                has_pull_request_target,
+                has_explicit_write_permissions,
+                &mut saw_checkout_step,
+                &mut current_checkout_indent,
+            );
         }
         Some(signals)
     }
@@ -529,6 +569,12 @@ struct HookToken<'a> {
     text: &'a str,
     start: usize,
     end: usize,
+}
+
+#[derive(Clone, Debug, Default)]
+struct McpCommandSignalSpan {
+    inline_download_exec: Option<Span>,
+    network_tls_bypass: Option<Span>,
 }
 
 fn collect_hook_line(
@@ -654,6 +700,8 @@ fn visit_json_value(
     if let Value::Object(map) = value {
         let mut shell_command_key = None;
         let mut shell_has_dash_c = false;
+        let command = map.get("command").and_then(Value::as_str);
+        let args = map.get("args").and_then(Value::as_array);
 
         for (key, nested) in map {
             if signals.shell_wrapper_span.is_none() {
@@ -805,6 +853,45 @@ fn visit_json_value(
             {
                 signals.unsafe_plugin_path_span =
                     Some(resolve_child_value_span(path, key, locator, fallback_len));
+            }
+
+            if signals.broad_env_file_span.is_none()
+                && artifact_kind == ArtifactKind::McpConfig
+                && signals.expanded_mcp_client_variant
+                && key == "envFile"
+                && let Some(text) = nested.as_str()
+                && is_broad_dotenv_env_file(text)
+            {
+                signals.broad_env_file_span =
+                    Some(resolve_child_value_span(path, key, locator, fallback_len));
+            }
+        }
+
+        if artifact_kind == ArtifactKind::McpConfig {
+            if signals.mutable_mcp_launcher_span.is_none()
+                && let Some(command) = command
+                && is_mutable_mcp_launcher(command, args)
+            {
+                signals.mutable_mcp_launcher_span = Some(resolve_child_value_span(
+                    path,
+                    "command",
+                    locator,
+                    fallback_len,
+                ));
+            }
+
+            if (signals.inline_download_exec_command_span.is_none()
+                || signals.network_tls_bypass_command_span.is_none())
+                && let Some(command_signals) =
+                    find_mcp_command_signal_span(path, command, args, locator, fallback_len)
+            {
+                if signals.inline_download_exec_command_span.is_none() {
+                    signals.inline_download_exec_command_span =
+                        command_signals.inline_download_exec;
+                }
+                if signals.network_tls_bypass_command_span.is_none() {
+                    signals.network_tls_bypass_command_span = command_signals.network_tls_bypass;
+                }
             }
         }
 
@@ -1351,6 +1438,121 @@ fn has_download_exec(lowered: &str) -> bool {
     has_download && (has_pipe_exec || has_chmod_exec)
 }
 
+fn has_inline_download_pipe_exec(lowered: &str) -> bool {
+    let has_download = lowered.contains("curl ") || lowered.contains("wget ");
+    let has_pipe_exec =
+        lowered.contains("| sh") || lowered.contains("| bash") || lowered.contains("| zsh");
+    has_download && has_pipe_exec
+}
+
+fn is_mutable_mcp_launcher(command: &str, args: Option<&Vec<Value>>) -> bool {
+    if command.eq_ignore_ascii_case("npx") || command.eq_ignore_ascii_case("uvx") {
+        return true;
+    }
+
+    let first_arg = args
+        .and_then(|items| items.first())
+        .and_then(Value::as_str)
+        .unwrap_or_default();
+
+    ((command.eq_ignore_ascii_case("pnpm") || command.eq_ignore_ascii_case("yarn"))
+        && first_arg.eq_ignore_ascii_case("dlx"))
+        || (command.eq_ignore_ascii_case("pipx") && first_arg.eq_ignore_ascii_case("run"))
+}
+
+fn find_mcp_command_signal_span(
+    path: &[JsonPathSegment],
+    command: Option<&str>,
+    args: Option<&Vec<Value>>,
+    locator: Option<&JsonLocationMap>,
+    fallback_len: usize,
+) -> Option<McpCommandSignalSpan> {
+    let mut spans = McpCommandSignalSpan::default();
+    let has_network_context = command
+        .map(|value| looks_like_network_capable_command(&value.to_ascii_lowercase()))
+        .unwrap_or(false)
+        || args
+            .into_iter()
+            .flatten()
+            .filter_map(Value::as_str)
+            .any(|value| looks_like_network_capable_command(&value.to_ascii_lowercase()));
+
+    if let Some(command) = command {
+        let lowered = command.to_ascii_lowercase();
+        if has_inline_download_pipe_exec(&lowered) {
+            spans.inline_download_exec = Some(resolve_child_value_span(
+                path,
+                "command",
+                locator,
+                fallback_len,
+            ));
+        }
+        if has_network_context
+            && let Some(relative) = find_command_tls_bypass_relative_span(command)
+        {
+            spans.network_tls_bypass = Some(resolve_child_relative_value_span(
+                path,
+                "command",
+                "command",
+                relative,
+                locator,
+                fallback_len,
+            ));
+        }
+    }
+
+    if let Some(args) = args {
+        for (index, item) in args.iter().enumerate() {
+            let Some(text) = item.as_str() else {
+                continue;
+            };
+            let lowered = text.to_ascii_lowercase();
+            let arg_path = with_child_index(&with_child_key(path, "args"), index);
+
+            if spans.inline_download_exec.is_none() && has_inline_download_pipe_exec(&lowered) {
+                spans.inline_download_exec =
+                    Some(resolve_value_span(&arg_path, locator, fallback_len));
+            }
+
+            if spans.network_tls_bypass.is_none()
+                && has_network_context
+                && let Some(relative) = find_command_tls_bypass_relative_span(text)
+            {
+                spans.network_tls_bypass = Some(resolve_relative_value_span(
+                    &arg_path,
+                    relative,
+                    locator,
+                    fallback_len,
+                ));
+            }
+        }
+    }
+
+    (spans.inline_download_exec.is_some() || spans.network_tls_bypass.is_some()).then_some(spans)
+}
+
+fn looks_like_network_capable_command(lowered: &str) -> bool {
+    lowered.contains("curl")
+        || lowered.contains("wget")
+        || lowered.contains("http://")
+        || lowered.contains("https://")
+}
+
+fn find_command_tls_bypass_relative_span(text: &str) -> Option<Span> {
+    if let Some(start) = text.find("NODE_TLS_REJECT_UNAUTHORIZED=0") {
+        return Some(Span::new(
+            start,
+            start + "NODE_TLS_REJECT_UNAUTHORIZED=0".len(),
+        ));
+    }
+
+    if let Some(start) = text.find("--insecure") {
+        return Some(Span::new(start, start + "--insecure".len()));
+    }
+
+    find_standalone_short_flag(text, "-k").map(|start| Span::new(start, start + 2))
+}
+
 fn has_base64_exec(lowered: &str) -> bool {
     let has_base64_decode = lowered.contains("base64 -d") || lowered.contains("base64 --decode");
     let has_exec = lowered.contains("| sh")
@@ -1514,6 +1716,31 @@ fn is_fixture_like_tool_json_path(normalized_path: &str) -> bool {
     })
 }
 
+fn is_expanded_mcp_client_variant_path(normalized_path: &str) -> bool {
+    normalized_path.ends_with(".cursor/mcp.json")
+        || normalized_path.ends_with(".vscode/mcp.json")
+        || normalized_path.ends_with(".roo/mcp.json")
+        || normalized_path.ends_with(".kiro/settings/mcp.json")
+}
+
+fn is_fixture_like_expanded_mcp_client_variant_path(normalized_path: &str) -> bool {
+    is_expanded_mcp_client_variant_path(normalized_path)
+        && normalized_path.split('/').any(|segment| {
+            matches!(
+                segment.to_ascii_lowercase().as_str(),
+                "test"
+                    | "tests"
+                    | "testdata"
+                    | "fixture"
+                    | "fixtures"
+                    | "example"
+                    | "examples"
+                    | "sample"
+                    | "samples"
+            )
+        })
+}
+
 fn find_non_loopback_http_relative_span(text: &str) -> Option<Span> {
     if !starts_with_ascii_case_insensitive(text, "http://") {
         return None;
@@ -1628,6 +1855,28 @@ fn shell_tokens(line: &str) -> Vec<HookToken<'_>> {
     tokens
 }
 
+fn find_standalone_short_flag(text: &str, flag: &str) -> Option<usize> {
+    let bytes = text.as_bytes();
+    let flag_bytes = flag.as_bytes();
+    if flag_bytes.is_empty() || bytes.len() < flag_bytes.len() {
+        return None;
+    }
+
+    for index in 0..=bytes.len() - flag_bytes.len() {
+        if &bytes[index..index + flag_bytes.len()] != flag_bytes {
+            continue;
+        }
+        let before_ok = index == 0 || bytes[index - 1].is_ascii_whitespace();
+        let after_index = index + flag_bytes.len();
+        let after_ok = after_index == bytes.len() || bytes[after_index].is_ascii_whitespace();
+        if before_ok && after_ok {
+            return Some(index);
+        }
+    }
+
+    None
+}
+
 fn resolve_key_span(
     path: &[JsonPathSegment],
     locator: Option<&JsonLocationMap>,
@@ -1735,6 +1984,12 @@ fn resolve_child_relative_value_span(
 fn with_child_key(path: &[JsonPathSegment], key: &str) -> Vec<JsonPathSegment> {
     let mut next = path.to_vec();
     next.push(JsonPathSegment::Key(key.to_owned()));
+    next
+}
+
+fn with_child_index(path: &[JsonPathSegment], index: usize) -> Vec<JsonPathSegment> {
+    let mut next = path.to_vec();
+    next.push(JsonPathSegment::Index(index));
     next
 }
 
@@ -1849,6 +2104,21 @@ fn is_literal_secret_value(value: &str) -> bool {
         && !lowered.contains("your-secret")
 }
 
+fn is_broad_dotenv_env_file(value: &str) -> bool {
+    let trimmed = value.trim();
+    if trimmed.is_empty()
+        || contains_dynamic_reference(trimmed)
+        || contains_template_placeholder(trimmed)
+    {
+        return false;
+    }
+
+    let normalized = trimmed.replace('\\', "/");
+    let basename = normalized.rsplit('/').next().unwrap_or(normalized.as_str());
+    let lowered = basename.to_ascii_lowercase();
+    lowered == ".env" || lowered.starts_with(".env.")
+}
+
 fn contains_template_placeholder(value: &str) -> bool {
     let bytes = value.as_bytes();
     let mut index = 0usize;
@@ -1952,6 +2222,49 @@ fn is_semantic_github_workflow(root: &serde_json::Map<String, Value>) -> bool {
         || root.values().any(value_contains_github_workflow_steps)
 }
 
+fn workflow_has_event(value: Option<&Value>, event_name: &str) -> bool {
+    let Some(value) = value else {
+        return false;
+    };
+    match value {
+        Value::String(name) => name.eq_ignore_ascii_case(event_name),
+        Value::Array(values) => values.iter().any(|value| {
+            value
+                .as_str()
+                .is_some_and(|name| name.eq_ignore_ascii_case(event_name))
+        }),
+        Value::Object(map) => map.keys().any(|name| name.eq_ignore_ascii_case(event_name)),
+        _ => false,
+    }
+}
+
+fn workflow_has_explicit_write_permissions(root: &serde_json::Map<String, Value>) -> bool {
+    root.get("permissions")
+        .is_some_and(permission_value_has_write_capability)
+        || root
+            .get("jobs")
+            .and_then(Value::as_object)
+            .is_some_and(|jobs| {
+                jobs.values().any(|job| {
+                    job.as_object()
+                        .and_then(|job| job.get("permissions"))
+                        .is_some_and(permission_value_has_write_capability)
+                })
+            })
+}
+
+fn permission_value_has_write_capability(value: &Value) -> bool {
+    match value {
+        Value::String(permission) => permission.eq_ignore_ascii_case("write-all"),
+        Value::Object(map) => map.values().any(|value| {
+            value
+                .as_str()
+                .is_some_and(|permission| permission.eq_ignore_ascii_case("write"))
+        }),
+        _ => false,
+    }
+}
+
 fn value_contains_github_workflow_steps(value: &Value) -> bool {
     match value {
         Value::Array(items) => items.iter().any(value_contains_github_workflow_steps),
@@ -1964,17 +2277,45 @@ fn value_contains_github_workflow_steps(value: &Value) -> bool {
     }
 }
 
-fn collect_github_workflow_line(signals: &mut GithubWorkflowSignals, line: &str, offset: usize) {
+fn collect_github_workflow_line(
+    signals: &mut GithubWorkflowSignals,
+    line: &str,
+    offset: usize,
+    has_pull_request_target: bool,
+    has_explicit_write_permissions: bool,
+    saw_checkout_step: &mut bool,
+    current_checkout_indent: &mut Option<usize>,
+) {
     let trimmed = line.trim_start();
     if trimmed.starts_with('#') {
         return;
     }
+    let line_indent = line.len() - trimmed.len();
+
+    if current_checkout_indent
+        .is_some_and(|indent| line_indent <= indent && !trimmed.starts_with('-'))
+    {
+        *current_checkout_indent = None;
+    }
 
     if let Some((start, end)) = find_github_workflow_key_value_span(line, "uses") {
         let value = &line[start..end];
+        let normalized = normalize_yaml_scalar(value);
+        if is_checkout_action_reference(normalized) {
+            *saw_checkout_step = true;
+            *current_checkout_indent = Some(line_indent);
+        } else {
+            *current_checkout_indent = None;
+        }
+
         if find_third_party_unpinned_action_relative_span(value).is_some() {
             signals
                 .unpinned_third_party_action_spans
+                .push(Span::new(offset + start, offset + end));
+        }
+        if has_explicit_write_permissions && is_third_party_action_reference(normalized) {
+            signals
+                .write_capable_third_party_action_spans
                 .push(Span::new(offset + start, offset + end));
         }
     }
@@ -1988,6 +2329,28 @@ fn collect_github_workflow_line(signals: &mut GithubWorkflowSignals, line: &str,
                     offset + start + relative.start_byte,
                     offset + start + relative.end_byte,
                 ));
+        }
+    }
+
+    if let Some((start, end)) = find_github_workflow_key_value_span(line, "permissions") {
+        let value = normalize_yaml_scalar(&line[start..end]);
+        if value.eq_ignore_ascii_case("write-all") {
+            signals
+                .write_all_permission_spans
+                .push(Span::new(offset + start, offset + end));
+        }
+    }
+
+    if let Some((start, end)) = find_github_workflow_key_value_span(line, "ref") {
+        let value = &line[start..end];
+        if has_pull_request_target
+            && *saw_checkout_step
+            && current_checkout_indent.is_some_and(|indent| line_indent > indent)
+            && find_untrusted_pull_request_ref_relative_span(value).is_some()
+        {
+            signals
+                .pull_request_target_head_checkout_spans
+                .push(Span::new(offset + start, offset + end));
         }
     }
 }
@@ -2014,7 +2377,7 @@ fn normalize_yaml_scalar(value: &str) -> &str {
     value.trim().trim_matches('"').trim_matches('\'')
 }
 
-fn find_third_party_unpinned_action_relative_span(value: &str) -> Option<Span> {
+fn parse_github_action_reference(value: &str) -> Option<(&str, &str, &str)> {
     let normalized = normalize_yaml_scalar(value);
     if normalized.starts_with("./") || normalized.starts_with("docker://") {
         return None;
@@ -2023,11 +2386,44 @@ fn find_third_party_unpinned_action_relative_span(value: &str) -> Option<Span> {
     let mut segments = action.split('/');
     let owner = segments.next()?;
     let repo = segments.next()?;
-    if owner.eq_ignore_ascii_case("actions") || repo.is_empty() {
+    if owner.is_empty() || repo.is_empty() || segments.next().is_some() {
+        return None;
+    }
+    Some((owner, repo, reference))
+}
+
+fn is_third_party_action_reference(value: &str) -> bool {
+    parse_github_action_reference(value)
+        .is_some_and(|(owner, _, _)| !owner.eq_ignore_ascii_case("actions"))
+}
+
+fn is_checkout_action_reference(value: &str) -> bool {
+    parse_github_action_reference(value).is_some_and(|(owner, repo, _)| {
+        owner.eq_ignore_ascii_case("actions") && repo.eq_ignore_ascii_case("checkout")
+    })
+}
+
+fn find_third_party_unpinned_action_relative_span(value: &str) -> Option<Span> {
+    let normalized = normalize_yaml_scalar(value);
+    let Some((owner, _, reference)) = parse_github_action_reference(normalized) else {
+        return None;
+    };
+    if owner.eq_ignore_ascii_case("actions") {
         return None;
     }
     let is_full_sha = reference.len() == 40 && reference.chars().all(|ch| ch.is_ascii_hexdigit());
     (!is_full_sha).then_some(Span::new(0, normalized.len()))
+}
+
+fn find_untrusted_pull_request_ref_relative_span(value: &str) -> Option<Span> {
+    let normalized = normalize_yaml_scalar(value);
+    matches!(
+        normalized,
+        "${{ github.event.pull_request.head.sha }}"
+            | "${{ github.event.pull_request.head.ref }}"
+            | "${{ github.head_ref }}"
+    )
+    .then_some(Span::new(0, normalized.len()))
 }
 
 fn find_direct_untrusted_run_interpolation_relative_span(value: &str) -> Option<Span> {

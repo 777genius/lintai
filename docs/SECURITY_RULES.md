@@ -47,6 +47,13 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC323` | server.json auth header carries material without an explicit secret flag | Preview | `preview_blocked` | Warn | `per_file` | `server_json` | `structural` | `message_only` |
 | `SEC324` | GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` |
 | `SEC325` | GitHub Actions workflow interpolates untrusted expression data directly inside a run command | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` |
+| `SEC326` | GitHub Actions pull_request_target workflow checks out untrusted pull request head content | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` |
+| `SEC327` | GitHub Actions workflow grants GITHUB_TOKEN write-all permissions | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` |
+| `SEC328` | GitHub Actions workflow combines explicit write-capable permissions with a third-party action | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` |
+| `SEC329` | MCP configuration launches tooling through a mutable package runner | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
+| `SEC330` | MCP configuration command downloads remote content and pipes it into a shell | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
+| `SEC331` | MCP configuration command disables TLS verification in a network-capable execution path | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
+| `SEC336` | Repo-local MCP client config loads a broad dotenv-style envFile | Preview | `preview_blocked` | Warn | `per_file` | `json` | `structural` | `message_only` |
 | `SEC401` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC402` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC403` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
@@ -670,13 +677,13 @@ Canonical catalog for the shipped security rules currently exposed by:
 - Tier: `Stable`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
-- Graduation Rationale: Checks workflow uses: entries for third-party actions that are not pinned to immutable commit SHAs.
+- Graduation Rationale: Checks workflow uses: entries for third-party actions that rely on mutable refs instead of immutable commit SHAs; positioned as a supply-chain hardening control rather than a direct exploit claim.
 - Deterministic Signal Basis: GithubWorkflowSignals line-level uses: extraction gated by semantically confirmed workflow YAML.
 - Malicious Corpus: `github-workflow-third-party-unpinned-action`
 - Benign Corpus: `github-workflow-pinned-third-party-action`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC325` — GitHub Actions workflow interpolates untrusted expression data directly inside a run command
 
@@ -690,6 +697,131 @@ Canonical catalog for the shipped security rules currently exposed by:
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Shell safety depends on how the interpolated expression is consumed inside the run command.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC326` — GitHub Actions pull_request_target workflow checks out untrusted pull request head content
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `github_workflow`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks pull_request_target workflows for actions/checkout steps that explicitly pull untrusted pull request head refs instead of the safer default merge context.
+- Deterministic Signal Basis: GithubWorkflowSignals event gating plus line-level checkout ref extraction for pull_request_target workflows.
+- Malicious Corpus: `github-workflow-pull-request-target-head-checkout`
+- Benign Corpus: `github-workflow-pull-request-target-safe-checkout`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC327` — GitHub Actions workflow grants GITHUB_TOKEN write-all permissions
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `github_workflow`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks workflow permissions for the explicit write-all shortcut, which exceeds least-privilege guidance for GITHUB_TOKEN.
+- Deterministic Signal Basis: GithubWorkflowSignals line-level permissions extraction for semantically confirmed workflow YAML.
+- Malicious Corpus: `github-workflow-write-all-permissions`
+- Benign Corpus: `github-workflow-read-only-permissions`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC328` — GitHub Actions workflow combines explicit write-capable permissions with a third-party action
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `github_workflow`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Write-capable token scopes and third-party action usage are compositional and need more corpus-backed precision review before a stable launch.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC329` — MCP configuration launches tooling through a mutable package runner
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP config command launchers for mutable package-runner forms such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.
+- Deterministic Signal Basis: JsonSignals command/args analysis over ArtifactKind::McpConfig objects with launcher-specific argument gating.
+- Malicious Corpus: `mcp-mutable-launcher`
+- Benign Corpus: `mcp-pinned-launcher-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC330` — MCP configuration command downloads remote content and pipes it into a shell
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP config command and args values for explicit curl|shell or wget|shell execution chains.
+- Deterministic Signal Basis: JsonSignals command/args string analysis over ArtifactKind::McpConfig objects, limited to explicit download-pipe-shell patterns.
+- Malicious Corpus: `mcp-inline-download-exec`
+- Benign Corpus: `mcp-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC331` — MCP configuration command disables TLS verification in a network-capable execution path
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP config command and args values for explicit TLS-bypass tokens in a network-capable execution context.
+- Deterministic Signal Basis: JsonSignals command/args string analysis over ArtifactKind::McpConfig objects gated by network markers plus TLS-bypass tokens.
+- Malicious Corpus: `mcp-command-tls-bypass`
+- Benign Corpus: `mcp-network-tls-verified-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC336` — Repo-local MCP client config loads a broad dotenv-style envFile
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Broad envFile loading is useful review signal, but whether it is materially risky still depends on repo-local review policy and env contents.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 

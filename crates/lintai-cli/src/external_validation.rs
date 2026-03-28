@@ -434,6 +434,14 @@ fn render_report_from_ledgers(
     let preview_signal_repos = preview_signal_repos(current);
     let expanded_surface_counts = expanded_surface_counts(current);
     let tool_rule_hits = rule_count(current, &["SEC314", "SEC315", "SEC316", "SEC317", "SEC318"]);
+    let mcp_rule_hits = rule_count(
+        current,
+        &[
+            "SEC301", "SEC302", "SEC303", "SEC304", "SEC305", "SEC306", "SEC307", "SEC308",
+            "SEC309", "SEC310", "SEC329", "SEC330", "SEC331",
+        ],
+    );
+    let env_file_hits = rule_count(current, &["SEC336"]);
 
     let datadog_status = phase_target_status(
         baseline,
@@ -507,13 +515,38 @@ fn render_report_from_ledgers(
     output.push_str("## Hybrid Scope Expansion Results\n\n");
     output.push_str("Current wave inventory for the newly expanded JSON lanes:\n\n");
     output.push_str(&format!(
+        "- repos with root `mcp.json`: `{}`\n",
+        expanded_surface_counts.top_level_mcp
+    ));
+    output.push_str(&format!(
         "- repos with `.mcp.json`: `{}`\n",
         expanded_surface_counts.dot_mcp
+    ));
+    output.push_str(&format!(
+        "- repos with `.cursor/mcp.json`: `{}`\n",
+        expanded_surface_counts.cursor_mcp
+    ));
+    output.push_str(&format!(
+        "- repos with `.vscode/mcp.json`: `{}`\n",
+        expanded_surface_counts.vscode_mcp
+    ));
+    output.push_str(&format!(
+        "- repos with `.roo/mcp.json`: `{}`\n",
+        expanded_surface_counts.roo_mcp
+    ));
+    output.push_str(&format!(
+        "- repos with `.kiro/settings/mcp.json`: `{}`\n",
+        expanded_surface_counts.kiro_mcp
     ));
     output.push_str(&format!(
         "- repos with `.claude/mcp/*.json`: `{}`\n",
         expanded_surface_counts.claude_mcp
     ));
+    output.push_str(&format!(
+        "- MCP findings from expanded client-config coverage (`SEC301`-`SEC331`): `{}`\n",
+        mcp_rule_hits
+    ));
+    output.push_str(&format!("- findings from `SEC336`: `{}`\n", env_file_hits));
     output.push_str(&format!(
         "- repos with `tool_descriptor_json`: `{}`\n",
         expanded_surface_counts.tool_descriptor_json
@@ -522,13 +555,22 @@ fn render_report_from_ledgers(
         "- findings from `SEC314`-`SEC318`: `{}`\n",
         tool_rule_hits
     ));
+    output.push_str(&format!(
+        "- repos where new MCP client-config variants existed only under fixture-like paths: `{}`\n",
+        expanded_surface_counts.fixture_only_client_variants
+    ));
+    if env_file_hits == 0 && mcp_rule_hits == 0 {
+        output.push_str(
+            "- expanded MCP client-config coverage produced no external MCP hits on the canonical cohort yet\n",
+        );
+    }
     if tool_rule_hits == 0 {
         output.push_str(
             "- no non-fixture external `Stable` hits were produced yet on committed tool-descriptor JSON\n",
         );
     }
     output.push_str(
-        "- fixture/testdata/example suppression stayed active; this batch did not create a fake `Stable` usefulness signal from fixture-like paths\n\n",
+        "- fixture/testdata/example suppression stayed active for the newly added MCP client-config variants and did not create a fake usefulness signal from fixture-like paths\n\n",
     );
 
     output.push_str("## Delta From Previous Wave\n\n");
@@ -990,8 +1032,8 @@ fn render_github_actions_extension_report(
     ledger: &ExternalValidationLedger,
 ) -> String {
     let counts = aggregate_counts(ledger);
-    let stable_hit_repos = repos_with_rule_hits(ledger, &["SEC324"], true);
-    let preview_hit_repos = repos_with_rule_hits(ledger, &["SEC325"], false);
+    let stable_hit_repos = repos_with_rule_hits(ledger, &["SEC324", "SEC326", "SEC327"], true);
+    let preview_hit_repos = repos_with_rule_hits(ledger, &["SEC325", "SEC328"], false);
     let runtime_issue_repos = repos_with_runtime_issues(ledger, shortlist);
     let stress = shortlist
         .repos
@@ -1043,7 +1085,7 @@ fn render_github_actions_extension_report(
 
     output.push_str("## Stable Hits\n\n");
     if stable_hit_repos.is_empty() {
-        output.push_str("- no external `Stable` hits were observed from `SEC324`\n\n");
+        output.push_str("- no external `Stable` hits were observed from `SEC324`-`SEC327`\n\n");
     } else {
         for (repo, count, rule_codes) in &stable_hit_repos {
             output.push_str(&format!(
@@ -1051,12 +1093,21 @@ fn render_github_actions_extension_report(
                 format_rule_codes(&rule_codes)
             ));
         }
+        let observed_stable_rules = unique_rule_codes_from_hits(&stable_hit_repos);
+        let missing_stable_rules =
+            missing_rule_codes(&["SEC324", "SEC326", "SEC327"], &observed_stable_rules);
+        if !missing_stable_rules.is_empty() {
+            output.push_str(&format!(
+                "\nWithin this batch, no external stable hits were observed from {}.\n",
+                format_rule_codes(&missing_stable_rules)
+            ));
+        }
         output.push('\n');
     }
 
     output.push_str("## Preview Hits\n\n");
     if preview_hit_repos.is_empty() {
-        output.push_str("- no preview hits were observed from `SEC325`\n\n");
+        output.push_str("- no preview hits were observed from `SEC325` or `SEC328`\n\n");
     } else {
         for (repo, count, rule_codes) in preview_hit_repos {
             output.push_str(&format!(
@@ -1109,6 +1160,26 @@ fn preview_signal_repos(ledger: &ExternalValidationLedger) -> Vec<(String, usize
         .collect()
 }
 
+fn unique_rule_codes_from_hits(hits: &[(String, usize, Vec<String>)]) -> Vec<String> {
+    let mut codes = Vec::new();
+    for (_, _, hit_codes) in hits {
+        for code in hit_codes {
+            if !codes.contains(code) {
+                codes.push(code.clone());
+            }
+        }
+    }
+    codes
+}
+
+fn missing_rule_codes(expected: &[&str], observed: &[String]) -> Vec<String> {
+    expected
+        .iter()
+        .filter(|code| !observed.iter().any(|observed| observed == **code))
+        .map(|code| (*code).to_owned())
+        .collect()
+}
+
 fn format_rule_codes(rule_codes: &[String]) -> String {
     if rule_codes.is_empty() {
         "`unspecified`".to_owned()
@@ -1149,20 +1220,55 @@ fn category_counts(ledger: &ExternalValidationLedger) -> BTreeMap<String, usize>
 }
 
 struct ExpandedSurfaceCounts {
+    top_level_mcp: usize,
     dot_mcp: usize,
+    cursor_mcp: usize,
+    vscode_mcp: usize,
+    roo_mcp: usize,
+    kiro_mcp: usize,
     claude_mcp: usize,
+    fixture_only_client_variants: usize,
     tool_descriptor_json: usize,
 }
 
 fn expanded_surface_counts(ledger: &ExternalValidationLedger) -> ExpandedSurfaceCounts {
     ExpandedSurfaceCounts {
+        top_level_mcp: count_any_surface_presence(ledger, &["mcp.json"]),
         dot_mcp: count_surface_presence(ledger, ".mcp.json"),
+        cursor_mcp: count_any_surface_presence(
+            ledger,
+            &[".cursor/mcp.json", ".cursor/mcp.json (fixture-like)"],
+        ),
+        vscode_mcp: count_any_surface_presence(
+            ledger,
+            &[".vscode/mcp.json", ".vscode/mcp.json (fixture-like)"],
+        ),
+        roo_mcp: count_any_surface_presence(
+            ledger,
+            &[".roo/mcp.json", ".roo/mcp.json (fixture-like)"],
+        ),
+        kiro_mcp: count_any_surface_presence(
+            ledger,
+            &[
+                ".kiro/settings/mcp.json",
+                ".kiro/settings/mcp.json (fixture-like)",
+            ],
+        ),
         claude_mcp: count_surface_presence(ledger, ".claude/mcp/*.json"),
+        fixture_only_client_variants: count_surface_presence(
+            ledger,
+            "expanded_mcp_client_variant_fixture_only",
+        ),
         tool_descriptor_json: count_surface_presence(ledger, "tool_descriptor_json"),
     }
 }
 
 fn count_surface_presence(ledger: &ExternalValidationLedger, surface: &str) -> usize {
+    count_any_surface_presence(ledger, &[surface])
+}
+
+fn count_any_surface_presence(ledger: &ExternalValidationLedger, surfaces: &[&str]) -> usize {
+    let wanted = surfaces.iter().copied().collect::<BTreeSet<_>>();
     ledger
         .evaluations
         .iter()
@@ -1170,7 +1276,7 @@ fn count_surface_presence(ledger: &ExternalValidationLedger, surface: &str) -> u
             entry
                 .surfaces_present
                 .iter()
-                .any(|present| present == surface)
+                .any(|present| wanted.contains(present.as_str()))
         })
         .count()
 }
@@ -1483,14 +1589,27 @@ fn inventory_surfaces(repo_root: &Path) -> Result<InventoryArtifact, String> {
         if normalized.ends_with(".cursorrules") {
             surfaces.insert(".cursorrules".to_owned());
         }
-        if normalized.ends_with("mcp.json") {
+        if normalized == "mcp.json" {
             surfaces.insert("mcp.json".to_owned());
         }
         if normalized.ends_with(".mcp.json") {
             surfaces.insert(".mcp.json".to_owned());
         }
         if normalized.ends_with(".cursor/mcp.json") {
-            surfaces.insert(".cursor/mcp.json".to_owned());
+            insert_expanded_mcp_variant_surface(&mut surfaces, &normalized, ".cursor/mcp.json");
+        }
+        if normalized.ends_with(".vscode/mcp.json") {
+            insert_expanded_mcp_variant_surface(&mut surfaces, &normalized, ".vscode/mcp.json");
+        }
+        if normalized.ends_with(".roo/mcp.json") {
+            insert_expanded_mcp_variant_surface(&mut surfaces, &normalized, ".roo/mcp.json");
+        }
+        if normalized.ends_with(".kiro/settings/mcp.json") {
+            insert_expanded_mcp_variant_surface(
+                &mut surfaces,
+                &normalized,
+                ".kiro/settings/mcp.json",
+            );
         }
         if normalized.contains(".claude/mcp/") && normalized.ends_with(".json") {
             surfaces.insert(".claude/mcp/*.json".to_owned());
@@ -1532,6 +1651,22 @@ fn inventory_surfaces(repo_root: &Path) -> Result<InventoryArtifact, String> {
     Ok(InventoryArtifact {
         surfaces_present: surfaces.into_iter().collect(),
     })
+}
+
+fn insert_expanded_mcp_variant_surface(
+    surfaces: &mut BTreeSet<String>,
+    normalized_path: &str,
+    label: &str,
+) {
+    if normalized_path
+        .split('/')
+        .any(|segment| FIXTURE_PATH_SEGMENTS.contains(&segment.to_ascii_lowercase().as_str()))
+    {
+        surfaces.insert(format!("{label} (fixture-like)"));
+        surfaces.insert("expanded_mcp_client_variant_fixture_only".to_owned());
+    } else {
+        surfaces.insert(label.to_owned());
+    }
 }
 
 fn verify_repo_admission(
@@ -2280,9 +2415,18 @@ rationale = "demo"
 
         let markdown = render_report_from_ledgers(&baseline, &current);
         assert!(markdown.contains("## Hybrid Scope Expansion Results"));
+        assert!(markdown.contains("- repos with root `mcp.json`: `0`"));
         assert!(markdown.contains("- repos with `.mcp.json`: `1`"));
+        assert!(markdown.contains("- repos with `.cursor/mcp.json`: `0`"));
+        assert!(markdown.contains("- repos with `.vscode/mcp.json`: `0`"));
+        assert!(markdown.contains("- repos with `.roo/mcp.json`: `0`"));
+        assert!(markdown.contains("- repos with `.kiro/settings/mcp.json`: `0`"));
         assert!(markdown.contains("- repos with `.claude/mcp/*.json`: `1`"));
+        assert!(markdown.contains("- findings from `SEC336`: `0`"));
         assert!(markdown.contains("- repos with `tool_descriptor_json`: `1`"));
+        assert!(markdown.contains(
+            "- repos where new MCP client-config variants existed only under fixture-like paths: `0`"
+        ));
         assert!(markdown.contains("## Delta From Previous Wave"));
         assert!(markdown.contains("`datadog-labs/cursor-plugin`: `improved`"));
         assert!(
@@ -2566,8 +2710,8 @@ rationale = "demo"
                 surfaces_present: vec![".github/workflows/*.yml".to_owned()],
                 stable_findings: 1,
                 preview_findings: 1,
-                stable_rule_codes: vec!["SEC324".to_owned()],
-                preview_rule_codes: vec!["SEC325".to_owned()],
+                stable_rule_codes: vec!["SEC324".to_owned(), "SEC327".to_owned()],
+                preview_rule_codes: vec!["SEC325".to_owned(), "SEC328".to_owned()],
                 repo_verdict: "strong_fit".to_owned(),
                 stable_precision_notes: String::new(),
                 preview_signal_notes: String::new(),
@@ -2589,5 +2733,7 @@ rationale = "demo"
         assert!(markdown.contains("## Recommended Next Step"));
         assert!(markdown.contains("`SEC324`"));
         assert!(markdown.contains("`SEC325`"));
+        assert!(markdown.contains("`SEC327`"));
+        assert!(markdown.contains("`SEC328`"));
     }
 }

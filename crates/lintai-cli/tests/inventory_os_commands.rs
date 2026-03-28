@@ -120,17 +120,23 @@ fn inventory_os_user_scope_reports_provenance_and_findings() {
     let value = json_output(&output);
     let roots = value["inventory_roots"].as_array().unwrap();
     assert_eq!(roots.len(), 2);
-    assert!(roots
-        .iter()
-        .all(|root| root["provenance"]["origin_scope"] == "user"));
+    assert!(
+        roots
+            .iter()
+            .all(|root| root["provenance"]["origin_scope"] == "user")
+    );
     assert!(roots.iter().all(|root| root["mode"] == "lintable"));
     assert!(roots.iter().all(|root| root["risk_level"] == "high"));
-    assert!(roots
-        .iter()
-        .any(|root| { root["client"] == "windsurf" && root["surface"] == "mcp-config" }));
-    assert!(roots
-        .iter()
-        .any(|root| { root["client"] == "claude-desktop" && root["surface"] == "desktop-config" }));
+    assert!(
+        roots
+            .iter()
+            .any(|root| { root["client"] == "windsurf" && root["surface"] == "mcp-config" })
+    );
+    assert!(
+        roots.iter().any(|root| {
+            root["client"] == "claude-desktop" && root["surface"] == "desktop-config"
+        })
+    );
 
     let stats = &value["inventory_stats"];
     assert_eq!(stats["user_roots"], 2);
@@ -140,12 +146,16 @@ fn inventory_os_user_scope_reports_provenance_and_findings() {
     assert_eq!(stats["supported_artifacts_scanned"], 2);
 
     let findings = value["findings"].as_array().unwrap();
-    assert!(findings
-        .iter()
-        .any(|finding| finding["rule_code"] == "SEC301"));
-    assert!(findings
-        .iter()
-        .any(|finding| finding["rule_code"] == "SEC302"));
+    assert!(
+        findings
+            .iter()
+            .any(|finding| finding["rule_code"] == "SEC301")
+    );
+    assert!(
+        findings
+            .iter()
+            .any(|finding| finding["rule_code"] == "SEC302")
+    );
     assert!(findings.iter().any(|finding| {
         finding["location"]["normalized_path"]
             == canonical_display(&root.join(".codeium/windsurf/mcp_config.json"))
@@ -211,10 +221,12 @@ fn inventory_os_system_scope_is_truthful_when_no_system_roots_exist() {
     assert_eq!(output.status.code(), Some(0));
 
     let value = json_output(&output);
-    assert!(value
-        .get("inventory_roots")
-        .and_then(serde_json::Value::as_array)
-        .is_none_or(|roots| roots.is_empty()));
+    assert!(
+        value
+            .get("inventory_roots")
+            .and_then(serde_json::Value::as_array)
+            .is_none_or(|roots| roots.is_empty())
+    );
     assert_eq!(value["inventory_stats"]["system_roots"], 0);
     assert_eq!(value["findings"].as_array().unwrap().len(), 0);
     assert_eq!(value["stats"]["scanned_files"], 0);
@@ -450,10 +462,12 @@ fn inventory_os_diff_reports_changed_roots_newly_lintable_risk_increase_and_new_
             .len(),
         1
     );
-    assert!(!value["inventory_diff"]["new_findings"]
-        .as_array()
-        .unwrap()
-        .is_empty());
+    assert!(
+        !value["inventory_diff"]["new_findings"]
+            .as_array()
+            .unwrap()
+            .is_empty()
+    );
 }
 
 #[test]

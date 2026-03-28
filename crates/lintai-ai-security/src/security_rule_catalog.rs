@@ -27,6 +27,9 @@ pub(crate) struct SecurityRuleCatalogEntry {
 
 impl SecurityRuleCatalogEntry {
     fn canonical_note(self) -> &'static str {
+        if self.metadata.code == "SEC324" {
+            return "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.";
+        }
         match (self.detection_class, self.metadata.tier) {
             (DetectionClass::Heuristic, _) => {
                 "Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves."
@@ -372,8 +375,14 @@ mod tests {
                     | "SEC321"
                     | "SEC322"
                     | "SEC324"
+                    | "SEC329"
+                    | "SEC330"
+                    | "SEC331"
             ) {
                 assert_eq!(entry.metadata.tier, RuleTier::Stable);
+                assert_eq!(entry.detection_class, DetectionClass::Structural);
+            } else if matches!(entry.metadata.code, "SEC336") {
+                assert_eq!(entry.metadata.tier, RuleTier::Preview);
                 assert_eq!(entry.detection_class, DetectionClass::Structural);
             }
         }

@@ -31,7 +31,8 @@ The current security layer is optimized for high-signal repository-local risks s
 
 - hidden or override-style instructions in agent-facing text surfaces
 - hook scripts that download-and-execute, exfiltrate secrets, disable TLS verification, or embed static auth
-- MCP and plugin JSON configurations that shell out unsafely, use insecure endpoints, disable trust checks, or pass through sensitive credentials
+- MCP and plugin JSON configurations that shell out unsafely, use insecure endpoints, disable trust checks, pass through sensitive credentials, or launch remote tooling through mutable execution paths
+- supporting sidecar checks such as GitHub Actions supply-chain hardening issues, kept shipped but not treated as the main usefulness story
 - project-policy mismatches where declared capabilities conflict with repository behavior
 
 The generated current rule inventory is documented in [SECURITY_RULES.md](SECURITY_RULES.md).
@@ -55,6 +56,7 @@ That means:
 - structural rules are the primary source of `Stable` findings
 - heuristic rules stay in `Preview` until they have enough corpus and precision evidence
 - “noisy but maybe useful” detection is not promoted into the stable contract just to increase apparent coverage
+- some `Stable` findings outside the core AI-native thesis, such as unpinned third-party GitHub Actions, are intentionally positioned as supporting supply-chain hardening controls rather than claims of critical repository compromise
 
 For the canonical rule-quality policy, see [RULE_QUALITY_POLICY.md](RULE_QUALITY_POLICY.md).
 
@@ -77,6 +79,6 @@ The right way to evaluate `lintai` today is:
 2. separate `Stable` findings from `Preview` findings during evaluation
 3. treat `diagnostics` separately from findings and from fatal runtime errors
 4. record false positives, false negatives, and ambiguous cases explicitly
-5. use that evidence to decide whether to widen the ruleset or tighten existing checks
+5. use MCP, plugin, and skills evidence as the primary signal for product usefulness; treat sidecar surfaces such as GitHub Actions as supporting evidence only
 
 This is intentionally a precision-first rollout, not a “ship 100 rules first and validate later” strategy.

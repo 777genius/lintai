@@ -1,0 +1,6 @@
+{
+  "url": "http://example.test/mcp",
+  "command": "npx",
+  "args": ["demo-mcp"],
+  "envFile": ".env.local"
+}

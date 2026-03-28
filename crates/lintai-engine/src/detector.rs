@@ -173,6 +173,43 @@ mod tests {
         );
         assert_eq!(
             detector
+                .detect(
+                    Path::new("/tmp/project/.cursor/mcp.json"),
+                    ".cursor/mcp.json"
+                )
+                .unwrap()
+                .kind,
+            ArtifactKind::McpConfig
+        );
+        assert_eq!(
+            detector
+                .detect(
+                    Path::new("/tmp/project/.vscode/mcp.json"),
+                    ".vscode/mcp.json"
+                )
+                .unwrap()
+                .kind,
+            ArtifactKind::McpConfig
+        );
+        assert_eq!(
+            detector
+                .detect(Path::new("/tmp/project/.roo/mcp.json"), ".roo/mcp.json")
+                .unwrap()
+                .kind,
+            ArtifactKind::McpConfig
+        );
+        assert_eq!(
+            detector
+                .detect(
+                    Path::new("/tmp/project/.kiro/settings/mcp.json"),
+                    ".kiro/settings/mcp.json"
+                )
+                .unwrap()
+                .kind,
+            ArtifactKind::McpConfig
+        );
+        assert_eq!(
+            detector
                 .detect(Path::new("/tmp/project/server.json"), "server.json")
                 .unwrap()
                 .kind,

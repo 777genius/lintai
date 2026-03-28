@@ -5,8 +5,8 @@ use std::process::ExitCode;
 
 use lintai_api::{Applicability, Finding};
 use lintai_engine::{
-    explain_file_config, load_workspace_config, Engine, EngineConfig, FileSuppressions,
-    OutputFormat, ResolvedFileConfig, WorkspaceConfig,
+    Engine, EngineConfig, FileSuppressions, OutputFormat, ResolvedFileConfig, WorkspaceConfig,
+    explain_file_config, load_workspace_config,
 };
 use lintai_fix::{apply_planned_fixes, plan_fixes};
 
@@ -16,13 +16,13 @@ use crate::args::{
 };
 use crate::builtin_providers::{product_provider_set, run_provider_runner};
 use crate::known_scan::{
+    ArtifactMode, DiscoveredRoot, DiscoveryStats, InventoryRoot, InventoryStats, KnownRootScope,
     absolute_base_for_scan, build_inventory_snapshot, diff_inventory_snapshots,
     discover_inventory_roots, discover_known_roots, inventory_lintable_root,
     load_inventory_snapshot, merge_summary_with_absolute_paths, workspace_for_known_root,
-    write_inventory_snapshot, ArtifactMode, DiscoveredRoot, DiscoveryStats, InventoryRoot,
-    InventoryStats, KnownRootScope,
+    write_inventory_snapshot,
 };
-use crate::policy_os::{evaluate_machine_policy, load_machine_policy, PolicyMatch};
+use crate::policy_os::{PolicyMatch, evaluate_machine_policy, load_machine_policy};
 use crate::{output, path::validate_path_within_project};
 
 struct InventoryCollection {

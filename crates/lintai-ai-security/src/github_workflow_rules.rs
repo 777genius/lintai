@@ -33,6 +33,51 @@ pub(crate) fn check_github_workflow_untrusted_run_interpolation(
     )
 }
 
+pub(crate) fn check_github_workflow_pull_request_target_head_checkout(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    github_workflow_findings(
+        ctx,
+        meta,
+        signals
+            .github_workflow()
+            .map(|signals| &signals.pull_request_target_head_checkout_spans),
+        "GitHub Actions workflow triggered by pull_request_target checks out untrusted pull request head content",
+    )
+}
+
+pub(crate) fn check_github_workflow_write_all_permissions(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    github_workflow_findings(
+        ctx,
+        meta,
+        signals
+            .github_workflow()
+            .map(|signals| &signals.write_all_permission_spans),
+        "GitHub Actions workflow grants GITHUB_TOKEN write-all permissions",
+    )
+}
+
+pub(crate) fn check_github_workflow_write_capable_third_party_action(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    github_workflow_findings(
+        ctx,
+        meta,
+        signals
+            .github_workflow()
+            .map(|signals| &signals.write_capable_third_party_action_spans),
+        "GitHub Actions workflow combines explicit write-capable token permissions with a third-party action",
+    )
+}
+
 fn github_workflow_findings(
     ctx: &ScanContext,
     meta: RuleMetadata,

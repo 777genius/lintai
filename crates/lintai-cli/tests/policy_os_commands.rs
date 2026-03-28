@@ -76,9 +76,11 @@ base_dirs = ["{}"]
     assert_eq!(output.status.code(), Some(0));
 
     let value = json_output(&output);
-    assert!(value["policy_matches"]
-        .as_array()
-        .is_none_or(|matches| matches.is_empty()));
+    assert!(
+        value["policy_matches"]
+            .as_array()
+            .is_none_or(|matches| matches.is_empty())
+    );
     assert_eq!(value["policy_stats"]["deny_matches"], 0);
     assert_eq!(value["policy_stats"]["warn_matches"], 0);
 }
@@ -435,7 +437,9 @@ clients = ["windsurf"]
 
     let value: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
     let results = value["runs"][0]["results"].as_array().unwrap();
-    assert!(results
-        .iter()
-        .any(|result| result["ruleId"] == "policy:unapproved-client"));
+    assert!(
+        results
+            .iter()
+            .any(|result| result["ruleId"] == "policy:unapproved-client")
+    );
 }

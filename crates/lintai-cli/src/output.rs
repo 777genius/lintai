@@ -2,8 +2,8 @@ use std::path::Path;
 
 use lintai_api::Finding;
 use lintai_engine::{
-    normalize_path_string, DiagnosticSeverity, RuntimeErrorKind, ScanDiagnostic, ScanRuntimeError,
-    ScanSummary,
+    DiagnosticSeverity, RuntimeErrorKind, ScanDiagnostic, ScanRuntimeError, ScanSummary,
+    normalize_path_string,
 };
 use serde::Serialize;
 
@@ -576,7 +576,7 @@ fn client_for_inventory_finding<'a>(roots: &'a [InventoryRoot], normalized_path:
 
 #[cfg(test)]
 mod tests {
-    use super::{format_json, format_sarif, ReportStats, ToolMetadata};
+    use super::{ReportStats, ToolMetadata, format_json, format_sarif};
     use crate::known_scan::{
         DiscoveredRoot, DiscoveryStats, InventoryChangedRoot, InventoryDiff, InventoryProvenance,
         InventoryRoot, InventoryStats,
@@ -1006,6 +1006,8 @@ mod tests {
         assert!(text.contains(
             "changed-root [risk low->high mode discovered_only->lintable mtime 1->2] windsurf mcp-config /tmp/.codeium/windsurf/mcp_config.json"
         ));
-        assert!(text.contains("new-finding SEC301 windsurf /tmp/.codeium/windsurf/mcp_config.json"));
+        assert!(
+            text.contains("new-finding SEC301 windsurf /tmp/.codeium/windsurf/mcp_config.json")
+        );
     }
 }
