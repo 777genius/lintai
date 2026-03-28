@@ -32,11 +32,36 @@ impl KnownScope {
     }
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum InventoryOsScope {
+    User,
+    System,
+    Both,
+}
+
+impl InventoryOsScope {
+    pub fn includes_user(self) -> bool {
+        matches!(self, Self::User | Self::Both)
+    }
+
+    pub fn includes_system(self) -> bool {
+        matches!(self, Self::System | Self::Both)
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct ScanKnownArgs {
     pub format_override: Option<lintai_engine::OutputFormat>,
     pub scope: KnownScope,
     pub client_filters: BTreeSet<String>,
+}
+
+#[derive(Clone, Debug)]
+pub struct InventoryOsArgs {
+    pub format_override: Option<lintai_engine::OutputFormat>,
+    pub scope: InventoryOsScope,
+    pub client_filters: BTreeSet<String>,
+    pub path_root: Option<PathBuf>,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
@@ -92,6 +117,136 @@ pub struct DiscoveryStats {
     pub unrecognized_files: usize,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum InventoryOriginScope {
+    Project,
+    User,
+    #[allow(dead_code)]
+    System,
+}
+
+impl InventoryOriginScope {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Project => "project",
+            Self::User => "user",
+            Self::System => "system",
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum InventoryPathType {
+    File,
+    Directory,
+    Symlink,
+    Other,
+}
+
+impl InventoryPathType {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::File => "file",
+            Self::Directory => "directory",
+            Self::Symlink => "symlink",
+            Self::Other => "other",
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum RiskLevel {
+    High,
+    Medium,
+    Low,
+}
+
+impl RiskLevel {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::High => "high",
+            Self::Medium => "medium",
+            Self::Low => "low",
+        }
+    }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+pub struct InventoryProvenance {
+    pub origin_scope: String,
+    pub path_type: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub target_path: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub owner: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub mtime_epoch_s: Option<u64>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+pub struct InventoryRoot {
+    pub client: String,
+    pub surface: String,
+    pub path: String,
+    pub mode: String,
+    pub risk_level: String,
+    pub provenance: InventoryProvenance,
+}
+
+#[derive(Clone, Debug, Default, Eq, PartialEq, Serialize)]
+pub struct InventoryStats {
+    pub user_roots: usize,
+    pub system_roots: usize,
+    pub lintable_roots: usize,
+    pub discovered_only_roots: usize,
+    pub high_risk_roots: usize,
+    pub medium_risk_roots: usize,
+    pub low_risk_roots: usize,
+    pub supported_artifacts_scanned: usize,
+    pub non_target_files_in_lintable_roots: usize,
+    pub excluded_files: usize,
+    pub binary_files: usize,
+    pub unreadable_files: usize,
+    pub unrecognized_files: usize,
+}
+
+impl InventoryStats {
+    pub fn non_target_total(&self) -> usize {
+        self.non_target_files_in_lintable_roots
+            + self.excluded_files
+            + self.binary_files
+            + self.unreadable_files
+    }
+
+    pub fn record_root(&mut self, root: &KnownRoot) {
+        match inventory_origin_scope(root.scope) {
+            InventoryOriginScope::Project => {}
+            InventoryOriginScope::User => self.user_roots += 1,
+            InventoryOriginScope::System => self.system_roots += 1,
+        }
+        match root.mode {
+            ArtifactMode::Lintable => self.lintable_roots += 1,
+            ArtifactMode::DiscoveredOnly => self.discovered_only_roots += 1,
+        }
+        match risk_level_for_root(root) {
+            RiskLevel::High => self.high_risk_roots += 1,
+            RiskLevel::Medium => self.medium_risk_roots += 1,
+            RiskLevel::Low => self.low_risk_roots += 1,
+        }
+    }
+
+    pub fn record_lintable_inventory(&mut self, inventory: &LintableInventoryStats) {
+        self.non_target_files_in_lintable_roots += inventory.unrecognized_files;
+        self.excluded_files += inventory.excluded_files;
+        self.binary_files += inventory.binary_files;
+        self.unreadable_files += inventory.unreadable_files;
+        self.unrecognized_files += inventory.unrecognized_files;
+    }
+}
+
 impl DiscoveryStats {
     pub fn non_target_total(&self) -> usize {
         self.non_target_files_in_lintable_roots
@@ -137,6 +292,18 @@ impl KnownRoot {
             mode: self.mode.as_str().to_owned(),
         }
     }
+
+    pub fn to_inventory_report(&self) -> InventoryRoot {
+        let provenance = inventory_provenance_for_path(self.scope, &self.path);
+        InventoryRoot {
+            client: self.client.clone(),
+            surface: self.surface.clone(),
+            path: normalize_path_string(&self.path),
+            mode: self.mode.as_str().to_owned(),
+            risk_level: risk_level_for_root(self).as_str().to_owned(),
+            provenance,
+        }
+    }
 }
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
@@ -162,6 +329,13 @@ impl EnvironmentPaths {
         Self {
             home_dir,
             xdg_config_home,
+        }
+    }
+
+    fn from_path_root(path_root: &Path) -> Self {
+        Self {
+            home_dir: Some(path_root.to_path_buf()),
+            xdg_config_home: Some(path_root.join(".config")),
         }
     }
 }
@@ -202,6 +376,43 @@ pub(crate) fn discover_known_roots(
         client_filters,
         &EnvironmentPaths::from_process(),
     )
+}
+
+pub(crate) fn discover_inventory_roots(
+    scope: InventoryOsScope,
+    client_filters: &BTreeSet<String>,
+    path_root: Option<&Path>,
+) -> Result<Vec<KnownRoot>, String> {
+    let env = match path_root {
+        Some(path_root) => EnvironmentPaths::from_path_root(path_root),
+        None => EnvironmentPaths::from_process(),
+    };
+    let mut roots = Vec::new();
+    if scope.includes_user() {
+        roots.extend(discover_known_roots_with_env(
+            registry(),
+            None,
+            KnownScope::Global,
+            client_filters,
+            &env,
+        )?);
+    }
+    if scope.includes_system() {
+        roots.extend(discover_system_known_roots()?);
+    }
+    roots.sort_by(|left, right| {
+        (
+            left.client.as_str(),
+            left.surface.as_str(),
+            normalize_path_string(&left.path),
+        )
+            .cmp(&(
+                right.client.as_str(),
+                right.surface.as_str(),
+                normalize_path_string(&right.path),
+            ))
+    });
+    Ok(roots)
 }
 
 pub(crate) fn inventory_lintable_root(
@@ -489,6 +700,11 @@ fn should_replace_known_root(existing: ArtifactMode, candidate: ArtifactMode) ->
     )
 }
 
+fn discover_system_known_roots() -> Result<Vec<KnownRoot>, String> {
+    registry()?;
+    Ok(Vec::new())
+}
+
 fn resolve_path_template(
     template: &str,
     project_root: Option<&Path>,
@@ -740,6 +956,100 @@ fn should_visit_path(path: &Path, project_root: Option<&Path>) -> bool {
 
 fn looks_binary(bytes: &[u8]) -> bool {
     bytes.iter().take(1024).any(|byte| *byte == 0)
+}
+
+fn inventory_origin_scope(scope: KnownRootScope) -> InventoryOriginScope {
+    match scope {
+        KnownRootScope::Project => InventoryOriginScope::Project,
+        KnownRootScope::Global => InventoryOriginScope::User,
+    }
+}
+
+fn path_type_for_path(path: &Path) -> InventoryPathType {
+    let metadata = match fs::symlink_metadata(path) {
+        Ok(metadata) => metadata,
+        Err(_) => return InventoryPathType::Other,
+    };
+    let file_type = metadata.file_type();
+    if file_type.is_symlink() {
+        InventoryPathType::Symlink
+    } else if file_type.is_dir() {
+        InventoryPathType::Directory
+    } else if file_type.is_file() {
+        InventoryPathType::File
+    } else {
+        InventoryPathType::Other
+    }
+}
+
+fn target_path_for_symlink(path: &Path) -> Option<String> {
+    let target = fs::read_link(path).ok()?;
+    let resolved = if target.is_absolute() {
+        target
+    } else {
+        path.parent().unwrap_or_else(|| Path::new("")).join(target)
+    };
+    Some(normalize_path_string(&resolved))
+}
+
+#[cfg(unix)]
+fn owner_for_path(path: &Path) -> Option<String> {
+    use std::os::unix::fs::MetadataExt;
+
+    let metadata = fs::symlink_metadata(path).ok()?;
+    Some(metadata.uid().to_string())
+}
+
+#[cfg(not(unix))]
+fn owner_for_path(_path: &Path) -> Option<String> {
+    None
+}
+
+fn mtime_epoch_s_for_path(path: &Path) -> Option<u64> {
+    let metadata = fs::symlink_metadata(path).ok()?;
+    let modified = metadata.modified().ok()?;
+    modified
+        .duration_since(std::time::UNIX_EPOCH)
+        .ok()
+        .map(|duration| duration.as_secs())
+}
+
+fn inventory_provenance_for_path(scope: KnownRootScope, path: &Path) -> InventoryProvenance {
+    let path_type = path_type_for_path(path);
+    InventoryProvenance {
+        origin_scope: inventory_origin_scope(scope).as_str().to_owned(),
+        path_type: path_type.as_str().to_owned(),
+        target_path: if path_type == InventoryPathType::Symlink {
+            target_path_for_symlink(path)
+        } else {
+            None
+        },
+        owner: owner_for_path(path),
+        mtime_epoch_s: mtime_epoch_s_for_path(path),
+    }
+}
+
+fn risk_level_for_root(root: &KnownRoot) -> RiskLevel {
+    if matches!(root.mode, ArtifactMode::DiscoveredOnly) {
+        return RiskLevel::Low;
+    }
+
+    match root.artifact_kind_hint {
+        Some(
+            ArtifactKind::McpConfig
+            | ArtifactKind::CursorHookScript
+            | ArtifactKind::CursorPluginHooks,
+        ) => RiskLevel::High,
+        Some(
+            ArtifactKind::Instructions
+            | ArtifactKind::CursorRules
+            | ArtifactKind::Skill
+            | ArtifactKind::CursorPluginManifest
+            | ArtifactKind::CursorPluginCommand
+            | ArtifactKind::CursorPluginAgent,
+        ) => RiskLevel::Medium,
+        _ => RiskLevel::Low,
+    }
 }
 
 fn rewrite_summary_paths(summary: &mut ScanSummary, absolute_base: &Path) {

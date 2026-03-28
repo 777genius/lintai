@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use lintai_engine::OutputFormat;
 
-use crate::known_scan::{KnownScope, ScanKnownArgs};
+use crate::known_scan::{InventoryOsArgs, InventoryOsScope, KnownScope, ScanKnownArgs};
 
 #[derive(Debug)]
 pub struct ScanArgs {
@@ -15,6 +15,72 @@ pub struct FixArgs {
     pub target: PathBuf,
     pub apply: bool,
     pub rule_filters: Vec<String>,
+}
+
+pub fn parse_inventory_os_args(
+    args: impl Iterator<Item = String>,
+) -> Result<InventoryOsArgs, String> {
+    let mut format_override = None;
+    let mut scope = InventoryOsScope::Both;
+    let mut client_filters = std::collections::BTreeSet::new();
+    let mut path_root = None;
+    let mut args = args.peekable();
+
+    while let Some(arg) = args.next() {
+        match arg.as_str() {
+            "--format" => {
+                let Some(value) = args.next() else {
+                    return Err("missing value for --format".to_owned());
+                };
+                format_override = Some(parse_output_format(&value)?);
+            }
+            "--scope" => {
+                let Some(value) = args.next() else {
+                    return Err("missing value for --scope".to_owned());
+                };
+                scope = parse_inventory_scope(&value)?;
+            }
+            "--client" => {
+                let Some(value) = args.next() else {
+                    return Err("missing value for --client".to_owned());
+                };
+                client_filters.insert(normalize_client_filter(&value));
+            }
+            "--path-root" => {
+                let Some(value) = args.next() else {
+                    return Err("missing value for --path-root".to_owned());
+                };
+                path_root = Some(PathBuf::from(value));
+            }
+            value if value.starts_with("--format=") => {
+                let value = value.trim_start_matches("--format=");
+                format_override = Some(parse_output_format(value)?);
+            }
+            value if value.starts_with("--scope=") => {
+                let value = value.trim_start_matches("--scope=");
+                scope = parse_inventory_scope(value)?;
+            }
+            value if value.starts_with("--client=") => {
+                client_filters.insert(normalize_client_filter(
+                    value.trim_start_matches("--client="),
+                ));
+            }
+            value if value.starts_with("--path-root=") => {
+                path_root = Some(PathBuf::from(value.trim_start_matches("--path-root=")));
+            }
+            value if value.starts_with('-') => {
+                return Err(format!("unknown flag: {value}"));
+            }
+            value => return Err(format!("unexpected extra argument: {value}")),
+        }
+    }
+
+    Ok(InventoryOsArgs {
+        format_override,
+        scope,
+        client_filters,
+        path_root,
+    })
 }
 
 pub fn parse_scan_known_args(args: impl Iterator<Item = String>) -> Result<ScanKnownArgs, String> {
@@ -170,6 +236,15 @@ fn parse_known_scope(value: &str) -> Result<KnownScope, String> {
     }
 }
 
+fn parse_inventory_scope(value: &str) -> Result<InventoryOsScope, String> {
+    match value {
+        "user" => Ok(InventoryOsScope::User),
+        "system" => Ok(InventoryOsScope::System),
+        "both" => Ok(InventoryOsScope::Both),
+        other => Err(format!("unsupported --scope value: {other}")),
+    }
+}
+
 fn normalize_client_filter(value: &str) -> String {
     value.trim().to_ascii_lowercase()
 }
@@ -177,9 +252,10 @@ fn normalize_client_filter(value: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::{
-        parse_explain_config_args, parse_fix_args, parse_scan_args, parse_scan_known_args,
+        parse_explain_config_args, parse_fix_args, parse_inventory_os_args, parse_scan_args,
+        parse_scan_known_args,
     };
-    use crate::known_scan::KnownScope;
+    use crate::known_scan::{InventoryOsScope, KnownScope};
     use lintai_engine::OutputFormat;
 
     #[test]
@@ -198,6 +274,15 @@ mod tests {
     }
 
     #[test]
+    fn inventory_os_defaults_to_both_scope_without_path_root() {
+        let parsed = parse_inventory_os_args(std::iter::empty()).unwrap();
+        assert_eq!(parsed.format_override, None);
+        assert_eq!(parsed.scope, InventoryOsScope::Both);
+        assert!(parsed.client_filters.is_empty());
+        assert_eq!(parsed.path_root, None);
+    }
+
+    #[test]
     fn scan_known_parses_scope_and_repeated_client_filters() {
         let parsed = parse_scan_known_args(
             ["--scope=global", "--client", "Cursor", "--client=codex"]
@@ -211,6 +296,27 @@ mod tests {
     }
 
     #[test]
+    fn inventory_os_parses_scope_client_and_path_root() {
+        let parsed = parse_inventory_os_args(
+            [
+                "--scope=user",
+                "--client",
+                "Goose",
+                "--path-root=/tmp/lintai-fixture",
+            ]
+            .into_iter()
+            .map(str::to_owned),
+        )
+        .unwrap();
+        assert_eq!(parsed.scope, InventoryOsScope::User);
+        assert!(parsed.client_filters.contains("goose"));
+        assert_eq!(
+            parsed.path_root,
+            Some(std::path::PathBuf::from("/tmp/lintai-fixture"))
+        );
+    }
+
+    #[test]
     fn scan_rejects_extra_positional_argument() {
         let error = parse_scan_args(["docs", "other"].into_iter().map(str::to_owned)).unwrap_err();
         assert!(error.contains("unexpected extra argument"));
@@ -219,6 +325,12 @@ mod tests {
     #[test]
     fn scan_known_rejects_extra_positional_argument() {
         let error = parse_scan_known_args(["project"].into_iter().map(str::to_owned)).unwrap_err();
+        assert!(error.contains("unexpected extra argument"));
+    }
+
+    #[test]
+    fn inventory_os_rejects_extra_positional_argument() {
+        let error = parse_inventory_os_args(["project"].into_iter().map(str::to_owned)).unwrap_err();
         assert!(error.contains("unexpected extra argument"));
     }
 

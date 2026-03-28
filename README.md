@@ -59,6 +59,7 @@ lintai help
 lintai config-schema
 lintai scan .
 lintai scan-known --scope=both
+lintai inventory-os --scope=user
 ```
 
 `lintai-api` remains the only stable publishable crate. This beta does not yet promise Homebrew, npm, or `cargo install` distribution for the CLI.
@@ -71,6 +72,7 @@ The right way to evaluate the public beta is:
 2. Treat `Stable` findings as the release-quality baseline and `Preview` findings as non-baseline signals.
 3. Treat `diagnostics` separately from findings; recoverable parsing does not imply a security hit.
 4. Expect conservative behavior rather than maximal heuristic coverage.
+5. Read GitHub Actions pinning findings such as `SEC324` as supply-chain hardening controls, not as blanket claims of critical repository compromise.
 
 Wave 2 external validation across `24` pinned public repositories is summarized in [`docs/EXTERNAL_VALIDATION_REPORT.md`](docs/EXTERNAL_VALIDATION_REPORT.md).
 
@@ -189,7 +191,15 @@ Examples:
 lintai scan-known --scope=global
 lintai scan-known --scope=both --client=cursor
 lintai scan-known --client=codex --format=json
+lintai inventory-os --scope=user --format=json
 ```
+
+`inventory-os` is the first machine-oriented inventory mode. It stays inventory-first:
+
+- scans only known user/system client roots
+- emits real findings only for already supported artifact kinds
+- reports per-root provenance and risk level
+- does not claim runtime activity or enforcement yet
 
 ### Support Matrix
 

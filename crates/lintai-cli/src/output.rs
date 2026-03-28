@@ -7,7 +7,7 @@ use lintai_engine::{
 };
 use serde::Serialize;
 
-use crate::known_scan::{DiscoveredRoot, DiscoveryStats};
+use crate::known_scan::{DiscoveredRoot, DiscoveryStats, InventoryRoot, InventoryStats};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct ReportEnvelope<'a> {
@@ -19,6 +19,10 @@ pub struct ReportEnvelope<'a> {
     pub discovered_roots: Vec<DiscoveredRoot>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub discovery_stats: Option<DiscoveryStats>,
+    #[serde(skip_serializing_if = "Vec::is_empty", default)]
+    pub inventory_roots: Vec<InventoryRoot>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub inventory_stats: Option<InventoryStats>,
     pub stats: ReportStats,
     pub findings: &'a [Finding],
     pub diagnostics: &'a [ScanDiagnostic],
@@ -58,6 +62,34 @@ pub fn build_envelope_with_discovery<'a>(
         project_root: project_root.map(normalize_path_string),
         discovered_roots,
         discovery_stats,
+        inventory_roots: Vec::new(),
+        inventory_stats: None,
+        stats: ReportStats {
+            scanned_files: summary.scanned_files,
+            skipped_files: summary.skipped_files,
+        },
+        findings: &summary.findings,
+        diagnostics: &summary.diagnostics,
+        runtime_errors: &summary.runtime_errors,
+    }
+}
+
+pub fn build_envelope_with_inventory<'a>(
+    summary: &'a ScanSummary,
+    config_source: Option<&Path>,
+    project_root: Option<&Path>,
+    inventory_roots: Vec<InventoryRoot>,
+    inventory_stats: Option<InventoryStats>,
+) -> ReportEnvelope<'a> {
+    ReportEnvelope {
+        schema_version: 1,
+        tool: ToolMetadata { name: "lintai" },
+        config_source: config_source.map(normalize_path_string),
+        project_root: project_root.map(normalize_path_string),
+        discovered_roots: Vec::new(),
+        discovery_stats: None,
+        inventory_roots,
+        inventory_stats,
         stats: ReportStats {
             scanned_files: summary.scanned_files,
             skipped_files: summary.skipped_files,
@@ -70,7 +102,32 @@ pub fn build_envelope_with_discovery<'a>(
 
 pub fn format_text(report: &ReportEnvelope<'_>) -> String {
     let mut output = String::new();
-    if let Some(discovery_stats) = &report.discovery_stats {
+    if let Some(inventory_stats) = &report.inventory_stats {
+        output.push_str(&format!(
+            "inventory discovered {} root(s), user {} root(s), system {} root(s), lintable {} root(s), discovered-only {} root(s), high risk {} root(s), medium risk {} root(s), low risk {} root(s), scanned {} supported artifact(s), non-target {} file(s), found {} finding(s), {} diagnostic(s), {} runtime error(s)\n",
+            report.inventory_roots.len(),
+            inventory_stats.user_roots,
+            inventory_stats.system_roots,
+            inventory_stats.lintable_roots,
+            inventory_stats.discovered_only_roots,
+            inventory_stats.high_risk_roots,
+            inventory_stats.medium_risk_roots,
+            inventory_stats.low_risk_roots,
+            inventory_stats.supported_artifacts_scanned,
+            inventory_stats.non_target_total(),
+            report.findings.len(),
+            report.diagnostics.len(),
+            report.runtime_errors.len()
+        ));
+        output.push_str(&format!(
+            "inventory counters: non_target={} excluded={} binary={} unreadable={} unrecognized={}\n",
+            inventory_stats.non_target_files_in_lintable_roots,
+            inventory_stats.excluded_files,
+            inventory_stats.binary_files,
+            inventory_stats.unreadable_files,
+            inventory_stats.unrecognized_files,
+        ));
+    } else if let Some(discovery_stats) = &report.discovery_stats {
         output.push_str(&format!(
             "discovered {} root(s), lintable {} root(s), discovered-only {} root(s), scanned {} supported artifact(s), non-target {} file(s), found {} finding(s), {} diagnostic(s), {} runtime error(s)\n",
             report.discovered_roots.len(),
@@ -105,6 +162,18 @@ pub fn format_text(report: &ReportEnvelope<'_>) -> String {
         output.push_str(&format!(
             "root [{} {}] {} {} {}\n",
             root.scope, root.mode, root.client, root.surface, root.path
+        ));
+    }
+
+    for root in &report.inventory_roots {
+        output.push_str(&format!(
+            "inventory-root [{} {} {}] {} {} {}\n",
+            root.provenance.origin_scope,
+            root.risk_level,
+            root.mode,
+            root.client,
+            root.surface,
+            root.path
         ));
     }
 
@@ -272,7 +341,9 @@ fn sarif_level(severity: lintai_api::Severity) -> &'static str {
 #[cfg(test)]
 mod tests {
     use super::{ReportStats, ToolMetadata, format_json, format_sarif};
-    use crate::known_scan::{DiscoveredRoot, DiscoveryStats};
+    use crate::known_scan::{
+        DiscoveredRoot, DiscoveryStats, InventoryProvenance, InventoryRoot, InventoryStats,
+    };
 
     #[test]
     fn sarif_output_contains_stable_fingerprint() {
@@ -295,6 +366,8 @@ mod tests {
             project_root: None,
             discovered_roots: Vec::new(),
             discovery_stats: None,
+            inventory_roots: Vec::new(),
+            inventory_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 0,
@@ -319,6 +392,8 @@ mod tests {
             project_root: None,
             discovered_roots: Vec::new(),
             discovery_stats: None,
+            inventory_roots: Vec::new(),
+            inventory_stats: None,
             stats: ReportStats {
                 scanned_files: 0,
                 skipped_files: 0,
@@ -357,6 +432,8 @@ mod tests {
             project_root: None,
             discovered_roots: Vec::new(),
             discovery_stats: None,
+            inventory_roots: Vec::new(),
+            inventory_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 0,
@@ -401,6 +478,8 @@ mod tests {
             project_root: None,
             discovered_roots: Vec::new(),
             discovery_stats: None,
+            inventory_roots: Vec::new(),
+            inventory_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 0,
@@ -432,6 +511,8 @@ mod tests {
             project_root: None,
             discovered_roots: Vec::new(),
             discovery_stats: None,
+            inventory_roots: Vec::new(),
+            inventory_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 0,
@@ -462,6 +543,8 @@ mod tests {
             project_root: None,
             discovered_roots: Vec::new(),
             discovery_stats: None,
+            inventory_roots: Vec::new(),
+            inventory_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 0,
@@ -501,6 +584,8 @@ mod tests {
                 unreadable_files: 1,
                 unrecognized_files: 2,
             }),
+            inventory_roots: Vec::new(),
+            inventory_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 6,
@@ -514,5 +599,58 @@ mod tests {
         assert!(text.contains("discovered 1 root(s), lintable 1 root(s)"));
         assert!(text.contains("discovery counters: non_target=2 excluded=3"));
         assert!(text.contains("root [global lintable] cursor mcp /tmp/.cursor/mcp.json"));
+    }
+
+    #[test]
+    fn text_output_renders_inventory_os_summary_with_risk_levels() {
+        let report = super::ReportEnvelope {
+            schema_version: 1,
+            tool: ToolMetadata { name: "lintai" },
+            config_source: None,
+            project_root: None,
+            discovered_roots: Vec::new(),
+            discovery_stats: None,
+            inventory_roots: vec![InventoryRoot {
+                client: "windsurf".to_owned(),
+                surface: "mcp-config".to_owned(),
+                path: "/tmp/.codeium/windsurf/mcp_config.json".to_owned(),
+                mode: "lintable".to_owned(),
+                risk_level: "high".to_owned(),
+                provenance: InventoryProvenance {
+                    origin_scope: "user".to_owned(),
+                    path_type: "file".to_owned(),
+                    target_path: None,
+                    owner: Some("501".to_owned()),
+                    mtime_epoch_s: Some(1),
+                },
+            }],
+            inventory_stats: Some(InventoryStats {
+                user_roots: 1,
+                system_roots: 0,
+                lintable_roots: 1,
+                discovered_only_roots: 0,
+                high_risk_roots: 1,
+                medium_risk_roots: 0,
+                low_risk_roots: 0,
+                supported_artifacts_scanned: 1,
+                non_target_files_in_lintable_roots: 0,
+                excluded_files: 0,
+                binary_files: 0,
+                unreadable_files: 0,
+                unrecognized_files: 0,
+            }),
+            stats: ReportStats {
+                scanned_files: 1,
+                skipped_files: 0,
+            },
+            findings: &[],
+            diagnostics: &[],
+            runtime_errors: &[],
+        };
+
+        let text = super::format_text(&report);
+        assert!(text.contains("inventory discovered 1 root(s), user 1 root(s), system 0 root(s)"));
+        assert!(text.contains("high risk 1 root(s)"));
+        assert!(text.contains("inventory-root [user high lintable] windsurf mcp-config /tmp/.codeium/windsurf/mcp_config.json"));
     }
 }

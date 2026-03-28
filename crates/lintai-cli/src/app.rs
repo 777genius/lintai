@@ -11,13 +11,14 @@ use lintai_engine::{
 use lintai_fix::{apply_planned_fixes, plan_fixes};
 
 use crate::args::{
-    parse_explain_config_args, parse_fix_args, parse_scan_args, parse_scan_known_args,
+    parse_explain_config_args, parse_fix_args, parse_inventory_os_args, parse_scan_args,
+    parse_scan_known_args,
 };
 use crate::builtin_providers::{product_provider_set, run_provider_runner};
 use crate::known_scan::{
-    ArtifactMode, DiscoveredRoot, DiscoveryStats, KnownRootScope, absolute_base_for_scan,
-    discover_known_roots, inventory_lintable_root, merge_summary_with_absolute_paths,
-    workspace_for_known_root,
+    absolute_base_for_scan, discover_inventory_roots, discover_known_roots,
+    inventory_lintable_root, merge_summary_with_absolute_paths, workspace_for_known_root,
+    ArtifactMode, DiscoveredRoot, DiscoveryStats, InventoryRoot, InventoryStats, KnownRootScope,
 };
 use crate::{output, path::validate_path_within_project};
 
@@ -33,6 +34,7 @@ pub fn run() -> Result<ExitCode, String> {
     match command.as_str() {
         "scan" => run_scan(&current_dir, args),
         "scan-known" => run_scan_known(&current_dir, args),
+        "inventory-os" => run_inventory_os(args),
         "fix" => run_fix(&current_dir, args),
         "explain-config" => run_explain_config(&current_dir, args),
         "__provider-runner" => run_provider_runner(args),
@@ -84,6 +86,79 @@ fn run_scan(current_dir: &Path, args: impl Iterator<Item = String>) -> Result<Ex
     }
 
     if has_blocking_findings(&summary.findings, &workspace.engine_config.ci_policy) {
+        Ok(ExitCode::from(1))
+    } else {
+        Ok(ExitCode::SUCCESS)
+    }
+}
+
+fn run_inventory_os(args: impl Iterator<Item = String>) -> Result<ExitCode, String> {
+    let parsed = parse_inventory_os_args(args)?;
+    let discovered_roots =
+        discover_inventory_roots(parsed.scope, &parsed.client_filters, parsed.path_root.as_deref())?;
+
+    let output_format = parsed.format_override.unwrap_or(OutputFormat::Text);
+    let default_workspace = WorkspaceConfig {
+        source_path: None,
+        engine_config: EngineConfig::default(),
+    };
+
+    let mut aggregate = lintai_engine::ScanSummary::default();
+    let mut report_roots = Vec::<InventoryRoot>::with_capacity(discovered_roots.len());
+    let mut inventory_stats = InventoryStats::default();
+    let mut blocking = false;
+
+    for root in discovered_roots {
+        inventory_stats.record_root(&root);
+        report_roots.push(root.to_inventory_report());
+        if matches!(root.mode, ArtifactMode::DiscoveredOnly) {
+            continue;
+        }
+
+        let workspace = workspace_for_known_root(&root, &default_workspace)?;
+        let engine = build_engine(&workspace)?;
+        let inventory = inventory_lintable_root(&root, &workspace)
+            .map_err(|error| format!("inventory failed for {}: {error}", root.path.display()))?;
+        inventory_stats.record_lintable_inventory(&inventory);
+
+        let summary = engine
+            .scan_path(&root.path)
+            .map_err(|error| format!("scan failed for {}: {error}", root.path.display()))?;
+        blocking |= has_blocking_findings(&summary.findings, &workspace.engine_config.ci_policy);
+        inventory_stats.supported_artifacts_scanned += summary.scanned_files;
+        let absolute_base = absolute_base_for_scan(&root.path, &workspace);
+        merge_summary_with_absolute_paths(&mut aggregate, summary, &absolute_base);
+    }
+
+    let report = output::build_envelope_with_inventory(
+        &aggregate,
+        None,
+        None,
+        report_roots,
+        Some(inventory_stats),
+    );
+
+    match output_format {
+        OutputFormat::Text => {
+            print!("{}", output::format_text(&report));
+        }
+        OutputFormat::Json => {
+            println!(
+                "{}",
+                output::format_json(&report)
+                    .map_err(|error| format!("json output failed: {error}"))?
+            );
+        }
+        OutputFormat::Sarif => {
+            println!(
+                "{}",
+                output::format_sarif(&report)
+                    .map_err(|error| format!("sarif output failed: {error}"))?
+            );
+        }
+    }
+
+    if blocking {
         Ok(ExitCode::from(1))
     } else {
         Ok(ExitCode::SUCCESS)
@@ -437,6 +512,8 @@ fn print_usage() {
     println!("                    [--format=sarif]");
     println!("lintai scan-known [--scope=project|global|both] [--client NAME]");
     println!("                    [--format=text|json|sarif]");
+    println!("lintai inventory-os [--scope=user|system|both] [--client NAME]");
+    println!("                    [--path-root DIR] [--format=text|json|sarif]");
     println!("lintai fix [path] [--apply] [--rule CODE]");
     println!("lintai explain-config <file>");
     println!("lintai config-schema");
