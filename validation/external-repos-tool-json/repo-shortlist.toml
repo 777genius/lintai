@@ -1,0 +1,130 @@
+version = 1
+
+[cohort]
+total = 9
+category = "tool_json"
+category_semantics = "tool_json means the repo was admitted because it contains committed non-fixture, non-doc-only ToolDescriptorJson artifacts confirmed by semantic classification"
+
+[[repos]]
+repo = "docker/hub-mcp"
+url = "https://github.com/docker/hub-mcp"
+pinned_ref = "3b1a162b12b420443dcf3668534581887d88212b"
+category = "tool_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+admission_paths = ["tools.json"]
+rationale = "Seed-wave repo with committed top-level tool registration JSON used by a public MCP server."
+
+[[repos]]
+repo = "OriShmila/alpha-vantage-mcp-server"
+url = "https://github.com/OriShmila/alpha-vantage-mcp-server"
+pinned_ref = "dea305c3190b23c87dc39bb5f209262daedca020"
+category = "tool_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+admission_paths = ["alpha_vantage_mcp_server/tools.json"]
+rationale = "Committed MCP server tool catalog under source control with explicit tool descriptors and inputSchema fields."
+
+[[repos]]
+repo = "gitkraken/MCP-Docs"
+url = "https://github.com/gitkraken/MCP-Docs"
+pinned_ref = "774874f73d98310c291a4248ac0e24c717aba1e3"
+category = "tool_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+admission_paths = ["tools.json"]
+rationale = "Public MCP server repo with checked-in tool descriptor JSON at repo root."
+
+[[repos]]
+repo = "hanweg/mcp-tool-builder"
+url = "https://github.com/hanweg/mcp-tool-builder"
+pinned_ref = "878a7a0de1742c9d90724068ec0ede75b1f5e916"
+category = "tool_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+admission_paths = ["tools/tools.json"]
+rationale = "Committed non-fixture tool collection JSON using name and parameters fields."
+
+[[repos]]
+repo = "TencentCloudBase/CloudBase-MCP"
+url = "https://github.com/TencentCloudBase/CloudBase-MCP"
+pinned_ref = "b3fbed8d43133cf2e4bbf6608863789a72292bee"
+category = "tool_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+admission_paths = ["scripts/tools.json"]
+rationale = "Committed generated tool catalog for a production MCP server, suitable as a clean-control descriptor source."
+
+[[repos]]
+repo = "vapagentmedia/vap-showcase"
+url = "https://github.com/vapagentmedia/vap-showcase"
+pinned_ref = "4c5e2ef4968debe9e7be4c5f0a03d7a31faf949f"
+category = "tool_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+admission_paths = ["mcp/tools.json"]
+rationale = "Committed application-local MCP tool catalog with clear descriptor semantics and no excluded path segments."
+
+[[repos]]
+repo = "masacento/mcp-go-example"
+url = "https://github.com/masacento/mcp-go-example"
+pinned_ref = "bac48eb813f9ba1a6dd2cc1a3ee8791fd2446b79"
+category = "tool_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+admission_paths = ["tools.json"]
+rationale = "Committed JSON-RPC tools/list response envelope whose nested result.tools payload contains valid MCP tool descriptors."
+
+[[repos]]
+repo = "marklechner/kali-mcp-server"
+url = "https://github.com/marklechner/kali-mcp-server"
+pinned_ref = "66a2bd35c6153fad052c136687ca96af27f5b5e0"
+category = "tool_json"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+admission_paths = ["tools.json"]
+rationale = "Committed top-level Kali MCP tool catalog with explicit tool descriptors and no excluded path segments."
+
+[[repos]]
+repo = "PRQELT/Autonomix"
+url = "https://github.com/PRQELT/Autonomix"
+pinned_ref = "3d1743fd9026f8ae2dad5841acaf1eb86cbd5ad1"
+category = "tool_json"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+admission_paths = [
+  "Resources/ToolSchemas/animation_tools.json",
+  "Resources/ToolSchemas/behaviortree_tools.json",
+  "Resources/ToolSchemas/blueprint_tools.json",
+  "Resources/ToolSchemas/build_tools.json",
+  "Resources/ToolSchemas/context_tools.json",
+  "Resources/ToolSchemas/cpp_tools.json",
+  "Resources/ToolSchemas/datatable_tools.json",
+  "Resources/ToolSchemas/diagnostics_tools.json",
+  "Resources/ToolSchemas/enhanced_input_tools.json",
+  "Resources/ToolSchemas/gas_tools.json",
+  "Resources/ToolSchemas/level_tools.json",
+  "Resources/ToolSchemas/material_tools.json",
+  "Resources/ToolSchemas/mesh_tools.json",
+  "Resources/ToolSchemas/pcg_tools.json",
+  "Resources/ToolSchemas/performance_tools.json",
+  "Resources/ToolSchemas/pie_tools.json",
+  "Resources/ToolSchemas/python_tools.json",
+  "Resources/ToolSchemas/sequencer_tools.json",
+  "Resources/ToolSchemas/settings_tools.json",
+  "Resources/ToolSchemas/sourcecontrol_tools.json",
+  "Resources/ToolSchemas/task_tools.json",
+  "Resources/ToolSchemas/validation_tools.json",
+  "Resources/ToolSchemas/viewport_tools.json",
+  "Resources/ToolSchemas/widget_tools.json",
+]
+rationale = "Operational Unreal-agent repo with committed tool descriptor JSON stored under non-fixture resource paths that still pass the literal path exclusion gate."

@@ -1,0 +1,213 @@
+version = 1
+wave = 2
+baseline = "archive/wave1-ledger.toml"
+
+[[evaluations]]
+repo = "docker/hub-mcp"
+url = "https://github.com/docker/hub-mcp"
+pinned_ref = "3b1a162b12b420443dcf3668534581887d88212b"
+category = "tool_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings were emitted on the committed non-fixture tool descriptor path."
+preview_signal_notes = "No preview findings were emitted."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "OriShmila/alpha-vantage-mcp-server"
+url = "https://github.com/OriShmila/alpha-vantage-mcp-server"
+pinned_ref = "dea305c3190b23c87dc39bb5f209262daedca020"
+category = "tool_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".cursorrules",
+    "tool_descriptor_json",
+]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings were emitted on the admitted tool descriptor path."
+preview_signal_notes = "No preview findings were emitted; one sibling candidate file still produced a parse runtime error."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+diagnostics = []
+
+[[evaluations.runtime_errors]]
+path = "alpha_vantage_mcp_server/tools_new.json"
+kind = "parse"
+message = "invalid JSON document: EOF while parsing a value at line 2270 column 0"
+
+[[evaluations]]
+repo = "gitkraken/MCP-Docs"
+url = "https://github.com/gitkraken/MCP-Docs"
+pinned_ref = "774874f73d98310c291a4248ac0e24c717aba1e3"
+category = "tool_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings were emitted on the committed non-fixture tool descriptor path."
+preview_signal_notes = "No preview findings were emitted."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "hanweg/mcp-tool-builder"
+url = "https://github.com/hanweg/mcp-tool-builder"
+pinned_ref = "878a7a0de1742c9d90724068ec0ede75b1f5e916"
+category = "tool_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings were emitted on the committed non-fixture tool descriptor path."
+preview_signal_notes = "No preview findings were emitted."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "TencentCloudBase/CloudBase-MCP"
+url = "https://github.com/TencentCloudBase/CloudBase-MCP"
+pinned_ref = "b3fbed8d43133cf2e4bbf6608863789a72292bee"
+category = "tool_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".mcp.json",
+    ".mdc",
+    "SKILL.md",
+    "mcp.json",
+    "tool_descriptor_json",
+]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings were emitted after tightening SEC314 to ignore wrapper documents containing tool collections."
+preview_signal_notes = "No preview findings were emitted; one recoverable markdown diagnostic was unrelated to the admitted tool JSON path."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations.diagnostics]]
+path = "config/source/editor-config/guides/cloudbase-rules.mdc"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: did not find expected alphabetic or numeric character at line 2 column 9, while scanning an alias at line 2 column 8)"
+
+[[evaluations]]
+repo = "vapagentmedia/vap-showcase"
+url = "https://github.com/vapagentmedia/vap-showcase"
+pinned_ref = "4c5e2ef4968debe9e7be4c5f0a03d7a31faf949f"
+category = "tool_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    "mcp.json",
+    "tool_descriptor_json",
+]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings were emitted on the committed non-fixture tool descriptor path."
+preview_signal_notes = "No preview findings were emitted."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "masacento/mcp-go-example"
+url = "https://github.com/masacento/mcp-go-example"
+pinned_ref = "bac48eb813f9ba1a6dd2cc1a3ee8791fd2446b79"
+category = "tool_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings were emitted on the admitted nested JSON-RPC tool descriptor payload."
+preview_signal_notes = "No preview findings were emitted."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "marklechner/kali-mcp-server"
+url = "https://github.com/marklechner/kali-mcp-server"
+pinned_ref = "66a2bd35c6153fad052c136687ca96af27f5b5e0"
+category = "tool_json"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings were emitted on the committed top-level tool descriptor catalog."
+preview_signal_notes = "No preview findings were emitted."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "PRQELT/Autonomix"
+url = "https://github.com/PRQELT/Autonomix"
+pinned_ref = "3d1743fd9026f8ae2dad5841acaf1eb86cbd5ad1"
+category = "tool_json"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings were emitted across the admitted operational tool descriptor resources."
+preview_signal_notes = "No preview findings were emitted."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []

@@ -48,6 +48,7 @@
 | 10 | **[PUBLIC_BETA_SHIPPING_CHECKLIST.md](PUBLIC_BETA_SHIPPING_CHECKLIST.md)** | Canonical shipping workflow and asset checklist for the first public beta |
 | 11 | **[EXTERNAL_VALIDATION_PLAN.md](EXTERNAL_VALIDATION_PLAN.md)** | Canonical plan и runbook для external-repo validation waves |
 | 12 | **[EXTERNAL_VALIDATION_REPORT.md](EXTERNAL_VALIDATION_REPORT.md)** | Checked-in wave 2 release evidence for the public beta posture |
+| 13 | **[EXTERNAL_VALIDATION_TOOL_JSON_REPORT.md](EXTERNAL_VALIDATION_TOOL_JSON_REPORT.md)** | Focused `+6` extension wave for `ToolDescriptorJson` usefulness evidence |
 | 13 | **[BETA_TO_1_0_ROADMAP.md](BETA_TO_1_0_ROADMAP.md)** | Большой post-`v0.1` roadmap: precision hardening, beta, structural growth, `1.0` gate |
 
 ### Research second
@@ -69,6 +70,7 @@ Research files below are reference material. They are useful for background and 
 - **[PUBLIC_BETA_SHIPPING_CHECKLIST.md](PUBLIC_BETA_SHIPPING_CHECKLIST.md)** — Exact tag, workflow, and asset checklist for shipping the first public beta
 - **[EXTERNAL_VALIDATION_PLAN.md](EXTERNAL_VALIDATION_PLAN.md)** — Cohort design, shortlist policy, ledger contract, and runbook for external validation
 - **[EXTERNAL_VALIDATION_REPORT.md](EXTERNAL_VALIDATION_REPORT.md)** — Checked-in wave 2 external validation summary and public beta release signal
+- **[EXTERNAL_VALIDATION_TOOL_JSON_REPORT.md](EXTERNAL_VALIDATION_TOOL_JSON_REPORT.md)** — Focused tool-descriptor extension wave for non-fixture usefulness proof
 - **[BETA_TO_1_0_ROADMAP.md](BETA_TO_1_0_ROADMAP.md)** — Canonical roadmap from clean `v0.1` core to public beta and toward `1.0`
 - **[RULE_QUALITY_POLICY.md](RULE_QUALITY_POLICY.md)** — Политика надёжности правил: детерминизм, контекст, доказательства
 - **[SECURITY_RULES.md](SECURITY_RULES.md)** — Сгенерированный canonical catalog текущих security rules и их remediation support
