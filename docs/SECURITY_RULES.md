@@ -42,6 +42,11 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC318` | Anthropic strict tool input schema omits additionalProperties: false | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` |
 | `SEC319` | server.json remotes entry uses an insecure or non-public remote URL | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` |
 | `SEC320` | server.json remotes URL references an undefined template variable | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` |
+| `SEC321` | server.json remotes header commits literal authentication material | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` |
+| `SEC322` | server.json remotes header value references an undefined template variable | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` |
+| `SEC323` | server.json auth header carries material without an explicit secret flag | Preview | `preview_blocked` | Warn | `per_file` | `server_json` | `structural` | `message_only` |
+| `SEC324` | GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` |
+| `SEC325` | GitHub Actions workflow interpolates untrusted expression data directly inside a run command | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` |
 | `SEC401` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC402` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC403` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
@@ -600,6 +605,93 @@ Canonical catalog for the shipped security rules currently exposed by:
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC321` — server.json remotes header commits literal authentication material
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `server_json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks remotes[].headers[] auth-like values for literal bearer/basic material or literal API key style values.
+- Deterministic Signal Basis: ServerJsonSignals inspects remotes[].headers[] auth-like names and value literals without looking at packages[].transport.
+- Malicious Corpus: `server-json-literal-auth-header`
+- Benign Corpus: `server-json-auth-header-placeholder-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC322` — server.json remotes header value references an undefined template variable
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `server_json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks auth-like remotes[].headers[].value placeholders against variables defined on the same header object.
+- Deterministic Signal Basis: ServerJsonSignals placeholder extraction over remotes[].headers[].value compared with headers[].variables keys.
+- Malicious Corpus: `server-json-unresolved-header-variable`
+- Benign Corpus: `server-json-header-variable-defined`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC323` — server.json auth header carries material without an explicit secret flag
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `server_json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Secret policy expectations can vary across registry producers, so the first release keeps this as guidance-only.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC324` — GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `github_workflow`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks workflow uses: entries for third-party actions that are not pinned to immutable commit SHAs.
+- Deterministic Signal Basis: GithubWorkflowSignals line-level uses: extraction gated by semantically confirmed workflow YAML.
+- Malicious Corpus: `github-workflow-third-party-unpinned-action`
+- Benign Corpus: `github-workflow-pinned-third-party-action`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC325` — GitHub Actions workflow interpolates untrusted expression data directly inside a run command
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `github_workflow`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shell safety depends on how the interpolated expression is consumed inside the run command.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ## Provider: `lintai-policy-mismatch`
 

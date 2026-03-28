@@ -1,0 +1,475 @@
+version = 1
+wave = 1
+
+[[evaluations]]
+repo = "IO-Aerospace-software-engineering/mcp-server"
+url = "https://github.com/IO-Aerospace-software-engineering/mcp-server"
+pinned_ref = "3dbe1d3314d88a959c4432d596f5554723ac2f6a"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "server.json",
+]
+stable_findings = 3
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "TencentCloudBase/CloudBase-MCP"
+url = "https://github.com/TencentCloudBase/CloudBase-MCP"
+pinned_ref = "b3fbed8d43133cf2e4bbf6608863789a72292bee"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    ".mcp.json",
+    ".mdc",
+    "SKILL.md",
+    "mcp.json",
+    "tool_descriptor_json",
+]
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations.diagnostics]]
+path = "config/source/editor-config/guides/cloudbase-rules.mdc"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: did not find expected alphabetic or numeric character at line 2 column 9, while scanning an alias at line 2 column 8)"
+
+[[evaluations]]
+repo = "VictoriaMetrics-Community/mcp-victoriametrics"
+url = "https://github.com/VictoriaMetrics-Community/mcp-victoriametrics"
+pinned_ref = "1d6523be0d7cea234251ded63032899f0af1a60a"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "server.json",
+]
+stable_findings = 6
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "blazickjp/arxiv-mcp-server"
+url = "https://github.com/blazickjp/arxiv-mcp-server"
+pinned_ref = "0065f5abb48f3eb4e011a130dd63fc52b381a1d2"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "CLAUDE.md",
+]
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "cloudflare/mcp-server-cloudflare"
+url = "https://github.com/cloudflare/mcp-server-cloudflare"
+pinned_ref = "7f48d179c70adea5577b3abeddb1105a874d9987"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "server.json",
+    "tool_descriptor_json",
+]
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "containers/kubernetes-mcp-server"
+url = "https://github.com/containers/kubernetes-mcp-server"
+pinned_ref = "df06f9de9cb98e0aef1008926ab1f5b12e427937"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "mcp.json",
+    "server.json",
+    "tool_descriptor_json",
+]
+stable_findings = 5
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "docker/hub-mcp"
+url = "https://github.com/docker/hub-mcp"
+pinned_ref = "3b1a162b12b420443dcf3668534581887d88212b"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "tool_descriptor_json",
+]
+stable_findings = 9
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "googleworkspace/developer-tools"
+url = "https://github.com/googleworkspace/developer-tools"
+pinned_ref = "496529e5392eeaea3a19854a40979a6f57a3f315"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "server.json",
+]
+stable_findings = 6
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "hashicorp/terraform-mcp-server"
+url = "https://github.com/hashicorp/terraform-mcp-server"
+pinned_ref = "617ba91b86a87e07cad2ca5374ee4149ce75ebb4"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "server.json",
+]
+stable_findings = 6
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "modelcontextprotocol/registry"
+url = "https://github.com/modelcontextprotocol/registry"
+pinned_ref = "c5c4b9e8890dd5754bee889b2f1417f4fe3b5ce5"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "CLAUDE.md",
+]
+stable_findings = 7
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "netdata/netdata"
+url = "https://github.com/netdata/netdata"
+pinned_ref = "bd37f67c61ebcfdf6912bf6e7d5240667edb8b07"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "CLAUDE.md",
+    "server.json",
+]
+stable_findings = 122
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "tldraw/tldraw"
+url = "https://github.com/tldraw/tldraw"
+pinned_ref = "a8785621b3271f55ab972cfac658b11a93cb252f"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".cursor-plugin/plugin.json",
+    ".github/workflows/*.yml",
+    ".mdc",
+    "CLAUDE.md",
+    "SKILL.md",
+    "mcp.json",
+    "server.json",
+]
+stable_findings = 18
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "MidOSresearch/midos"
+url = "https://github.com/MidOSresearch/midos"
+pinned_ref = "696ab0762540648c2d80b2d380b7f668ffbe6a96"
+category = "github_workflow"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "SKILL.md",
+    "mcp.json",
+    "server.json",
+]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+diagnostics = []
+
+[[evaluations.runtime_errors]]
+path = "knowledge/skills/avr_embedded/SKILL.md"
+kind = "parse"
+message = "unterminated frontmatter block"
+
+[[evaluations.runtime_errors]]
+path = "knowledge/skills/fastapi/SKILL.md"
+kind = "parse"
+message = "unterminated frontmatter block"
+
+[[evaluations]]
+repo = "cursor/plugins"
+url = "https://github.com/cursor/plugins"
+pinned_ref = "08c2bbe2ae8a022a21dc6c32faf611f14a6e8343"
+category = "github_workflow"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [
+    ".cursor-plugin/plugin.json",
+    ".github/workflows/*.yml",
+    ".mdc",
+    "SKILL.md",
+]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations.diagnostics]]
+path = "agent-compatibility/skills/check-agent-compatibility/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 56)"
+
+[[evaluations]]
+repo = "gitkraken/MCP-Docs"
+url = "https://github.com/gitkraken/MCP-Docs"
+pinned_ref = "774874f73d98310c291a4248ac0e24c717aba1e3"
+category = "github_workflow"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "tool_descriptor_json",
+]
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "mrexodia/ida-pro-mcp"
+url = "https://github.com/mrexodia/ida-pro-mcp"
+pinned_ref = "5bdafa2f20c9b4807a864b4e7999c715da52b05d"
+category = "github_workflow"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "CLAUDE.md",
+    "SKILL.md",
+]
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "olostep/olostep-cursor-plugin"
+url = "https://github.com/olostep/olostep-cursor-plugin"
+pinned_ref = "f970811435fe500e6d1c6cc2cd37e1aa4c05c9cc"
+category = "github_workflow"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [
+    ".cursor-plugin/plugin.json",
+    ".github/workflows/*.yml",
+    "SKILL.md",
+    "mcp.json",
+]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "vapagentmedia/vap-showcase"
+url = "https://github.com/vapagentmedia/vap-showcase"
+pinned_ref = "4c5e2ef4968debe9e7be4c5f0a03d7a31faf949f"
+category = "github_workflow"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "mcp.json",
+    "server.json",
+    "tool_descriptor_json",
+]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []

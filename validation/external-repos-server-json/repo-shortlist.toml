@@ -1,7 +1,7 @@
 version = 1
 
 [cohort]
-total = 12
+total = 18
 category = "server_json"
 category_semantics = "server_json means the repo was admitted because it contains a semantically confirmed MCP Registry server.json artifact under an operational path"
 
@@ -136,3 +136,69 @@ status = "evaluated"
 surfaces_present = ["server.json"]
 admission_paths = ["server.json"]
 rationale = "Packages-only root server.json in a public production-focused MCP server repo, used as a clean control."
+
+[[repos]]
+repo = "github/github-mcp-server"
+url = "https://github.com/github/github-mcp-server"
+pinned_ref = "2a1eaaca39daf7e6538cf21e0cb0f7dcd73bd88b"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["server.json"]
+rationale = "Official GitHub MCP server with root server.json remote metadata and header configuration under remotes[]."
+
+[[repos]]
+repo = "onkernel/kernel-mcp-server"
+url = "https://github.com/onkernel/kernel-mcp-server"
+pinned_ref = "afc85c351a5a96bd4ec86195de565a1db1cb1fc6"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["server.json"]
+rationale = "Operational MCP server repo with a valid root server.json and remote-enabled registry metadata."
+
+[[repos]]
+repo = "peek-travel/mcp-intro"
+url = "https://github.com/peek-travel/mcp-intro"
+pinned_ref = "689181707e2e4aa3385b54401f15a29566868af4"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["server.json"]
+rationale = "Public tutorial repo with a committed root server.json using remotes[] under an operational path."
+
+[[repos]]
+repo = "blockscout/mcp-server"
+url = "https://github.com/blockscout/mcp-server"
+pinned_ref = "00cc9302d74faa3c880fdf0c1650e7dabecd4ad2"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["server.json"]
+rationale = "Production MCP server repo with a root server.json and semantically confirmed remote registry configuration."
+
+[[repos]]
+repo = "domdomegg/airtable-mcp-server"
+url = "https://github.com/domdomegg/airtable-mcp-server"
+pinned_ref = "331983354c4908955f018940b3b58347847eb449"
+category = "server_json"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["server.json"]
+rationale = "Packages-only server.json admitted as a clean control for valid registry metadata without remote risk."
+
+[[repos]]
+repo = "formulahendry/mcp-server-code-runner"
+url = "https://github.com/formulahendry/mcp-server-code-runner"
+pinned_ref = "529b5ed4654c70e45a10ada4dc6e65e657120ac3"
+category = "server_json"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["server.json"]
+rationale = "Committed server.json with package transport metadata only, suitable as a control for server-registry validation."

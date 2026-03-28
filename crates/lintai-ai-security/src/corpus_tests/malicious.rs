@@ -20,6 +20,8 @@ fn malicious_corpus_case_dirs_are_discoverable() {
         names,
         vec![
             "cursor-plugin-unsafe-path",
+            "github-workflow-direct-run-interpolation",
+            "github-workflow-third-party-unpinned-action",
             "hook-base64-exec",
             "hook-download-exec",
             "hook-plain-http-secret-exfil",
@@ -39,6 +41,8 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "policy-exec-network-mismatch",
             "policy-frontmatter-conflict",
             "server-json-insecure-remote-url",
+            "server-json-literal-auth-header",
+            "server-json-unresolved-header-variable",
             "server-json-unresolved-remote-variable",
             "skill-fenced-pipe-shell",
             "skill-hidden-directive",

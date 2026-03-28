@@ -1,13 +1,13 @@
 # External Validation Server JSON Report
 
-> Focused extension report for semantically confirmed MCP Registry `server.json` surfaces.
-> Source of truth lives in [validation/external-repos-server-json/repo-shortlist.toml](../validation/external-repos-server-json/repo-shortlist.toml) and [validation/external-repos-server-json/ledger.toml](../validation/external-repos-server-json/ledger.toml).
+> Wave 2 extension report for semantically confirmed MCP Registry `server.json` surfaces.
+> Source of truth lives in [validation/external-repos-server-json/repo-shortlist.toml](../validation/external-repos-server-json/repo-shortlist.toml), current results in [validation/external-repos-server-json/ledger.toml](../validation/external-repos-server-json/ledger.toml), and archived wave 1 baseline in [validation/external-repos-server-json/archive/wave1-ledger.toml](../validation/external-repos-server-json/archive/wave1-ledger.toml).
 
 ## Cohort Composition
 
-- `12` repos evaluated
-- `8` remote-enabled repos
-- `4` control repos
+- `18` repos evaluated
+- `12` remote-enabled repos
+- `6` control repos
 
 ## Admission Results
 
@@ -23,17 +23,37 @@
 - `arielbk/anki-mcp` via `server.json`. Packages-only server.json used as a clean control for valid registry metadata without remote risk.
 - `hashicorp/terraform-mcp-server` via `server.json`. Packages-only server.json in a high-signal production repo, suitable as a control for package transport metadata.
 - `VictoriaMetrics-Community/mcp-victoriametrics` via `server.json`. Packages-only root server.json in a public production-focused MCP server repo, used as a clean control.
+- `github/github-mcp-server` via `server.json`. Official GitHub MCP server with root server.json remote metadata and header configuration under remotes[].
+- `onkernel/kernel-mcp-server` via `server.json`. Operational MCP server repo with a valid root server.json and remote-enabled registry metadata.
+- `peek-travel/mcp-intro` via `server.json`. Public tutorial repo with a committed root server.json using remotes[] under an operational path.
+- `blockscout/mcp-server` via `server.json`. Production MCP server repo with a root server.json and semantically confirmed remote registry configuration.
+- `domdomegg/airtable-mcp-server` via `server.json`. Packages-only server.json admitted as a clean control for valid registry metadata without remote risk.
+- `formulahendry/mcp-server-code-runner` via `server.json`. Committed server.json with package transport metadata only, suitable as a control for server-registry validation.
 
 ## Overall Counts
 
-- `0` stable findings
-- `0` preview findings
-- `2` runtime parser errors
+- `194` stable findings
+- `1` preview findings
+- `3` runtime parser errors
 - `0` diagnostics
+
+## Delta From Previous Wave
+
+- stable findings: `0` -> `194`
+- preview findings: `0` -> `1`
+- runtime parser errors: `2` -> `3`
+- diagnostics: `0` -> `0`
+- admitted repo set changes:
+- added `blockscout/mcp-server`
+- added `domdomegg/airtable-mcp-server`
+- added `formulahendry/mcp-server-code-runner`
+- added `github/github-mcp-server`
+- added `onkernel/kernel-mcp-server`
+- added `peek-travel/mcp-intro`
 
 ## Stable Hits
 
-- no external `Stable` hits were observed from `SEC319`-`SEC320`
+- no external `Stable` hits were observed from `SEC319`-`SEC323`
 
 ## Preview Hits
 
@@ -42,7 +62,8 @@
 ## Runtime / Diagnostic Notes
 
 - `MidOSresearch/midos`: `2` runtime parser errors, `0` diagnostics (non-admission-path issue)
+- `formulahendry/mcp-server-code-runner`: `1` runtime parser errors, `0` diagnostics (non-admission-path issue)
 
 ## Recommended Next Step
 
-Keep the `server.json` surface and continue discovery; do not weaken `SEC319` or `SEC320` if this first wave stays clean but sparse.
+Keep the `server.json` surface and continue discovery; do not weaken `SEC319`-`SEC323` if this wave stays clean but sparse.

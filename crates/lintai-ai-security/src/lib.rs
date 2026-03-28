@@ -1,3 +1,4 @@
+mod github_workflow_rules;
 mod helpers;
 mod hook_rules;
 mod json_locator;

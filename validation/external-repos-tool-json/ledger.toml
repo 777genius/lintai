@@ -1,6 +1,6 @@
 version = 1
-wave = 3
-baseline = "archive/wave2-ledger.toml"
+wave = 4
+baseline = "archive/wave3-ledger.toml"
 
 [[evaluations]]
 repo = "docker/hub-mcp"
@@ -9,10 +9,13 @@ pinned_ref = "3b1a162b12b420443dcf3668534581887d88212b"
 category = "tool_json"
 subtype = "stress"
 status = "evaluated"
-surfaces_present = ["tool_descriptor_json"]
-stable_findings = 0
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "tool_descriptor_json",
+]
+stable_findings = 9
 preview_findings = 0
-stable_rule_codes = []
+stable_rule_codes = ["SEC324"]
 preview_rule_codes = []
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings were emitted on the committed non-fixture tool descriptor path."
@@ -58,10 +61,13 @@ pinned_ref = "774874f73d98310c291a4248ac0e24c717aba1e3"
 category = "tool_json"
 subtype = "stress"
 status = "evaluated"
-surfaces_present = ["tool_descriptor_json"]
-stable_findings = 0
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "tool_descriptor_json",
+]
+stable_findings = 1
 preview_findings = 0
-stable_rule_codes = []
+stable_rule_codes = ["SEC324"]
 preview_rule_codes = []
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings were emitted on the committed non-fixture tool descriptor path."
@@ -101,15 +107,16 @@ category = "tool_json"
 subtype = "stress"
 status = "evaluated"
 surfaces_present = [
+    ".github/workflows/*.yml",
     ".mcp.json",
     ".mdc",
     "SKILL.md",
     "mcp.json",
     "tool_descriptor_json",
 ]
-stable_findings = 0
+stable_findings = 1
 preview_findings = 0
-stable_rule_codes = []
+stable_rule_codes = ["SEC324"]
 preview_rule_codes = []
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings were emitted after tightening SEC314 to ignore wrapper documents containing tool collections."
@@ -133,6 +140,7 @@ category = "tool_json"
 subtype = "stress"
 status = "evaluated"
 surfaces_present = [
+    ".github/workflows/*.yml",
     "mcp.json",
     "server.json",
     "tool_descriptor_json",
@@ -186,6 +194,27 @@ preview_rule_codes = []
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings were emitted on the committed top-level tool descriptor catalog."
 preview_signal_notes = "No preview findings were emitted."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "wrediam/n8n-coolify-mcp-tools"
+url = "https://github.com/wrediam/n8n-coolify-mcp-tools"
+pinned_ref = "b657b517fb61d44918010104be625af16a956465"
+category = "tool_json"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"

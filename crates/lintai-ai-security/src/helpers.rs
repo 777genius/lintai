@@ -1,6 +1,6 @@
 use lintai_api::{
     DocumentSemantics, Evidence, EvidenceKind, Finding, JsonSemantics, Location, RuleMetadata,
-    ScanContext, Span, WorkspaceArtifact,
+    ScanContext, Span, WorkspaceArtifact, YamlSemantics,
 };
 
 pub(crate) fn json_semantics(ctx: &ScanContext) -> Option<&JsonSemantics> {
@@ -13,6 +13,13 @@ pub(crate) fn json_semantics(ctx: &ScanContext) -> Option<&JsonSemantics> {
 pub(crate) fn workspace_json_semantics(ctx: &WorkspaceArtifact) -> Option<&JsonSemantics> {
     match ctx.semantics.as_ref() {
         Some(DocumentSemantics::Json(value)) => Some(value),
+        _ => None,
+    }
+}
+
+pub(crate) fn yaml_semantics(ctx: &ScanContext) -> Option<&YamlSemantics> {
+    match ctx.semantics.as_ref() {
+        Some(DocumentSemantics::Yaml(value)) => Some(value),
         _ => None,
     }
 }

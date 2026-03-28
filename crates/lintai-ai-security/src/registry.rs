@@ -3,6 +3,10 @@ use lintai_api::{
     ScanContext, Severity, Suggestion, declare_rule,
 };
 
+use crate::github_workflow_rules::{
+    check_github_workflow_unpinned_third_party_action,
+    check_github_workflow_untrusted_run_interpolation,
+};
 use crate::hook_rules::{
     check_hook_base64_exec, check_hook_download_exec, check_hook_plain_http_exfil,
     check_hook_secret_exfil, check_hook_static_auth_exposure, check_hook_tls_bypass,
@@ -20,7 +24,9 @@ use crate::markdown_rules::{
     check_markdown_private_key_pem,
 };
 use crate::server_json_rules::{
-    check_server_json_insecure_remote_url, check_server_json_unresolved_remote_variable,
+    check_server_json_auth_header_policy_mismatch, check_server_json_insecure_remote_url,
+    check_server_json_literal_auth_header, check_server_json_unresolved_header_variable,
+    check_server_json_unresolved_remote_variable,
 };
 use crate::signals::ArtifactSignals;
 use crate::tool_json_rules::{
@@ -374,6 +380,61 @@ declare_rule! {
     }
 }
 
+declare_rule! {
+    pub struct ServerJsonLiteralAuthHeaderRule {
+        code: "SEC321",
+        summary: "server.json remotes header commits literal authentication material",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ServerJsonUnresolvedHeaderVariableRule {
+        code: "SEC322",
+        summary: "server.json remotes header value references an undefined template variable",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ServerJsonAuthHeaderPolicyMismatchRule {
+        code: "SEC323",
+        summary: "server.json auth header carries material without an explicit secret flag",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GithubWorkflowUnpinnedThirdPartyActionRule {
+        code: "SEC324",
+        summary: "GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct GithubWorkflowUntrustedRunInterpolationRule {
+        code: "SEC325",
+        summary: "GitHub Actions workflow interpolates untrusted expression data directly inside a run command",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
 type CheckFn = fn(&ScanContext, &ArtifactSignals, RuleMetadata) -> Vec<Finding>;
 type SafeFixFn = fn(&Finding) -> Fix;
 type SuggestionFixFn = fn(&ScanContext, &Finding) -> Option<Fix>;
@@ -386,6 +447,7 @@ pub(crate) enum Surface {
     Json,
     ToolJson,
     ServerJson,
+    GithubWorkflow,
     Workspace,
 }
 
@@ -409,6 +471,7 @@ impl Surface {
             ),
             Self::ToolJson => artifact_kind == ArtifactKind::ToolDescriptorJson,
             Self::ServerJson => artifact_kind == ArtifactKind::ServerRegistryConfig,
+            Self::GithubWorkflow => artifact_kind == ArtifactKind::GitHubWorkflow,
             Self::Workspace => false,
         }
     }
@@ -493,7 +556,7 @@ pub(crate) const HEURISTIC_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed pre
 pub(crate) const STRUCTURAL_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.";
 pub(crate) const WORKSPACE_PREVIEW_REQUIREMENTS: &str = "Needs workspace precision review, linked benign/malicious corpus proof, and completed stable checklist metadata.";
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 31] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 36] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1040,6 +1103,93 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 31] = [
         safe_fix: None,
         suggestion_message: Some(
             "define every URL placeholder under remotes[].variables or remove the unresolved placeholder from the remote URL",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ServerJsonLiteralAuthHeaderRule::METADATA,
+        surface: Surface::ServerJson,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks remotes[].headers[] auth-like values for literal bearer/basic material or literal API key style values.",
+            malicious_case_ids: &["server-json-literal-auth-header"],
+            benign_case_ids: &["server-json-auth-header-placeholder-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ServerJsonSignals inspects remotes[].headers[] auth-like names and value literals without looking at packages[].transport.",
+        },
+        check: check_server_json_literal_auth_header,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace the literal auth header value with a placeholder-backed variable in the same remote header entry",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ServerJsonUnresolvedHeaderVariableRule::METADATA,
+        surface: Surface::ServerJson,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks auth-like remotes[].headers[].value placeholders against variables defined on the same header object.",
+            malicious_case_ids: &["server-json-unresolved-header-variable"],
+            benign_case_ids: &["server-json-header-variable-defined"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ServerJsonSignals placeholder extraction over remotes[].headers[].value compared with headers[].variables keys.",
+        },
+        check: check_server_json_unresolved_header_variable,
+        safe_fix: None,
+        suggestion_message: Some(
+            "define every auth header placeholder under the same remotes[].headers[].variables object",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ServerJsonAuthHeaderPolicyMismatchRule::METADATA,
+        surface: Surface::ServerJson,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Secret policy expectations can vary across registry producers, so the first release keeps this as guidance-only.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_server_json_auth_header_policy_mismatch,
+        safe_fix: None,
+        suggestion_message: Some(
+            "mark auth-carrying header entries with isSecret/is_secret=true when they carry value or variables",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GithubWorkflowUnpinnedThirdPartyActionRule::METADATA,
+        surface: Surface::GithubWorkflow,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks workflow uses: entries for third-party actions that are not pinned to immutable commit SHAs.",
+            malicious_case_ids: &["github-workflow-third-party-unpinned-action"],
+            benign_case_ids: &["github-workflow-pinned-third-party-action"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "GithubWorkflowSignals line-level uses: extraction gated by semantically confirmed workflow YAML.",
+        },
+        check: check_github_workflow_unpinned_third_party_action,
+        safe_fix: None,
+        suggestion_message: Some(
+            "pin third-party GitHub actions to a full 40-character commit SHA",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GithubWorkflowUntrustedRunInterpolationRule::METADATA,
+        surface: Surface::GithubWorkflow,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shell safety depends on how the interpolated expression is consumed inside the run command.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_github_workflow_untrusted_run_interpolation,
+        safe_fix: None,
+        suggestion_message: Some(
+            "avoid interpolating github.event or inputs values directly inside run commands; route them through validated env handling first",
         ),
         suggestion_fix: None,
     },

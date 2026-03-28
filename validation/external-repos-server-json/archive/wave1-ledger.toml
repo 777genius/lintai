@@ -1,0 +1,288 @@
+version = 1
+wave = 1
+
+[[evaluations]]
+repo = "containers/kubernetes-mcp-server"
+url = "https://github.com/containers/kubernetes-mcp-server"
+pinned_ref = "df06f9de9cb98e0aef1008926ab1f5b12e427937"
+category = "server_json"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [
+    "mcp.json",
+    "server.json",
+    "tool_descriptor_json",
+]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "vapagentmedia/vap-showcase"
+url = "https://github.com/vapagentmedia/vap-showcase"
+pinned_ref = "4c5e2ef4968debe9e7be4c5f0a03d7a31faf949f"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    "mcp.json",
+    "server.json",
+    "tool_descriptor_json",
+]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "cloudflare/mcp-server-cloudflare"
+url = "https://github.com/cloudflare/mcp-server-cloudflare"
+pinned_ref = "7f48d179c70adea5577b3abeddb1105a874d9987"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    "server.json",
+    "tool_descriptor_json",
+]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "googleworkspace/developer-tools"
+url = "https://github.com/googleworkspace/developer-tools"
+pinned_ref = "496529e5392eeaea3a19854a40979a6f57a3f315"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "IO-Aerospace-software-engineering/mcp-server"
+url = "https://github.com/IO-Aerospace-software-engineering/mcp-server"
+pinned_ref = "3dbe1d3314d88a959c4432d596f5554723ac2f6a"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "MidOSresearch/midos"
+url = "https://github.com/MidOSresearch/midos"
+pinned_ref = "696ab0762540648c2d80b2d380b7f668ffbe6a96"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    "SKILL.md",
+    "mcp.json",
+    "server.json",
+]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+diagnostics = []
+
+[[evaluations.runtime_errors]]
+path = "knowledge/skills/avr_embedded/SKILL.md"
+kind = "parse"
+message = "unterminated frontmatter block"
+
+[[evaluations.runtime_errors]]
+path = "knowledge/skills/fastapi/SKILL.md"
+kind = "parse"
+message = "unterminated frontmatter block"
+
+[[evaluations]]
+repo = "mldotink/mcp"
+url = "https://github.com/mldotink/mcp"
+pinned_ref = "f46c9cfdaccb3612e2fc2564788288d7b1318608"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "netdata/netdata"
+url = "https://github.com/netdata/netdata"
+pinned_ref = "bd37f67c61ebcfdf6912bf6e7d5240667edb8b07"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    "CLAUDE.md",
+    "server.json",
+]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "tldraw/tldraw"
+url = "https://github.com/tldraw/tldraw"
+pinned_ref = "a8785621b3271f55ab972cfac658b11a93cb252f"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".cursor-plugin/plugin.json",
+    ".mdc",
+    "CLAUDE.md",
+    "SKILL.md",
+    "mcp.json",
+    "server.json",
+]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "arielbk/anki-mcp"
+url = "https://github.com/arielbk/anki-mcp"
+pinned_ref = "21257cbfc9e972cee109dfdd10e709a07a7158be"
+category = "server_json"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["server.json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "hashicorp/terraform-mcp-server"
+url = "https://github.com/hashicorp/terraform-mcp-server"
+pinned_ref = "617ba91b86a87e07cad2ca5374ee4149ce75ebb4"
+category = "server_json"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["server.json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations]]
+repo = "VictoriaMetrics-Community/mcp-victoriametrics"
+url = "https://github.com/VictoriaMetrics-Community/mcp-victoriametrics"
+pinned_ref = "1d6523be0d7cea234251ded63032899f0af1a60a"
+category = "server_json"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["server.json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = ""
+preview_signal_notes = ""
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []

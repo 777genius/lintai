@@ -1,0 +1,21 @@
+id = "server-json-literal-auth-header"
+kind = "malicious"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = ["SEC322"]
+
+[[expected_findings]]
+rule_code = "SEC321"
+tier = "stable"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC323"
+tier = "preview"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

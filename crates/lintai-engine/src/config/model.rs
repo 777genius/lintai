@@ -18,6 +18,10 @@ pub(crate) const DEFAULT_INCLUDE_PATTERNS: &[&str] = &[
     "**/.cursorrules",
     "*.json",
     "**/*.json",
+    "*.yml",
+    "**/*.yml",
+    "*.yaml",
+    "**/*.yaml",
     "*.sh",
     "**/*.sh",
 ];

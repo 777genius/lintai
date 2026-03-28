@@ -107,6 +107,21 @@ fn parses_json_semantics_for_mcp() {
 }
 
 #[test]
+fn parses_yaml_semantics_for_github_workflow() {
+    let parsed = parse_document(
+        &Artifact::new(
+            ".github/workflows/ci.yml",
+            ArtifactKind::GitHubWorkflow,
+            SourceFormat::Yaml,
+        ),
+        "on: push\njobs:\n  build:\n    runs-on: ubuntu-latest\n",
+    )
+    .unwrap();
+
+    assert!(matches!(parsed.semantics, Some(DocumentSemantics::Yaml(_))));
+}
+
+#[test]
 fn keeps_multiline_html_comment_as_single_region() {
     let parsed = parse_document(
         &Artifact::new("SKILL.md", ArtifactKind::Skill, SourceFormat::Markdown),

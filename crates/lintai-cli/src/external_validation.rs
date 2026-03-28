@@ -18,11 +18,17 @@ const ARCHIVED_WAVE1_LEDGER_PATH: &str = "validation/external-repos/archive/wave
 const TOOL_JSON_EXTENSION_SHORTLIST_PATH: &str =
     "validation/external-repos-tool-json/repo-shortlist.toml";
 const TOOL_JSON_EXTENSION_LEDGER_PATH: &str = "validation/external-repos-tool-json/ledger.toml";
-const TOOL_JSON_EXTENSION_ARCHIVED_WAVE2_LEDGER_PATH: &str =
-    "validation/external-repos-tool-json/archive/wave2-ledger.toml";
+const TOOL_JSON_EXTENSION_ARCHIVED_WAVE3_LEDGER_PATH: &str =
+    "validation/external-repos-tool-json/archive/wave3-ledger.toml";
 const SERVER_JSON_EXTENSION_SHORTLIST_PATH: &str =
     "validation/external-repos-server-json/repo-shortlist.toml";
 const SERVER_JSON_EXTENSION_LEDGER_PATH: &str = "validation/external-repos-server-json/ledger.toml";
+const SERVER_JSON_EXTENSION_ARCHIVED_WAVE1_LEDGER_PATH: &str =
+    "validation/external-repos-server-json/archive/wave1-ledger.toml";
+const GITHUB_ACTIONS_EXTENSION_SHORTLIST_PATH: &str =
+    "validation/external-repos-github-actions/repo-shortlist.toml";
+const GITHUB_ACTIONS_EXTENSION_LEDGER_PATH: &str =
+    "validation/external-repos-github-actions/ledger.toml";
 const FIXTURE_PATH_SEGMENTS: &[&str] = &[
     "test", "tests", "testdata", "fixture", "fixtures", "example", "examples", "sample", "samples",
 ];
@@ -42,6 +48,7 @@ pub(crate) enum ValidationPackage {
     Canonical,
     ToolJsonExtension,
     ServerJsonExtension,
+    GithubActionsExtension,
 }
 
 impl ValidationPackage {
@@ -50,6 +57,7 @@ impl ValidationPackage {
             "canonical" => Ok(Self::Canonical),
             "tool-json-extension" => Ok(Self::ToolJsonExtension),
             "server-json-extension" => Ok(Self::ServerJsonExtension),
+            "github-actions-extension" => Ok(Self::GithubActionsExtension),
             _ => Err(format!("unknown external validation package `{value}`")),
         }
     }
@@ -59,6 +67,7 @@ impl ValidationPackage {
             Self::Canonical => SHORTLIST_PATH,
             Self::ToolJsonExtension => TOOL_JSON_EXTENSION_SHORTLIST_PATH,
             Self::ServerJsonExtension => SERVER_JSON_EXTENSION_SHORTLIST_PATH,
+            Self::GithubActionsExtension => GITHUB_ACTIONS_EXTENSION_SHORTLIST_PATH,
         }
     }
 
@@ -67,14 +76,16 @@ impl ValidationPackage {
             Self::Canonical => LEDGER_PATH,
             Self::ToolJsonExtension => TOOL_JSON_EXTENSION_LEDGER_PATH,
             Self::ServerJsonExtension => SERVER_JSON_EXTENSION_LEDGER_PATH,
+            Self::GithubActionsExtension => GITHUB_ACTIONS_EXTENSION_LEDGER_PATH,
         }
     }
 
     fn baseline_reference(self) -> Option<&'static str> {
         match self {
             Self::Canonical => Some("archive/wave1-ledger.toml"),
-            Self::ToolJsonExtension => Some("archive/wave2-ledger.toml"),
-            Self::ServerJsonExtension => None,
+            Self::ToolJsonExtension => Some("archive/wave3-ledger.toml"),
+            Self::ServerJsonExtension => Some("archive/wave1-ledger.toml"),
+            Self::GithubActionsExtension => None,
         }
     }
 
@@ -87,6 +98,9 @@ impl ValidationPackage {
             Self::ServerJsonExtension => {
                 "target/external-validation/server-json-extension/candidate-ledger.toml"
             }
+            Self::GithubActionsExtension => {
+                "target/external-validation/github-actions-extension/candidate-ledger.toml"
+            }
         }
     }
 
@@ -95,13 +109,17 @@ impl ValidationPackage {
             Self::Canonical => "target/external-validation/wave2/raw",
             Self::ToolJsonExtension => "target/external-validation/tool-json-extension/raw",
             Self::ServerJsonExtension => "target/external-validation/server-json-extension/raw",
+            Self::GithubActionsExtension => {
+                "target/external-validation/github-actions-extension/raw"
+            }
         }
     }
     fn default_wave(self) -> u32 {
         match self {
             Self::Canonical => 2,
-            Self::ToolJsonExtension => 3,
-            Self::ServerJsonExtension => 1,
+            Self::ToolJsonExtension => 4,
+            Self::ServerJsonExtension => 2,
+            Self::GithubActionsExtension => 1,
         }
     }
 }
@@ -364,7 +382,7 @@ pub(crate) fn render_report(options: RenderReportOptions) -> Result<String, Stri
             let baseline = load_ledger(
                 &options
                     .workspace_root
-                    .join(TOOL_JSON_EXTENSION_ARCHIVED_WAVE2_LEDGER_PATH),
+                    .join(TOOL_JSON_EXTENSION_ARCHIVED_WAVE3_LEDGER_PATH),
             )?;
             let current = load_ledger(&options.workspace_root.join(options.package.ledger_path()))?;
             Ok(render_tool_json_extension_report(
@@ -373,8 +391,20 @@ pub(crate) fn render_report(options: RenderReportOptions) -> Result<String, Stri
         }
         ValidationPackage::ServerJsonExtension => {
             let shortlist = load_shortlist(&options.workspace_root, options.package)?;
+            let baseline = load_ledger(
+                &options
+                    .workspace_root
+                    .join(SERVER_JSON_EXTENSION_ARCHIVED_WAVE1_LEDGER_PATH),
+            )?;
             let current = load_ledger(&options.workspace_root.join(options.package.ledger_path()))?;
-            Ok(render_server_json_extension_report(&shortlist, &current))
+            Ok(render_server_json_extension_report(
+                &shortlist, &baseline, &current,
+            ))
+        }
+        ValidationPackage::GithubActionsExtension => {
+            let shortlist = load_shortlist(&options.workspace_root, options.package)?;
+            let current = load_ledger(&options.workspace_root.join(options.package.ledger_path()))?;
+            Ok(render_github_actions_extension_report(&shortlist, &current))
         }
     }
 }
@@ -615,8 +645,16 @@ fn render_tool_json_extension_report(
         .map(|repo| repo.admission_paths.len())
         .sum::<usize>();
     let admitted_repo_changes = admitted_repo_set_changes(shortlist, baseline);
-    let stable_hit_repos = repos_with_hits(ledger, true);
-    let preview_hit_repos = repos_with_hits(ledger, false);
+    let stable_hit_repos = repos_with_rule_hits(
+        ledger,
+        &["SEC314", "SEC315", "SEC316", "SEC317", "SEC318"],
+        true,
+    );
+    let preview_hit_repos = repos_with_rule_hits(
+        ledger,
+        &["SEC314", "SEC315", "SEC316", "SEC317", "SEC318"],
+        false,
+    );
     let runtime_issue_repos = repos_with_runtime_issues(ledger, shortlist);
     let fixture_safe = shortlist.repos.iter().all(|repo| {
         repo.admission_paths
@@ -630,8 +668,8 @@ fn render_tool_json_extension_report(
 
     let mut output = String::new();
     output.push_str("# External Validation Tool JSON Extension Report\n\n");
-    output.push_str("> Wave 3 extension report for `ToolDescriptorJson` usefulness proof after tightening operational-only admission.\n");
-    output.push_str("> Source of truth lives in [validation/external-repos-tool-json/repo-shortlist.toml](../validation/external-repos-tool-json/repo-shortlist.toml), current results in [validation/external-repos-tool-json/ledger.toml](../validation/external-repos-tool-json/ledger.toml), and archived wave 2 baseline in [validation/external-repos-tool-json/archive/wave2-ledger.toml](../validation/external-repos-tool-json/archive/wave2-ledger.toml).\n\n");
+    output.push_str("> Wave 4 extension report for `ToolDescriptorJson` usefulness proof after broader deterministic discovery and the stricter operational-only admission gate.\n");
+    output.push_str("> Source of truth lives in [validation/external-repos-tool-json/repo-shortlist.toml](../validation/external-repos-tool-json/repo-shortlist.toml), current results in [validation/external-repos-tool-json/ledger.toml](../validation/external-repos-tool-json/ledger.toml), and archived wave 3 baseline in [validation/external-repos-tool-json/archive/wave3-ledger.toml](../validation/external-repos-tool-json/archive/wave3-ledger.toml).\n\n");
 
     output.push_str("## Cohort Composition\n\n");
     output.push_str(&format!(
@@ -656,7 +694,7 @@ fn render_tool_json_extension_report(
     output.push_str(&format!("- `{}` `control` repos\n\n", control));
     if scarcity {
         output.push_str(
-            "Broader discovery was attempted, but the target of `18` admitted repos was not reached under the stricter operational-only gate.\n\n",
+        "Broader discovery was attempted, but the target of `18` admitted repos was not reached under the stricter operational-only gate.\n\n",
         );
     }
 
@@ -733,7 +771,7 @@ fn render_tool_json_extension_report(
             "- no non-fixture external `Stable` hits were observed from `SEC314`-`SEC318`\n",
         );
     } else {
-        for (repo, count, rule_codes) in stable_hit_repos {
+        for (repo, count, rule_codes) in &stable_hit_repos {
             output.push_str(&format!(
                 "- `{repo}`: `{count}` stable finding(s) via {}\n",
                 format_rule_codes(&rule_codes)
@@ -797,23 +835,35 @@ fn render_tool_json_extension_report(
 
 fn render_server_json_extension_report(
     shortlist: &RepoShortlist,
+    baseline: &ExternalValidationLedger,
     ledger: &ExternalValidationLedger,
 ) -> String {
+    let baseline_counts = aggregate_counts(baseline);
     let counts = aggregate_counts(ledger);
-    let stable_hit_repos = repos_with_hits(ledger, true);
-    let preview_hit_repos = repos_with_hits(ledger, false);
+    let stable_hit_repos = repos_with_rule_hits(
+        ledger,
+        &["SEC319", "SEC320", "SEC321", "SEC322", "SEC323"],
+        true,
+    );
+    let preview_hit_repos = repos_with_rule_hits(
+        ledger,
+        &["SEC319", "SEC320", "SEC321", "SEC322", "SEC323"],
+        false,
+    );
     let runtime_issue_repos = repos_with_runtime_issues(ledger, shortlist);
+    let admitted_repo_changes = admitted_repo_set_changes(shortlist, baseline);
     let remote_enabled = shortlist
         .repos
         .iter()
         .filter(|repo| repo.subtype == "stress")
         .count();
     let controls = shortlist.repos.len().saturating_sub(remote_enabled);
+    let scarcity = shortlist.repos.len() < 18;
 
     let mut output = String::new();
     output.push_str("# External Validation Server JSON Report\n\n");
-    output.push_str("> Focused extension report for semantically confirmed MCP Registry `server.json` surfaces.\n");
-    output.push_str("> Source of truth lives in [validation/external-repos-server-json/repo-shortlist.toml](../validation/external-repos-server-json/repo-shortlist.toml) and [validation/external-repos-server-json/ledger.toml](../validation/external-repos-server-json/ledger.toml).\n\n");
+    output.push_str("> Wave 2 extension report for semantically confirmed MCP Registry `server.json` surfaces.\n");
+    output.push_str("> Source of truth lives in [validation/external-repos-server-json/repo-shortlist.toml](../validation/external-repos-server-json/repo-shortlist.toml), current results in [validation/external-repos-server-json/ledger.toml](../validation/external-repos-server-json/ledger.toml), and archived wave 1 baseline in [validation/external-repos-server-json/archive/wave1-ledger.toml](../validation/external-repos-server-json/archive/wave1-ledger.toml).\n\n");
 
     output.push_str("## Cohort Composition\n\n");
     output.push_str(&format!(
@@ -822,9 +872,9 @@ fn render_server_json_extension_report(
         remote_enabled,
         controls
     ));
-    if shortlist.repos.len() < 12 {
+    if scarcity {
         output.push_str(&format!(
-            "Discovery exhausted before reaching the target cohort size of `12`; current admitted count is `{}`.\n\n",
+            "Discovery exhausted before reaching the target cohort size of `18`; current admitted count is `{}`.\n\n",
             shortlist.repos.len()
         ));
     }
@@ -849,9 +899,42 @@ fn render_server_json_extension_report(
         counts.diagnostics
     ));
 
+    output.push_str("## Delta From Previous Wave\n\n");
+    output.push_str(&format!(
+        "- stable findings: `{}` -> `{}`\n",
+        baseline_counts.stable_findings, counts.stable_findings
+    ));
+    output.push_str(&format!(
+        "- preview findings: `{}` -> `{}`\n",
+        baseline_counts.preview_findings, counts.preview_findings
+    ));
+    output.push_str(&format!(
+        "- runtime parser errors: `{}` -> `{}`\n",
+        baseline_counts.runtime_errors, counts.runtime_errors
+    ));
+    output.push_str(&format!(
+        "- diagnostics: `{}` -> `{}`\n",
+        baseline_counts.diagnostics, counts.diagnostics
+    ));
+    if admitted_repo_changes.is_empty() {
+        output.push_str("- admitted repo set changes: none\n\n");
+    } else {
+        output.push_str("- admitted repo set changes:\n");
+        for change in admitted_repo_changes {
+            output.push_str(&format!("- {change}\n"));
+        }
+        output.push('\n');
+    }
+    if scarcity {
+        output.push_str(&format!(
+            "- scarcity note: discovery exhausted before reaching the target cohort size of `18`; current admitted count is `{}`\n\n",
+            shortlist.repos.len()
+        ));
+    }
+
     output.push_str("## Stable Hits\n\n");
     if stable_hit_repos.is_empty() {
-        output.push_str("- no external `Stable` hits were observed from `SEC319`-`SEC320`\n\n");
+        output.push_str("- no external `Stable` hits were observed from `SEC319`-`SEC323`\n\n");
     } else {
         for (repo, count, rule_codes) in &stable_hit_repos {
             output.push_str(&format!(
@@ -894,9 +977,118 @@ fn render_server_json_extension_report(
 
     output.push_str("## Recommended Next Step\n\n");
     if stable_hit_repos.is_empty() {
-        output.push_str("Keep the `server.json` surface and continue discovery; do not weaken `SEC319` or `SEC320` if this first wave stays clean but sparse.\n");
+        output.push_str("Keep the `server.json` surface and continue discovery; do not weaken `SEC319`-`SEC323` if this wave stays clean but sparse.\n");
     } else {
         output.push_str("Promote the highest-signal server-json repos into future canonical evidence sets and expand the server-json rule batch conservatively.\n");
+    }
+
+    output
+}
+
+fn render_github_actions_extension_report(
+    shortlist: &RepoShortlist,
+    ledger: &ExternalValidationLedger,
+) -> String {
+    let counts = aggregate_counts(ledger);
+    let stable_hit_repos = repos_with_rule_hits(ledger, &["SEC324"], true);
+    let preview_hit_repos = repos_with_rule_hits(ledger, &["SEC325"], false);
+    let runtime_issue_repos = repos_with_runtime_issues(ledger, shortlist);
+    let stress = shortlist
+        .repos
+        .iter()
+        .filter(|repo| repo.subtype == "stress")
+        .count();
+    let control = shortlist.repos.len().saturating_sub(stress);
+
+    let mut output = String::new();
+    output.push_str("# External Validation GitHub Actions Report\n\n");
+    output.push_str(
+        "> Wave 1 extension report for semantically confirmed GitHub Actions workflow surfaces.\n",
+    );
+    output.push_str("> Source of truth lives in [validation/external-repos-github-actions/repo-shortlist.toml](../validation/external-repos-github-actions/repo-shortlist.toml) and [validation/external-repos-github-actions/ledger.toml](../validation/external-repos-github-actions/ledger.toml).\n\n");
+
+    output.push_str("## Cohort Composition\n\n");
+    output.push_str(&format!(
+        "- `{}` repos evaluated\n- `{}` stress repos\n- `{}` control repos\n\n",
+        shortlist.repos.len(),
+        stress,
+        control
+    ));
+    if shortlist.repos.len() < 18 {
+        output.push_str(&format!(
+            "Discovery exhausted before reaching the target cohort size of `18`; current admitted count is `{}`.\n\n",
+            shortlist.repos.len()
+        ));
+    }
+
+    output.push_str("## Admission Results\n\n");
+    for repo in &shortlist.repos {
+        output.push_str(&format!(
+            "- `{}` via {}. {}\n",
+            repo.repo,
+            format_rule_codes(&repo.admission_paths),
+            repo.rationale
+        ));
+    }
+    output.push('\n');
+
+    output.push_str("## Overall Counts\n\n");
+    output.push_str(&format!(
+        "- `{}` stable findings\n- `{}` preview findings\n- `{}` runtime parser errors\n- `{}` diagnostics\n\n",
+        counts.stable_findings,
+        counts.preview_findings,
+        counts.runtime_errors,
+        counts.diagnostics
+    ));
+
+    output.push_str("## Stable Hits\n\n");
+    if stable_hit_repos.is_empty() {
+        output.push_str("- no external `Stable` hits were observed from `SEC324`\n\n");
+    } else {
+        for (repo, count, rule_codes) in &stable_hit_repos {
+            output.push_str(&format!(
+                "- `{repo}`: `{count}` stable finding(s) via {}\n",
+                format_rule_codes(&rule_codes)
+            ));
+        }
+        output.push('\n');
+    }
+
+    output.push_str("## Preview Hits\n\n");
+    if preview_hit_repos.is_empty() {
+        output.push_str("- no preview hits were observed from `SEC325`\n\n");
+    } else {
+        for (repo, count, rule_codes) in preview_hit_repos {
+            output.push_str(&format!(
+                "- `{repo}`: `{count}` preview finding(s) via {}\n",
+                format_rule_codes(&rule_codes)
+            ));
+        }
+        output.push('\n');
+    }
+
+    output.push_str("## Runtime / Diagnostic Notes\n\n");
+    if runtime_issue_repos.is_empty() {
+        output.push_str(
+            "- no runtime parser errors or diagnostics were emitted in this extension wave\n\n",
+        );
+    } else {
+        for (repo, runtime_count, diagnostic_count, labels) in runtime_issue_repos {
+            output.push_str(&format!(
+                "- `{repo}`: `{}` runtime parser errors, `{}` diagnostics ({})\n",
+                runtime_count,
+                diagnostic_count,
+                labels.join(", ")
+            ));
+        }
+        output.push('\n');
+    }
+
+    output.push_str("## Recommended Next Step\n\n");
+    if stable_hit_repos.is_empty() {
+        output.push_str("Keep the GitHub Actions surface and expand the workflow rule batch conservatively if this first wave stays clean but sparse.\n");
+    } else {
+        output.push_str("Promote the highest-signal GitHub Actions repos into future usefulness evidence sets and expand workflow checks conservatively.\n");
     }
 
     output
@@ -1134,20 +1326,48 @@ fn aggregate_counts(ledger: &ExternalValidationLedger) -> AggregateCounts {
     }
 }
 
-fn repos_with_hits(
+fn repos_with_rule_hits(
     ledger: &ExternalValidationLedger,
+    wanted_rules: &[&str],
     stable: bool,
 ) -> Vec<(String, usize, Vec<String>)> {
+    let wanted = wanted_rules.iter().copied().collect::<BTreeSet<_>>();
     ledger
         .evaluations
         .iter()
         .filter_map(|entry| {
-            let (count, rule_codes) = if stable {
-                (entry.stable_findings, &entry.stable_rule_codes)
+            let matching_codes = if stable {
+                entry
+                    .stable_rule_codes
+                    .iter()
+                    .filter(|code| wanted.contains(code.as_str()))
+                    .cloned()
+                    .collect::<Vec<_>>()
             } else {
-                (entry.preview_findings, &entry.preview_rule_codes)
+                entry
+                    .preview_rule_codes
+                    .iter()
+                    .filter(|code| wanted.contains(code.as_str()))
+                    .cloned()
+                    .collect::<Vec<_>>()
             };
-            (count > 0).then(|| (entry.repo.clone(), count, rule_codes.clone()))
+            if matching_codes.is_empty() {
+                return None;
+            }
+            let count = if stable {
+                entry
+                    .stable_rule_codes
+                    .iter()
+                    .filter(|code| wanted.contains(code.as_str()))
+                    .count()
+            } else {
+                entry
+                    .preview_rule_codes
+                    .iter()
+                    .filter(|code| wanted.contains(code.as_str()))
+                    .count()
+            };
+            Some((entry.repo.clone(), count, matching_codes))
         })
         .collect()
 }
@@ -1278,6 +1498,11 @@ fn inventory_surfaces(repo_root: &Path) -> Result<InventoryArtifact, String> {
         if normalized.ends_with("server.json") {
             surfaces.insert("server.json".to_owned());
         }
+        if normalized.contains(".github/workflows/")
+            && (normalized.ends_with(".yml") || normalized.ends_with(".yaml"))
+        {
+            surfaces.insert(".github/workflows/*.yml".to_owned());
+        }
         if normalized.ends_with("tools.json")
             || normalized.ends_with(".tool.json")
             || normalized.ends_with(".tools.json")
@@ -1318,6 +1543,7 @@ fn verify_repo_admission(
         ValidationPackage::Canonical => return Ok(()),
         ValidationPackage::ToolJsonExtension => admitted_tool_descriptor_paths(repo_root)?,
         ValidationPackage::ServerJsonExtension => admitted_server_json_paths(repo_root)?,
+        ValidationPackage::GithubActionsExtension => admitted_github_workflow_paths(repo_root)?,
     };
 
     if repo.admission_paths.is_empty() {
@@ -1452,11 +1678,59 @@ fn admitted_server_json_paths(repo_root: &Path) -> Result<Vec<String>, String> {
     Ok(admitted)
 }
 
+fn admitted_github_workflow_paths(repo_root: &Path) -> Result<Vec<String>, String> {
+    let detector = FileTypeDetector::default();
+    let mut admitted = Vec::new();
+    let mut builder = WalkBuilder::new(repo_root);
+    builder
+        .hidden(false)
+        .git_ignore(false)
+        .git_exclude(false)
+        .parents(false);
+    for result in builder.build() {
+        let entry =
+            result.map_err(|error| format!("github-workflow admission walk failed: {error}"))?;
+        if !entry
+            .file_type()
+            .is_some_and(|file_type| file_type.is_file())
+        {
+            continue;
+        }
+        let relative = entry
+            .path()
+            .strip_prefix(repo_root)
+            .map_err(|error| format!("failed to relativize github-workflow path: {error}"))?;
+        let normalized = normalize_rel_path(relative);
+        let Some(detected) = detector.detect(relative, &normalized) else {
+            continue;
+        };
+        if detected.kind != ArtifactKind::GitHubWorkflow {
+            continue;
+        }
+        let text = fs::read_to_string(entry.path()).map_err(|error| {
+            format!(
+                "failed to read candidate github workflow {}: {error}",
+                entry.path().display()
+            )
+        })?;
+        if contains_semantic_github_workflow_yaml(&text) {
+            admitted.push(normalized);
+        }
+    }
+    admitted.sort();
+    admitted.dedup();
+    if admitted.is_empty() {
+        return Err("no semantically confirmed GitHub workflow paths passed admission".to_owned());
+    }
+    Ok(admitted)
+}
+
 fn package_label(package: ValidationPackage) -> &'static str {
     match package {
         ValidationPackage::Canonical => "canonical",
         ValidationPackage::ToolJsonExtension => "tool-json extension",
         ValidationPackage::ServerJsonExtension => "server-json extension",
+        ValidationPackage::GithubActionsExtension => "github-actions extension",
     }
 }
 
@@ -1496,6 +1770,31 @@ fn contains_semantic_server_json(text: &str) -> bool {
         && object.get("version").and_then(Value::as_str).is_some()
         && (object.get("remotes").and_then(Value::as_array).is_some()
             || object.get("packages").and_then(Value::as_array).is_some())
+}
+
+fn contains_semantic_github_workflow_yaml(text: &str) -> bool {
+    let Ok(value) = serde_yaml_bw::from_str::<Value>(text) else {
+        return false;
+    };
+    let Some(object) = value.as_object() else {
+        return false;
+    };
+    object.get("jobs").and_then(Value::as_object).is_some()
+        && (object.contains_key("on")
+            || object.contains_key("permissions")
+            || object.values().any(value_contains_workflow_steps))
+}
+
+fn value_contains_workflow_steps(value: &Value) -> bool {
+    match value {
+        Value::Array(items) => items.iter().any(value_contains_workflow_steps),
+        Value::Object(object) => {
+            object.contains_key("uses")
+                || object.contains_key("run")
+                || object.values().any(value_contains_workflow_steps)
+        }
+        _ => false,
+    }
 }
 
 fn segment_tokens(segment: &str) -> Vec<&str> {
@@ -2018,6 +2317,14 @@ rationale = "demo"
     }
 
     #[test]
+    fn package_flag_parses_github_actions_extension() {
+        assert_eq!(
+            parse_package_flag(&["--package=github-actions-extension".to_owned()]).unwrap(),
+            ValidationPackage::GithubActionsExtension
+        );
+    }
+
+    #[test]
     fn fixture_like_paths_are_rejected() {
         assert!(is_generic_validation_excluded_path(
             "tests/fixtures/tools.json"
@@ -2076,6 +2383,16 @@ rationale = "demo"
         ));
         assert!(!contains_semantic_server_json(
             r#"{"version":"1.0.0","packages":[{"name":"demo"}]}"#
+        ));
+    }
+
+    #[test]
+    fn semantic_github_workflow_yaml_requires_jobs_and_workflow_keys() {
+        assert!(contains_semantic_github_workflow_yaml(
+            "on: push\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: docker/login-action@v4\n"
+        ));
+        assert!(!contains_semantic_github_workflow_yaml(
+            "name: just a yaml file\nvalues:\n  - demo\n"
         ));
     }
 
@@ -2171,10 +2488,19 @@ rationale = "demo"
                 rationale: "Committed server registry metadata.".to_owned(),
             }],
         };
-        let ledger = ExternalValidationLedger {
+        let baseline = ExternalValidationLedger {
             version: 1,
             wave: 1,
             baseline: None,
+            evaluations: vec![EvaluationEntry {
+                repo: "owner/old-server-json".to_owned(),
+                ..default_entry_from_shortlist(&sample_shortlist().repos[0])
+            }],
+        };
+        let ledger = ExternalValidationLedger {
+            version: 1,
+            wave: 2,
+            baseline: Some("archive/wave1-ledger.toml".to_owned()),
             evaluations: vec![EvaluationEntry {
                 repo: "owner/server-json".to_owned(),
                 url: "https://github.com/owner/server-json".to_owned(),
@@ -2198,7 +2524,62 @@ rationale = "demo"
             }],
         };
 
-        let markdown = render_server_json_extension_report(&shortlist, &ledger);
+        let markdown = render_server_json_extension_report(&shortlist, &baseline, &ledger);
+        assert!(markdown.contains("## Cohort Composition"));
+        assert!(markdown.contains("## Admission Results"));
+        assert!(markdown.contains("## Overall Counts"));
+        assert!(markdown.contains("## Delta From Previous Wave"));
+        assert!(markdown.contains("## Stable Hits"));
+        assert!(markdown.contains("## Preview Hits"));
+        assert!(markdown.contains("## Runtime / Diagnostic Notes"));
+        assert!(markdown.contains("## Recommended Next Step"));
+        assert!(markdown.contains("`SEC319`"));
+    }
+
+    #[test]
+    fn github_actions_extension_report_has_required_sections() {
+        let shortlist = RepoShortlist {
+            version: 1,
+            repos: vec![ShortlistRepo {
+                repo: "owner/workflows".to_owned(),
+                url: "https://github.com/owner/workflows".to_owned(),
+                pinned_ref: "abc123".to_owned(),
+                category: "github_actions".to_owned(),
+                subtype: "stress".to_owned(),
+                status: "evaluated".to_owned(),
+                surfaces_present: vec![".github/workflows/*.yml".to_owned()],
+                admission_paths: vec![".github/workflows/ci.yml".to_owned()],
+                rationale: "Workflow repo.".to_owned(),
+            }],
+        };
+        let ledger = ExternalValidationLedger {
+            version: 1,
+            wave: 1,
+            baseline: None,
+            evaluations: vec![EvaluationEntry {
+                repo: "owner/workflows".to_owned(),
+                url: "https://github.com/owner/workflows".to_owned(),
+                pinned_ref: "abc123".to_owned(),
+                category: "github_actions".to_owned(),
+                subtype: "stress".to_owned(),
+                status: "evaluated".to_owned(),
+                surfaces_present: vec![".github/workflows/*.yml".to_owned()],
+                stable_findings: 1,
+                preview_findings: 1,
+                stable_rule_codes: vec!["SEC324".to_owned()],
+                preview_rule_codes: vec!["SEC325".to_owned()],
+                repo_verdict: "strong_fit".to_owned(),
+                stable_precision_notes: String::new(),
+                preview_signal_notes: String::new(),
+                false_positive_notes: Vec::new(),
+                possible_false_negative_notes: Vec::new(),
+                follow_up_action: "no_action".to_owned(),
+                runtime_errors: Vec::new(),
+                diagnostics: Vec::new(),
+            }],
+        };
+
+        let markdown = render_github_actions_extension_report(&shortlist, &ledger);
         assert!(markdown.contains("## Cohort Composition"));
         assert!(markdown.contains("## Admission Results"));
         assert!(markdown.contains("## Overall Counts"));
@@ -2206,6 +2587,7 @@ rationale = "demo"
         assert!(markdown.contains("## Preview Hits"));
         assert!(markdown.contains("## Runtime / Diagnostic Notes"));
         assert!(markdown.contains("## Recommended Next Step"));
-        assert!(markdown.contains("`SEC319`"));
+        assert!(markdown.contains("`SEC324`"));
+        assert!(markdown.contains("`SEC325`"));
     }
 }

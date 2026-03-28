@@ -1,7 +1,7 @@
 version = 1
 
 [cohort]
-total = 8
+total = 9
 category = "tool_json"
 category_semantics = "tool_json means the repo was admitted because it contains committed non-fixture, non-doc-only ToolDescriptorJson artifacts confirmed by semantic classification"
 
@@ -92,3 +92,14 @@ status = "evaluated"
 surfaces_present = ["tool_descriptor_json"]
 admission_paths = ["tools.json"]
 rationale = "Committed top-level Kali MCP tool catalog with explicit tool descriptors and no excluded path segments."
+
+[[repos]]
+repo = "wrediam/n8n-coolify-mcp-tools"
+url = "https://github.com/wrediam/n8n-coolify-mcp-tools"
+pinned_ref = "b657b517fb61d44918010104be625af16a956465"
+category = "tool_json"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+admission_paths = ["coolify-tools.json"]
+rationale = "Broader-discovery repo with a committed operational tool catalog confirmed by semantic classification outside fixture, docs, and schema paths."

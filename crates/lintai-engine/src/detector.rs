@@ -201,6 +201,16 @@ mod tests {
         assert_eq!(
             detector
                 .detect(
+                    Path::new("/tmp/project/.github/workflows/ci.yml"),
+                    ".github/workflows/ci.yml"
+                )
+                .unwrap()
+                .kind,
+            ArtifactKind::GitHubWorkflow
+        );
+        assert_eq!(
+            detector
+                .detect(
                     Path::new("/tmp/project/.cursor-plugin/commands/setup.md"),
                     ".cursor-plugin/commands/setup.md"
                 )

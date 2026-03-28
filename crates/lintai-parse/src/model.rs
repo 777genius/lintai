@@ -54,6 +54,18 @@ impl JsonParse {
 }
 
 #[derive(Clone, Debug, PartialEq)]
+pub struct YamlParse {
+    pub document: ParsedDocument,
+    pub value: Value,
+}
+
+impl YamlParse {
+    pub fn new(document: ParsedDocument, value: Value) -> Self {
+        Self { document, value }
+    }
+}
+
+#[derive(Clone, Debug, PartialEq)]
 pub struct ShellParse {
     pub document: ParsedDocument,
     pub lines: Vec<String>,

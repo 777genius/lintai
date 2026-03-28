@@ -36,6 +36,7 @@ pub enum ArtifactKind {
     McpConfig,
     ServerRegistryConfig,
     ToolDescriptorJson,
+    GitHubWorkflow,
     CursorPluginManifest,
     CursorPluginHooks,
     CursorHookScript,
@@ -49,6 +50,7 @@ pub enum ArtifactKind {
 pub enum SourceFormat {
     Markdown,
     Json,
+    Yaml,
     Shell,
 }
 
@@ -64,6 +66,7 @@ pub struct ParsedDocument {
 pub enum DocumentSemantics {
     Markdown(MarkdownSemantics),
     Json(JsonSemantics),
+    Yaml(YamlSemantics),
     Shell(ShellSemantics),
 }
 
@@ -85,6 +88,13 @@ impl DocumentSemantics {
     pub fn as_shell(&self) -> Option<&ShellSemantics> {
         match self {
             Self::Shell(value) => Some(value),
+            _ => None,
+        }
+    }
+
+    pub fn as_yaml(&self) -> Option<&YamlSemantics> {
+        match self {
+            Self::Yaml(value) => Some(value),
             _ => None,
         }
     }
@@ -130,6 +140,18 @@ pub struct JsonSemantics {
 }
 
 impl JsonSemantics {
+    pub fn new(value: Value) -> Self {
+        Self { value }
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, JsonSchema, PartialEq, Serialize)]
+#[non_exhaustive]
+pub struct YamlSemantics {
+    pub value: Value,
+}
+
+impl YamlSemantics {
     pub fn new(value: Value) -> Self {
         Self { value }
     }

@@ -171,6 +171,7 @@ Current MCP-family `lintable` roots include:
 - Claude Desktop `claude_desktop_config.json`
 - Continue `~/.continue/mcpServers/**/*.json`
 - GitHub Copilot CLI `mcp-config.json`
+- Windsurf `~/.codeium/windsurf/mcp_config.json`
 
 Current markdown compatibility `lintable` roots include:
 
@@ -179,6 +180,7 @@ Current markdown compatibility `lintable` roots include:
 - Zed `.rules`
 - GitHub Copilot `.github/copilot-instructions.md`
 - Junie `.junie/guidelines.md`
+- Goose `.goosehints`
 - Amp `AGENT.md`
 
 Examples:

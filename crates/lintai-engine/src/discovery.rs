@@ -29,6 +29,7 @@ pub(crate) fn collect_files(path: &Path, config: &EngineConfig) -> io::Result<Ve
     let mut walker = WalkBuilder::new(path);
     walker.hidden(false);
     walker.follow_links(config.follow_symlinks);
+    walker.parents(false);
     walker.git_ignore(true);
     walker.git_global(true);
     walker.git_exclude(true);

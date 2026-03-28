@@ -295,7 +295,10 @@ pub(crate) fn workspace_for_known_root(
     if patterns.is_empty() {
         return Ok(workspace);
     }
-    if artifact_kind == ArtifactKind::CursorRules {
+    if matches!(
+        artifact_kind,
+        ArtifactKind::CursorRules | ArtifactKind::Instructions
+    ) {
         workspace
             .engine_config
             .add_include_patterns(&patterns)

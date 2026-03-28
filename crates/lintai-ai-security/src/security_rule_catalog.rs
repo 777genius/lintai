@@ -225,6 +225,7 @@ fn format_surface(surface: Surface) -> &'static str {
         Surface::Json => "json",
         Surface::ToolJson => "tool_json",
         Surface::ServerJson => "server_json",
+        Surface::GithubWorkflow => "github_workflow",
         Surface::Workspace => "workspace",
     }
 }
@@ -366,6 +367,11 @@ mod tests {
                     | "SEC316"
                     | "SEC317"
                     | "SEC318"
+                    | "SEC319"
+                    | "SEC320"
+                    | "SEC321"
+                    | "SEC322"
+                    | "SEC324"
             ) {
                 assert_eq!(entry.metadata.tier, RuleTier::Stable);
                 assert_eq!(entry.detection_class, DetectionClass::Structural);

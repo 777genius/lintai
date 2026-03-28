@@ -252,8 +252,9 @@ client_id = "windsurf"
 surface_id = "mcp-config"
 scope = "global"
 path_template = "{home}/.codeium/windsurf/mcp_config.json"
-artifact_mode = "discovered_only"
-notes = "Windsurf global MCP config."
+artifact_mode = "lintable"
+artifact_kind_hint = "mcp_config"
+notes = "Windsurf global MCP config, linted through MCP config rules."
 
 [[surface]]
 client_id = "junie"
@@ -503,8 +504,9 @@ client_id = "goose"
 surface_id = "goosehints"
 scope = "project"
 path_template = "{project_root}/.goosehints"
-artifact_mode = "discovered_only"
-notes = "Goose project hints."
+artifact_mode = "lintable"
+artifact_kind_hint = "instructions"
+notes = "Goose project hints, linted as instructions."
 
 [[surface]]
 client_id = "goose"

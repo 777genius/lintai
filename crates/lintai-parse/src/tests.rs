@@ -88,3 +88,17 @@ fn shell_extracts_lines() {
         vec!["echo one".to_owned(), "echo two".to_owned()]
     );
 }
+
+#[test]
+fn yaml_parses_value() {
+    let parsed =
+        parse::yaml::parse("on: push\njobs:\n  build:\n    runs-on: ubuntu-latest\n").unwrap();
+    assert_eq!(parsed.value["on"], "push");
+    assert!(parsed.value["jobs"].is_object());
+}
+
+#[test]
+fn yaml_rejects_invalid_document() {
+    let error = parse::yaml::parse("jobs: [").unwrap_err();
+    assert!(error.message.contains("invalid YAML document"));
+}

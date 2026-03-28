@@ -1,0 +1,204 @@
+version = 1
+
+[cohort]
+total = 18
+category = "github_workflow"
+category_semantics = "github_workflow means the repo was admitted because it contains semantically confirmed GitHub Actions workflow YAML under .github/workflows"
+
+[[repos]]
+repo = "IO-Aerospace-software-engineering/mcp-server"
+url = "https://github.com/IO-Aerospace-software-engineering/mcp-server"
+pinned_ref = "3dbe1d3314d88a959c4432d596f5554723ac2f6a"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/ci.yml", ".github/workflows/release.yml"]
+rationale = "Workflow set contains third-party action references in operational CI and release paths."
+
+[[repos]]
+repo = "TencentCloudBase/CloudBase-MCP"
+url = "https://github.com/TencentCloudBase/CloudBase-MCP"
+pinned_ref = "b3fbed8d43133cf2e4bbf6608863789a72292bee"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/ai-dev.yaml", ".github/workflows/build-zips.yml", ".github/workflows/compat-check.yml", ".github/workflows/crawl-docs.yml", ".github/workflows/nightly-build.yaml", ".github/workflows/npm-publish.yaml", ".github/workflows/publish-clawhub-registry.yml", ".github/workflows/push-allinone-skill.yml", ".github/workflows/push-skills-repo.yaml", ".github/workflows/stale.yml", ".github/workflows/static.yml", ".github/workflows/sync-branch.yml", ".github/workflows/sync-claude-skills-mirror.yml", ".github/workflows/sync-derived-branches.yml", ".github/workflows/sync-to-cnb.yml"]
+rationale = "Large operational workflow set with multiple third-party uses candidates across release and automation jobs."
+
+[[repos]]
+repo = "VictoriaMetrics-Community/mcp-victoriametrics"
+url = "https://github.com/VictoriaMetrics-Community/mcp-victoriametrics"
+pinned_ref = "1d6523be0d7cea234251ded63032899f0af1a60a"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/lint.yaml", ".github/workflows/release.yml"]
+rationale = "Small but operational workflow set with release automation and third-party action candidates."
+
+[[repos]]
+repo = "blazickjp/arxiv-mcp-server"
+url = "https://github.com/blazickjp/arxiv-mcp-server"
+pinned_ref = "0065f5abb48f3eb4e011a130dd63fc52b381a1d2"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/lint.yml", ".github/workflows/publish.yml", ".github/workflows/tests.yml"]
+rationale = "Operational publish and CI workflows with candidate third-party action pins."
+
+[[repos]]
+repo = "cloudflare/mcp-server-cloudflare"
+url = "https://github.com/cloudflare/mcp-server-cloudflare"
+pinned_ref = "7f48d179c70adea5577b3abeddb1105a874d9987"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/branches.yml", ".github/workflows/main.yml", ".github/workflows/release.yml"]
+rationale = "Production workflow set with release automation and third-party action usage."
+
+[[repos]]
+repo = "containers/kubernetes-mcp-server"
+url = "https://github.com/containers/kubernetes-mcp-server"
+pinned_ref = "df06f9de9cb98e0aef1008926ab1f5b12e427937"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/build.yaml", ".github/workflows/helm.yaml", ".github/workflows/labeler.yaml", ".github/workflows/mcpchecker-report.yaml", ".github/workflows/mcpchecker.yaml", ".github/workflows/release-helm.yaml", ".github/workflows/release-image.yml", ".github/workflows/release-mcp-registry.yaml", ".github/workflows/release-mcpb.yaml", ".github/workflows/release.yaml"]
+rationale = "Workflow-heavy repo with numerous operational release and validation jobs."
+
+[[repos]]
+repo = "docker/hub-mcp"
+url = "https://github.com/docker/hub-mcp"
+pinned_ref = "3b1a162b12b420443dcf3668534581887d88212b"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/lint.yml", ".github/workflows/release.yml", ".github/workflows/scorecard.yml", ".github/workflows/tools-list.yml"]
+rationale = "Operational workflow set with release automation and third-party action candidates."
+
+[[repos]]
+repo = "googleworkspace/developer-tools"
+url = "https://github.com/googleworkspace/developer-tools"
+pinned_ref = "496529e5392eeaea3a19854a40979a6f57a3f315"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/release.yml", ".github/workflows/test.yml", ".github/workflows/update.yml"]
+rationale = "Operational workflow set with release, test, and update automation suitable for GitHub Actions checks."
+
+[[repos]]
+repo = "hashicorp/terraform-mcp-server"
+url = "https://github.com/hashicorp/terraform-mcp-server"
+pinned_ref = "617ba91b86a87e07cad2ca5374ee4149ce75ebb4"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/build.yml", ".github/workflows/changelog.yml", ".github/workflows/e2e_test.yml", ".github/workflows/publish-registry.yml", ".github/workflows/release-checks.yml", ".github/workflows/security-scan.yml", ".github/workflows/unit_test.yml"]
+rationale = "High-signal operational workflow set with several third-party action references."
+
+[[repos]]
+repo = "modelcontextprotocol/registry"
+url = "https://github.com/modelcontextprotocol/registry"
+pinned_ref = "c5c4b9e8890dd5754bee889b2f1417f4fe3b5ce5"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/cancel-pulumi-lock.yml", ".github/workflows/ci.yml", ".github/workflows/claude.yml", ".github/workflows/deploy-production.yml", ".github/workflows/deploy-staging.yml", ".github/workflows/release.yml", ".github/workflows/sync-db.yml", ".github/workflows/sync-schema.yml"]
+rationale = "Official registry repo with operational workflow set and multiple third-party action candidates."
+
+[[repos]]
+repo = "netdata/netdata"
+url = "https://github.com/netdata/netdata"
+pinned_ref = "bd37f67c61ebcfdf6912bf6e7d5240667edb8b07"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/add-to-project.yml", ".github/workflows/build.yml", ".github/workflows/check-markdown.yml", ".github/workflows/checks.yml", ".github/workflows/cloud_regression.yml", ".github/workflows/codeql.yml", ".github/workflows/coverity.yml", ".github/workflows/docker.yml", ".github/workflows/generate-integrations.yml", ".github/workflows/go-tests.yml", ".github/workflows/kickstart-upload.yml", ".github/workflows/labeler.yml", ".github/workflows/monitor-releases.yml", ".github/workflows/packagecloud.yml", ".github/workflows/packaging.yml", ".github/workflows/platform-eol-check.yml", ".github/workflows/release.yml", ".github/workflows/repoconfig-packages.yml", ".github/workflows/review.yml", ".github/workflows/tests.yml", ".github/workflows/trigger-learn-update.yml", ".github/workflows/update-mcp-registry.yml"]
+rationale = "Large operational workflow set with many third-party action references and release automation."
+
+[[repos]]
+repo = "tldraw/tldraw"
+url = "https://github.com/tldraw/tldraw"
+pinned_ref = "a8785621b3271f55ab972cfac658b11a93cb252f"
+category = "github_workflow"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/add-framer-rewrites.yml", ".github/workflows/bump-versions.yml", ".github/workflows/checks.yml", ".github/workflows/claude.yml", ".github/workflows/close-stale-issues.yml", ".github/workflows/dependabot-dedupe.yml", ".github/workflows/deploy-analytics.yml", ".github/workflows/deploy-bemo.yml", ".github/workflows/deploy-dotcom.yml", ".github/workflows/get-changelog.yml", ".github/workflows/i18n-download-strings.yml", ".github/workflows/i18n-upload-strings.yml", ".github/workflows/issue-triage.yml", ".github/workflows/playwright-dotcom.yml", ".github/workflows/playwright-examples.yml", ".github/workflows/playwright-perf.yml", ".github/workflows/playwright-update-snapshots.yml", ".github/workflows/prune-preview-deploys.yml", ".github/workflows/publish-branch.yml", ".github/workflows/publish-canary.yml", ".github/workflows/publish-editor-extensions.yml", ".github/workflows/publish-manual.yml", ".github/workflows/publish-new.yml", ".github/workflows/publish-patch.yml", ".github/workflows/publish-templates.yml", ".github/workflows/staging-cleanup-daily.yml", ".github/workflows/staging-e2e.yml", ".github/workflows/trigger-dotcom-hotfix.yml", ".github/workflows/trigger-production-build.yml", ".github/workflows/trigger-sdk-hotfix.yml", ".github/workflows/update-release-notes.yml"]
+rationale = "Workflow-heavy production repo with many operational third-party action candidates."
+
+[[repos]]
+repo = "MidOSresearch/midos"
+url = "https://github.com/MidOSresearch/midos"
+pinned_ref = "696ab0762540648c2d80b2d380b7f668ffbe6a96"
+category = "github_workflow"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/midos-ci.yml", "web/.github/workflows/deploy.yml"]
+rationale = "Repo with semantically confirmed workflows but no intended SEC324 or SEC325 trigger in the current narrow classifier."
+
+[[repos]]
+repo = "cursor/plugins"
+url = "https://github.com/cursor/plugins"
+pinned_ref = "08c2bbe2ae8a022a21dc6c32faf611f14a6e8343"
+category = "github_workflow"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/validate-plugins.yml"]
+rationale = "Single validation workflow used as a clean control for workflow parsing without an intended SEC324 or SEC325 trigger."
+
+[[repos]]
+repo = "gitkraken/MCP-Docs"
+url = "https://github.com/gitkraken/MCP-Docs"
+pinned_ref = "774874f73d98310c291a4248ac0e24c717aba1e3"
+category = "github_workflow"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/merge-mate.yml"]
+rationale = "Small operational workflow set used as a control for semantically confirmed workflow parsing."
+
+[[repos]]
+repo = "mrexodia/ida-pro-mcp"
+url = "https://github.com/mrexodia/ida-pro-mcp"
+pinned_ref = "5bdafa2f20c9b4807a864b4e7999c715da52b05d"
+category = "github_workflow"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/idalib-tests.yml"]
+rationale = "Single operational workflow used as a control for GitHub Actions detection and parsing."
+
+[[repos]]
+repo = "olostep/olostep-cursor-plugin"
+url = "https://github.com/olostep/olostep-cursor-plugin"
+pinned_ref = "f970811435fe500e6d1c6cc2cd37e1aa4c05c9cc"
+category = "github_workflow"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/integrity.yml"]
+rationale = "Small operational workflow set used as a clean control for current GitHub Actions rules."
+
+[[repos]]
+repo = "vapagentmedia/vap-showcase"
+url = "https://github.com/vapagentmedia/vap-showcase"
+pinned_ref = "4c5e2ef4968debe9e7be4c5f0a03d7a31faf949f"
+category = "github_workflow"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [".github/workflows/*.yml"]
+admission_paths = [".github/workflows/ci-example.yml"]
+rationale = "Small workflow surface used as a control with semantically valid GitHub Actions YAML."

@@ -1,6 +1,7 @@
 use lintai_api::{
     Artifact, ArtifactKind, DocumentSemantics, FrontmatterSemantics, JsonSemantics,
     MarkdownSemantics, ParsedDocument, RegionKind, ShellSemantics, SourceFormat, Span, TextRegion,
+    YamlSemantics,
 };
 use lintai_parse::parse;
 
@@ -41,6 +42,13 @@ pub(crate) fn parse_document(
             Ok(ParsedArtifact::new(
                 parsed.document,
                 Some(DocumentSemantics::Json(JsonSemantics::new(parsed.value))),
+            ))
+        }
+        (ArtifactKind::GitHubWorkflow, SourceFormat::Yaml) => {
+            let parsed = parse::yaml::parse(content)?;
+            Ok(ParsedArtifact::new(
+                parsed.document,
+                Some(DocumentSemantics::Yaml(YamlSemantics::new(parsed.value))),
             ))
         }
         (ArtifactKind::CursorHookScript, SourceFormat::Shell) => {

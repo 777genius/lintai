@@ -2,7 +2,7 @@ use lintai_api::{ArtifactKind, RegionKind, ScanContext, Span};
 use serde_json::Value;
 
 use crate::helpers::{
-    contains_dynamic_reference, find_url_userinfo_span, json_semantics, span_text,
+    contains_dynamic_reference, find_url_userinfo_span, json_semantics, span_text, yaml_semantics,
 };
 use crate::json_locator::{JsonLocationMap, JsonPathSegment};
 
@@ -63,6 +63,7 @@ pub(crate) struct ArtifactSignals {
     json: Option<JsonSignals>,
     server_json: Option<ServerJsonSignals>,
     tool_json: Option<ToolJsonSignals>,
+    github_workflow: Option<GithubWorkflowSignals>,
     metrics: SignalWorkBudget,
 }
 
@@ -85,6 +86,7 @@ impl ArtifactSignals {
             json: JsonSignals::from_context(ctx, &mut metrics),
             server_json: ServerJsonSignals::from_context(ctx, &mut metrics),
             tool_json: ToolJsonSignals::from_context(ctx, &mut metrics),
+            github_workflow: GithubWorkflowSignals::from_context(ctx, &mut metrics),
             metrics,
         }
     }
@@ -107,6 +109,10 @@ impl ArtifactSignals {
 
     pub(crate) fn tool_json(&self) -> Option<&ToolJsonSignals> {
         self.tool_json.as_ref()
+    }
+
+    pub(crate) fn github_workflow(&self) -> Option<&GithubWorkflowSignals> {
+        self.github_workflow.as_ref()
     }
 
     pub(crate) fn metrics(&self) -> SignalWorkBudget {
@@ -342,6 +348,9 @@ pub(crate) struct ServerJsonSignals {
     pub(crate) locator: Option<JsonLocationMap>,
     pub(crate) insecure_remote_url_span: Option<Span>,
     pub(crate) unresolved_remote_variable_span: Option<Span>,
+    pub(crate) literal_auth_header_span: Option<Span>,
+    pub(crate) unresolved_header_variable_span: Option<Span>,
+    pub(crate) auth_header_policy_mismatch_span: Option<Span>,
 }
 
 impl ServerJsonSignals {
@@ -412,8 +421,105 @@ impl ServerJsonSignals {
                     fallback_len,
                 ));
             }
+
+            let Some(headers) = remote_object.get("headers").and_then(Value::as_array) else {
+                continue;
+            };
+            for (header_index, header) in headers.iter().enumerate() {
+                metrics.json_values_visited += 1;
+                let Some(header_object) = header.as_object() else {
+                    continue;
+                };
+                let Some(name) = header_object.get("name").and_then(Value::as_str) else {
+                    continue;
+                };
+                if !is_server_auth_header_name(name) {
+                    continue;
+                }
+                let header_path = vec![
+                    JsonPathSegment::Key("remotes".to_owned()),
+                    JsonPathSegment::Index(index),
+                    JsonPathSegment::Key("headers".to_owned()),
+                    JsonPathSegment::Index(header_index),
+                ];
+                if signals.literal_auth_header_span.is_none()
+                    && let Some(relative) =
+                        find_literal_auth_header_relative_span(name, header_object)
+                {
+                    signals.literal_auth_header_span = Some(resolve_relative_value_span(
+                        &with_child_key(&header_path, "value"),
+                        relative,
+                        signals.locator.as_ref(),
+                        fallback_len,
+                    ));
+                }
+                if signals.unresolved_header_variable_span.is_none()
+                    && let Some(relative) =
+                        find_unresolved_header_variable_relative_span(header_object)
+                {
+                    signals.unresolved_header_variable_span = Some(resolve_relative_value_span(
+                        &with_child_key(&header_path, "value"),
+                        relative,
+                        signals.locator.as_ref(),
+                        fallback_len,
+                    ));
+                }
+                if signals.auth_header_policy_mismatch_span.is_none()
+                    && auth_header_policy_mismatch(header_object)
+                {
+                    let key = if header_object.contains_key("isSecret") {
+                        "isSecret"
+                    } else if header_object.contains_key("is_secret") {
+                        "is_secret"
+                    } else {
+                        "name"
+                    };
+                    signals.auth_header_policy_mismatch_span =
+                        Some(resolve_child_value_or_key_span(
+                            &header_path,
+                            key,
+                            signals.locator.as_ref(),
+                            fallback_len,
+                        ));
+                }
+            }
         }
 
+        Some(signals)
+    }
+}
+
+#[derive(Clone, Debug, Default)]
+pub(crate) struct GithubWorkflowSignals {
+    pub(crate) unpinned_third_party_action_spans: Vec<Span>,
+    pub(crate) direct_untrusted_run_interpolation_spans: Vec<Span>,
+}
+
+impl GithubWorkflowSignals {
+    fn from_context(ctx: &ScanContext, metrics: &mut SignalWorkBudget) -> Option<Self> {
+        if ctx.artifact.kind != ArtifactKind::GitHubWorkflow {
+            return None;
+        }
+
+        let value = &yaml_semantics(ctx)?.value;
+        let Some(root) = value.as_object() else {
+            return None;
+        };
+        if !is_semantic_github_workflow(root) {
+            return None;
+        }
+
+        let mut signals = Self::default();
+        let mut offset = 0usize;
+        for segment in ctx.content.split_inclusive('\n') {
+            let line = segment.strip_suffix('\n').unwrap_or(segment);
+            metrics.markdown_regions_visited += 1;
+            collect_github_workflow_line(&mut signals, line, offset);
+            offset += segment.len();
+        }
+        if offset < ctx.content.len() {
+            collect_github_workflow_line(&mut signals, &ctx.content[offset..], offset);
+        }
         Some(signals)
     }
 }
@@ -1626,6 +1732,12 @@ fn resolve_child_relative_value_span(
     resolve_relative_value_span(&matched_path, relative, locator, fallback_len)
 }
 
+fn with_child_key(path: &[JsonPathSegment], key: &str) -> Vec<JsonPathSegment> {
+    let mut next = path.to_vec();
+    next.push(JsonPathSegment::Key(key.to_owned()));
+    next
+}
+
 fn find_literal_value_after_prefixes_case_insensitive(
     text: &str,
     prefixes: &[&str],
@@ -1701,6 +1813,19 @@ fn is_sensitive_header_name(key: &str) -> bool {
         || key.eq_ignore_ascii_case("cookie")
 }
 
+fn is_server_auth_header_name(key: &str) -> bool {
+    matches!(
+        key.to_ascii_lowercase().as_str(),
+        "authorization"
+            | "proxy-authorization"
+            | "authentication"
+            | "x-api-key"
+            | "api-key"
+            | "x-auth-token"
+            | "x-access-token"
+    )
+}
+
 fn is_static_authorization_literal(key: &str, value: &str) -> bool {
     key.eq_ignore_ascii_case("authorization")
         && find_literal_value_after_prefixes_case_insensitive(value, &["Bearer ", "Basic "])
@@ -1722,6 +1847,215 @@ fn is_literal_secret_value(value: &str) -> bool {
         && !lowered.contains("<redacted>")
         && !lowered.contains("your_token_here")
         && !lowered.contains("your-secret")
+}
+
+fn contains_template_placeholder(value: &str) -> bool {
+    let bytes = value.as_bytes();
+    let mut index = 0usize;
+    while index < bytes.len() {
+        if bytes[index] != b'{' {
+            index += 1;
+            continue;
+        }
+        let name_start = index + 1;
+        let Some(close_rel) = value[name_start..].find('}') else {
+            index += 1;
+            continue;
+        };
+        let name_end = name_start + close_rel;
+        if is_remote_variable_name(&value[name_start..name_end]) {
+            return true;
+        }
+        index = name_end + 1;
+    }
+    false
+}
+
+fn find_literal_auth_header_relative_span(
+    header_name: &str,
+    header_object: &serde_json::Map<String, Value>,
+) -> Option<Span> {
+    let value = header_object.get("value").and_then(Value::as_str)?;
+    if contains_template_placeholder(value) {
+        return None;
+    }
+
+    if matches!(
+        header_name.to_ascii_lowercase().as_str(),
+        "authorization" | "proxy-authorization" | "authentication"
+    ) {
+        return find_literal_value_after_prefixes_case_insensitive(value, &["Bearer ", "Basic "]);
+    }
+
+    is_literal_secret_value(value).then_some(Span::new(0, value.len()))
+}
+
+fn find_unresolved_header_variable_relative_span(
+    header_object: &serde_json::Map<String, Value>,
+) -> Option<Span> {
+    let value = header_object.get("value").and_then(Value::as_str)?;
+    let variables = header_object.get("variables").and_then(Value::as_object);
+    let bytes = value.as_bytes();
+    let mut index = 0usize;
+    while index < bytes.len() {
+        if bytes[index] != b'{' {
+            index += 1;
+            continue;
+        }
+        let name_start = index + 1;
+        let Some(close_rel) = value[name_start..].find('}') else {
+            index += 1;
+            continue;
+        };
+        let name_end = name_start + close_rel;
+        let name = &value[name_start..name_end];
+        if is_remote_variable_name(name)
+            && !variables.is_some_and(|variables| variables.contains_key(name))
+        {
+            return Some(Span::new(index, name_end + 1));
+        }
+        index = name_end + 1;
+    }
+    None
+}
+
+fn auth_header_policy_mismatch(header_object: &serde_json::Map<String, Value>) -> bool {
+    let carries_auth_material = header_object
+        .get("value")
+        .and_then(Value::as_str)
+        .is_some_and(|value| !value.trim().is_empty())
+        || header_object
+            .get("variables")
+            .and_then(Value::as_object)
+            .is_some_and(|variables| !variables.is_empty());
+    if !carries_auth_material {
+        return false;
+    }
+
+    match header_object
+        .get("isSecret")
+        .or_else(|| header_object.get("is_secret"))
+    {
+        Some(Value::Bool(true)) => false,
+        Some(Value::Bool(false)) | None => true,
+        _ => true,
+    }
+}
+
+fn is_semantic_github_workflow(root: &serde_json::Map<String, Value>) -> bool {
+    if root.get("jobs").and_then(Value::as_object).is_none() {
+        return false;
+    }
+
+    root.contains_key("on")
+        || root.contains_key("permissions")
+        || root.values().any(value_contains_github_workflow_steps)
+}
+
+fn value_contains_github_workflow_steps(value: &Value) -> bool {
+    match value {
+        Value::Array(items) => items.iter().any(value_contains_github_workflow_steps),
+        Value::Object(object) => {
+            object.contains_key("uses")
+                || object.contains_key("run")
+                || object.values().any(value_contains_github_workflow_steps)
+        }
+        _ => false,
+    }
+}
+
+fn collect_github_workflow_line(signals: &mut GithubWorkflowSignals, line: &str, offset: usize) {
+    let trimmed = line.trim_start();
+    if trimmed.starts_with('#') {
+        return;
+    }
+
+    if let Some((start, end)) = find_github_workflow_key_value_span(line, "uses") {
+        let value = &line[start..end];
+        if find_third_party_unpinned_action_relative_span(value).is_some() {
+            signals
+                .unpinned_third_party_action_spans
+                .push(Span::new(offset + start, offset + end));
+        }
+    }
+
+    if let Some((start, end)) = find_github_workflow_key_value_span(line, "run") {
+        let value = &line[start..end];
+        if let Some(relative) = find_direct_untrusted_run_interpolation_relative_span(value) {
+            signals
+                .direct_untrusted_run_interpolation_spans
+                .push(Span::new(
+                    offset + start + relative.start_byte,
+                    offset + start + relative.end_byte,
+                ));
+        }
+    }
+}
+
+fn find_github_workflow_key_value_span(line: &str, key: &str) -> Option<(usize, usize)> {
+    let trimmed_start = line.len() - line.trim_start().len();
+    let mut trimmed = &line[trimmed_start..];
+    if let Some(rest) = trimmed.strip_prefix("- ") {
+        trimmed = rest.trim_start();
+    }
+    let prefix = format!("{key}:");
+    if !trimmed.starts_with(&prefix) {
+        return None;
+    }
+    let value = trimmed[prefix.len()..].trim_start();
+    if value.is_empty() {
+        return None;
+    }
+    let value_start = line.len() - value.len();
+    Some((value_start, line.len()))
+}
+
+fn normalize_yaml_scalar(value: &str) -> &str {
+    value.trim().trim_matches('"').trim_matches('\'')
+}
+
+fn find_third_party_unpinned_action_relative_span(value: &str) -> Option<Span> {
+    let normalized = normalize_yaml_scalar(value);
+    if normalized.starts_with("./") || normalized.starts_with("docker://") {
+        return None;
+    }
+    let (action, reference) = normalized.split_once('@')?;
+    let mut segments = action.split('/');
+    let owner = segments.next()?;
+    let repo = segments.next()?;
+    if owner.eq_ignore_ascii_case("actions") || repo.is_empty() {
+        return None;
+    }
+    let is_full_sha = reference.len() == 40 && reference.chars().all(|ch| ch.is_ascii_hexdigit());
+    (!is_full_sha).then_some(Span::new(0, normalized.len()))
+}
+
+fn find_direct_untrusted_run_interpolation_relative_span(value: &str) -> Option<Span> {
+    let normalized = normalize_yaml_scalar(value);
+    let start = normalized.find("${{")?;
+    let end = normalized[start..].find("}}").map(|rel| start + rel + 2)?;
+    let expression = &normalized[start..end];
+    let lowered = expression.to_ascii_lowercase();
+    if !(lowered.contains("inputs.") || lowered.contains("github.event.")) {
+        return None;
+    }
+
+    let trimmed = normalized.trim_start();
+    let first_token = trimmed.split_whitespace().next().unwrap_or_default();
+    let looks_like_env_assignment = first_token.contains('=')
+        && first_token.split('=').next().is_some_and(|name| {
+            let mut chars = name.chars();
+            let Some(first) = chars.next() else {
+                return false;
+            };
+            (first.is_ascii_alphabetic() || first == '_')
+                && chars.all(|ch| ch.is_ascii_alphanumeric() || ch == '_')
+        });
+    if looks_like_env_assignment {
+        return None;
+    }
+
+    Some(Span::new(start, end))
 }
 
 fn is_endpointish_json_key(key: &str) -> bool {

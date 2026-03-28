@@ -850,6 +850,266 @@ fn ignores_server_json_defined_remote_variable() {
 }
 
 #[test]
+fn finds_server_json_literal_auth_header() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{
+  "name": "io.github.example/demo",
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://example.com/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer sk_live_12345"
+        }
+      ]
+    }
+  ]
+}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::ServerRegistryConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC321"));
+}
+
+#[test]
+fn ignores_server_json_placeholder_auth_header() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{
+  "name": "io.github.example/demo",
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://example.com/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {TOKEN}",
+          "variables": {
+            "TOKEN": { "description": "API token", "isSecret": true }
+          }
+        }
+      ]
+    }
+  ]
+}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::ServerRegistryConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC321"));
+}
+
+#[test]
+fn finds_server_json_unresolved_header_variable() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{
+  "name": "io.github.example/demo",
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://example.com/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {TOKEN}"
+        }
+      ]
+    }
+  ]
+}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::ServerRegistryConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC322"));
+}
+
+#[test]
+fn ignores_server_json_defined_header_variable() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{
+  "name": "io.github.example/demo",
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://example.com/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {TOKEN}",
+          "variables": {
+            "TOKEN": { "description": "API token", "isSecret": true }
+          }
+        }
+      ]
+    }
+  ]
+}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::ServerRegistryConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC322"));
+}
+
+#[test]
+fn finds_server_json_auth_header_policy_mismatch() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{
+  "name": "io.github.example/demo",
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://example.com/mcp",
+      "headers": [
+        {
+          "name": "x-api-key",
+          "value": "{API_KEY}",
+          "variables": {
+            "API_KEY": { "description": "API key" }
+          }
+        }
+      ]
+    }
+  ]
+}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::ServerRegistryConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC323")
+        .unwrap();
+    assert_eq!(finding.rule_code, "SEC323");
+}
+
+#[test]
+fn ignores_server_json_auth_header_with_secret_flag() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{
+  "name": "io.github.example/demo",
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://example.com/mcp",
+      "headers": [
+        {
+          "name": "x-api-key",
+          "value": "{API_KEY}",
+          "variables": {
+            "API_KEY": { "description": "API key" }
+          },
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::ServerRegistryConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC323"));
+}
+
+#[test]
+fn finds_github_workflow_unpinned_third_party_action() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::GitHubWorkflow,
+        SourceFormat::Yaml,
+        "on: push\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: docker/login-action@v4\n",
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC324"));
+}
+
+#[test]
+fn ignores_github_workflow_pinned_third_party_action() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::GitHubWorkflow,
+        SourceFormat::Yaml,
+        "on: push\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: docker/login-action@0123456789abcdef0123456789abcdef01234567\n",
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC324"));
+}
+
+#[test]
+fn ignores_github_workflow_official_actions_reference() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::GitHubWorkflow,
+        SourceFormat::Yaml,
+        "on: push\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v6\n",
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC324"));
+}
+
+#[test]
+fn finds_github_workflow_direct_run_interpolation() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::GitHubWorkflow,
+        SourceFormat::Yaml,
+        "on: workflow_dispatch\njobs:\n  publish:\n    runs-on: ubuntu-latest\n    steps:\n      - run: echo ${{ inputs.version }}\n",
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC325")
+        .unwrap();
+    assert_eq!(finding.rule_code, "SEC325");
+}
+
+#[test]
+fn ignores_github_workflow_env_indirected_interpolation() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::GitHubWorkflow,
+        SourceFormat::Yaml,
+        "on: workflow_dispatch\njobs:\n  publish:\n    runs-on: ubuntu-latest\n    steps:\n      - run: VERSION=${{ inputs.version }}\n",
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC325"));
+}
+
+#[test]
 fn existing_mcp_rules_apply_to_claude_mcp_json_variants() {
     let temp_dir = unique_temp_dir("lintai-claude-mcp-variant");
     std::fs::create_dir_all(temp_dir.join(".claude/mcp")).unwrap();
@@ -1540,7 +1800,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
             DetectionClass::Structural => {
                 if matches!(
                     spec.metadata.code,
-                    "SEC313" | "SEC401" | "SEC402" | "SEC403"
+                    "SEC313" | "SEC323" | "SEC325" | "SEC401" | "SEC402" | "SEC403"
                 ) {
                     assert_eq!(
                         spec.metadata.tier,

@@ -17,7 +17,7 @@ pub use finding::{
 pub use parsed::{
     Artifact, ArtifactKind, DocumentSemantics, FrontmatterFormat, FrontmatterSemantics,
     JsonSemantics, MarkdownSemantics, ParsedDocument, RegionKind, ShellSemantics, SourceFormat,
-    TextRegion,
+    TextRegion, YamlSemantics,
 };
 pub use rule::{
     ProviderError, ProviderErrorKind, ProviderScanResult, RuleMetadata, RuleProvider, RuleTier,

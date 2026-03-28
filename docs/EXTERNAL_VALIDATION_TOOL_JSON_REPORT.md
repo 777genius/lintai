@@ -1,15 +1,15 @@
 # External Validation Tool JSON Extension Report
 
-> Wave 3 extension report for `ToolDescriptorJson` usefulness proof after tightening operational-only admission.
-> Source of truth lives in [validation/external-repos-tool-json/repo-shortlist.toml](../validation/external-repos-tool-json/repo-shortlist.toml), current results in [validation/external-repos-tool-json/ledger.toml](../validation/external-repos-tool-json/ledger.toml), and archived wave 2 baseline in [validation/external-repos-tool-json/archive/wave2-ledger.toml](../validation/external-repos-tool-json/archive/wave2-ledger.toml).
+> Wave 4 extension report for `ToolDescriptorJson` usefulness proof after broader deterministic discovery and the stricter operational-only admission gate.
+> Source of truth lives in [validation/external-repos-tool-json/repo-shortlist.toml](../validation/external-repos-tool-json/repo-shortlist.toml), current results in [validation/external-repos-tool-json/ledger.toml](../validation/external-repos-tool-json/ledger.toml), and archived wave 3 baseline in [validation/external-repos-tool-json/archive/wave3-ledger.toml](../validation/external-repos-tool-json/archive/wave3-ledger.toml).
 
 ## Cohort Composition
 
-The extension cohort contains `8` public repositories focused on committed non-fixture tool-descriptor JSON.
+The extension cohort contains `9` public repositories focused on committed non-fixture tool-descriptor JSON.
 
-- `8` `tool_json` repos total
+- `9` `tool_json` repos total
 - `7` `stress` repos
-- `1` `control` repos
+- `2` `control` repos
 
 Broader discovery was attempted, but the target of `18` admitted repos was not reached under the stricter operational-only gate.
 
@@ -25,26 +25,27 @@ Admitted repos and their semantic-confirmed non-fixture `ToolDescriptorJson` pat
 - `vapagentmedia/vap-showcase` via `mcp/tools.json`. Committed application-local MCP tool catalog with clear descriptor semantics and no excluded path segments.
 - `masacento/mcp-go-example` via `tools.json`. Committed JSON-RPC tools/list response envelope whose nested result.tools payload contains valid MCP tool descriptors.
 - `marklechner/kali-mcp-server` via `tools.json`. Committed top-level Kali MCP tool catalog with explicit tool descriptors and no excluded path segments.
+- `wrediam/n8n-coolify-mcp-tools` via `coolify-tools.json`. Broader-discovery repo with a committed operational tool catalog confirmed by semantic classification outside fixture, docs, and schema paths.
 
 ## Overall Counts
 
-- `8` repos evaluated
-- `8` admitted tool-descriptor paths
-- `0` stable findings
+- `9` repos evaluated
+- `9` admitted tool-descriptor paths
+- `11` stable findings
 - `0` preview findings
 - `1` runtime parser errors
 - `1` diagnostics
 
 ## Delta From Previous Wave
 
-- stable findings: `0` -> `0`
+- stable findings: `0` -> `11`
 - preview findings: `0` -> `0`
 - runtime parser errors: `1` -> `1`
 - diagnostics: `1` -> `1`
 - admitted repo set changes:
-- removed `PRQELT/Autonomix`
+- added `wrediam/n8n-coolify-mcp-tools`
 
-- scarcity note: discovery exhausted before reaching the target cohort size of `18`; current admitted count is `8`
+- scarcity note: discovery exhausted before reaching the target cohort size of `18`; current admitted count is `9`
 
 ## Stable Hits
 

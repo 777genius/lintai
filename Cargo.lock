@@ -353,6 +353,7 @@ dependencies = [
  "lintai-testing",
  "serde",
  "serde_json",
+ "serde_yaml_bw",
  "toml",
 ]
 

@@ -1,0 +1,16 @@
+{
+  "name": "io.github.example/demo",
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://example.com/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer sk_live_123456"
+        }
+      ]
+    }
+  ]
+}

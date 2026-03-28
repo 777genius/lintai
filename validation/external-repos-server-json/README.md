@@ -1,13 +1,14 @@
 # Server JSON Extension Wave
 
-This package tracks focused external validation for semantically confirmed MCP Registry `server.json` artifacts.
+This package tracks focused external validation for semantically confirmed MCP Registry `server.json` artifacts across multiple waves.
 
 Purpose:
 
 - keep the canonical `validation/external-repos/*` package unchanged as the public beta precision baseline
-- measure whether `SEC319` and `SEC320` produce useful external `Stable` hits on real `server.json` surfaces
+- measure whether `SEC319`-`SEC323` produce useful external `Stable` or `Preview` hits on real `server.json` surfaces
 - keep registry-metadata evidence separate from client config and tool-json evidence
 - make repo admission deterministic and checked in
+- preserve wave history via archived ledgers and delta-based reports
 
 Workflow:
 
@@ -27,4 +28,5 @@ Admission rules:
   - `remotes` array
   - `packages` array
 - fixture-like and docs/schema/spec/contracts-only paths are excluded from admission
+- wave baselines are archived under `validation/external-repos-server-json/archive/`
 - overlap with canonical and tool-json packages is allowed because this package is surface-scoped
