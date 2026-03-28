@@ -42,6 +42,7 @@
 | 5 | **[ROADMAP_V0_1.md](ROADMAP_V0_1.md)** | Операционный roadmap и sequence итераций |
 | 6 | **[FIXTURE_CONTRACT.md](FIXTURE_CONTRACT.md)** | Контракт для corpus cases и sample repos |
 | 7 | **[SECURITY_RULES.md](SECURITY_RULES.md)** | Generated catalog of current shipped security rules |
+| 7b | **[TOP_AI_LINTER_RULES.md](TOP_AI_LINTER_RULES.md)** | Ручной топ security-first и spec-правил для AI-линтера (приоритизация и ссылки) |
 | 8 | **[POSITIONING_AND_SCOPE.md](POSITIONING_AND_SCOPE.md)** | Кому нужен `lintai`, где заканчивается `v0.1`, и как честно его оценивать |
 | 9 | **[PUBLIC_BETA_RELEASE.md](PUBLIC_BETA_RELEASE.md)** | Canonical public beta contract for `v0.1.0-beta.1` |
 | 10 | **[PUBLIC_BETA_SHIPPING_CHECKLIST.md](PUBLIC_BETA_SHIPPING_CHECKLIST.md)** | Canonical shipping workflow and asset checklist for the first public beta |
@@ -71,6 +72,7 @@ Research files below are reference material. They are useful for background and 
 - **[BETA_TO_1_0_ROADMAP.md](BETA_TO_1_0_ROADMAP.md)** — Canonical roadmap from clean `v0.1` core to public beta and toward `1.0`
 - **[RULE_QUALITY_POLICY.md](RULE_QUALITY_POLICY.md)** — Политика надёжности правил: детерминизм, контекст, доказательства
 - **[SECURITY_RULES.md](SECURITY_RULES.md)** — Сгенерированный canonical catalog текущих security rules и их remediation support
+- **[TOP_AI_LINTER_RULES.md](TOP_AI_LINTER_RULES.md)** — Топ правил для AI-линтера (security-first, spec, минимальные наборы, первоисточники)
 - **[GLOSSARY.md](GLOSSARY.md)** — Единые термины (Claims/Capabilities, stable_key/fingerprint, артефакты)
 - **[ROADMAP_V0_1.md](ROADMAP_V0_1.md)** — Операционный roadmap от текущего core к publishable `v0.1`
 - **[RELEASE_CHECKLIST_V0_1.md](RELEASE_CHECKLIST_V0_1.md)** — Dry release checklist и certification record

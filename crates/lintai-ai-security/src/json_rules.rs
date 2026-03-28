@@ -93,6 +93,51 @@ pub(crate) fn check_json_suspicious_remote_endpoint(
     )
 }
 
+pub(crate) fn check_json_literal_secret(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.literal_secret_span.clone()),
+        "configuration commits literal secret material in env, auth, or header values",
+    )
+}
+
+pub(crate) fn check_json_dangerous_endpoint_host(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.dangerous_endpoint_host_span.clone()),
+        "configuration endpoint targets a metadata or private-network host literal",
+    )
+}
+
+pub(crate) fn check_json_unsafe_plugin_path(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.unsafe_plugin_path_span.clone()),
+        "cursor plugin manifest contains an unsafe absolute or parent-traversing path",
+    )
+}
+
 pub(crate) fn check_trust_verification_disabled_config(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

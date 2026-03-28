@@ -16,16 +16,16 @@ The current cohort still contains `24` public repositories:
 Current checked-in wave 2 results:
 
 - `24` repos evaluated
-- `0` total findings
+- `2` total findings
 - `0` stable findings
-- `0` preview findings
+- `2` preview findings
 - `0` runtime parser errors
 - `2` diagnostics
 
 ## Delta From Previous Wave
 
 - stable findings: `0` -> `0`
-- preview findings: `1` -> `0`
+- preview findings: `1` -> `2`
 - runtime parser errors: `2` -> `0`
 - diagnostics: `0` -> `2`
 - repo verdict changes:
@@ -43,9 +43,10 @@ The current `Stable` layer remains clean across wave 2:
 
 ## Preview Usefulness Summary
 
-Wave 2 produced `0` preview finding(s).
+Wave 2 produced `2` preview finding(s).
 
 - `datadog-labs/cursor-plugin`: `improved`
+- `zebbern/claude-code-guide`: `2` preview finding(s) via `SEC313`
 
 ## Runtime / Diagnostic Notes
 

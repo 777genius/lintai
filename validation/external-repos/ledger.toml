@@ -421,15 +421,15 @@ surfaces_present = [
     "SKILL.md",
 ]
 stable_findings = 0
-preview_findings = 0
+preview_findings = 2
 stable_rule_codes = []
-preview_rule_codes = []
+preview_rule_codes = ["SEC313"]
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings observed on first-pass external scan."
-preview_signal_notes = "No preview findings observed on first-pass external scan."
+preview_signal_notes = "SEC313 surfaced two fenced curl|sh examples in shipped skills; useful preview signal, not release-blocking."
 false_positive_notes = []
 possible_false_negative_notes = []
-follow_up_action = "no_action"
+follow_up_action = "promote_preview_later"
 runtime_errors = []
 diagnostics = []
 

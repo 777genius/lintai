@@ -19,21 +19,26 @@ fn benign_corpus_case_dirs_are_discoverable() {
         names,
         vec![
             "cursor-plugin-clean-basic",
+            "cursor-plugin-safe-paths",
             "cursor-plugin-tls-verified-basic",
             "hook-auth-dynamic-safe",
             "hook-base64-decode-safe",
             "mcp-authorization-placeholder-safe",
             "mcp-description-safe",
             "mcp-nonsensitive-env-reference-safe",
+            "mcp-public-endpoint-safe",
             "mcp-safe-basic",
+            "mcp-secret-placeholder-safe",
             "mcp-trust-verified-basic",
             "mcp-trusted-endpoint-safe",
             "mixed-clean-workspace",
             "policy-truthful-basic",
             "skill-base64-fenced-safe",
             "skill-clean-basic",
+            "skill-fenced-pipe-shell-safe",
             "skill-html-comment-safe",
             "skill-project-scoped-path-safe",
+            "skill-public-key-pem-safe",
         ]
     );
 }

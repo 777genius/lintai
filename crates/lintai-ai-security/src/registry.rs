@@ -8,14 +8,16 @@ use crate::hook_rules::{
     check_hook_secret_exfil, check_hook_static_auth_exposure, check_hook_tls_bypass,
 };
 use crate::json_rules::{
-    check_json_hidden_instruction, check_json_sensitive_env_reference,
-    check_json_suspicious_remote_endpoint, check_mcp_credential_env_passthrough,
-    check_mcp_shell_wrapper, check_plain_http_config, check_static_auth_exposure_config,
-    check_trust_verification_disabled_config,
+    check_json_dangerous_endpoint_host, check_json_hidden_instruction,
+    check_json_literal_secret, check_json_sensitive_env_reference,
+    check_json_suspicious_remote_endpoint, check_json_unsafe_plugin_path,
+    check_mcp_credential_env_passthrough, check_mcp_shell_wrapper, check_plain_http_config,
+    check_static_auth_exposure_config, check_trust_verification_disabled_config,
 };
 use crate::markdown_rules::{
     check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
-    check_markdown_download_exec, check_markdown_path_traversal,
+    check_markdown_download_exec, check_markdown_fenced_pipe_shell,
+    check_markdown_path_traversal, check_markdown_private_key_pem,
 };
 use crate::signals::ArtifactSignals;
 
@@ -231,6 +233,61 @@ declare_rule! {
     }
 }
 
+declare_rule! {
+    pub struct JsonLiteralSecretRule {
+        code: "SEC309",
+        summary: "Configuration commits literal secret material in env, auth, or header values",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct JsonDangerousEndpointHostRule {
+        code: "SEC310",
+        summary: "Configuration endpoint targets a metadata or private-network host literal",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct CursorPluginUnsafePathRule {
+        code: "SEC311",
+        summary: "Cursor plugin manifest contains an unsafe absolute or parent-traversing path",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownPrivateKeyPemRule {
+        code: "SEC312",
+        summary: "Markdown contains committed private key material",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownFencedPipeShellRule {
+        code: "SEC313",
+        summary: "Fenced shell example pipes remote content directly into a shell",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
 type CheckFn = fn(&ScanContext, &ArtifactSignals, RuleMetadata) -> Vec<Finding>;
 type SafeFixFn = fn(&Finding) -> Fix;
 type SuggestionFixFn = fn(&ScanContext, &Finding) -> Option<Fix>;
@@ -343,9 +400,10 @@ impl NativeRuleSpec {
 }
 
 pub(crate) const HEURISTIC_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.";
+pub(crate) const STRUCTURAL_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.";
 pub(crate) const WORKSPACE_PREVIEW_REQUIREMENTS: &str = "Needs workspace precision review, linked benign/malicious corpus proof, and completed stable checklist metadata.";
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 24] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -668,6 +726,97 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace the suspicious remote endpoint with a trusted internal, verified, or pinned service endpoint",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: JsonLiteralSecretRule::METADATA,
+        surface: Surface::Json,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches literal secret material committed into env, header, or auth-like JSON fields.",
+            malicious_case_ids: &["mcp-literal-secret-config"],
+            benign_case_ids: &["mcp-secret-placeholder-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals literal secret observation over env, header, and auth-like keys excluding dynamic placeholders.",
+        },
+        check: check_json_literal_secret,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace committed secret literals with environment or input indirection before shipping the config",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: JsonDangerousEndpointHostRule::METADATA,
+        surface: Surface::Json,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit metadata-service or private-network host literals in endpoint-like configuration values.",
+            malicious_case_ids: &["mcp-metadata-host-literal"],
+            benign_case_ids: &["mcp-public-endpoint-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals endpoint-host extraction over URL-like endpoint fields with metadata/private-host classification.",
+        },
+        check: check_json_dangerous_endpoint_host,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace metadata or private-network host literals with a trusted public endpoint or local stdio transport",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: CursorPluginUnsafePathRule::METADATA,
+        surface: Surface::Json,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches absolute or parent-traversing paths in committed Cursor plugin manifest path fields.",
+            malicious_case_ids: &["cursor-plugin-unsafe-path"],
+            benign_case_ids: &["cursor-plugin-safe-paths"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals plugin-manifest path observation limited to known plugin path fields.",
+        },
+        check: check_json_unsafe_plugin_path,
+        safe_fix: None,
+        suggestion_message: Some(
+            "keep plugin manifest paths project-relative and inside the plugin root",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownPrivateKeyPemRule::METADATA,
+        surface: Surface::Markdown,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit committed private-key PEM markers inside agent markdown surfaces.",
+            malicious_case_ids: &["skill-private-key-pem"],
+            benign_case_ids: &["skill-public-key-pem-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals private-key marker observation across parsed markdown regions excluding placeholder examples.",
+        },
+        check: check_markdown_private_key_pem,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove committed private key material and replace it with redacted or placeholder guidance",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownFencedPipeShellRule::METADATA,
+        surface: Surface::Markdown,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Depends on fenced shell-example command heuristics and still needs broader external precision review.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_markdown_fenced_pipe_shell,
+        safe_fix: None,
+        suggestion_message: Some(
+            "rewrite the fenced example to download first or explain the command without piping directly into a shell",
         ),
         suggestion_fix: None,
     },

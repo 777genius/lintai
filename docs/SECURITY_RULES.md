@@ -30,6 +30,11 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC306` | JSON configuration description contains override-style hidden instructions | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` |
 | `SEC307` | Configuration forwards sensitive environment variable references | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` |
 | `SEC308` | Configuration points at a suspicious remote endpoint | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` |
+| `SEC309` | Configuration commits literal secret material in env, auth, or header values | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
+| `SEC310` | Configuration endpoint targets a metadata or private-network host literal | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
+| `SEC311` | Cursor plugin manifest contains an unsafe absolute or parent-traversing path | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
+| `SEC312` | Markdown contains committed private key material | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` |
+| `SEC313` | Fenced shell example pipes remote content directly into a shell | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` |
 | `SEC401` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC402` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC403` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
@@ -364,6 +369,97 @@ Canonical catalog for the shipped security rules currently exposed by:
 - Promotion Blocker: Depends on suspicious host-marker heuristics for remote endpoints.
 - Promotion Requirements: Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.
 - Canonical Note: Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.
+
+### `SEC309` — Configuration commits literal secret material in env, auth, or header values
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches literal secret material committed into env, header, or auth-like JSON fields.
+- Deterministic Signal Basis: JsonSignals literal secret observation over env, header, and auth-like keys excluding dynamic placeholders.
+- Malicious Corpus: `mcp-literal-secret-config`
+- Benign Corpus: `mcp-secret-placeholder-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC310` — Configuration endpoint targets a metadata or private-network host literal
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit metadata-service or private-network host literals in endpoint-like configuration values.
+- Deterministic Signal Basis: JsonSignals endpoint-host extraction over URL-like endpoint fields with metadata/private-host classification.
+- Malicious Corpus: `mcp-metadata-host-literal`
+- Benign Corpus: `mcp-public-endpoint-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC311` — Cursor plugin manifest contains an unsafe absolute or parent-traversing path
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches absolute or parent-traversing paths in committed Cursor plugin manifest path fields.
+- Deterministic Signal Basis: JsonSignals plugin-manifest path observation limited to known plugin path fields.
+- Malicious Corpus: `cursor-plugin-unsafe-path`
+- Benign Corpus: `cursor-plugin-safe-paths`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC312` — Markdown contains committed private key material
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit committed private-key PEM markers inside agent markdown surfaces.
+- Deterministic Signal Basis: MarkdownSignals private-key marker observation across parsed markdown regions excluding placeholder examples.
+- Malicious Corpus: `skill-private-key-pem`
+- Benign Corpus: `skill-public-key-pem-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC313` — Fenced shell example pipes remote content directly into a shell
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Depends on fenced shell-example command heuristics and still needs broader external precision review.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ## Provider: `lintai-policy-mismatch`
 

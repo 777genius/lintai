@@ -276,6 +276,7 @@ fn render_report_from_ledgers(
     let verdict_changes = repo_verdict_changes(baseline, current);
     let fp_clusters = top_clusters(current, ClusterKind::FalsePositive);
     let fn_clusters = top_clusters(current, ClusterKind::FalseNegative);
+    let preview_signal_repos = preview_signal_repos(current);
 
     let datadog_status = phase_target_status(
         baseline,
@@ -396,6 +397,12 @@ fn render_report_from_ledgers(
         "- `datadog-labs/cursor-plugin`: `{}`\n",
         target_status_label(datadog_status)
     ));
+    for (repo, count, rule_codes) in preview_signal_repos {
+        output.push_str(&format!(
+            "- `{repo}`: `{count}` preview finding(s) via {}\n",
+            format_rule_codes(&rule_codes)
+        ));
+    }
     output.push('\n');
 
     output.push_str("## Runtime / Diagnostic Notes\n\n");
@@ -439,6 +446,33 @@ fn render_report_from_ledgers(
     }
 
     output
+}
+
+fn preview_signal_repos(ledger: &ExternalValidationLedger) -> Vec<(String, usize, Vec<String>)> {
+    ledger
+        .evaluations
+        .iter()
+        .filter(|entry| entry.preview_findings > 0)
+        .map(|entry| {
+            (
+                entry.repo.clone(),
+                entry.preview_findings,
+                entry.preview_rule_codes.clone(),
+            )
+        })
+        .collect()
+}
+
+fn format_rule_codes(rule_codes: &[String]) -> String {
+    if rule_codes.is_empty() {
+        "`unspecified`".to_owned()
+    } else {
+        rule_codes
+            .iter()
+            .map(|rule_code| format!("`{rule_code}`"))
+            .collect::<Vec<_>>()
+            .join(", ")
+    }
 }
 
 fn render_clusters(output: &mut String, clusters: &[(String, usize)], label: &str) {
@@ -1057,6 +1091,12 @@ rationale = "demo"
                     ..default_entry_from_shortlist(&sample_shortlist().repos[0])
                 },
                 EvaluationEntry {
+                    repo: "zebbern/claude-code-guide".to_owned(),
+                    preview_findings: 2,
+                    preview_rule_codes: vec!["SEC313".to_owned()],
+                    ..default_entry_from_shortlist(&sample_shortlist().repos[0])
+                },
+                EvaluationEntry {
                     repo: "cursor/plugins".to_owned(),
                     diagnostics: vec![DiagnosticRecord {
                         path: "a".to_owned(),
@@ -1082,6 +1122,7 @@ rationale = "demo"
         let markdown = render_report_from_ledgers(&baseline, &current);
         assert!(markdown.contains("## Delta From Previous Wave"));
         assert!(markdown.contains("`datadog-labs/cursor-plugin`: `improved`"));
+        assert!(markdown.contains("`zebbern/claude-code-guide`: `2` preview finding(s) via `SEC313`"));
         assert!(markdown.contains("`cursor/plugins`: `improved`"));
         assert!(markdown.contains("`Emmraan/agent-skills`: `improved`"));
     }

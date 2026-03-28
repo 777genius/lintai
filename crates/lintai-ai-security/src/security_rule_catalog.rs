@@ -355,6 +355,10 @@ mod tests {
                     | "SEC303"
                     | "SEC304"
                     | "SEC305"
+                    | "SEC309"
+                    | "SEC310"
+                    | "SEC311"
+                    | "SEC312"
             ) {
                 assert_eq!(entry.metadata.tier, RuleTier::Stable);
                 assert_eq!(entry.detection_class, DetectionClass::Structural);

@@ -83,6 +83,38 @@ pub(crate) fn check_html_comment_download_exec(
     )
 }
 
+pub(crate) fn check_markdown_private_key_pem(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.private_key_spans.as_slice())
+            .unwrap_or(&[]),
+        "markdown contains committed private key material",
+    )
+}
+
+pub(crate) fn check_markdown_fenced_pipe_shell(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.fenced_pipe_shell_spans.as_slice())
+            .unwrap_or(&[]),
+        "fenced shell example pipes remote content directly into a shell",
+    )
+}
+
 fn findings_for_spans(
     ctx: &ScanContext,
     meta: RuleMetadata,

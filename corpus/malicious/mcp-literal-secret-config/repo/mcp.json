@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "demo": {
+      "env": {
+        "OPENAI_API_KEY": "sk-live-real-secret"
+      }
+    }
+  }
+}
