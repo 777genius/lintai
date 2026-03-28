@@ -32,6 +32,8 @@
 - `2` plugin-root hook admission paths are now covered
 - `6` plugin-root agent markdown admission paths are now covered
 
+- `0` plugin-root command markdown admission paths are now covered
+
 - `2` Gemini-style MCP client admission paths are now covered
 
 Currently covered admission paths:
@@ -66,6 +68,8 @@ Currently covered admission paths:
 
 - `24` preview hit(s) were observed at repo scope; these should not yet be interpreted as proof on discovery-only admission paths
 
+- `SEC335` produced no repo-level external preview hits in this wave
+
 ## Runtime / Diagnostic Notes
 
 - `cursor/plugins`: `0` runtime parser errors, `1` diagnostics (non-admission-path issue)
@@ -74,4 +78,4 @@ Currently covered admission paths:
 
 ## Recommended Next Step
 
-Use this package as discovery evidence for the next detector expansion. Plugin-root `hooks.json` and `agents/*.md` are now partially covered through manifest-backed detection, so the remaining AI-native gaps are committed Gemini-style client configs plus deferred plugin surfaces such as `commands` and `mcpServers`.
+Use this package as discovery evidence for the next detector expansion. There are no remaining discovery-only admission paths in the current checked-in AI-native cohort, so deferred plugin `mcpServers` support is not blocking coverage of the admitted set.

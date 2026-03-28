@@ -4,10 +4,11 @@ use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use lintai_api::ScanScope;
+use lintai_policy::PolicyMismatchProvider;
 use lintai_runtime::{InProcessProviderBackend, ProviderBackend};
 use lintai_testing::{CaseManifest, WorkspaceHarness};
 
-use crate::{AiSecurityProvider, PolicyMismatchProvider};
+use crate::AiSecurityProvider;
 
 mod benign;
 mod edge;

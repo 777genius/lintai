@@ -10,6 +10,7 @@ mod path;
 mod policy_os;
 #[cfg(test)]
 mod sample_repo_tests;
+mod security_rule_catalog;
 
 use std::process::ExitCode;
 

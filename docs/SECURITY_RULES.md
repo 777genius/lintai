@@ -1,7 +1,7 @@
 # Security Rules Catalog
 
 > Generated file. Do not edit by hand.
-> Source: `lintai-ai-security` native rule specs and policy rule specs.
+> Source: `lintai-cli` shipped rule inventory aggregated from provider catalogs.
 
 Canonical catalog for the shipped security rules currently exposed by:
 - `lintai-ai-security`
@@ -53,6 +53,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC329` | MCP configuration launches tooling through a mutable package runner | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
 | `SEC330` | MCP configuration command downloads remote content and pipes it into a shell | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
 | `SEC331` | MCP configuration command disables TLS verification in a network-capable execution path | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
+| `SEC335` | AI-native markdown contains a direct cloud metadata-service access example | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` |
 | `SEC336` | Repo-local MCP client config loads a broad dotenv-style envFile | Preview | `preview_blocked` | Warn | `per_file` | `json` | `structural` | `message_only` |
 | `SEC337` | MCP configuration launches Docker with an image reference that is not digest-pinned | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
 | `SEC338` | MCP configuration launches Docker with a bind mount of sensitive host material | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
@@ -819,6 +820,21 @@ Canonical catalog for the shipped security rules currently exposed by:
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC335` — AI-native markdown contains a direct cloud metadata-service access example
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Metadata-service examples can appear in legitimate security training content, so the first release stays guidance-only.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC336` — Repo-local MCP client config loads a broad dotenv-style envFile
 

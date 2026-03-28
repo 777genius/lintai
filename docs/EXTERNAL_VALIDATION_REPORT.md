@@ -16,9 +16,9 @@ The current cohort still contains `24` public repositories:
 Current checked-in wave 2 results:
 
 - `24` repos evaluated
-- `91` total findings
+- `96` total findings
 - `46` stable findings
-- `45` preview findings
+- `50` preview findings
 - `0` runtime parser errors
 - `3` diagnostics
 
@@ -41,6 +41,7 @@ Current wave inventory for the newly expanded JSON lanes:
 - MCP findings from expanded client-config coverage (`SEC301`-`SEC331`, `SEC337`-`SEC339`, `SEC346`): `4`
 - findings from `SEC336`: `0`
 - findings from `SEC337`-`SEC339`, `SEC346`: `0`
+- preview findings from `SEC335` on AI-native markdown surfaces: `1`
 - repos with `tool_descriptor_json`: `3`
 - findings from `SEC314`-`SEC318`: `0`
 - repos where new MCP client-config variants existed only under fixture-like paths: `1`
@@ -52,7 +53,7 @@ Current wave inventory for the newly expanded JSON lanes:
 ## Delta From Previous Wave
 
 - stable findings: `0` -> `46`
-- preview findings: `1` -> `45`
+- preview findings: `1` -> `50`
 - runtime parser errors: `2` -> `0`
 - diagnostics: `0` -> `3`
 - repo verdict changes:
@@ -66,14 +67,14 @@ Wave 2 surfaced `Stable` findings and requires another precision pass before bet
 
 ## Preview Usefulness Summary
 
-Wave 2 produced `45` preview finding(s).
+Wave 2 produced `50` preview finding(s).
 
 - `datadog-labs/cursor-plugin`: `improved`
 - `containers/kubernetes-mcp-server`: `3` preview finding(s) via `SEC328`
 - `modelcontextprotocol/registry`: `10` preview finding(s) via `SEC328`
 - `airmcp-com/mcp-standards`: `2` preview finding(s) via `SEC328`
 - `agent-sh/agnix`: `27` preview finding(s) via `SEC325`, `SEC328`
-- `zebbern/claude-code-guide`: `2` preview finding(s) via `SEC313`
+- `zebbern/claude-code-guide`: `7` preview finding(s) via `SEC313`, `SEC335`
 - `zechenzhangAGI/AI-research-SKILLs`: `1` preview finding(s) via `SEC328`
 
 ## Runtime / Diagnostic Notes

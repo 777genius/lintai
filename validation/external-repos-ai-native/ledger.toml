@@ -74,6 +74,7 @@ surfaces_present = [
     "CLAUDE.md",
     "SKILL.md",
     "plugin_root_agents/*.md",
+    "plugin_root_commands/*.md",
 ]
 stable_findings = 3
 preview_findings = 2
@@ -134,6 +135,7 @@ surfaces_present = [
     "CLAUDE.md",
     "SKILL.md",
     "plugin_root_agents/*.md",
+    "plugin_root_commands/*.md",
     "tool_descriptor_json",
 ]
 stable_findings = 1
@@ -161,6 +163,7 @@ surfaces_present = [
     "CLAUDE.md",
     "SKILL.md",
     "claude/settings.json",
+    "plugin_root_commands/*.md",
 ]
 stable_findings = 1
 preview_findings = 0
@@ -222,6 +225,7 @@ surfaces_present = [
     ".mdc",
     "CLAUDE.md",
     "SKILL.md",
+    "plugin_root_commands/*.md",
     "server.json",
 ]
 stable_findings = 14

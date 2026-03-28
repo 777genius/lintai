@@ -1,7 +1,7 @@
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{SystemTime, UNIX_EPOCH};
 
-use lintai_api::{Category, Severity};
+use lintai_api::{ArtifactKind, Category, Severity};
 
 use super::{DEFAULT_INCLUDE_PATTERNS, OutputFormat, explain_file_config, load_workspace_config};
 
@@ -141,6 +141,21 @@ format = "markdown"
         resolved.detected_format,
         Some(lintai_api::SourceFormat::Markdown)
     );
+}
+
+#[test]
+fn add_detection_override_for_kind_uses_canonical_route() {
+    let mut config = super::EngineConfig::default();
+    let patterns = vec!["custom/**/*.md".to_owned()];
+
+    config
+        .add_detection_override_for_kind(&patterns, ArtifactKind::CursorPluginAgent)
+        .unwrap();
+
+    assert_eq!(config.detection_overrides.len(), 1);
+    let override_spec = &config.detection_overrides[0];
+    assert_eq!(override_spec.kind, ArtifactKind::CursorPluginAgent);
+    assert_eq!(override_spec.format, lintai_api::SourceFormat::Markdown);
 }
 
 fn unique_temp_dir(prefix: &str) -> std::path::PathBuf {

@@ -8,10 +8,13 @@ publish = false
 
 [dependencies]
 lintai-api.workspace = true
+lintai-adapters.workspace = true
 lintai-engine.workspace = true
 lintai-runtime.workspace = true
 lintai-ai-security.workspace = true
+lintai-policy.workspace = true
 lintai-fix.workspace = true
+globset.workspace = true
 ignore.workspace = true
 serde.workspace = true
 serde_json.workspace = true

@@ -137,7 +137,6 @@ impl NativeRuleSpec {
 
 pub(crate) const HEURISTIC_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.";
 pub(crate) const STRUCTURAL_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.";
-pub(crate) const WORKSPACE_PREVIEW_REQUIREMENTS: &str = "Needs workspace precision review, linked benign/malicious corpus proof, and completed stable checklist metadata.";
 
 pub(crate) fn rule_specs() -> &'static [NativeRuleSpec] {
     static RULE_SPECS: OnceLock<Vec<NativeRuleSpec>> = OnceLock::new();

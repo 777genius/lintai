@@ -9,6 +9,7 @@ mod tests;
 pub use detection::{DetectionRuleSpec, detection_rules};
 pub use error::ParseError;
 pub use model::ParsedArtifact;
+pub use surface::route_for_artifact_kind;
 
 mod detection;
 

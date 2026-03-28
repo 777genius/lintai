@@ -115,6 +115,22 @@ pub(crate) fn check_markdown_fenced_pipe_shell(
     )
 }
 
+pub(crate) fn check_markdown_metadata_service_access(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.metadata_service_access_spans.as_slice())
+            .unwrap_or(&[]),
+        "markdown example targets a cloud metadata service literal",
+    )
+}
+
 fn findings_for_spans(
     ctx: &ScanContext,
     meta: RuleMetadata,

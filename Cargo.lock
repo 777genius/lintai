@@ -326,6 +326,7 @@ dependencies = [
  "lintai-adapters",
  "lintai-api",
  "lintai-engine",
+ "lintai-policy",
  "lintai-runtime",
  "lintai-testing",
  "serde",
@@ -346,11 +347,14 @@ dependencies = [
 name = "lintai-cli"
 version = "0.0.0"
 dependencies = [
+ "globset",
  "ignore",
+ "lintai-adapters",
  "lintai-ai-security",
  "lintai-api",
  "lintai-engine",
  "lintai-fix",
+ "lintai-policy",
  "lintai-runtime",
  "lintai-testing",
  "serde",
@@ -388,6 +392,14 @@ dependencies = [
  "lintai-api",
  "serde_json",
  "serde_yaml_bw",
+]
+
+[[package]]
+name = "lintai-policy"
+version = "0.0.0"
+dependencies = [
+ "lintai-api",
+ "serde_json",
 ]
 
 [[package]]

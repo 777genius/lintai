@@ -24,6 +24,12 @@ pub(crate) struct SurfaceSpec {
     pub(crate) parse_fn: fn(&str) -> Result<ParsedArtifact, ParseError>,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct ArtifactRoute {
+    pub artifact_kind: ArtifactKind,
+    pub format: SourceFormat,
+}
+
 pub(crate) fn surface_spec(
     artifact_kind: ArtifactKind,
     format: SourceFormat,
@@ -31,6 +37,21 @@ pub(crate) fn surface_spec(
     all_surface_specs()
         .iter()
         .find(|spec| spec.artifact_kind == artifact_kind && spec.format == format)
+}
+
+pub fn route_for_artifact_kind(artifact_kind: ArtifactKind) -> Option<ArtifactRoute> {
+    let mut routes = all_surface_specs()
+        .iter()
+        .filter(|spec| spec.artifact_kind == artifact_kind)
+        .map(|spec| ArtifactRoute {
+            artifact_kind: spec.artifact_kind,
+            format: spec.format,
+        });
+    let route = routes.next()?;
+    if routes.any(|other| other != route) {
+        return None;
+    }
+    Some(route)
 }
 
 pub(crate) fn all_surface_specs() -> &'static [SurfaceSpec] {

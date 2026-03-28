@@ -1,15 +1,44 @@
 use lintai_api::{
     ArtifactKind, CapabilityConflictMode, CapabilityProfile, Evidence, EvidenceKind,
     ExecCapability, Finding, Location, NetworkCapability, ProviderScanResult, RuleMetadata,
-    RuleProvider, RuleTier, Span, WorkspaceArtifact, WorkspaceScanContext, declare_rule,
+    RuleProvider, RuleTier, ScanContext, WorkspaceArtifact, WorkspaceScanContext, declare_rule,
 };
 
-use crate::helpers::workspace_json_semantics;
-use crate::registry::{
-    DetectionClass, RemediationSupport, RuleLifecycle, Surface, WORKSPACE_PREVIEW_REQUIREMENTS,
-};
+pub const PROVIDER_ID: &str = "lintai-policy-mismatch";
+pub const WORKSPACE_PREVIEW_REQUIREMENTS: &str = "Needs workspace precision review, linked benign/malicious corpus proof, and completed stable checklist metadata.";
 
-pub(crate) const PROVIDER_ID: &str = "lintai-policy-mismatch";
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum PolicyDetectionClass {
+    Structural,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum PolicyRuleLifecycle {
+    Preview {
+        blocker: &'static str,
+        promotion_requirements: &'static str,
+    },
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum PolicyRemediationSupport {
+    None,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum PolicySurface {
+    Workspace,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct PolicyRuleCatalogEntry {
+    pub metadata: RuleMetadata,
+    pub provider_id: &'static str,
+    pub surface: PolicySurface,
+    pub detection_class: PolicyDetectionClass,
+    pub lifecycle: PolicyRuleLifecycle,
+    pub remediation_support: PolicyRemediationSupport,
+}
 
 declare_rule! {
     pub struct ProjectExecMismatchRule {
@@ -44,55 +73,51 @@ declare_rule! {
     }
 }
 
-#[derive(Clone, Copy)]
-#[cfg_attr(not(test), allow(dead_code))]
-pub(crate) struct PolicyRuleSpec {
-    pub(crate) metadata: RuleMetadata,
-    pub(crate) surface: Surface,
-    pub(crate) detection_class: DetectionClass,
-    pub(crate) lifecycle: RuleLifecycle,
-    pub(crate) remediation_support: RemediationSupport,
-}
+const POLICY_RULES: [RuleMetadata; 3] = [
+    ProjectExecMismatchRule::METADATA,
+    ProjectNetworkMismatchRule::METADATA,
+    CapabilityConflictRule::METADATA,
+];
 
-#[cfg_attr(not(test), allow(dead_code))]
-pub(crate) const POLICY_RULE_SPECS: [PolicyRuleSpec; 3] = [
-    PolicyRuleSpec {
+const POLICY_RULE_CATALOG_ENTRIES: [PolicyRuleCatalogEntry; 3] = [
+    PolicyRuleCatalogEntry {
         metadata: ProjectExecMismatchRule::METADATA,
-        surface: Surface::Workspace,
-        detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
+        provider_id: PROVIDER_ID,
+        surface: PolicySurface::Workspace,
+        detection_class: PolicyDetectionClass::Structural,
+        lifecycle: PolicyRuleLifecycle::Preview {
             blocker: "Needs workspace-level precision review and linked graduation corpus before promotion to Stable.",
             promotion_requirements: WORKSPACE_PREVIEW_REQUIREMENTS,
         },
-        remediation_support: RemediationSupport::None,
+        remediation_support: PolicyRemediationSupport::None,
     },
-    PolicyRuleSpec {
+    PolicyRuleCatalogEntry {
         metadata: ProjectNetworkMismatchRule::METADATA,
-        surface: Surface::Workspace,
-        detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
+        provider_id: PROVIDER_ID,
+        surface: PolicySurface::Workspace,
+        detection_class: PolicyDetectionClass::Structural,
+        lifecycle: PolicyRuleLifecycle::Preview {
             blocker: "Needs workspace-level network precision review and linked graduation corpus before promotion to Stable.",
             promotion_requirements: WORKSPACE_PREVIEW_REQUIREMENTS,
         },
-        remediation_support: RemediationSupport::None,
+        remediation_support: PolicyRemediationSupport::None,
     },
-    PolicyRuleSpec {
+    PolicyRuleCatalogEntry {
         metadata: CapabilityConflictRule::METADATA,
-        surface: Surface::Workspace,
-        detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
+        provider_id: PROVIDER_ID,
+        surface: PolicySurface::Workspace,
+        detection_class: PolicyDetectionClass::Structural,
+        lifecycle: PolicyRuleLifecycle::Preview {
             blocker: "Needs workspace-level capability-conflict precision review and linked graduation corpus before promotion to Stable.",
             promotion_requirements: WORKSPACE_PREVIEW_REQUIREMENTS,
         },
-        remediation_support: RemediationSupport::None,
+        remediation_support: PolicyRemediationSupport::None,
     },
 ];
 
-const POLICY_RULES: [RuleMetadata; 3] = [
-    POLICY_RULE_SPECS[0].metadata,
-    POLICY_RULE_SPECS[1].metadata,
-    POLICY_RULE_SPECS[2].metadata,
-];
+pub fn policy_rule_catalog_entries() -> &'static [PolicyRuleCatalogEntry] {
+    &POLICY_RULE_CATALOG_ENTRIES
+}
 
 pub struct PolicyMismatchProvider;
 
@@ -105,7 +130,7 @@ impl RuleProvider for PolicyMismatchProvider {
         &POLICY_RULES
     }
 
-    fn check_result(&self, _ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+    fn check_result(&self, _ctx: &ScanContext) -> ProviderScanResult {
         ProviderScanResult::new(Vec::new(), Vec::new())
     }
 
@@ -134,15 +159,15 @@ impl RuleProvider for PolicyMismatchProvider {
                 ));
             }
 
-            if let Some(frontmatter_caps) = artifact.capabilities.as_ref() {
-                if capabilities_conflict(project_capabilities, &frontmatter_caps) {
-                    findings.push(policy_finding(
-                        &CapabilityConflictRule::METADATA,
-                        artifact,
-                        "skill frontmatter capabilities conflict with project policy",
-                        ctx.capability_conflict_mode,
-                    ));
-                }
+            if let Some(frontmatter_caps) = artifact.capabilities.as_ref()
+                && capabilities_conflict(project_capabilities, &frontmatter_caps)
+            {
+                findings.push(policy_finding(
+                    &CapabilityConflictRule::METADATA,
+                    artifact,
+                    "skill frontmatter capabilities conflict with project policy",
+                    ctx.capability_conflict_mode,
+                ));
             }
         }
 
@@ -161,7 +186,7 @@ fn policy_finding(
         artifact.location_hint.clone().unwrap_or_else(|| {
             Location::new(
                 artifact.artifact.normalized_path.clone(),
-                Span::new(0, artifact.content.len()),
+                lintai_api::Span::new(0, artifact.content.len()),
             )
         }),
         message,
@@ -291,7 +316,7 @@ fn first_match_location(
         .unwrap_or(start + 1);
     Some(Location::new(
         normalized_path.to_owned(),
-        Span::new(start, end),
+        lintai_api::Span::new(start, end),
     ))
 }
 
@@ -328,5 +353,12 @@ fn contains_network_reference(value: &serde_json::Value) -> bool {
         serde_json::Value::Array(items) => items.iter().any(contains_network_reference),
         serde_json::Value::Object(map) => map.values().any(contains_network_reference),
         _ => false,
+    }
+}
+
+fn workspace_json_semantics(ctx: &WorkspaceArtifact) -> Option<&lintai_api::JsonSemantics> {
+    match ctx.semantics.as_ref() {
+        Some(lintai_api::DocumentSemantics::Json(value)) => Some(value),
+        _ => None,
     }
 }

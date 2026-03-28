@@ -3,7 +3,8 @@ use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
 use super::*;
 use crate::markdown_rules::{
     check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
-    check_markdown_download_exec, check_markdown_fenced_pipe_shell, check_markdown_path_traversal,
+    check_markdown_download_exec, check_markdown_fenced_pipe_shell,
+    check_markdown_metadata_service_access, check_markdown_path_traversal,
     check_markdown_private_key_pem,
 };
 
@@ -63,6 +64,17 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct MarkdownMetadataServiceAccessRule {
+        code: "SEC335",
+        summary: "AI-native markdown contains a direct cloud metadata-service access example",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct MarkdownPrivateKeyPemRule {
         code: "SEC312",
         summary: "Markdown contains committed private key material",
@@ -84,7 +96,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 7] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 8] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -153,6 +165,21 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 7] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace parent-directory traversal instructions with project-scoped paths or explicit safe inputs",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownMetadataServiceAccessRule::METADATA,
+        surface: Surface::Markdown,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Metadata-service examples can appear in legitimate security training content, so the first release stays guidance-only.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_markdown_metadata_service_access,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace direct metadata-service access examples with redacted placeholders or add explicit safety framing",
         ),
         suggestion_fix: None,
     },

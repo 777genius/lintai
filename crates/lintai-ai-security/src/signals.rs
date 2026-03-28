@@ -56,6 +56,10 @@ const MARKDOWN_PRIVATE_KEY_MARKERS: &[&str] = &[
     "BEGIN PRIVATE KEY",
 ];
 
+const MARKDOWN_METADATA_SERVICE_MARKERS: &[&str] = &["169.254.169.254", "metadata.google.internal"];
+
+const MARKDOWN_METADATA_EXECUTION_MARKERS: &[&str] = &["curl", "wget", "invoke-webrequest"];
+
 const FIXTURE_PATH_SEGMENTS: &[&str] = &[
     "test", "tests", "testdata", "fixture", "fixtures", "example", "examples", "sample", "samples",
 ];
@@ -139,6 +143,7 @@ pub(crate) struct MarkdownSignals {
     pub(crate) comment_download_exec_spans: Vec<Span>,
     pub(crate) private_key_spans: Vec<Span>,
     pub(crate) fenced_pipe_shell_spans: Vec<Span>,
+    pub(crate) metadata_service_access_spans: Vec<Span>,
 }
 
 impl MarkdownSignals {
@@ -193,6 +198,12 @@ impl MarkdownSignals {
                             region.span.start_byte + relative.end_byte,
                         ));
                     }
+                    if let Some(relative) = find_metadata_service_access_relative_span(snippet) {
+                        signals.metadata_service_access_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
                 }
                 RegionKind::CodeBlock => {
                     if let Some(relative) = find_private_key_relative_span(snippet) {
@@ -207,10 +218,22 @@ impl MarkdownSignals {
                             region.span.start_byte + relative.end_byte,
                         ));
                     }
+                    if let Some(relative) = find_metadata_service_access_relative_span(snippet) {
+                        signals.metadata_service_access_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
                 }
                 RegionKind::Blockquote => {
                     if let Some(relative) = find_private_key_relative_span(snippet) {
                         signals.private_key_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
+                    if let Some(relative) = find_metadata_service_access_relative_span(snippet) {
+                        signals.metadata_service_access_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
                             region.span.start_byte + relative.end_byte,
                         ));
@@ -2063,6 +2086,40 @@ fn find_fenced_pipe_shell_relative_span(text: &str) -> Option<Span> {
             return Some(Span::new(offset, offset + line.len()));
         }
         offset += line.len();
+    }
+
+    None
+}
+
+fn find_metadata_service_access_relative_span(text: &str) -> Option<Span> {
+    let mut offset = 0usize;
+    for line in text.split_inclusive('\n') {
+        let lowered = line.to_ascii_lowercase();
+        let has_exec_marker = MARKDOWN_METADATA_EXECUTION_MARKERS
+            .iter()
+            .any(|marker| lowered.contains(marker));
+        if has_exec_marker {
+            for marker in MARKDOWN_METADATA_SERVICE_MARKERS {
+                if let Some(start) = lowered.find(marker) {
+                    return Some(Span::new(offset + start, offset + start + marker.len()));
+                }
+            }
+        }
+        offset += line.len();
+    }
+
+    if !text.ends_with('\n') {
+        let lowered = text.to_ascii_lowercase();
+        let has_exec_marker = MARKDOWN_METADATA_EXECUTION_MARKERS
+            .iter()
+            .any(|marker| lowered.contains(marker));
+        if has_exec_marker {
+            for marker in MARKDOWN_METADATA_SERVICE_MARKERS {
+                if let Some(start) = lowered.find(marker) {
+                    return Some(Span::new(start, start + marker.len()));
+                }
+            }
+        }
     }
 
     None

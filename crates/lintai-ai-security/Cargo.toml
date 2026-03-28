@@ -15,6 +15,7 @@ lintai-testing.workspace = true
 lintai-engine.workspace = true
 lintai-runtime.workspace = true
 lintai-adapters.workspace = true
+lintai-policy.workspace = true
 serde.workspace = true
 toml.workspace = true
 criterion = "0.5.1"

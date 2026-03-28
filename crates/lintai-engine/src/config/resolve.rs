@@ -1,5 +1,7 @@
 use std::path::Path;
 
+use lintai_adapters::route_for_artifact_kind;
+
 use crate::normalize::normalize_path;
 
 use super::{
@@ -89,6 +91,19 @@ impl EngineConfig {
             format,
         });
         Ok(())
+    }
+
+    pub fn add_detection_override_for_kind(
+        &mut self,
+        patterns: &[String],
+        kind: lintai_api::ArtifactKind,
+    ) -> Result<(), super::ConfigError> {
+        let route = route_for_artifact_kind(kind).ok_or_else(|| {
+            super::ConfigError::new(format!(
+                "artifact kind `{kind:?}` does not have a unique canonical route"
+            ))
+        })?;
+        self.add_detection_override(patterns, route.artifact_kind, route.format)
     }
 
     pub fn resolve_for(&self, normalized_path: &str) -> ResolvedFileConfig {

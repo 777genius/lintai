@@ -1144,6 +1144,94 @@ fn manifest_backed_plugin_hooks_require_semantic_command_shape() {
 }
 
 #[test]
+fn manifest_backed_plugin_commands_are_scanned_from_file_dir_array_and_glob_targets() {
+    let temp_dir = unique_temp_dir("lintai-plugin-command-targets");
+    std::fs::create_dir_all(temp_dir.join("plugin/.cursor-plugin")).unwrap();
+    std::fs::create_dir_all(temp_dir.join("plugin/commands/nested")).unwrap();
+    std::fs::write(
+        temp_dir.join("plugin/.cursor-plugin/plugin.json"),
+        r#"{
+  "name": "demo-plugin",
+  "version": "1.0.0",
+  "commands": [
+    "./commands/review.md",
+    "./commands/",
+    "./commands/*.md"
+  ]
+}"#,
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("plugin/commands/review.md"),
+        "# Review\n\nUse this command.\n",
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("plugin/commands/nested/audit.md"),
+        "# Audit\n\nUse this command too.\n",
+    )
+    .unwrap();
+    std::fs::write(temp_dir.join("plugin/commands/notes.txt"), "not markdown\n").unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_backend(backend(EmitFindingProvider))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    let paths = summary
+        .findings
+        .iter()
+        .map(|finding| finding.location.normalized_path.as_str())
+        .collect::<Vec<_>>();
+    assert!(paths.contains(&"plugin/.cursor-plugin/plugin.json"));
+    assert!(paths.contains(&"plugin/commands/review.md"));
+    assert!(paths.contains(&"plugin/commands/nested/audit.md"));
+    assert!(!paths.contains(&"plugin/commands/notes.txt"));
+}
+
+#[test]
+fn manifest_backed_plugin_commands_ignore_missing_outside_repo_and_non_markdown_targets() {
+    let temp_dir = unique_temp_dir("lintai-plugin-command-ignore");
+    std::fs::create_dir_all(temp_dir.join("plugin/.cursor-plugin")).unwrap();
+    std::fs::create_dir_all(temp_dir.join("plugin/commands")).unwrap();
+    std::fs::write(
+        temp_dir.join("plugin/.cursor-plugin/plugin.json"),
+        r#"{
+  "name": "demo-plugin",
+  "version": "1.0.0",
+  "commands": [
+    "../outside/review.md",
+    "./missing.md",
+    "./commands/readme.txt"
+  ]
+}"#,
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("plugin/commands/readme.txt"),
+        "not markdown\n",
+    )
+    .unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_backend(backend(EmitFindingProvider))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    let paths = summary
+        .findings
+        .iter()
+        .map(|finding| finding.location.normalized_path.as_str())
+        .collect::<Vec<_>>();
+    assert!(paths.contains(&"plugin/.cursor-plugin/plugin.json"));
+    assert!(!paths.iter().any(|path| path.ends_with("review.md")));
+    assert!(!paths.iter().any(|path| path.ends_with("missing.md")));
+    assert!(!paths.iter().any(|path| path.ends_with("readme.txt")));
+}
+
+#[test]
 fn gemini_extension_is_scanned_as_mcp_config() {
     let temp_dir = unique_temp_dir("lintai-gemini-extension");
     std::fs::create_dir_all(&temp_dir).unwrap();

@@ -2,6 +2,7 @@ use lintai_api::{Artifact, ArtifactKind, DocumentSemantics, RegionKind, SourceFo
 
 use crate::detection_rules;
 use crate::parse_document;
+use crate::route_for_artifact_kind;
 use crate::surface::{all_surface_specs, surface_spec};
 
 #[test]
@@ -209,4 +210,29 @@ fn surface_specs_assemble_in_fixed_order() {
             "cursor_hook_script_shell",
         ]
     );
+}
+
+#[test]
+fn artifact_kind_routes_are_unique_for_shipped_surfaces() {
+    let expected = [
+        (ArtifactKind::Skill, SourceFormat::Markdown),
+        (ArtifactKind::Instructions, SourceFormat::Markdown),
+        (ArtifactKind::CursorRules, SourceFormat::Markdown),
+        (ArtifactKind::McpConfig, SourceFormat::Json),
+        (ArtifactKind::ClaudeSettings, SourceFormat::Json),
+        (ArtifactKind::ServerRegistryConfig, SourceFormat::Json),
+        (ArtifactKind::ToolDescriptorJson, SourceFormat::Json),
+        (ArtifactKind::GitHubWorkflow, SourceFormat::Yaml),
+        (ArtifactKind::CursorPluginManifest, SourceFormat::Json),
+        (ArtifactKind::CursorPluginHooks, SourceFormat::Json),
+        (ArtifactKind::CursorHookScript, SourceFormat::Shell),
+        (ArtifactKind::CursorPluginCommand, SourceFormat::Markdown),
+        (ArtifactKind::CursorPluginAgent, SourceFormat::Markdown),
+    ];
+
+    for (artifact_kind, format) in expected {
+        let route = route_for_artifact_kind(artifact_kind)
+            .unwrap_or_else(|| panic!("missing route for {artifact_kind:?}"));
+        assert_eq!(route.format, format);
+    }
 }

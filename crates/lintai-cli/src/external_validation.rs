@@ -4,9 +4,10 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 
 use ignore::WalkBuilder;
-use lintai_ai_security::{AiSecurityProvider, PolicyMismatchProvider};
+use lintai_ai_security::AiSecurityProvider;
 use lintai_api::{ArtifactKind, RuleProvider, RuleTier};
 use lintai_engine::FileTypeDetector;
+use lintai_policy::PolicyMismatchProvider;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -462,6 +463,7 @@ fn render_report_from_ledgers(
     );
     let env_file_hits = rule_count(current, &["SEC336"]);
     let docker_rule_hits = rule_count(current, &["SEC337", "SEC338", "SEC339", "SEC346"]);
+    let metadata_markdown_hits = rule_count(current, &["SEC335"]);
 
     let datadog_status = phase_target_status(
         baseline,
@@ -592,6 +594,10 @@ fn render_report_from_ledgers(
         docker_rule_hits
     ));
     output.push_str(&format!(
+        "- preview findings from `SEC335` on AI-native markdown surfaces: `{}`\n",
+        metadata_markdown_hits
+    ));
+    output.push_str(&format!(
         "- repos with `tool_descriptor_json`: `{}`\n",
         expanded_surface_counts.tool_descriptor_json
     ));
@@ -615,6 +621,11 @@ fn render_report_from_ledgers(
     if docker_rule_hits == 0 {
         output.push_str(
             "- no external hits were produced yet from Docker-based MCP launch hardening on the canonical cohort\n",
+        );
+    }
+    if metadata_markdown_hits == 0 {
+        output.push_str(
+            "- `SEC335` produced no preview hits yet on the current canonical skills/CLAUDE markdown cohort\n",
         );
     }
     if tool_rule_hits == 0 {
@@ -1204,8 +1215,8 @@ fn render_ai_native_discovery_report(
 ) -> String {
     const AI_NATIVE_RULE_CODES: &[&str] = &[
         "SEC301", "SEC302", "SEC303", "SEC304", "SEC305", "SEC309", "SEC310", "SEC329", "SEC330",
-        "SEC331", "SEC336", "SEC337", "SEC338", "SEC339", "SEC340", "SEC341", "SEC342", "SEC343",
-        "SEC344", "SEC345", "SEC346",
+        "SEC331", "SEC335", "SEC336", "SEC337", "SEC338", "SEC339", "SEC340", "SEC341", "SEC342",
+        "SEC343", "SEC344", "SEC345", "SEC346",
     ];
     let counts = aggregate_counts(ledger);
     let subtype_counts = shortlist
@@ -1219,6 +1230,7 @@ fn render_ai_native_discovery_report(
     let runtime_issue_repos = repos_with_runtime_issues(ledger, shortlist);
     let ai_native_rule_hits = rule_count(ledger, AI_NATIVE_RULE_CODES);
     let sec346_repos = repos_with_rule_hits(ledger, &["SEC346"], true);
+    let sec335_repos = repos_with_rule_hits(ledger, &["SEC335"], false);
 
     let mut output = String::new();
     output.push_str("# External Validation AI-Native Discovery Report\n\n");
@@ -1285,6 +1297,10 @@ fn render_ai_native_discovery_report(
     output.push_str(&format!(
         "- `{}` plugin-root agent markdown admission paths are now covered\n\n",
         coverage.plugin_root_agent_paths
+    ));
+    output.push_str(&format!(
+        "- `{}` plugin-root command markdown admission paths are now covered\n\n",
+        coverage.plugin_root_command_paths
     ));
     output.push_str(&format!(
         "- `{}` Gemini-style MCP client admission paths are now covered\n\n",
@@ -1372,6 +1388,17 @@ fn render_ai_native_discovery_report(
             counts.preview_findings
         ));
     }
+    if sec335_repos.is_empty() {
+        output.push_str("- `SEC335` produced no repo-level external preview hits in this wave\n\n");
+    } else {
+        for (repo, count, rule_codes) in sec335_repos {
+            output.push_str(&format!(
+                "- `{repo}`: `{count}` repo-level preview finding(s) via {}\n",
+                format_rule_codes(&rule_codes)
+            ));
+        }
+        output.push('\n');
+    }
 
     output.push_str("## Runtime / Diagnostic Notes\n\n");
     if runtime_issue_repos.is_empty() {
@@ -1402,7 +1429,11 @@ fn render_ai_native_discovery_report(
     }
 
     output.push_str("## Recommended Next Step\n\n");
-    output.push_str("Use this package as discovery evidence for the next detector expansion. Plugin-root `hooks.json` and `agents/*.md` are now partially covered through manifest-backed detection, so the remaining AI-native gaps are committed Gemini-style client configs plus deferred plugin surfaces such as `commands` and `mcpServers`.\n");
+    if coverage.discovery_only_admission_paths == 0 {
+        output.push_str("Use this package as discovery evidence for the next detector expansion. There are no remaining discovery-only admission paths in the current checked-in AI-native cohort, so deferred plugin `mcpServers` support is not blocking coverage of the admitted set.\n");
+    } else {
+        output.push_str("Use this package as discovery evidence for the next detector expansion. Plugin-root `hooks.json`, `agents/*.md`, and `commands/*.md` are now partially covered through manifest-backed detection, so the remaining AI-native gaps are deferred plugin surfaces such as `mcpServers`.\n");
+    }
 
     output
 }
@@ -1414,6 +1445,7 @@ struct AiNativeCoverageSummary {
     discovery_only_admission_paths: usize,
     plugin_root_hook_paths: usize,
     plugin_root_agent_paths: usize,
+    plugin_root_command_paths: usize,
     gemini_client_paths: usize,
     covered_repos: Vec<(String, Vec<String>)>,
     discovery_only_repos: Vec<(String, Vec<String>)>,
@@ -1438,6 +1470,9 @@ fn ai_native_coverage_summary(shortlist: &RepoShortlist) -> AiNativeCoverageSumm
                 if is_manifest_backed_plugin_agent_path(path) {
                     summary.plugin_root_agent_paths += 1;
                 }
+                if is_manifest_backed_plugin_command_path(path) {
+                    summary.plugin_root_command_paths += 1;
+                }
                 if is_ai_native_docker_config_path(path) {
                     summary.gemini_client_paths += 1;
                 }
@@ -1460,7 +1495,9 @@ fn ai_native_coverage_summary(shortlist: &RepoShortlist) -> AiNativeCoverageSumm
 }
 
 fn is_manifest_backed_plugin_target_path(path: &str) -> bool {
-    is_manifest_backed_plugin_hooks_path(path) || is_manifest_backed_plugin_agent_path(path)
+    is_manifest_backed_plugin_hooks_path(path)
+        || is_manifest_backed_plugin_agent_path(path)
+        || is_manifest_backed_plugin_command_path(path)
 }
 
 fn is_manifest_backed_plugin_hooks_path(path: &str) -> bool {
@@ -1469,6 +1506,13 @@ fn is_manifest_backed_plugin_hooks_path(path: &str) -> bool {
 
 fn is_manifest_backed_plugin_agent_path(path: &str) -> bool {
     path.contains("/agents/") && path.ends_with(".md") && !path.contains("/.cursor-plugin/agents/")
+}
+
+fn is_manifest_backed_plugin_command_path(path: &str) -> bool {
+    path.contains("/commands/")
+        && path.ends_with(".md")
+        && !path.contains("/.cursor-plugin/commands/")
+        && !path.contains("/.claude/commands/")
 }
 
 fn preview_signal_repos(ledger: &ExternalValidationLedger) -> Vec<(String, usize, Vec<String>)> {
@@ -2049,6 +2093,13 @@ fn inventory_surfaces(repo_root: &Path) -> Result<InventoryArtifact, String> {
         {
             surfaces.insert("plugin_root_agents/*.md".to_owned());
         }
+        if normalized.contains("/commands/")
+            && normalized.ends_with(".md")
+            && !normalized.contains("/.cursor-plugin/commands/")
+            && !normalized.contains("/.claude/commands/")
+        {
+            surfaces.insert("plugin_root_commands/*.md".to_owned());
+        }
     }
 
     Ok(InventoryArtifact {
@@ -2547,73 +2598,146 @@ fn admitted_plugin_execution_targets(
     };
     let plugin_root_fs = repo_root.join(plugin_root_relative);
 
-    for key in ["hooks", "agents"] {
-        let Some(target) = object.get(key).and_then(Value::as_str) else {
+    for key in ["hooks", "agents", "commands"] {
+        let Some(target_value) = object.get(key) else {
             continue;
         };
-        let resolved = plugin_root_fs.join(target);
-        if !resolved.exists() {
-            continue;
-        }
-        if resolved.is_file() {
-            let normalized = normalize_rel_path(
-                resolved
-                    .strip_prefix(repo_root)
-                    .map_err(|error| format!("failed to relativize plugin target: {error}"))?,
-            );
-            if is_generic_validation_excluded_path(&normalized) {
+        for target in manifest_target_strings(target_value) {
+            let resolved = plugin_root_fs.join(&target);
+            if key == "commands" && has_glob_metacharacters(&target) {
+                let normalized_pattern =
+                    normalize_rel_path(resolved.strip_prefix(repo_root).unwrap_or(&resolved));
+                if !is_repo_local_validation_path(&normalized_pattern) {
+                    continue;
+                }
+                let Ok(glob) = globset::Glob::new(&normalized_pattern) else {
+                    continue;
+                };
+                let matcher = glob.compile_matcher();
+                let mut builder = WalkBuilder::new(repo_root);
+                builder
+                    .hidden(false)
+                    .git_ignore(false)
+                    .git_exclude(false)
+                    .parents(false);
+                for result in builder.build() {
+                    let entry = result.map_err(|error| {
+                        format!(
+                            "plugin command glob walk failed for {}: {error}",
+                            repo_root.display()
+                        )
+                    })?;
+                    if !entry
+                        .file_type()
+                        .is_some_and(|file_type| file_type.is_file())
+                    {
+                        continue;
+                    }
+                    let normalized =
+                        normalize_rel_path(entry.path().strip_prefix(repo_root).map_err(
+                            |error| format!("failed to relativize plugin command target: {error}"),
+                        )?);
+                    if normalized.ends_with(".md")
+                        && matcher.is_match(normalized.as_str())
+                        && !is_generic_validation_excluded_path(&normalized)
+                    {
+                        admitted.push(normalized);
+                    }
+                }
                 continue;
             }
-            let file_text = fs::read_to_string(&resolved).map_err(|error| {
-                format!(
-                    "failed to read plugin execution target {}: {error}",
-                    resolved.display()
-                )
-            })?;
-            let semantic = match key {
-                "hooks" => contains_semantic_plugin_hook_commands(&file_text),
-                _ => false,
-            };
-            if semantic {
-                admitted.push(normalized);
+
+            if !resolved.exists() {
+                continue;
             }
-            continue;
-        }
-        if resolved.is_dir() && key == "agents" {
-            let mut builder = WalkBuilder::new(&resolved);
-            builder
-                .hidden(false)
-                .git_ignore(false)
-                .git_exclude(false)
-                .parents(false);
-            for result in builder.build() {
-                let entry = result.map_err(|error| {
-                    format!(
-                        "plugin target walk failed for {}: {error}",
-                        resolved.display()
-                    )
-                })?;
-                if !entry
-                    .file_type()
-                    .is_some_and(|file_type| file_type.is_file())
-                {
+            if resolved.is_file() {
+                let normalized = normalize_rel_path(
+                    resolved
+                        .strip_prefix(repo_root)
+                        .map_err(|error| format!("failed to relativize plugin target: {error}"))?,
+                );
+                if is_generic_validation_excluded_path(&normalized) {
                     continue;
                 }
-                if entry.path().extension().and_then(|ext| ext.to_str()) != Some("md") {
-                    continue;
+                match key {
+                    "hooks" => {
+                        let file_text = fs::read_to_string(&resolved).map_err(|error| {
+                            format!(
+                                "failed to read plugin execution target {}: {error}",
+                                resolved.display()
+                            )
+                        })?;
+                        if contains_semantic_plugin_hook_commands(&file_text) {
+                            admitted.push(normalized);
+                        }
+                    }
+                    "commands" => {
+                        if normalized.ends_with(".md") {
+                            admitted.push(normalized);
+                        }
+                    }
+                    _ => {}
                 }
-                let normalized =
-                    normalize_rel_path(entry.path().strip_prefix(repo_root).map_err(|error| {
-                        format!("failed to relativize plugin markdown target: {error}")
-                    })?);
-                if !is_generic_validation_excluded_path(&normalized) {
-                    admitted.push(normalized);
+                continue;
+            }
+            if resolved.is_dir() && matches!(key, "agents" | "commands") {
+                let mut builder = WalkBuilder::new(&resolved);
+                builder
+                    .hidden(false)
+                    .git_ignore(false)
+                    .git_exclude(false)
+                    .parents(false);
+                for result in builder.build() {
+                    let entry = result.map_err(|error| {
+                        format!(
+                            "plugin target walk failed for {}: {error}",
+                            resolved.display()
+                        )
+                    })?;
+                    if !entry
+                        .file_type()
+                        .is_some_and(|file_type| file_type.is_file())
+                    {
+                        continue;
+                    }
+                    if entry.path().extension().and_then(|ext| ext.to_str()) != Some("md") {
+                        continue;
+                    }
+                    let normalized =
+                        normalize_rel_path(entry.path().strip_prefix(repo_root).map_err(
+                            |error| format!("failed to relativize plugin markdown target: {error}"),
+                        )?);
+                    if !is_generic_validation_excluded_path(&normalized) {
+                        admitted.push(normalized);
+                    }
                 }
             }
         }
     }
 
+    admitted.sort();
+    admitted.dedup();
     Ok(admitted)
+}
+
+fn manifest_target_strings(value: &Value) -> Vec<String> {
+    match value {
+        Value::String(value) => vec![value.clone()],
+        Value::Array(items) => items
+            .iter()
+            .filter_map(Value::as_str)
+            .map(ToOwned::to_owned)
+            .collect(),
+        _ => Vec::new(),
+    }
+}
+
+fn has_glob_metacharacters(target: &str) -> bool {
+    target.contains('*') || target.contains('?') || target.contains('[')
+}
+
+fn is_repo_local_validation_path(path: &str) -> bool {
+    !path.starts_with('/') && !path.starts_with("../") && path != ".."
 }
 
 fn contains_semantic_github_workflow_yaml(text: &str) -> bool {
@@ -3138,6 +3262,10 @@ rationale = "demo"
         assert!(markdown.contains("- repos with Docker-based MCP launch configs: `0`"));
         assert!(markdown.contains("- findings from `SEC336`: `0`"));
         assert!(markdown.contains("- findings from `SEC337`-`SEC339`, `SEC346`: `0`"));
+        assert!(
+            markdown
+                .contains("- preview findings from `SEC335` on AI-native markdown surfaces: `0`")
+        );
         assert!(markdown.contains("- repos with `tool_descriptor_json`: `1`"));
         assert!(markdown.contains(
             "- repos where new MCP client-config variants existed only under fixture-like paths: `0`"
@@ -3561,6 +3689,6 @@ rationale = "demo"
         assert!(markdown.contains("## Preview Hits"));
         assert!(markdown.contains("## Runtime / Diagnostic Notes"));
         assert!(markdown.contains("## Recommended Next Step"));
-        assert!(markdown.contains("discovery-only"));
+        assert!(markdown.contains("plugin-root command markdown admission paths"));
     }
 }

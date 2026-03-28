@@ -4,7 +4,7 @@ use std::path::{Path, PathBuf};
 use std::sync::OnceLock;
 
 use ignore::WalkBuilder;
-use lintai_api::{ArtifactKind, Finding, SourceFormat};
+use lintai_api::{ArtifactKind, Finding};
 use lintai_engine::{FileTypeDetector, ScanSummary, WorkspaceConfig, normalize_path_string};
 use serde::{Deserialize, Serialize};
 
@@ -668,15 +668,11 @@ pub(crate) fn workspace_for_known_root(
     let Some(artifact_kind) = root.artifact_kind_hint else {
         return Ok(workspace);
     };
-    let (patterns, format) = match artifact_kind {
-        ArtifactKind::McpConfig => (
-            mcp_detection_override_patterns(root, &workspace)?,
-            SourceFormat::Json,
-        ),
-        ArtifactKind::Instructions | ArtifactKind::CursorRules => (
-            markdown_detection_override_patterns(root, &workspace),
-            SourceFormat::Markdown,
-        ),
+    let patterns = match artifact_kind {
+        ArtifactKind::McpConfig => mcp_detection_override_patterns(root, &workspace)?,
+        ArtifactKind::Instructions | ArtifactKind::CursorRules => {
+            markdown_detection_override_patterns(root, &workspace)
+        }
         _ => return Ok(workspace),
     };
     if patterns.is_empty() {
@@ -694,7 +690,7 @@ pub(crate) fn workspace_for_known_root(
 
     workspace
         .engine_config
-        .add_detection_override(&patterns, artifact_kind, format)
+        .add_detection_override_for_kind(&patterns, artifact_kind)
         .map_err(|error| format!("detection override failed: {error}"))?;
     Ok(workspace)
 }
@@ -1337,6 +1333,7 @@ mod tests {
     use std::fs;
     use std::time::{SystemTime, UNIX_EPOCH};
 
+    use lintai_adapters::route_for_artifact_kind;
     use lintai_api::{
         Category, Confidence, Evidence, EvidenceKind, Location, RuleTier, Severity, Span,
     };
@@ -1396,6 +1393,26 @@ artifact_kind_hint = "skill"
         )
         .unwrap_err();
         assert!(error.contains("duplicates scope/path"));
+    }
+
+    #[test]
+    fn lintable_known_root_hints_have_canonical_routes() {
+        let registry = registry().unwrap();
+        for surface in &registry.surfaces {
+            if !matches!(surface.artifact_mode, ArtifactMode::Lintable) {
+                continue;
+            }
+            let artifact_kind = surface
+                .artifact_kind_hint
+                .expect("lintable surface should declare artifact kind hint");
+            assert!(
+                route_for_artifact_kind(artifact_kind).is_some(),
+                "missing canonical route for {:?} on {}:{}",
+                artifact_kind,
+                surface.client_id,
+                surface.surface_id
+            );
+        }
     }
 
     #[test]

@@ -10,14 +10,15 @@ use lintai_api::{
     ScanContext, ScanScope, SourceFormat, Span, TextRegion,
 };
 use lintai_engine::{FileTypeDetector, ProviderExecutionPhase, normalize_path_string};
+use lintai_policy::PolicyMismatchProvider;
 use lintai_runtime::InProcessProviderBackend;
 use lintai_testing::{OutputHarness, WorkspaceHarness, discover_case_dirs};
 use serde::Deserialize;
 use serde_json::json;
 
+use crate::AiSecurityProvider;
 use crate::provider::profile_scan_context;
 use crate::registry::rule_specs;
-use crate::{AiSecurityProvider, PolicyMismatchProvider};
 
 #[test]
 fn markdown_provider_perf_budget_stays_single_pass() {

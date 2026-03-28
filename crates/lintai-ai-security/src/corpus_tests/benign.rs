@@ -60,6 +60,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-clean-basic",
             "skill-fenced-pipe-shell-safe",
             "skill-html-comment-safe",
+            "skill-metadata-service-deny-list-safe",
             "skill-project-scoped-path-safe",
             "skill-public-key-pem-safe",
             "tool-json-anthropic-strict-locked",

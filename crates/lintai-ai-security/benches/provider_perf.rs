@@ -2,8 +2,9 @@ use std::path::PathBuf;
 use std::sync::Arc;
 
 use criterion::{Criterion, criterion_group, criterion_main};
-use lintai_ai_security::{AiSecurityProvider, PolicyMismatchProvider};
+use lintai_ai_security::AiSecurityProvider;
 use lintai_api::ScanScope;
+use lintai_policy::PolicyMismatchProvider;
 use lintai_runtime::InProcessProviderBackend;
 use lintai_testing::{WorkspaceHarness, discover_case_dirs};
 

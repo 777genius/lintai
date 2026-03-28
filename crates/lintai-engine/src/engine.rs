@@ -628,6 +628,26 @@ fn manifest_backed_plugin_detection_patterns(
                 }
             }
         }
+
+        if let Some(targets) = object.get("commands") {
+            for target in manifest_target_strings(targets) {
+                for normalized_target in resolve_manifest_markdown_targets(
+                    base_path,
+                    plugin_root_fs,
+                    &target,
+                    &normalized_to_path,
+                ) {
+                    overrides.insert(
+                        normalized_target.clone(),
+                        DynamicDetectionOverride {
+                            normalized_path: normalized_target,
+                            kind: ArtifactKind::CursorPluginCommand,
+                            format: SourceFormat::Markdown,
+                        },
+                    );
+                }
+            }
+        }
     }
 
     overrides.into_values().collect()
@@ -691,6 +711,85 @@ fn resolve_manifest_target_directory(
     }
     let normalized = normalize_path(base_path, &resolved);
     is_repo_local_normalized_path(&normalized).then_some(normalized)
+}
+
+fn manifest_target_strings(value: &Value) -> Vec<String> {
+    match value {
+        Value::String(value) => vec![value.clone()],
+        Value::Array(items) => items
+            .iter()
+            .filter_map(Value::as_str)
+            .map(ToOwned::to_owned)
+            .collect(),
+        _ => Vec::new(),
+    }
+}
+
+fn resolve_manifest_markdown_targets(
+    base_path: &Path,
+    plugin_root_fs: &Path,
+    target: &str,
+    normalized_to_path: &BTreeMap<String, PathBuf>,
+) -> Vec<String> {
+    if has_glob_metacharacters(target) {
+        return match_manifest_markdown_glob_targets(
+            base_path,
+            plugin_root_fs,
+            target,
+            normalized_to_path,
+        );
+    }
+
+    let resolved = plugin_root_fs.join(target);
+    if resolved.is_file() {
+        let normalized = normalize_path(base_path, &resolved);
+        return (is_repo_local_normalized_path(&normalized)
+            && normalized.ends_with(".md")
+            && normalized_to_path.contains_key(&normalized))
+        .then_some(normalized)
+        .into_iter()
+        .collect();
+    }
+
+    if resolved.is_dir() {
+        let normalized_dir = normalize_path(base_path, &resolved);
+        if !is_repo_local_normalized_path(&normalized_dir) {
+            return Vec::new();
+        }
+        let prefix = format!("{normalized_dir}/");
+        return normalized_to_path
+            .keys()
+            .filter(|normalized| normalized.starts_with(&prefix) && normalized.ends_with(".md"))
+            .cloned()
+            .collect();
+    }
+
+    Vec::new()
+}
+
+fn match_manifest_markdown_glob_targets(
+    base_path: &Path,
+    plugin_root_fs: &Path,
+    target: &str,
+    normalized_to_path: &BTreeMap<String, PathBuf>,
+) -> Vec<String> {
+    let normalized_pattern = normalize_path(base_path, &plugin_root_fs.join(target));
+    if !is_repo_local_normalized_path(&normalized_pattern) {
+        return Vec::new();
+    }
+    let Ok(glob) = globset::Glob::new(&normalized_pattern) else {
+        return Vec::new();
+    };
+    let matcher = glob.compile_matcher();
+    normalized_to_path
+        .keys()
+        .filter(|normalized| normalized.ends_with(".md") && matcher.is_match(normalized.as_str()))
+        .cloned()
+        .collect()
+}
+
+fn has_glob_metacharacters(target: &str) -> bool {
+    target.contains('*') || target.contains('?') || target.contains('[')
 }
 
 const FORCE_SEQUENTIAL_SCAN_ENV: &str = "LINTAI_FORCE_SEQUENTIAL_SCAN";
