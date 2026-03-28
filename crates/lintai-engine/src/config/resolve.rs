@@ -38,6 +38,34 @@ impl Default for EngineConfig {
 }
 
 impl EngineConfig {
+    pub fn set_project_root(&mut self, project_root: Option<std::path::PathBuf>) {
+        self.project_root = project_root;
+    }
+
+    pub fn add_detection_override(
+        &mut self,
+        patterns: &[String],
+        kind: lintai_api::ArtifactKind,
+        format: lintai_api::SourceFormat,
+    ) -> Result<(), super::ConfigError> {
+        let mut builder = globset::GlobSetBuilder::new();
+        for pattern in patterns {
+            let glob = globset::Glob::new(pattern).map_err(|error| {
+                super::ConfigError::new(format!("invalid glob `{pattern}`: {error}"))
+            })?;
+            builder.add(glob);
+        }
+        let matcher = builder
+            .build()
+            .map_err(|error| super::ConfigError::new(format!("invalid globset: {error}")))?;
+        self.detection_overrides.push(super::DetectionOverride {
+            matcher,
+            kind,
+            format,
+        });
+        Ok(())
+    }
+
     pub fn resolve_for(&self, normalized_path: &str) -> ResolvedFileConfig {
         let mut category_overrides = self.category_overrides.clone();
         let mut rule_overrides = self.rule_overrides.clone();

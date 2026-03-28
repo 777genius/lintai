@@ -5,8 +5,8 @@ use std::process::ExitCode;
 
 use lintai_api::{Applicability, Finding};
 use lintai_engine::{
-    explain_file_config, load_workspace_config, Engine, EngineConfig, FileSuppressions,
-    OutputFormat, ResolvedFileConfig, WorkspaceConfig,
+    Engine, EngineConfig, FileSuppressions, OutputFormat, ResolvedFileConfig, WorkspaceConfig,
+    explain_file_config, load_workspace_config,
 };
 use lintai_fix::{apply_planned_fixes, plan_fixes};
 
@@ -15,9 +15,9 @@ use crate::args::{
 };
 use crate::builtin_providers::{product_provider_set, run_provider_runner};
 use crate::known_scan::{
-    absolute_base_for_scan, discover_known_roots, inventory_lintable_root,
-    merge_summary_with_absolute_paths, ArtifactMode, DiscoveredRoot, DiscoveryStats,
-    KnownRootScope,
+    ArtifactMode, DiscoveredRoot, DiscoveryStats, KnownRootScope, absolute_base_for_scan,
+    discover_known_roots, inventory_lintable_root, merge_summary_with_absolute_paths,
+    workspace_for_known_root,
 };
 use crate::{output, path::validate_path_within_project};
 
@@ -127,12 +127,6 @@ fn run_scan_known(
         source_path: None,
         engine_config: EngineConfig::default(),
     };
-    let project_engine = project_workspace.as_ref().map(build_engine).transpose()?;
-    let global_engine = if parsed.scope.includes_global() {
-        Some(build_engine(&default_workspace)?)
-    } else {
-        None
-    };
 
     for root in discovered_roots {
         discovery_stats.record_root(root.mode);
@@ -141,24 +135,16 @@ fn run_scan_known(
             continue;
         }
 
-        let (engine, workspace) = match root.scope {
-            KnownRootScope::Project => (
-                project_engine
-                    .as_ref()
-                    .ok_or_else(|| "project scan engine was not initialized".to_owned())?,
-                project_workspace
-                    .as_ref()
-                    .ok_or_else(|| "project workspace was not initialized".to_owned())?,
-            ),
-            KnownRootScope::Global => (
-                global_engine
-                    .as_ref()
-                    .ok_or_else(|| "global scan engine was not initialized".to_owned())?,
-                &default_workspace,
-            ),
+        let base_workspace = match root.scope {
+            KnownRootScope::Project => project_workspace
+                .as_ref()
+                .ok_or_else(|| "project workspace was not initialized".to_owned())?,
+            KnownRootScope::Global => &default_workspace,
         };
+        let workspace = workspace_for_known_root(&root, base_workspace)?;
+        let engine = build_engine(&workspace)?;
 
-        let inventory = inventory_lintable_root(&root, workspace)
+        let inventory = inventory_lintable_root(&root, &workspace)
             .map_err(|error| format!("inventory failed for {}: {error}", root.path.display()))?;
         discovery_stats.record_lintable_inventory(&inventory);
 
@@ -167,7 +153,7 @@ fn run_scan_known(
             .map_err(|error| format!("scan failed for {}: {error}", root.path.display()))?;
         blocking |= has_blocking_findings(&summary.findings, &workspace.engine_config.ci_policy);
         discovery_stats.supported_artifacts_scanned += summary.scanned_files;
-        let absolute_base = absolute_base_for_scan(&root.path, workspace);
+        let absolute_base = absolute_base_for_scan(&root.path, &workspace);
         merge_summary_with_absolute_paths(&mut aggregate, summary, &absolute_base);
     }
 

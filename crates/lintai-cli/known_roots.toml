@@ -137,8 +137,9 @@ client_id = "claude-desktop"
 surface_id = "desktop-config"
 scope = "global"
 path_template = "{home}/Library/Application Support/Claude/claude_desktop_config.json"
-artifact_mode = "discovered_only"
-notes = "Claude Desktop config path on macOS."
+artifact_mode = "lintable"
+artifact_kind_hint = "mcp_config"
+notes = "Claude Desktop config path on macOS, linted through MCP config rules."
 
 [[surface]]
 client_id = "codex"
@@ -350,8 +351,27 @@ client_id = "continue"
 surface_id = "mcp-servers"
 scope = "global"
 path_template = "{home}/.continue/mcpServers"
-artifact_mode = "discovered_only"
-notes = "Continue MCP servers directory."
+artifact_mode = "lintable"
+artifact_kind_hint = "mcp_config"
+notes = "Continue MCP servers directory, linted as MCP JSON files."
+
+[[surface]]
+client_id = "github-copilot-cli"
+surface_id = "mcp-config"
+scope = "global"
+path_template = "{home}/.copilot/mcp-config.json"
+artifact_mode = "lintable"
+artifact_kind_hint = "mcp_config"
+notes = "GitHub Copilot CLI MCP config in the default home location."
+
+[[surface]]
+client_id = "github-copilot-cli"
+surface_id = "mcp-config-xdg"
+scope = "global"
+path_template = "{xdg_config_home}/copilot/mcp-config.json"
+artifact_mode = "lintable"
+artifact_kind_hint = "mcp_config"
+notes = "GitHub Copilot CLI MCP config in XDG config directories."
 
 [[surface]]
 client_id = "gemini-cli"

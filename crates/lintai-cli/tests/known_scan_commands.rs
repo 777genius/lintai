@@ -24,6 +24,13 @@ fn write(path: &Path, content: &str) {
     fs::write(path, content).unwrap();
 }
 
+fn canonical_display(path: &Path) -> String {
+    fs::canonicalize(path)
+        .unwrap_or_else(|_| path.to_path_buf())
+        .display()
+        .to_string()
+}
+
 fn run_lintai(
     cwd: &Path,
     home: &Path,
@@ -68,12 +75,14 @@ fn scan_known_global_discovers_roots_and_emits_findings() {
     assert!(stdout.contains("discovery counters:"));
     assert!(stdout.contains("SEC101"));
     assert!(stdout.contains("SEC301"));
-    assert!(stdout.contains(
-        &home
-            .join(".claude/skills/demo/SKILL.md")
-            .display()
-            .to_string()
-    ));
+    assert!(
+        stdout.contains(
+            &home
+                .join(".claude/skills/demo/SKILL.md")
+                .display()
+                .to_string()
+        )
+    );
     assert!(stdout.contains(&home.join(".cursor/mcp.json").display().to_string()));
 }
 
@@ -117,18 +126,22 @@ fn scan_known_json_respects_client_filter_and_reports_discovered_roots() {
     assert_eq!(stats["supported_artifacts_scanned"], 2);
 
     let findings = value["findings"].as_array().unwrap();
-    assert!(findings
-        .iter()
-        .any(|finding| finding["rule_code"] == "SEC101"));
-    assert!(findings
-        .iter()
-        .any(|finding| finding["rule_code"] == "SEC103"));
-    assert!(findings
-        .iter()
-        .all(|finding| finding["location"]["normalized_path"]
+    assert!(
+        findings
+            .iter()
+            .any(|finding| finding["rule_code"] == "SEC101")
+    );
+    assert!(
+        findings
+            .iter()
+            .any(|finding| finding["rule_code"] == "SEC103")
+    );
+    assert!(findings.iter().all(|finding| {
+        finding["location"]["normalized_path"]
             .as_str()
             .unwrap()
-            .starts_with('/')));
+            .starts_with('/')
+    }));
 }
 
 #[test]
@@ -184,16 +197,194 @@ fn scan_known_mixed_modes_reports_both_lintable_and_discovered_only_roots() {
 
     let stdout = stdout_string(&output);
     let value: serde_json::Value = serde_json::from_str(&stdout).unwrap();
-    assert!(value["discovered_roots"]
-        .as_array()
-        .unwrap()
-        .iter()
-        .any(|root| root["mode"] == "lintable"));
-    assert!(value["discovered_roots"]
-        .as_array()
-        .unwrap()
-        .iter()
-        .any(|root| root["mode"] == "discovered_only"));
+    assert!(
+        value["discovered_roots"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|root| root["mode"] == "lintable")
+    );
+    assert!(
+        value["discovered_roots"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|root| root["mode"] == "discovered_only")
+    );
     assert_eq!(value["discovery_stats"]["lintable_roots"], 1);
     assert_eq!(value["discovery_stats"]["discovered_only_roots"], 1);
+}
+
+#[test]
+fn scan_known_claude_desktop_and_copilot_cli_configs_are_lintable() {
+    let temp_dir = unique_temp_dir("lintai-scan-known-mcp-global-clients");
+    let cwd = temp_dir.join("project");
+    let home = temp_dir.join("home");
+    let xdg = temp_dir.join("xdg");
+    fs::create_dir_all(&cwd).unwrap();
+
+    write(
+        &home.join("Library/Application Support/Claude/claude_desktop_config.json"),
+        r#"{
+  "servers": {
+    "desktop-shell": {
+      "command": "sh",
+      "args": ["-c", "./wrap.sh"]
+    }
+  }
+}"#,
+    );
+    write(
+        &home.join(".copilot/mcp-config.json"),
+        r#"{
+  "servers": {
+    "copilot-secret": {
+      "env": {
+        "OPENAI_API_KEY": "sk-live-secret"
+      }
+    }
+  }
+}"#,
+    );
+
+    let output = run_lintai(&cwd, &home, &xdg, &["scan-known", "--format=json"]);
+    assert_eq!(output.status.code(), Some(0));
+
+    let stdout = stdout_string(&output);
+    let value: serde_json::Value = serde_json::from_str(&stdout).unwrap();
+    let roots = value["discovered_roots"].as_array().unwrap();
+    assert!(roots.iter().any(|root| {
+        root["client"] == "claude-desktop"
+            && root["surface"] == "desktop-config"
+            && root["mode"] == "lintable"
+    }));
+    assert!(roots.iter().any(|root| {
+        root["client"] == "github-copilot-cli"
+            && root["surface"].as_str().unwrap().starts_with("mcp-config")
+            && root["mode"] == "lintable"
+    }));
+    let findings = value["findings"].as_array().unwrap();
+    assert!(findings.iter().any(|finding| {
+        finding["location"]["normalized_path"]
+            == canonical_display(
+                &home.join("Library/Application Support/Claude/claude_desktop_config.json"),
+            )
+    }));
+    assert!(findings.iter().any(|finding| {
+        finding["location"]["normalized_path"]
+            == canonical_display(&home.join(".copilot/mcp-config.json"))
+    }));
+}
+
+#[test]
+fn scan_known_continue_mcp_servers_directory_is_lintable() {
+    let temp_dir = unique_temp_dir("lintai-scan-known-continue-mcp");
+    let cwd = temp_dir.join("project");
+    let home = temp_dir.join("home");
+    let xdg = temp_dir.join("xdg");
+    fs::create_dir_all(&cwd).unwrap();
+
+    write(
+        &home.join(".continue/mcpServers/docker.json"),
+        r#"{
+  "command": "sh",
+  "args": ["-c", "./run-wrapper.sh"]
+}"#,
+    );
+
+    let output = run_lintai(
+        &cwd,
+        &home,
+        &xdg,
+        &["scan-known", "--client=continue", "--format=json"],
+    );
+    assert_eq!(output.status.code(), Some(0));
+
+    let stdout = stdout_string(&output);
+    let value: serde_json::Value = serde_json::from_str(&stdout).unwrap();
+    let roots = value["discovered_roots"].as_array().unwrap();
+    assert_eq!(roots.len(), 1);
+    assert_eq!(roots[0]["client"], "continue");
+    assert_eq!(roots[0]["mode"], "lintable");
+    assert_eq!(value["discovery_stats"]["lintable_roots"], 1);
+    assert_eq!(value["discovery_stats"]["supported_artifacts_scanned"], 1);
+    assert!(value["findings"].as_array().unwrap().iter().any(|finding| {
+        finding["location"]["normalized_path"]
+            == canonical_display(&home.join(".continue/mcpServers/docker.json"))
+    }));
+}
+
+#[test]
+fn scan_known_vscode_kiro_and_amazon_q_mcp_configs_emit_findings() {
+    let temp_dir = unique_temp_dir("lintai-scan-known-project-mcp-clients");
+    let cwd = temp_dir.join("project");
+    let home = temp_dir.join("home");
+    let xdg = temp_dir.join("xdg");
+    fs::create_dir_all(&cwd).unwrap();
+
+    write(
+        &cwd.join(".vscode/mcp.json"),
+        r#"{
+  "servers": {
+    "workspace-mcp": {
+      "env": {
+        "OPENAI_API_KEY": "sk-live-vscode"
+      }
+    }
+  }
+}"#,
+    );
+    write(
+        &cwd.join(".kiro/settings/mcp.json"),
+        r#"{
+  "servers": {
+    "kiro-shell": {
+      "command": "bash",
+      "args": ["-c", "./run-kiro.sh"]
+    }
+  }
+}"#,
+    );
+    write(
+        &cwd.join(".amazonq/mcp.json"),
+        r#"{
+  "servers": {
+    "amazon-q": {
+      "command": "sh",
+      "args": ["-c", "./run-amazon-q.sh"]
+    }
+  }
+}"#,
+    );
+
+    let output = run_lintai(&cwd, &home, &xdg, &["scan-known", "--format=json"]);
+    assert_eq!(output.status.code(), Some(0));
+
+    let stdout = stdout_string(&output);
+    let value: serde_json::Value = serde_json::from_str(&stdout).unwrap();
+    let roots = value["discovered_roots"].as_array().unwrap();
+    assert!(roots.iter().any(|root| {
+        root["client"] == "vs-code-copilot"
+            && root["surface"] == "workspace-mcp"
+            && root["mode"] == "lintable"
+    }));
+    assert!(roots.iter().any(|root| {
+        root["client"] == "kiro" && root["surface"] == "project-mcp" && root["mode"] == "lintable"
+    }));
+    assert!(roots.iter().any(|root| {
+        root["client"] == "amazon-q"
+            && root["surface"] == "project-mcp"
+            && root["mode"] == "lintable"
+    }));
+    let findings = value["findings"].as_array().unwrap();
+    assert!(findings.iter().any(|finding| {
+        finding["location"]["normalized_path"] == canonical_display(&cwd.join(".vscode/mcp.json"))
+    }));
+    assert!(findings.iter().any(|finding| {
+        finding["location"]["normalized_path"]
+            == canonical_display(&cwd.join(".kiro/settings/mcp.json"))
+    }));
+    assert!(findings.iter().any(|finding| {
+        finding["location"]["normalized_path"] == canonical_display(&cwd.join(".amazonq/mcp.json"))
+    }));
 }

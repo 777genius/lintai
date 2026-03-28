@@ -165,6 +165,13 @@ Current coverage in this command:
 - `lintable` roots: client paths that resolve to existing `lintai` artifact kinds today, such as `SKILL.md`, `mcp.json`, `.mdc`, `.cursorrules`, and Cursor plugin surfaces
 - `discovered_only` roots: known client paths that `scan-known` can inventory honestly today, but that do not yet map to current `lintai` parser/rule coverage
 
+Current MCP-family `lintable` roots include:
+
+- Cursor, Codex, VS Code/Copilot, Kiro, and Amazon Q `mcp.json` locations
+- Claude Desktop `claude_desktop_config.json`
+- Continue `~/.continue/mcpServers/**/*.json`
+- GitHub Copilot CLI `mcp-config.json`
+
 Examples:
 
 ```bash
@@ -198,6 +205,7 @@ The checked-in manifest currently includes registry coverage for:
 - Windsurf
 - Junie
 - VS Code / Copilot
+- GitHub Copilot CLI
 - Continue
 - Gemini CLI
 - Kiro
