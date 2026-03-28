@@ -24,6 +24,8 @@ pub fn parse_inventory_os_args(
     let mut scope = InventoryOsScope::Both;
     let mut client_filters = std::collections::BTreeSet::new();
     let mut path_root = None;
+    let mut write_baseline = None;
+    let mut diff_against = None;
     let mut args = args.peekable();
 
     while let Some(arg) = args.next() {
@@ -52,6 +54,18 @@ pub fn parse_inventory_os_args(
                 };
                 path_root = Some(PathBuf::from(value));
             }
+            "--write-baseline" => {
+                let Some(value) = args.next() else {
+                    return Err("missing value for --write-baseline".to_owned());
+                };
+                write_baseline = Some(PathBuf::from(value));
+            }
+            "--diff-against" => {
+                let Some(value) = args.next() else {
+                    return Err("missing value for --diff-against".to_owned());
+                };
+                diff_against = Some(PathBuf::from(value));
+            }
             value if value.starts_with("--format=") => {
                 let value = value.trim_start_matches("--format=");
                 format_override = Some(parse_output_format(value)?);
@@ -68,6 +82,12 @@ pub fn parse_inventory_os_args(
             value if value.starts_with("--path-root=") => {
                 path_root = Some(PathBuf::from(value.trim_start_matches("--path-root=")));
             }
+            value if value.starts_with("--write-baseline=") => {
+                write_baseline = Some(PathBuf::from(value.trim_start_matches("--write-baseline=")));
+            }
+            value if value.starts_with("--diff-against=") => {
+                diff_against = Some(PathBuf::from(value.trim_start_matches("--diff-against=")));
+            }
             value if value.starts_with('-') => {
                 return Err(format!("unknown flag: {value}"));
             }
@@ -80,6 +100,8 @@ pub fn parse_inventory_os_args(
         scope,
         client_filters,
         path_root,
+        write_baseline,
+        diff_against,
     })
 }
 
@@ -280,6 +302,8 @@ mod tests {
         assert_eq!(parsed.scope, InventoryOsScope::Both);
         assert!(parsed.client_filters.is_empty());
         assert_eq!(parsed.path_root, None);
+        assert_eq!(parsed.write_baseline, None);
+        assert_eq!(parsed.diff_against, None);
     }
 
     #[test]
@@ -303,6 +327,9 @@ mod tests {
                 "--client",
                 "Goose",
                 "--path-root=/tmp/lintai-fixture",
+                "--write-baseline=/tmp/baseline.json",
+                "--diff-against",
+                "/tmp/previous.json",
             ]
             .into_iter()
             .map(str::to_owned),
@@ -313,6 +340,14 @@ mod tests {
         assert_eq!(
             parsed.path_root,
             Some(std::path::PathBuf::from("/tmp/lintai-fixture"))
+        );
+        assert_eq!(
+            parsed.write_baseline,
+            Some(std::path::PathBuf::from("/tmp/baseline.json"))
+        );
+        assert_eq!(
+            parsed.diff_against,
+            Some(std::path::PathBuf::from("/tmp/previous.json"))
         );
     }
 
@@ -330,7 +365,8 @@ mod tests {
 
     #[test]
     fn inventory_os_rejects_extra_positional_argument() {
-        let error = parse_inventory_os_args(["project"].into_iter().map(str::to_owned)).unwrap_err();
+        let error =
+            parse_inventory_os_args(["project"].into_iter().map(str::to_owned)).unwrap_err();
         assert!(error.contains("unexpected extra argument"));
     }
 

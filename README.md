@@ -60,6 +60,8 @@ lintai config-schema
 lintai scan .
 lintai scan-known --scope=both
 lintai inventory-os --scope=user
+lintai inventory-os --scope=user --write-baseline .lintai-baseline.json
+lintai inventory-os --scope=user --diff-against .lintai-baseline.json
 ```
 
 `lintai-api` remains the only stable publishable crate. This beta does not yet promise Homebrew, npm, or `cargo install` distribution for the CLI.
@@ -192,6 +194,8 @@ lintai scan-known --scope=global
 lintai scan-known --scope=both --client=cursor
 lintai scan-known --client=codex --format=json
 lintai inventory-os --scope=user --format=json
+lintai inventory-os --scope=user --write-baseline .lintai-baseline.json
+lintai inventory-os --scope=user --diff-against .lintai-baseline.json --format=json
 ```
 
 `inventory-os` is the first machine-oriented inventory mode. It stays inventory-first:
@@ -199,6 +203,7 @@ lintai inventory-os --scope=user --format=json
 - scans only known user/system client roots
 - emits real findings only for already supported artifact kinds
 - reports per-root provenance and risk level
+- can write and diff machine inventory baselines
 - does not claim runtime activity or enforcement yet
 
 ### Support Matrix

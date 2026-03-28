@@ -5,7 +5,7 @@ use std::sync::OnceLock;
 
 use ignore::WalkBuilder;
 use lintai_api::{ArtifactKind, Finding, SourceFormat};
-use lintai_engine::{FileTypeDetector, ScanSummary, WorkspaceConfig, normalize_path_string};
+use lintai_engine::{normalize_path_string, FileTypeDetector, ScanSummary, WorkspaceConfig};
 use serde::{Deserialize, Serialize};
 
 const KNOWN_ROOTS_MANIFEST: &str = include_str!("../known_roots.toml");
@@ -62,6 +62,8 @@ pub struct InventoryOsArgs {
     pub scope: InventoryOsScope,
     pub client_filters: BTreeSet<String>,
     pub path_root: Option<PathBuf>,
+    pub write_baseline: Option<PathBuf>,
+    pub diff_against: Option<PathBuf>,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
@@ -174,7 +176,7 @@ impl RiskLevel {
     }
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct InventoryProvenance {
     pub origin_scope: String,
     pub path_type: String,
@@ -186,7 +188,7 @@ pub struct InventoryProvenance {
     pub mtime_epoch_s: Option<u64>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct InventoryRoot {
     pub client: String,
     pub surface: String,
@@ -196,7 +198,7 @@ pub struct InventoryRoot {
     pub provenance: InventoryProvenance,
 }
 
-#[derive(Clone, Debug, Default, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct InventoryStats {
     pub user_roots: usize,
     pub system_roots: usize,
@@ -211,6 +213,55 @@ pub struct InventoryStats {
     pub binary_files: usize,
     pub unreadable_files: usize,
     pub unrecognized_files: usize,
+}
+
+pub const INVENTORY_SNAPSHOT_SCHEMA_VERSION: u32 = 1;
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct InventorySnapshot {
+    pub schema_version: u32,
+    pub generated_at: u64,
+    #[serde(skip_serializing_if = "Vec::is_empty", default)]
+    pub inventory_roots: Vec<InventoryRoot>,
+    pub inventory_stats: InventoryStats,
+    #[serde(skip_serializing_if = "Vec::is_empty", default)]
+    pub findings: Vec<Finding>,
+}
+
+#[derive(Clone, Debug, Default, Eq, PartialEq, Serialize)]
+pub struct InventoryDiff {
+    pub new_roots: Vec<InventoryRoot>,
+    pub removed_roots: Vec<InventoryRoot>,
+    pub changed_roots: Vec<InventoryChangedRoot>,
+    pub new_lintable_roots: Vec<InventoryRoot>,
+    pub risk_increased_roots: Vec<InventoryRiskIncrease>,
+    pub new_findings: Vec<Finding>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+pub struct InventoryChangedRoot {
+    pub client: String,
+    pub surface: String,
+    pub path: String,
+    pub old_mode: String,
+    pub new_mode: String,
+    pub old_risk_level: String,
+    pub new_risk_level: String,
+    pub old_path_type: String,
+    pub new_path_type: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub old_mtime_epoch_s: Option<u64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub new_mtime_epoch_s: Option<u64>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+pub struct InventoryRiskIncrease {
+    pub client: String,
+    pub surface: String,
+    pub path: String,
+    pub old_risk_level: String,
+    pub new_risk_level: String,
 }
 
 impl InventoryStats {
@@ -245,6 +296,131 @@ impl InventoryStats {
         self.unreadable_files += inventory.unreadable_files;
         self.unrecognized_files += inventory.unrecognized_files;
     }
+}
+
+pub fn build_inventory_snapshot(
+    inventory_roots: &[InventoryRoot],
+    inventory_stats: &InventoryStats,
+    findings: &[Finding],
+) -> InventorySnapshot {
+    let generated_at = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .ok()
+        .map(|duration| duration.as_secs())
+        .unwrap_or(0);
+    InventorySnapshot {
+        schema_version: INVENTORY_SNAPSHOT_SCHEMA_VERSION,
+        generated_at,
+        inventory_roots: inventory_roots.to_vec(),
+        inventory_stats: inventory_stats.clone(),
+        findings: findings.to_vec(),
+    }
+}
+
+pub fn write_inventory_snapshot(path: &Path, snapshot: &InventorySnapshot) -> Result<(), String> {
+    if let Some(parent) = path.parent() {
+        fs::create_dir_all(parent)
+            .map_err(|error| format!("failed to create {}: {error}", parent.display()))?;
+    }
+    let bytes = serde_json::to_vec_pretty(snapshot)
+        .map_err(|error| format!("failed to encode baseline snapshot: {error}"))?;
+    fs::write(path, bytes)
+        .map_err(|error| format!("failed to write baseline {}: {error}", path.display()))
+}
+
+pub fn load_inventory_snapshot(path: &Path) -> Result<InventorySnapshot, String> {
+    let bytes = fs::read(path)
+        .map_err(|error| format!("failed to read baseline {}: {error}", path.display()))?;
+    let snapshot: InventorySnapshot = serde_json::from_slice(&bytes)
+        .map_err(|error| format!("failed to parse baseline {}: {error}", path.display()))?;
+    if snapshot.schema_version != INVENTORY_SNAPSHOT_SCHEMA_VERSION {
+        return Err(format!(
+            "unsupported baseline schema_version {} in {} (expected {})",
+            snapshot.schema_version,
+            path.display(),
+            INVENTORY_SNAPSHOT_SCHEMA_VERSION
+        ));
+    }
+    Ok(snapshot)
+}
+
+pub fn diff_inventory_snapshots(
+    baseline: &InventorySnapshot,
+    current: &InventorySnapshot,
+) -> InventoryDiff {
+    let baseline_roots = baseline
+        .inventory_roots
+        .iter()
+        .map(|root| (inventory_root_identity(root), root))
+        .collect::<BTreeMap<_, _>>();
+    let current_roots = current
+        .inventory_roots
+        .iter()
+        .map(|root| (inventory_root_identity(root), root))
+        .collect::<BTreeMap<_, _>>();
+
+    let baseline_finding_keys = baseline
+        .findings
+        .iter()
+        .map(finding_identity)
+        .collect::<BTreeSet<_>>();
+    let mut diff = InventoryDiff::default();
+
+    for (key, current_root) in &current_roots {
+        let Some(baseline_root) = baseline_roots.get(key) else {
+            diff.new_roots.push((*current_root).clone());
+            continue;
+        };
+
+        if baseline_root.mode != "lintable" && current_root.mode == "lintable" {
+            diff.new_lintable_roots.push((*current_root).clone());
+        }
+
+        if risk_rank(&current_root.risk_level) > risk_rank(&baseline_root.risk_level) {
+            diff.risk_increased_roots.push(InventoryRiskIncrease {
+                client: current_root.client.clone(),
+                surface: current_root.surface.clone(),
+                path: current_root.path.clone(),
+                old_risk_level: baseline_root.risk_level.clone(),
+                new_risk_level: current_root.risk_level.clone(),
+            });
+        }
+
+        if root_changed(baseline_root, current_root)
+            || findings_for_root(baseline, baseline_root)
+                != findings_for_root(current, current_root)
+        {
+            diff.changed_roots.push(InventoryChangedRoot {
+                client: current_root.client.clone(),
+                surface: current_root.surface.clone(),
+                path: current_root.path.clone(),
+                old_mode: baseline_root.mode.clone(),
+                new_mode: current_root.mode.clone(),
+                old_risk_level: baseline_root.risk_level.clone(),
+                new_risk_level: current_root.risk_level.clone(),
+                old_path_type: baseline_root.provenance.path_type.clone(),
+                new_path_type: current_root.provenance.path_type.clone(),
+                old_mtime_epoch_s: baseline_root.provenance.mtime_epoch_s,
+                new_mtime_epoch_s: current_root.provenance.mtime_epoch_s,
+            });
+        }
+    }
+
+    for (key, baseline_root) in &baseline_roots {
+        if !current_roots.contains_key(key) {
+            diff.removed_roots.push((*baseline_root).clone());
+        }
+    }
+
+    diff.new_findings = current
+        .findings
+        .iter()
+        .filter(|finding| !baseline_finding_keys.contains(&finding_identity(finding)))
+        .cloned()
+        .collect();
+
+    sort_inventory_diff(&mut diff);
+    diff
 }
 
 impl DiscoveryStats {
@@ -1052,6 +1228,71 @@ fn risk_level_for_root(root: &KnownRoot) -> RiskLevel {
     }
 }
 
+fn inventory_root_identity(root: &InventoryRoot) -> String {
+    format!("{}|{}|{}", root.client, root.surface, root.path)
+}
+
+fn root_changed(baseline: &InventoryRoot, current: &InventoryRoot) -> bool {
+    baseline.mode != current.mode
+        || baseline.risk_level != current.risk_level
+        || baseline.provenance.path_type != current.provenance.path_type
+        || baseline.provenance.mtime_epoch_s != current.provenance.mtime_epoch_s
+}
+
+fn root_contains_finding(root: &InventoryRoot, finding: &Finding) -> bool {
+    let root_path = Path::new(&root.path);
+    let finding_path = Path::new(&finding.location.normalized_path);
+    match root.provenance.path_type.as_str() {
+        "directory" => finding_path == root_path || finding_path.starts_with(root_path),
+        _ => normalize_path_string(finding_path) == root.path,
+    }
+}
+
+fn findings_for_root(snapshot: &InventorySnapshot, root: &InventoryRoot) -> BTreeSet<String> {
+    snapshot
+        .findings
+        .iter()
+        .filter(|finding| root_contains_finding(root, finding))
+        .map(finding_identity)
+        .collect()
+}
+
+fn finding_identity(finding: &Finding) -> String {
+    format!(
+        "{}|{}|{}|{}|{}",
+        finding.rule_code,
+        finding.location.normalized_path,
+        finding.location.span.start_byte,
+        finding.location.span.end_byte,
+        finding.stable_key.subject_id.as_deref().unwrap_or("")
+    )
+}
+
+fn risk_rank(value: &str) -> u8 {
+    match value {
+        "high" => 3,
+        "medium" => 2,
+        _ => 1,
+    }
+}
+
+fn sort_inventory_diff(diff: &mut InventoryDiff) {
+    diff.new_roots
+        .sort_by(|left, right| inventory_root_identity(left).cmp(&inventory_root_identity(right)));
+    diff.removed_roots
+        .sort_by(|left, right| inventory_root_identity(left).cmp(&inventory_root_identity(right)));
+    diff.new_lintable_roots
+        .sort_by(|left, right| inventory_root_identity(left).cmp(&inventory_root_identity(right)));
+    diff.changed_roots.sort_by(|left, right| {
+        (&left.client, &left.surface, &left.path).cmp(&(&right.client, &right.surface, &right.path))
+    });
+    diff.risk_increased_roots.sort_by(|left, right| {
+        (&left.client, &left.surface, &left.path).cmp(&(&right.client, &right.surface, &right.path))
+    });
+    diff.new_findings
+        .sort_by(|left, right| finding_identity(left).cmp(&finding_identity(right)));
+}
+
 fn rewrite_summary_paths(summary: &mut ScanSummary, absolute_base: &Path) {
     for finding in &mut summary.findings {
         rewrite_finding_paths(finding, absolute_base);
@@ -1181,16 +1422,12 @@ artifact_kind_hint = "skill"
         .unwrap();
 
         assert_eq!(roots.len(), 2);
-        assert!(
-            roots
-                .iter()
-                .any(|root| root.client == "codex" && root.scope == KnownRootScope::Project)
-        );
-        assert!(
-            roots
-                .iter()
-                .any(|root| root.client == "opencode" && root.scope == KnownRootScope::Global)
-        );
+        assert!(roots
+            .iter()
+            .any(|root| root.client == "codex" && root.scope == KnownRootScope::Project));
+        assert!(roots
+            .iter()
+            .any(|root| root.client == "opencode" && root.scope == KnownRootScope::Global));
     }
 
     #[test]

@@ -5,8 +5,8 @@ use std::process::ExitCode;
 
 use lintai_api::{Applicability, Finding};
 use lintai_engine::{
-    Engine, EngineConfig, FileSuppressions, OutputFormat, ResolvedFileConfig, WorkspaceConfig,
-    explain_file_config, load_workspace_config,
+    explain_file_config, load_workspace_config, Engine, EngineConfig, FileSuppressions,
+    OutputFormat, ResolvedFileConfig, WorkspaceConfig,
 };
 use lintai_fix::{apply_planned_fixes, plan_fixes};
 
@@ -16,9 +16,11 @@ use crate::args::{
 };
 use crate::builtin_providers::{product_provider_set, run_provider_runner};
 use crate::known_scan::{
-    absolute_base_for_scan, discover_inventory_roots, discover_known_roots,
-    inventory_lintable_root, merge_summary_with_absolute_paths, workspace_for_known_root,
-    ArtifactMode, DiscoveredRoot, DiscoveryStats, InventoryRoot, InventoryStats, KnownRootScope,
+    absolute_base_for_scan, build_inventory_snapshot, diff_inventory_snapshots,
+    discover_inventory_roots, discover_known_roots, inventory_lintable_root,
+    load_inventory_snapshot, merge_summary_with_absolute_paths, workspace_for_known_root,
+    write_inventory_snapshot, ArtifactMode, DiscoveredRoot, DiscoveryStats, InventoryRoot,
+    InventoryStats, KnownRootScope,
 };
 use crate::{output, path::validate_path_within_project};
 
@@ -94,8 +96,11 @@ fn run_scan(current_dir: &Path, args: impl Iterator<Item = String>) -> Result<Ex
 
 fn run_inventory_os(args: impl Iterator<Item = String>) -> Result<ExitCode, String> {
     let parsed = parse_inventory_os_args(args)?;
-    let discovered_roots =
-        discover_inventory_roots(parsed.scope, &parsed.client_filters, parsed.path_root.as_deref())?;
+    let discovered_roots = discover_inventory_roots(
+        parsed.scope,
+        &parsed.client_filters,
+        parsed.path_root.as_deref(),
+    )?;
 
     let output_format = parsed.format_override.unwrap_or(OutputFormat::Text);
     let default_workspace = WorkspaceConfig {
@@ -130,12 +135,25 @@ fn run_inventory_os(args: impl Iterator<Item = String>) -> Result<ExitCode, Stri
         merge_summary_with_absolute_paths(&mut aggregate, summary, &absolute_base);
     }
 
+    let snapshot = build_inventory_snapshot(&report_roots, &inventory_stats, &aggregate.findings);
+    let inventory_diff = if let Some(baseline_path) = parsed.diff_against.as_deref() {
+        let baseline = load_inventory_snapshot(baseline_path)?;
+        Some(diff_inventory_snapshots(&baseline, &snapshot))
+    } else {
+        None
+    };
+
+    if let Some(baseline_path) = parsed.write_baseline.as_deref() {
+        write_inventory_snapshot(baseline_path, &snapshot)?;
+    }
+
     let report = output::build_envelope_with_inventory(
         &aggregate,
         None,
         None,
         report_roots,
         Some(inventory_stats),
+        inventory_diff,
     );
 
     match output_format {
@@ -513,7 +531,8 @@ fn print_usage() {
     println!("lintai scan-known [--scope=project|global|both] [--client NAME]");
     println!("                    [--format=text|json|sarif]");
     println!("lintai inventory-os [--scope=user|system|both] [--client NAME]");
-    println!("                    [--path-root DIR] [--format=text|json|sarif]");
+    println!("                    [--path-root DIR] [--write-baseline FILE]");
+    println!("                    [--diff-against FILE] [--format=text|json|sarif]");
     println!("lintai fix [path] [--apply] [--rule CODE]");
     println!("lintai explain-config <file>");
     println!("lintai config-schema");
