@@ -1,6 +1,6 @@
 use serde_json::Value;
 
-use crate::ParseError;
+use crate::{ParseDiagnostic, ParseError};
 
 const MAX_FRONTMATTER_BYTES: usize = 64 * 1024;
 
@@ -47,4 +47,11 @@ pub fn parse_yaml(raw: &str) -> Result<Value, ParseError> {
     serde_yaml_bw::from_str::<Value>(raw).map_err(|error| ParseError {
         message: format!("invalid YAML frontmatter: {error}"),
     })
+}
+
+pub fn recovery_diagnostic(error: &ParseError) -> ParseDiagnostic {
+    ParseDiagnostic::new(format!(
+        "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied ({})",
+        error.message
+    ))
 }

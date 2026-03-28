@@ -72,6 +72,30 @@ fn supports_bom_prefixed_frontmatter() {
 }
 
 #[test]
+fn invalid_yaml_frontmatter_stays_parseable_without_semantics() {
+    let parsed = parse_document(
+        &Artifact::new("SKILL.md", ArtifactKind::Skill, SourceFormat::Markdown),
+        "---\nname: demo: bad\n---\n# Heading\n",
+    )
+    .unwrap();
+
+    assert_eq!(
+        parsed.document.raw_frontmatter.as_deref(),
+        Some("name: demo: bad")
+    );
+    assert!(matches!(
+        parsed.semantics,
+        Some(DocumentSemantics::Markdown(ref markdown)) if markdown.frontmatter.is_none()
+    ));
+    assert_eq!(parsed.diagnostics.len(), 1);
+    assert!(
+        parsed.diagnostics[0]
+            .message
+            .contains("frontmatter was ignored because YAML was invalid")
+    );
+}
+
+#[test]
 fn parses_json_semantics_for_mcp() {
     let parsed = parse_document(
         &Artifact::new("mcp.json", ArtifactKind::McpConfig, SourceFormat::Json),

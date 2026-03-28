@@ -1,5 +1,4 @@
 use std::io::{Read, Write};
-use std::path::PathBuf;
 use std::process::{Command, ExitCode, Stdio};
 use std::sync::Arc;
 use std::thread;
@@ -11,6 +10,8 @@ use lintai_api::{
     RuleTier, ScanContext, ScanScope, Severity, Span, WorkspaceScanContext,
 };
 use lintai_engine::ProviderBackend;
+
+use crate::internal_bin::resolve_lintai_driver_path;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
 #[serde(rename_all = "snake_case")]
@@ -336,53 +337,6 @@ fn read_optional_stderr(stderr: &mut Option<std::process::ChildStderr>) -> Strin
     let mut output = String::new();
     let _ = stderr.read_to_string(&mut output);
     output.trim().to_owned()
-}
-
-fn resolve_lintai_driver_path() -> Result<PathBuf, String> {
-    if let Some(path) = std::env::var_os("LINTAI_SELF_EXE") {
-        let path = PathBuf::from(path);
-        if path.exists() {
-            return Ok(path);
-        }
-    }
-    if let Some(path) = std::env::var_os("CARGO_BIN_EXE_lintai") {
-        let path = PathBuf::from(path);
-        if path.exists() {
-            return Ok(path);
-        }
-    }
-
-    let current = std::env::current_exe()
-        .map_err(|error| format!("failed to resolve current executable: {error}"))?;
-    if current
-        .file_stem()
-        .and_then(|value| value.to_str())
-        .is_some_and(|name| name == "lintai")
-    {
-        return Ok(current);
-    }
-
-    let binary_name = format!("lintai{}", std::env::consts::EXE_SUFFIX);
-    let mut candidates = Vec::new();
-    if let Some(parent) = current.parent() {
-        candidates.push(parent.join(&binary_name));
-        if parent.file_name().is_some_and(|name| name == "deps") {
-            if let Some(grandparent) = parent.parent() {
-                candidates.push(grandparent.join(&binary_name));
-            }
-        }
-    }
-
-    for candidate in candidates {
-        if candidate.exists() {
-            return Ok(candidate);
-        }
-    }
-
-    Err(format!(
-        "failed to locate lintai executable near {}",
-        current.display()
-    ))
 }
 
 #[cfg(debug_assertions)]

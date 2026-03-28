@@ -42,6 +42,12 @@
 | 5 | **[ROADMAP_V0_1.md](ROADMAP_V0_1.md)** | Операционный roadmap и sequence итераций |
 | 6 | **[FIXTURE_CONTRACT.md](FIXTURE_CONTRACT.md)** | Контракт для corpus cases и sample repos |
 | 7 | **[SECURITY_RULES.md](SECURITY_RULES.md)** | Generated catalog of current shipped security rules |
+| 8 | **[POSITIONING_AND_SCOPE.md](POSITIONING_AND_SCOPE.md)** | Кому нужен `lintai`, где заканчивается `v0.1`, и как честно его оценивать |
+| 9 | **[PUBLIC_BETA_RELEASE.md](PUBLIC_BETA_RELEASE.md)** | Canonical public beta contract for `v0.1.0-beta.1` |
+| 10 | **[PUBLIC_BETA_SHIPPING_CHECKLIST.md](PUBLIC_BETA_SHIPPING_CHECKLIST.md)** | Canonical shipping workflow and asset checklist for the first public beta |
+| 11 | **[EXTERNAL_VALIDATION_PLAN.md](EXTERNAL_VALIDATION_PLAN.md)** | Canonical plan и runbook для external-repo validation waves |
+| 12 | **[EXTERNAL_VALIDATION_REPORT.md](EXTERNAL_VALIDATION_REPORT.md)** | Checked-in wave 2 release evidence for the public beta posture |
+| 13 | **[BETA_TO_1_0_ROADMAP.md](BETA_TO_1_0_ROADMAP.md)** | Большой post-`v0.1` roadmap: precision hardening, beta, structural growth, `1.0` gate |
 
 ### Research second
 
@@ -57,6 +63,12 @@ Research files below are reference material. They are useful for background and 
 - **[CREDITS.md](CREDITS.md)** — Таблица: компонент → crate/репо → лицензия → что переносим / как используем
 - **[ARCHITECTURE_DECISIONS.md](ARCHITECTURE_DECISIONS.md)** — главный canonical doc по архитектуре
 - **[FEATURE_CAPABILITIES_MANIFEST.md](FEATURE_CAPABILITIES_MANIFEST.md)** — Декларирование capabilities для снижения false positives
+- **[POSITIONING_AND_SCOPE.md](POSITIONING_AND_SCOPE.md)** — Canonical positioning: target users, non-goals, release posture, precision-vs-noise stance
+- **[PUBLIC_BETA_RELEASE.md](PUBLIC_BETA_RELEASE.md)** — Canonical public beta contract, channel, and trust posture for `v0.1.0-beta.1`
+- **[PUBLIC_BETA_SHIPPING_CHECKLIST.md](PUBLIC_BETA_SHIPPING_CHECKLIST.md)** — Exact tag, workflow, and asset checklist for shipping the first public beta
+- **[EXTERNAL_VALIDATION_PLAN.md](EXTERNAL_VALIDATION_PLAN.md)** — Cohort design, shortlist policy, ledger contract, and runbook for external validation
+- **[EXTERNAL_VALIDATION_REPORT.md](EXTERNAL_VALIDATION_REPORT.md)** — Checked-in wave 2 external validation summary and public beta release signal
+- **[BETA_TO_1_0_ROADMAP.md](BETA_TO_1_0_ROADMAP.md)** — Canonical roadmap from clean `v0.1` core to public beta and toward `1.0`
 - **[RULE_QUALITY_POLICY.md](RULE_QUALITY_POLICY.md)** — Политика надёжности правил: детерминизм, контекст, доказательства
 - **[SECURITY_RULES.md](SECURITY_RULES.md)** — Сгенерированный canonical catalog текущих security rules и их remediation support
 - **[GLOSSARY.md](GLOSSARY.md)** — Единые термины (Claims/Capabilities, stable_key/fingerprint, артефакты)

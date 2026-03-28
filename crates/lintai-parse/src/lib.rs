@@ -6,4 +6,4 @@ pub mod parse;
 mod tests;
 
 pub use error::ParseError;
-pub use model::{JsonParse, MarkdownParse, ShellParse};
+pub use model::{JsonParse, MarkdownParse, ParseDiagnostic, ShellParse};

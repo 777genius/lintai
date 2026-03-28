@@ -1,0 +1,248 @@
+version = 1
+
+[cohort]
+total = 24
+mcp = 10
+cursor_plugin = 6
+skills = 8
+category_semantics = "category is the primary validation focus for the repo, not an exclusive taxonomy"
+
+[[repos]]
+repo = "containers/kubernetes-mcp-server"
+url = "https://github.com/containers/kubernetes-mcp-server"
+pinned_ref = "df06f9de9cb98e0aef1008926ab1f5b12e427937"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["CLAUDE.md", "mcp.json"]
+rationale = "Representative MCP server repo with both config and instruction surfaces."
+
+[[repos]]
+repo = "microsoft/mcp-for-beginners"
+url = "https://github.com/microsoft/mcp-for-beginners"
+pinned_ref = "123d41278366526870308f412ccdce1710302952"
+category = "mcp"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["mcp.json"]
+rationale = "Large but directly relevant MCP teaching repo with checked-in config examples."
+
+[[repos]]
+repo = "modelcontextprotocol/registry"
+url = "https://github.com/modelcontextprotocol/registry"
+pinned_ref = "c5c4b9e8890dd5754bee889b2f1417f4fe3b5ce5"
+category = "mcp"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["CLAUDE.md"]
+rationale = "Official registry repo for MCP ecosystem validation with agent-instruction surface."
+
+[[repos]]
+repo = "mrexodia/ida-pro-mcp"
+url = "https://github.com/mrexodia/ida-pro-mcp"
+pinned_ref = "5bdafa2f20c9b4807a864b4e7999c715da52b05d"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md"]
+rationale = "MCP server repo with both skill and Claude instruction surfaces."
+
+[[repos]]
+repo = "supermemoryai/apple-mcp"
+url = "https://github.com/supermemoryai/apple-mcp"
+pinned_ref = "08e2c5315683c00fc9567dfefd70a477caccc60d"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["CLAUDE.md"]
+rationale = "Active MCP repo with checked-in Claude instruction surface."
+
+[[repos]]
+repo = "blazickjp/arxiv-mcp-server"
+url = "https://github.com/blazickjp/arxiv-mcp-server"
+pinned_ref = "0065f5abb48f3eb4e011a130dd63fc52b381a1d2"
+category = "mcp"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["CLAUDE.md"]
+rationale = "Focused MCP server repo with lightweight instruction surface and no config noise."
+
+[[repos]]
+repo = "airmcp-com/mcp-standards"
+url = "https://github.com/airmcp-com/mcp-standards"
+pinned_ref = "5904a55c01f45de48ffacd59d768a85abdd7464a"
+category = "mcp"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["CLAUDE.md"]
+rationale = "MCP-focused standards repo with checked-in Claude instruction file."
+
+[[repos]]
+repo = "centminmod/my-claude-code-setup"
+url = "https://github.com/centminmod/my-claude-code-setup"
+pinned_ref = "204c03f7984180be35c2e52fa9703475cdb2f118"
+category = "mcp"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["CLAUDE.md"]
+rationale = "Claude setup repo that explicitly documents MCP server usage and configuration."
+
+[[repos]]
+repo = "hex-inc/hex-cursor-plugin"
+url = "https://github.com/hex-inc/hex-cursor-plugin"
+pinned_ref = "81413514f3cb7c40600c5a8cbdd89a3cfea94cd1"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["mcp.json", ".cursor-plugin/plugin.json"]
+rationale = "Cursor plugin whose main external-validation target is the embedded MCP configuration."
+
+[[repos]]
+repo = "olostep/olostep-cursor-plugin"
+url = "https://github.com/olostep/olostep-cursor-plugin"
+pinned_ref = "f970811435fe500e6d1c6cc2cd37e1aa4c05c9cc"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "mcp.json", ".cursor-plugin/plugin.json"]
+rationale = "Cursor plugin repo with explicit MCP setup workflow and checked-in mcp.json example."
+
+[[repos]]
+repo = "cursor/plugins"
+url = "https://github.com/cursor/plugins"
+pinned_ref = "08c2bbe2ae8a022a21dc6c32faf611f14a6e8343"
+category = "cursor_plugin"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", ".mdc", ".cursor-plugin/plugin.json"]
+rationale = "Official Cursor plugin repo with multiple plugin-related surfaces."
+
+[[repos]]
+repo = "datadog-labs/cursor-plugin"
+url = "https://github.com/datadog-labs/cursor-plugin"
+pinned_ref = "fdce3e1db7c99b80939f2ad95c67f525bf0eee50"
+category = "cursor_plugin"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "mcp.json", ".cursor-plugin/plugin.json"]
+rationale = "Plugin repo with setup skill and embedded MCP config; useful for preview-noise validation."
+
+[[repos]]
+repo = "linear/cursor-plugin"
+url = "https://github.com/linear/cursor-plugin"
+pinned_ref = "c2c4cb2ab23206c9219b0dd31c9571e4c922faeb"
+category = "cursor_plugin"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["mcp.json", ".cursor-plugin/plugin.json"]
+rationale = "Small plugin repo with minimal checked-in surfaces for clean-control behavior."
+
+[[repos]]
+repo = "makenotion/cursor-notion-plugin"
+url = "https://github.com/makenotion/cursor-notion-plugin"
+pinned_ref = "cf1324609edba6d617164f1dec138aeb43f26735"
+category = "cursor_plugin"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "mcp.json", ".cursor-plugin/plugin.json"]
+rationale = "Plugin repo combining instruction and MCP config surfaces."
+
+[[repos]]
+repo = "van-reflect/cursor-plugin"
+url = "https://github.com/van-reflect/cursor-plugin"
+pinned_ref = "15a212718e566b3a964c077cc8426972cced1b85"
+category = "cursor_plugin"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md", ".mdc", ".cursor-plugin/plugin.json"]
+rationale = "Compact plugin repo with rules surface and manifest but low overall complexity."
+
+[[repos]]
+repo = "vercel-labs/cursor-plugin"
+url = "https://github.com/vercel-labs/cursor-plugin"
+pinned_ref = "95857183947fcc2a478f817c1e5d24ec054b21a9"
+category = "cursor_plugin"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md", ".cursor-plugin/plugin.json"]
+rationale = "Minimal plugin repo for clean-control plugin validation."
+
+[[repos]]
+repo = "agent-sh/agnix"
+url = "https://github.com/agent-sh/agnix"
+pinned_ref = "342d74123ae898a7c6d1a5ca99f5a81907951306"
+category = "skills"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md", ".cursorrules"]
+rationale = "Instruction-heavy repo with multiple target surfaces including Cursor rules."
+
+[[repos]]
+repo = "zebbern/claude-code-guide"
+url = "https://github.com/zebbern/claude-code-guide"
+pinned_ref = "4b37743a717209e114f08d53150f3b8dc76eb116"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md"]
+rationale = "Widely shared instruction/template repo with clean target surfaces."
+
+[[repos]]
+repo = "zechenzhangAGI/AI-research-SKILLs"
+url = "https://github.com/zechenzhangAGI/AI-research-SKILLs"
+pinned_ref = "a7289540d33f78df20dc9b27808fdf096cf1b3a4"
+category = "skills"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md"]
+rationale = "Skill-centric repo with multiple instruction artifacts."
+
+[[repos]]
+repo = "buildingopen/claude-setup"
+url = "https://github.com/buildingopen/claude-setup"
+pinned_ref = "69cc9c8fd0f81782cb90dc51c95dbcbb4d346d5c"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md"]
+rationale = "Small setup repo with straightforward Claude and skill instructions."
+
+[[repos]]
+repo = "lighthouse-strategy/claude-code-starter"
+url = "https://github.com/lighthouse-strategy/claude-code-starter"
+pinned_ref = "b6cacd4055c26152165e8a8bf0b7ff9209f0c396"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md"]
+rationale = "Starter repo for clean-control instruction validation."
+
+[[repos]]
+repo = "reizam/claude-md-templates"
+url = "https://github.com/reizam/claude-md-templates"
+pinned_ref = "694240a17d550babf4c5392d1ea4b32ce5ca8a62"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md"]
+rationale = "Template-focused repo with simple checked-in instruction files."
+
+[[repos]]
+repo = "Narwhal-Lab/MagicSkills"
+url = "https://github.com/Narwhal-Lab/MagicSkills"
+pinned_ref = "1ba6ae32b4df4349195ec38c283535b68619a085"
+category = "skills"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md"]
+rationale = "Skill-heavy repo with richer instruction content than a basic template."
+
+[[repos]]
+repo = "Emmraan/agent-skills"
+url = "https://github.com/Emmraan/agent-skills"
+pinned_ref = "a1582043b95667eea450d37f028e7451ffda02f2"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md"]
+rationale = "Simple skill repo included as a low-complexity control case."

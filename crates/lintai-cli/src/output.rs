@@ -388,4 +388,32 @@ mod tests {
         assert!(text.contains("provider=demo-provider"));
         assert!(text.contains("phase=file"));
     }
+
+    #[test]
+    fn text_output_renders_diagnostics_separately_from_runtime_errors() {
+        let diagnostic = lintai_engine::ScanDiagnostic {
+            normalized_path: "SKILL.md".to_owned(),
+            severity: lintai_engine::DiagnosticSeverity::Warn,
+            code: Some("parse_recovery".to_owned()),
+            message: "frontmatter was ignored because YAML was invalid".to_owned(),
+        };
+        let report = super::ReportEnvelope {
+            schema_version: 1,
+            tool: ToolMetadata { name: "lintai" },
+            config_source: None,
+            project_root: None,
+            stats: ReportStats {
+                scanned_files: 1,
+                skipped_files: 0,
+            },
+            findings: &[],
+            diagnostics: std::slice::from_ref(&diagnostic),
+            runtime_errors: &[],
+        };
+
+        let text = super::format_text(&report);
+        assert!(text.contains("1 diagnostic(s), 0 runtime error(s)"));
+        assert!(text.contains("diagnostic [warn] SKILL.md"));
+        assert!(!text.contains("error [parse]"));
+    }
 }

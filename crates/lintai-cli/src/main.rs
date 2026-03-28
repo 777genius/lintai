@@ -3,6 +3,7 @@ mod args;
 mod builtin_providers;
 #[cfg(test)]
 mod compat_tests;
+mod internal_bin;
 mod output;
 mod path;
 #[cfg(test)]

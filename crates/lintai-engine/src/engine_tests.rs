@@ -880,6 +880,32 @@ fn drops_invalid_fix_and_keeps_finding() {
 }
 
 #[test]
+fn recovers_invalid_yaml_frontmatter_as_diagnostic() {
+    let temp_dir = unique_temp_dir("lintai-parse-recovery");
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    std::fs::write(
+        temp_dir.join("SKILL.md"),
+        b"---\nname: demo: bad\n---\n# title\n",
+    )
+    .unwrap();
+
+    let summary = EngineBuilder::default()
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert_eq!(summary.scanned_files, 1);
+    assert!(summary.runtime_errors.is_empty());
+    assert!(summary.diagnostics.iter().any(|diagnostic| {
+        diagnostic.normalized_path == "SKILL.md"
+            && diagnostic.code.as_deref() == Some("parse_recovery")
+            && diagnostic
+                .message
+                .contains("frontmatter was ignored because YAML was invalid")
+    }));
+}
+
+#[test]
 fn deduplicates_findings_by_stable_key_keeping_stronger_one() {
     let temp_dir = unique_temp_dir("lintai-dedup-findings");
     std::fs::create_dir_all(&temp_dir).unwrap();

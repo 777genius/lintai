@@ -11,6 +11,7 @@ pub fn parse(input: &str) -> Result<MarkdownParse, ParseError> {
     let mut html_comment_start: Option<usize> = None;
     let mut frontmatter_format = None;
     let mut frontmatter_value = None;
+    let mut diagnostics = Vec::new();
 
     if let Some(raw_frontmatter) = extraction.raw.as_deref() {
         let frontmatter_end = extraction.body_start.min(input.len());
@@ -19,8 +20,15 @@ pub fn parse(input: &str) -> Result<MarkdownParse, ParseError> {
             RegionKind::Frontmatter,
         ));
         normal_start = frontmatter_end;
-        frontmatter_format = Some(FrontmatterFormat::Yaml);
-        frontmatter_value = Some(frontmatter::parse_yaml(raw_frontmatter)?);
+        match frontmatter::parse_yaml(raw_frontmatter) {
+            Ok(value) => {
+                frontmatter_format = Some(FrontmatterFormat::Yaml);
+                frontmatter_value = Some(value);
+            }
+            Err(error) => {
+                diagnostics.push(frontmatter::recovery_diagnostic(&error));
+            }
+        }
     }
 
     for (line_start, line_end, line) in line_spans(input, normal_start) {
@@ -104,6 +112,7 @@ pub fn parse(input: &str) -> Result<MarkdownParse, ParseError> {
         raw_frontmatter,
         frontmatter_format,
         frontmatter_value,
+        diagnostics,
     ))
 }
 

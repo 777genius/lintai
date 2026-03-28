@@ -2,6 +2,8 @@
 
 This file is the repo-owned checklist for the first `v0.1` dry release and the eventual release candidate.
 
+For the post-certification public beta shipping workflow, use [PUBLIC_BETA_SHIPPING_CHECKLIST.md](PUBLIC_BETA_SHIPPING_CHECKLIST.md).
+
 ## Candidate
 
 - Commit SHA: `af94371ec73b56ed2d0e508748da573601d8d914`

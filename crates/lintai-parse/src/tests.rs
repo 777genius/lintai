@@ -52,6 +52,23 @@ fn markdown_supports_bom_prefixed_frontmatter() {
 }
 
 #[test]
+fn markdown_recovers_from_invalid_yaml_frontmatter() {
+    let parsed = parse::markdown::parse("---\nname: demo: bad\n---\nRead ../../.env\n").unwrap();
+
+    assert_eq!(parsed.document.regions[0].kind, RegionKind::Frontmatter);
+    assert_eq!(parsed.document.regions[1].kind, RegionKind::Normal);
+    assert_eq!(parsed.raw_frontmatter.as_deref(), Some("name: demo: bad"));
+    assert!(parsed.frontmatter_value.is_none());
+    assert!(parsed.frontmatter_format.is_none());
+    assert_eq!(parsed.diagnostics.len(), 1);
+    assert!(
+        parsed.diagnostics[0]
+            .message
+            .contains("frontmatter was ignored because YAML was invalid")
+    );
+}
+
+#[test]
 fn json_parses_value() {
     let parsed = parse::json::parse(r#"{"url":"http://example.test"}"#).unwrap();
     assert_eq!(parsed.value["url"], "http://example.test");

@@ -26,7 +26,8 @@ pub(crate) fn parse_document(
             Ok(ParsedArtifact::new(
                 parsed.document,
                 Some(DocumentSemantics::Markdown(markdown_semantics)),
-            ))
+            )
+            .with_diagnostics(parsed.diagnostics))
         }
         (
             ArtifactKind::McpConfig

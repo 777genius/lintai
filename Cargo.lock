@@ -345,6 +345,7 @@ dependencies = [
 name = "lintai-cli"
 version = "0.0.0"
 dependencies = [
+ "ignore",
  "lintai-ai-security",
  "lintai-api",
  "lintai-engine",
@@ -352,6 +353,7 @@ dependencies = [
  "lintai-testing",
  "serde",
  "serde_json",
+ "toml",
 ]
 
 [[package]]

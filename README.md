@@ -4,6 +4,22 @@ Offline-first security scanner for AI agent supply chain artifacts.
 
 `lintai` scans repository-local agent instructions, MCP configs, Cursor rules, and Cursor Plugin surfaces with deterministic rules and CI-friendly output.
 
+Public beta release: `v0.1.0-beta.1`
+
+## Product Position
+
+`lintai` is intentionally narrow in `v0.1`: offline-first, deterministic, and precision-first.
+
+- Best fit: teams scanning repository-local skills, MCP configs, Cursor rules, and Cursor Plugins in CI.
+- Primary value: high-signal security findings with stable rule ids, structured evidence, SARIF output, and explicit remediation support.
+- Not the goal in `v0.1`: cloud-managed threat intel, broad registry scanning, “scan every AI platform”, or aggressive heuristic coverage at the cost of noise.
+- Honest posture: strong public beta / early-adopter tool, not yet a broad `1.0` ecosystem platform.
+- Public beta channel: GitHub Releases with prebuilt binaries only for the CLI in this phase.
+
+Canonical positioning and non-goals live in [`docs/POSITIONING_AND_SCOPE.md`](docs/POSITIONING_AND_SCOPE.md).
+Public beta release contract lives in [`docs/PUBLIC_BETA_RELEASE.md`](docs/PUBLIC_BETA_RELEASE.md).
+The current beta evidence base is in [`docs/EXTERNAL_VALIDATION_REPORT.md`](docs/EXTERNAL_VALIDATION_REPORT.md).
+
 ## What It Scans
 
 The current `v0.1` product contract covers:
@@ -29,6 +45,33 @@ If you just opened the repo, these are the only root `.md` files you need to car
 - [`ARCH_GAPS.md`](ARCH_GAPS.md): release-gap tracker; currently clear for `v0.1`
 
 Everything else product/architecture-related is indexed from [`docs/INDEX.md`](docs/INDEX.md).
+
+## Public Beta Install
+
+The public beta CLI is distributed through GitHub Releases only in this phase.
+
+1. Download the prebuilt binary for `v0.1.0-beta.1` from the GitHub Release.
+2. Verify the release notes in [`docs/releases/v0.1.0-beta.1.md`](docs/releases/v0.1.0-beta.1.md).
+3. Run:
+
+```bash
+lintai help
+lintai config-schema
+lintai scan .
+```
+
+`lintai-api` remains the only stable publishable crate. This beta does not yet promise Homebrew, npm, or `cargo install` distribution for the CLI.
+
+## Beta Evaluation Guide
+
+The right way to evaluate the public beta is:
+
+1. Run `lintai` on repositories that already contain supported surfaces.
+2. Treat `Stable` findings as the release-quality baseline and `Preview` findings as non-baseline signals.
+3. Treat `diagnostics` separately from findings; recoverable parsing does not imply a security hit.
+4. Expect conservative behavior rather than maximal heuristic coverage.
+
+Wave 2 external validation across `24` pinned public repositories is summarized in [`docs/EXTERNAL_VALIDATION_REPORT.md`](docs/EXTERNAL_VALIDATION_REPORT.md).
 
 ## Quick Start
 
@@ -151,6 +194,8 @@ format = "markdown"
 ## Compatibility Notes
 
 - `lintai-api` is the only stable publishable contract crate in `v0.1`
+- the public beta CLI release is `v0.1.0-beta.1`
+- the CLI distribution channel for this phase is GitHub Releases with prebuilt binaries only
 - findings carry structured `evidence`
 - JSON machine output is versioned through `schema_version = 1`
 - SARIF uses `stableKey` as the fingerprint source of truth
@@ -160,6 +205,6 @@ format = "markdown"
 - root README commands are validated through the docs-command suite
 - `lintai-testing` remains internal during `v0.1`
 
-## Product Position
+## Current Non-Goals
 
-`lintai` is intentionally narrow in `v0.1`: offline-first, deterministic, and precision-first. It does not yet attempt broad multi-platform coverage, WASM/plugin runtime, registry scanning, or LSP workflows.
+`lintai` does not yet attempt broad multi-platform coverage, WASM/plugin runtime, registry scanning, or LSP workflows.

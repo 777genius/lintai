@@ -1,0 +1,171 @@
+name: Public Beta Release
+
+on:
+  push:
+    tags:
+      - "v*-beta.*"
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Existing beta tag to publish or rerun"
+        required: true
+        default: "v0.1.0-beta.1"
+
+concurrency:
+  group: public-beta-release-${{ github.ref_name || inputs.release_tag }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release_context:
+    name: Resolve Release Context
+    runs-on: ubuntu-latest
+    outputs:
+      release_tag: ${{ steps.resolve.outputs.release_tag }}
+      release_title: ${{ steps.resolve.outputs.release_title }}
+      release_notes_path: ${{ steps.resolve.outputs.release_notes_path }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: resolve
+        shell: bash
+        run: |
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            tag="${{ inputs.release_tag }}"
+          else
+            tag="${GITHUB_REF_NAME}"
+          fi
+
+          case "$tag" in
+            v*-beta.*) ;;
+            *)
+              echo "expected a beta tag like v0.1.0-beta.1, got: $tag" >&2
+              exit 1
+              ;;
+          esac
+
+          notes_path="docs/releases/${tag}.md"
+          if [[ ! -f "$notes_path" ]]; then
+            echo "missing checked-in release note: $notes_path" >&2
+            exit 1
+          fi
+
+          echo "release_tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "release_title=lintai ${tag}" >> "$GITHUB_OUTPUT"
+          echo "release_notes_path=$notes_path" >> "$GITHUB_OUTPUT"
+
+  verify_release_contracts:
+    name: Verify Release Contracts
+    needs: release_context
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.90.0
+      - uses: Swatinem/rust-cache@v2
+      - name: Run CLI contract suites
+        run: cargo test --manifest-path Cargo.toml --locked -p lintai-cli
+      - name: Run security provider suites
+        run: cargo test --manifest-path Cargo.toml --locked -p lintai-ai-security
+
+  build_assets:
+    name: Build ${{ matrix.target }}
+    needs:
+      - release_context
+      - verify_release_contracts
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            archive_ext: tar.gz
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            archive_ext: tar.gz
+          - os: macos-14
+            target: aarch64-apple-darwin
+            archive_ext: tar.gz
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            archive_ext: zip
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.90.0
+          targets: ${{ matrix.target }}
+      - uses: Swatinem/rust-cache@v2
+      - name: Install musl tools
+        if: ${{ matrix.target == 'x86_64-unknown-linux-musl' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y musl-tools
+      - name: Build release binary
+        run: cargo build --manifest-path Cargo.toml --locked -p lintai-cli --release --target ${{ matrix.target }}
+      - name: Package Unix asset
+        if: ${{ matrix.archive_ext == 'tar.gz' }}
+        shell: bash
+        run: |
+          tag="${{ needs.release_context.outputs.release_tag }}"
+          asset_root="lintai-${tag}-${{ matrix.target }}"
+          mkdir -p "dist/${asset_root}"
+          cp "target/${{ matrix.target }}/release/lintai" "dist/${asset_root}/lintai"
+          tar -C dist -czf "dist/${asset_root}.tar.gz" "${asset_root}"
+      - name: Package Windows asset
+        if: ${{ matrix.archive_ext == 'zip' }}
+        shell: pwsh
+        run: |
+          $tag = "${{ needs.release_context.outputs.release_tag }}"
+          $assetRoot = "lintai-$tag-${{ matrix.target }}"
+          New-Item -ItemType Directory -Path "dist/$assetRoot" -Force | Out-Null
+          Copy-Item "target/${{ matrix.target }}/release/lintai.exe" "dist/$assetRoot/lintai.exe"
+          Compress-Archive -Path "dist/$assetRoot" -DestinationPath "dist/$assetRoot.zip" -Force
+      - name: Upload packaged asset
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-asset-${{ matrix.target }}
+          path: dist/*
+
+  publish_release:
+    name: Publish GitHub Release
+    needs:
+      - release_context
+      - build_assets
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download packaged assets
+        uses: actions/download-artifact@v4
+        with:
+          pattern: release-asset-*
+          merge-multiple: true
+          path: dist
+      - name: Generate checksums
+        shell: bash
+        run: |
+          cd dist
+          shopt -s nullglob
+          files=( *.tar.gz *.zip )
+          if [[ ${#files[@]} -eq 0 ]]; then
+            echo "no packaged release assets found" >&2
+            exit 1
+          fi
+          sha256sum "${files[@]}" > SHA256SUMS
+      - name: Publish prerelease
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.release_context.outputs.release_tag }}
+          name: ${{ needs.release_context.outputs.release_title }}
+          body_path: ${{ needs.release_context.outputs.release_notes_path }}
+          prerelease: true
+          files: |
+            dist/*.tar.gz
+            dist/*.zip
+            dist/SHA256SUMS

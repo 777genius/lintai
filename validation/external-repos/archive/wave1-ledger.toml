@@ -1,0 +1,482 @@
+version = 1
+wave = 1
+
+[[evaluations]]
+repo = "containers/kubernetes-mcp-server"
+url = "https://github.com/containers/kubernetes-mcp-server"
+pinned_ref = "df06f9de9cb98e0aef1008926ab1f5b12e427937"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["CLAUDE.md", "mcp.json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "microsoft/mcp-for-beginners"
+url = "https://github.com/microsoft/mcp-for-beginners"
+pinned_ref = "123d41278366526870308f412ccdce1710302952"
+category = "mcp"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["mcp.json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "modelcontextprotocol/registry"
+url = "https://github.com/modelcontextprotocol/registry"
+pinned_ref = "c5c4b9e8890dd5754bee889b2f1417f4fe3b5ce5"
+category = "mcp"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["CLAUDE.md"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "mrexodia/ida-pro-mcp"
+url = "https://github.com/mrexodia/ida-pro-mcp"
+pinned_ref = "5bdafa2f20c9b4807a864b4e7999c715da52b05d"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "supermemoryai/apple-mcp"
+url = "https://github.com/supermemoryai/apple-mcp"
+pinned_ref = "08e2c5315683c00fc9567dfefd70a477caccc60d"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["CLAUDE.md"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "blazickjp/arxiv-mcp-server"
+url = "https://github.com/blazickjp/arxiv-mcp-server"
+pinned_ref = "0065f5abb48f3eb4e011a130dd63fc52b381a1d2"
+category = "mcp"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["CLAUDE.md"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "airmcp-com/mcp-standards"
+url = "https://github.com/airmcp-com/mcp-standards"
+pinned_ref = "5904a55c01f45de48ffacd59d768a85abdd7464a"
+category = "mcp"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["CLAUDE.md"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "centminmod/my-claude-code-setup"
+url = "https://github.com/centminmod/my-claude-code-setup"
+pinned_ref = "204c03f7984180be35c2e52fa9703475cdb2f118"
+category = "mcp"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["CLAUDE.md"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "hex-inc/hex-cursor-plugin"
+url = "https://github.com/hex-inc/hex-cursor-plugin"
+pinned_ref = "81413514f3cb7c40600c5a8cbdd89a3cfea94cd1"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["mcp.json", ".cursor-plugin/plugin.json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "olostep/olostep-cursor-plugin"
+url = "https://github.com/olostep/olostep-cursor-plugin"
+pinned_ref = "f970811435fe500e6d1c6cc2cd37e1aa4c05c9cc"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "mcp.json", ".cursor-plugin/plugin.json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "cursor/plugins"
+url = "https://github.com/cursor/plugins"
+pinned_ref = "08c2bbe2ae8a022a21dc6c32faf611f14a6e8343"
+category = "cursor_plugin"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", ".mdc", ".cursor-plugin/plugin.json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "useful_but_noisy"
+stable_precision_notes = "No stable findings observed, but one parser runtime error occurred in a nested SKILL.md file."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = [{ path = "agent-compatibility/skills/check-agent-compatibility/SKILL.md", kind = "parse", message = "invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 56" }]
+
+[[evaluations]]
+repo = "datadog-labs/cursor-plugin"
+url = "https://github.com/datadog-labs/cursor-plugin"
+pinned_ref = "fdce3e1db7c99b80939f2ad95c67f525bf0eee50"
+category = "cursor_plugin"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "mcp.json", ".cursor-plugin/plugin.json"]
+stable_findings = 0
+preview_findings = 1
+stable_rule_codes = []
+preview_rule_codes = ["SEC105"]
+repo_verdict = "useful_but_noisy"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "SEC105 flagged a setup-skill reference to ../../mcp.json."
+false_positive_notes = [{ rule_code = "SEC105", verdict = "false_positive", reason = "The parent-directory reference resolves to the repo-local plugin mcp.json rather than an external traversal target.", problem = "rule_logic" }]
+possible_false_negative_notes = []
+follow_up_action = "tighten_rule"
+runtime_errors = []
+
+[[evaluations]]
+repo = "linear/cursor-plugin"
+url = "https://github.com/linear/cursor-plugin"
+pinned_ref = "c2c4cb2ab23206c9219b0dd31c9571e4c922faeb"
+category = "cursor_plugin"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["mcp.json", ".cursor-plugin/plugin.json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "makenotion/cursor-notion-plugin"
+url = "https://github.com/makenotion/cursor-notion-plugin"
+pinned_ref = "cf1324609edba6d617164f1dec138aeb43f26735"
+category = "cursor_plugin"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "mcp.json", ".cursor-plugin/plugin.json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "van-reflect/cursor-plugin"
+url = "https://github.com/van-reflect/cursor-plugin"
+pinned_ref = "15a212718e566b3a964c077cc8426972cced1b85"
+category = "cursor_plugin"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md", ".mdc", ".cursor-plugin/plugin.json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "vercel-labs/cursor-plugin"
+url = "https://github.com/vercel-labs/cursor-plugin"
+pinned_ref = "95857183947fcc2a478f817c1e5d24ec054b21a9"
+category = "cursor_plugin"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md", ".cursor-plugin/plugin.json"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "agent-sh/agnix"
+url = "https://github.com/agent-sh/agnix"
+pinned_ref = "342d74123ae898a7c6d1a5ca99f5a81907951306"
+category = "skills"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md", ".cursorrules"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "zebbern/claude-code-guide"
+url = "https://github.com/zebbern/claude-code-guide"
+pinned_ref = "4b37743a717209e114f08d53150f3b8dc76eb116"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "zechenzhangAGI/AI-research-SKILLs"
+url = "https://github.com/zechenzhangAGI/AI-research-SKILLs"
+pinned_ref = "a7289540d33f78df20dc9b27808fdf096cf1b3a4"
+category = "skills"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "buildingopen/claude-setup"
+url = "https://github.com/buildingopen/claude-setup"
+pinned_ref = "69cc9c8fd0f81782cb90dc51c95dbcbb4d346d5c"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "lighthouse-strategy/claude-code-starter"
+url = "https://github.com/lighthouse-strategy/claude-code-starter"
+pinned_ref = "b6cacd4055c26152165e8a8bf0b7ff9209f0c396"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "reizam/claude-md-templates"
+url = "https://github.com/reizam/claude-md-templates"
+pinned_ref = "694240a17d550babf4c5392d1ea4b32ce5ca8a62"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "Narwhal-Lab/MagicSkills"
+url = "https://github.com/Narwhal-Lab/MagicSkills"
+pinned_ref = "1ba6ae32b4df4349195ec38c283535b68619a085"
+category = "skills"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations]]
+repo = "Emmraan/agent-skills"
+url = "https://github.com/Emmraan/agent-skills"
+pinned_ref = "a1582043b95667eea450d37f028e7451ffda02f2"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md"]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "useful_but_noisy"
+stable_precision_notes = "No stable findings observed, but one parser runtime error occurred in a nested skill file."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = [{ path = "skills/seo/SKILL.md", kind = "parse", message = "invalid YAML frontmatter: could not find expected ':' at line 5 column 1, while scanning a simple key at line 3 column 1" }]

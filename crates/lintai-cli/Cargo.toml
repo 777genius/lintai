@@ -11,8 +11,10 @@ lintai-api.workspace = true
 lintai-engine.workspace = true
 lintai-ai-security.workspace = true
 lintai-fix.workspace = true
+ignore.workspace = true
 serde.workspace = true
 serde_json.workspace = true
+toml.workspace = true
 
 [dev-dependencies]
 lintai-testing.workspace = true
@@ -20,3 +22,7 @@ lintai-testing.workspace = true
 [[bin]]
 name = "lintai"
 path = "src/main.rs"
+
+[[bin]]
+name = "lintai-external-validation"
+path = "src/bin/lintai-external-validation.rs"

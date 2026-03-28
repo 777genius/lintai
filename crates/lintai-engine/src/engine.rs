@@ -170,6 +170,19 @@ impl Engine {
                 return None;
             }
         };
+        summary
+            .diagnostics
+            .extend(
+                parsed
+                    .diagnostics
+                    .iter()
+                    .map(|diagnostic| crate::ScanDiagnostic {
+                        normalized_path: normalized_path.clone(),
+                        severity: crate::DiagnosticSeverity::Warn,
+                        code: Some("parse_recovery".to_owned()),
+                        message: diagnostic.message.clone(),
+                    }),
+            );
 
         let context = ScanContext::new(artifact, content, parsed.document, parsed.semantics);
 
