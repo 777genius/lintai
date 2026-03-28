@@ -1,0 +1,815 @@
+use std::collections::{BTreeMap, BTreeSet};
+use std::fs;
+use std::path::{Path, PathBuf};
+use std::sync::OnceLock;
+
+use ignore::WalkBuilder;
+use lintai_api::{ArtifactKind, Finding};
+use lintai_engine::{normalize_path_string, FileTypeDetector, ScanSummary, WorkspaceConfig};
+use serde::{Deserialize, Serialize};
+
+const KNOWN_ROOTS_MANIFEST: &str = include_str!("../known_roots.toml");
+const DEFAULT_EXCLUDED_DIRS: &[&str] = &[
+    ".git",
+    "node_modules",
+    "target",
+    "dist",
+    "build",
+    "__pycache__",
+    "vendor",
+];
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum KnownScope {
+    Project,
+    Global,
+    Both,
+}
+
+impl KnownScope {
+    pub fn includes_project(self) -> bool {
+        matches!(self, Self::Project | Self::Both)
+    }
+
+    pub fn includes_global(self) -> bool {
+        matches!(self, Self::Global | Self::Both)
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ScanKnownArgs {
+    pub format_override: Option<lintai_engine::OutputFormat>,
+    pub scope: KnownScope,
+    pub client_filters: BTreeSet<String>,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum KnownRootScope {
+    Project,
+    Global,
+}
+
+impl KnownRootScope {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Project => "project",
+            Self::Global => "global",
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ArtifactMode {
+    Lintable,
+    DiscoveredOnly,
+}
+
+impl ArtifactMode {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Lintable => "lintable",
+            Self::DiscoveredOnly => "discovered_only",
+        }
+    }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+pub struct DiscoveredRoot {
+    pub client: String,
+    pub scope: String,
+    pub surface: String,
+    pub path: String,
+    pub mode: String,
+}
+
+#[derive(Clone, Debug, Default, Eq, PartialEq, Serialize)]
+pub struct DiscoveryStats {
+    pub lintable_roots: usize,
+    pub discovered_only_roots: usize,
+    pub supported_artifacts_scanned: usize,
+    pub non_target_files_in_lintable_roots: usize,
+    pub excluded_files: usize,
+    pub binary_files: usize,
+    pub unreadable_files: usize,
+    pub unrecognized_files: usize,
+}
+
+impl DiscoveryStats {
+    pub fn non_target_total(&self) -> usize {
+        self.non_target_files_in_lintable_roots
+            + self.excluded_files
+            + self.binary_files
+            + self.unreadable_files
+    }
+
+    pub fn record_root(&mut self, mode: ArtifactMode) {
+        match mode {
+            ArtifactMode::Lintable => self.lintable_roots += 1,
+            ArtifactMode::DiscoveredOnly => self.discovered_only_roots += 1,
+        }
+    }
+
+    pub fn record_lintable_inventory(&mut self, inventory: &LintableInventoryStats) {
+        self.non_target_files_in_lintable_roots += inventory.unrecognized_files;
+        self.excluded_files += inventory.excluded_files;
+        self.binary_files += inventory.binary_files;
+        self.unreadable_files += inventory.unreadable_files;
+        self.unrecognized_files += inventory.unrecognized_files;
+    }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct KnownRoot {
+    pub client: String,
+    pub scope: KnownRootScope,
+    pub surface: String,
+    pub path: PathBuf,
+    pub mode: ArtifactMode,
+    pub artifact_kind_hint: Option<ArtifactKind>,
+    pub notes: Option<String>,
+}
+
+impl KnownRoot {
+    pub fn to_report(&self) -> DiscoveredRoot {
+        DiscoveredRoot {
+            client: self.client.clone(),
+            scope: self.scope.as_str().to_owned(),
+            surface: self.surface.clone(),
+            path: normalize_path_string(&self.path),
+            mode: self.mode.as_str().to_owned(),
+        }
+    }
+}
+
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
+pub struct LintableInventoryStats {
+    pub excluded_files: usize,
+    pub binary_files: usize,
+    pub unreadable_files: usize,
+    pub unrecognized_files: usize,
+}
+
+#[derive(Clone, Debug, Default)]
+struct EnvironmentPaths {
+    home_dir: Option<PathBuf>,
+    xdg_config_home: Option<PathBuf>,
+}
+
+impl EnvironmentPaths {
+    fn from_process() -> Self {
+        let home_dir = std::env::var_os("HOME").map(PathBuf::from);
+        let xdg_config_home = std::env::var_os("XDG_CONFIG_HOME")
+            .map(PathBuf::from)
+            .or_else(|| home_dir.as_ref().map(|home| home.join(".config")));
+        Self {
+            home_dir,
+            xdg_config_home,
+        }
+    }
+}
+
+#[derive(Clone, Debug, Deserialize)]
+struct KnownRootsManifest {
+    #[serde(rename = "surface")]
+    surfaces: Vec<KnownSurfaceSpec>,
+}
+
+#[derive(Clone, Debug, Deserialize)]
+struct KnownSurfaceSpec {
+    client_id: String,
+    surface_id: String,
+    scope: KnownRootScope,
+    path_template: String,
+    artifact_mode: ArtifactMode,
+    artifact_kind_hint: Option<ArtifactKind>,
+    notes: Option<String>,
+}
+
+#[derive(Clone, Debug)]
+struct KnownRegistry {
+    surfaces: Vec<KnownSurfaceSpec>,
+}
+
+static KNOWN_REGISTRY: OnceLock<Result<KnownRegistry, String>> = OnceLock::new();
+
+pub(crate) fn discover_known_roots(
+    project_root: Option<&Path>,
+    scope: KnownScope,
+    client_filters: &BTreeSet<String>,
+) -> Result<Vec<KnownRoot>, String> {
+    discover_known_roots_with_env(
+        registry(),
+        project_root,
+        scope,
+        client_filters,
+        &EnvironmentPaths::from_process(),
+    )
+}
+
+pub(crate) fn inventory_lintable_root(
+    root: &KnownRoot,
+    workspace: &WorkspaceConfig,
+) -> Result<LintableInventoryStats, String> {
+    let detector = FileTypeDetector::new(&workspace.engine_config);
+    let base_path = absolute_base_for_scan(&root.path, workspace);
+    let canonical_project_root = workspace
+        .engine_config
+        .project_root
+        .as_deref()
+        .map(std::fs::canonicalize)
+        .transpose()
+        .map_err(|error| format!("project root resolution failed: {error}"))?;
+
+    let mut inventory = LintableInventoryStats::default();
+    for entry in walk_root(
+        &root.path,
+        workspace.engine_config.follow_symlinks,
+        canonical_project_root.as_deref(),
+    ) {
+        let entry = match entry {
+            Ok(entry) => entry,
+            Err(_) => {
+                inventory.unreadable_files += 1;
+                continue;
+            }
+        };
+        let path = entry.path();
+        if !path.is_file() {
+            continue;
+        }
+
+        let normalized_path = normalize_known_path(&base_path, path);
+        let file_config = workspace.engine_config.resolve_for(&normalized_path);
+        if !file_config.included {
+            inventory.excluded_files += 1;
+            continue;
+        }
+
+        if detector.detect(path, &normalized_path).is_none() {
+            inventory.unrecognized_files += 1;
+            continue;
+        }
+
+        let bytes = match fs::read(path) {
+            Ok(bytes) => bytes,
+            Err(_) => {
+                inventory.unreadable_files += 1;
+                continue;
+            }
+        };
+        if looks_binary(&bytes) {
+            inventory.binary_files += 1;
+            continue;
+        }
+        if String::from_utf8(bytes).is_err() {
+            inventory.unreadable_files += 1;
+        }
+    }
+
+    Ok(inventory)
+}
+
+pub(crate) fn absolute_base_for_scan(target: &Path, workspace: &WorkspaceConfig) -> PathBuf {
+    if let Some(project_root) = workspace.engine_config.project_root.as_ref() {
+        return project_root.clone();
+    }
+
+    if target.is_file() {
+        return target
+            .parent()
+            .map_or_else(|| PathBuf::from("."), Path::to_path_buf);
+    }
+
+    target.to_path_buf()
+}
+
+pub(crate) fn merge_summary_with_absolute_paths(
+    aggregate: &mut ScanSummary,
+    mut summary: ScanSummary,
+    absolute_base: &Path,
+) {
+    rewrite_summary_paths(&mut summary, absolute_base);
+
+    aggregate.scanned_files += summary.scanned_files;
+    aggregate.skipped_files += summary.skipped_files;
+    aggregate.findings.extend(summary.findings);
+    aggregate.diagnostics.extend(summary.diagnostics);
+    aggregate.runtime_errors.extend(summary.runtime_errors);
+    aggregate.provider_metrics.extend(summary.provider_metrics);
+}
+
+fn registry() -> Result<&'static KnownRegistry, String> {
+    match KNOWN_REGISTRY.get_or_init(|| registry_from_str(KNOWN_ROOTS_MANIFEST)) {
+        Ok(registry) => Ok(registry),
+        Err(error) => Err(error.clone()),
+    }
+}
+
+fn registry_from_str(input: &str) -> Result<KnownRegistry, String> {
+    let manifest: KnownRootsManifest = toml::from_str(input)
+        .map_err(|error| format!("known roots manifest parse failed: {error}"))?;
+    validate_manifest(&manifest)?;
+    Ok(KnownRegistry {
+        surfaces: manifest.surfaces,
+    })
+}
+
+fn validate_manifest(manifest: &KnownRootsManifest) -> Result<(), String> {
+    let mut ids = BTreeSet::new();
+    let mut paths = BTreeSet::new();
+    for surface in &manifest.surfaces {
+        if !ids.insert((
+            surface.client_id.clone(),
+            surface.surface_id.clone(),
+            surface.scope,
+        )) {
+            return Err(format!(
+                "known roots manifest duplicates ({}, {}, {:?})",
+                surface.client_id, surface.surface_id, surface.scope
+            ));
+        }
+        if !paths.insert((surface.scope, surface.path_template.clone())) {
+            return Err(format!(
+                "known roots manifest duplicates scope/path ({:?}, {})",
+                surface.scope, surface.path_template
+            ));
+        }
+
+        let has_hint = surface.artifact_kind_hint.is_some();
+        match surface.artifact_mode {
+            ArtifactMode::Lintable if !has_hint => {
+                return Err(format!(
+                    "lintable surface {}:{} is missing artifact_kind_hint",
+                    surface.client_id, surface.surface_id
+                ));
+            }
+            ArtifactMode::DiscoveredOnly if has_hint => {
+                return Err(format!(
+                    "discovered-only surface {}:{} must not declare artifact_kind_hint",
+                    surface.client_id, surface.surface_id
+                ));
+            }
+            _ => {}
+        }
+
+        validate_path_template(&surface.path_template).map_err(|error| {
+            format!(
+                "invalid path_template for {}:{}: {error}",
+                surface.client_id, surface.surface_id
+            )
+        })?;
+    }
+
+    Ok(())
+}
+
+fn validate_path_template(template: &str) -> Result<(), String> {
+    let valid_prefixes = ["{project_root}", "{home}", "{xdg_config_home}", "/"];
+    if !valid_prefixes
+        .iter()
+        .any(|prefix| template.starts_with(prefix))
+    {
+        return Err("must start with {project_root}, {home}, {xdg_config_home}, or /".to_owned());
+    }
+
+    for placeholder in ["{project_root}", "{home}", "{xdg_config_home}"] {
+        if template.starts_with(placeholder) {
+            let suffix = &template[placeholder.len()..];
+            if suffix.contains('{') || suffix.contains('}') {
+                return Err("path_template may only contain one leading placeholder".to_owned());
+            }
+            return Ok(());
+        }
+    }
+
+    if template.contains('{') || template.contains('}') {
+        return Err("path_template contains unmatched braces".to_owned());
+    }
+
+    Ok(())
+}
+
+fn discover_known_roots_with_env(
+    registry: Result<&KnownRegistry, String>,
+    project_root: Option<&Path>,
+    scope: KnownScope,
+    client_filters: &BTreeSet<String>,
+    env: &EnvironmentPaths,
+) -> Result<Vec<KnownRoot>, String> {
+    let registry = registry?;
+    let mut by_path = BTreeMap::<String, KnownRoot>::new();
+
+    for surface in &registry.surfaces {
+        if !scope_matches(scope, surface.scope) {
+            continue;
+        }
+        if !client_filters.is_empty() && !client_filters.contains(surface.client_id.as_str()) {
+            continue;
+        }
+
+        let Some(candidate) = resolve_path_template(&surface.path_template, project_root, env)
+        else {
+            continue;
+        };
+        if !candidate.exists() {
+            continue;
+        }
+
+        let canonical = std::fs::canonicalize(&candidate).unwrap_or(candidate.clone());
+        let key = normalize_path_string(&canonical);
+        match by_path.get(&key) {
+            Some(existing) if !should_replace_known_root(existing.mode, surface.artifact_mode) => {}
+            _ => {
+                by_path.insert(
+                    key,
+                    KnownRoot {
+                        client: surface.client_id.clone(),
+                        scope: surface.scope,
+                        surface: surface.surface_id.clone(),
+                        path: canonical,
+                        mode: surface.artifact_mode,
+                        artifact_kind_hint: surface.artifact_kind_hint,
+                        notes: surface.notes.clone(),
+                    },
+                );
+            }
+        }
+    }
+
+    Ok(by_path.into_values().collect())
+}
+
+fn should_replace_known_root(existing: ArtifactMode, candidate: ArtifactMode) -> bool {
+    matches!(
+        (existing, candidate),
+        (ArtifactMode::DiscoveredOnly, ArtifactMode::Lintable)
+    )
+}
+
+fn resolve_path_template(
+    template: &str,
+    project_root: Option<&Path>,
+    env: &EnvironmentPaths,
+) -> Option<PathBuf> {
+    if let Some(suffix) = template.strip_prefix("{project_root}") {
+        return Some(join_template_suffix(project_root?, suffix));
+    }
+    if let Some(suffix) = template.strip_prefix("{home}") {
+        return Some(join_template_suffix(env.home_dir.as_deref()?, suffix));
+    }
+    if let Some(suffix) = template.strip_prefix("{xdg_config_home}") {
+        return Some(join_template_suffix(
+            env.xdg_config_home.as_deref()?,
+            suffix,
+        ));
+    }
+    Some(PathBuf::from(template))
+}
+
+fn join_template_suffix(base: &Path, suffix: &str) -> PathBuf {
+    let mut resolved = base.to_path_buf();
+    for component in suffix.trim_start_matches('/').split('/') {
+        if component.is_empty() {
+            continue;
+        }
+        resolved.push(component);
+    }
+    resolved
+}
+
+fn scope_matches(filter: KnownScope, scope: KnownRootScope) -> bool {
+    match filter {
+        KnownScope::Project => scope == KnownRootScope::Project,
+        KnownScope::Global => scope == KnownRootScope::Global,
+        KnownScope::Both => true,
+    }
+}
+
+fn normalize_known_path(base_path: &Path, path: &Path) -> String {
+    let relative = path.strip_prefix(base_path).unwrap_or(path);
+    normalize_path_string(relative)
+}
+
+fn walk_root<'a>(
+    root: &'a Path,
+    follow_symlinks: bool,
+    canonical_project_root: Option<&'a Path>,
+) -> ignore::Walk {
+    let mut walker = WalkBuilder::new(root);
+    walker.hidden(false);
+    walker.follow_links(follow_symlinks);
+    walker.git_ignore(true);
+    walker.git_global(true);
+    walker.git_exclude(true);
+    if let Some(project_root) = canonical_project_root {
+        let project_root = project_root.to_path_buf();
+        walker.filter_entry(move |entry| {
+            should_visit_path(entry.path(), Some(project_root.as_path()))
+        });
+    } else {
+        walker.filter_entry(|entry| should_visit_path(entry.path(), None));
+    }
+    walker.build()
+}
+
+fn should_skip_path(path: &Path) -> bool {
+    path.components().any(|component| {
+        let value = component.as_os_str().to_string_lossy();
+        DEFAULT_EXCLUDED_DIRS.contains(&value.as_ref())
+    })
+}
+
+fn should_visit_path(path: &Path, project_root: Option<&Path>) -> bool {
+    if should_skip_path(path) {
+        return false;
+    }
+
+    let Some(project_root) = project_root else {
+        return true;
+    };
+
+    match std::fs::canonicalize(path) {
+        Ok(canonical_path) => {
+            canonical_path == project_root || canonical_path.starts_with(project_root)
+        }
+        Err(_) => true,
+    }
+}
+
+fn looks_binary(bytes: &[u8]) -> bool {
+    bytes.iter().take(1024).any(|byte| *byte == 0)
+}
+
+fn rewrite_summary_paths(summary: &mut ScanSummary, absolute_base: &Path) {
+    for finding in &mut summary.findings {
+        rewrite_finding_paths(finding, absolute_base);
+    }
+    for diagnostic in &mut summary.diagnostics {
+        diagnostic.normalized_path = absolutize_path(absolute_base, &diagnostic.normalized_path);
+    }
+    for error in &mut summary.runtime_errors {
+        error.normalized_path = absolutize_path(absolute_base, &error.normalized_path);
+    }
+    for metric in &mut summary.provider_metrics {
+        metric.normalized_path = absolutize_path(absolute_base, &metric.normalized_path);
+    }
+}
+
+fn rewrite_finding_paths(finding: &mut Finding, absolute_base: &Path) {
+    let location_path = absolutize_path(absolute_base, &finding.location.normalized_path);
+    finding.location.normalized_path = location_path.clone();
+    finding.stable_key.normalized_path = location_path;
+
+    for evidence in &mut finding.evidence {
+        if let Some(location) = &mut evidence.location {
+            location.normalized_path = absolutize_path(absolute_base, &location.normalized_path);
+        }
+    }
+
+    for related in &mut finding.related {
+        related.normalized_path = absolutize_path(absolute_base, &related.normalized_path);
+    }
+}
+
+fn absolutize_path(absolute_base: &Path, normalized_path: &str) -> String {
+    normalize_path_string(&absolute_base.join(normalized_path))
+}
+
+#[cfg(test)]
+mod tests {
+    use std::fs;
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    use lintai_api::{
+        Category, Confidence, Evidence, EvidenceKind, Location, RuleTier, Severity, Span,
+    };
+    use lintai_engine::{
+        ProviderExecutionMetric, ProviderExecutionPhase, RuntimeErrorKind, ScanDiagnostic,
+        ScanRuntimeError,
+    };
+
+    use super::*;
+
+    fn unique_temp_dir(prefix: &str) -> PathBuf {
+        let suffix = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let path = std::env::temp_dir().join(format!("{prefix}-{suffix}"));
+        fs::create_dir_all(&path).unwrap();
+        path
+    }
+
+    #[test]
+    fn manifest_requires_kind_hint_for_lintable_surface() {
+        let error = registry_from_str(
+            r#"
+[[surface]]
+client_id = "cursor"
+surface_id = "skills"
+scope = "project"
+path_template = "{project_root}/.cursor/skills"
+artifact_mode = "lintable"
+"#,
+        )
+        .unwrap_err();
+        assert!(error.contains("missing artifact_kind_hint"));
+    }
+
+    #[test]
+    fn manifest_rejects_duplicate_scope_path_pairs() {
+        let error = registry_from_str(
+            r#"
+[[surface]]
+client_id = "cursor"
+surface_id = "skills"
+scope = "project"
+path_template = "{project_root}/.cursor/skills"
+artifact_mode = "lintable"
+artifact_kind_hint = "skill"
+
+[[surface]]
+client_id = "codex"
+surface_id = "same"
+scope = "project"
+path_template = "{project_root}/.cursor/skills"
+artifact_mode = "lintable"
+artifact_kind_hint = "skill"
+"#,
+        )
+        .unwrap_err();
+        assert!(error.contains("duplicates scope/path"));
+    }
+
+    #[test]
+    fn discover_known_roots_respects_scope_filters_and_existing_paths() {
+        let temp_dir = unique_temp_dir("lintai-known-roots");
+        let project_root = temp_dir.join("project");
+        let home_dir = temp_dir.join("home");
+        let xdg_dir = temp_dir.join("xdg");
+        fs::create_dir_all(project_root.join(".agents/skills/demo")).unwrap();
+        fs::create_dir_all(home_dir.join(".cursor/skills/demo")).unwrap();
+        fs::create_dir_all(xdg_dir.join("opencode/skills/demo")).unwrap();
+
+        let env = EnvironmentPaths {
+            home_dir: Some(home_dir),
+            xdg_config_home: Some(xdg_dir),
+        };
+        let filters = ["codex", "opencode"]
+            .into_iter()
+            .map(str::to_owned)
+            .collect::<BTreeSet<_>>();
+        let roots = discover_known_roots_with_env(
+            Ok(registry().unwrap()),
+            Some(&project_root),
+            KnownScope::Both,
+            &filters,
+            &env,
+        )
+        .unwrap();
+
+        assert_eq!(roots.len(), 2);
+        assert!(roots
+            .iter()
+            .any(|root| root.client == "codex" && root.scope == KnownRootScope::Project));
+        assert!(roots
+            .iter()
+            .any(|root| root.client == "opencode" && root.scope == KnownRootScope::Global));
+    }
+
+    #[test]
+    fn inventory_lintable_root_splits_unrecognized_binary_and_excluded_files() {
+        let temp_dir = unique_temp_dir("lintai-known-root-inventory");
+        fs::create_dir_all(temp_dir.join(".agents/skills/demo/scripts")).unwrap();
+        fs::create_dir_all(temp_dir.join(".agents/skills/demo/assets")).unwrap();
+        fs::write(temp_dir.join(".agents/skills/demo/SKILL.md"), "# Demo\n").unwrap();
+        fs::write(
+            temp_dir.join(".agents/skills/demo/scripts/helper.sh"),
+            "#!/bin/sh\necho hi\n",
+        )
+        .unwrap();
+        fs::write(
+            temp_dir.join(".agents/skills/demo/assets/logo.png"),
+            [0u8, 159, 146, 150],
+        )
+        .unwrap();
+        fs::write(
+            temp_dir.join(".agents/skills/demo/license.txt"),
+            "license\n",
+        )
+        .unwrap();
+
+        let root = KnownRoot {
+            client: "codex".to_owned(),
+            scope: KnownRootScope::Project,
+            surface: "skills".to_owned(),
+            path: temp_dir.join(".agents/skills"),
+            mode: ArtifactMode::Lintable,
+            artifact_kind_hint: Some(ArtifactKind::Skill),
+            notes: None,
+        };
+        let workspace = WorkspaceConfig {
+            source_path: None,
+            engine_config: lintai_engine::EngineConfig::default(),
+        };
+
+        let inventory = inventory_lintable_root(&root, &workspace).unwrap();
+        assert_eq!(inventory.unrecognized_files, 1);
+        assert_eq!(inventory.binary_files, 0);
+        assert_eq!(inventory.unreadable_files, 0);
+        assert_eq!(inventory.excluded_files, 2);
+    }
+
+    #[test]
+    fn merge_summary_rewrites_paths_to_absolute_locations() {
+        let base = PathBuf::from("/tmp/demo");
+        let metadata = lintai_api::RuleMetadata::new(
+            "SEC999",
+            "demo",
+            Category::Security,
+            Severity::Warn,
+            Confidence::High,
+            RuleTier::Stable,
+        );
+        let mut finding = Finding::new(
+            &metadata,
+            Location::new("skills/demo/SKILL.md", Span::new(0, 4)),
+            "demo finding",
+        );
+        finding.evidence.push(Evidence::new(
+            EvidenceKind::ObservedBehavior,
+            "evidence",
+            Some(Location::new("skills/demo/SKILL.md", Span::new(0, 4))),
+        ));
+        finding.related.push(lintai_api::RelatedFinding::new(
+            "SEC998",
+            "skills/demo/SKILL.md",
+            Span::new(1, 2),
+        ));
+
+        let summary = ScanSummary {
+            scanned_files: 1,
+            skipped_files: 0,
+            findings: vec![finding],
+            diagnostics: vec![ScanDiagnostic {
+                normalized_path: "mcp.json".to_owned(),
+                severity: lintai_engine::DiagnosticSeverity::Warn,
+                code: Some("demo".to_owned()),
+                message: "diag".to_owned(),
+            }],
+            runtime_errors: vec![ScanRuntimeError {
+                normalized_path: "mcp.json".to_owned(),
+                kind: RuntimeErrorKind::Read,
+                provider_id: None,
+                phase: None,
+                message: "err".to_owned(),
+            }],
+            provider_metrics: vec![ProviderExecutionMetric {
+                normalized_path: "mcp.json".to_owned(),
+                provider_id: "provider".to_owned(),
+                phase: ProviderExecutionPhase::File,
+                elapsed_us: 10,
+                findings_emitted: 1,
+                errors_emitted: 0,
+            }],
+        };
+
+        let mut aggregate = ScanSummary::default();
+        merge_summary_with_absolute_paths(&mut aggregate, summary, &base);
+
+        assert_eq!(
+            aggregate.findings[0].location.normalized_path,
+            "/tmp/demo/skills/demo/SKILL.md"
+        );
+        assert_eq!(
+            aggregate.findings[0].stable_key.normalized_path,
+            "/tmp/demo/skills/demo/SKILL.md"
+        );
+        assert_eq!(
+            aggregate.findings[0].evidence[1]
+                .location
+                .as_ref()
+                .unwrap()
+                .normalized_path,
+            "/tmp/demo/skills/demo/SKILL.md"
+        );
+        assert_eq!(
+            aggregate.findings[0].related[0].normalized_path,
+            "/tmp/demo/skills/demo/SKILL.md"
+        );
+        assert_eq!(
+            aggregate.diagnostics[0].normalized_path,
+            "/tmp/demo/mcp.json"
+        );
+        assert_eq!(
+            aggregate.runtime_errors[0].normalized_path,
+            "/tmp/demo/mcp.json"
+        );
+        assert_eq!(
+            aggregate.provider_metrics[0].normalized_path,
+            "/tmp/demo/mcp.json"
+        );
+    }
+}

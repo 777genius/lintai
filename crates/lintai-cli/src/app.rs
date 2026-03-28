@@ -5,13 +5,20 @@ use std::process::ExitCode;
 
 use lintai_api::{Applicability, Finding};
 use lintai_engine::{
-    Engine, FileSuppressions, OutputFormat, ResolvedFileConfig, explain_file_config,
-    load_workspace_config,
+    explain_file_config, load_workspace_config, Engine, EngineConfig, FileSuppressions,
+    OutputFormat, ResolvedFileConfig, WorkspaceConfig,
 };
 use lintai_fix::{apply_planned_fixes, plan_fixes};
 
-use crate::args::{parse_explain_config_args, parse_fix_args, parse_scan_args};
+use crate::args::{
+    parse_explain_config_args, parse_fix_args, parse_scan_args, parse_scan_known_args,
+};
 use crate::builtin_providers::{product_provider_set, run_provider_runner};
+use crate::known_scan::{
+    absolute_base_for_scan, discover_known_roots, inventory_lintable_root,
+    merge_summary_with_absolute_paths, ArtifactMode, DiscoveredRoot, DiscoveryStats,
+    KnownRootScope,
+};
 use crate::{output, path::validate_path_within_project};
 
 pub fn run() -> Result<ExitCode, String> {
@@ -25,6 +32,7 @@ pub fn run() -> Result<ExitCode, String> {
 
     match command.as_str() {
         "scan" => run_scan(&current_dir, args),
+        "scan-known" => run_scan_known(&current_dir, args),
         "fix" => run_fix(&current_dir, args),
         "explain-config" => run_explain_config(&current_dir, args),
         "__provider-runner" => run_provider_runner(args),
@@ -76,6 +84,121 @@ fn run_scan(current_dir: &Path, args: impl Iterator<Item = String>) -> Result<Ex
     }
 
     if has_blocking_findings(&summary.findings, &workspace.engine_config.ci_policy) {
+        Ok(ExitCode::from(1))
+    } else {
+        Ok(ExitCode::SUCCESS)
+    }
+}
+
+fn run_scan_known(
+    current_dir: &Path,
+    args: impl Iterator<Item = String>,
+) -> Result<ExitCode, String> {
+    let parsed = parse_scan_known_args(args)?;
+    let project_workspace = if parsed.scope.includes_project() {
+        Some(
+            load_workspace_config(current_dir)
+                .map_err(|error| format!("config resolution failed: {error}"))?,
+        )
+    } else {
+        None
+    };
+    let project_root = project_workspace
+        .as_ref()
+        .and_then(|workspace| workspace.engine_config.project_root.as_deref())
+        .unwrap_or(current_dir);
+    let discovered_roots =
+        discover_known_roots(Some(project_root), parsed.scope, &parsed.client_filters)?;
+
+    let output_format = parsed
+        .format_override
+        .or_else(|| {
+            project_workspace
+                .as_ref()
+                .map(|workspace| workspace.engine_config.output_format)
+        })
+        .unwrap_or(OutputFormat::Text);
+
+    let mut aggregate = lintai_engine::ScanSummary::default();
+    let mut report_roots = Vec::<DiscoveredRoot>::with_capacity(discovered_roots.len());
+    let mut discovery_stats = DiscoveryStats::default();
+    let mut blocking = false;
+    let default_workspace = WorkspaceConfig {
+        source_path: None,
+        engine_config: EngineConfig::default(),
+    };
+    let project_engine = project_workspace.as_ref().map(build_engine).transpose()?;
+    let global_engine = if parsed.scope.includes_global() {
+        Some(build_engine(&default_workspace)?)
+    } else {
+        None
+    };
+
+    for root in discovered_roots {
+        discovery_stats.record_root(root.mode);
+        report_roots.push(root.to_report());
+        if matches!(root.mode, ArtifactMode::DiscoveredOnly) {
+            continue;
+        }
+
+        let (engine, workspace) = match root.scope {
+            KnownRootScope::Project => (
+                project_engine
+                    .as_ref()
+                    .ok_or_else(|| "project scan engine was not initialized".to_owned())?,
+                project_workspace
+                    .as_ref()
+                    .ok_or_else(|| "project workspace was not initialized".to_owned())?,
+            ),
+            KnownRootScope::Global => (
+                global_engine
+                    .as_ref()
+                    .ok_or_else(|| "global scan engine was not initialized".to_owned())?,
+                &default_workspace,
+            ),
+        };
+
+        let inventory = inventory_lintable_root(&root, workspace)
+            .map_err(|error| format!("inventory failed for {}: {error}", root.path.display()))?;
+        discovery_stats.record_lintable_inventory(&inventory);
+
+        let summary = engine
+            .scan_path(&root.path)
+            .map_err(|error| format!("scan failed for {}: {error}", root.path.display()))?;
+        blocking |= has_blocking_findings(&summary.findings, &workspace.engine_config.ci_policy);
+        discovery_stats.supported_artifacts_scanned += summary.scanned_files;
+        let absolute_base = absolute_base_for_scan(&root.path, workspace);
+        merge_summary_with_absolute_paths(&mut aggregate, summary, &absolute_base);
+    }
+
+    let report = output::build_envelope_with_discovery(
+        &aggregate,
+        None,
+        None,
+        report_roots,
+        Some(discovery_stats),
+    );
+    match output_format {
+        OutputFormat::Text => {
+            print!("{}", output::format_text(&report));
+        }
+        OutputFormat::Json => {
+            println!(
+                "{}",
+                output::format_json(&report)
+                    .map_err(|error| format!("json output failed: {error}"))?
+            );
+        }
+        OutputFormat::Sarif => {
+            println!(
+                "{}",
+                output::format_sarif(&report)
+                    .map_err(|error| format!("sarif output failed: {error}"))?
+            );
+        }
+    }
+
+    if blocking {
         Ok(ExitCode::from(1))
     } else {
         Ok(ExitCode::SUCCESS)
@@ -319,6 +442,8 @@ pub(crate) fn format_explain_config(
 fn print_usage() {
     println!("lintai scan [path] [--format=text|json]");
     println!("                    [--format=sarif]");
+    println!("lintai scan-known [--scope=project|global|both] [--client NAME]");
+    println!("                    [--format=text|json|sarif]");
     println!("lintai fix [path] [--apply] [--rule CODE]");
     println!("lintai explain-config <file>");
     println!("lintai config-schema");

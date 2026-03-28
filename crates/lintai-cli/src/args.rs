@@ -2,6 +2,8 @@ use std::path::PathBuf;
 
 use lintai_engine::OutputFormat;
 
+use crate::known_scan::{KnownScope, ScanKnownArgs};
+
 #[derive(Debug)]
 pub struct ScanArgs {
     pub target: PathBuf,
@@ -13,6 +15,59 @@ pub struct FixArgs {
     pub target: PathBuf,
     pub apply: bool,
     pub rule_filters: Vec<String>,
+}
+
+pub fn parse_scan_known_args(args: impl Iterator<Item = String>) -> Result<ScanKnownArgs, String> {
+    let mut format_override = None;
+    let mut scope = KnownScope::Both;
+    let mut client_filters = std::collections::BTreeSet::new();
+    let mut args = args.peekable();
+
+    while let Some(arg) = args.next() {
+        match arg.as_str() {
+            "--format" => {
+                let Some(value) = args.next() else {
+                    return Err("missing value for --format".to_owned());
+                };
+                format_override = Some(parse_output_format(&value)?);
+            }
+            "--scope" => {
+                let Some(value) = args.next() else {
+                    return Err("missing value for --scope".to_owned());
+                };
+                scope = parse_known_scope(&value)?;
+            }
+            "--client" => {
+                let Some(value) = args.next() else {
+                    return Err("missing value for --client".to_owned());
+                };
+                client_filters.insert(normalize_client_filter(&value));
+            }
+            value if value.starts_with("--format=") => {
+                let value = value.trim_start_matches("--format=");
+                format_override = Some(parse_output_format(value)?);
+            }
+            value if value.starts_with("--scope=") => {
+                let value = value.trim_start_matches("--scope=");
+                scope = parse_known_scope(value)?;
+            }
+            value if value.starts_with("--client=") => {
+                client_filters.insert(normalize_client_filter(
+                    value.trim_start_matches("--client="),
+                ));
+            }
+            value if value.starts_with('-') => {
+                return Err(format!("unknown flag: {value}"));
+            }
+            value => return Err(format!("unexpected extra argument: {value}")),
+        }
+    }
+
+    Ok(ScanKnownArgs {
+        format_override,
+        scope,
+        client_filters,
+    })
 }
 
 pub fn parse_scan_args(args: impl Iterator<Item = String>) -> Result<ScanArgs, String> {
@@ -106,9 +161,25 @@ fn parse_output_format(value: &str) -> Result<OutputFormat, String> {
     }
 }
 
+fn parse_known_scope(value: &str) -> Result<KnownScope, String> {
+    match value {
+        "project" => Ok(KnownScope::Project),
+        "global" => Ok(KnownScope::Global),
+        "both" => Ok(KnownScope::Both),
+        other => Err(format!("unsupported --scope value: {other}")),
+    }
+}
+
+fn normalize_client_filter(value: &str) -> String {
+    value.trim().to_ascii_lowercase()
+}
+
 #[cfg(test)]
 mod tests {
-    use super::{parse_explain_config_args, parse_fix_args, parse_scan_args};
+    use super::{
+        parse_explain_config_args, parse_fix_args, parse_scan_args, parse_scan_known_args,
+    };
+    use crate::known_scan::KnownScope;
     use lintai_engine::OutputFormat;
 
     #[test]
@@ -119,8 +190,35 @@ mod tests {
     }
 
     #[test]
+    fn scan_known_defaults_to_both_scope() {
+        let parsed = parse_scan_known_args(std::iter::empty()).unwrap();
+        assert_eq!(parsed.format_override, None);
+        assert_eq!(parsed.scope, KnownScope::Both);
+        assert!(parsed.client_filters.is_empty());
+    }
+
+    #[test]
+    fn scan_known_parses_scope_and_repeated_client_filters() {
+        let parsed = parse_scan_known_args(
+            ["--scope=global", "--client", "Cursor", "--client=codex"]
+                .into_iter()
+                .map(str::to_owned),
+        )
+        .unwrap();
+        assert_eq!(parsed.scope, KnownScope::Global);
+        assert!(parsed.client_filters.contains("cursor"));
+        assert!(parsed.client_filters.contains("codex"));
+    }
+
+    #[test]
     fn scan_rejects_extra_positional_argument() {
         let error = parse_scan_args(["docs", "other"].into_iter().map(str::to_owned)).unwrap_err();
+        assert!(error.contains("unexpected extra argument"));
+    }
+
+    #[test]
+    fn scan_known_rejects_extra_positional_argument() {
+        let error = parse_scan_known_args(["project"].into_iter().map(str::to_owned)).unwrap_err();
         assert!(error.contains("unexpected extra argument"));
     }
 

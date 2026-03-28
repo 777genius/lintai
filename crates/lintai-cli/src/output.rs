@@ -2,10 +2,12 @@ use std::path::Path;
 
 use lintai_api::Finding;
 use lintai_engine::{
-    DiagnosticSeverity, RuntimeErrorKind, ScanDiagnostic, ScanRuntimeError, ScanSummary,
-    normalize_path_string,
+    normalize_path_string, DiagnosticSeverity, RuntimeErrorKind, ScanDiagnostic, ScanRuntimeError,
+    ScanSummary,
 };
 use serde::Serialize;
+
+use crate::known_scan::{DiscoveredRoot, DiscoveryStats};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct ReportEnvelope<'a> {
@@ -13,6 +15,10 @@ pub struct ReportEnvelope<'a> {
     pub tool: ToolMetadata<'a>,
     pub config_source: Option<String>,
     pub project_root: Option<String>,
+    #[serde(skip_serializing_if = "Vec::is_empty", default)]
+    pub discovered_roots: Vec<DiscoveredRoot>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub discovery_stats: Option<DiscoveryStats>,
     pub stats: ReportStats,
     pub findings: &'a [Finding],
     pub diagnostics: &'a [ScanDiagnostic],
@@ -35,11 +41,23 @@ pub fn build_envelope<'a>(
     config_source: Option<&Path>,
     project_root: Option<&Path>,
 ) -> ReportEnvelope<'a> {
+    build_envelope_with_discovery(summary, config_source, project_root, Vec::new(), None)
+}
+
+pub fn build_envelope_with_discovery<'a>(
+    summary: &'a ScanSummary,
+    config_source: Option<&Path>,
+    project_root: Option<&Path>,
+    discovered_roots: Vec<DiscoveredRoot>,
+    discovery_stats: Option<DiscoveryStats>,
+) -> ReportEnvelope<'a> {
     ReportEnvelope {
         schema_version: 1,
         tool: ToolMetadata { name: "lintai" },
         config_source: config_source.map(normalize_path_string),
         project_root: project_root.map(normalize_path_string),
+        discovered_roots,
+        discovery_stats,
         stats: ReportStats {
             scanned_files: summary.scanned_files,
             skipped_files: summary.skipped_files,
@@ -52,14 +70,43 @@ pub fn build_envelope<'a>(
 
 pub fn format_text(report: &ReportEnvelope<'_>) -> String {
     let mut output = String::new();
-    output.push_str(&format!(
-        "scanned {} file(s), skipped {} file(s), found {} finding(s), {} diagnostic(s), {} runtime error(s)\n",
-        report.stats.scanned_files,
-        report.stats.skipped_files,
-        report.findings.len(),
-        report.diagnostics.len(),
-        report.runtime_errors.len()
-    ));
+    if let Some(discovery_stats) = &report.discovery_stats {
+        output.push_str(&format!(
+            "discovered {} root(s), lintable {} root(s), discovered-only {} root(s), scanned {} supported artifact(s), non-target {} file(s), found {} finding(s), {} diagnostic(s), {} runtime error(s)\n",
+            report.discovered_roots.len(),
+            discovery_stats.lintable_roots,
+            discovery_stats.discovered_only_roots,
+            discovery_stats.supported_artifacts_scanned,
+            discovery_stats.non_target_total(),
+            report.findings.len(),
+            report.diagnostics.len(),
+            report.runtime_errors.len()
+        ));
+        output.push_str(&format!(
+            "discovery counters: non_target={} excluded={} binary={} unreadable={} unrecognized={}\n",
+            discovery_stats.non_target_files_in_lintable_roots,
+            discovery_stats.excluded_files,
+            discovery_stats.binary_files,
+            discovery_stats.unreadable_files,
+            discovery_stats.unrecognized_files,
+        ));
+    } else {
+        output.push_str(&format!(
+            "scanned {} file(s), skipped {} file(s), found {} finding(s), {} diagnostic(s), {} runtime error(s)\n",
+            report.stats.scanned_files,
+            report.stats.skipped_files,
+            report.findings.len(),
+            report.diagnostics.len(),
+            report.runtime_errors.len()
+        ));
+    }
+
+    for root in &report.discovered_roots {
+        output.push_str(&format!(
+            "root [{} {}] {} {} {}\n",
+            root.scope, root.mode, root.client, root.surface, root.path
+        ));
+    }
 
     for finding in report.findings {
         output.push_str(&format!(
@@ -224,7 +271,8 @@ fn sarif_level(severity: lintai_api::Severity) -> &'static str {
 
 #[cfg(test)]
 mod tests {
-    use super::{ReportStats, ToolMetadata, format_json, format_sarif};
+    use super::{format_json, format_sarif, ReportStats, ToolMetadata};
+    use crate::known_scan::{DiscoveredRoot, DiscoveryStats};
 
     #[test]
     fn sarif_output_contains_stable_fingerprint() {
@@ -245,6 +293,8 @@ mod tests {
             tool: ToolMetadata { name: "lintai" },
             config_source: None,
             project_root: None,
+            discovered_roots: Vec::new(),
+            discovery_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 0,
@@ -267,6 +317,8 @@ mod tests {
             tool: ToolMetadata { name: "lintai" },
             config_source: None,
             project_root: None,
+            discovered_roots: Vec::new(),
+            discovery_stats: None,
             stats: ReportStats {
                 scanned_files: 0,
                 skipped_files: 0,
@@ -303,6 +355,8 @@ mod tests {
             tool: ToolMetadata { name: "lintai" },
             config_source: None,
             project_root: None,
+            discovered_roots: Vec::new(),
+            discovery_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 0,
@@ -345,6 +399,8 @@ mod tests {
             tool: ToolMetadata { name: "lintai" },
             config_source: None,
             project_root: None,
+            discovered_roots: Vec::new(),
+            discovery_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 0,
@@ -374,6 +430,8 @@ mod tests {
             tool: ToolMetadata { name: "lintai" },
             config_source: None,
             project_root: None,
+            discovered_roots: Vec::new(),
+            discovery_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 0,
@@ -402,6 +460,8 @@ mod tests {
             tool: ToolMetadata { name: "lintai" },
             config_source: None,
             project_root: None,
+            discovered_roots: Vec::new(),
+            discovery_stats: None,
             stats: ReportStats {
                 scanned_files: 1,
                 skipped_files: 0,
@@ -415,5 +475,44 @@ mod tests {
         assert!(text.contains("1 diagnostic(s), 0 runtime error(s)"));
         assert!(text.contains("diagnostic [warn] SKILL.md"));
         assert!(!text.contains("error [parse]"));
+    }
+
+    #[test]
+    fn text_output_renders_known_scan_summary_with_modes() {
+        let report = super::ReportEnvelope {
+            schema_version: 1,
+            tool: ToolMetadata { name: "lintai" },
+            config_source: None,
+            project_root: None,
+            discovered_roots: vec![DiscoveredRoot {
+                client: "cursor".to_owned(),
+                scope: "global".to_owned(),
+                surface: "mcp".to_owned(),
+                path: "/tmp/.cursor/mcp.json".to_owned(),
+                mode: "lintable".to_owned(),
+            }],
+            discovery_stats: Some(DiscoveryStats {
+                lintable_roots: 1,
+                discovered_only_roots: 0,
+                supported_artifacts_scanned: 1,
+                non_target_files_in_lintable_roots: 2,
+                excluded_files: 3,
+                binary_files: 0,
+                unreadable_files: 1,
+                unrecognized_files: 2,
+            }),
+            stats: ReportStats {
+                scanned_files: 1,
+                skipped_files: 6,
+            },
+            findings: &[],
+            diagnostics: &[],
+            runtime_errors: &[],
+        };
+
+        let text = super::format_text(&report);
+        assert!(text.contains("discovered 1 root(s), lintable 1 root(s)"));
+        assert!(text.contains("discovery counters: non_target=2 excluded=3"));
+        assert!(text.contains("root [global lintable] cursor mcp /tmp/.cursor/mcp.json"));
     }
 }

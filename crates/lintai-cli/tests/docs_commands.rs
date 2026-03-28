@@ -319,6 +319,7 @@ fn assert_fix_preview_output(case: &CommandCase, stdout: &str) {
 fn assert_help_output(case: &CommandCase, stdout: &str) {
     for expected in [
         "lintai scan [path]",
+        "lintai scan-known [--scope=project|global|both] [--client NAME]",
         "lintai fix [path] [--apply] [--rule CODE]",
         "lintai explain-config <file>",
         "lintai config-schema",

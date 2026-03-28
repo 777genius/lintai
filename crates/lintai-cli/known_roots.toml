@@ -1,0 +1,501 @@
+[[surface]]
+client_id = "cursor"
+surface_id = "skills"
+scope = "project"
+path_template = "{project_root}/.cursor/skills"
+artifact_mode = "lintable"
+artifact_kind_hint = "skill"
+notes = "Cursor project skills directory."
+
+[[surface]]
+client_id = "cursor"
+surface_id = "mcp"
+scope = "project"
+path_template = "{project_root}/.cursor/mcp.json"
+artifact_mode = "lintable"
+artifact_kind_hint = "mcp_config"
+notes = "Cursor project MCP config."
+
+[[surface]]
+client_id = "cursor"
+surface_id = "rules"
+scope = "project"
+path_template = "{project_root}/.cursor/rules"
+artifact_mode = "lintable"
+artifact_kind_hint = "cursor_rules"
+notes = "Cursor project rules directory."
+
+[[surface]]
+client_id = "cursor"
+surface_id = "legacy-rules"
+scope = "project"
+path_template = "{project_root}/.cursorrules"
+artifact_mode = "lintable"
+artifact_kind_hint = "cursor_rules"
+notes = "Legacy Cursor rules file."
+
+[[surface]]
+client_id = "cursor"
+surface_id = "plugin-manifest"
+scope = "project"
+path_template = "{project_root}/.cursor-plugin/plugin.json"
+artifact_mode = "lintable"
+artifact_kind_hint = "cursor_plugin_manifest"
+notes = "Cursor plugin manifest."
+
+[[surface]]
+client_id = "cursor"
+surface_id = "plugin-hooks-json"
+scope = "project"
+path_template = "{project_root}/.cursor-plugin/hooks.json"
+artifact_mode = "lintable"
+artifact_kind_hint = "cursor_plugin_hooks"
+notes = "Cursor plugin hooks metadata."
+
+[[surface]]
+client_id = "cursor"
+surface_id = "plugin-hooks"
+scope = "project"
+path_template = "{project_root}/.cursor-plugin/hooks"
+artifact_mode = "lintable"
+artifact_kind_hint = "cursor_hook_script"
+notes = "Cursor plugin hook scripts."
+
+[[surface]]
+client_id = "cursor"
+surface_id = "plugin-commands"
+scope = "project"
+path_template = "{project_root}/.cursor-plugin/commands"
+artifact_mode = "lintable"
+artifact_kind_hint = "cursor_plugin_command"
+notes = "Cursor plugin markdown commands."
+
+[[surface]]
+client_id = "cursor"
+surface_id = "plugin-agents"
+scope = "project"
+path_template = "{project_root}/.cursor-plugin/agents"
+artifact_mode = "lintable"
+artifact_kind_hint = "cursor_plugin_agent"
+notes = "Cursor plugin markdown agents."
+
+[[surface]]
+client_id = "cursor"
+surface_id = "skills"
+scope = "global"
+path_template = "{home}/.cursor/skills"
+artifact_mode = "lintable"
+artifact_kind_hint = "skill"
+notes = "Cursor user skills directory."
+
+[[surface]]
+client_id = "cursor"
+surface_id = "mcp"
+scope = "global"
+path_template = "{home}/.cursor/mcp.json"
+artifact_mode = "lintable"
+artifact_kind_hint = "mcp_config"
+notes = "Cursor user MCP config."
+
+[[surface]]
+client_id = "cursor"
+surface_id = "rules"
+scope = "global"
+path_template = "{home}/.cursor/rules"
+artifact_mode = "lintable"
+artifact_kind_hint = "cursor_rules"
+notes = "Cursor user rules directory."
+
+[[surface]]
+client_id = "claude-code"
+surface_id = "skills"
+scope = "project"
+path_template = "{project_root}/.claude/skills"
+artifact_mode = "lintable"
+artifact_kind_hint = "skill"
+notes = "Claude Code project skills."
+
+[[surface]]
+client_id = "claude-code"
+surface_id = "plugin-root"
+scope = "project"
+path_template = "{project_root}/.claude-plugin"
+artifact_mode = "discovered_only"
+notes = "Claude Code plugin root; current lintai release does not parse it yet."
+
+[[surface]]
+client_id = "claude-code"
+surface_id = "skills"
+scope = "global"
+path_template = "{home}/.claude/skills"
+artifact_mode = "lintable"
+artifact_kind_hint = "skill"
+notes = "Claude Code user skills."
+
+[[surface]]
+client_id = "claude-desktop"
+surface_id = "desktop-config"
+scope = "global"
+path_template = "{home}/Library/Application Support/Claude/claude_desktop_config.json"
+artifact_mode = "discovered_only"
+notes = "Claude Desktop config path on macOS."
+
+[[surface]]
+client_id = "codex"
+surface_id = "agents-skills"
+scope = "project"
+path_template = "{project_root}/.agents/skills"
+artifact_mode = "lintable"
+artifact_kind_hint = "skill"
+notes = "Codex-compatible project skills."
+
+[[surface]]
+client_id = "codex"
+surface_id = "codex-skills"
+scope = "project"
+path_template = "{project_root}/.codex/skills"
+artifact_mode = "lintable"
+artifact_kind_hint = "skill"
+notes = "Codex project skills."
+
+[[surface]]
+client_id = "codex"
+surface_id = "generic-mcp"
+scope = "project"
+path_template = "{project_root}/mcp.json"
+artifact_mode = "lintable"
+artifact_kind_hint = "mcp_config"
+notes = "Generic project-local MCP config."
+
+[[surface]]
+client_id = "codex"
+surface_id = "agents-skills"
+scope = "global"
+path_template = "{home}/.agents/skills"
+artifact_mode = "lintable"
+artifact_kind_hint = "skill"
+notes = "Codex-compatible user skills."
+
+[[surface]]
+client_id = "codex"
+surface_id = "codex-skills"
+scope = "global"
+path_template = "{home}/.codex/skills"
+artifact_mode = "lintable"
+artifact_kind_hint = "skill"
+notes = "Codex user skills."
+
+[[surface]]
+client_id = "opencode"
+surface_id = "skills"
+scope = "project"
+path_template = "{project_root}/.opencode/skills"
+artifact_mode = "lintable"
+artifact_kind_hint = "skill"
+notes = "OpenCode project skills."
+
+[[surface]]
+client_id = "opencode"
+surface_id = "config"
+scope = "project"
+path_template = "{project_root}/opencode.json"
+artifact_mode = "discovered_only"
+notes = "OpenCode project config."
+
+[[surface]]
+client_id = "opencode"
+surface_id = "skills"
+scope = "global"
+path_template = "{xdg_config_home}/opencode/skills"
+artifact_mode = "lintable"
+artifact_kind_hint = "skill"
+notes = "OpenCode user skills."
+
+[[surface]]
+client_id = "opencode"
+surface_id = "config"
+scope = "global"
+path_template = "{xdg_config_home}/opencode/opencode.json"
+artifact_mode = "discovered_only"
+notes = "OpenCode user config."
+
+[[surface]]
+client_id = "windsurf"
+surface_id = "skills"
+scope = "project"
+path_template = "{project_root}/.windsurf/skills"
+artifact_mode = "lintable"
+artifact_kind_hint = "skill"
+notes = "Windsurf project skills."
+
+[[surface]]
+client_id = "windsurf"
+surface_id = "rules"
+scope = "project"
+path_template = "{project_root}/.windsurfrules"
+artifact_mode = "discovered_only"
+notes = "Windsurf rules file."
+
+[[surface]]
+client_id = "windsurf"
+surface_id = "skills"
+scope = "global"
+path_template = "{home}/.codeium/windsurf/skills"
+artifact_mode = "lintable"
+artifact_kind_hint = "skill"
+notes = "Windsurf user skills."
+
+[[surface]]
+client_id = "windsurf"
+surface_id = "mcp-config"
+scope = "global"
+path_template = "{home}/.codeium/windsurf/mcp_config.json"
+artifact_mode = "discovered_only"
+notes = "Windsurf global MCP config."
+
+[[surface]]
+client_id = "junie"
+surface_id = "skills"
+scope = "project"
+path_template = "{project_root}/.junie/skills"
+artifact_mode = "lintable"
+artifact_kind_hint = "skill"
+notes = "Junie project skills."
+
+[[surface]]
+client_id = "junie"
+surface_id = "agents"
+scope = "project"
+path_template = "{project_root}/.junie/agents"
+artifact_mode = "discovered_only"
+notes = "Junie project agents."
+
+[[surface]]
+client_id = "junie"
+surface_id = "guidelines"
+scope = "project"
+path_template = "{project_root}/.junie/guidelines.md"
+artifact_mode = "discovered_only"
+notes = "Junie project guidelines."
+
+[[surface]]
+client_id = "junie"
+surface_id = "skills"
+scope = "global"
+path_template = "{home}/.junie/skills"
+artifact_mode = "lintable"
+artifact_kind_hint = "skill"
+notes = "Junie user skills."
+
+[[surface]]
+client_id = "junie"
+surface_id = "agents"
+scope = "global"
+path_template = "{home}/.junie/agents"
+artifact_mode = "discovered_only"
+notes = "Junie user agents."
+
+[[surface]]
+client_id = "vs-code-copilot"
+surface_id = "workspace-mcp"
+scope = "project"
+path_template = "{project_root}/.vscode/mcp.json"
+artifact_mode = "lintable"
+artifact_kind_hint = "mcp_config"
+notes = "VS Code workspace MCP config."
+
+[[surface]]
+client_id = "vs-code-copilot"
+surface_id = "copilot-instructions"
+scope = "project"
+path_template = "{project_root}/.github/copilot-instructions.md"
+artifact_mode = "discovered_only"
+notes = "GitHub Copilot instructions file."
+
+[[surface]]
+client_id = "vs-code-copilot"
+surface_id = "user-mcp"
+scope = "global"
+path_template = "{home}/Library/Application Support/Code/User/mcp.json"
+artifact_mode = "lintable"
+artifact_kind_hint = "mcp_config"
+notes = "VS Code user MCP config on macOS."
+
+[[surface]]
+client_id = "continue"
+surface_id = "workspace-config"
+scope = "project"
+path_template = "{project_root}/.continuerc.json"
+artifact_mode = "discovered_only"
+notes = "Continue workspace config."
+
+[[surface]]
+client_id = "continue"
+surface_id = "config-yaml"
+scope = "global"
+path_template = "{home}/.continue/config.yaml"
+artifact_mode = "discovered_only"
+notes = "Continue primary config."
+
+[[surface]]
+client_id = "continue"
+surface_id = "rules"
+scope = "global"
+path_template = "{home}/.continue/rules"
+artifact_mode = "discovered_only"
+notes = "Continue rules directory."
+
+[[surface]]
+client_id = "continue"
+surface_id = "mcp-servers"
+scope = "global"
+path_template = "{home}/.continue/mcpServers"
+artifact_mode = "discovered_only"
+notes = "Continue MCP servers directory."
+
+[[surface]]
+client_id = "gemini-cli"
+surface_id = "settings"
+scope = "project"
+path_template = "{project_root}/.gemini/settings.json"
+artifact_mode = "discovered_only"
+notes = "Gemini CLI project settings."
+
+[[surface]]
+client_id = "gemini-cli"
+surface_id = "settings"
+scope = "global"
+path_template = "{home}/.gemini/settings.json"
+artifact_mode = "discovered_only"
+notes = "Gemini CLI user settings."
+
+[[surface]]
+client_id = "kiro"
+surface_id = "project-mcp"
+scope = "project"
+path_template = "{project_root}/.kiro/settings/mcp.json"
+artifact_mode = "lintable"
+artifact_kind_hint = "mcp_config"
+notes = "Kiro project MCP config."
+
+[[surface]]
+client_id = "kiro"
+surface_id = "project-agents"
+scope = "project"
+path_template = "{project_root}/.kiro/agents"
+artifact_mode = "discovered_only"
+notes = "Kiro project agents."
+
+[[surface]]
+client_id = "kiro"
+surface_id = "global-mcp"
+scope = "global"
+path_template = "{home}/.kiro/settings/mcp.json"
+artifact_mode = "lintable"
+artifact_kind_hint = "mcp_config"
+notes = "Kiro user MCP config."
+
+[[surface]]
+client_id = "kiro"
+surface_id = "global-agents"
+scope = "global"
+path_template = "{home}/.kiro/agents"
+artifact_mode = "discovered_only"
+notes = "Kiro user agents."
+
+[[surface]]
+client_id = "amazon-q"
+surface_id = "project-mcp"
+scope = "project"
+path_template = "{project_root}/.amazonq/mcp.json"
+artifact_mode = "lintable"
+artifact_kind_hint = "mcp_config"
+notes = "Amazon Q project MCP config."
+
+[[surface]]
+client_id = "amazon-q"
+surface_id = "project-agents"
+scope = "project"
+path_template = "{project_root}/.amazonq/cli-agents"
+artifact_mode = "discovered_only"
+notes = "Amazon Q project CLI agents."
+
+[[surface]]
+client_id = "amazon-q"
+surface_id = "global-agents"
+scope = "global"
+path_template = "{home}/.aws/amazonq/cli-agents"
+artifact_mode = "discovered_only"
+notes = "Amazon Q user CLI agents."
+
+[[surface]]
+client_id = "amazon-q"
+surface_id = "profiles"
+scope = "global"
+path_template = "{home}/.aws/amazonq/profiles"
+artifact_mode = "discovered_only"
+notes = "Amazon Q profiles."
+
+[[surface]]
+client_id = "roo"
+surface_id = "rules"
+scope = "project"
+path_template = "{project_root}/.roo/rules"
+artifact_mode = "discovered_only"
+notes = "Roo project rules."
+
+[[surface]]
+client_id = "roo"
+surface_id = "rules"
+scope = "global"
+path_template = "{home}/.roo/rules"
+artifact_mode = "discovered_only"
+notes = "Roo user rules."
+
+[[surface]]
+client_id = "cline"
+surface_id = "rules"
+scope = "project"
+path_template = "{project_root}/.clinerules"
+artifact_mode = "discovered_only"
+notes = "Cline rules file."
+
+[[surface]]
+client_id = "zed"
+surface_id = "rules"
+scope = "project"
+path_template = "{project_root}/.rules"
+artifact_mode = "discovered_only"
+notes = "Zed rules file."
+
+[[surface]]
+client_id = "goose"
+surface_id = "goosehints"
+scope = "project"
+path_template = "{project_root}/.goosehints"
+artifact_mode = "discovered_only"
+notes = "Goose project hints."
+
+[[surface]]
+client_id = "goose"
+surface_id = "config"
+scope = "global"
+path_template = "{xdg_config_home}/goose/config.yaml"
+artifact_mode = "discovered_only"
+notes = "Goose config."
+
+[[surface]]
+client_id = "aider"
+surface_id = "config"
+scope = "global"
+path_template = "{home}/.aider.conf.yml"
+artifact_mode = "discovered_only"
+notes = "Aider config."
+
+[[surface]]
+client_id = "amp"
+surface_id = "agent-md"
+scope = "project"
+path_template = "{project_root}/AGENT.md"
+artifact_mode = "discovered_only"
+notes = "Amp often uses AGENT.md, but lintai does not parse this surface yet."

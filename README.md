@@ -58,6 +58,7 @@ The public beta CLI is distributed through GitHub Releases only in this phase.
 lintai help
 lintai config-schema
 lintai scan .
+lintai scan-known --scope=both
 ```
 
 `lintai-api` remains the only stable publishable crate. This beta does not yet promise Homebrew, npm, or `cargo install` distribution for the CLI.
@@ -80,6 +81,7 @@ Repo-root commands that are always truthful from this repository:
 ```bash
 cargo run -- help
 cargo run -- config-schema
+cargo run -- scan-known --scope=both
 ```
 
 End-to-end scan examples are intentionally documented against the checked-in sample repos, because config resolution is based on the working directory.
@@ -150,8 +152,62 @@ cargo run --manifest-path ../../../Cargo.toml -- fix .
 ## Exit Codes
 
 - `scan`: `0` means no blocking findings, `1` means blocking findings were emitted
+- `scan-known`: `0` means no blocking findings across discovered known roots, `1` means at least one discovered root emitted a blocking finding
 - `fix`: `0` means fixes were previewed or applied successfully, `1` means one or more selected fixes were skipped safely
 - `2`: execution or configuration error
+
+## Known Roots Scan
+
+`scan-known` is the first ecosystem-oriented orchestration command. It does not broaden the parser/rule contract by itself; instead it auto-discovers the **currently supported** artifact surfaces in common client locations and scans only the roots that actually exist.
+
+Current coverage in this command:
+
+- `lintable` roots: client paths that resolve to existing `lintai` artifact kinds today, such as `SKILL.md`, `mcp.json`, `.mdc`, `.cursorrules`, and Cursor plugin surfaces
+- `discovered_only` roots: known client paths that `scan-known` can inventory honestly today, but that do not yet map to current `lintai` parser/rule coverage
+
+Examples:
+
+```bash
+lintai scan-known --scope=global
+lintai scan-known --scope=both --client=cursor
+lintai scan-known --client=codex --format=json
+```
+
+### Support Matrix
+
+`scan-known` now reports client paths through a simple support matrix:
+
+| State | Meaning |
+|------|---------|
+| `root discovered` | A manifest path exists on disk and is reported in `discovered_roots[]`. |
+| `surface recognized` | Files under that root currently map to existing `lintai` artifact kinds. |
+| `rules available` | Current providers can emit real findings for those recognized artifacts. |
+
+Practical interpretation:
+
+- `lintable` means `root discovered` + `surface recognized` + `rules available`
+- `discovered_only` means `root discovered`, but `surface recognized` and `rules available` are not claimed yet
+
+The checked-in manifest currently includes registry coverage for:
+
+- Cursor
+- Claude Code
+- Claude Desktop
+- Codex
+- OpenCode
+- Windsurf
+- Junie
+- VS Code / Copilot
+- Continue
+- Gemini CLI
+- Kiro
+- Amazon Q
+- Roo
+- Cline
+- Zed
+- Goose
+- Aider
+- Amp
 
 ## Sample Repos
 
@@ -207,4 +263,4 @@ format = "markdown"
 
 ## Current Non-Goals
 
-`lintai` does not yet attempt broad multi-platform coverage, WASM/plugin runtime, registry scanning, or LSP workflows.
+`lintai` does not yet attempt broad multi-platform semantic coverage, WASM/plugin runtime, registry scanning, or LSP workflows.
