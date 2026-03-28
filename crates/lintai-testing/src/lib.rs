@@ -614,7 +614,7 @@ fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
     match rule_code {
         "SEC201" | "SEC202" | "SEC203" | "SEC204" | "SEC205" | "SEC206" | "SEC301" | "SEC302"
         | "SEC303" | "SEC304" | "SEC305" | "SEC309" | "SEC310" | "SEC311" | "SEC312" | "SEC314"
-        | "SEC315" | "SEC316" | "SEC317" | "SEC318" => Some(RuleTier::Stable),
+        | "SEC315" | "SEC316" | "SEC317" | "SEC318" | "SEC319" | "SEC320" => Some(RuleTier::Stable),
         "SEC101" | "SEC102" | "SEC103" | "SEC104" | "SEC105" | "SEC306" | "SEC307" | "SEC308"
         | "SEC313" | "SEC401" | "SEC402" | "SEC403" => Some(RuleTier::Preview),
         _ => None,
@@ -638,6 +638,7 @@ fn fixture_path_for(artifact_kind: ArtifactKind, format: SourceFormat) -> &'stat
         (ArtifactKind::Instructions, SourceFormat::Markdown) => Path::new("CLAUDE.md"),
         (ArtifactKind::CursorRules, SourceFormat::Markdown) => Path::new("rules.mdc"),
         (ArtifactKind::McpConfig, SourceFormat::Json) => Path::new("mcp.json"),
+        (ArtifactKind::ServerRegistryConfig, SourceFormat::Json) => Path::new("server.json"),
         (ArtifactKind::ToolDescriptorJson, SourceFormat::Json) => {
             Path::new("pkg/mcp/toolsets-full-tools.json")
         }

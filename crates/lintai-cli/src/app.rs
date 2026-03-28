@@ -5,8 +5,8 @@ use std::process::ExitCode;
 
 use lintai_api::{Applicability, Finding};
 use lintai_engine::{
-    explain_file_config, load_workspace_config, Engine, EngineConfig, FileSuppressions,
-    OutputFormat, ResolvedFileConfig, WorkspaceConfig,
+    Engine, EngineConfig, FileSuppressions, OutputFormat, ResolvedFileConfig, WorkspaceConfig,
+    explain_file_config, load_workspace_config,
 };
 use lintai_fix::{apply_planned_fixes, plan_fixes};
 
@@ -15,9 +15,9 @@ use crate::args::{
 };
 use crate::builtin_providers::{product_provider_set, run_provider_runner};
 use crate::known_scan::{
-    absolute_base_for_scan, discover_known_roots, inventory_lintable_root,
-    merge_summary_with_absolute_paths, workspace_for_known_root, ArtifactMode, DiscoveredRoot,
-    DiscoveryStats, KnownRootScope,
+    ArtifactMode, DiscoveredRoot, DiscoveryStats, KnownRootScope, absolute_base_for_scan,
+    discover_known_roots, inventory_lintable_root, merge_summary_with_absolute_paths,
+    workspace_for_known_root,
 };
 use crate::{output, path::validate_path_within_project};
 

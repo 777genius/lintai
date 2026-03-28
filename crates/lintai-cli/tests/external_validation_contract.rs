@@ -12,7 +12,13 @@ fn parse_toml(path: &str) -> toml::Value {
             include_str!("../../../validation/external-repos-tool-json/ledger.toml")
         }
         "tool_json_archive" => {
-            include_str!("../../../validation/external-repos-tool-json/archive/wave1-ledger.toml")
+            include_str!("../../../validation/external-repos-tool-json/archive/wave2-ledger.toml")
+        }
+        "server_json_shortlist" => {
+            include_str!("../../../validation/external-repos-server-json/repo-shortlist.toml")
+        }
+        "server_json_ledger" => {
+            include_str!("../../../validation/external-repos-server-json/ledger.toml")
         }
         _ => unreachable!(),
     };
@@ -111,6 +117,12 @@ fn external_validation_docs_are_linked_from_index() {
 
     assert!(text.contains("[EXTERNAL_VALIDATION_PLAN.md](EXTERNAL_VALIDATION_PLAN.md)"));
     assert!(text.contains("[EXTERNAL_VALIDATION_REPORT.md](EXTERNAL_VALIDATION_REPORT.md)"));
+    assert!(text.contains(
+        "[EXTERNAL_VALIDATION_TOOL_JSON_REPORT.md](EXTERNAL_VALIDATION_TOOL_JSON_REPORT.md)"
+    ));
+    assert!(text.contains(
+        "[EXTERNAL_VALIDATION_SERVER_JSON_REPORT.md](EXTERNAL_VALIDATION_SERVER_JSON_REPORT.md)"
+    ));
 }
 
 #[test]
@@ -174,8 +186,8 @@ fn tool_json_extension_shortlist_has_expected_shape() {
     let cohort = value["cohort"].as_table().expect("cohort table");
 
     assert_eq!(value["version"].as_integer(), Some(1));
-    assert_eq!(cohort["total"].as_integer(), Some(9));
-    assert_eq!(repos.len(), 9);
+    assert_eq!(cohort["total"].as_integer(), Some(8));
+    assert_eq!(repos.len(), 8);
 
     for repo in repos {
         assert_eq!(repo["category"].as_str(), Some("tool_json"));
@@ -215,12 +227,12 @@ fn tool_json_extension_ledger_matches_shortlist_and_wave_marker() {
     let ledger = parse_toml("tool_json_ledger");
     let archive = parse_toml("tool_json_archive");
 
-    assert_eq!(ledger["wave"].as_integer(), Some(2));
+    assert_eq!(ledger["wave"].as_integer(), Some(3));
     assert_eq!(
         ledger["baseline"].as_str(),
-        Some("archive/wave1-ledger.toml")
+        Some("archive/wave2-ledger.toml")
     );
-    assert_eq!(archive["wave"].as_integer(), Some(1));
+    assert_eq!(archive["wave"].as_integer(), Some(2));
 
     let shortlist_repos: BTreeSet<_> = shortlist["repos"]
         .as_array()
@@ -258,4 +270,78 @@ fn tool_json_extension_report_has_required_sections() {
     assert!(report.contains("admitted repo set changes:"));
     assert!(report.contains("admission-path issue"));
     assert!(report.contains("non-admission-path issue"));
+}
+
+#[test]
+fn server_json_extension_shortlist_has_expected_shape() {
+    let value = parse_toml("server_json_shortlist");
+    let repos = value["repos"].as_array().expect("repos array");
+    let cohort = value["cohort"].as_table().expect("cohort table");
+
+    assert_eq!(value["version"].as_integer(), Some(1));
+    assert_eq!(cohort["total"].as_integer(), Some(12));
+    assert_eq!(repos.len(), 12);
+
+    let stress = repos
+        .iter()
+        .filter(|repo| repo["subtype"].as_str() == Some("stress"))
+        .count();
+    let control = repos
+        .iter()
+        .filter(|repo| repo["subtype"].as_str() == Some("control"))
+        .count();
+
+    assert_eq!(stress, 8);
+    assert_eq!(control, 4);
+
+    for repo in repos {
+        assert_eq!(repo["category"].as_str(), Some("server_json"));
+        assert_eq!(repo["status"].as_str(), Some("evaluated"));
+        assert_eq!(
+            repo["surfaces_present"].as_array().unwrap(),
+            &vec![toml::Value::String("server.json".to_owned())]
+        );
+        assert!(
+            !repo["admission_paths"].as_array().unwrap().is_empty(),
+            "server-json extension repos must record admitted semantic-confirmed paths"
+        );
+    }
+}
+
+#[test]
+fn server_json_extension_ledger_matches_shortlist() {
+    let shortlist = parse_toml("server_json_shortlist");
+    let ledger = parse_toml("server_json_ledger");
+
+    assert_eq!(ledger["wave"].as_integer(), Some(1));
+    assert!(ledger.get("baseline").is_none());
+
+    let shortlist_repos: BTreeSet<_> = shortlist["repos"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|repo| repo["repo"].as_str().unwrap())
+        .collect();
+    let ledger_repos: BTreeSet<_> = ledger["evaluations"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|entry| entry["repo"].as_str().unwrap())
+        .collect();
+
+    assert_eq!(shortlist_repos, ledger_repos);
+}
+
+#[test]
+fn server_json_extension_report_has_required_sections() {
+    let report = include_str!("../../../docs/EXTERNAL_VALIDATION_SERVER_JSON_REPORT.md");
+
+    assert!(report.contains("## Cohort Composition"));
+    assert!(report.contains("## Admission Results"));
+    assert!(report.contains("## Overall Counts"));
+    assert!(report.contains("## Stable Hits"));
+    assert!(report.contains("## Preview Hits"));
+    assert!(report.contains("## Runtime / Diagnostic Notes"));
+    assert!(report.contains("## Recommended Next Step"));
+    assert!(report.contains("stable findings"));
 }

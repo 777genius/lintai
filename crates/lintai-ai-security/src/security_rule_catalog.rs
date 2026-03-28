@@ -224,6 +224,7 @@ fn format_surface(surface: Surface) -> &'static str {
         Surface::Hook => "hook",
         Surface::Json => "json",
         Surface::ToolJson => "tool_json",
+        Surface::ServerJson => "server_json",
         Surface::Workspace => "workspace",
     }
 }

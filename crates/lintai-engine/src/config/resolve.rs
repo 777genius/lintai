@@ -3,8 +3,8 @@ use std::path::Path;
 use crate::normalize::normalize_path;
 
 use super::{
-    EngineConfig, ResolvedFileConfig, WorkspaceConfig, DEFAULT_EXCLUDE_PATTERNS,
-    DEFAULT_INCLUDE_PATTERNS,
+    DEFAULT_EXCLUDE_PATTERNS, DEFAULT_INCLUDE_PATTERNS, EngineConfig, ResolvedFileConfig,
+    WorkspaceConfig,
 };
 
 impl Default for EngineConfig {

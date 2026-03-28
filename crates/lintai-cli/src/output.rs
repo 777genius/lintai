@@ -2,8 +2,8 @@ use std::path::Path;
 
 use lintai_api::Finding;
 use lintai_engine::{
-    normalize_path_string, DiagnosticSeverity, RuntimeErrorKind, ScanDiagnostic, ScanRuntimeError,
-    ScanSummary,
+    DiagnosticSeverity, RuntimeErrorKind, ScanDiagnostic, ScanRuntimeError, ScanSummary,
+    normalize_path_string,
 };
 use serde::Serialize;
 
@@ -271,7 +271,7 @@ fn sarif_level(severity: lintai_api::Severity) -> &'static str {
 
 #[cfg(test)]
 mod tests {
-    use super::{format_json, format_sarif, ReportStats, ToolMetadata};
+    use super::{ReportStats, ToolMetadata, format_json, format_sarif};
     use crate::known_scan::{DiscoveredRoot, DiscoveryStats};
 
     #[test]

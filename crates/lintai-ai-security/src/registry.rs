@@ -19,6 +19,9 @@ use crate::markdown_rules::{
     check_markdown_download_exec, check_markdown_fenced_pipe_shell, check_markdown_path_traversal,
     check_markdown_private_key_pem,
 };
+use crate::server_json_rules::{
+    check_server_json_insecure_remote_url, check_server_json_unresolved_remote_variable,
+};
 use crate::signals::ArtifactSignals;
 use crate::tool_json_rules::{
     check_tool_json_anthropic_strict_locked_input_schema, check_tool_json_duplicate_mcp_tool_names,
@@ -349,6 +352,28 @@ declare_rule! {
     }
 }
 
+declare_rule! {
+    pub struct ServerJsonInsecureRemoteUrlRule {
+        code: "SEC319",
+        summary: "server.json remotes entry uses an insecure or non-public remote URL",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ServerJsonUnresolvedRemoteVariableRule {
+        code: "SEC320",
+        summary: "server.json remotes URL references an undefined template variable",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
 type CheckFn = fn(&ScanContext, &ArtifactSignals, RuleMetadata) -> Vec<Finding>;
 type SafeFixFn = fn(&Finding) -> Fix;
 type SuggestionFixFn = fn(&ScanContext, &Finding) -> Option<Fix>;
@@ -360,6 +385,7 @@ pub(crate) enum Surface {
     Hook,
     Json,
     ToolJson,
+    ServerJson,
     Workspace,
 }
 
@@ -382,6 +408,7 @@ impl Surface {
                     | ArtifactKind::CursorPluginHooks
             ),
             Self::ToolJson => artifact_kind == ArtifactKind::ToolDescriptorJson,
+            Self::ServerJson => artifact_kind == ArtifactKind::ServerRegistryConfig,
             Self::Workspace => false,
         }
     }
@@ -466,7 +493,7 @@ pub(crate) const HEURISTIC_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed pre
 pub(crate) const STRUCTURAL_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.";
 pub(crate) const WORKSPACE_PREVIEW_REQUIREMENTS: &str = "Needs workspace precision review, linked benign/malicious corpus proof, and completed stable checklist metadata.";
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 29] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 31] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -975,6 +1002,44 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 29] = [
         safe_fix: None,
         suggestion_message: Some(
             "lock the Anthropic input_schema with additionalProperties: false on every object node",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ServerJsonInsecureRemoteUrlRule::METADATA,
+        surface: Surface::ServerJson,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks MCP registry remotes[] URLs for insecure HTTP and non-public host literals without inspecting local package transport URLs.",
+            malicious_case_ids: &["server-json-insecure-remote-url"],
+            benign_case_ids: &["server-json-loopback-package-transport-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ServerJsonSignals remotes[] URL analysis limited to streamable-http and sse entries.",
+        },
+        check: check_server_json_insecure_remote_url,
+        safe_fix: None,
+        suggestion_message: Some(
+            "use a public https remote URL or remove the non-public literal from the registry remote entry",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ServerJsonUnresolvedRemoteVariableRule::METADATA,
+        surface: Surface::ServerJson,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks server.json remotes[] URL templates against variables defined on the same remote entry.",
+            malicious_case_ids: &["server-json-unresolved-remote-variable"],
+            benign_case_ids: &["server-json-remote-variable-defined"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ServerJsonSignals placeholder extraction over remotes[] URLs compared with remotes[].variables keys.",
+        },
+        check: check_server_json_unresolved_remote_variable,
+        safe_fix: None,
+        suggestion_message: Some(
+            "define every URL placeholder under remotes[].variables or remove the unresolved placeholder from the remote URL",
         ),
         suggestion_fix: None,
     },

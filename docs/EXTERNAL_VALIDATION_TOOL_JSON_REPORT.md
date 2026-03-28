@@ -1,15 +1,17 @@
 # External Validation Tool JSON Extension Report
 
-> Broader extension wave for `ToolDescriptorJson` usefulness proof after tightening operational-only admission.
-> Source of truth lives in [validation/external-repos-tool-json/repo-shortlist.toml](../validation/external-repos-tool-json/repo-shortlist.toml), current results in [validation/external-repos-tool-json/ledger.toml](../validation/external-repos-tool-json/ledger.toml), and archived wave 1 baseline in [validation/external-repos-tool-json/archive/wave1-ledger.toml](../validation/external-repos-tool-json/archive/wave1-ledger.toml).
+> Wave 3 extension report for `ToolDescriptorJson` usefulness proof after tightening operational-only admission.
+> Source of truth lives in [validation/external-repos-tool-json/repo-shortlist.toml](../validation/external-repos-tool-json/repo-shortlist.toml), current results in [validation/external-repos-tool-json/ledger.toml](../validation/external-repos-tool-json/ledger.toml), and archived wave 2 baseline in [validation/external-repos-tool-json/archive/wave2-ledger.toml](../validation/external-repos-tool-json/archive/wave2-ledger.toml).
 
 ## Cohort Composition
 
-The extension cohort contains `9` public repositories focused on committed non-fixture tool-descriptor JSON. Broader discovery was attempted, but only these repos passed the stricter operational-only admission gate.
+The extension cohort contains `8` public repositories focused on committed non-fixture tool-descriptor JSON.
 
-- `9` `tool_json` repos total
+- `8` `tool_json` repos total
 - `7` `stress` repos
-- `2` `control` repos
+- `1` `control` repos
+
+Broader discovery was attempted, but the target of `18` admitted repos was not reached under the stricter operational-only gate.
 
 ## Admission Results
 
@@ -23,12 +25,11 @@ Admitted repos and their semantic-confirmed non-fixture `ToolDescriptorJson` pat
 - `vapagentmedia/vap-showcase` via `mcp/tools.json`. Committed application-local MCP tool catalog with clear descriptor semantics and no excluded path segments.
 - `masacento/mcp-go-example` via `tools.json`. Committed JSON-RPC tools/list response envelope whose nested result.tools payload contains valid MCP tool descriptors.
 - `marklechner/kali-mcp-server` via `tools.json`. Committed top-level Kali MCP tool catalog with explicit tool descriptors and no excluded path segments.
-- `PRQELT/Autonomix` via `Resources/ToolSchemas/animation_tools.json`, `Resources/ToolSchemas/behaviortree_tools.json`, `Resources/ToolSchemas/blueprint_tools.json`, `Resources/ToolSchemas/build_tools.json`, `Resources/ToolSchemas/context_tools.json`, `Resources/ToolSchemas/cpp_tools.json`, `Resources/ToolSchemas/datatable_tools.json`, `Resources/ToolSchemas/diagnostics_tools.json`, `Resources/ToolSchemas/enhanced_input_tools.json`, `Resources/ToolSchemas/gas_tools.json`, `Resources/ToolSchemas/level_tools.json`, `Resources/ToolSchemas/material_tools.json`, `Resources/ToolSchemas/mesh_tools.json`, `Resources/ToolSchemas/pcg_tools.json`, `Resources/ToolSchemas/performance_tools.json`, `Resources/ToolSchemas/pie_tools.json`, `Resources/ToolSchemas/python_tools.json`, `Resources/ToolSchemas/sequencer_tools.json`, `Resources/ToolSchemas/settings_tools.json`, `Resources/ToolSchemas/sourcecontrol_tools.json`, `Resources/ToolSchemas/task_tools.json`, `Resources/ToolSchemas/validation_tools.json`, `Resources/ToolSchemas/viewport_tools.json`, `Resources/ToolSchemas/widget_tools.json`. Operational Unreal-agent repo with committed tool descriptor JSON stored under non-fixture resource paths that still pass the literal path exclusion gate.
 
 ## Overall Counts
 
-- `9` repos evaluated
-- `32` admitted tool-descriptor paths
+- `8` repos evaluated
+- `8` admitted tool-descriptor paths
 - `0` stable findings
 - `0` preview findings
 - `1` runtime parser errors
@@ -41,9 +42,9 @@ Admitted repos and their semantic-confirmed non-fixture `ToolDescriptorJson` pat
 - runtime parser errors: `1` -> `1`
 - diagnostics: `1` -> `1`
 - admitted repo set changes:
-- added `PRQELT/Autonomix`
-- added `marklechner/kali-mcp-server`
-- added `masacento/mcp-go-example`
+- removed `PRQELT/Autonomix`
+
+- scarcity note: discovery exhausted before reaching the target cohort size of `18`; current admitted count is `8`
 
 ## Stable Hits
 
@@ -64,7 +65,7 @@ Admitted repos and their semantic-confirmed non-fixture `ToolDescriptorJson` pat
 
 - all admitted repos passed the non-fixture path gate
 - no admitted repo would have been excluded for `tests/fixtures/testdata/examples/samples`
-- no admitted repo used exact literal path segments reserved for `docs/schema/spec/contracts`-only material
+- no admitted repo used tokenized path segments reserved for `docs/schema/spec/contracts`-only material
 - no fake `Stable` usefulness signal was introduced from fixture or documentation-only paths
 
 ## Recommended Next Step

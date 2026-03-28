@@ -1,7 +1,7 @@
 version = 1
 
 [cohort]
-total = 9
+total = 8
 category = "tool_json"
 category_semantics = "tool_json means the repo was admitted because it contains committed non-fixture, non-doc-only ToolDescriptorJson artifacts confirmed by semantic classification"
 
@@ -92,39 +92,3 @@ status = "evaluated"
 surfaces_present = ["tool_descriptor_json"]
 admission_paths = ["tools.json"]
 rationale = "Committed top-level Kali MCP tool catalog with explicit tool descriptors and no excluded path segments."
-
-[[repos]]
-repo = "PRQELT/Autonomix"
-url = "https://github.com/PRQELT/Autonomix"
-pinned_ref = "3d1743fd9026f8ae2dad5841acaf1eb86cbd5ad1"
-category = "tool_json"
-subtype = "control"
-status = "evaluated"
-surfaces_present = ["tool_descriptor_json"]
-admission_paths = [
-  "Resources/ToolSchemas/animation_tools.json",
-  "Resources/ToolSchemas/behaviortree_tools.json",
-  "Resources/ToolSchemas/blueprint_tools.json",
-  "Resources/ToolSchemas/build_tools.json",
-  "Resources/ToolSchemas/context_tools.json",
-  "Resources/ToolSchemas/cpp_tools.json",
-  "Resources/ToolSchemas/datatable_tools.json",
-  "Resources/ToolSchemas/diagnostics_tools.json",
-  "Resources/ToolSchemas/enhanced_input_tools.json",
-  "Resources/ToolSchemas/gas_tools.json",
-  "Resources/ToolSchemas/level_tools.json",
-  "Resources/ToolSchemas/material_tools.json",
-  "Resources/ToolSchemas/mesh_tools.json",
-  "Resources/ToolSchemas/pcg_tools.json",
-  "Resources/ToolSchemas/performance_tools.json",
-  "Resources/ToolSchemas/pie_tools.json",
-  "Resources/ToolSchemas/python_tools.json",
-  "Resources/ToolSchemas/sequencer_tools.json",
-  "Resources/ToolSchemas/settings_tools.json",
-  "Resources/ToolSchemas/sourcecontrol_tools.json",
-  "Resources/ToolSchemas/task_tools.json",
-  "Resources/ToolSchemas/validation_tools.json",
-  "Resources/ToolSchemas/viewport_tools.json",
-  "Resources/ToolSchemas/widget_tools.json",
-]
-rationale = "Operational Unreal-agent repo with committed tool descriptor JSON stored under non-fixture resource paths that still pass the literal path exclusion gate."

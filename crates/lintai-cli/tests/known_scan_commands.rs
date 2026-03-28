@@ -75,12 +75,14 @@ fn scan_known_global_discovers_roots_and_emits_findings() {
     assert!(stdout.contains("discovery counters:"));
     assert!(stdout.contains("SEC101"));
     assert!(stdout.contains("SEC301"));
-    assert!(stdout.contains(
-        &home
-            .join(".claude/skills/demo/SKILL.md")
-            .display()
-            .to_string()
-    ));
+    assert!(
+        stdout.contains(
+            &home
+                .join(".claude/skills/demo/SKILL.md")
+                .display()
+                .to_string()
+        )
+    );
     assert!(stdout.contains(&home.join(".cursor/mcp.json").display().to_string()));
 }
 
@@ -124,12 +126,16 @@ fn scan_known_json_respects_client_filter_and_reports_discovered_roots() {
     assert_eq!(stats["supported_artifacts_scanned"], 2);
 
     let findings = value["findings"].as_array().unwrap();
-    assert!(findings
-        .iter()
-        .any(|finding| finding["rule_code"] == "SEC101"));
-    assert!(findings
-        .iter()
-        .any(|finding| finding["rule_code"] == "SEC103"));
+    assert!(
+        findings
+            .iter()
+            .any(|finding| finding["rule_code"] == "SEC101")
+    );
+    assert!(
+        findings
+            .iter()
+            .any(|finding| finding["rule_code"] == "SEC103")
+    );
     assert!(findings.iter().all(|finding| {
         finding["location"]["normalized_path"]
             .as_str()
@@ -194,16 +200,20 @@ fn scan_known_mixed_modes_reports_both_lintable_and_discovered_only_roots() {
 
     let stdout = stdout_string(&output);
     let value: serde_json::Value = serde_json::from_str(&stdout).unwrap();
-    assert!(value["discovered_roots"]
-        .as_array()
-        .unwrap()
-        .iter()
-        .any(|root| root["mode"] == "lintable"));
-    assert!(value["discovered_roots"]
-        .as_array()
-        .unwrap()
-        .iter()
-        .any(|root| root["mode"] == "discovered_only"));
+    assert!(
+        value["discovered_roots"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|root| root["mode"] == "lintable")
+    );
+    assert!(
+        value["discovered_roots"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|root| root["mode"] == "discovered_only")
+    );
     assert_eq!(value["discovery_stats"]["lintable_roots"], 1);
     assert_eq!(value["discovery_stats"]["discovered_only_roots"], 1);
 }
@@ -240,9 +250,11 @@ fn scan_known_rules_alias_files_are_lintable() {
     assert_eq!(value["discovery_stats"]["supported_artifacts_scanned"], 3);
 
     let findings = value["findings"].as_array().unwrap();
-    assert!(findings
-        .iter()
-        .any(|finding| finding["rule_code"] == "SEC101"));
+    assert!(
+        findings
+            .iter()
+            .any(|finding| finding["rule_code"] == "SEC101")
+    );
     assert!(findings.iter().any(|finding| {
         finding["location"]["normalized_path"] == canonical_display(&cwd.join(".windsurfrules"))
     }));
@@ -288,9 +300,11 @@ fn scan_known_instruction_alias_files_are_lintable() {
     assert_eq!(value["discovery_stats"]["supported_artifacts_scanned"], 3);
 
     let findings = value["findings"].as_array().unwrap();
-    assert!(findings
-        .iter()
-        .any(|finding| finding["rule_code"] == "SEC101"));
+    assert!(
+        findings
+            .iter()
+            .any(|finding| finding["rule_code"] == "SEC101")
+    );
     assert!(findings.iter().any(|finding| {
         finding["location"]["normalized_path"]
             == canonical_display(&cwd.join(".github/copilot-instructions.md"))
@@ -343,9 +357,11 @@ fn scan_known_directory_based_markdown_roots_are_lintable() {
     assert_eq!(value["discovery_stats"]["lintable_roots"], 3);
     assert_eq!(value["discovery_stats"]["supported_artifacts_scanned"], 3);
     let findings = value["findings"].as_array().unwrap();
-    assert!(findings
-        .iter()
-        .any(|finding| finding["rule_code"] == "SEC101"));
+    assert!(
+        findings
+            .iter()
+            .any(|finding| finding["rule_code"] == "SEC101")
+    );
     assert!(findings.iter().any(|finding| {
         finding["location"]["normalized_path"]
             == canonical_display(&cwd.join(".roo/rules/security.md"))

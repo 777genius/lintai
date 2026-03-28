@@ -48,8 +48,9 @@
 | 10 | **[PUBLIC_BETA_SHIPPING_CHECKLIST.md](PUBLIC_BETA_SHIPPING_CHECKLIST.md)** | Canonical shipping workflow and asset checklist for the first public beta |
 | 11 | **[EXTERNAL_VALIDATION_PLAN.md](EXTERNAL_VALIDATION_PLAN.md)** | Canonical plan и runbook для external-repo validation waves |
 | 12 | **[EXTERNAL_VALIDATION_REPORT.md](EXTERNAL_VALIDATION_REPORT.md)** | Checked-in wave 2 release evidence for the public beta posture |
-| 13 | **[EXTERNAL_VALIDATION_TOOL_JSON_REPORT.md](EXTERNAL_VALIDATION_TOOL_JSON_REPORT.md)** | Focused `+6` extension wave for `ToolDescriptorJson` usefulness evidence |
-| 13 | **[BETA_TO_1_0_ROADMAP.md](BETA_TO_1_0_ROADMAP.md)** | Большой post-`v0.1` roadmap: precision hardening, beta, structural growth, `1.0` gate |
+| 13 | **[EXTERNAL_VALIDATION_TOOL_JSON_REPORT.md](EXTERNAL_VALIDATION_TOOL_JSON_REPORT.md)** | Wave 3 extension evidence for `ToolDescriptorJson` usefulness under the stricter operational gate |
+| 14 | **[EXTERNAL_VALIDATION_SERVER_JSON_REPORT.md](EXTERNAL_VALIDATION_SERVER_JSON_REPORT.md)** | Focused extension evidence for MCP Registry `server.json` surfaces and `SEC319`/`SEC320` |
+| 15 | **[BETA_TO_1_0_ROADMAP.md](BETA_TO_1_0_ROADMAP.md)** | Большой post-`v0.1` roadmap: precision hardening, beta, structural growth, `1.0` gate |
 
 ### Research second
 

@@ -1,0 +1,10 @@
+{
+  "name": "io.github.example/demo",
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "http://example.com/mcp"
+    }
+  ]
+}

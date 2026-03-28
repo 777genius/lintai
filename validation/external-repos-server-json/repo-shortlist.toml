@@ -1,0 +1,138 @@
+version = 1
+
+[cohort]
+total = 12
+category = "server_json"
+category_semantics = "server_json means the repo was admitted because it contains a semantically confirmed MCP Registry server.json artifact under an operational path"
+
+[[repos]]
+repo = "containers/kubernetes-mcp-server"
+url = "https://github.com/containers/kubernetes-mcp-server"
+pinned_ref = "df06f9de9cb98e0aef1008926ab1f5b12e427937"
+category = "server_json"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["server.json"]
+rationale = "Cached canonical-cohort repo with a valid root server.json used as a clean control for package-only transport examples."
+
+[[repos]]
+repo = "vapagentmedia/vap-showcase"
+url = "https://github.com/vapagentmedia/vap-showcase"
+pinned_ref = "4c5e2ef4968debe9e7be4c5f0a03d7a31faf949f"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["server.json"]
+rationale = "Cached real-world MCP app repo with a root server.json and remote registry metadata under remotes[]."
+
+[[repos]]
+repo = "cloudflare/mcp-server-cloudflare"
+url = "https://github.com/cloudflare/mcp-server-cloudflare"
+pinned_ref = "7f48d179c70adea5577b3abeddb1105a874d9987"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["server.json"]
+rationale = "Registry-linked MCP server repo with remote entries using streamable-http and sse."
+
+[[repos]]
+repo = "googleworkspace/developer-tools"
+url = "https://github.com/googleworkspace/developer-tools"
+pinned_ref = "496529e5392eeaea3a19854a40979a6f57a3f315"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["server.json"]
+rationale = "Official Google Workspace developer tools repo with a root server.json and remote MCP registry metadata."
+
+[[repos]]
+repo = "IO-Aerospace-software-engineering/mcp-server"
+url = "https://github.com/IO-Aerospace-software-engineering/mcp-server"
+pinned_ref = "3dbe1d3314d88a959c4432d596f5554723ac2f6a"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["server.json"]
+rationale = "Public MCP server with a root server.json exposing remote-enabled registry metadata."
+
+[[repos]]
+repo = "MidOSresearch/midos"
+url = "https://github.com/MidOSresearch/midos"
+pinned_ref = "696ab0762540648c2d80b2d380b7f668ffbe6a96"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["server.json"]
+rationale = "Committed root server.json with both packages and remote registry metadata for an MCP-enabled workspace."
+
+[[repos]]
+repo = "mldotink/mcp"
+url = "https://github.com/mldotink/mcp"
+pinned_ref = "f46c9cfdaccb3612e2fc2564788288d7b1318608"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["server.json"]
+rationale = "Root server.json with remote MCP registration metadata under remotes[]."
+
+[[repos]]
+repo = "netdata/netdata"
+url = "https://github.com/netdata/netdata"
+pinned_ref = "bd37f67c61ebcfdf6912bf6e7d5240667edb8b07"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["server.json"]
+rationale = "Large production repo with a root server.json using remote URLs and variable definitions in remotes[]."
+
+[[repos]]
+repo = "tldraw/tldraw"
+url = "https://github.com/tldraw/tldraw"
+pinned_ref = "a8785621b3271f55ab972cfac658b11a93cb252f"
+category = "server_json"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["apps/mcp-app/server.json"]
+rationale = "Nested application server.json with streamable-http and sse remotes under an operational app path."
+
+[[repos]]
+repo = "arielbk/anki-mcp"
+url = "https://github.com/arielbk/anki-mcp"
+pinned_ref = "21257cbfc9e972cee109dfdd10e709a07a7158be"
+category = "server_json"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["server.json"]
+rationale = "Packages-only server.json used as a clean control for valid registry metadata without remote risk."
+
+[[repos]]
+repo = "hashicorp/terraform-mcp-server"
+url = "https://github.com/hashicorp/terraform-mcp-server"
+pinned_ref = "617ba91b86a87e07cad2ca5374ee4149ce75ebb4"
+category = "server_json"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["server.json"]
+rationale = "Packages-only server.json in a high-signal production repo, suitable as a control for package transport metadata."
+
+[[repos]]
+repo = "VictoriaMetrics-Community/mcp-victoriametrics"
+url = "https://github.com/VictoriaMetrics-Community/mcp-victoriametrics"
+pinned_ref = "1d6523be0d7cea234251ded63032899f0af1a60a"
+category = "server_json"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["server.json"]
+admission_paths = ["server.json"]
+rationale = "Packages-only root server.json in a public production-focused MCP server repo, used as a clean control."

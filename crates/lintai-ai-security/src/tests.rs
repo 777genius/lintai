@@ -747,6 +747,109 @@ fn finds_anthropic_strict_open_input_schema() {
 }
 
 #[test]
+fn finds_server_json_insecure_remote_url() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{
+  "name": "io.github.example/demo",
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "http://example.com/mcp"
+    }
+  ]
+}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::ServerRegistryConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC319"));
+}
+
+#[test]
+fn ignores_server_json_loopback_package_transport_url() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{
+  "name": "io.github.example/demo",
+  "version": "1.0.0",
+  "packages": [
+    {
+      "registryType": "oci",
+      "identifier": "ghcr.io/example/demo:1.0.0",
+      "runtimeHint": "docker",
+      "transport": {
+        "type": "streamable-http",
+        "url": "http://localhost:8080/mcp"
+      }
+    }
+  ]
+}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::ServerRegistryConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC319"));
+}
+
+#[test]
+fn finds_server_json_unresolved_remote_variable() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{
+  "name": "io.github.example/demo",
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://{tenant_id}.example.com/mcp"
+    }
+  ]
+}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::ServerRegistryConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC320"));
+}
+
+#[test]
+fn ignores_server_json_defined_remote_variable() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{
+  "name": "io.github.example/demo",
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://{tenant_id}.example.com/mcp",
+      "variables": {
+        "tenant_id": {
+          "description": "Tenant subdomain",
+          "isSecret": false
+        }
+      }
+    }
+  ]
+}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::ServerRegistryConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC320"));
+}
+
+#[test]
 fn existing_mcp_rules_apply_to_claude_mcp_json_variants() {
     let temp_dir = unique_temp_dir("lintai-claude-mcp-variant");
     std::fs::create_dir_all(temp_dir.join(".claude/mcp")).unwrap();

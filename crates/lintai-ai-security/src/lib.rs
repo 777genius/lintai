@@ -8,6 +8,7 @@ mod provider;
 mod registry;
 #[cfg_attr(not(test), allow(dead_code))]
 mod security_rule_catalog;
+mod server_json_rules;
 mod signals;
 mod tool_json_rules;
 

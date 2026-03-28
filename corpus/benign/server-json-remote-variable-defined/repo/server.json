@@ -1,0 +1,16 @@
+{
+  "name": "io.github.example/demo",
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://{tenant_id}.example.com/mcp",
+      "variables": {
+        "tenant_id": {
+          "description": "Tenant subdomain",
+          "isSecret": false
+        }
+      }
+    }
+  ]
+}

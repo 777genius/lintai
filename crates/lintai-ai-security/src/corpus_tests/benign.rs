@@ -33,6 +33,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "mcp-trusted-endpoint-safe",
             "mixed-clean-workspace",
             "policy-truthful-basic",
+            "server-json-loopback-package-transport-safe",
+            "server-json-remote-variable-defined",
             "skill-base64-fenced-safe",
             "skill-clean-basic",
             "skill-fenced-pipe-shell-safe",

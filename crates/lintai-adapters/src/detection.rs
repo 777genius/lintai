@@ -66,6 +66,16 @@ pub fn detection_rules() -> Vec<DetectionRuleSpec> {
         },
         DetectionRuleSpec {
             priority: 1,
+            file_name: Some("server.json"),
+            file_name_fragment: None,
+            suffix: None,
+            parent_dir: None,
+            path_fragment: None,
+            artifact_kind: ArtifactKind::ServerRegistryConfig,
+            format: SourceFormat::Json,
+        },
+        DetectionRuleSpec {
+            priority: 1,
             file_name: Some("plugin.json"),
             file_name_fragment: None,
             suffix: None,

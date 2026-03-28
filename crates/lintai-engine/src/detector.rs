@@ -173,6 +173,13 @@ mod tests {
         );
         assert_eq!(
             detector
+                .detect(Path::new("/tmp/project/server.json"), "server.json")
+                .unwrap()
+                .kind,
+            ArtifactKind::ServerRegistryConfig
+        );
+        assert_eq!(
+            detector
                 .detect(
                     Path::new("/tmp/project/.claude/mcp/chrome-devtools.json"),
                     ".claude/mcp/chrome-devtools.json"

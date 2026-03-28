@@ -34,6 +34,7 @@ pub enum ArtifactKind {
     Instructions,
     CursorRules,
     McpConfig,
+    ServerRegistryConfig,
     ToolDescriptorJson,
     CursorPluginManifest,
     CursorPluginHooks,

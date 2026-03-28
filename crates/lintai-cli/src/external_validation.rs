@@ -18,8 +18,11 @@ const ARCHIVED_WAVE1_LEDGER_PATH: &str = "validation/external-repos/archive/wave
 const TOOL_JSON_EXTENSION_SHORTLIST_PATH: &str =
     "validation/external-repos-tool-json/repo-shortlist.toml";
 const TOOL_JSON_EXTENSION_LEDGER_PATH: &str = "validation/external-repos-tool-json/ledger.toml";
-const TOOL_JSON_EXTENSION_ARCHIVED_WAVE1_LEDGER_PATH: &str =
-    "validation/external-repos-tool-json/archive/wave1-ledger.toml";
+const TOOL_JSON_EXTENSION_ARCHIVED_WAVE2_LEDGER_PATH: &str =
+    "validation/external-repos-tool-json/archive/wave2-ledger.toml";
+const SERVER_JSON_EXTENSION_SHORTLIST_PATH: &str =
+    "validation/external-repos-server-json/repo-shortlist.toml";
+const SERVER_JSON_EXTENSION_LEDGER_PATH: &str = "validation/external-repos-server-json/ledger.toml";
 const FIXTURE_PATH_SEGMENTS: &[&str] = &[
     "test", "tests", "testdata", "fixture", "fixtures", "example", "examples", "sample", "samples",
 ];
@@ -38,6 +41,7 @@ const DOCISH_PATH_SEGMENTS: &[&str] = &[
 pub(crate) enum ValidationPackage {
     Canonical,
     ToolJsonExtension,
+    ServerJsonExtension,
 }
 
 impl ValidationPackage {
@@ -45,6 +49,7 @@ impl ValidationPackage {
         match value {
             "canonical" => Ok(Self::Canonical),
             "tool-json-extension" => Ok(Self::ToolJsonExtension),
+            "server-json-extension" => Ok(Self::ServerJsonExtension),
             _ => Err(format!("unknown external validation package `{value}`")),
         }
     }
@@ -53,6 +58,7 @@ impl ValidationPackage {
         match self {
             Self::Canonical => SHORTLIST_PATH,
             Self::ToolJsonExtension => TOOL_JSON_EXTENSION_SHORTLIST_PATH,
+            Self::ServerJsonExtension => SERVER_JSON_EXTENSION_SHORTLIST_PATH,
         }
     }
 
@@ -60,13 +66,15 @@ impl ValidationPackage {
         match self {
             Self::Canonical => LEDGER_PATH,
             Self::ToolJsonExtension => TOOL_JSON_EXTENSION_LEDGER_PATH,
+            Self::ServerJsonExtension => SERVER_JSON_EXTENSION_LEDGER_PATH,
         }
     }
 
-    fn archived_wave1_ledger_path(self) -> Option<&'static str> {
+    fn baseline_reference(self) -> Option<&'static str> {
         match self {
-            Self::Canonical => Some(ARCHIVED_WAVE1_LEDGER_PATH),
-            Self::ToolJsonExtension => Some(TOOL_JSON_EXTENSION_ARCHIVED_WAVE1_LEDGER_PATH),
+            Self::Canonical => Some("archive/wave1-ledger.toml"),
+            Self::ToolJsonExtension => Some("archive/wave2-ledger.toml"),
+            Self::ServerJsonExtension => None,
         }
     }
 
@@ -76,6 +84,9 @@ impl ValidationPackage {
             Self::ToolJsonExtension => {
                 "target/external-validation/tool-json-extension/candidate-ledger.toml"
             }
+            Self::ServerJsonExtension => {
+                "target/external-validation/server-json-extension/candidate-ledger.toml"
+            }
         }
     }
 
@@ -83,12 +94,14 @@ impl ValidationPackage {
         match self {
             Self::Canonical => "target/external-validation/wave2/raw",
             Self::ToolJsonExtension => "target/external-validation/tool-json-extension/raw",
+            Self::ServerJsonExtension => "target/external-validation/server-json-extension/raw",
         }
     }
     fn default_wave(self) -> u32 {
         match self {
             Self::Canonical => 2,
-            Self::ToolJsonExtension => 2,
+            Self::ToolJsonExtension => 3,
+            Self::ServerJsonExtension => 1,
         }
     }
 }
@@ -280,9 +293,7 @@ pub(crate) fn rerun(options: RerunOptions) -> Result<(), String> {
     let mut candidate = ExternalValidationLedger {
         version: 1,
         wave: package.default_wave(),
-        baseline: package
-            .archived_wave1_ledger_path()
-            .map(|_| "archive/wave1-ledger.toml".to_owned()),
+        baseline: package.baseline_reference().map(str::to_owned),
         evaluations: Vec::new(),
     };
 
@@ -353,12 +364,17 @@ pub(crate) fn render_report(options: RenderReportOptions) -> Result<String, Stri
             let baseline = load_ledger(
                 &options
                     .workspace_root
-                    .join(TOOL_JSON_EXTENSION_ARCHIVED_WAVE1_LEDGER_PATH),
+                    .join(TOOL_JSON_EXTENSION_ARCHIVED_WAVE2_LEDGER_PATH),
             )?;
             let current = load_ledger(&options.workspace_root.join(options.package.ledger_path()))?;
             Ok(render_tool_json_extension_report(
                 &shortlist, &baseline, &current,
             ))
+        }
+        ValidationPackage::ServerJsonExtension => {
+            let shortlist = load_shortlist(&options.workspace_root, options.package)?;
+            let current = load_ledger(&options.workspace_root.join(options.package.ledger_path()))?;
+            Ok(render_server_json_extension_report(&shortlist, &current))
         }
     }
 }
@@ -607,18 +623,19 @@ fn render_tool_json_extension_report(
             .iter()
             .all(|path| !is_tool_json_excluded_path(path))
     });
+    let scarcity = shortlist.repos.len() < 18;
     let tool_rule_hit_count =
         rule_count(ledger, &["SEC314", "SEC315", "SEC316", "SEC317", "SEC318"]);
     let recommend_promotion = tool_rule_hit_count > 0 && counts.runtime_errors == 0;
 
     let mut output = String::new();
     output.push_str("# External Validation Tool JSON Extension Report\n\n");
-    output.push_str("> Broader extension wave for `ToolDescriptorJson` usefulness proof after tightening operational-only admission.\n");
-    output.push_str("> Source of truth lives in [validation/external-repos-tool-json/repo-shortlist.toml](../validation/external-repos-tool-json/repo-shortlist.toml), current results in [validation/external-repos-tool-json/ledger.toml](../validation/external-repos-tool-json/ledger.toml), and archived wave 1 baseline in [validation/external-repos-tool-json/archive/wave1-ledger.toml](../validation/external-repos-tool-json/archive/wave1-ledger.toml).\n\n");
+    output.push_str("> Wave 3 extension report for `ToolDescriptorJson` usefulness proof after tightening operational-only admission.\n");
+    output.push_str("> Source of truth lives in [validation/external-repos-tool-json/repo-shortlist.toml](../validation/external-repos-tool-json/repo-shortlist.toml), current results in [validation/external-repos-tool-json/ledger.toml](../validation/external-repos-tool-json/ledger.toml), and archived wave 2 baseline in [validation/external-repos-tool-json/archive/wave2-ledger.toml](../validation/external-repos-tool-json/archive/wave2-ledger.toml).\n\n");
 
     output.push_str("## Cohort Composition\n\n");
     output.push_str(&format!(
-        "The extension cohort contains `{}` public repositories focused on committed non-fixture tool-descriptor JSON. Broader discovery was attempted, but only these repos passed the stricter operational-only admission gate.\n\n",
+        "The extension cohort contains `{}` public repositories focused on committed non-fixture tool-descriptor JSON.\n\n",
         shortlist.repos.len()
     ));
     let stress = shortlist
@@ -637,6 +654,11 @@ fn render_tool_json_extension_report(
     ));
     output.push_str(&format!("- `{}` `stress` repos\n", stress));
     output.push_str(&format!("- `{}` `control` repos\n\n", control));
+    if scarcity {
+        output.push_str(
+            "Broader discovery was attempted, but the target of `18` admitted repos was not reached under the stricter operational-only gate.\n\n",
+        );
+    }
 
     output.push_str("## Admission Results\n\n");
     output.push_str(
@@ -698,6 +720,12 @@ fn render_tool_json_extension_report(
         }
         output.push('\n');
     }
+    if scarcity {
+        output.push_str(&format!(
+            "- scarcity note: discovery exhausted before reaching the target cohort size of `18`; current admitted count is `{}`\n\n",
+            shortlist.repos.len()
+        ));
+    }
 
     output.push_str("## Stable Hits\n\n");
     if stable_hit_repos.is_empty() {
@@ -751,7 +779,7 @@ fn render_tool_json_extension_report(
     if fixture_safe {
         output.push_str("- all admitted repos passed the non-fixture path gate\n");
         output.push_str("- no admitted repo would have been excluded for `tests/fixtures/testdata/examples/samples`\n");
-        output.push_str("- no admitted repo used exact literal path segments reserved for `docs/schema/spec/contracts`-only material\n");
+        output.push_str("- no admitted repo used tokenized path segments reserved for `docs/schema/spec/contracts`-only material\n");
         output.push_str("- no fake `Stable` usefulness signal was introduced from fixture or documentation-only paths\n\n");
     } else {
         output.push_str("- one or more admitted repos violated the fixture suppression boundary and this wave is invalid\n\n");
@@ -762,6 +790,113 @@ fn render_tool_json_extension_report(
         output.push_str("Extension evidence is strong enough to consider promoting some of these repos into the main canonical cohort later.\n");
     } else {
         output.push_str("Extension evidence is not strong enough yet to justify promoting repos into the main canonical cohort; continue broader discovery or add more structural rules.\n");
+    }
+
+    output
+}
+
+fn render_server_json_extension_report(
+    shortlist: &RepoShortlist,
+    ledger: &ExternalValidationLedger,
+) -> String {
+    let counts = aggregate_counts(ledger);
+    let stable_hit_repos = repos_with_hits(ledger, true);
+    let preview_hit_repos = repos_with_hits(ledger, false);
+    let runtime_issue_repos = repos_with_runtime_issues(ledger, shortlist);
+    let remote_enabled = shortlist
+        .repos
+        .iter()
+        .filter(|repo| repo.subtype == "stress")
+        .count();
+    let controls = shortlist.repos.len().saturating_sub(remote_enabled);
+
+    let mut output = String::new();
+    output.push_str("# External Validation Server JSON Report\n\n");
+    output.push_str("> Focused extension report for semantically confirmed MCP Registry `server.json` surfaces.\n");
+    output.push_str("> Source of truth lives in [validation/external-repos-server-json/repo-shortlist.toml](../validation/external-repos-server-json/repo-shortlist.toml) and [validation/external-repos-server-json/ledger.toml](../validation/external-repos-server-json/ledger.toml).\n\n");
+
+    output.push_str("## Cohort Composition\n\n");
+    output.push_str(&format!(
+        "- `{}` repos evaluated\n- `{}` remote-enabled repos\n- `{}` control repos\n\n",
+        shortlist.repos.len(),
+        remote_enabled,
+        controls
+    ));
+    if shortlist.repos.len() < 12 {
+        output.push_str(&format!(
+            "Discovery exhausted before reaching the target cohort size of `12`; current admitted count is `{}`.\n\n",
+            shortlist.repos.len()
+        ));
+    }
+
+    output.push_str("## Admission Results\n\n");
+    for repo in &shortlist.repos {
+        output.push_str(&format!(
+            "- `{}` via {}. {}\n",
+            repo.repo,
+            format_rule_codes(&repo.admission_paths),
+            repo.rationale
+        ));
+    }
+    output.push('\n');
+
+    output.push_str("## Overall Counts\n\n");
+    output.push_str(&format!(
+        "- `{}` stable findings\n- `{}` preview findings\n- `{}` runtime parser errors\n- `{}` diagnostics\n\n",
+        counts.stable_findings,
+        counts.preview_findings,
+        counts.runtime_errors,
+        counts.diagnostics
+    ));
+
+    output.push_str("## Stable Hits\n\n");
+    if stable_hit_repos.is_empty() {
+        output.push_str("- no external `Stable` hits were observed from `SEC319`-`SEC320`\n\n");
+    } else {
+        for (repo, count, rule_codes) in &stable_hit_repos {
+            output.push_str(&format!(
+                "- `{repo}`: `{count}` stable finding(s) via {}\n",
+                format_rule_codes(rule_codes)
+            ));
+        }
+        output.push('\n');
+    }
+
+    output.push_str("## Preview Hits\n\n");
+    if preview_hit_repos.is_empty() {
+        output.push_str("- no preview hits were observed in the server-json extension wave\n\n");
+    } else {
+        for (repo, count, rule_codes) in preview_hit_repos {
+            output.push_str(&format!(
+                "- `{repo}`: `{count}` preview finding(s) via {}\n",
+                format_rule_codes(&rule_codes)
+            ));
+        }
+        output.push('\n');
+    }
+
+    output.push_str("## Runtime / Diagnostic Notes\n\n");
+    if runtime_issue_repos.is_empty() {
+        output.push_str(
+            "- no runtime parser errors or diagnostics were emitted in this extension wave\n\n",
+        );
+    } else {
+        for (repo, runtime_count, diagnostic_count, labels) in runtime_issue_repos {
+            output.push_str(&format!(
+                "- `{repo}`: `{}` runtime parser errors, `{}` diagnostics ({})\n",
+                runtime_count,
+                diagnostic_count,
+                labels.join(", ")
+            ));
+        }
+        output.push('\n');
+    }
+
+    output.push_str("## Recommended Next Step\n\n");
+    if stable_hit_repos.is_empty() {
+        output.push_str("Keep the `server.json` surface and continue discovery; do not weaken `SEC319` or `SEC320` if this first wave stays clean but sparse.\n");
+    } else {
+        output.push_str("Promote the highest-signal server-json repos into future canonical evidence sets and expand the server-json rule batch conservatively.\n");
     }
 
     output
@@ -1140,6 +1275,9 @@ fn inventory_surfaces(repo_root: &Path) -> Result<InventoryArtifact, String> {
         if normalized.contains(".claude/mcp/") && normalized.ends_with(".json") {
             surfaces.insert(".claude/mcp/*.json".to_owned());
         }
+        if normalized.ends_with("server.json") {
+            surfaces.insert("server.json".to_owned());
+        }
         if normalized.ends_with("tools.json")
             || normalized.ends_with(".tool.json")
             || normalized.ends_with(".tools.json")
@@ -1176,18 +1314,20 @@ fn verify_repo_admission(
     repo: &ShortlistRepo,
     repo_root: &Path,
 ) -> Result<(), String> {
-    if package != ValidationPackage::ToolJsonExtension {
-        return Ok(());
-    }
+    let detected = match package {
+        ValidationPackage::Canonical => return Ok(()),
+        ValidationPackage::ToolJsonExtension => admitted_tool_descriptor_paths(repo_root)?,
+        ValidationPackage::ServerJsonExtension => admitted_server_json_paths(repo_root)?,
+    };
 
     if repo.admission_paths.is_empty() {
         return Err(format!(
-            "tool-json extension repo `{}` must declare at least one admission path",
+            "{} repo `{}` must declare at least one admission path",
+            package_label(package),
             repo.repo
         ));
     }
 
-    let detected = admitted_tool_descriptor_paths(repo_root)?;
     let expected = repo
         .admission_paths
         .iter()
@@ -1197,8 +1337,11 @@ fn verify_repo_admission(
 
     if expected != actual {
         return Err(format!(
-            "tool-json extension admission mismatch for `{}`: expected {:?}, got {:?}",
-            repo.repo, expected, actual
+            "{} admission mismatch for `{}`: expected {:?}, got {:?}",
+            package_label(package),
+            repo.repo,
+            expected,
+            actual
         ));
     }
 
@@ -1257,20 +1400,82 @@ fn admitted_tool_descriptor_paths(repo_root: &Path) -> Result<Vec<String>, Strin
     Ok(admitted)
 }
 
-fn is_fixture_like_path(normalized_path: &str) -> bool {
-    normalized_path
-        .split('/')
-        .any(|segment| FIXTURE_PATH_SEGMENTS.contains(&segment))
+fn admitted_server_json_paths(repo_root: &Path) -> Result<Vec<String>, String> {
+    let detector = FileTypeDetector::default();
+    let mut admitted = Vec::new();
+    let mut builder = WalkBuilder::new(repo_root);
+    builder
+        .hidden(false)
+        .git_ignore(false)
+        .git_exclude(false)
+        .parents(false);
+    for result in builder.build() {
+        let entry =
+            result.map_err(|error| format!("server-json admission walk failed: {error}"))?;
+        if !entry
+            .file_type()
+            .is_some_and(|file_type| file_type.is_file())
+        {
+            continue;
+        }
+        let relative = entry
+            .path()
+            .strip_prefix(repo_root)
+            .map_err(|error| format!("failed to relativize server-json path: {error}"))?;
+        let normalized = normalize_rel_path(relative);
+        if is_generic_validation_excluded_path(&normalized) {
+            continue;
+        }
+        let Some(detected) = detector.detect(relative, &normalized) else {
+            continue;
+        };
+        if detected.kind != ArtifactKind::ServerRegistryConfig {
+            continue;
+        }
+        let text = fs::read_to_string(entry.path()).map_err(|error| {
+            format!(
+                "failed to read candidate server.json {}: {error}",
+                entry.path().display()
+            )
+        })?;
+        if contains_semantic_server_json(&text) {
+            admitted.push(normalized);
+        }
+    }
+    admitted.sort();
+    admitted.dedup();
+    if admitted.is_empty() {
+        return Err(
+            "no committed non-fixture server.json paths passed semantic confirmation".to_owned(),
+        );
+    }
+    Ok(admitted)
 }
 
-fn is_docish_only_path(normalized_path: &str) -> bool {
+fn package_label(package: ValidationPackage) -> &'static str {
+    match package {
+        ValidationPackage::Canonical => "canonical",
+        ValidationPackage::ToolJsonExtension => "tool-json extension",
+        ValidationPackage::ServerJsonExtension => "server-json extension",
+    }
+}
+
+fn is_generic_validation_excluded_path(normalized_path: &str) -> bool {
     normalized_path
         .split('/')
-        .any(|segment| DOCISH_PATH_SEGMENTS.contains(&segment))
+        .flat_map(segment_tokens)
+        .any(|token| {
+            FIXTURE_PATH_SEGMENTS
+                .iter()
+                .any(|reserved| token.eq_ignore_ascii_case(reserved))
+                || DOCISH_PATH_SEGMENTS
+                    .iter()
+                    .any(|reserved| token.eq_ignore_ascii_case(reserved))
+        })
 }
 
 fn is_tool_json_excluded_path(normalized_path: &str) -> bool {
-    is_fixture_like_path(normalized_path) || is_docish_only_path(normalized_path)
+    is_generic_validation_excluded_path(normalized_path)
 }
 
 fn contains_semantic_tool_descriptor_json(text: &str) -> bool {
@@ -1278,6 +1483,45 @@ fn contains_semantic_tool_descriptor_json(text: &str) -> bool {
         return false;
     };
     json_descendants(&value).any(is_tool_descriptor_shape)
+}
+
+fn contains_semantic_server_json(text: &str) -> bool {
+    let Ok(value) = serde_json::from_str::<Value>(text) else {
+        return false;
+    };
+    let Some(object) = value.as_object() else {
+        return false;
+    };
+    object.get("name").and_then(Value::as_str).is_some()
+        && object.get("version").and_then(Value::as_str).is_some()
+        && (object.get("remotes").and_then(Value::as_array).is_some()
+            || object.get("packages").and_then(Value::as_array).is_some())
+}
+
+fn segment_tokens(segment: &str) -> Vec<&str> {
+    let mut tokens = Vec::new();
+    let bytes = segment.as_bytes();
+    let mut start = 0usize;
+    for index in 0..bytes.len() {
+        let byte = bytes[index];
+        let is_delimiter = matches!(byte, b'_' | b'-' | b'.');
+        let is_camel_boundary =
+            index > start && bytes[index - 1].is_ascii_lowercase() && byte.is_ascii_uppercase();
+        if is_delimiter || is_camel_boundary {
+            if start < index {
+                tokens.push(&segment[start..index]);
+            }
+            start = if is_delimiter { index + 1 } else { index };
+        }
+    }
+    if start < segment.len() {
+        tokens.push(&segment[start..]);
+    }
+    tokens
+        .into_iter()
+        .map(str::trim)
+        .filter(|token| !token.is_empty())
+        .collect()
 }
 
 fn json_descendants<'a>(value: &'a Value) -> Box<dyn Iterator<Item = &'a Value> + 'a> {
@@ -1766,18 +2010,38 @@ rationale = "demo"
     }
 
     #[test]
+    fn package_flag_parses_server_json_extension() {
+        assert_eq!(
+            parse_package_flag(&["--package=server-json-extension".to_owned()]).unwrap(),
+            ValidationPackage::ServerJsonExtension
+        );
+    }
+
+    #[test]
     fn fixture_like_paths_are_rejected() {
-        assert!(is_fixture_like_path("tests/fixtures/tools.json"));
-        assert!(is_fixture_like_path("pkg/testdata/sample.tools.json"));
-        assert!(!is_fixture_like_path("configs/tools.json"));
+        assert!(is_generic_validation_excluded_path(
+            "tests/fixtures/tools.json"
+        ));
+        assert!(is_generic_validation_excluded_path(
+            "pkg/testdata/sample.tools.json"
+        ));
+        assert!(!is_generic_validation_excluded_path("configs/tools.json"));
     }
 
     #[test]
     fn docish_tool_json_paths_are_rejected() {
-        assert!(is_docish_only_path("docs/tools.json"));
-        assert!(is_docish_only_path("Resources/schema/tools.json"));
-        assert!(!is_docish_only_path("resources/ToolSchemas/tools.json"));
-        assert!(!is_docish_only_path("configs/tools.json"));
+        assert!(is_tool_json_excluded_path("docs/tools.json"));
+        assert!(is_tool_json_excluded_path("Resources/schema/tools.json"));
+        assert!(is_tool_json_excluded_path(
+            "resources/ToolSchemas/tools.json"
+        ));
+        assert!(is_tool_json_excluded_path(
+            "resources/tool-schemas/tools.json"
+        ));
+        assert!(is_tool_json_excluded_path(
+            "resources/schema_store/tools.json"
+        ));
+        assert!(!is_tool_json_excluded_path("configs/tools.json"));
     }
 
     #[test]
@@ -1796,6 +2060,22 @@ rationale = "demo"
         ));
         assert!(!contains_semantic_tool_descriptor_json(
             r#"{"tools":[{"description":"missing name","inputSchema":{"type":"object"}}]}"#
+        ));
+    }
+
+    #[test]
+    fn semantic_server_json_requires_name_version_and_remotes_or_packages() {
+        assert!(contains_semantic_server_json(
+            r#"{"name":"demo","version":"1.0.0","remotes":[{"type":"streamable-http","url":"https://example.com/mcp"}]}"#
+        ));
+        assert!(contains_semantic_server_json(
+            r#"{"name":"demo","version":"1.0.0","packages":[{"registry_name":"npm","name":"demo","version":"1.0.0"}]}"#
+        ));
+        assert!(!contains_semantic_server_json(
+            r#"{"name":"demo","remotes":[{"type":"streamable-http","url":"https://example.com/mcp"}]}"#
+        ));
+        assert!(!contains_semantic_server_json(
+            r#"{"version":"1.0.0","packages":[{"name":"demo"}]}"#
         ));
     }
 
@@ -1873,5 +2153,59 @@ rationale = "demo"
         assert!(markdown.contains("`SEC314`"));
         assert!(markdown.contains("admission-path issue"));
         assert!(markdown.contains("non-admission-path issue"));
+    }
+
+    #[test]
+    fn server_json_extension_report_has_required_sections() {
+        let shortlist = RepoShortlist {
+            version: 1,
+            repos: vec![ShortlistRepo {
+                repo: "owner/server-json".to_owned(),
+                url: "https://github.com/owner/server-json".to_owned(),
+                pinned_ref: "abc123".to_owned(),
+                category: "server_json".to_owned(),
+                subtype: "stress".to_owned(),
+                status: "evaluated".to_owned(),
+                surfaces_present: vec!["server.json".to_owned()],
+                admission_paths: vec!["server.json".to_owned()],
+                rationale: "Committed server registry metadata.".to_owned(),
+            }],
+        };
+        let ledger = ExternalValidationLedger {
+            version: 1,
+            wave: 1,
+            baseline: None,
+            evaluations: vec![EvaluationEntry {
+                repo: "owner/server-json".to_owned(),
+                url: "https://github.com/owner/server-json".to_owned(),
+                pinned_ref: "abc123".to_owned(),
+                category: "server_json".to_owned(),
+                subtype: "stress".to_owned(),
+                status: "evaluated".to_owned(),
+                surfaces_present: vec!["server.json".to_owned()],
+                stable_findings: 1,
+                preview_findings: 0,
+                stable_rule_codes: vec!["SEC319".to_owned()],
+                preview_rule_codes: Vec::new(),
+                repo_verdict: "strong_fit".to_owned(),
+                stable_precision_notes: String::new(),
+                preview_signal_notes: String::new(),
+                false_positive_notes: Vec::new(),
+                possible_false_negative_notes: Vec::new(),
+                follow_up_action: "no_action".to_owned(),
+                runtime_errors: Vec::new(),
+                diagnostics: Vec::new(),
+            }],
+        };
+
+        let markdown = render_server_json_extension_report(&shortlist, &ledger);
+        assert!(markdown.contains("## Cohort Composition"));
+        assert!(markdown.contains("## Admission Results"));
+        assert!(markdown.contains("## Overall Counts"));
+        assert!(markdown.contains("## Stable Hits"));
+        assert!(markdown.contains("## Preview Hits"));
+        assert!(markdown.contains("## Runtime / Diagnostic Notes"));
+        assert!(markdown.contains("## Recommended Next Step"));
+        assert!(markdown.contains("`SEC319`"));
     }
 }

@@ -40,6 +40,8 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC316` | OpenAI strict tool schema omits recursive additionalProperties: false | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` |
 | `SEC317` | OpenAI strict tool schema does not require every declared property | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` |
 | `SEC318` | Anthropic strict tool input schema omits additionalProperties: false | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` |
+| `SEC319` | server.json remotes entry uses an insecure or non-public remote URL | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` |
+| `SEC320` | server.json remotes URL references an undefined template variable | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` |
 | `SEC401` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC402` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC403` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
@@ -557,6 +559,44 @@ Canonical catalog for the shipped security rules currently exposed by:
 - Deterministic Signal Basis: ToolJsonSignals recursive schema walk over Anthropic input_schema when strict mode is enabled.
 - Malicious Corpus: `tool-json-anthropic-strict-open-schema`
 - Benign Corpus: `tool-json-anthropic-strict-locked`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC319` — server.json remotes entry uses an insecure or non-public remote URL
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `server_json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks MCP registry remotes[] URLs for insecure HTTP and non-public host literals without inspecting local package transport URLs.
+- Deterministic Signal Basis: ServerJsonSignals remotes[] URL analysis limited to streamable-http and sse entries.
+- Malicious Corpus: `server-json-insecure-remote-url`
+- Benign Corpus: `server-json-loopback-package-transport-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC320` — server.json remotes URL references an undefined template variable
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `server_json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks server.json remotes[] URL templates against variables defined on the same remote entry.
+- Deterministic Signal Basis: ServerJsonSignals placeholder extraction over remotes[] URLs compared with remotes[].variables keys.
+- Malicious Corpus: `server-json-unresolved-remote-variable`
+- Benign Corpus: `server-json-remote-variable-defined`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

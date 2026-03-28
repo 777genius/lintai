@@ -38,6 +38,8 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "mcp-trust-verification-disabled",
             "policy-exec-network-mismatch",
             "policy-frontmatter-conflict",
+            "server-json-insecure-remote-url",
+            "server-json-unresolved-remote-variable",
             "skill-fenced-pipe-shell",
             "skill-hidden-directive",
             "skill-html-comment-download-exec",

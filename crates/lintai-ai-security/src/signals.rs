@@ -61,6 +61,7 @@ pub(crate) struct ArtifactSignals {
     markdown: Option<MarkdownSignals>,
     hook: Option<HookSignals>,
     json: Option<JsonSignals>,
+    server_json: Option<ServerJsonSignals>,
     tool_json: Option<ToolJsonSignals>,
     metrics: SignalWorkBudget,
 }
@@ -82,6 +83,7 @@ impl ArtifactSignals {
             markdown: MarkdownSignals::from_context(ctx, &mut metrics),
             hook: HookSignals::from_context(ctx, &mut metrics),
             json: JsonSignals::from_context(ctx, &mut metrics),
+            server_json: ServerJsonSignals::from_context(ctx, &mut metrics),
             tool_json: ToolJsonSignals::from_context(ctx, &mut metrics),
             metrics,
         }
@@ -97,6 +99,10 @@ impl ArtifactSignals {
 
     pub(crate) fn json(&self) -> Option<&JsonSignals> {
         self.json.as_ref()
+    }
+
+    pub(crate) fn server_json(&self) -> Option<&ServerJsonSignals> {
+        self.server_json.as_ref()
     }
 
     pub(crate) fn tool_json(&self) -> Option<&ToolJsonSignals> {
@@ -326,6 +332,87 @@ impl ToolJsonSignals {
             &mut signals,
             metrics,
         );
+
+        Some(signals)
+    }
+}
+
+#[derive(Clone, Debug, Default)]
+pub(crate) struct ServerJsonSignals {
+    pub(crate) locator: Option<JsonLocationMap>,
+    pub(crate) insecure_remote_url_span: Option<Span>,
+    pub(crate) unresolved_remote_variable_span: Option<Span>,
+}
+
+impl ServerJsonSignals {
+    fn from_context(ctx: &ScanContext, metrics: &mut SignalWorkBudget) -> Option<Self> {
+        if ctx.artifact.kind != ArtifactKind::ServerRegistryConfig {
+            return None;
+        }
+
+        let value = &json_semantics(ctx)?.value;
+        let locator = JsonLocationMap::parse(&ctx.content);
+        if locator.is_some() {
+            metrics.json_locator_builds += 1;
+        }
+        let fallback_len = ctx.content.len();
+        let mut signals = Self {
+            locator,
+            ..Self::default()
+        };
+        let Some(remotes) = value
+            .as_object()
+            .and_then(|root| root.get("remotes"))
+            .and_then(Value::as_array)
+        else {
+            return Some(signals);
+        };
+
+        for (index, remote) in remotes.iter().enumerate() {
+            metrics.json_values_visited += 1;
+            let Some(remote_object) = remote.as_object() else {
+                continue;
+            };
+            let remote_type = remote_object.get("type").and_then(Value::as_str);
+            if !matches!(remote_type, Some("streamable-http" | "sse")) {
+                continue;
+            }
+            let Some(url) = remote_object.get("url").and_then(Value::as_str) else {
+                continue;
+            };
+            let remote_path = vec![
+                JsonPathSegment::Key("remotes".to_owned()),
+                JsonPathSegment::Index(index),
+            ];
+            if signals.insecure_remote_url_span.is_none() {
+                let relative = find_non_loopback_http_relative_span(url)
+                    .or_else(|| find_dangerous_endpoint_host_relative_span(url));
+                if let Some(relative) = relative {
+                    signals.insecure_remote_url_span = Some(resolve_child_relative_value_span(
+                        &remote_path,
+                        "url",
+                        "url",
+                        relative,
+                        signals.locator.as_ref(),
+                        fallback_len,
+                    ));
+                }
+            }
+
+            if signals.unresolved_remote_variable_span.is_none()
+                && let Some(relative) =
+                    find_unresolved_remote_variable_relative_span(url, remote_object)
+            {
+                signals.unresolved_remote_variable_span = Some(resolve_child_relative_value_span(
+                    &remote_path,
+                    "url",
+                    "url",
+                    relative,
+                    signals.locator.as_ref(),
+                    fallback_len,
+                ));
+            }
+        }
 
         Some(signals)
     }
@@ -1319,6 +1406,91 @@ fn is_fixture_like_tool_json_path(normalized_path: &str) -> bool {
                 | "samples"
         )
     })
+}
+
+fn find_non_loopback_http_relative_span(text: &str) -> Option<Span> {
+    if !starts_with_ascii_case_insensitive(text, "http://") {
+        return None;
+    }
+
+    let host = extract_url_host(text)?;
+    if is_loopback_host(host) {
+        return None;
+    }
+
+    Some(Span::new(0, "http://".len()))
+}
+
+fn find_unresolved_remote_variable_relative_span(
+    url: &str,
+    remote_object: &serde_json::Map<String, Value>,
+) -> Option<Span> {
+    let variables = remote_object.get("variables").and_then(Value::as_object);
+    let bytes = url.as_bytes();
+    let mut index = 0usize;
+    while index < bytes.len() {
+        if bytes[index] != b'{' {
+            index += 1;
+            continue;
+        }
+        let name_start = index + 1;
+        let Some(close_rel) = url[name_start..].find('}') else {
+            index += 1;
+            continue;
+        };
+        let name_end = name_start + close_rel;
+        let name = &url[name_start..name_end];
+        if is_remote_variable_name(name)
+            && !variables.is_some_and(|variables| variables.contains_key(name))
+        {
+            return Some(Span::new(index, name_end + 1));
+        }
+        index = name_end + 1;
+    }
+    None
+}
+
+fn is_remote_variable_name(name: &str) -> bool {
+    let mut chars = name.chars();
+    let Some(first) = chars.next() else {
+        return false;
+    };
+    if !(first.is_ascii_alphabetic() || first == '_') {
+        return false;
+    }
+    chars.all(|ch| ch.is_ascii_alphanumeric() || ch == '_' || ch == '-')
+}
+
+fn extract_url_host(text: &str) -> Option<&str> {
+    let scheme_len = if starts_with_ascii_case_insensitive(text, "https://") {
+        "https://".len()
+    } else if starts_with_ascii_case_insensitive(text, "http://") {
+        "http://".len()
+    } else {
+        return None;
+    };
+
+    let authority_end = text[scheme_len..]
+        .char_indices()
+        .find_map(|(index, ch)| match ch {
+            '/' | '?' | '#' | '"' | '\'' | ' ' | '\t' | '\r' | '\n' => Some(scheme_len + index),
+            _ => None,
+        })
+        .unwrap_or(text.len());
+    let authority = &text[scheme_len..authority_end];
+    let host_port = authority.rsplit('@').next().unwrap_or(authority);
+    if let Some(stripped) = host_port.strip_prefix('[') {
+        let end = stripped.find(']')?;
+        return Some(&stripped[..end]);
+    }
+    Some(host_port.split(':').next().unwrap_or(host_port))
+}
+
+fn is_loopback_host(host: &str) -> bool {
+    host.eq_ignore_ascii_case("localhost")
+        || host == "127.0.0.1"
+        || host == "::1"
+        || host.eq_ignore_ascii_case("[::1]")
 }
 
 fn shell_tokens(line: &str) -> Vec<HookToken<'_>> {
