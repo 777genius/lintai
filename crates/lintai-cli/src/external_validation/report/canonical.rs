@@ -22,7 +22,13 @@ pub(crate) fn render_report_from_ledgers(
     );
     let env_file_hits = rule_count(current, &["SEC336"]);
     let docker_rule_hits = rule_count(current, &["SEC337", "SEC338", "SEC339", "SEC346"]);
-    let metadata_markdown_hits = rule_count(current, &["SEC335"]);
+    let sec313_hits = rule_count(current, &["SEC313"]);
+    let sec335_hits = rule_count(current, &["SEC335"]);
+    let sec347_hits = rule_count(current, &["SEC347"]);
+    let sec348_hits = rule_count(current, &["SEC348"]);
+    let sec349_hits = rule_count(current, &["SEC349"]);
+    let sec348_repos = repos_with_rule_hits(current, &["SEC348"], false);
+    let sec349_repos = repos_with_rule_hits(current, &["SEC349"], false);
 
     let datadog_status = phase_target_status(
         baseline,
@@ -152,9 +158,26 @@ pub(crate) fn render_report_from_ledgers(
         "- findings from `SEC337`-`SEC339`, `SEC346`: `{}`\n",
         docker_rule_hits
     ));
+    output.push_str("- AI-native markdown preview findings:\n");
     output.push_str(&format!(
-        "- preview findings from `SEC335` on AI-native markdown surfaces: `{}`\n",
-        metadata_markdown_hits
+        "  - `SEC313` fenced pipe-to-shell examples: `{}`\n",
+        sec313_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC335` metadata-service access examples: `{}`\n",
+        sec335_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC347` mutable MCP launcher examples: `{}`\n",
+        sec347_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC348` mutable Docker registry-image examples: `{}`\n",
+        sec348_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC349` Docker host-escape or privileged runtime examples: `{}`\n",
+        sec349_hits
     ));
     output.push_str(&format!(
         "- repos with `tool_descriptor_json`: `{}`\n",
@@ -182,15 +205,36 @@ pub(crate) fn render_report_from_ledgers(
             "- no external hits were produced yet from Docker-based MCP launch hardening on the canonical cohort\n",
         );
     }
-    if metadata_markdown_hits == 0 {
-        output.push_str(
-            "- `SEC335` produced no preview hits yet on the current canonical skills/CLAUDE markdown cohort\n",
-        );
-    }
     if tool_rule_hits == 0 {
         output.push_str(
             "- no non-fixture external `Stable` hits were produced yet on committed tool-descriptor JSON\n",
         );
+    }
+    if sec348_repos.is_empty() {
+        output.push_str(
+            "- `SEC348` produced no repo-level preview hits yet on the canonical cohort\n",
+        );
+    } else {
+        output.push_str("- `SEC348` repo-level preview hits on the canonical cohort:\n");
+        for (repo, count, rule_codes) in sec348_repos {
+            output.push_str(&format!(
+                "  - `{repo}`: `{count}` preview finding(s) via {}\n",
+                format_rule_codes(&rule_codes)
+            ));
+        }
+    }
+    if sec349_repos.is_empty() {
+        output.push_str(
+            "- `SEC349` produced no repo-level preview hits yet on the canonical cohort\n",
+        );
+    } else {
+        output.push_str("- `SEC349` repo-level preview hits on the canonical cohort:\n");
+        for (repo, count, rule_codes) in sec349_repos {
+            output.push_str(&format!(
+                "  - `{repo}`: `{count}` preview finding(s) via {}\n",
+                format_rule_codes(&rule_codes)
+            ));
+        }
     }
     output.push_str(
         "- fixture/testdata/example suppression stayed active for the newly added MCP client-config variants and did not create a fake usefulness signal from fixture-like paths\n\n",

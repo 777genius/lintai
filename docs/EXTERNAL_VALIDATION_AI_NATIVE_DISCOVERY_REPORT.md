@@ -59,7 +59,7 @@ Currently covered admission paths:
 
 ## Stable Hits
 
-- current AI-native MCP rule families produced `8` repo-level rule-code hits in this discovery wave
+- current AI-native MCP rule families produced `7` repo-level rule-code hits in this discovery wave
 - repo-level AI-native rule hits were observed after the latest detector expansion. Treat these as repo-scope evidence first, then inspect path attribution before claiming they all came from newly covered admission paths.
 
 - `SonarSource/sonarqube-mcp-server`: `1` repo-level stable finding(s) via `SEC346`
@@ -68,13 +68,14 @@ Currently covered admission paths:
 
 - `31` preview hit(s) were observed at repo scope; these should not yet be interpreted as proof on discovery-only admission paths
 
-- AI-native markdown preview hits by rule code: `SEC313`=`0`, `SEC335`=`0`, `SEC347`=`1`, `SEC348`=`0`
-- current markdown usefulness is not being driven by plugin-root command docs in this discovery cohort; that surface still has `0` admitted covered paths
+- AI-native markdown preview hits by rule code: `SEC313`=`0`, `SEC335`=`0`, `SEC347`=`1`, `SEC348`=`0`, `SEC349`=`0`
+- current markdown usefulness is still mainly skills / `CLAUDE.md`; plugin-root command docs remain a non-driving surface with `0` admitted covered paths
 
 - `SEC313` produced no repo-level external preview hits in this wave
 - `SEC335` produced no repo-level external preview hits in this wave
 - `airmcp-com/mcp-standards`: `1` repo-level preview finding(s) via `SEC347`
 - `SEC348` produced no repo-level external preview hits in this wave
+- `SEC349` produced no repo-level external preview hits in this wave
 
 ## Runtime / Diagnostic Notes
 
@@ -84,4 +85,4 @@ Currently covered admission paths:
 
 ## Recommended Next Step
 
-Use this package as discovery evidence for the next detector expansion. There are no remaining discovery-only admission paths in the current checked-in AI-native cohort, so deferred plugin `mcpServers` support is not blocking coverage of the admitted set.
+Use this package as discovery evidence for the next detector expansion. There are no remaining discovery-only admission paths in the current checked-in AI-native cohort, and markdown usefulness is still being driven mainly by skills / `CLAUDE.md` rather than plugin-root command docs.

@@ -163,6 +163,22 @@ pub(crate) fn check_markdown_mutable_docker_image(
     )
 }
 
+pub(crate) fn check_markdown_docker_host_escape(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.docker_host_escape_spans.as_slice())
+            .unwrap_or(&[]),
+        "markdown docker example uses a host-escape or privileged runtime pattern",
+    )
+}
+
 fn findings_for_spans(
     ctx: &ScanContext,
     meta: RuleMetadata,

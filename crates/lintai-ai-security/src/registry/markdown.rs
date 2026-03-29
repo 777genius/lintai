@@ -3,10 +3,10 @@ use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
 use super::*;
 use crate::markdown_rules::{
     check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
-    check_markdown_download_exec, check_markdown_fenced_pipe_shell,
-    check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
-    check_markdown_mutable_mcp_launcher, check_markdown_path_traversal,
-    check_markdown_private_key_pem,
+    check_markdown_docker_host_escape, check_markdown_download_exec,
+    check_markdown_fenced_pipe_shell, check_markdown_metadata_service_access,
+    check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
+    check_markdown_path_traversal, check_markdown_private_key_pem,
 };
 
 declare_rule! {
@@ -98,6 +98,17 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct MarkdownDockerHostEscapeRule {
+        code: "SEC349",
+        summary: "AI-native markdown Docker example uses a host-escape or privileged runtime pattern",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct MarkdownPrivateKeyPemRule {
         code: "SEC312",
         summary: "Markdown contains committed private key material",
@@ -119,7 +130,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 10] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 11] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -233,6 +244,21 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 10] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace mutable Docker image examples with digest-pinned alternatives or add explicit reproducibility guidance",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownDockerHostEscapeRule::METADATA,
+        surface: Surface::Markdown,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Docker host-escape examples in markdown can be legitimate ops guidance, so the first release stays guidance-only.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_markdown_docker_host_escape,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace host-escape Docker examples with safer alternatives or add explicit risk framing and isolation guidance",
         ),
         suggestion_fix: None,
     },

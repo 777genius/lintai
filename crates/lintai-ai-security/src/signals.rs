@@ -156,6 +156,7 @@ pub(crate) struct MarkdownSignals {
     pub(crate) metadata_service_access_spans: Vec<Span>,
     pub(crate) mutable_mcp_launcher_spans: Vec<Span>,
     pub(crate) mutable_docker_image_spans: Vec<Span>,
+    pub(crate) docker_host_escape_spans: Vec<Span>,
 }
 
 impl MarkdownSignals {
@@ -230,6 +231,13 @@ impl MarkdownSignals {
                             region.span.start_byte + relative.end_byte,
                         ));
                     }
+                    if let Some(relative) = find_markdown_docker_host_escape_relative_span(snippet)
+                    {
+                        signals.docker_host_escape_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
                 }
                 RegionKind::CodeBlock => {
                     if let Some(relative) = find_private_key_relative_span(snippet) {
@@ -264,6 +272,13 @@ impl MarkdownSignals {
                             region.span.start_byte + relative.end_byte,
                         ));
                     }
+                    if let Some(relative) = find_markdown_docker_host_escape_relative_span(snippet)
+                    {
+                        signals.docker_host_escape_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
                 }
                 RegionKind::Blockquote => {
                     if let Some(relative) = find_private_key_relative_span(snippet) {
@@ -288,6 +303,13 @@ impl MarkdownSignals {
                         find_markdown_mutable_docker_image_relative_span(snippet)
                     {
                         signals.mutable_docker_image_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
+                    if let Some(relative) = find_markdown_docker_host_escape_relative_span(snippet)
+                    {
+                        signals.docker_host_escape_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
                             region.span.start_byte + relative.end_byte,
                         ));
@@ -2294,6 +2316,48 @@ fn find_markdown_mutable_docker_image_relative_span(text: &str) -> Option<Span> 
     None
 }
 
+fn find_markdown_docker_host_escape_relative_span(text: &str) -> Option<Span> {
+    let line_starts = line_start_offsets(text);
+    let lines = text.split_inclusive('\n').collect::<Vec<_>>();
+
+    for (index, line) in lines.iter().enumerate() {
+        if !line.to_ascii_lowercase().contains("docker run") {
+            continue;
+        }
+
+        let mut command = String::new();
+        let mut command_start = line_starts[index];
+        let mut last_line_index = index;
+        let mut saw_any = false;
+
+        for continuation_index in index..lines.len() {
+            let current = lines[continuation_index];
+            if !saw_any {
+                command_start = line_starts[continuation_index];
+                saw_any = true;
+            }
+            command.push_str(current);
+            last_line_index = continuation_index;
+            if !current.trim_end().ends_with('\\') {
+                break;
+            }
+        }
+
+        if let Some(relative) = find_docker_host_escape_in_command(&command) {
+            return Some(Span::new(
+                command_start + relative.start_byte,
+                command_start + relative.end_byte,
+            ));
+        }
+
+        if last_line_index == index && !line.ends_with('\n') {
+            break;
+        }
+    }
+
+    None
+}
+
 fn line_start_offsets(text: &str) -> Vec<usize> {
     let mut starts = vec![0usize];
     for (index, byte) in text.bytes().enumerate() {
@@ -2331,6 +2395,96 @@ fn find_mutable_docker_image_in_command(command: &str) -> Option<Span> {
         }
         let (trimmed_start, trimmed_end) = trimmed_token_span(token, start, end);
         return Some(Span::new(trimmed_start, trimmed_end));
+    }
+
+    None
+}
+
+fn find_docker_host_escape_in_command(command: &str) -> Option<Span> {
+    let tokens = tokenize_markdown_shell_command(command);
+    if tokens.len() < 3 {
+        return None;
+    }
+    let docker_run_index = tokens.windows(2).position(|window| {
+        normalized_markdown_shell_token(window[0].0).eq_ignore_ascii_case("docker")
+            && normalized_markdown_shell_token(window[1].0).eq_ignore_ascii_case("run")
+    })?;
+
+    let mut index = docker_run_index + 2;
+    while index < tokens.len() {
+        let (token, start, end) = tokens[index];
+        let normalized = normalized_markdown_shell_token(token);
+        let normalized_lower = normalized.to_ascii_lowercase();
+
+        if normalized_lower == "--privileged" {
+            let (trimmed_start, trimmed_end) = trimmed_token_span(token, start, end);
+            return Some(Span::new(trimmed_start, trimmed_end));
+        }
+
+        if matches!(normalized_lower.as_str(), "--network" | "--pid" | "--ipc")
+            && let Some((next_token, next_start, next_end)) = tokens.get(index + 1)
+            && normalized_markdown_shell_token(next_token).eq_ignore_ascii_case("host")
+        {
+            let (trimmed_start, _) = trimmed_token_span(token, start, end);
+            let (_, trimmed_end) = trimmed_token_span(next_token, *next_start, *next_end);
+            return Some(Span::new(trimmed_start, trimmed_end));
+        }
+
+        if matches!(
+            normalized_lower.as_str(),
+            "--network=host" | "--pid=host" | "--ipc=host"
+        ) {
+            let (trimmed_start, trimmed_end) = trimmed_token_span(token, start, end);
+            return Some(Span::new(trimmed_start, trimmed_end));
+        }
+
+        if normalized_lower == "-v" || normalized_lower == "--volume" {
+            if let Some((mount_token, mount_start, mount_end)) = tokens.get(index + 1)
+                && let Some(relative) =
+                    docker_socket_mount_span(mount_token, *mount_start, *mount_end)
+            {
+                return Some(relative);
+            }
+            index += markdown_docker_option_consumed_len(&tokens, index);
+            continue;
+        }
+
+        if normalized_lower.starts_with("-v")
+            && normalized.len() > 2
+            && let Some(relative) = docker_socket_mount_span(token, start, end)
+        {
+            return Some(relative);
+        }
+
+        if normalized_lower.starts_with("--volume=")
+            && let Some(relative) = docker_socket_mount_span(token, start, end)
+        {
+            return Some(relative);
+        }
+
+        if normalized_lower == "--mount" {
+            if let Some((mount_token, mount_start, mount_end)) = tokens.get(index + 1)
+                && let Some(relative) =
+                    docker_socket_bind_mount_span(mount_token, *mount_start, *mount_end)
+            {
+                return Some(relative);
+            }
+            index += markdown_docker_option_consumed_len(&tokens, index);
+            continue;
+        }
+
+        if normalized_lower.starts_with("--mount=")
+            && let Some(relative) = docker_socket_bind_mount_span(token, start, end)
+        {
+            return Some(relative);
+        }
+
+        if token.starts_with('-') {
+            index += markdown_docker_option_consumed_len(&tokens, index);
+            continue;
+        }
+
+        index += 1;
     }
 
     None
@@ -2445,6 +2599,36 @@ fn trimmed_token_span(token: &str, start: usize, end: usize) -> (usize, usize) {
             .map(|index| index + 1)
             .unwrap_or(token.len());
     (trimmed_start, trimmed_end.min(end))
+}
+
+fn docker_socket_mount_span(token: &str, start: usize, end: usize) -> Option<Span> {
+    let normalized = normalized_markdown_shell_token(token);
+    let mount_value = normalized
+        .strip_prefix("-v")
+        .or_else(|| normalized.strip_prefix("--volume="))
+        .unwrap_or(normalized);
+    let marker = "/var/run/docker.sock";
+    let lowered = mount_value.to_ascii_lowercase();
+    let marker_start = lowered.find(marker)?;
+    Some(Span::new(
+        start + marker_start,
+        (start + marker_start + marker.len()).min(end),
+    ))
+}
+
+fn docker_socket_bind_mount_span(token: &str, start: usize, end: usize) -> Option<Span> {
+    let normalized = normalized_markdown_shell_token(token);
+    let mount_value = normalized.strip_prefix("--mount=").unwrap_or(normalized);
+    let lowered = mount_value.to_ascii_lowercase();
+    let marker = "/var/run/docker.sock";
+    if !lowered.contains("type=bind") {
+        return None;
+    }
+    let marker_start = lowered.find(marker)?;
+    Some(Span::new(
+        start + marker_start,
+        (start + marker_start + marker.len()).min(end),
+    ))
 }
 
 fn has_path_traversal_access(normalized_path: &str, snippet: &str, lowered: &str) -> bool {

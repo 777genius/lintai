@@ -60,6 +60,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-clean-basic",
             "skill-command-snippet-without-mcp-context-safe",
             "skill-docker-digest-pinned-safe",
+            "skill-docker-host-escape-safe-ordinary-run",
             "skill-docker-local-image-safe",
             "skill-fenced-pipe-shell-safe",
             "skill-generic-npx-safe",

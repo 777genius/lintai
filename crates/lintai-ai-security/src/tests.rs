@@ -493,6 +493,78 @@ fn finds_markdown_mutable_multiline_docker_registry_image_example() {
 }
 
 #[test]
+fn finds_markdown_privileged_docker_example() {
+    let provider = AiSecurityProvider::default();
+    let content = "Use `docker run --privileged ghcr.io/acme/tool` only in isolated labs.\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Skill,
+        SourceFormat::Markdown,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC349")
+        .unwrap();
+    let start = content.find("--privileged").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "--privileged".len())
+    );
+}
+
+#[test]
+fn finds_markdown_docker_network_host_example() {
+    let provider = AiSecurityProvider::default();
+    let content = "```bash\ndocker run --network host ghcr.io/acme/tool\n```\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Instructions,
+        SourceFormat::Markdown,
+        content,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC349"));
+}
+
+#[test]
+fn finds_markdown_docker_socket_mount_example() {
+    let provider = AiSecurityProvider::default();
+    let content = "docker run -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/acme/tool\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::CursorPluginAgent,
+        SourceFormat::Markdown,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC349")
+        .unwrap();
+    let start = content.find("/var/run/docker.sock").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "/var/run/docker.sock".len())
+    );
+}
+
+#[test]
+fn finds_markdown_multiline_docker_host_escape_example() {
+    let provider = AiSecurityProvider::default();
+    let content = "```bash\ndocker run \\\n  --pid host \\\n  ghcr.io/acme/tool\n```\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Skill,
+        SourceFormat::Markdown,
+        content,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC349"));
+}
+
+#[test]
 fn ignores_markdown_digest_pinned_docker_image_example() {
     let provider = AiSecurityProvider::default();
     let findings = ProviderHarness::run(
@@ -529,6 +601,19 @@ fn ignores_markdown_docker_prose_without_run_example() {
     );
 
     assert!(!findings.iter().any(|finding| finding.rule_code == "SEC348"));
+}
+
+#[test]
+fn ignores_markdown_safe_docker_example_without_host_escape() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Skill,
+        SourceFormat::Markdown,
+        "docker run qdrant/qdrant\n",
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC349"));
 }
 
 #[test]
@@ -2791,6 +2876,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC335"
                         | "SEC347"
                         | "SEC348"
+                        | "SEC349"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

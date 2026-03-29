@@ -24,7 +24,16 @@ pub(crate) fn render_ai_native_discovery_report(
     let runtime_issue_repos = repos_with_runtime_issues(ledger, shortlist);
     let ai_native_rule_hits = rule_count(ledger, AI_NATIVE_RULE_CODES);
     let sec346_repos = repos_with_rule_hits(ledger, &["SEC346"], true);
+    let sec313_hits = rule_count(ledger, &["SEC313"]);
+    let sec335_hits = rule_count(ledger, &["SEC335"]);
+    let sec347_hits = rule_count(ledger, &["SEC347"]);
+    let sec348_hits = rule_count(ledger, &["SEC348"]);
+    let sec349_hits = rule_count(ledger, &["SEC349"]);
+    let sec313_repos = repos_with_rule_hits(ledger, &["SEC313"], false);
     let sec335_repos = repos_with_rule_hits(ledger, &["SEC335"], false);
+    let sec347_repos = repos_with_rule_hits(ledger, &["SEC347"], false);
+    let sec348_repos = repos_with_rule_hits(ledger, &["SEC348"], false);
+    let sec349_repos = repos_with_rule_hits(ledger, &["SEC349"], false);
 
     let mut output = String::new();
     output.push_str("# External Validation AI-Native Discovery Report\n\n");
@@ -182,17 +191,41 @@ pub(crate) fn render_ai_native_discovery_report(
             counts.preview_findings
         ));
     }
-    if sec335_repos.is_empty() {
-        output.push_str("- `SEC335` produced no repo-level external preview hits in this wave\n\n");
+    output.push_str(&format!(
+        "- AI-native markdown preview hits by rule code: `SEC313`=`{}`, `SEC335`=`{}`, `SEC347`=`{}`, `SEC348`=`{}`, `SEC349`=`{}`\n",
+        sec313_hits, sec335_hits, sec347_hits, sec348_hits, sec349_hits
+    ));
+    if coverage.plugin_root_command_paths == 0 {
+        output.push_str(
+            "- current markdown usefulness is still mainly skills / `CLAUDE.md`; plugin-root command docs remain a non-driving surface with `0` admitted covered paths\n\n",
+        );
     } else {
-        for (repo, count, rule_codes) in sec335_repos {
-            output.push_str(&format!(
-                "- `{repo}`: `{count}` repo-level preview finding(s) via {}\n",
-                format_rule_codes(&rule_codes)
-            ));
-        }
-        output.push('\n');
+        output.push_str(
+            "- plugin-root command docs are now part of the covered markdown surface, but skill / `CLAUDE.md` evidence still dominates current usefulness\n\n",
+        );
     }
+
+    for (label, repos) in [
+        ("SEC313", sec313_repos),
+        ("SEC335", sec335_repos),
+        ("SEC347", sec347_repos),
+        ("SEC348", sec348_repos),
+        ("SEC349", sec349_repos),
+    ] {
+        if repos.is_empty() {
+            output.push_str(&format!(
+                "- `{label}` produced no repo-level external preview hits in this wave\n"
+            ));
+        } else {
+            for (repo, count, rule_codes) in repos {
+                output.push_str(&format!(
+                    "- `{repo}`: `{count}` repo-level preview finding(s) via {}\n",
+                    format_rule_codes(&rule_codes)
+                ));
+            }
+        }
+    }
+    output.push('\n');
 
     output.push_str("## Runtime / Diagnostic Notes\n\n");
     if runtime_issue_repos.is_empty() {
@@ -224,7 +257,7 @@ pub(crate) fn render_ai_native_discovery_report(
 
     output.push_str("## Recommended Next Step\n\n");
     if coverage.discovery_only_admission_paths == 0 {
-        output.push_str("Use this package as discovery evidence for the next detector expansion. There are no remaining discovery-only admission paths in the current checked-in AI-native cohort, so deferred plugin `mcpServers` support is not blocking coverage of the admitted set.\n");
+        output.push_str("Use this package as discovery evidence for the next detector expansion. There are no remaining discovery-only admission paths in the current checked-in AI-native cohort, and markdown usefulness is still being driven mainly by skills / `CLAUDE.md` rather than plugin-root command docs.\n");
     } else {
         output.push_str("Use this package as discovery evidence for the next detector expansion. Plugin-root `hooks.json`, `agents/*.md`, and `commands/*.md` are now partially covered through manifest-backed detection, so the remaining AI-native gaps are deferred plugin surfaces such as `mcpServers`.\n");
     }

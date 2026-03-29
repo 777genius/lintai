@@ -1,0 +1,14 @@
+id = "skill-docker-socket-bind-mount"
+kind = "malicious"
+entry_path = "repo"
+expected_output = ["json"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = [
+  { rule_code = "SEC349", tier = "preview" },
+]
+expected_absent_rules = []
+
+[snapshot]
+kind = "none"
+name = "skill-docker-socket-bind-mount"
