@@ -14,16 +14,58 @@ const SKILL_RULES: &[DetectionRuleSpec] = &[DetectionRuleSpec {
     format: SourceFormat::Markdown,
 }];
 
-const INSTRUCTIONS_RULES: &[DetectionRuleSpec] = &[DetectionRuleSpec {
-    priority: 0,
-    file_name: Some("CLAUDE.md"),
-    file_name_fragment: None,
-    suffix: None,
-    parent_dir: None,
-    path_fragment: None,
-    artifact_kind: ArtifactKind::Instructions,
-    format: SourceFormat::Markdown,
-}];
+const INSTRUCTIONS_RULES: &[DetectionRuleSpec] = &[
+    DetectionRuleSpec {
+        priority: 0,
+        file_name: Some("CLAUDE.md"),
+        file_name_fragment: None,
+        suffix: None,
+        parent_dir: None,
+        path_fragment: None,
+        artifact_kind: ArtifactKind::Instructions,
+        format: SourceFormat::Markdown,
+    },
+    DetectionRuleSpec {
+        priority: 0,
+        file_name: Some("AGENTS.md"),
+        file_name_fragment: None,
+        suffix: None,
+        parent_dir: None,
+        path_fragment: None,
+        artifact_kind: ArtifactKind::Instructions,
+        format: SourceFormat::Markdown,
+    },
+    DetectionRuleSpec {
+        priority: 1,
+        file_name: Some("copilot-instructions.md"),
+        file_name_fragment: None,
+        suffix: None,
+        parent_dir: None,
+        path_fragment: Some(".github/"),
+        artifact_kind: ArtifactKind::Instructions,
+        format: SourceFormat::Markdown,
+    },
+    DetectionRuleSpec {
+        priority: 1,
+        file_name: None,
+        file_name_fragment: None,
+        suffix: Some(".instructions.md"),
+        parent_dir: None,
+        path_fragment: None,
+        artifact_kind: ArtifactKind::Instructions,
+        format: SourceFormat::Markdown,
+    },
+    DetectionRuleSpec {
+        priority: 1,
+        file_name: None,
+        file_name_fragment: None,
+        suffix: Some(".agent.md"),
+        parent_dir: None,
+        path_fragment: None,
+        artifact_kind: ArtifactKind::Instructions,
+        format: SourceFormat::Markdown,
+    },
+];
 
 const CURSOR_RULES_RULES: &[DetectionRuleSpec] = &[
     DetectionRuleSpec {

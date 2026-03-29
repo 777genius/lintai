@@ -18,9 +18,11 @@ fn benign_corpus_case_dirs_are_discoverable() {
     assert_eq!(
         names,
         vec![
+            "agents-untrusted-input-warning-safe",
             "claude-settings-network-command-safe",
             "claude-settings-network-tls-verified-safe",
             "claude-settings-pinned-launcher-safe",
+            "copilot-untrusted-input-generic-safe",
             "cursor-plugin-clean-basic",
             "cursor-plugin-safe-paths",
             "cursor-plugin-tls-verified-basic",
@@ -68,6 +70,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-metadata-service-deny-list-safe",
             "skill-project-scoped-path-safe",
             "skill-public-key-pem-safe",
+            "skill-untrusted-input-negated-safe",
             "tool-json-anthropic-strict-locked",
             "tool-json-mcp-valid-tool",
             "tool-json-openai-strict-locked",

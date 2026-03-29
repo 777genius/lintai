@@ -7,6 +7,7 @@ use crate::markdown_rules::{
     check_markdown_fenced_pipe_shell, check_markdown_metadata_service_access,
     check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
     check_markdown_path_traversal, check_markdown_private_key_pem,
+    check_untrusted_instruction_promotion,
 };
 
 declare_rule! {
@@ -109,6 +110,17 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct UntrustedInstructionPromotionRule {
+        code: "SEC350",
+        summary: "Instruction markdown promotes untrusted external content to developer/system-level instructions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct MarkdownPrivateKeyPemRule {
         code: "SEC312",
         summary: "Markdown contains committed private key material",
@@ -130,7 +142,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 11] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 12] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -259,6 +271,21 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 11] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace host-escape Docker examples with safer alternatives or add explicit risk framing and isolation guidance",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: UntrustedInstructionPromotionRule::METADATA,
+        surface: Surface::Markdown,
+        detection_class: DetectionClass::Heuristic,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Instruction-boundary promotion in markdown is prose-aware and needs external usefulness review before any stronger posture.",
+            promotion_requirements: HEURISTIC_PREVIEW_REQUIREMENTS,
+        },
+        check: check_untrusted_instruction_promotion,
+        safe_fix: None,
+        suggestion_message: Some(
+            "rewrite the instruction so external content stays untrusted context and cannot override developer/system guidance",
         ),
         suggestion_fix: None,
     },

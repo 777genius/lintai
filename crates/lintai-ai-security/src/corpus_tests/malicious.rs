@@ -19,10 +19,12 @@ fn malicious_corpus_case_dirs_are_discoverable() {
     assert_eq!(
         names,
         vec![
+            "agents-pr-body-override",
             "claude-markdown-mutable-mcp-launcher",
             "claude-settings-command-tls-bypass",
             "claude-settings-inline-download-exec",
             "claude-settings-mutable-launcher",
+            "copilot-webpage-system-prompt-promotion",
             "cursor-plugin-unsafe-path",
             "gemini-mcp-docker-pull-always",
             "gemini-mcp-docker-unpinned-image",
@@ -80,6 +82,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "skill-mcp-config-mutable-launcher",
             "skill-metadata-service-access",
             "skill-private-key-pem",
+            "skill-tool-output-developer-instructions",
             "tool-json-anthropic-strict-open-schema",
             "tool-json-duplicate-tool-names",
             "tool-json-mcp-missing-machine-fields",

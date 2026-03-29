@@ -264,6 +264,9 @@ rationale = "demo"
         assert!(
             markdown.contains("`SEC349` Docker host-escape or privileged runtime examples: `0`")
         );
+        assert!(
+            markdown.contains("`SEC350` untrusted-input instruction-promotion examples: `0`")
+        );
         assert!(markdown.contains("- repos with `tool_descriptor_json`: `1`"));
         assert!(markdown.contains(
             "- repos where new MCP client-config variants existed only under fixture-like paths: `0`"
@@ -276,6 +279,9 @@ rationale = "demo"
         ));
         assert!(markdown.contains(
             "- `SEC349` produced no repo-level preview hits yet on the canonical cohort"
+        ));
+        assert!(markdown.contains(
+            "- `SEC350` produced no repo-level preview hits yet on the canonical cohort"
         ));
         assert!(markdown.contains("## Delta From Previous Wave"));
         assert!(markdown.contains("`datadog-labs/cursor-plugin`: `improved`"));
@@ -696,5 +702,6 @@ rationale = "demo"
         assert!(markdown.contains("plugin-root command markdown admission paths"));
         assert!(markdown.contains("AI-native markdown preview hits by rule code"));
         assert!(markdown.contains("`SEC349`=`0`"));
+        assert!(markdown.contains("`SEC350`=`0`"));
     }
 }

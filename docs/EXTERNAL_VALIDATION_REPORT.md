@@ -47,6 +47,7 @@ Current wave inventory for the newly expanded JSON lanes:
   - `SEC347` mutable MCP launcher examples: `3`
   - `SEC348` mutable Docker registry-image examples: `2`
   - `SEC349` Docker host-escape or privileged runtime examples: `0`
+  - `SEC350` untrusted-input instruction-promotion examples: `0`
 - repos with `tool_descriptor_json`: `3`
 - findings from `SEC314`-`SEC318`: `0`
 - repos where new MCP client-config variants existed only under fixture-like paths: `1`
@@ -57,6 +58,7 @@ Current wave inventory for the newly expanded JSON lanes:
   - `zebbern/claude-code-guide`: `1` preview finding(s) via `SEC348`
   - `zechenzhangAGI/AI-research-SKILLs`: `1` preview finding(s) via `SEC348`
 - `SEC349` produced no repo-level preview hits yet on the canonical cohort
+- `SEC350` produced no repo-level preview hits yet on the canonical cohort
 - fixture/testdata/example suppression stayed active for the newly added MCP client-config variants and did not create a fake usefulness signal from fixture-like paths
 
 ## Delta From Previous Wave

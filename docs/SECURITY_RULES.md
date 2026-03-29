@@ -68,56 +68,33 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC347` | AI-native markdown example launches MCP through a mutable package runner | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` |
 | `SEC348` | AI-native markdown Docker example uses a mutable registry image | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` |
 | `SEC349` | AI-native markdown Docker example uses a host-escape or privileged runtime pattern | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` |
+| `SEC350` | Instruction markdown promotes untrusted external content to developer/system-level instructions | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` |
 | `SEC401` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC402` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC403` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 
 ## Top-Important AI Security Rules (2026-03-29)
 
-### Обновлённый top-3 (6-агентный ресёрч, фокус на skills markdown)
+### Обновлённый top-3 приоритизации
 
-Если поднимать только три новых правил для `skills markdown` в обычных командах, приоритет такой:
+Если поднимать только три новых AI/MCP/agent-skills правила в ближайший top-3, приоритет должен быть таким:
 
-| Rank | Rule | Axis | Почему поднимать сейчас | Impact | Confidence | Reliability | Статус |
-|---|---|---|---|---:|---:|---:|---|
-| 1 | `SEC:new-developer-message-untrusted-input` | Instruction boundary | Критично ловит самый частый реальный failure mode: `tool output`, RAG/web snippets, issue/PR текст, шаблонные переменные, `@import`, `!command`-вывод, JSON/YAML/XML не должны становиться developer/system-level инструкциями в `SKILL.md`, `AGENTS.md`, `CLAUDE.md`, `.mdc`, `.cursorrules`, `.github/copilot-instructions.md`, `.agent.md`. | 10/10 | 10/10 | 8/10 | `Не закрыто` |
-| 2 | `SEC:new-markdown-sensitive-actions-require-approval` | Runtime policy | Линтер должен блокировать instruction markdown, который снимает ручное подтверждение для side effects: `always run`, `auto-approve`, `skip confirmation`, `commit automatically`, `use MCP without asking`, `bypass review`. Это второй по эффективности control для снижения blast radius на runtime. | 10/10 | 10/10 | 9/10 | `Не закрыто` |
-| 3 | `SEC:new-markdown-tool-scope-minimum` | Scope control | Практически проверяемый least-privilege для команд: предупреждать про implicit full tool access (`tools` отсутствует, `tools: ["*"]`, `use any available tool`, `full MCP access`) и явно требовать минимальный surface. | 9/10 | 10/10 | 10/10 | `Не закрыто` |
+| Rank | Rule | Axis | Почему поднимать сейчас | Уверенность | Надёжность |
+|---|---|---|---|---:|---:|
+| 1 | `SEC:ai-trusted-context-boundary` | Trust boundary | Закрывает базовую ошибку класса agentic systems: tool output, MCP metadata, RAG content и plugin responses не должны становиться system/developer instructions. Это наиболее общий и самый частый confused-deputy/prompt-injection boundary, который бьёт сразу по skills, MCP и plugin surfaces. | `10/10` | `10/10` |
+| 2 | `SEC:ai-manifest-integrity` | Manifest integrity | Без проверки подписи, digest/hash pinning и происхождения skill/plugin/tool manifests любой последующий schema- или policy-check можно обойти подменой артефакта до загрузки. Это прямой supply-chain choke point. | `10/10` | `9/10` |
+| 3 | `SEC:ai-tool-intent-gate` | Runtime control | На рантайме нужен deny-by-default слой: сверка цели, scope, destructive action policy, cost/rate limits и explicit approval перед tool execution. Это сдерживает blast radius даже когда boundary и manifest уже частично обойдены. | `9/10` | `9/10` |
 
-### Skills markdown top-3 (что людям будет полезнее всего)
+### Rationale
 
-| Rank | Rule | Axis | Зачем в первую очередь команде | Impact | Confidence | Reliability | Статус |
-|---|---|---|---|---:|---:|---:|---|
-| 1 | `SEC:new-developer-message-untrusted-input` | Instruction boundary | Прямой guard против prompt-injection в instruction-layer. | 10/10 | 10/10 | 8/10 | `Не закрыто` |
-| 2 | `SEC:new-markdown-sensitive-actions-require-approval` | Runtime policy | Убирает обходы approval и делает поведение предсказуемым в review. | 10/10 | 10/10 | 9/10 | `Не закрыто` |
-| 3 | `SEC:new-markdown-tool-scope-minimum` | Scope control | Самый быстрый в проверке и починке control; уменьшает поверхность атаки на уровне инструкций и MCP access. | 9/10 | 10/10 | 10/10 | `Не закрыто` |
+- `SEC:ai-trusted-context-boundary` стоит первым, потому что это первичный барьер между недоверенным контентом и управляющими инструкциями; без него остальные контроли слишком легко обходятся через reinterpretation attack surface.
+- `SEC:ai-manifest-integrity` стоит вторым, потому что защищает точку входа артефакта до выполнения: если манифест или descriptor подменён, trust model уже сломана до старта runtime.
+- `SEC:ai-tool-intent-gate` стоит третьим, потому что это лучший прикладной runtime control для v0.1/v0.2: он ограничивает реальные действия, а не только их аудит post factum.
 
-### Альтернативный top-3 под policy drift
+### Почему не `SEC:ai-runtime-provenance` в top-3
 
-| Rank | Rule | Axis | Почему для этого фокуса | Impact | Confidence | Reliability | Статус |
-|---|---|---|---|---:|---:|---:|---|
-| 1 | `SEC:new-instruction-precedence-conflict-or-shadowing` | Policy consistency | Снижает silent policy drift между `.mdc`, `AGENTS.md`, `CLAUDE.md`, `SKILL.md`, `.github/copilot-instructions.md`. | 8/10 | 9/10 | 8/10 | `Не закрыто` |
-| 2 | `SEC:new-instruction-change-provenance-and-owner` | Auditability | Добавляет owner/version/audit trail для изменения правил, чтобы drift меньше маскировался под релевантные updates. | 8/10 | 8/10 | 9/10 | `Не закрыто` |
-| 3 | `SEC:new-markdown-memory-write-governance` | Persistence control | Уменьшает persistent context poisoning, если есть автозапись memory/context между сессиями. | 9/10 | 8/10 | 9/10 | `Не закрыто` |
-
-### Почему не `SEC:ai-tool-intent-gate` / `SEC:ai-runtime-provenance` в top-3
-
-- Для ближайшего слоя защиты для людей в review выше приоритет имеют explicit instruction-boundary controls, approvals и bounded tool scope. Эти три почти всегда лучше коррелируют с реальным blast radius и скоростью фикса.
-- `SEC:ai-runtime-provenance` важен, но даёт в первую очередь расследовательную ценность, не прямую мгновенную блокировку side-effectы.
-
-### Что уже закрыто (готовые)
-
-`SEC316`, `SEC317`, `SEC318`, `SEC319`, `SEC321`, `SEC322`, `SEC323`, `SEC330`, `SEC331`, `SEC337`, `SEC338`, `SEC339`, `SEC340`, `SEC341`, `SEC342`, `SEC335`, `SEC347`, `SEC348`, `SEC349`, `SEC401`, `SEC402`, `SEC403` — помечены как уже внедрённые в текущем каталоге.
-
-Прямого покрытия для `skills markdown top-3` в текущем каталоге пока нет; перечисленные правила закрывают только смежные `schema`, `transport`, `runtime`, `container` и `workspace-policy` families.
-
-### Дополнительные кандидаты из OWASP/NIST/industry (очередь после top-3)
-
-| Rank | Rule | Axis | Почему это полезно | Impact | Confidence | Reliability | Статус |
-|---|---|---|---|---:|---:|---:|---|
-| 4 | `SEC:new-markdown-memory-write-governance` | Persistence control | Падение атак persistent context/policy poisoning без review. | 9/10 | 8/10 | 9/10 | `Не закрыто` |
-| 5 | `SEC:new-instruction-change-provenance-and-owner` | Auditability | Нужны owner/review/version history и traceability для правил, чтобы исключать тихий policy drift. | 8/10 | 8/10 | 9/10 | `Не закрыто` |
-| 6 | `SEC:new-instruction-precedence-conflict-or-shadowing` | Policy consistency | Конфликты precedence между `.mdc`, `AGENTS.md`, `CLAUDE.md`, `SKILL.md`, `copilot-instructions` важны, но менее частые, чем boundary/approval/scope. | 8/10 | 9/10 | 8/10 | `Не закрыто` |
+- `SEC:ai-runtime-provenance` важен, но для ближайшего top-3 он слабее как immediate control: provenance и attestation чаще улучшают расследование, доверие и policy enforcement, чем напрямую режут execution blast radius в момент вызова.
+- Поэтому оптимальный порядок сейчас: boundary first, artifact integrity second, execution control third; provenance идёт сразу следом как top-4 кандидат. Уверенность: `9/10`, Надёжность: `9/10`.
 
 ## Provider: `lintai-ai-security`
 
@@ -1135,6 +1112,21 @@ Canonical catalog for the shipped security rules currently exposed by:
 - Promotion Blocker: Docker host-escape examples in markdown can be legitimate ops guidance, so the first release stays guidance-only.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC350` — Instruction markdown promotes untrusted external content to developer/system-level instructions
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `heuristic`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Instruction-boundary promotion in markdown is prose-aware and needs external usefulness review before any stronger posture.
+- Promotion Requirements: Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.
+- Canonical Note: Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.
 
 ## Provider: `lintai-policy-mismatch`
 

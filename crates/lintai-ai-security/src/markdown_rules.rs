@@ -179,6 +179,22 @@ pub(crate) fn check_markdown_docker_host_escape(
     )
 }
 
+pub(crate) fn check_untrusted_instruction_promotion(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.untrusted_instruction_promotion_spans.as_slice())
+            .unwrap_or(&[]),
+        "instruction markdown promotes untrusted external content to developer/system-level instructions",
+    )
+}
+
 fn findings_for_spans(
     ctx: &ScanContext,
     meta: RuleMetadata,

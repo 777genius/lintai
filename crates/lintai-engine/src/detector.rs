@@ -136,6 +136,43 @@ mod tests {
         );
         assert_eq!(
             detector
+                .detect(Path::new("/tmp/AGENTS.md"), "AGENTS.md")
+                .unwrap()
+                .kind,
+            ArtifactKind::Instructions
+        );
+        assert_eq!(
+            detector
+                .detect(
+                    Path::new("/tmp/project/.github/copilot-instructions.md"),
+                    ".github/copilot-instructions.md"
+                )
+                .unwrap()
+                .kind,
+            ArtifactKind::Instructions
+        );
+        assert_eq!(
+            detector
+                .detect(
+                    Path::new("/tmp/project/docs/review.instructions.md"),
+                    "docs/review.instructions.md"
+                )
+                .unwrap()
+                .kind,
+            ArtifactKind::Instructions
+        );
+        assert_eq!(
+            detector
+                .detect(
+                    Path::new("/tmp/project/docs/security.agent.md"),
+                    "docs/security.agent.md"
+                )
+                .unwrap()
+                .kind,
+            ArtifactKind::Instructions
+        );
+        assert_eq!(
+            detector
                 .detect(
                     Path::new("/tmp/.cursor/rules/demo.mdc"),
                     ".cursor/rules/demo.mdc"
@@ -288,6 +325,14 @@ mod tests {
         assert!(
             detector
                 .detect(Path::new("/tmp/project/tsconfig.json"), "tsconfig.json")
+                .is_none()
+        );
+        assert!(
+            detector
+                .detect(
+                    Path::new("/tmp/project/docs/review.md"),
+                    "docs/review.md"
+                )
                 .is_none()
         );
     }

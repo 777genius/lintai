@@ -68,7 +68,7 @@ Currently covered admission paths:
 
 - `31` preview hit(s) were observed at repo scope; these should not yet be interpreted as proof on discovery-only admission paths
 
-- AI-native markdown preview hits by rule code: `SEC313`=`0`, `SEC335`=`0`, `SEC347`=`1`, `SEC348`=`0`, `SEC349`=`0`
+- AI-native markdown preview hits by rule code: `SEC313`=`0`, `SEC335`=`0`, `SEC347`=`1`, `SEC348`=`0`, `SEC349`=`0`, `SEC350`=`0`
 - current markdown usefulness is still mainly skills / `CLAUDE.md`; plugin-root command docs remain a non-driving surface with `0` admitted covered paths
 
 - `SEC313` produced no repo-level external preview hits in this wave
@@ -76,6 +76,7 @@ Currently covered admission paths:
 - `airmcp-com/mcp-standards`: `1` repo-level preview finding(s) via `SEC347`
 - `SEC348` produced no repo-level external preview hits in this wave
 - `SEC349` produced no repo-level external preview hits in this wave
+- `SEC350` produced no repo-level external preview hits in this wave
 
 ## Runtime / Diagnostic Notes
 
