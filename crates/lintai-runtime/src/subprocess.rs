@@ -50,24 +50,10 @@ impl<S> SubprocessProviderBackend<S> {
     where
         S: Clone + Send + Sync + Serialize,
     {
-        let executable = match self.resolve_executable_path() {
-            Ok(path) => path,
-            Err(error) => return self.error_result(error),
-        };
-        let request_json = match self.encode_request(&request) {
-            Ok(value) => value,
-            Err(error) => return self.error_result(error),
-        };
-        let mut child = match self.spawn_child(&executable) {
-            Ok(child) => child,
-            Err(error) => return self.error_result(error),
-        };
-        if let Err(error) = self.write_request(&mut child, &request_json) {
-            terminate_child(&mut child.child);
-            return self.error_result(error);
+        match self.start_child(request) {
+            Ok(child) => self.complete_child(child),
+            Err(error) => self.error_result(error),
         }
-
-        self.wait_for_child(child)
     }
 
     fn resolve_executable_path(&self) -> Result<PathBuf, ProviderError> {
@@ -85,6 +71,20 @@ impl<S> SubprocessProviderBackend<S> {
                 format!("provider runner request encode failed: {error}"),
             )
         })
+    }
+
+    fn start_child(&self, request: RunnerRequest<S>) -> Result<RunningChild, ProviderError>
+    where
+        S: Clone + Send + Sync + Serialize,
+    {
+        let executable = self.resolve_executable_path()?;
+        let request_json = self.encode_request(&request)?;
+        let mut child = self.spawn_child(&executable)?;
+        if let Err(error) = self.write_request(&mut child, &request_json) {
+            terminate_child(&mut child.child);
+            return Err(error);
+        }
+        Ok(child)
     }
 
     fn spawn_child(&self, executable: &PathBuf) -> Result<RunningChild, ProviderError> {
@@ -137,61 +137,28 @@ impl<S> SubprocessProviderBackend<S> {
         Ok(())
     }
 
-    fn wait_for_child(&self, mut child: RunningChild) -> ProviderScanResult {
-        let started = Instant::now();
-
-        loop {
-            match self.poll_child_exit(&mut child.child, started) {
-                Ok(Some(status)) => return self.handle_completed_child(status, child),
-                Ok(None) => thread::sleep(Duration::from_millis(5)),
-                Err(error) => {
-                    terminate_child(&mut child.child);
-                    return self.error_result(error);
-                }
+    fn complete_child(&self, mut child: RunningChild) -> ProviderScanResult {
+        let status = match wait_for_exit(
+            &mut child.child,
+            ChildWaitPolicy::new(self.timeout),
+            self.provider_id.as_str(),
+        ) {
+            Ok(status) => status,
+            Err(error) => {
+                terminate_child(&mut child.child);
+                return self.error_result(error);
             }
-        }
+        };
+        let output = read_child_output(&mut child);
+        self.decode_response(status, output)
     }
 
-    fn poll_child_exit(
-        &self,
-        child: &mut Child,
-        started: Instant,
-    ) -> Result<Option<ExitStatus>, ProviderError> {
-        match child.try_wait() {
-            Ok(Some(status)) => Ok(Some(status)),
-            Ok(None) => {
-                if started.elapsed() >= self.timeout {
-                    terminate_child(child);
-                    Err(ProviderError::timeout(
-                        self.provider_id.as_str(),
-                        format!(
-                            "isolated provider child was terminated after exceeding timeout {:?}",
-                            self.timeout
-                        ),
-                    ))
-                } else {
-                    Ok(None)
-                }
-            }
-            Err(error) => Err(ProviderError::new(
-                self.provider_id.as_str(),
-                format!("provider runner wait failed: {error}"),
-            )),
-        }
-    }
-
-    fn handle_completed_child(
-        &self,
-        status: ExitStatus,
-        mut child: RunningChild,
-    ) -> ProviderScanResult {
-        let output = read_stdout(&mut child.stdout);
-        let stderr_output = read_optional_stderr(&mut child.stderr);
+    fn decode_response(&self, status: ExitStatus, output: ChildOutput) -> ProviderScanResult {
         if !status.success() {
-            let suffix = if stderr_output.is_empty() {
+            let suffix = if output.stderr.is_empty() {
                 String::new()
             } else {
-                format!(": {stderr_output}")
+                format!(": {}", output.stderr)
             };
             return self.error_result(ProviderError::new(
                 self.provider_id.as_str(),
@@ -199,7 +166,7 @@ impl<S> SubprocessProviderBackend<S> {
             ));
         }
 
-        match serde_json::from_str::<RunnerResponse>(&output) {
+        match serde_json::from_str::<RunnerResponse>(&output.stdout) {
             Ok(response) => response.result,
             Err(error) => self.error_result(ProviderError::new(
                 self.provider_id.as_str(),
@@ -267,10 +234,68 @@ struct RunningChild {
     stderr: Option<ChildStderr>,
 }
 
+struct ChildOutput {
+    stdout: String,
+    stderr: String,
+}
+
+struct ChildWaitPolicy {
+    timeout: Duration,
+    poll_interval: Duration,
+}
+
+impl ChildWaitPolicy {
+    fn new(timeout: Duration) -> Self {
+        Self {
+            timeout,
+            poll_interval: Duration::from_millis(5),
+        }
+    }
+}
+
 fn read_stdout(stdout: &mut ChildStdout) -> String {
     let mut output = String::new();
     let _ = stdout.read_to_string(&mut output);
     output
+}
+
+fn read_child_output(child: &mut RunningChild) -> ChildOutput {
+    ChildOutput {
+        stdout: read_stdout(&mut child.stdout),
+        stderr: read_optional_stderr(&mut child.stderr),
+    }
+}
+
+fn wait_for_exit(
+    child: &mut Child,
+    policy: ChildWaitPolicy,
+    provider_id: &str,
+) -> Result<ExitStatus, ProviderError> {
+    let started = Instant::now();
+    loop {
+        match child.try_wait() {
+            Ok(Some(status)) => return Ok(status),
+            Ok(None) => {
+                if started.elapsed() >= policy.timeout {
+                    terminate_child(child);
+                    return Err(ProviderError::timeout(
+                        provider_id,
+                        format!(
+                            "isolated provider child was terminated after exceeding timeout {:?}",
+                            policy.timeout
+                        ),
+                    ));
+                }
+                thread::sleep(policy.poll_interval);
+            }
+            Err(error) => {
+                return Err(ProviderError::new(
+                    provider_id,
+                    format!("provider runner wait failed: {error}"),
+                ));
+            }
+        }
+    }
 }
 
 fn terminate_child(child: &mut Child) {

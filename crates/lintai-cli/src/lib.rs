@@ -3,8 +3,10 @@ use std::process::ExitCode;
 mod app;
 mod args;
 mod builtin_providers;
+mod commands;
 #[cfg(test)]
 mod compat_tests;
+mod execution;
 #[path = "external_validation/mod.rs"]
 mod external_validation;
 mod internal_bin;

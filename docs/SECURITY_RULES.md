@@ -67,6 +67,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC346` | MCP configuration forces Docker to refresh from a mutable registry source | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` |
 | `SEC347` | AI-native markdown example launches MCP through a mutable package runner | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` |
 | `SEC348` | AI-native markdown Docker example uses a mutable registry image | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` |
+| `SEC349` | AI-native markdown Docker example uses a host-escape or privileged runtime pattern | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` |
 | `SEC401` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC402` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
 | `SEC403` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` |
@@ -1093,6 +1094,21 @@ Canonical catalog for the shipped security rules currently exposed by:
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Mutable Docker image examples in markdown can be legitimate setup guidance, so the first release stays guidance-only.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC349` — AI-native markdown Docker example uses a host-escape or privileged runtime pattern
+
+- Provider: `lintai-ai-security`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Docker host-escape examples in markdown can be legitimate ops guidance, so the first release stays guidance-only.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
