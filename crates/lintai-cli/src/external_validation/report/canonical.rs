@@ -28,9 +28,11 @@ pub(crate) fn render_report_from_ledgers(
     let sec348_hits = rule_count(current, &["SEC348"]);
     let sec349_hits = rule_count(current, &["SEC349"]);
     let sec350_hits = rule_count(current, &["SEC350"]);
+    let sec351_hits = rule_count(current, &["SEC351"]);
     let sec348_repos = repos_with_rule_hits(current, &["SEC348"], false);
     let sec349_repos = repos_with_rule_hits(current, &["SEC349"], false);
     let sec350_repos = repos_with_rule_hits(current, &["SEC350"], false);
+    let sec351_repos = repos_with_rule_hits(current, &["SEC351"], false);
 
     let datadog_status = phase_target_status(
         baseline,
@@ -186,6 +188,10 @@ pub(crate) fn render_report_from_ledgers(
         sec350_hits
     ));
     output.push_str(&format!(
+        "  - `SEC351` approval-bypass instruction examples: `{}`\n",
+        sec351_hits
+    ));
+    output.push_str(&format!(
         "- repos with `tool_descriptor_json`: `{}`\n",
         expanded_surface_counts.tool_descriptor_json
     ));
@@ -249,6 +255,19 @@ pub(crate) fn render_report_from_ledgers(
     } else {
         output.push_str("- `SEC350` repo-level preview hits on the canonical cohort:\n");
         for (repo, count, rule_codes) in sec350_repos {
+            output.push_str(&format!(
+                "  - `{repo}`: `{count}` preview finding(s) via {}\n",
+                format_rule_codes(&rule_codes)
+            ));
+        }
+    }
+    if sec351_repos.is_empty() {
+        output.push_str(
+            "- `SEC351` produced no repo-level preview hits yet on the canonical cohort\n",
+        );
+    } else {
+        output.push_str("- `SEC351` repo-level preview hits on the canonical cohort:\n");
+        for (repo, count, rule_codes) in sec351_repos {
             output.push_str(&format!(
                 "  - `{repo}`: `{count}` preview finding(s) via {}\n",
                 format_rule_codes(&rule_codes)

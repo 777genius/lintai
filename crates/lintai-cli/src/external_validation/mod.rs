@@ -257,16 +257,15 @@ rationale = "demo"
         assert!(markdown.contains("- findings from `SEC336`: `0`"));
         assert!(markdown.contains("- findings from `SEC337`-`SEC339`, `SEC346`: `0`"));
         assert!(markdown.contains("- AI-native markdown preview findings:"));
-        assert!(markdown.contains("`SEC313` fenced pipe-to-shell examples: `2`"));
+        assert!(markdown.contains("`SEC313` fenced pipe-to-shell examples: `1`"));
         assert!(markdown.contains("`SEC335` metadata-service access examples: `0`"));
         assert!(markdown.contains("`SEC347` mutable MCP launcher examples: `0`"));
         assert!(markdown.contains("`SEC348` mutable Docker registry-image examples: `0`"));
         assert!(
             markdown.contains("`SEC349` Docker host-escape or privileged runtime examples: `0`")
         );
-        assert!(
-            markdown.contains("`SEC350` untrusted-input instruction-promotion examples: `0`")
-        );
+        assert!(markdown.contains("`SEC350` untrusted-input instruction-promotion examples: `0`"));
+        assert!(markdown.contains("`SEC351` approval-bypass instruction examples: `0`"));
         assert!(markdown.contains("- repos with `tool_descriptor_json`: `1`"));
         assert!(markdown.contains(
             "- repos where new MCP client-config variants existed only under fixture-like paths: `0`"
@@ -282,6 +281,9 @@ rationale = "demo"
         ));
         assert!(markdown.contains(
             "- `SEC350` produced no repo-level preview hits yet on the canonical cohort"
+        ));
+        assert!(markdown.contains(
+            "- `SEC351` produced no repo-level preview hits yet on the canonical cohort"
         ));
         assert!(markdown.contains("## Delta From Previous Wave"));
         assert!(markdown.contains("`datadog-labs/cursor-plugin`: `improved`"));
@@ -703,5 +705,6 @@ rationale = "demo"
         assert!(markdown.contains("AI-native markdown preview hits by rule code"));
         assert!(markdown.contains("`SEC349`=`0`"));
         assert!(markdown.contains("`SEC350`=`0`"));
+        assert!(markdown.contains("`SEC351`=`0`"));
     }
 }

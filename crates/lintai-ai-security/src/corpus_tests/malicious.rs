@@ -19,8 +19,10 @@ fn malicious_corpus_case_dirs_are_discoverable() {
     assert_eq!(
         names,
         vec![
+            "agents-human-approval-bypass",
             "agents-pr-body-override",
             "claude-markdown-mutable-mcp-launcher",
+            "claude-sensitive-action-without-permission",
             "claude-settings-command-tls-bypass",
             "claude-settings-inline-download-exec",
             "claude-settings-mutable-launcher",
@@ -68,6 +70,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "server-json-literal-auth-header",
             "server-json-unresolved-header-variable",
             "server-json-unresolved-remote-variable",
+            "skill-approval-bypass-directive",
             "skill-docker-host-network",
             "skill-docker-multiline-mutable-image",
             "skill-docker-privileged-runtime",

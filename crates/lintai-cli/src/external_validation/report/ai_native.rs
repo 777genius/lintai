@@ -30,12 +30,14 @@ pub(crate) fn render_ai_native_discovery_report(
     let sec348_hits = rule_count(ledger, &["SEC348"]);
     let sec349_hits = rule_count(ledger, &["SEC349"]);
     let sec350_hits = rule_count(ledger, &["SEC350"]);
+    let sec351_hits = rule_count(ledger, &["SEC351"]);
     let sec313_repos = repos_with_rule_hits(ledger, &["SEC313"], false);
     let sec335_repos = repos_with_rule_hits(ledger, &["SEC335"], false);
     let sec347_repos = repos_with_rule_hits(ledger, &["SEC347"], false);
     let sec348_repos = repos_with_rule_hits(ledger, &["SEC348"], false);
     let sec349_repos = repos_with_rule_hits(ledger, &["SEC349"], false);
     let sec350_repos = repos_with_rule_hits(ledger, &["SEC350"], false);
+    let sec351_repos = repos_with_rule_hits(ledger, &["SEC351"], false);
 
     let mut output = String::new();
     output.push_str("# External Validation AI-Native Discovery Report\n\n");
@@ -194,8 +196,8 @@ pub(crate) fn render_ai_native_discovery_report(
         ));
     }
     output.push_str(&format!(
-        "- AI-native markdown preview hits by rule code: `SEC313`=`{}`, `SEC335`=`{}`, `SEC347`=`{}`, `SEC348`=`{}`, `SEC349`=`{}`, `SEC350`=`{}`\n",
-        sec313_hits, sec335_hits, sec347_hits, sec348_hits, sec349_hits, sec350_hits
+        "- AI-native markdown preview hits by rule code: `SEC313`=`{}`, `SEC335`=`{}`, `SEC347`=`{}`, `SEC348`=`{}`, `SEC349`=`{}`, `SEC350`=`{}`, `SEC351`=`{}`\n",
+        sec313_hits, sec335_hits, sec347_hits, sec348_hits, sec349_hits, sec350_hits, sec351_hits
     ));
     if coverage.plugin_root_command_paths == 0 {
         output.push_str(
@@ -214,6 +216,7 @@ pub(crate) fn render_ai_native_discovery_report(
         ("SEC348", sec348_repos),
         ("SEC349", sec349_repos),
         ("SEC350", sec350_repos),
+        ("SEC351", sec351_repos),
     ] {
         if repos.is_empty() {
             output.push_str(&format!(

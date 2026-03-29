@@ -2,7 +2,8 @@ use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
 
 use super::*;
 use crate::markdown_rules::{
-    check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
+    check_approval_bypass_instruction, check_html_comment_directive,
+    check_html_comment_download_exec, check_markdown_base64_exec,
     check_markdown_docker_host_escape, check_markdown_download_exec,
     check_markdown_fenced_pipe_shell, check_markdown_metadata_service_access,
     check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
@@ -121,6 +122,17 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct ApprovalBypassInstructionRule {
+        code: "SEC351",
+        summary: "AI-native instruction explicitly disables user approval or confirmation",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct MarkdownPrivateKeyPemRule {
         code: "SEC312",
         summary: "Markdown contains committed private key material",
@@ -142,7 +154,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 12] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -286,6 +298,21 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 12] = [
         safe_fix: None,
         suggestion_message: Some(
             "rewrite the instruction so external content stays untrusted context and cannot override developer/system guidance",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ApprovalBypassInstructionRule::METADATA,
+        surface: Surface::Markdown,
+        detection_class: DetectionClass::Heuristic,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Approval-bypass guidance in markdown is prose-aware and needs external usefulness review before any stronger posture.",
+            promotion_requirements: HEURISTIC_PREVIEW_REQUIREMENTS,
+        },
+        check: check_approval_bypass_instruction,
+        safe_fix: None,
+        suggestion_message: Some(
+            "rewrite the instruction so risky actions require explicit approval or confirmation instead of bypassing it",
         ),
         suggestion_fix: None,
     },

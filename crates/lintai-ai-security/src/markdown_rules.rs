@@ -195,6 +195,22 @@ pub(crate) fn check_untrusted_instruction_promotion(
     )
 }
 
+pub(crate) fn check_approval_bypass_instruction(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.approval_bypass_instruction_spans.as_slice())
+            .unwrap_or(&[]),
+        "instruction markdown explicitly disables user approval or confirmation",
+    )
+}
+
 fn findings_for_spans(
     ctx: &ScanContext,
     meta: RuleMetadata,

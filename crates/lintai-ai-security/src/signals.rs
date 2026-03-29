@@ -113,6 +113,45 @@ const MARKDOWN_INSTRUCTION_PROMOTION_MARKERS: &[&str] = &[
 ];
 const MARKDOWN_PROMOTION_NEGATION_MARKERS: &[&str] =
     &["do not", "don't", "never", "must not", "should not"];
+const MARKDOWN_APPROVAL_BYPASS_DIRECTIVE_MARKERS: &[&str] = &[
+    "do not ask the user for permission",
+    "do not ask the user for confirmation",
+    "don't wait for human approval",
+    "no human approval needed",
+];
+const MARKDOWN_APPROVAL_BYPASS_SUFFIX_MARKERS: &[&str] = &[
+    "without asking",
+    "without permission",
+    "without approval",
+    "without confirmation",
+];
+const MARKDOWN_APPROVAL_SENSITIVE_ACTION_MARKERS: &[&str] = &[
+    "kill process",
+    "kill processes",
+    "rm -rf",
+    "git clean",
+    "git checkout .",
+    "git commit",
+    "commit periodically",
+    "push",
+    "deploy",
+    "start server",
+    "start servers",
+    "change env vars",
+    "modify env vars",
+    "change environment variables",
+    "modify environment variables",
+];
+const MARKDOWN_APPROVAL_SAFETY_MARKERS: &[&str] = &[
+    "ask before",
+    "confirm before",
+    "requires explicit approval",
+    "approval first",
+    "must confirm",
+    "must ask",
+];
+const MARKDOWN_NEGATIVE_SECTION_HEADERS: &[&str] =
+    &["**never:**", "**must not:**", "never:", "must not:"];
 
 const FIXTURE_PATH_SEGMENTS: &[&str] = &[
     "test", "tests", "testdata", "fixture", "fixtures", "example", "examples", "sample", "samples",
@@ -202,6 +241,7 @@ pub(crate) struct MarkdownSignals {
     pub(crate) mutable_docker_image_spans: Vec<Span>,
     pub(crate) docker_host_escape_spans: Vec<Span>,
     pub(crate) untrusted_instruction_promotion_spans: Vec<Span>,
+    pub(crate) approval_bypass_instruction_spans: Vec<Span>,
 }
 
 impl MarkdownSignals {
@@ -286,7 +326,19 @@ impl MarkdownSignals {
                     if let Some(relative) =
                         find_untrusted_instruction_promotion_relative_span(snippet)
                     {
-                        signals.untrusted_instruction_promotion_spans.push(Span::new(
+                        signals
+                            .untrusted_instruction_promotion_spans
+                            .push(Span::new(
+                                region.span.start_byte + relative.start_byte,
+                                region.span.start_byte + relative.end_byte,
+                            ));
+                    }
+                    if let Some(relative) = find_approval_bypass_instruction_relative_span(
+                        &ctx.content,
+                        region.span.start_byte,
+                        snippet,
+                    ) {
+                        signals.approval_bypass_instruction_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
                             region.span.start_byte + relative.end_byte,
                         ));
@@ -370,7 +422,19 @@ impl MarkdownSignals {
                     if let Some(relative) =
                         find_untrusted_instruction_promotion_relative_span(snippet)
                     {
-                        signals.untrusted_instruction_promotion_spans.push(Span::new(
+                        signals
+                            .untrusted_instruction_promotion_spans
+                            .push(Span::new(
+                                region.span.start_byte + relative.start_byte,
+                                region.span.start_byte + relative.end_byte,
+                            ));
+                    }
+                    if let Some(relative) = find_approval_bypass_instruction_relative_span(
+                        &ctx.content,
+                        region.span.start_byte,
+                        snippet,
+                    ) {
+                        signals.approval_bypass_instruction_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
                             region.span.start_byte + relative.end_byte,
                         ));
@@ -2443,9 +2507,12 @@ fn find_untrusted_instruction_promotion_relative_span(text: &str) -> Option<Span
     MARKDOWN_UNTRUSTED_INPUT_MARKERS
         .iter()
         .find_map(|marker| {
-            window
-                .find(marker)
-                .map(|start| Span::new(search_window_start + start, search_window_start + start + marker.len()))
+            window.find(marker).map(|start| {
+                Span::new(
+                    search_window_start + start,
+                    search_window_start + start + marker.len(),
+                )
+            })
         })
         .or_else(|| {
             MARKDOWN_UNTRUSTED_INPUT_MARKERS
@@ -2459,11 +2526,8 @@ fn find_instruction_promotion_position(text: &str) -> Option<usize> {
     let with_as = MARKDOWN_INSTRUCTION_PROMOTION_VERBS_WITH_AS
         .iter()
         .filter_map(|verb| {
-            text.find(verb).and_then(|position| {
-                text[position + verb.len()..]
-                    .find(" as ")
-                    .map(|_| position)
-            })
+            text.find(verb)
+                .and_then(|position| text[position + verb.len()..].find(" as ").map(|_| position))
         })
         .min();
     let direct = MARKDOWN_INSTRUCTION_PROMOTION_MARKERS
@@ -2477,6 +2541,103 @@ fn find_instruction_promotion_position(text: &str) -> Option<usize> {
         (None, Some(right)) => Some(right),
         (None, None) => None,
     }
+}
+
+fn find_approval_bypass_instruction_relative_span(
+    full_content: &str,
+    region_start: usize,
+    text: &str,
+) -> Option<Span> {
+    let lowered = text.to_ascii_lowercase();
+
+    for marker in MARKDOWN_APPROVAL_BYPASS_DIRECTIVE_MARKERS {
+        if let Some(start) = lowered.find(marker) {
+            let marker_span = Span::new(start, start + marker.len());
+            if approval_marker_is_suppressed(
+                full_content,
+                region_start,
+                text,
+                &lowered,
+                &marker_span,
+            ) {
+                continue;
+            }
+            return Some(marker_span);
+        }
+    }
+
+    for marker in MARKDOWN_APPROVAL_BYPASS_SUFFIX_MARKERS {
+        if let Some(start) = lowered.find(marker) {
+            let marker_span = Span::new(start, start + marker.len());
+            if approval_marker_is_suppressed(
+                full_content,
+                region_start,
+                text,
+                &lowered,
+                &marker_span,
+            ) {
+                continue;
+            }
+
+            let window = local_marker_window(&lowered, &marker_span, 96);
+            if MARKDOWN_APPROVAL_SENSITIVE_ACTION_MARKERS
+                .iter()
+                .any(|candidate| window.contains(candidate))
+            {
+                return Some(marker_span);
+            }
+        }
+    }
+
+    None
+}
+
+fn approval_marker_is_suppressed(
+    full_content: &str,
+    region_start: usize,
+    text: &str,
+    lowered: &str,
+    marker_span: &Span,
+) -> bool {
+    let window = local_marker_window(lowered, marker_span, 96);
+    MARKDOWN_APPROVAL_SAFETY_MARKERS
+        .iter()
+        .any(|marker| window.contains(marker))
+        || has_nearby_negative_section_header(
+            full_content,
+            region_start,
+            text,
+            marker_span.start_byte,
+        )
+}
+
+fn local_marker_window<'a>(text: &'a str, marker_span: &Span, radius: usize) -> &'a str {
+    let start = marker_span.start_byte.saturating_sub(radius);
+    let end = (marker_span.end_byte + radius).min(text.len());
+    &text[start..end]
+}
+
+fn has_nearby_negative_section_header(
+    full_content: &str,
+    region_start: usize,
+    text: &str,
+    marker_start: usize,
+) -> bool {
+    if has_local_negative_section_header(&text[..marker_start]) {
+        return true;
+    }
+
+    let lookback_start = region_start.saturating_sub(160);
+    has_local_negative_section_header(&full_content[lookback_start..region_start])
+}
+
+fn has_local_negative_section_header(text: &str) -> bool {
+    let lowered = text.to_ascii_lowercase();
+    MARKDOWN_NEGATIVE_SECTION_HEADERS
+        .iter()
+        .filter_map(|marker| lowered.rfind(marker).map(|position| (marker, position)))
+        .max_by_key(|(_, position)| *position)
+        .is_some_and(|(marker, position)| !lowered[position + marker.len()..].contains("\n\n"))
 }
 
 fn line_start_offsets(text: &str) -> Vec<usize> {

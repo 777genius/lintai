@@ -18,7 +18,9 @@ fn benign_corpus_case_dirs_are_discoverable() {
     assert_eq!(
         names,
         vec![
+            "agents-autonomy-without-bypass-safe",
             "agents-untrusted-input-warning-safe",
+            "claude-never-header-approval-safe",
             "claude-settings-network-command-safe",
             "claude-settings-network-tls-verified-safe",
             "claude-settings-pinned-launcher-safe",
@@ -64,6 +66,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-docker-digest-pinned-safe",
             "skill-docker-host-escape-safe-ordinary-run",
             "skill-docker-local-image-safe",
+            "skill-explicit-approval-required-safe",
             "skill-fenced-pipe-shell-safe",
             "skill-generic-npx-safe",
             "skill-html-comment-safe",
