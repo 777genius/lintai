@@ -131,6 +131,38 @@ pub(crate) fn check_markdown_metadata_service_access(
     )
 }
 
+pub(crate) fn check_markdown_mutable_mcp_launcher(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.mutable_mcp_launcher_spans.as_slice())
+            .unwrap_or(&[]),
+        "markdown example launches MCP through a mutable package runner",
+    )
+}
+
+pub(crate) fn check_markdown_mutable_docker_image(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.mutable_docker_image_spans.as_slice())
+            .unwrap_or(&[]),
+        "markdown docker example uses a mutable registry image",
+    )
+}
+
 fn findings_for_spans(
     ctx: &ScanContext,
     meta: RuleMetadata,

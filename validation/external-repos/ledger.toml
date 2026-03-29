@@ -158,12 +158,15 @@ surfaces_present = [
     "plugin_root_commands/*.md",
 ]
 stable_findings = 3
-preview_findings = 2
+preview_findings = 9
 stable_rule_codes = [
     "SEC324",
     "SEC340",
 ]
-preview_rule_codes = ["SEC328"]
+preview_rule_codes = [
+    "SEC328",
+    "SEC347",
+]
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings observed on first-pass external scan."
 preview_signal_notes = "No preview findings observed on first-pass external scan."
@@ -240,9 +243,9 @@ surfaces_present = [
     "mcp.json",
 ]
 stable_findings = 1
-preview_findings = 0
+preview_findings = 2
 stable_rule_codes = ["SEC329"]
-preview_rule_codes = []
+preview_rule_codes = ["SEC347"]
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings observed on first-pass external scan."
 preview_signal_notes = "No preview findings observed on first-pass external scan."
@@ -465,11 +468,12 @@ surfaces_present = [
     "SKILL.md",
 ]
 stable_findings = 0
-preview_findings = 7
+preview_findings = 8
 stable_rule_codes = []
 preview_rule_codes = [
     "SEC313",
     "SEC335",
+    "SEC348",
 ]
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings observed on first-pass external scan."
@@ -493,9 +497,13 @@ surfaces_present = [
     "SKILL.md",
 ]
 stable_findings = 1
-preview_findings = 1
+preview_findings = 5
 stable_rule_codes = ["SEC324"]
-preview_rule_codes = ["SEC328"]
+preview_rule_codes = [
+    "SEC328",
+    "SEC347",
+    "SEC348",
+]
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings observed on first-pass external scan."
 preview_signal_notes = "No preview findings observed on first-pass external scan."

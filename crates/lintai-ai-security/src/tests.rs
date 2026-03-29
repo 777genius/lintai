@@ -380,6 +380,158 @@ fn ignores_generic_ssrf_prose_without_literal_metadata_endpoint() {
 }
 
 #[test]
+fn finds_markdown_mutable_mcp_launcher_cli_example() {
+    let provider = AiSecurityProvider::default();
+    let content = "claude mcp add claude-flow npx claude-flow@alpha mcp start\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Instructions,
+        SourceFormat::Markdown,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC347")
+        .unwrap();
+    let start = content.find("npx").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "npx".len())
+    );
+}
+
+#[test]
+fn finds_markdown_mutable_mcp_launcher_config_example() {
+    let provider = AiSecurityProvider::default();
+    let content = "```json\n{\n  \"mcpServers\": {\n    \"demo\": {\n      \"command\": \"npx\"\n    }\n  }\n}\n```\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Skill,
+        SourceFormat::Markdown,
+        content,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC347"));
+}
+
+#[test]
+fn finds_markdown_mutable_mcp_launcher_uvx_cli_example() {
+    let provider = AiSecurityProvider::default();
+    let content = "claude mcp add exa uvx mcp-remote https://mcp.exa.ai/mcp\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Instructions,
+        SourceFormat::Markdown,
+        content,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC347"));
+}
+
+#[test]
+fn ignores_markdown_generic_npx_without_mcp_context() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Skill,
+        SourceFormat::Markdown,
+        "Run `npx lighthouse https://example.com` after building the app.\n",
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC347"));
+}
+
+#[test]
+fn ignores_markdown_command_snippet_without_mcp_context() {
+    let provider = AiSecurityProvider::default();
+    let content = "```yaml\ncommand: npx\n```\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::CursorPluginAgent,
+        SourceFormat::Markdown,
+        content,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC347"));
+}
+
+#[test]
+fn finds_markdown_mutable_docker_registry_image_example() {
+    let provider = AiSecurityProvider::default();
+    let content = "Use `docker run -p 6333:6333 qdrant/qdrant` to start the service.\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Skill,
+        SourceFormat::Markdown,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC348")
+        .unwrap();
+    let start = content.find("qdrant/qdrant").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "qdrant/qdrant".len())
+    );
+}
+
+#[test]
+fn finds_markdown_mutable_multiline_docker_registry_image_example() {
+    let provider = AiSecurityProvider::default();
+    let content = "```bash\ndocker run -p 6333:6333 \\\n  arizephoenix/phoenix:latest\n```\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Instructions,
+        SourceFormat::Markdown,
+        content,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC348"));
+}
+
+#[test]
+fn ignores_markdown_digest_pinned_docker_image_example() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Skill,
+        SourceFormat::Markdown,
+        "docker run ghcr.io/acme/server@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n",
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC348"));
+}
+
+#[test]
+fn ignores_markdown_local_docker_image_example() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::CursorPluginAgent,
+        SourceFormat::Markdown,
+        "docker run my-app:latest\n",
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC348"));
+}
+
+#[test]
+fn ignores_markdown_docker_prose_without_run_example() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::CursorPluginCommand,
+        SourceFormat::Markdown,
+        "Use Docker images pinned by digest in production workflows.\n",
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC348"));
+}
+
+#[test]
 fn manifest_backed_plugin_command_markdown_uses_existing_markdown_rules() {
     let temp_dir = unique_temp_dir("lintai-plugin-command-markdown-covered");
     std::fs::create_dir_all(temp_dir.join("plugin/.cursor-plugin")).unwrap();
@@ -2637,6 +2789,8 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                     spec.metadata.code,
                     "SEC313"
                         | "SEC335"
+                        | "SEC347"
+                        | "SEC348"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

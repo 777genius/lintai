@@ -1,0 +1,688 @@
+use std::collections::{BTreeMap, BTreeSet};
+use std::fs;
+use std::path::{Path, PathBuf};
+use std::process::Command;
+
+use ignore::WalkBuilder;
+use lintai_api::{ArtifactKind, RuleTier};
+use lintai_engine::FileTypeDetector;
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
+
+use crate::internal_bin::resolve_lintai_driver_path;
+
+const SHORTLIST_PATH: &str = "validation/external-repos/repo-shortlist.toml";
+const LEDGER_PATH: &str = "validation/external-repos/ledger.toml";
+const ARCHIVED_WAVE1_LEDGER_PATH: &str = "validation/external-repos/archive/wave1-ledger.toml";
+const TOOL_JSON_EXTENSION_SHORTLIST_PATH: &str =
+    "validation/external-repos-tool-json/repo-shortlist.toml";
+const TOOL_JSON_EXTENSION_LEDGER_PATH: &str = "validation/external-repos-tool-json/ledger.toml";
+const TOOL_JSON_EXTENSION_ARCHIVED_WAVE3_LEDGER_PATH: &str =
+    "validation/external-repos-tool-json/archive/wave3-ledger.toml";
+const SERVER_JSON_EXTENSION_SHORTLIST_PATH: &str =
+    "validation/external-repos-server-json/repo-shortlist.toml";
+const SERVER_JSON_EXTENSION_LEDGER_PATH: &str = "validation/external-repos-server-json/ledger.toml";
+const SERVER_JSON_EXTENSION_ARCHIVED_WAVE1_LEDGER_PATH: &str =
+    "validation/external-repos-server-json/archive/wave1-ledger.toml";
+const GITHUB_ACTIONS_EXTENSION_SHORTLIST_PATH: &str =
+    "validation/external-repos-github-actions/repo-shortlist.toml";
+const GITHUB_ACTIONS_EXTENSION_LEDGER_PATH: &str =
+    "validation/external-repos-github-actions/ledger.toml";
+const AI_NATIVE_DISCOVERY_SHORTLIST_PATH: &str =
+    "validation/external-repos-ai-native/repo-shortlist.toml";
+const AI_NATIVE_DISCOVERY_LEDGER_PATH: &str = "validation/external-repos-ai-native/ledger.toml";
+const FIXTURE_PATH_SEGMENTS: &[&str] = &[
+    "test", "tests", "testdata", "fixture", "fixtures", "example", "examples", "sample", "samples",
+];
+const DOCISH_PATH_SEGMENTS: &[&str] = &[
+    "doc",
+    "docs",
+    "schema",
+    "schemas",
+    "spec",
+    "specs",
+    "contract",
+    "contracts",
+];
+
+mod inventory;
+mod model;
+mod package;
+mod report;
+mod runner;
+mod scan;
+
+pub(crate) use inventory::*;
+pub(crate) use model::*;
+pub(crate) use package::*;
+pub(crate) use report::*;
+pub(crate) use runner::*;
+pub(crate) use scan::*;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn sample_shortlist() -> RepoShortlist {
+        RepoShortlist {
+            version: 1,
+            repos: vec![ShortlistRepo {
+                repo: "owner/repo".to_owned(),
+                url: "https://github.com/owner/repo".to_owned(),
+                pinned_ref: "abc123".to_owned(),
+                category: "skills".to_owned(),
+                subtype: "control".to_owned(),
+                status: "evaluated".to_owned(),
+                surfaces_present: vec!["SKILL.md".to_owned()],
+                admission_paths: Vec::new(),
+                rationale: "demo".to_owned(),
+            }],
+        }
+    }
+
+    #[test]
+    fn shortlist_parser_shape_is_expected() {
+        let shortlist: RepoShortlist = toml::from_str(
+            r#"
+version = 1
+
+[[repos]]
+repo = "owner/repo"
+url = "https://github.com/owner/repo"
+pinned_ref = "abc123"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md"]
+rationale = "demo"
+"#,
+        )
+        .unwrap();
+
+        assert_eq!(shortlist.version, 1);
+        assert_eq!(shortlist.repos.len(), 1);
+        assert_eq!(shortlist.repos[0].repo, "owner/repo");
+    }
+
+    #[test]
+    fn fill_auto_fields_separates_stable_preview_diagnostics_and_runtime_errors() {
+        let repo = &sample_shortlist().repos[0];
+        let mut entry = default_entry_from_shortlist(repo);
+        let parsed = JsonScanEnvelope {
+            findings: vec![
+                JsonFinding {
+                    rule_code: "SEC201".to_owned(),
+                },
+                JsonFinding {
+                    rule_code: "SEC105".to_owned(),
+                },
+            ],
+            diagnostics: vec![JsonDiagnostic {
+                normalized_path: "SKILL.md".to_owned(),
+                severity: "warn".to_owned(),
+                code: Some("parse_recovery".to_owned()),
+                message: "frontmatter ignored".to_owned(),
+            }],
+            runtime_errors: vec![JsonRuntimeError {
+                normalized_path: "SKILL.md".to_owned(),
+                kind: "parse".to_owned(),
+                message: "fatal".to_owned(),
+            }],
+        };
+
+        fill_auto_fields(
+            &mut entry,
+            repo,
+            vec!["SKILL.md".to_owned()],
+            &parsed,
+            &current_rule_tiers(),
+        )
+        .unwrap();
+
+        assert_eq!(entry.stable_findings, 1);
+        assert_eq!(entry.preview_findings, 1);
+        assert_eq!(entry.stable_rule_codes, vec!["SEC201"]);
+        assert_eq!(entry.preview_rule_codes, vec!["SEC105"]);
+        assert_eq!(entry.diagnostics.len(), 1);
+        assert_eq!(entry.runtime_errors.len(), 1);
+    }
+
+    #[test]
+    fn template_map_preserves_manual_fields() {
+        let repo = &sample_shortlist().repos[0];
+        let mut prior = default_entry_from_shortlist(repo);
+        prior.repo_verdict = "useful_but_noisy".to_owned();
+        prior.preview_signal_notes = "carry".to_owned();
+        let ledger = ExternalValidationLedger {
+            version: 1,
+            wave: 1,
+            baseline: None,
+            evaluations: vec![prior.clone()],
+        };
+
+        let mapped = template_map(&ledger);
+        assert_eq!(mapped["owner/repo"].repo_verdict, "useful_but_noisy");
+        assert_eq!(mapped["owner/repo"].preview_signal_notes, "carry");
+    }
+
+    #[test]
+    fn report_renderer_emits_delta_and_phase_targets() {
+        let mut baseline_entry = default_entry_from_shortlist(&sample_shortlist().repos[0]);
+        baseline_entry.repo = "datadog-labs/cursor-plugin".to_owned();
+        baseline_entry.preview_findings = 1;
+        baseline_entry.preview_rule_codes = vec!["SEC105".to_owned()];
+        let baseline = ExternalValidationLedger {
+            version: 1,
+            wave: 1,
+            baseline: None,
+            evaluations: vec![
+                baseline_entry,
+                EvaluationEntry {
+                    repo: "cursor/plugins".to_owned(),
+                    runtime_errors: vec![RuntimeErrorRecord {
+                        path: "a".to_owned(),
+                        kind: "parse".to_owned(),
+                        message: "bad".to_owned(),
+                    }],
+                    ..default_entry_from_shortlist(&sample_shortlist().repos[0])
+                },
+                EvaluationEntry {
+                    repo: "Emmraan/agent-skills".to_owned(),
+                    runtime_errors: vec![RuntimeErrorRecord {
+                        path: "b".to_owned(),
+                        kind: "parse".to_owned(),
+                        message: "bad".to_owned(),
+                    }],
+                    ..default_entry_from_shortlist(&sample_shortlist().repos[0])
+                },
+            ],
+        };
+        let current = ExternalValidationLedger {
+            version: 1,
+            wave: 2,
+            baseline: Some("archive/wave1-ledger.toml".to_owned()),
+            evaluations: vec![
+                EvaluationEntry {
+                    repo: "datadog-labs/cursor-plugin".to_owned(),
+                    surfaces_present: vec![".mcp.json".to_owned()],
+                    ..default_entry_from_shortlist(&sample_shortlist().repos[0])
+                },
+                EvaluationEntry {
+                    repo: "zebbern/claude-code-guide".to_owned(),
+                    preview_findings: 2,
+                    preview_rule_codes: vec!["SEC313".to_owned()],
+                    surfaces_present: vec![
+                        ".claude/mcp/*.json".to_owned(),
+                        "tool_descriptor_json".to_owned(),
+                    ],
+                    ..default_entry_from_shortlist(&sample_shortlist().repos[0])
+                },
+                EvaluationEntry {
+                    repo: "cursor/plugins".to_owned(),
+                    diagnostics: vec![DiagnosticRecord {
+                        path: "a".to_owned(),
+                        severity: "warn".to_owned(),
+                        code: Some("parse_recovery".to_owned()),
+                        message: "recovered".to_owned(),
+                    }],
+                    ..default_entry_from_shortlist(&sample_shortlist().repos[0])
+                },
+                EvaluationEntry {
+                    repo: "Emmraan/agent-skills".to_owned(),
+                    diagnostics: vec![DiagnosticRecord {
+                        path: "b".to_owned(),
+                        severity: "warn".to_owned(),
+                        code: Some("parse_recovery".to_owned()),
+                        message: "recovered".to_owned(),
+                    }],
+                    ..default_entry_from_shortlist(&sample_shortlist().repos[0])
+                },
+            ],
+        };
+
+        let markdown = render_report_from_ledgers(&baseline, &current);
+        assert!(markdown.contains("## Hybrid Scope Expansion Results"));
+        assert!(markdown.contains("- repos with root `mcp.json`: `0`"));
+        assert!(markdown.contains("- repos with `.mcp.json`: `1`"));
+        assert!(markdown.contains("- repos with `.cursor/mcp.json`: `0`"));
+        assert!(markdown.contains("- repos with `.vscode/mcp.json`: `0`"));
+        assert!(markdown.contains("- repos with `.roo/mcp.json`: `0`"));
+        assert!(markdown.contains("- repos with `.kiro/settings/mcp.json`: `0`"));
+        assert!(markdown.contains("- repos with `gemini-extension.json`: `0`"));
+        assert!(markdown.contains("- repos with `gemini.settings.json`: `0`"));
+        assert!(markdown.contains("- repos with `.gemini/settings.json`: `0`"));
+        assert!(markdown.contains("- repos with `vscode.settings.json`: `0`"));
+        assert!(markdown.contains("- repos with `.claude/mcp/*.json`: `1`"));
+        assert!(markdown.contains("- repos with Docker-based MCP launch configs: `0`"));
+        assert!(markdown.contains("- findings from `SEC336`: `0`"));
+        assert!(markdown.contains("- findings from `SEC337`-`SEC339`, `SEC346`: `0`"));
+        assert!(
+            markdown
+                .contains("- preview findings from `SEC335` on AI-native markdown surfaces: `0`")
+        );
+        assert!(markdown.contains("- repos with `tool_descriptor_json`: `1`"));
+        assert!(markdown.contains(
+            "- repos where new MCP client-config variants existed only under fixture-like paths: `0`"
+        ));
+        assert!(markdown.contains(
+            "- repos where Docker-based MCP launch existed only under fixture-like client-config variants: `0`"
+        ));
+        assert!(markdown.contains("## Delta From Previous Wave"));
+        assert!(markdown.contains("`datadog-labs/cursor-plugin`: `improved`"));
+        assert!(
+            markdown.contains("`zebbern/claude-code-guide`: `2` preview finding(s) via `SEC313`")
+        );
+        assert!(markdown.contains("`cursor/plugins`: `improved`"));
+        assert!(markdown.contains("`Emmraan/agent-skills`: `improved`"));
+    }
+
+    #[test]
+    fn package_flag_defaults_to_canonical() {
+        assert_eq!(
+            parse_package_flag(&Vec::<String>::new()).unwrap(),
+            ValidationPackage::Canonical
+        );
+    }
+
+    #[test]
+    fn package_flag_parses_tool_json_extension() {
+        assert_eq!(
+            parse_package_flag(&["--package=tool-json-extension".to_owned()]).unwrap(),
+            ValidationPackage::ToolJsonExtension
+        );
+    }
+
+    #[test]
+    fn package_flag_parses_server_json_extension() {
+        assert_eq!(
+            parse_package_flag(&["--package=server-json-extension".to_owned()]).unwrap(),
+            ValidationPackage::ServerJsonExtension
+        );
+    }
+
+    #[test]
+    fn package_flag_parses_github_actions_extension() {
+        assert_eq!(
+            parse_package_flag(&["--package=github-actions-extension".to_owned()]).unwrap(),
+            ValidationPackage::GithubActionsExtension
+        );
+    }
+
+    #[test]
+    fn package_flag_parses_ai_native_discovery() {
+        assert_eq!(
+            parse_package_flag(&["--package=ai-native-discovery".to_owned()]).unwrap(),
+            ValidationPackage::AiNativeDiscovery
+        );
+    }
+
+    #[test]
+    fn semantic_docker_mcp_launch_requires_docker_run_shape() {
+        assert!(contains_semantic_docker_mcp_launch(
+            r#"{"servers":{"demo":{"command":"docker","args":["run","ghcr.io/acme/mcp-server"]}}}"#
+        ));
+        assert!(!contains_semantic_docker_mcp_launch(
+            r#"{"servers":{"demo":{"command":"docker","args":["pull","ghcr.io/acme/mcp-server"]}}}"#
+        ));
+        assert!(!contains_semantic_docker_mcp_launch(
+            r#"{"servers":{"demo":{"command":"node","args":["server.js"]}}}"#
+        ));
+    }
+
+    #[test]
+    fn semantic_gemini_mcp_config_requires_top_level_mcp_servers_with_command() {
+        assert!(contains_semantic_gemini_mcp_config(
+            r#"{"mcpServers":{"demo":{"command":"docker","args":["run","ghcr.io/acme/mcp-server"]}}}"#
+        ));
+        assert!(!contains_semantic_gemini_mcp_config(
+            r#"{"mcpServers":{"demo":{"args":["run","ghcr.io/acme/mcp-server"]}}}"#
+        ));
+        assert!(!contains_semantic_gemini_mcp_config(
+            r#"{"servers":{"demo":{"command":"docker"}}}"#
+        ));
+    }
+
+    #[test]
+    fn fixture_like_paths_are_rejected() {
+        assert!(is_generic_validation_excluded_path(
+            "tests/fixtures/tools.json"
+        ));
+        assert!(is_generic_validation_excluded_path(
+            "pkg/testdata/sample.tools.json"
+        ));
+        assert!(!is_generic_validation_excluded_path("configs/tools.json"));
+    }
+
+    #[test]
+    fn docish_tool_json_paths_are_rejected() {
+        assert!(is_tool_json_excluded_path("docs/tools.json"));
+        assert!(is_tool_json_excluded_path("Resources/schema/tools.json"));
+        assert!(is_tool_json_excluded_path(
+            "resources/ToolSchemas/tools.json"
+        ));
+        assert!(is_tool_json_excluded_path(
+            "resources/tool-schemas/tools.json"
+        ));
+        assert!(is_tool_json_excluded_path(
+            "resources/schema_store/tools.json"
+        ));
+        assert!(!is_tool_json_excluded_path("configs/tools.json"));
+    }
+
+    #[test]
+    fn semantic_tool_descriptor_json_requires_name_and_schema() {
+        assert!(contains_semantic_tool_descriptor_json(
+            r#"{"tools":[{"name":"search","inputSchema":{"type":"object"}}]}"#
+        ));
+        assert!(contains_semantic_tool_descriptor_json(
+            r#"[{"name":"search","function":{"parameters":{"type":"object"}}}]"#
+        ));
+        assert!(contains_semantic_tool_descriptor_json(
+            r#"{"jsonrpc":"2.0","result":{"tools":[{"name":"search","inputSchema":{"type":"object"}}]}}"#
+        ));
+        assert!(!contains_semantic_tool_descriptor_json(
+            r#"{"$schema":"http://json-schema.org/draft-07/schema#","type":"array"}"#
+        ));
+        assert!(!contains_semantic_tool_descriptor_json(
+            r#"{"tools":[{"description":"missing name","inputSchema":{"type":"object"}}]}"#
+        ));
+    }
+
+    #[test]
+    fn semantic_server_json_requires_name_version_and_remotes_or_packages() {
+        assert!(contains_semantic_server_json(
+            r#"{"name":"demo","version":"1.0.0","remotes":[{"type":"streamable-http","url":"https://example.com/mcp"}]}"#
+        ));
+        assert!(contains_semantic_server_json(
+            r#"{"name":"demo","version":"1.0.0","packages":[{"registry_name":"npm","name":"demo","version":"1.0.0"}]}"#
+        ));
+        assert!(!contains_semantic_server_json(
+            r#"{"name":"demo","remotes":[{"type":"streamable-http","url":"https://example.com/mcp"}]}"#
+        ));
+        assert!(!contains_semantic_server_json(
+            r#"{"version":"1.0.0","packages":[{"name":"demo"}]}"#
+        ));
+    }
+
+    #[test]
+    fn semantic_claude_settings_require_command_hooks() {
+        assert!(contains_semantic_claude_command_settings(
+            r#"{"hooks":{"PreToolUse":[{"hooks":[{"type":"command","command":"./hook.sh"}]}]}}"#
+        ));
+        assert!(!contains_semantic_claude_command_settings(
+            r#"{"hooks":{"PreToolUse":[{"hooks":[{"type":"notification","message":"hi"}]}]}}"#
+        ));
+    }
+
+    #[test]
+    fn semantic_plugin_hooks_require_command_entries() {
+        assert!(contains_semantic_plugin_hook_commands(
+            r#"{"hooks":{"stop":[{"command":"./hooks/stop.sh"}]}}"#
+        ));
+        assert!(!contains_semantic_plugin_hook_commands(
+            r#"{"hooks":{"stop":[{"message":"no command"}]}}"#
+        ));
+    }
+
+    #[test]
+    fn semantic_github_workflow_yaml_requires_jobs_and_workflow_keys() {
+        assert!(contains_semantic_github_workflow_yaml(
+            "on: push\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: docker/login-action@v4\n"
+        ));
+        assert!(!contains_semantic_github_workflow_yaml(
+            "name: just a yaml file\nvalues:\n  - demo\n"
+        ));
+    }
+
+    #[test]
+    fn tool_json_extension_report_has_required_sections() {
+        let shortlist = RepoShortlist {
+            version: 1,
+            repos: vec![ShortlistRepo {
+                repo: "owner/tool-json".to_owned(),
+                url: "https://github.com/owner/tool-json".to_owned(),
+                pinned_ref: "abc123".to_owned(),
+                category: "tool_json".to_owned(),
+                subtype: "stress".to_owned(),
+                status: "evaluated".to_owned(),
+                surfaces_present: vec!["tool_descriptor_json".to_owned()],
+                admission_paths: vec!["tools.json".to_owned()],
+                rationale: "Committed tool descriptor JSON.".to_owned(),
+            }],
+        };
+        let baseline = ExternalValidationLedger {
+            version: 1,
+            wave: 1,
+            baseline: None,
+            evaluations: vec![EvaluationEntry {
+                repo: "owner/old-tool-json".to_owned(),
+                ..default_entry_from_shortlist(&sample_shortlist().repos[0])
+            }],
+        };
+        let ledger = ExternalValidationLedger {
+            version: 1,
+            wave: 2,
+            baseline: Some("archive/wave1-ledger.toml".to_owned()),
+            evaluations: vec![EvaluationEntry {
+                repo: "owner/tool-json".to_owned(),
+                url: "https://github.com/owner/tool-json".to_owned(),
+                pinned_ref: "abc123".to_owned(),
+                category: "tool_json".to_owned(),
+                subtype: "stress".to_owned(),
+                status: "evaluated".to_owned(),
+                surfaces_present: vec!["tool_descriptor_json".to_owned()],
+                stable_findings: 1,
+                preview_findings: 0,
+                stable_rule_codes: vec!["SEC314".to_owned()],
+                preview_rule_codes: Vec::new(),
+                repo_verdict: "strong_fit".to_owned(),
+                stable_precision_notes: String::new(),
+                preview_signal_notes: String::new(),
+                false_positive_notes: Vec::new(),
+                possible_false_negative_notes: Vec::new(),
+                follow_up_action: "no_action".to_owned(),
+                runtime_errors: vec![RuntimeErrorRecord {
+                    path: "other.json".to_owned(),
+                    kind: "parse".to_owned(),
+                    message: "bad".to_owned(),
+                }],
+                diagnostics: vec![DiagnosticRecord {
+                    path: "tools.json".to_owned(),
+                    severity: "warn".to_owned(),
+                    code: Some("parse_recovery".to_owned()),
+                    message: "recovered".to_owned(),
+                }],
+            }],
+        };
+
+        let markdown = render_tool_json_extension_report(&shortlist, &baseline, &ledger);
+        assert!(markdown.contains("## Cohort Composition"));
+        assert!(markdown.contains("## Admission Results"));
+        assert!(markdown.contains("## Overall Counts"));
+        assert!(markdown.contains("## Delta From Previous Wave"));
+        assert!(markdown.contains("## Stable Hits"));
+        assert!(markdown.contains("## Preview Hits"));
+        assert!(markdown.contains("## Runtime / Diagnostic Notes"));
+        assert!(markdown.contains("## Fixture Suppression Check"));
+        assert!(markdown.contains("## Recommended Next Step"));
+        assert!(markdown.contains("`SEC314`"));
+        assert!(markdown.contains("admission-path issue"));
+        assert!(markdown.contains("non-admission-path issue"));
+    }
+
+    #[test]
+    fn server_json_extension_report_has_required_sections() {
+        let shortlist = RepoShortlist {
+            version: 1,
+            repos: vec![ShortlistRepo {
+                repo: "owner/server-json".to_owned(),
+                url: "https://github.com/owner/server-json".to_owned(),
+                pinned_ref: "abc123".to_owned(),
+                category: "server_json".to_owned(),
+                subtype: "stress".to_owned(),
+                status: "evaluated".to_owned(),
+                surfaces_present: vec!["server.json".to_owned()],
+                admission_paths: vec!["server.json".to_owned()],
+                rationale: "Committed server registry metadata.".to_owned(),
+            }],
+        };
+        let baseline = ExternalValidationLedger {
+            version: 1,
+            wave: 1,
+            baseline: None,
+            evaluations: vec![EvaluationEntry {
+                repo: "owner/old-server-json".to_owned(),
+                ..default_entry_from_shortlist(&sample_shortlist().repos[0])
+            }],
+        };
+        let ledger = ExternalValidationLedger {
+            version: 1,
+            wave: 2,
+            baseline: Some("archive/wave1-ledger.toml".to_owned()),
+            evaluations: vec![EvaluationEntry {
+                repo: "owner/server-json".to_owned(),
+                url: "https://github.com/owner/server-json".to_owned(),
+                pinned_ref: "abc123".to_owned(),
+                category: "server_json".to_owned(),
+                subtype: "stress".to_owned(),
+                status: "evaluated".to_owned(),
+                surfaces_present: vec!["server.json".to_owned()],
+                stable_findings: 1,
+                preview_findings: 0,
+                stable_rule_codes: vec!["SEC319".to_owned()],
+                preview_rule_codes: Vec::new(),
+                repo_verdict: "strong_fit".to_owned(),
+                stable_precision_notes: String::new(),
+                preview_signal_notes: String::new(),
+                false_positive_notes: Vec::new(),
+                possible_false_negative_notes: Vec::new(),
+                follow_up_action: "no_action".to_owned(),
+                runtime_errors: Vec::new(),
+                diagnostics: Vec::new(),
+            }],
+        };
+
+        let markdown = render_server_json_extension_report(&shortlist, &baseline, &ledger);
+        assert!(markdown.contains("## Cohort Composition"));
+        assert!(markdown.contains("## Admission Results"));
+        assert!(markdown.contains("## Overall Counts"));
+        assert!(markdown.contains("## Delta From Previous Wave"));
+        assert!(markdown.contains("## Stable Hits"));
+        assert!(markdown.contains("## Preview Hits"));
+        assert!(markdown.contains("## Runtime / Diagnostic Notes"));
+        assert!(markdown.contains("## Recommended Next Step"));
+        assert!(markdown.contains("`SEC319`"));
+    }
+
+    #[test]
+    fn github_actions_extension_report_has_required_sections() {
+        let shortlist = RepoShortlist {
+            version: 1,
+            repos: vec![ShortlistRepo {
+                repo: "owner/workflows".to_owned(),
+                url: "https://github.com/owner/workflows".to_owned(),
+                pinned_ref: "abc123".to_owned(),
+                category: "github_actions".to_owned(),
+                subtype: "stress".to_owned(),
+                status: "evaluated".to_owned(),
+                surfaces_present: vec![".github/workflows/*.yml".to_owned()],
+                admission_paths: vec![".github/workflows/ci.yml".to_owned()],
+                rationale: "Workflow repo.".to_owned(),
+            }],
+        };
+        let ledger = ExternalValidationLedger {
+            version: 1,
+            wave: 1,
+            baseline: None,
+            evaluations: vec![EvaluationEntry {
+                repo: "owner/workflows".to_owned(),
+                url: "https://github.com/owner/workflows".to_owned(),
+                pinned_ref: "abc123".to_owned(),
+                category: "github_actions".to_owned(),
+                subtype: "stress".to_owned(),
+                status: "evaluated".to_owned(),
+                surfaces_present: vec![".github/workflows/*.yml".to_owned()],
+                stable_findings: 1,
+                preview_findings: 1,
+                stable_rule_codes: vec!["SEC324".to_owned(), "SEC327".to_owned()],
+                preview_rule_codes: vec!["SEC325".to_owned(), "SEC328".to_owned()],
+                repo_verdict: "strong_fit".to_owned(),
+                stable_precision_notes: String::new(),
+                preview_signal_notes: String::new(),
+                false_positive_notes: Vec::new(),
+                possible_false_negative_notes: Vec::new(),
+                follow_up_action: "no_action".to_owned(),
+                runtime_errors: Vec::new(),
+                diagnostics: Vec::new(),
+            }],
+        };
+
+        let markdown = render_github_actions_extension_report(&shortlist, &ledger);
+        assert!(markdown.contains("## Cohort Composition"));
+        assert!(markdown.contains("## Admission Results"));
+        assert!(markdown.contains("## Overall Counts"));
+        assert!(markdown.contains("## Stable Hits"));
+        assert!(markdown.contains("## Preview Hits"));
+        assert!(markdown.contains("## Runtime / Diagnostic Notes"));
+        assert!(markdown.contains("## Recommended Next Step"));
+        assert!(markdown.contains("`SEC324`"));
+        assert!(markdown.contains("`SEC325`"));
+        assert!(markdown.contains("`SEC327`"));
+        assert!(markdown.contains("`SEC328`"));
+    }
+
+    #[test]
+    fn ai_native_discovery_report_has_required_sections() {
+        let shortlist = RepoShortlist {
+            version: 1,
+            repos: vec![ShortlistRepo {
+                repo: "owner/ai-native".to_owned(),
+                url: "https://github.com/owner/ai-native".to_owned(),
+                pinned_ref: "abc123".to_owned(),
+                category: "ai_native".to_owned(),
+                subtype: "claude_settings_command".to_owned(),
+                status: "evaluated".to_owned(),
+                surfaces_present: vec![".claude/settings.json".to_owned()],
+                admission_paths: vec![".claude/settings.json".to_owned()],
+                rationale: "Committed Claude settings hooks.".to_owned(),
+            }],
+        };
+        let ledger = ExternalValidationLedger {
+            version: 1,
+            wave: 1,
+            baseline: None,
+            evaluations: vec![EvaluationEntry {
+                repo: "owner/ai-native".to_owned(),
+                url: "https://github.com/owner/ai-native".to_owned(),
+                pinned_ref: "abc123".to_owned(),
+                category: "ai_native".to_owned(),
+                subtype: "claude_settings_command".to_owned(),
+                status: "evaluated".to_owned(),
+                surfaces_present: vec!["SKILL.md".to_owned()],
+                stable_findings: 0,
+                preview_findings: 0,
+                stable_rule_codes: Vec::new(),
+                preview_rule_codes: Vec::new(),
+                repo_verdict: "strong_fit".to_owned(),
+                stable_precision_notes: String::new(),
+                preview_signal_notes: String::new(),
+                false_positive_notes: Vec::new(),
+                possible_false_negative_notes: Vec::new(),
+                follow_up_action: "no_action".to_owned(),
+                runtime_errors: Vec::new(),
+                diagnostics: Vec::new(),
+            }],
+        };
+
+        let markdown = render_ai_native_discovery_report(&shortlist, &ledger);
+        assert!(markdown.contains("## Cohort Composition"));
+        assert!(markdown.contains("## Admission Results"));
+        assert!(markdown.contains("## Coverage Status"));
+        assert!(markdown.contains("## Overall Counts"));
+        assert!(markdown.contains("## Stable Hits"));
+        assert!(markdown.contains("## Preview Hits"));
+        assert!(markdown.contains("## Runtime / Diagnostic Notes"));
+        assert!(markdown.contains("## Recommended Next Step"));
+        assert!(markdown.contains("plugin-root command markdown admission paths"));
+    }
+}

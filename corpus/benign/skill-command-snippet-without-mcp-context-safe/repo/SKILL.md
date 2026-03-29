@@ -1,0 +1,3 @@
+```yaml
+command: npx
+```

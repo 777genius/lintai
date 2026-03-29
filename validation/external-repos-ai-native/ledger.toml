@@ -77,12 +77,15 @@ surfaces_present = [
     "plugin_root_commands/*.md",
 ]
 stable_findings = 3
-preview_findings = 2
+preview_findings = 9
 stable_rule_codes = [
     "SEC324",
     "SEC340",
 ]
-preview_rule_codes = ["SEC328"]
+preview_rule_codes = [
+    "SEC328",
+    "SEC347",
+]
 repo_verdict = "strong_fit"
 stable_precision_notes = ""
 preview_signal_notes = ""

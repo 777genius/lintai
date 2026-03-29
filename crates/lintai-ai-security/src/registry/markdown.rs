@@ -4,7 +4,8 @@ use super::*;
 use crate::markdown_rules::{
     check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
     check_markdown_download_exec, check_markdown_fenced_pipe_shell,
-    check_markdown_metadata_service_access, check_markdown_path_traversal,
+    check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
+    check_markdown_mutable_mcp_launcher, check_markdown_path_traversal,
     check_markdown_private_key_pem,
 };
 
@@ -75,6 +76,28 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct MarkdownMutableMcpLauncherRule {
+        code: "SEC347",
+        summary: "AI-native markdown example launches MCP through a mutable package runner",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownMutableDockerImageRule {
+        code: "SEC348",
+        summary: "AI-native markdown Docker example uses a mutable registry image",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct MarkdownPrivateKeyPemRule {
         code: "SEC312",
         summary: "Markdown contains committed private key material",
@@ -96,7 +119,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 8] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 10] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -180,6 +203,36 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 8] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace direct metadata-service access examples with redacted placeholders or add explicit safety framing",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownMutableMcpLauncherRule::METADATA,
+        surface: Surface::Markdown,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Mutable MCP launcher examples in markdown can be legitimate setup guidance, so the first release stays guidance-only.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_markdown_mutable_mcp_launcher,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace mutable MCP launcher examples with pinned alternatives or add explicit supply-chain safety framing",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownMutableDockerImageRule::METADATA,
+        surface: Surface::Markdown,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Mutable Docker image examples in markdown can be legitimate setup guidance, so the first release stays guidance-only.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_markdown_mutable_docker_image,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace mutable Docker image examples with digest-pinned alternatives or add explicit reproducibility guidance",
         ),
         suggestion_fix: None,
     },

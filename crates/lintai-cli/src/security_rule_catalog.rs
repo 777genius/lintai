@@ -1,193 +1,18 @@
-#![allow(dead_code)]
-
-use lintai_ai_security::{
-    NativeCatalogDetectionClass, NativeCatalogRemediationSupport, NativeCatalogRuleLifecycle,
-    NativeCatalogSurface, native_rule_catalog_entries,
+use crate::shipped_rules::{
+    CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleLifecycle, CatalogSurface,
+    RuleScope, shipped_security_rule_catalog_entries,
 };
 use lintai_api::{RuleMetadata, RuleTier};
-use lintai_policy::{
-    PolicyDetectionClass, PolicyRemediationSupport, PolicyRuleLifecycle, PolicySurface,
-    policy_rule_catalog_entries,
-};
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum RuleScope {
-    PerFile,
-    Workspace,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum CatalogSurface {
-    Markdown,
-    Hook,
-    Json,
-    ClaudeSettings,
-    ToolJson,
-    ServerJson,
-    GithubWorkflow,
-    Workspace,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum CatalogDetectionClass {
-    Structural,
-    Heuristic,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum CatalogRuleLifecycle {
-    Preview {
-        blocker: &'static str,
-        promotion_requirements: &'static str,
-    },
-    Stable {
-        rationale: &'static str,
-        malicious_case_ids: &'static [&'static str],
-        benign_case_ids: &'static [&'static str],
-        requires_structured_evidence: bool,
-        remediation_reviewed: bool,
-        deterministic_signal_basis: &'static str,
-    },
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum CatalogRemediationSupport {
-    SafeFix,
-    Suggestion,
-    MessageOnly,
-    None,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) struct SecurityRuleCatalogEntry {
-    pub(crate) metadata: RuleMetadata,
-    pub(crate) provider_id: &'static str,
-    pub(crate) scope: RuleScope,
-    pub(crate) surface: CatalogSurface,
-    pub(crate) detection_class: CatalogDetectionClass,
-    pub(crate) lifecycle: CatalogRuleLifecycle,
-    pub(crate) remediation_support: CatalogRemediationSupport,
-}
-
-impl SecurityRuleCatalogEntry {
-    fn canonical_note(self) -> &'static str {
-        if self.metadata.code == "SEC324" {
-            return "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.";
-        }
-        match (self.detection_class, self.metadata.tier) {
-            (CatalogDetectionClass::Heuristic, _) => {
-                "Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves."
-            }
-            (CatalogDetectionClass::Structural, RuleTier::Stable) => {
-                "Structural stable rule intended as a high-precision check with deterministic evidence."
-            }
-            (CatalogDetectionClass::Structural, RuleTier::Preview) => {
-                "Structural preview rule; deterministic today, but the preview contract may still evolve."
-            }
-        }
-    }
-
-    fn lifecycle_state(self) -> &'static str {
-        match self.lifecycle {
-            CatalogRuleLifecycle::Preview { .. } => "preview_blocked",
-            CatalogRuleLifecycle::Stable { .. } => "stable_gated",
-        }
-    }
-}
-
-pub(crate) fn security_rule_catalog_entries() -> Vec<SecurityRuleCatalogEntry> {
-    let mut entries = Vec::new();
-    entries.extend(native_rule_catalog_entries().into_iter().map(|entry| {
-        SecurityRuleCatalogEntry {
-            metadata: entry.metadata,
-            provider_id: entry.provider_id,
-            scope: RuleScope::PerFile,
-            surface: match entry.surface {
-                NativeCatalogSurface::Markdown => CatalogSurface::Markdown,
-                NativeCatalogSurface::Hook => CatalogSurface::Hook,
-                NativeCatalogSurface::Json => CatalogSurface::Json,
-                NativeCatalogSurface::ClaudeSettings => CatalogSurface::ClaudeSettings,
-                NativeCatalogSurface::ToolJson => CatalogSurface::ToolJson,
-                NativeCatalogSurface::ServerJson => CatalogSurface::ServerJson,
-                NativeCatalogSurface::GithubWorkflow => CatalogSurface::GithubWorkflow,
-            },
-            detection_class: match entry.detection_class {
-                NativeCatalogDetectionClass::Structural => CatalogDetectionClass::Structural,
-                NativeCatalogDetectionClass::Heuristic => CatalogDetectionClass::Heuristic,
-            },
-            lifecycle: match entry.lifecycle {
-                NativeCatalogRuleLifecycle::Preview {
-                    blocker,
-                    promotion_requirements,
-                } => CatalogRuleLifecycle::Preview {
-                    blocker,
-                    promotion_requirements,
-                },
-                NativeCatalogRuleLifecycle::Stable {
-                    rationale,
-                    malicious_case_ids,
-                    benign_case_ids,
-                    requires_structured_evidence,
-                    remediation_reviewed,
-                    deterministic_signal_basis,
-                } => CatalogRuleLifecycle::Stable {
-                    rationale,
-                    malicious_case_ids,
-                    benign_case_ids,
-                    requires_structured_evidence,
-                    remediation_reviewed,
-                    deterministic_signal_basis,
-                },
-            },
-            remediation_support: match entry.remediation_support {
-                NativeCatalogRemediationSupport::SafeFix => CatalogRemediationSupport::SafeFix,
-                NativeCatalogRemediationSupport::Suggestion => {
-                    CatalogRemediationSupport::Suggestion
-                }
-                NativeCatalogRemediationSupport::MessageOnly => {
-                    CatalogRemediationSupport::MessageOnly
-                }
-                NativeCatalogRemediationSupport::None => CatalogRemediationSupport::None,
-            },
-        }
-    }));
-    entries.extend(policy_rule_catalog_entries().iter().copied().map(|entry| {
-        SecurityRuleCatalogEntry {
-            metadata: entry.metadata,
-            provider_id: entry.provider_id,
-            scope: RuleScope::Workspace,
-            surface: match entry.surface {
-                PolicySurface::Workspace => CatalogSurface::Workspace,
-            },
-            detection_class: match entry.detection_class {
-                PolicyDetectionClass::Structural => CatalogDetectionClass::Structural,
-            },
-            lifecycle: match entry.lifecycle {
-                PolicyRuleLifecycle::Preview {
-                    blocker,
-                    promotion_requirements,
-                } => CatalogRuleLifecycle::Preview {
-                    blocker,
-                    promotion_requirements,
-                },
-            },
-            remediation_support: match entry.remediation_support {
-                PolicyRemediationSupport::None => CatalogRemediationSupport::None,
-            },
-        }
-    }));
-    entries.sort_by_key(|entry| (provider_sort_key(entry.provider_id), entry.metadata.code));
-    entries
-}
 
 pub(crate) fn render_security_rules_markdown() -> String {
-    let entries = security_rule_catalog_entries();
-    let native_provider_id = native_rule_catalog_entries()
+    let entries = shipped_security_rule_catalog_entries();
+    let native_provider_id = entries
         .first()
         .map(|entry| entry.provider_id)
         .unwrap_or("lintai-ai-security");
-    let policy_provider_id = policy_rule_catalog_entries()
-        .first()
+    let policy_provider_id = entries
+        .iter()
+        .find(|entry| entry.scope == RuleScope::Workspace)
         .map(|entry| entry.provider_id)
         .unwrap_or("lintai-policy-mismatch");
     let mut lines = vec![
@@ -222,6 +47,8 @@ pub(crate) fn render_security_rules_markdown() -> String {
             format_remediation(entry.remediation_support),
         ));
     }
+
+    lines.extend(render_top_priority_section());
 
     for provider_id in [native_provider_id, policy_provider_id] {
         lines.push(String::new());
@@ -309,12 +136,32 @@ pub(crate) fn render_security_rules_markdown() -> String {
     lines.join("\n")
 }
 
-fn provider_sort_key(provider_id: &str) -> usize {
-    match provider_id {
-        "lintai-ai-security" => 0,
-        "lintai-policy-mismatch" => 1,
-        _ => usize::MAX,
-    }
+fn render_top_priority_section() -> Vec<String> {
+    vec![
+        String::new(),
+        "## Top-Important AI Security Rules (2026-03-29)".to_owned(),
+        String::new(),
+        "### Обновлённый top-3 приоритизации".to_owned(),
+        String::new(),
+        "Если поднимать только три новых AI/MCP/agent-skills правила в ближайший top-3, приоритет должен быть таким:".to_owned(),
+        String::new(),
+        "| Rank | Rule | Axis | Почему поднимать сейчас | Уверенность | Надёжность |".to_owned(),
+        "|---|---|---|---|---:|---:|".to_owned(),
+        "| 1 | `SEC:ai-trusted-context-boundary` | Trust boundary | Закрывает базовую ошибку класса agentic systems: tool output, MCP metadata, RAG content и plugin responses не должны становиться system/developer instructions. Это наиболее общий и самый частый confused-deputy/prompt-injection boundary, который бьёт сразу по skills, MCP и plugin surfaces. | `10/10` | `10/10` |".to_owned(),
+        "| 2 | `SEC:ai-manifest-integrity` | Manifest integrity | Без проверки подписи, digest/hash pinning и происхождения skill/plugin/tool manifests любой последующий schema- или policy-check можно обойти подменой артефакта до загрузки. Это прямой supply-chain choke point. | `10/10` | `9/10` |".to_owned(),
+        "| 3 | `SEC:ai-tool-intent-gate` | Runtime control | На рантайме нужен deny-by-default слой: сверка цели, scope, destructive action policy, cost/rate limits и explicit approval перед tool execution. Это сдерживает blast radius даже когда boundary и manifest уже частично обойдены. | `9/10` | `9/10` |".to_owned(),
+        String::new(),
+        "### Rationale".to_owned(),
+        String::new(),
+        "- `SEC:ai-trusted-context-boundary` стоит первым, потому что это первичный барьер между недоверенным контентом и управляющими инструкциями; без него остальные контроли слишком легко обходятся через reinterpretation attack surface.".to_owned(),
+        "- `SEC:ai-manifest-integrity` стоит вторым, потому что защищает точку входа артефакта до выполнения: если манифест или descriptor подменён, trust model уже сломана до старта runtime.".to_owned(),
+        "- `SEC:ai-tool-intent-gate` стоит третьим, потому что это лучший прикладной runtime control для v0.1/v0.2: он ограничивает реальные действия, а не только их аудит post factum.".to_owned(),
+        String::new(),
+        "### Почему не `SEC:ai-runtime-provenance` в top-3".to_owned(),
+        String::new(),
+        "- `SEC:ai-runtime-provenance` важен, но для ближайшего top-3 он слабее как immediate control: provenance и attestation чаще улучшают расследование, доверие и policy enforcement, чем напрямую режут execution blast radius в момент вызова.".to_owned(),
+        "- Поэтому оптимальный порядок сейчас: boundary first, artifact integrity second, execution control third; provenance идёт сразу следом как top-4 кандидат. Уверенность: `9/10`, Надёжность: `9/10`.".to_owned(),
+    ]
 }
 
 fn format_scope(scope: RuleScope) -> &'static str {
@@ -392,10 +239,8 @@ fn format_bool(value: bool) -> &'static str {
 mod tests {
     use std::collections::BTreeSet;
 
-    use super::{
-        CatalogDetectionClass, CatalogRuleLifecycle, render_security_rules_markdown,
-        security_rule_catalog_entries,
-    };
+    use super::{CatalogDetectionClass, CatalogRuleLifecycle, render_security_rules_markdown};
+    use crate::shipped_rules::{provider_sort_key, shipped_security_rule_catalog_entries};
     use lintai_ai_security::{NativeCatalogDetectionClass, native_rule_catalog_entries};
     use lintai_api::RuleTier;
     use lintai_policy::policy_rule_catalog_entries;
@@ -408,7 +253,7 @@ mod tests {
 
     #[test]
     fn all_shipped_security_rules_are_documented() {
-        let entries = security_rule_catalog_entries();
+        let entries = shipped_security_rule_catalog_entries();
         let documented_codes: BTreeSet<_> =
             entries.iter().map(|entry| entry.metadata.code).collect();
         let expected_codes: BTreeSet<_> = native_rule_catalog_entries()
@@ -426,7 +271,7 @@ mod tests {
 
     #[test]
     fn catalog_order_is_stable() {
-        let entries = security_rule_catalog_entries();
+        let entries = shipped_security_rule_catalog_entries();
         let actual: Vec<_> = entries
             .iter()
             .map(|entry| (entry.provider_id, entry.metadata.code))
@@ -440,13 +285,13 @@ mod tests {
                     .map(|entry| (entry.provider_id, entry.metadata.code)),
             )
             .collect();
-        expected.sort_by_key(|(provider_id, code)| (super::provider_sort_key(provider_id), *code));
+        expected.sort_by_key(|(provider_id, code)| (provider_sort_key(provider_id), *code));
         assert_eq!(actual, expected);
     }
 
     #[test]
     fn heuristic_entries_remain_preview() {
-        for entry in security_rule_catalog_entries() {
+        for entry in shipped_security_rule_catalog_entries() {
             if entry.detection_class == CatalogDetectionClass::Heuristic {
                 assert_eq!(entry.metadata.tier, RuleTier::Preview);
             }
@@ -461,7 +306,7 @@ mod tests {
 
     #[test]
     fn stable_entries_have_completed_metadata() {
-        for entry in security_rule_catalog_entries() {
+        for entry in shipped_security_rule_catalog_entries() {
             if entry.metadata.tier != RuleTier::Stable {
                 continue;
             }

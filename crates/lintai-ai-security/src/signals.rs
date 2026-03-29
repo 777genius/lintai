@@ -59,6 +59,16 @@ const MARKDOWN_PRIVATE_KEY_MARKERS: &[&str] = &[
 const MARKDOWN_METADATA_SERVICE_MARKERS: &[&str] = &["169.254.169.254", "metadata.google.internal"];
 
 const MARKDOWN_METADATA_EXECUTION_MARKERS: &[&str] = &["curl", "wget", "invoke-webrequest"];
+const MARKDOWN_MUTABLE_MCP_LAUNCHER_MARKERS: &[&str] =
+    &["npx", "uvx", "pnpm dlx", "yarn dlx", "pipx run"];
+const MARKDOWN_MUTABLE_MCP_CONTEXT_MARKERS: &[&str] = &[
+    "mcpservers",
+    "\"mcpservers\"",
+    "claude mcp",
+    "cursor mcp",
+    "model context protocol",
+    "mcp server",
+];
 
 const FIXTURE_PATH_SEGMENTS: &[&str] = &[
     "test", "tests", "testdata", "fixture", "fixtures", "example", "examples", "sample", "samples",
@@ -144,6 +154,8 @@ pub(crate) struct MarkdownSignals {
     pub(crate) private_key_spans: Vec<Span>,
     pub(crate) fenced_pipe_shell_spans: Vec<Span>,
     pub(crate) metadata_service_access_spans: Vec<Span>,
+    pub(crate) mutable_mcp_launcher_spans: Vec<Span>,
+    pub(crate) mutable_docker_image_spans: Vec<Span>,
 }
 
 impl MarkdownSignals {
@@ -204,6 +216,20 @@ impl MarkdownSignals {
                             region.span.start_byte + relative.end_byte,
                         ));
                     }
+                    if let Some(relative) = find_mutable_mcp_launcher_relative_span(snippet) {
+                        signals.mutable_mcp_launcher_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
+                    if let Some(relative) =
+                        find_markdown_mutable_docker_image_relative_span(snippet)
+                    {
+                        signals.mutable_docker_image_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
                 }
                 RegionKind::CodeBlock => {
                     if let Some(relative) = find_private_key_relative_span(snippet) {
@@ -224,6 +250,20 @@ impl MarkdownSignals {
                             region.span.start_byte + relative.end_byte,
                         ));
                     }
+                    if let Some(relative) = find_mutable_mcp_launcher_relative_span(snippet) {
+                        signals.mutable_mcp_launcher_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
+                    if let Some(relative) =
+                        find_markdown_mutable_docker_image_relative_span(snippet)
+                    {
+                        signals.mutable_docker_image_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
                 }
                 RegionKind::Blockquote => {
                     if let Some(relative) = find_private_key_relative_span(snippet) {
@@ -234,6 +274,20 @@ impl MarkdownSignals {
                     }
                     if let Some(relative) = find_metadata_service_access_relative_span(snippet) {
                         signals.metadata_service_access_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
+                    if let Some(relative) = find_mutable_mcp_launcher_relative_span(snippet) {
+                        signals.mutable_mcp_launcher_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
+                    if let Some(relative) =
+                        find_markdown_mutable_docker_image_relative_span(snippet)
+                    {
+                        signals.mutable_docker_image_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
                             region.span.start_byte + relative.end_byte,
                         ));
@@ -2123,6 +2177,274 @@ fn find_metadata_service_access_relative_span(text: &str) -> Option<Span> {
     }
 
     None
+}
+
+fn find_mutable_mcp_launcher_relative_span(text: &str) -> Option<Span> {
+    let lowered_region = text.to_ascii_lowercase();
+    let region_has_mcp_context = MARKDOWN_MUTABLE_MCP_CONTEXT_MARKERS
+        .iter()
+        .any(|marker| lowered_region.contains(marker));
+
+    let mut offset = 0usize;
+    for line in text.split_inclusive('\n') {
+        let lowered = line.to_ascii_lowercase();
+        if lowered.contains("claude mcp add")
+            && let Some(relative) = find_mutable_launcher_token_relative_span(line)
+        {
+            return Some(Span::new(
+                offset + relative.start_byte,
+                offset + relative.end_byte,
+            ));
+        }
+        if region_has_mcp_context
+            && let Some(relative) = find_markdown_command_launcher_relative_span(line)
+        {
+            return Some(Span::new(
+                offset + relative.start_byte,
+                offset + relative.end_byte,
+            ));
+        }
+        offset += line.len();
+    }
+
+    if !text.ends_with('\n') {
+        let lowered = text.to_ascii_lowercase();
+        if lowered.contains("claude mcp add")
+            && let Some(relative) = find_mutable_launcher_token_relative_span(text)
+        {
+            return Some(relative);
+        }
+        if region_has_mcp_context
+            && let Some(relative) = find_markdown_command_launcher_relative_span(text)
+        {
+            return Some(relative);
+        }
+    }
+
+    None
+}
+
+fn find_mutable_launcher_token_relative_span(text: &str) -> Option<Span> {
+    let lowered = text.to_ascii_lowercase();
+    for marker in MARKDOWN_MUTABLE_MCP_LAUNCHER_MARKERS {
+        if let Some(start) = lowered.find(marker) {
+            let token_len = marker.split_whitespace().next().unwrap_or(marker).len();
+            return Some(Span::new(start, start + token_len));
+        }
+    }
+    None
+}
+
+fn find_markdown_command_launcher_relative_span(text: &str) -> Option<Span> {
+    let lowered = text.to_ascii_lowercase();
+    for marker in ["npx", "uvx"] {
+        for prefix in [
+            format!("\"command\": \"{marker}\""),
+            format!("command: {marker}"),
+        ] {
+            if lowered.contains(&prefix)
+                && let Some(start) = lowered.find(marker)
+            {
+                return Some(Span::new(start, start + marker.len()));
+            }
+        }
+    }
+    None
+}
+
+fn find_markdown_mutable_docker_image_relative_span(text: &str) -> Option<Span> {
+    let line_starts = line_start_offsets(text);
+    let lines = text.split_inclusive('\n').collect::<Vec<_>>();
+
+    for (index, line) in lines.iter().enumerate() {
+        if !line.to_ascii_lowercase().contains("docker run") {
+            continue;
+        }
+
+        let mut command = String::new();
+        let mut command_start = line_starts[index];
+        let mut last_line_index = index;
+        let mut saw_any = false;
+
+        for continuation_index in index..lines.len() {
+            let current = lines[continuation_index];
+            if !saw_any {
+                command_start = line_starts[continuation_index];
+                saw_any = true;
+            }
+            command.push_str(current);
+            last_line_index = continuation_index;
+            if !current.trim_end().ends_with('\\') {
+                break;
+            }
+        }
+
+        if let Some(relative) = find_mutable_docker_image_in_command(&command) {
+            return Some(Span::new(
+                command_start + relative.start_byte,
+                command_start + relative.end_byte,
+            ));
+        }
+
+        if last_line_index == index && !line.ends_with('\n') {
+            break;
+        }
+    }
+
+    None
+}
+
+fn line_start_offsets(text: &str) -> Vec<usize> {
+    let mut starts = vec![0usize];
+    for (index, byte) in text.bytes().enumerate() {
+        if byte == b'\n' && index + 1 < text.len() {
+            starts.push(index + 1);
+        }
+    }
+    starts
+}
+
+fn find_mutable_docker_image_in_command(command: &str) -> Option<Span> {
+    let tokens = tokenize_markdown_shell_command(command);
+    if tokens.len() < 3 {
+        return None;
+    }
+    let docker_run_index = tokens.windows(2).position(|window| {
+        normalized_markdown_shell_token(window[0].0).eq_ignore_ascii_case("docker")
+            && normalized_markdown_shell_token(window[1].0).eq_ignore_ascii_case("run")
+    })?;
+
+    let mut index = docker_run_index + 2;
+    while index < tokens.len() {
+        let (token, start, end) = tokens[index];
+        if token.starts_with('-') {
+            index += markdown_docker_option_consumed_len(&tokens, index);
+            continue;
+        }
+
+        let normalized = normalized_markdown_shell_token(token);
+        if !looks_like_registry_distributed_docker_image(normalized) {
+            return None;
+        }
+        if is_digest_pinned_docker_image(normalized) {
+            return None;
+        }
+        let (trimmed_start, trimmed_end) = trimmed_token_span(token, start, end);
+        return Some(Span::new(trimmed_start, trimmed_end));
+    }
+
+    None
+}
+
+fn tokenize_markdown_shell_command(command: &str) -> Vec<(&str, usize, usize)> {
+    let bytes = command.as_bytes();
+    let mut tokens = Vec::new();
+    let mut index = 0usize;
+
+    while index < bytes.len() {
+        while index < bytes.len() && bytes[index].is_ascii_whitespace() {
+            index += 1;
+        }
+        if index >= bytes.len() {
+            break;
+        }
+        if bytes[index] == b'\\' {
+            index += 1;
+            continue;
+        }
+        let start = index;
+        while index < bytes.len() && !bytes[index].is_ascii_whitespace() && bytes[index] != b'\\' {
+            index += 1;
+        }
+        if start < index {
+            tokens.push((&command[start..index], start, index));
+        }
+    }
+
+    tokens
+}
+
+fn markdown_docker_option_consumed_len(tokens: &[(&str, usize, usize)], index: usize) -> usize {
+    let text = tokens[index].0;
+
+    if text.starts_with("--volume=")
+        || text.starts_with("--mount=")
+        || text.starts_with("--network=")
+        || text.starts_with("--pid=")
+        || text.starts_with("--ipc=")
+        || text.starts_with("--pull=")
+        || (text.starts_with("-v") && text.len() > 2)
+    {
+        return 1;
+    }
+
+    if matches!(
+        text,
+        "-v" | "--volume"
+            | "--mount"
+            | "-e"
+            | "--env"
+            | "--env-file"
+            | "-p"
+            | "--publish"
+            | "--network"
+            | "--pid"
+            | "--ipc"
+            | "--name"
+            | "-w"
+            | "--workdir"
+            | "-u"
+            | "--user"
+            | "--entrypoint"
+            | "--platform"
+            | "--pull"
+    ) && tokens.get(index + 1).is_some()
+    {
+        return 2;
+    }
+
+    1
+}
+
+fn looks_like_registry_distributed_docker_image(text: &str) -> bool {
+    let image = text.trim_matches(|ch| matches!(ch, '`' | '"' | '\''));
+    image.contains('/')
+        || image
+            .split('/')
+            .next()
+            .is_some_and(|segment| segment.contains('.'))
+}
+
+fn normalized_markdown_shell_token(token: &str) -> &str {
+    token.trim_matches(|ch: char| {
+        matches!(
+            ch,
+            '`' | '"' | '\'' | ',' | '.' | ';' | ':' | ')' | '(' | '[' | ']'
+        )
+    })
+}
+
+fn trimmed_token_span(token: &str, start: usize, end: usize) -> (usize, usize) {
+    let trimmed_start = start
+        + token
+            .find(|ch: char| {
+                !matches!(
+                    ch,
+                    '`' | '"' | '\'' | ',' | '.' | ';' | ':' | ')' | '(' | '[' | ']'
+                )
+            })
+            .unwrap_or(0);
+    let trimmed_end = start
+        + token
+            .rfind(|ch: char| {
+                !matches!(
+                    ch,
+                    '`' | '"' | '\'' | ',' | '.' | ';' | ':' | ')' | '(' | '[' | ']'
+                )
+            })
+            .map(|index| index + 1)
+            .unwrap_or(token.len());
+    (trimmed_start, trimmed_end.min(end))
 }
 
 fn has_path_traversal_access(normalized_path: &str, snippet: &str, lowered: &str) -> bool {
