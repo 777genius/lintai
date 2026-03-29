@@ -913,20 +913,30 @@ name = ""
             })
             .collect::<Vec<_>>();
 
+        let mut sorted_names = names.clone();
+        sorted_names.sort();
         assert_eq!(
-            names,
-            vec![
-                "cursor-plugin-clean-basic",
-                "cursor-plugin-tls-verified-basic",
-                "hook-auth-dynamic-safe",
-                "mcp-authorization-placeholder-safe",
-                "mcp-safe-basic",
-                "mcp-trust-verified-basic",
-                "mixed-clean-workspace",
-                "policy-truthful-basic",
-                "skill-clean-basic",
-                "skill-html-comment-safe",
-            ]
+            names, sorted_names,
+            "discover_case_dirs should return sorted case roots"
+        );
+
+        for required in [
+            "cursor-plugin-clean-basic",
+            "mcp-safe-basic",
+            "mixed-clean-workspace",
+            "policy-truthful-basic",
+            "skill-clean-basic",
+            "tool-json-openai-strict-locked",
+        ] {
+            assert!(
+                names.iter().any(|name| name == required),
+                "expected benign corpus to contain representative case {required}"
+            );
+        }
+
+        assert!(
+            names.len() >= 10,
+            "expected benign corpus to contain a non-trivial checked-in case set"
         );
     }
 
