@@ -51,8 +51,7 @@ fn readme_root_cargo_config_schema_command_is_truthful() {
     let value: serde_json::Value =
         serde_json::from_str(&stdout).expect("config-schema output should be valid JSON");
     assert_eq!(
-        value["$schema"],
-        "https://json-schema.org/draft/2020-12/schema",
+        value["$schema"], "https://json-schema.org/draft/2020-12/schema",
         "config-schema output should remain a draft 2020-12 schema"
     );
 }
