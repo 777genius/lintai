@@ -50,10 +50,26 @@ impl<S> SubprocessProviderBackend<S> {
     where
         S: Clone + Send + Sync + Serialize,
     {
-        match self.start_child(request) {
-            Ok(child) => self.complete_child(child),
+        match self.prepare_request(&request) {
+            Ok(prepared) => match self.start_child(prepared) {
+                Ok(child) => self.complete_child(child),
+                Err(error) => self.error_result(error),
+            },
             Err(error) => self.error_result(error),
         }
+    }
+
+    fn prepare_request(
+        &self,
+        request: &RunnerRequest<S>,
+    ) -> Result<PreparedChildRequest, ProviderError>
+    where
+        S: Serialize,
+    {
+        Ok(PreparedChildRequest {
+            executable: self.resolve_executable_path()?,
+            request_json: self.encode_request(request)?,
+        })
     }
 
     fn resolve_executable_path(&self) -> Result<PathBuf, ProviderError> {
@@ -73,14 +89,9 @@ impl<S> SubprocessProviderBackend<S> {
         })
     }
 
-    fn start_child(&self, request: RunnerRequest<S>) -> Result<RunningChild, ProviderError>
-    where
-        S: Clone + Send + Sync + Serialize,
-    {
-        let executable = self.resolve_executable_path()?;
-        let request_json = self.encode_request(&request)?;
-        let mut child = self.spawn_child(&executable)?;
-        if let Err(error) = self.write_request(&mut child, &request_json) {
+    fn start_child(&self, prepared: PreparedChildRequest) -> Result<RunningChild, ProviderError> {
+        let mut child = self.spawn_child(&prepared.executable)?;
+        if let Err(error) = self.write_request(&mut child, &prepared.request_json) {
             terminate_child(&mut child.child);
             return Err(error);
         }
@@ -138,27 +149,34 @@ impl<S> SubprocessProviderBackend<S> {
     }
 
     fn complete_child(&self, mut child: RunningChild) -> ProviderScanResult {
-        let status = match wait_for_exit(
+        match self.wait_for_completion(&mut child) {
+            Ok(completed) => self.decode_response(completed),
+            Err(error) => {
+                terminate_child(&mut child.child);
+                self.error_result(error)
+            }
+        }
+    }
+
+    fn wait_for_completion(
+        &self,
+        child: &mut RunningChild,
+    ) -> Result<CompletedChild, ProviderError> {
+        let status = wait_for_exit(
             &mut child.child,
             ChildWaitPolicy::new(self.timeout),
             self.provider_id.as_str(),
-        ) {
-            Ok(status) => status,
-            Err(error) => {
-                terminate_child(&mut child.child);
-                return self.error_result(error);
-            }
-        };
-        let output = read_child_output(&mut child);
-        self.decode_response(status, output)
+        )?;
+        let output = read_child_output(child);
+        Ok(CompletedChild { status, output })
     }
 
-    fn decode_response(&self, status: ExitStatus, output: ChildOutput) -> ProviderScanResult {
-        if !status.success() {
-            let suffix = if output.stderr.is_empty() {
+    fn decode_response(&self, completed: CompletedChild) -> ProviderScanResult {
+        if !completed.status.success() {
+            let suffix = if completed.output.stderr.is_empty() {
                 String::new()
             } else {
-                format!(": {}", output.stderr)
+                format!(": {}", completed.output.stderr)
             };
             return self.error_result(ProviderError::new(
                 self.provider_id.as_str(),
@@ -166,7 +184,7 @@ impl<S> SubprocessProviderBackend<S> {
             ));
         }
 
-        match serde_json::from_str::<RunnerResponse>(&output.stdout) {
+        match serde_json::from_str::<RunnerResponse>(&completed.output.stdout) {
             Ok(response) => response.result,
             Err(error) => self.error_result(ProviderError::new(
                 self.provider_id.as_str(),
@@ -237,6 +255,16 @@ struct RunningChild {
 struct ChildOutput {
     stdout: String,
     stderr: String,
+}
+
+struct PreparedChildRequest {
+    executable: PathBuf,
+    request_json: Vec<u8>,
+}
+
+struct CompletedChild {
+    status: ExitStatus,
+    output: ChildOutput,
 }
 
 struct ChildWaitPolicy {
