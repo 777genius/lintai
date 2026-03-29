@@ -13,6 +13,7 @@ use lintai_api::{ArtifactKind, CapabilityConflictMode, CapabilityProfile, Source
 pub(crate) struct RawRootConfig {
     pub(super) project: Option<RawProject>,
     pub(super) files: Option<RawFiles>,
+    pub(super) presets: Option<RawPresets>,
     pub(super) categories: Option<BTreeMap<Category, Severity>>,
     #[schemars(schema_with = "rules_schema")]
     pub(super) rules: Option<toml::Value>,
@@ -48,6 +49,13 @@ pub(crate) struct RawProject {
 pub(crate) struct RawFiles {
     pub(super) include: Option<Vec<String>>,
     pub(super) exclude: Option<Vec<String>>,
+}
+
+#[derive(Debug, Default, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields)]
+#[serde(default)]
+pub(crate) struct RawPresets {
+    pub(super) enable: Option<Vec<String>>,
 }
 
 #[derive(Debug, Default, Deserialize, JsonSchema)]

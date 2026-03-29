@@ -5,7 +5,10 @@ mod priority_appendix;
 mod tests;
 
 use crate::shipped_rules::shipped_security_rule_catalog_entries;
-use catalog::{provider_ids, render_provider_sections, render_provider_summary, render_summary};
+use catalog::{
+    provider_ids, render_preset_activation_model, render_provider_sections, render_provider_summary,
+    render_summary,
+};
 use format::render_inline_code;
 use priority_appendix::render_top_priority_section;
 
@@ -23,6 +26,7 @@ pub(crate) fn render_security_rules_markdown() -> String {
     ];
     lines.extend(render_provider_summary(&provider_ids, render_inline_code));
     lines.extend(render_summary(&entries));
+    lines.extend(render_preset_activation_model());
     lines.extend(render_top_priority_section());
     lines.extend(render_provider_sections(&entries, &provider_ids));
     lines.push(String::new());

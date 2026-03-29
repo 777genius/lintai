@@ -14,6 +14,7 @@ use super::{
 use self::glob::compile_globset_vec;
 use self::parse::{parse_rules, validate_top_level_keys};
 use self::raw::RawRootConfig;
+use super::presets::resolve_builtin_presets;
 
 pub fn load_workspace_config(target: &Path) -> Result<WorkspaceConfig, ConfigError> {
     let source_path = find_config_path(target);
@@ -44,6 +45,7 @@ pub fn load_workspace_config(target: &Path) -> Result<WorkspaceConfig, ConfigErr
         ));
     }
     let _rules_section = raw.rules.as_ref();
+    let preset_policy = resolve_builtin_presets(raw.presets.and_then(|presets| presets.enable))?;
     let config_dir = source_path
         .parent()
         .map_or_else(|| PathBuf::from("."), Path::to_path_buf);
@@ -139,6 +141,10 @@ pub fn load_workspace_config(target: &Path) -> Result<WorkspaceConfig, ConfigErr
             include_matcher,
             exclude_patterns,
             exclude_matcher,
+            enabled_presets: preset_policy.enabled_presets,
+            active_rule_codes: preset_policy.active_rules,
+            preset_category_overrides: preset_policy.category_overrides,
+            preset_rule_overrides: preset_policy.rule_overrides,
             category_overrides: raw.categories.unwrap_or_default(),
             rule_overrides: rules,
             overrides,

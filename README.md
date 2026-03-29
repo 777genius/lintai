@@ -132,6 +132,46 @@ lintai scan . --format json
 lintai scan . --format sarif
 ```
 
+## Preset Policy
+
+`lintai` now resolves findings through builtin policy presets declared in `lintai.toml`.
+
+Default behavior:
+
+- if `[presets]` is omitted, `lintai` enables `["base"]`
+- `base` means the stable baseline
+- `preview` is explicit opt-in
+- `compat` is explicit opt-in for project policy mismatch rules such as `SEC401`-`SEC403`
+
+Example:
+
+```toml
+[presets]
+enable = ["base", "skills", "mcp"]
+
+[categories]
+security = "warn"
+
+[rules]
+SEC201 = "deny"
+```
+
+Builtin preset intent:
+
+- `base`: stable baseline
+- `strict`: `base` plus stricter preset-level hardening
+- `compat`: transition and project-policy mismatch lane
+- `preview`: all shipped preview rules
+- `skills`: instruction and skills markdown overlays
+- `mcp`: MCP and tool/server config overlays
+- `claude`: Claude-specific config overlays
+
+Important merge rules:
+
+- `[[overrides]]` can change severities for matching files, but cannot change preset membership
+- category overrides do not implicitly activate rules outside the resolved preset set
+- explicit `[rules] SECxxx = "..."` can opt a specific rule in on purpose
+
 For teams evaluating the beta, a good default is:
 
 1. Gate on blocking `Stable` findings.

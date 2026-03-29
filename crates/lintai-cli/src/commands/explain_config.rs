@@ -36,6 +36,7 @@ pub(crate) fn format_explain_config(
     output.push_str(&format!("included={}\n", resolved.included));
     output.push_str(&format!("detected_kind={:?}\n", resolved.detected_kind));
     output.push_str(&format!("detected_format={:?}\n", resolved.detected_format));
+    output.push_str(&format!("enabled_presets={:?}\n", resolved.enabled_presets));
     output.push_str(&format!("output={:?}\n", resolved.output_format));
     output.push_str(&format!("ci_fail_on={:?}\n", resolved.ci_policy.fail_on));
     output.push_str(&format!(
@@ -53,6 +54,14 @@ pub(crate) fn format_explain_config(
     output.push_str(&format!(
         "applied_overrides={:?}\n",
         resolved.applied_overrides
+    ));
+    output.push_str(&format!(
+        "preset_category_overrides={:?}\n",
+        resolved.preset_category_overrides
+    ));
+    output.push_str(&format!(
+        "preset_rule_overrides={:?}\n",
+        resolved.preset_rule_overrides
     ));
     output.push_str(&format!(
         "category_overrides={:?}\n",

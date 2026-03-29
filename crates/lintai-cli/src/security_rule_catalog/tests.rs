@@ -95,6 +95,41 @@ fn stable_entries_have_completed_metadata() {
 }
 
 #[test]
+fn shipped_rules_have_expected_default_preset_mapping() {
+    let entries = shipped_security_rule_catalog_entries();
+
+    let sec201 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC201")
+        .unwrap();
+    assert_eq!(sec201.default_presets(), vec!["base"]);
+
+    let sec101 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC101")
+        .unwrap();
+    assert_eq!(sec101.default_presets(), vec!["preview", "skills"]);
+
+    let sec323 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC323")
+        .unwrap();
+    assert_eq!(sec323.default_presets(), vec!["preview", "mcp"]);
+
+    let sec340 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC340")
+        .unwrap();
+    assert_eq!(sec340.default_presets(), vec!["base", "claude"]);
+
+    let sec401 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC401")
+        .unwrap();
+    assert_eq!(sec401.default_presets(), vec!["preview", "compat"]);
+}
+
+#[test]
 fn detail_sections_cover_every_provider_and_rule() {
     let markdown = render_security_rules_markdown();
     let mut provider_ids = BTreeSet::new();

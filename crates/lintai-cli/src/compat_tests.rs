@@ -133,5 +133,6 @@ fn format_explain_config_preserves_current_line_order() {
     assert!(lines[2].starts_with("included="));
     assert!(lines[3].starts_with("detected_kind="));
     assert!(lines[4].starts_with("detected_format="));
-    assert!(lines[5].starts_with("output="));
+    assert!(lines[5].starts_with("enabled_presets="));
+    assert!(lines[6].starts_with("output="));
 }

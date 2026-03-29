@@ -1,7 +1,7 @@
 use crate::security_rule_catalog::format::{
     escape_markdown_table_cell, escape_markdown_text, format_bool, format_case_ids,
-    format_confidence, format_detection, format_remediation, format_scope, format_severity,
-    format_surface, format_tier, render_inline_code,
+    format_confidence, format_detection, format_presets, format_remediation, format_scope,
+    format_severity, format_surface, format_tier, render_inline_code,
 };
 use crate::shipped_rules::{CatalogRuleLifecycle, SecurityRuleCatalogEntry};
 
@@ -30,15 +30,15 @@ pub(super) fn render_summary(entries: &[SecurityRuleCatalogEntry]) -> Vec<String
         String::new(),
         "## Summary".to_owned(),
         String::new(),
-        "| Code | Summary | Tier | Lifecycle | Severity | Scope | Surface | Detection | Remediation |".to_owned(),
-        "|---|---|---|---|---|---|---|---|---|".to_owned(),
+        "| Code | Summary | Tier | Lifecycle | Severity | Scope | Surface | Detection | Remediation | Presets |".to_owned(),
+        "|---|---|---|---|---|---|---|---|---|---|".to_owned(),
     ];
 
     let mut summary_entries = entries.to_vec();
     summary_entries.sort_by_key(|entry| entry.metadata.code);
     for entry in summary_entries {
         lines.push(format!(
-            "| {} | {} | {} | {} | {} | {} | {} | {} | {} |",
+            "| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |",
             render_inline_code(entry.metadata.code),
             escape_markdown_table_cell(entry.metadata.summary),
             format_tier(entry.metadata.tier),
@@ -48,10 +48,34 @@ pub(super) fn render_summary(entries: &[SecurityRuleCatalogEntry]) -> Vec<String
             render_inline_code(format_surface(entry.surface)),
             render_inline_code(format_detection(entry.detection_class)),
             render_inline_code(format_remediation(entry.remediation_support)),
+            format_presets(&entry.default_presets()),
         ));
     }
 
     lines
+}
+
+pub(super) fn render_preset_activation_model() -> Vec<String> {
+    vec![
+        String::new(),
+        "## Builtin preset activation model".to_owned(),
+        String::new(),
+        "All shipped rules now participate in the preset model through a deterministic surface-and-tier mapping:".to_owned(),
+        String::new(),
+        "- `base`: every shipped `Stable` rule".to_owned(),
+        "- `preview`: every shipped `Preview` rule".to_owned(),
+        "- `compat`: workspace policy mismatch rules (`SEC401`-`SEC403`)".to_owned(),
+        "- `skills`: all markdown-surface rules, including markdown preview rules".to_owned(),
+        "- `mcp`: all `json`, `tool_json`, and `server_json` surface rules, including preview MCP/config rules".to_owned(),
+        "- `claude`: all `claude_settings` surface rules".to_owned(),
+        String::new(),
+        "Important behavior:".to_owned(),
+        String::new(),
+        "- `strict` is a severity overlay, not a membership preset: when enabled, active security rules are raised through preset policy instead of silently activating new rules by itself.".to_owned(),
+        "- Hook and GitHub workflow rules are activated by `base`/`preview` according to tier; they do not currently have a dedicated surface overlay preset in v1.".to_owned(),
+        "- Category overrides do not activate rules outside the resolved preset set.".to_owned(),
+        "- Explicit `[rules] SECxxx = \"...\"` remains the escape hatch for intentional per-rule opt-in outside the default preset set.".to_owned(),
+    ]
 }
 
 pub(super) fn render_provider_sections(
@@ -106,6 +130,10 @@ fn render_detail_section(entry: SecurityRuleCatalogEntry) -> Vec<String> {
         format!(
             "- Tier: {}",
             render_inline_code(format_tier(entry.metadata.tier))
+        ),
+        format!(
+            "- Default Presets: {}",
+            format_presets(&entry.default_presets())
         ),
         format!(
             "- Remediation: {}",

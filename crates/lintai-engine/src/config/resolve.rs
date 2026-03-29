@@ -5,12 +5,12 @@ use lintai_adapters::route_for_artifact_kind;
 use crate::normalize::normalize_path;
 
 use super::{
-    DEFAULT_EXCLUDE_PATTERNS, DEFAULT_INCLUDE_PATTERNS, EngineConfig, ResolvedFileConfig,
-    WorkspaceConfig,
+    DEFAULT_EXCLUDE_PATTERNS, DEFAULT_INCLUDE_PATTERNS, EngineConfig, ResolvedFileConfig, WorkspaceConfig,
 };
 
 impl Default for EngineConfig {
     fn default() -> Self {
+        let preset_policy = super::presets::default_builtin_preset_policy();
         Self {
             project_root: None,
             follow_symlinks: false,
@@ -31,6 +31,10 @@ impl Default for EngineConfig {
                 .collect(),
             exclude_matcher: super::load::compile_globset(DEFAULT_EXCLUDE_PATTERNS)
                 .expect("default exclude"),
+            enabled_presets: preset_policy.enabled_presets,
+            active_rule_codes: preset_policy.active_rules,
+            preset_category_overrides: preset_policy.category_overrides,
+            preset_rule_overrides: preset_policy.rule_overrides,
             category_overrides: Default::default(),
             rule_overrides: Default::default(),
             overrides: Vec::new(),
@@ -129,7 +133,11 @@ impl EngineConfig {
             suppress_policy: self.suppress_policy.clone(),
             project_capabilities: self.capability_profile.clone(),
             capability_conflict_mode: self.capability_conflict_mode,
+            enabled_presets: self.enabled_presets.clone(),
+            preset_category_overrides: self.preset_category_overrides.clone(),
+            preset_rule_overrides: self.preset_rule_overrides.clone(),
             applied_overrides,
+            active_rule_codes: self.active_rule_codes.clone(),
             category_overrides,
             rule_overrides,
             detected_kind: None,

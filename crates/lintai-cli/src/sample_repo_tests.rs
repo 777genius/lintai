@@ -301,6 +301,7 @@ fn policy_mismatch_explain_config_is_informative() {
     assert!(formatted.contains("normalized_path=custom/agent.md"));
     assert!(formatted.contains("detected_kind=Some(CursorPluginAgent)"));
     assert!(formatted.contains("detected_format=Some(Markdown)"));
+    assert!(formatted.contains("enabled_presets=[\"base\", \"compat\"]"));
     assert!(formatted.contains("capability_conflict_mode=Deny"));
     assert!(formatted.contains("project_capabilities=Some("));
     assert!(formatted.contains("applied_overrides=[[\"custom/**/*.md\"]]"));

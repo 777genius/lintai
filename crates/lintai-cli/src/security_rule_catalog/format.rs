@@ -70,6 +70,14 @@ pub(super) fn format_case_ids(case_ids: &[&str]) -> String {
         .join(", ")
 }
 
+pub(super) fn format_presets(presets: &[&str]) -> String {
+    presets
+        .iter()
+        .map(|preset| render_inline_code(preset))
+        .collect::<Vec<_>>()
+        .join(", ")
+}
+
 pub(super) fn format_bool(value: bool) -> &'static str {
     if value { "true" } else { "false" }
 }

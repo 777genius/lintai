@@ -7,6 +7,7 @@ use crate::ConfigError;
 const SUPPORTED_TOP_LEVEL_KEYS: &[&str] = &[
     "project",
     "files",
+    "presets",
     "categories",
     "rules",
     "overrides",

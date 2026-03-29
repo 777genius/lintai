@@ -48,6 +48,7 @@ mod tests {
         for needle in [
             "\"project\"",
             "\"files\"",
+            "\"presets\"",
             "\"categories\"",
             "\"rules\"",
             "\"overrides\"",
@@ -80,6 +81,13 @@ mod tests {
         assert!(
             rules.get("oneOf").is_none(),
             "rules schema should not silently accept unsupported parameter objects"
+        );
+
+        let presets = &properties["presets"];
+        assert_eq!(presets["anyOf"][0]["$ref"], "#/$defs/RawPresets");
+        assert_eq!(
+            presets["anyOf"][1]["type"], "null",
+            "presets should stay optional in v1 config schema"
         );
 
         for key in ["extends", "plugins", "cache", "fix", "disallowed"] {

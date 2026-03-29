@@ -23,6 +23,9 @@ impl Engine {
         populate_line_columns(context.content, &mut finding);
         finding.severity =
             file_config.severity_for(&finding.rule_code, finding.category, finding.severity);
+        if matches!(finding.severity, lintai_api::Severity::Allow) {
+            return;
+        }
         if !self.suppressions.is_suppressed(context, &finding) {
             summary.findings.push(finding);
         }

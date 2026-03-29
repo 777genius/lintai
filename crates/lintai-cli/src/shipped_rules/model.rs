@@ -60,6 +60,27 @@ pub(crate) struct SecurityRuleCatalogEntry {
 }
 
 impl SecurityRuleCatalogEntry {
+    pub(crate) fn default_presets(self) -> Vec<&'static str> {
+        let mut presets = Vec::new();
+
+        match self.metadata.tier {
+            RuleTier::Stable => presets.push("base"),
+            RuleTier::Preview => presets.push("preview"),
+        }
+
+        match self.surface {
+            CatalogSurface::Markdown => presets.push("skills"),
+            CatalogSurface::Json | CatalogSurface::ToolJson | CatalogSurface::ServerJson => {
+                presets.push("mcp");
+            }
+            CatalogSurface::ClaudeSettings => presets.push("claude"),
+            CatalogSurface::Workspace => presets.push("compat"),
+            CatalogSurface::Hook | CatalogSurface::GithubWorkflow => {}
+        }
+
+        presets
+    }
+
     pub(crate) fn canonical_note(self) -> &'static str {
         if self.metadata.code == "SEC324" {
             return "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.";

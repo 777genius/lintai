@@ -1,4 +1,4 @@
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 use std::path::PathBuf;
 
 use globset::GlobSet;
@@ -96,6 +96,10 @@ pub struct EngineConfig {
     pub(crate) include_matcher: GlobSet,
     pub(crate) exclude_patterns: Vec<String>,
     pub(crate) exclude_matcher: GlobSet,
+    pub(crate) enabled_presets: Vec<String>,
+    pub(crate) active_rule_codes: BTreeSet<String>,
+    pub(crate) preset_category_overrides: BTreeMap<Category, Severity>,
+    pub(crate) preset_rule_overrides: BTreeMap<String, Severity>,
     pub(crate) category_overrides: BTreeMap<Category, Severity>,
     pub(crate) rule_overrides: BTreeMap<String, Severity>,
     pub(crate) overrides: Vec<FileOverride>,
@@ -111,7 +115,11 @@ pub struct ResolvedFileConfig {
     pub suppress_policy: SuppressPolicy,
     pub project_capabilities: Option<CapabilityProfile>,
     pub capability_conflict_mode: CapabilityConflictMode,
+    pub enabled_presets: Vec<String>,
+    pub preset_category_overrides: BTreeMap<Category, Severity>,
+    pub preset_rule_overrides: BTreeMap<String, Severity>,
     pub applied_overrides: Vec<Vec<String>>,
+    pub active_rule_codes: BTreeSet<String>,
     pub category_overrides: BTreeMap<Category, Severity>,
     pub rule_overrides: BTreeMap<String, Severity>,
     pub detected_kind: Option<ArtifactKind>,
@@ -120,10 +128,19 @@ pub struct ResolvedFileConfig {
 
 impl ResolvedFileConfig {
     pub fn severity_for(&self, rule_code: &str, category: Category, default: Severity) -> Severity {
-        self.rule_overrides
-            .get(rule_code)
+        if let Some(explicit_rule_override) = self.rule_overrides.get(rule_code).copied() {
+            return explicit_rule_override;
+        }
+
+        if !self.active_rule_codes.contains(rule_code) {
+            return Severity::Allow;
+        }
+
+        self.category_overrides
+            .get(&category)
             .copied()
-            .or_else(|| self.category_overrides.get(&category).copied())
+            .or_else(|| self.preset_rule_overrides.get(rule_code).copied())
+            .or_else(|| self.preset_category_overrides.get(&category).copied())
             .unwrap_or(default)
     }
 }

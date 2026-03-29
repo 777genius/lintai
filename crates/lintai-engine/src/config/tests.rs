@@ -74,6 +74,128 @@ rules = { SEC201 = "deny" }
 }
 
 #[test]
+fn preview_rules_require_explicit_opt_in() {
+    let temp_dir = unique_temp_dir("lintai-config-preview-default");
+    std::fs::create_dir_all(temp_dir.join("custom")).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        r#"
+[categories]
+security = "deny"
+"#,
+    )
+    .unwrap();
+    std::fs::write(temp_dir.join("custom/agent.md"), "# custom\n").unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let resolved = explain_file_config(&workspace, &temp_dir.join("custom/agent.md"));
+
+    assert_eq!(resolved.enabled_presets, vec!["base".to_owned()]);
+    assert_eq!(
+        resolved.severity_for("SEC201", Category::Security, Severity::Warn),
+        Severity::Deny
+    );
+    assert_eq!(
+        resolved.severity_for("SEC401", Category::Security, Severity::Warn),
+        Severity::Allow
+    );
+}
+
+#[test]
+fn explicit_rule_override_can_opt_in_inactive_rule() {
+    let temp_dir = unique_temp_dir("lintai-config-explicit-rule-opt-in");
+    std::fs::create_dir_all(temp_dir.join("custom")).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        r#"
+[rules]
+SEC401 = "deny"
+"#,
+    )
+    .unwrap();
+    std::fs::write(temp_dir.join("custom/agent.md"), "# custom\n").unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let resolved = explain_file_config(&workspace, &temp_dir.join("custom/agent.md"));
+
+    assert_eq!(
+        resolved.severity_for("SEC401", Category::Security, Severity::Warn),
+        Severity::Deny
+    );
+}
+
+#[test]
+fn builtin_presets_can_enable_compat_lane() {
+    let temp_dir = unique_temp_dir("lintai-config-presets-compat");
+    std::fs::create_dir_all(temp_dir.join("custom")).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        r#"
+[presets]
+enable = ["base", "compat"]
+"#,
+    )
+    .unwrap();
+    std::fs::write(temp_dir.join("custom/agent.md"), "# custom\n").unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let resolved = explain_file_config(&workspace, &temp_dir.join("custom/agent.md"));
+
+    assert_eq!(
+        resolved.enabled_presets,
+        vec!["base".to_owned(), "compat".to_owned()]
+    );
+    assert_eq!(
+        resolved.severity_for("SEC401", Category::Security, Severity::Warn),
+        Severity::Warn
+    );
+}
+
+#[test]
+fn surface_presets_can_opt_in_preview_rules_for_selected_surface() {
+    let temp_dir = unique_temp_dir("lintai-config-surface-preset");
+    std::fs::create_dir_all(temp_dir.join("docs")).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        r#"
+[presets]
+enable = ["base", "skills"]
+"#,
+    )
+    .unwrap();
+    std::fs::write(temp_dir.join("docs/SKILL.md"), "# skill\n").unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let resolved = explain_file_config(&workspace, &temp_dir.join("docs/SKILL.md"));
+
+    assert_eq!(
+        resolved.enabled_presets,
+        vec!["base".to_owned(), "skills".to_owned()]
+    );
+    assert_eq!(
+        resolved.severity_for("SEC347", Category::Security, Severity::Warn),
+        Severity::Warn
+    );
+}
+
+#[test]
+fn rejects_unknown_builtin_preset() {
+    let temp_dir = unique_temp_dir("lintai-config-bad-preset");
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        r#"
+[presets]
+enable = ["base", "unknown"]
+"#,
+    )
+    .unwrap();
+
+    let error = load_workspace_config(&temp_dir).unwrap_err();
+    assert!(error.to_string().contains("unknown builtin preset `unknown`"));
+}
+
+#[test]
 fn does_not_cascade_to_parent_config() {
     let root_dir = unique_temp_dir("lintai-config-no-cascade");
     let child_dir = root_dir.join("nested");
@@ -104,6 +226,9 @@ fn explain_config_reports_detection_override_and_capabilities() {
     std::fs::write(
         temp_dir.join("lintai.toml"),
         r#"
+[presets]
+enable = ["base", "compat"]
+
 [capabilities]
 network = "none"
 
@@ -132,6 +257,10 @@ format = "markdown"
     assert_eq!(
         resolved.capability_conflict_mode,
         lintai_api::CapabilityConflictMode::Deny
+    );
+    assert_eq!(
+        resolved.enabled_presets,
+        vec!["base".to_owned(), "compat".to_owned()]
     );
     assert_eq!(
         resolved.detected_kind,

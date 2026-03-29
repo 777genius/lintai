@@ -245,6 +245,22 @@
       },
       "type": "object"
     },
+    "RawPresets": {
+      "additionalProperties": false,
+      "properties": {
+        "enable": {
+          "default": null,
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
     "RawOverride": {
       "additionalProperties": false,
       "properties": {
@@ -498,6 +514,16 @@
       "type": [
         "array",
         "null"
+      ]
+    },
+    "presets": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RawPresets"
+        },
+        {
+          "type": "null"
+        }
       ]
     },
     "plugins": {
