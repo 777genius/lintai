@@ -50,10 +50,40 @@ Everything else product/architecture-related is indexed from [`docs/INDEX.md`](d
 ## Public Beta Install
 
 The public beta CLI is distributed through GitHub Releases only in this phase.
+The recommended path is to download a release-published installer script and run it locally.
+Manual archive install remains the fallback.
 
-1. Download the prebuilt binary for `v0.1.0-beta.1` from the GitHub Release.
-2. Verify the release notes in [`docs/releases/v0.1.0-beta.1.md`](docs/releases/v0.1.0-beta.1.md).
-3. Run:
+### Install via release script on macOS/Linux
+
+Download `lintai-installer.sh` from the `v0.1.0-beta.1` GitHub Release, or fetch it directly:
+
+```bash
+curl -fsSLO https://github.com/<owner>/<repo>/releases/download/v0.1.0-beta.1/lintai-installer.sh
+sh ./lintai-installer.sh
+```
+
+The release-published script downloads the tagged archive and `SHA256SUMS`, verifies the checksum, and installs `lintai` into `~/.local/bin` by default.
+It does not edit your shell profile; instead it prints the exact `PATH` follow-up if that directory is not already available in your shell.
+
+### Install via release script on Windows PowerShell
+
+```powershell
+Invoke-WebRequest -Uri https://github.com/<owner>/<repo>/releases/download/v0.1.0-beta.1/lintai-installer.ps1 -OutFile .\lintai-installer.ps1
+powershell -ExecutionPolicy Bypass -File .\lintai-installer.ps1
+```
+
+The PowerShell installer downloads the tagged archive and `SHA256SUMS`, verifies the checksum, and installs `lintai.exe` into `%USERPROFILE%\.local\bin` by default.
+
+### Manual archive install
+
+1. Download the archive for your target from the GitHub Release.
+2. Download `SHA256SUMS` from the same release and verify the archive checksum.
+3. Extract `lintai` or `lintai.exe` into a directory on your `PATH`.
+
+### Post-install verification
+
+1. Verify the release notes in [`docs/releases/v0.1.0-beta.1.md`](docs/releases/v0.1.0-beta.1.md).
+2. Run:
 
 ```bash
 lintai help

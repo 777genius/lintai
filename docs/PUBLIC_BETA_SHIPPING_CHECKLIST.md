@@ -26,6 +26,8 @@ The shipping workflow must publish exactly these asset classes:
 - `lintai-v0.1.0-beta.1-x86_64-unknown-linux-musl.tar.gz`
 - `lintai-v0.1.0-beta.1-aarch64-apple-darwin.tar.gz`
 - `lintai-v0.1.0-beta.1-x86_64-pc-windows-msvc.zip`
+- `lintai-installer.sh`
+- `lintai-installer.ps1`
 - `SHA256SUMS`
 
 ## Shipping Steps
@@ -35,8 +37,9 @@ The shipping workflow must publish exactly these asset classes:
 3. Let `public-beta-release.yml` build and upload the release assets.
 4. Verify the GitHub Release is marked as prerelease.
 5. Verify the uploaded body matches [releases/v0.1.0-beta.1.md](releases/v0.1.0-beta.1.md).
-6. Verify the release assets and `SHA256SUMS` are present.
-7. Verify no parallel installer or registry publication step was introduced for this beta workflow.
+6. Verify the release assets, installer scripts, and `SHA256SUMS` are present.
+7. Verify the installer scripts still fetch only tagged GitHub Release assets and perform checksum validation before install.
+8. Verify no parallel package-manager or registry publication step was introduced for this beta workflow.
 
 ## Post-Shipping Truth Check
 
@@ -44,5 +47,6 @@ The public-facing release posture is valid only if:
 
 - the GitHub Release uses the checked-in release note
 - the published assets match the expected target list above
+- the installer scripts are shipped as convenience assets inside that same GitHub Release
 - no docs imply Homebrew, npm, or `cargo install` support for the CLI in this beta
 - no workflow or release note implies an alternative installation channel beyond downloading the published GitHub Release assets

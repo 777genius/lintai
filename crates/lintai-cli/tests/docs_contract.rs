@@ -197,6 +197,8 @@ fn public_beta_release_doc_exists_and_matches_current_posture() {
     assert!(text.contains("v0.1.0-beta.1"));
     assert!(text.contains("public beta"));
     assert!(text.contains("GitHub Releases with prebuilt binaries only"));
+    assert!(text.contains("lintai-installer.sh"));
+    assert!(text.contains("lintai-installer.ps1"));
     assert!(text.contains("release promise for this phase is intentionally limited"));
     assert!(text.contains("`lintai-api` remains the only stable publishable crate"));
     assert!(text.contains("EXTERNAL_VALIDATION_REPORT.md"));
@@ -220,17 +222,35 @@ fn beta_roadmap_and_shipping_checklist_lock_release_only_distribution() {
         "BETA_TO_1_0_ROADMAP.md should defer installer channels until after the beta loop"
     );
     assert!(
-        checklist.contains("no parallel installer or registry publication step"),
-        "PUBLIC_BETA_SHIPPING_CHECKLIST.md should forbid parallel installer publication in the beta workflow"
+        checklist.contains("no parallel package-manager or registry publication step"),
+        "PUBLIC_BETA_SHIPPING_CHECKLIST.md should forbid parallel package-manager publication outside the GitHub Release asset set"
     );
     assert!(
         checklist.contains("alternative installation channel beyond downloading the published GitHub Release assets"),
         "PUBLIC_BETA_SHIPPING_CHECKLIST.md should keep the release-assets-only truth check explicit"
     );
     assert!(
-        index.contains("GitHub Release binaries only"),
+        index.contains("GitHub Release assets only"),
         "INDEX.md should summarize the release-only beta distribution decision"
     );
+    assert!(
+        checklist.contains("lintai-installer.sh") && checklist.contains("lintai-installer.ps1"),
+        "PUBLIC_BETA_SHIPPING_CHECKLIST.md should list the installer assets"
+    );
+}
+
+#[test]
+fn readme_and_release_note_document_download_then_run_installers() {
+    let readme = include_str!("../../../README.md");
+    let release_note = include_str!("../../../docs/releases/v0.1.0-beta.1.md");
+
+    assert!(readme.contains("lintai-installer.sh"));
+    assert!(readme.contains("lintai-installer.ps1"));
+    assert!(readme.contains("curl -fsSLO"));
+    assert!(readme.contains("Manual archive install"));
+    assert!(readme.contains("Post-install verification"));
+    assert!(release_note.contains("download `lintai-installer.sh` or `lintai-installer.ps1`"));
+    assert!(release_note.contains("no `curl | sh` install contract"));
 }
 
 #[test]

@@ -24,7 +24,7 @@
 - **File discovery**: `ignore` crate (gitignore semantics), symlinks not followed by default
 - **Config**: unknown keys = error, `explain-config` обязателен, JSON Schema + SchemaStore
 - **Testing/release direction**: `lintai-testing` remains internal in `v0.1`; corpus, sample repos, compat snapshots, release barrier, docs gate, and dry release are already wired
-- **Beta distribution**: this release is intentionally shipped through GitHub Release binaries only; installer channels such as Homebrew/npm/`cargo install` are explicitly deferred
+- **Beta distribution**: this release is intentionally shipped through GitHub Release assets only; convenience installer scripts may ship inside that asset set, while Homebrew/npm/`cargo install` remain explicitly deferred
 - **Remediation**: `lintai fix` is public CLI surface with safe autofix, message suggestions, and preview-only candidate patch edits
 - **Лицензия**: Dual MIT + Apache 2.0
 

@@ -71,6 +71,41 @@ jobs:
       - name: Run security provider suites
         run: cargo test --manifest-path Cargo.toml --locked -p lintai-ai-security
 
+  prepare_release_helpers:
+    name: Prepare Release Helpers
+    needs: release_context
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Render Unix installer
+        env:
+          RELEASE_TAG: ${{ needs.release_context.outputs.release_tag }}
+          RELEASE_REPOSITORY: ${{ github.repository }}
+        run: |
+          mkdir -p dist
+          sed \
+            -e "s|__RELEASE_TAG__|${RELEASE_TAG}|g" \
+            -e "s|__RELEASE_REPOSITORY__|${RELEASE_REPOSITORY}|g" \
+            scripts/release/lintai-installer.sh > dist/lintai-installer.sh
+          chmod +x dist/lintai-installer.sh
+      - name: Render PowerShell installer
+        shell: pwsh
+        env:
+          RELEASE_TAG: ${{ needs.release_context.outputs.release_tag }}
+          RELEASE_REPOSITORY: ${{ github.repository }}
+        run: |
+          ((Get-Content "scripts/release/lintai-installer.ps1") `
+            -replace "__RELEASE_TAG__", $env:RELEASE_TAG `
+            -replace "__RELEASE_REPOSITORY__", $env:RELEASE_REPOSITORY) |
+            Set-Content "dist/lintai-installer.ps1"
+      - name: Upload release helpers
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-helpers
+          path: |
+            dist/lintai-installer.sh
+            dist/lintai-installer.ps1
+
   build_assets:
     name: Build ${{ matrix.target }}
     needs:
@@ -132,11 +167,117 @@ jobs:
           name: release-asset-${{ matrix.target }}
           path: dist/*
 
+  smoke_installer_unix:
+    name: Smoke installer (Unix)
+    needs:
+      - build_assets
+      - prepare_release_helpers
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Download packaged assets
+        uses: actions/download-artifact@v4
+        with:
+          pattern: release-asset-*
+          merge-multiple: true
+          path: dist
+      - name: Download release helpers
+        uses: actions/download-artifact@v4
+        with:
+          name: release-helpers
+          path: dist
+      - name: Generate checksums
+        shell: bash
+        run: |
+          cd dist
+          sha256sum *.tar.gz *.zip > SHA256SUMS
+          chmod +x lintai-installer.sh
+      - name: Start local release server
+        shell: bash
+        run: |
+          cd dist
+          python3 -m http.server 18080 >/tmp/lintai-release-http.log 2>&1 &
+          echo $! > /tmp/lintai-release-http.pid
+          sleep 2
+      - name: Run Unix installer smoke
+        shell: bash
+        env:
+          LINTAI_INSTALL_BASE_URL: http://127.0.0.1:18080
+        run: |
+          INSTALL_DIR="$RUNNER_TEMP/lintai-bin"
+          sh dist/lintai-installer.sh --install-dir "$INSTALL_DIR" --target x86_64-unknown-linux-gnu
+          "$INSTALL_DIR/lintai" help >/dev/null
+      - name: Stop local release server
+        if: always()
+        shell: bash
+        run: |
+          if [ -f /tmp/lintai-release-http.pid ]; then
+            kill "$(cat /tmp/lintai-release-http.pid)" || true
+          fi
+
+  smoke_installer_windows:
+    name: Smoke installer (Windows)
+    needs:
+      - build_assets
+      - prepare_release_helpers
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - name: Download packaged assets
+        uses: actions/download-artifact@v4
+        with:
+          pattern: release-asset-*
+          merge-multiple: true
+          path: dist
+      - name: Download release helpers
+        uses: actions/download-artifact@v4
+        with:
+          name: release-helpers
+          path: dist
+      - name: Generate checksums
+        shell: pwsh
+        run: |
+          $archives = Get-ChildItem dist | Where-Object { $_.Name -like "*.tar.gz" -or $_.Name -like "*.zip" } | Sort-Object Name
+          $lines = foreach ($file in $archives) {
+            "$((Get-FileHash -Path $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant())  $($file.Name)"
+          }
+          Set-Content -Path "dist/SHA256SUMS" -Value $lines
+      - name: Start local release server
+        shell: pwsh
+        run: |
+          $job = Start-Job -ScriptBlock {
+            param($path)
+            Set-Location $path
+            py -3 -m http.server 18081
+          } -ArgumentList (Join-Path $pwd "dist")
+          Set-Content -Path "$env:RUNNER_TEMP\lintai-http-job.txt" -Value $job.Id
+          Start-Sleep -Seconds 2
+      - name: Run Windows installer smoke
+        shell: pwsh
+        env:
+          LINTAI_INSTALL_BASE_URL: http://127.0.0.1:18081
+        run: |
+          $installDir = Join-Path $env:RUNNER_TEMP "lintai-bin"
+          powershell -ExecutionPolicy Bypass -File .\dist\lintai-installer.ps1 -InstallDir $installDir -Target x86_64-pc-windows-msvc
+          & (Join-Path $installDir "lintai.exe") help | Out-Null
+      - name: Stop local release server
+        if: always()
+        shell: pwsh
+        run: |
+          if (Test-Path "$env:RUNNER_TEMP\lintai-http-job.txt") {
+            $jobId = Get-Content "$env:RUNNER_TEMP\lintai-http-job.txt"
+            Stop-Job -Id $jobId -ErrorAction SilentlyContinue
+            Remove-Job -Id $jobId -Force -ErrorAction SilentlyContinue
+          }
+
   publish_release:
     name: Publish GitHub Release
     needs:
       - release_context
       - build_assets
+      - prepare_release_helpers
+      - smoke_installer_unix
+      - smoke_installer_windows
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -146,6 +287,11 @@ jobs:
         with:
           pattern: release-asset-*
           merge-multiple: true
+          path: dist
+      - name: Download release helpers
+        uses: actions/download-artifact@v4
+        with:
+          name: release-helpers
           path: dist
       - name: Generate checksums
         shell: bash
@@ -168,4 +314,6 @@ jobs:
           files: |
             dist/*.tar.gz
             dist/*.zip
+            dist/lintai-installer.sh
+            dist/lintai-installer.ps1
             dist/SHA256SUMS
