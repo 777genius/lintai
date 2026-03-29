@@ -85,6 +85,62 @@ Canonical catalog for the shipped security rules currently exposed by:
 | 2 | `SEC:ai-manifest-integrity` | Manifest integrity | Без проверки подписи, digest/hash pinning и происхождения skill/plugin/tool manifests любой последующий schema- или policy-check можно обойти подменой артефакта до загрузки. Это прямой supply-chain choke point. | `10/10` | `9/10` |
 | 3 | `SEC:ai-tool-intent-gate` | Runtime control | На рантайме нужен deny-by-default слой: сверка цели, scope, destructive action policy, cost/rate limits и explicit approval перед tool execution. Это сдерживает blast radius даже когда boundary и manifest уже частично обойдены. | `9/10` | `9/10` |
 
+### Skills markdown top-3 (что людям полезнее всего)
+
+Если ориентироваться на практичность для команд в `SKILL.md`, `.mdc`, `.cursorrules`, `AGENTS.md`, `CLAUDE.md`, `.github/copilot-instructions.md`:
+
+| Rank | Rule | Axis | Зачем в первую очередь команде | Уверенность | Надёжность | Статус |
+|---|---|---|---|---:|---:|---|
+| 1 | `SEC:new-markdown-tool-scope-minimum` | Scope control | Обрезает blast radius на старте: запрет `tools: ["*"]`, wildcard-доступа и untrusted MCP discovery без allowlist. | `10/10` | `10/10` | `Частично (локально рекомендовано)` |
+| 2 | `SEC:new-markdown-sensitive-actions-require-approval` | Runtime policy | Не даёт автоприменение `commit/deploy/delete/network` действий и MCP/CLI опасных вызовов; нужен human-in-the-loop слой для high-risk действий. | `10/10` | `9/10` | `Не закрыто` |
+| 3 | `SEC:new-developer-message-untrusted-input` | Trust boundary | Блокирует превращение untrusted-контента (`tool output`, RAG/web snippets, issue-тексты) в authority как developer/system инструкции. | `10/10` | `8/10` | `Не закрыто` |
+
+### Краткий разбор очередности
+
+- `top-3` выше (boundary → manifest → runtime) остаётся корректным для общего threat-model.
+- Для `skills markdown` на практике по внедрению полезнее идти: `SEC:new-markdown-tool-scope-minimum` → `SEC:new-markdown-sensitive-actions-require-approval` → `SEC:new-developer-message-untrusted-input`.
+- Уже закрытые в каталоге и ранее помеченные как внедрённые:
+  - `SEC316`, `SEC317`, `SEC318`, `SEC319`, `SEC321`, `SEC322`, `SEC323`, `SEC330`, `SEC331`, `SEC337`, `SEC338`, `SEC339`, `SEC340`, `SEC341`, `SEC342`, `SEC335`, `SEC347`, `SEC348`, `SEC349`, `SEC401`, `SEC402`, `SEC403`.
+- Из этого перечня для `skills markdown` реально полезны и уже применимы:
+  - `SEC403` (skill frontmatter ↔ policy conflict),
+  - `SEC335`, `SEC347`, `SEC348`, `SEC349` (опасные AI-native markdown-шаблоны с MCP/tool actions).
+
+### Новые источники (2025-2026), учтённые в этом блоке
+
+- [OpenAI Function calling (tool choice + tool permissions)](https://platform.openai.com/docs/guides/function-calling)  
+- [OpenAI Safety in building agents](https://developers.openai.com/api/docs/guides/agent-builder-safety)  
+- [OpenAI MCP в Agents SDK](https://openai.github.io/openai-agents-js/guides/mcp/)  
+- [OpenAI Agents SDK — Human-in-the-loop approvals](https://openai.github.io/openai-agents-python/human_in_the_loop/)  
+- [MCP tools spec: human-in-the-loop + tool metadata и безопасность](https://modelcontextprotocol.io/specification/2025-11-25/server/tools)  
+- [MCP security best practices (инструментальные и сеть/авторизация)](https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices)  
+- [MCP 2025 релиз: 2025-11-25](https://blog.modelcontextprotocol.io/posts/2025-09-26-mcp-next-version-update/)  
+- [Anthropic Claude Code security](https://code.claude.com/docs/en/security)  
+- [Anthropic Agent SDK permissions (`allow`/`ask`/`deny`)](https://platform.claude.com/docs/en/agent-sdk/permissions)  
+- [Microsoft Function tool approvals с HITL](https://learn.microsoft.com/en-us/agent-framework/agents/tools/tool-approval)  
+- [GitHub Copilot repository instructions](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions)  
+- [GitHub Copilot now supports Agent Skills](https://github.blog/changelog/2025-12-18-github-copilot-now-supports-agent-skills/)  
+- [GitHub Changelog: AGENTS.md custom instructions](https://github.blog/changelog/2025-08-28-copilot-coding-agent-now-supports-agents-md-custom-instructions/)  
+- [GitHub Changelog: MCP registry + allowlist controls (JetBrains/Eclipse/Xcode)](https://github.blog/changelog/2025-10-28-mcp-registry-and-allowlist-controls-for-copilot-in-jetbrains-eclipse-and-xcode-now-in-public-preview/)  
+- [GitHub Changelog: MCP allowlist for VS Code stable](https://github.blog/changelog/2025-11-18-internal-mcp-registry-and-allowlist-controls-for-vs-code-stable-in-public-preview/)  
+- [OWASP LLM01 Prompt Injection](https://genai.owasp.org/llm01/)  
+- [OWASP MCP Top 10](https://owasp.org/www-project-mcp-top-10/)  
+- [OWASP MCP06 — Prompt Injection via Contextual Payloads](https://owasp.org/www-project-mcp-top-10/#mcp06)  
+- [NIST AI 100-2e2025](https://nvlpubs.nist.gov/nistpubs/AI/NIST.AI.100-2e2025.pdf)
+
+### Если сомневаешься: top-3 пути внедрения для `skills markdown`
+
+1. **Жёсткий production-поток (рекомендуется):** `SEC:new-markdown-tool-scope-minimum` → `SEC:new-markdown-sensitive-actions-require-approval` → `SEC:new-developer-message-untrusted-input`.  
+   - Уверенность: `10/10`  
+   - Надёжность: `9/10`  
+
+2. **Баланс скорости и безопасности:** `SEC:new-markdown-tool-scope-minimum` + `SEC:new-markdown-sensitive-actions-require-approval`, `SEC:new-developer-message-untrusted-input` позже (по итогам пилота).  
+   - Уверенность: `8/10`  
+   - Надёжность: `8/10`  
+
+3. **Минимальный старт (ограниченный scope):** только `SEC:new-markdown-tool-scope-minimum`, затем ручные апрувы для write/delete/deploy действий.  
+   - Уверенность: `7/10`  
+   - Надёжность: `7/10`
+
 ### Rationale
 
 - `SEC:ai-trusted-context-boundary` стоит первым, потому что это первичный барьер между недоверенным контентом и управляющими инструкциями; без него остальные контроли слишком легко обходятся через reinterpretation attack surface.

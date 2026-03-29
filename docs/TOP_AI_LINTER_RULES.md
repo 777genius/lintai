@@ -2,9 +2,11 @@
 
 Документ **ручной**: приоритизация и threat-model для репозиториев со **skills**, **MCP**, **инструкциями в Markdown**, **tool JSON**, **плагинами IDE** и **CI-артефактами**. Не заменяет сгенерированный каталог текущих кодов правил — см. **[SECURITY_RULES.md](SECURITY_RULES.md)**.
 
-**Срез:** март 2026. Часть правил уже покрывается shipped `SEC*` в `lintai-ai-security`, часть — кандидаты на следующие итерации.
+**Срез:** 29 марта 2026. Часть правил уже покрывается shipped `SEC*` в `lintai-ai-security`, часть — кандидаты на следующие итерации.
 
----
+## Актуализация для skills markdown (2026-03-29)
+
+Смотрите обновлённую секцию ниже: **## Актуализация (2026-03-29): top-6 правил для `skills markdown` (самые полезные)**.
 
 ## Синтез 15 исследовательских агентов (март 2026)
 
@@ -52,6 +54,59 @@
 15. **Vector stack:** **`http://`** к облачному вендору; **api_key** литералом в Helm/values; **compose `ports`** `0.0.0.0` для qdrant/weaviate/chroma без политики.
 
 ---
+
+## Актуализация (2026-03-29): top-6 правил для `skills markdown` (самые полезные)
+
+Ниже — 6 правил с максимальной практической ценностью для `SKILL.md`, `AGENTS.md`, `.mdc`, `.github/instructions`, `.github/copilot-instructions.md`, `.cursor` и MCP-конфигов.
+
+### Топ-6 правил (приоритет сообщества)
+
+| Ранг | Правило | Почему полезно | Уверенность | Надёжность |
+|---|---|---|---:|---:|
+| 1 | `SEC-COPILOT-PATH-LAYOUT` | Формат и расположение инструкций (`.github/copilot-instructions.md`, `.github/instructions/*.instructions.md`, `applyTo`), чтобы `instructions` реально применялись в нужном контексте. | 10/10 | 10/10 |
+| 2 | `SEC-COPILOT-4K` | В code-review лимит `4000` символов (контроль по GitHub docs) — исключает тихое отбрасывание хвостовой логики инструкций. | 10/10 | 10/10 |
+| 3 | `SEC-OWASP-TOOLS` | Принудительный allowlist инструментов (без `tools: ["*"]`) снижает excessive agency и blast radius. | 10/10 | 10/10 |
+| 4 | `SEC-MCP-TOOL-REQ` | Наличие обязательных `name` и `inputSchema` в инструментах MCP/agent-интерфейсов предотвращает невалидный execution surface. | 10/10 | 10/10 |
+| 5 | `SEC-OPENAI-STRICT` + `SEC-OPENAI-STRICT-REQ` + `SEC-ANTHROPIC-STRICT` | Строгая валидация аргументов tool-call блокирует неожиданную семантику и подмену параметров. | 10/10 | 9/10 |
+| 6 | `SEC-MCP-LAUNCH` + `SEC-CURSOR-MCP-ENVFILE` + `SEC-CURSOR-IGNORE-NOT-BOUNDARY` | Реальный blast-radius контроль: запуск MCP без shell-пайпов + запрет утечки секретов через env/headers + не считаем `.cursorignore` security boundary. | 10/10 | 9/10 |
+
+### Минимальный релизный набор (1-й проход)
+
+1. `SEC-COPILOT-PATH-LAYOUT`
+2. `SEC-COPILOT-4K`
+3. `SEC-OWASP-TOOLS`
+4. `SEC-MCP-TOOL-REQ`
+5. `SEC-OPENAI-STRICT` + `SEC-OPENAI-STRICT-REQ`
+
+### Где линтовать для сообщества (top-3 по практичности, с оценками)
+
+- **Вариант A: GitHub Action required check**  
+  Уверенность: `10/10`  
+  Надёжность: `10/10`  
+  Почему: максимальный охват, enforce для каждого PR, единообразие для OSS-репозиториев.
+- **Вариант B: pre-commit + локальный линт**  
+  Уверенность: `9/10`  
+  Надёжность: `8/10`  
+  Почему: дешёвый вход, раннее обнаружение и меньше итераций PR.
+- **Вариант C: PR advisory bot**  
+  Уверенность: `8/10`  
+  Надёжность: `7/10`  
+  Почему: второй слой в проектах с legacy-репозиториями или без strict CI.
+
+### Рекомендуемый rollout
+`pre-commit` → обязательный GitHub Action → advisory-бот (поэтапно, без перегруза команд).
+
+### Обновлённые источники 2025-2026 (критичные для этого блока)
+
+- [GitHub Copilot customization / custom instructions](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions)  
+- [GitHub Copilot customization cheat sheet](https://docs.github.com/en/enterprise-cloud%40latest/copilot/reference/customization-cheat-sheet)  
+- [GitHub custom agents configuration](https://docs.github.com/en/copilot/reference/custom-agents-configuration), [response customization](https://docs.github.com/en/copilot/concepts/prompting/response-customization)
+- [GitHub Actions security (script injections, pwn requests)](https://docs.github.com/en/actions/concepts/security/script-injections), [GitHub Security Lab](https://securitylab.github.com/research/github-actions-preventing-pwn-requests/)  
+- [MCP spec/security + 2025-11-25 schema](https://modelcontextprotocol.io/specification/2025-11-25/server/tools), [MCP security best practices](https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices)  
+- [OpenAI strict function/tool calling](https://platform.openai.com/docs/guides/function-calling)  
+- [Anthropic Claude security/permissions/MCP/plugins/hooks](https://code.claude.com/docs/en/security), [settings](https://code.claude.com/docs/en/settings), [plugins reference](https://code.claude.com/docs/en/plugins-reference), [hooks](https://code.claude.com/docs/en/hooks)  
+- [Cursor MCP / ignore limitations](https://docs.cursor.com/context/mcp), [ignore file](https://cursor.com/docs/reference/ignore-file)  
+- [OWASP agentic LLM Top 10 (2025/2026)](https://genai.owasp.org/resource/2025-12-09/owasp-top-10-for-agentic-applications-for-2026)
 
 ## Принципы
 

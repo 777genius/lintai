@@ -329,10 +329,7 @@ mod tests {
         );
         assert!(
             detector
-                .detect(
-                    Path::new("/tmp/project/docs/review.md"),
-                    "docs/review.md"
-                )
+                .detect(Path::new("/tmp/project/docs/review.md"), "docs/review.md")
                 .is_none()
         );
     }

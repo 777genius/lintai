@@ -7,8 +7,8 @@ use lintai_testing::{
     CaseManifest, OutputHarness, WorkspaceHarness, assert_case_summary, discover_case_dirs,
 };
 
-use crate::commands::explain_config::format_explain_config;
 use crate::builtin_providers::product_provider_set;
+use crate::commands::explain_config::format_explain_config;
 use crate::output::{build_envelope, format_json, format_sarif, format_text};
 
 fn repo_root() -> PathBuf {

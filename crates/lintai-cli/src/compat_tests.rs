@@ -2,8 +2,8 @@ use lintai_engine::{explain_file_config, load_workspace_config};
 use lintai_testing::{OutputHarness, WorkspaceHarness, discover_case_dirs};
 use std::path::PathBuf;
 
-use crate::commands::explain_config::format_explain_config;
 use crate::builtin_providers::product_provider_set;
+use crate::commands::explain_config::format_explain_config;
 use crate::output::{build_envelope, format_json, format_sarif};
 
 fn repo_root() -> PathBuf {
