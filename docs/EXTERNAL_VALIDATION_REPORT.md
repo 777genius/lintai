@@ -44,11 +44,14 @@ Current wave inventory for the newly expanded JSON lanes:
 - AI-native markdown preview findings:
   - `SEC313` fenced pipe-to-shell examples: `1`
   - `SEC335` metadata-service access examples: `1`
-  - `SEC347` mutable MCP launcher examples: `3`
+  - `SEC347` mutable MCP setup launcher examples: `3`
+    - CLI-form repo hits: `2`
+    - config-snippet-form repo hits: `1`
   - `SEC348` mutable Docker registry-image examples: `2`
   - `SEC349` Docker host-escape or privileged runtime examples: `0`
   - `SEC350` untrusted-input instruction-promotion examples: `0`
   - `SEC351` approval-bypass instruction examples: `0`
+  - current `SEC347` usefulness is being driven mainly by command-line onboarding examples
 - repos with `tool_descriptor_json`: `3`
 - findings from `SEC314`-`SEC318`: `0`
 - repos where new MCP client-config variants existed only under fixture-like paths: `1`

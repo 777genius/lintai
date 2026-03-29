@@ -240,7 +240,7 @@ rationale = "demo"
             ],
         };
 
-        let markdown = render_report_from_ledgers(&baseline, &current);
+        let markdown = render_report_from_ledgers(&workspace_root().unwrap(), &baseline, &current);
         assert!(markdown.contains("## Hybrid Scope Expansion Results"));
         assert!(markdown.contains("- repos with root `mcp.json`: `0`"));
         assert!(markdown.contains("- repos with `.mcp.json`: `1`"));
@@ -259,7 +259,9 @@ rationale = "demo"
         assert!(markdown.contains("- AI-native markdown preview findings:"));
         assert!(markdown.contains("`SEC313` fenced pipe-to-shell examples: `1`"));
         assert!(markdown.contains("`SEC335` metadata-service access examples: `0`"));
-        assert!(markdown.contains("`SEC347` mutable MCP launcher examples: `0`"));
+        assert!(markdown.contains("`SEC347` mutable MCP setup launcher examples: `0`"));
+        assert!(markdown.contains("CLI-form repo hits: `0`"));
+        assert!(markdown.contains("config-snippet-form repo hits: `0`"));
         assert!(markdown.contains("`SEC348` mutable Docker registry-image examples: `0`"));
         assert!(
             markdown.contains("`SEC349` Docker host-escape or privileged runtime examples: `0`")
@@ -692,7 +694,8 @@ rationale = "demo"
             }],
         };
 
-        let markdown = render_ai_native_discovery_report(&shortlist, &ledger);
+        let markdown =
+            render_ai_native_discovery_report(&workspace_root().unwrap(), &shortlist, &ledger);
         assert!(markdown.contains("## Cohort Composition"));
         assert!(markdown.contains("## Admission Results"));
         assert!(markdown.contains("## Coverage Status"));
@@ -703,6 +706,9 @@ rationale = "demo"
         assert!(markdown.contains("## Recommended Next Step"));
         assert!(markdown.contains("plugin-root command markdown admission paths"));
         assert!(markdown.contains("AI-native markdown preview hits by rule code"));
+        assert!(
+            markdown.contains("`SEC347` subtype repo hits: CLI-form=`0`, config-snippet-form=`0`")
+        );
         assert!(markdown.contains("`SEC349`=`0`"));
         assert!(markdown.contains("`SEC350`=`0`"));
         assert!(markdown.contains("`SEC351`=`0`"));

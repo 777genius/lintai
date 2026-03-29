@@ -69,6 +69,13 @@ const MARKDOWN_MUTABLE_MCP_CONTEXT_MARKERS: &[&str] = &[
     "model context protocol",
     "mcp server",
 ];
+const MARKDOWN_MUTABLE_MCP_SAFETY_MARKERS: &[&str] = &[
+    "do not use",
+    "don't use",
+    "avoid",
+    "replace with",
+    "instead of",
+];
 const MARKDOWN_UNTRUSTED_INPUT_MARKERS: &[&str] = &[
     "tool output",
     "tool result",
@@ -2338,20 +2345,20 @@ fn find_mutable_mcp_launcher_relative_span(text: &str) -> Option<Span> {
         if lowered.contains("claude mcp add")
             && let Some(relative) = find_mutable_launcher_token_relative_span(line)
         {
-            return Some(Span::new(
-                offset + relative.start_byte,
-                offset + relative.end_byte,
-            ));
-        }
-        if region_has_mcp_context
-            && let Some(relative) = find_markdown_command_launcher_relative_span(line)
-        {
-            return Some(Span::new(
-                offset + relative.start_byte,
-                offset + relative.end_byte,
-            ));
+            if !has_markdown_mutable_mcp_safety_context(line, &relative) {
+                return Some(Span::new(
+                    offset + relative.start_byte,
+                    offset + relative.end_byte,
+                ));
+            }
         }
         offset += line.len();
+    }
+
+    if region_has_mcp_context
+        && let Some(relative) = find_markdown_command_launcher_relative_span(text)
+    {
+        return Some(relative);
     }
 
     if !text.ends_with('\n') {
@@ -2359,12 +2366,9 @@ fn find_mutable_mcp_launcher_relative_span(text: &str) -> Option<Span> {
         if lowered.contains("claude mcp add")
             && let Some(relative) = find_mutable_launcher_token_relative_span(text)
         {
-            return Some(relative);
-        }
-        if region_has_mcp_context
-            && let Some(relative) = find_markdown_command_launcher_relative_span(text)
-        {
-            return Some(relative);
+            if !has_markdown_mutable_mcp_safety_context(text, &relative) {
+                return Some(relative);
+            }
         }
     }
 
@@ -2384,19 +2388,79 @@ fn find_mutable_launcher_token_relative_span(text: &str) -> Option<Span> {
 
 fn find_markdown_command_launcher_relative_span(text: &str) -> Option<Span> {
     let lowered = text.to_ascii_lowercase();
-    for marker in ["npx", "uvx"] {
+    for launcher in ["npx", "uvx", "pnpm", "yarn", "pipx"] {
         for prefix in [
-            format!("\"command\": \"{marker}\""),
-            format!("command: {marker}"),
+            format!("\"command\": \"{launcher}\""),
+            format!("command: {launcher}"),
         ] {
-            if lowered.contains(&prefix)
-                && let Some(start) = lowered.find(marker)
-            {
-                return Some(Span::new(start, start + marker.len()));
+            if let Some(start) = lowered.find(&prefix) {
+                let launcher_start = start + prefix.rfind(launcher).unwrap_or(0);
+                let launcher_span = Span::new(launcher_start, launcher_start + launcher.len());
+                if has_markdown_mutable_mcp_safety_context(text, &launcher_span) {
+                    continue;
+                }
+                if markdown_command_launcher_has_mutable_args(text, launcher, &launcher_span) {
+                    return Some(launcher_span);
+                }
             }
         }
     }
     None
+}
+
+fn markdown_command_launcher_has_mutable_args(
+    text: &str,
+    launcher: &str,
+    launcher_span: &Span,
+) -> bool {
+    let lowered = text.to_ascii_lowercase();
+    let window_start = launcher_span.start_byte.saturating_sub(48);
+    let window_end = (launcher_span.end_byte + 220).min(lowered.len());
+    let window = &lowered[window_start..window_end];
+
+    let Some(args_index) = window.find("\"args\"").or_else(|| window.find("args:")) else {
+        return false;
+    };
+    let args_window = &window[args_index..];
+
+    match launcher {
+        "npx" | "uvx" => contains_package_like_arg(args_window, &["-y", "--yes"]),
+        "pnpm" | "yarn" => {
+            args_window.contains("dlx")
+                && contains_package_like_arg(args_window, &["dlx", "-y", "--yes"])
+        }
+        "pipx" => {
+            args_window.contains("run")
+                && contains_package_like_arg(args_window, &["run", "-y", "--yes"])
+        }
+        _ => false,
+    }
+}
+
+fn contains_package_like_arg(args_window: &str, excluded_tokens: &[&str]) -> bool {
+    tokenize_markdown_shell_command(args_window)
+        .into_iter()
+        .map(|(token, _, _)| {
+            normalized_markdown_shell_token(token).trim_matches(|ch| {
+                ch == '"' || ch == '\'' || ch == '[' || ch == ']' || ch == ',' || ch == ':'
+            })
+        })
+        .any(|token| {
+            !token.is_empty()
+                && token.chars().any(|ch| ch.is_ascii_alphabetic())
+                && token != "args"
+                && !excluded_tokens.iter().any(|excluded| token == *excluded)
+        })
+}
+
+fn has_markdown_mutable_mcp_safety_context(text: &str, marker_span: &Span) -> bool {
+    let lowered = text.to_ascii_lowercase();
+    let start = marker_span.start_byte.saturating_sub(96);
+    let end = (marker_span.end_byte + 96).min(lowered.len());
+    let window = &lowered[start..end];
+    MARKDOWN_MUTABLE_MCP_SAFETY_MARKERS
+        .iter()
+        .any(|marker| window.contains(marker))
 }
 
 fn find_markdown_mutable_docker_image_relative_span(text: &str) -> Option<Span> {

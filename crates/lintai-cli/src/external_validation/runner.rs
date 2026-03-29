@@ -123,7 +123,11 @@ pub(crate) fn render_report(options: RenderReportOptions) -> Result<String, Stri
         ValidationPackage::Canonical => {
             let baseline = load_ledger(&options.workspace_root.join(ARCHIVED_WAVE1_LEDGER_PATH))?;
             let current = load_ledger(&options.workspace_root.join(LEDGER_PATH))?;
-            Ok(render_report_from_ledgers(&baseline, &current))
+            Ok(render_report_from_ledgers(
+                &options.workspace_root,
+                &baseline,
+                &current,
+            ))
         }
         ValidationPackage::ToolJsonExtension => {
             let shortlist = load_shortlist(&options.workspace_root, options.package)?;
@@ -157,7 +161,11 @@ pub(crate) fn render_report(options: RenderReportOptions) -> Result<String, Stri
         ValidationPackage::AiNativeDiscovery => {
             let shortlist = load_shortlist(&options.workspace_root, options.package)?;
             let current = load_ledger(&options.workspace_root.join(options.package.ledger_path()))?;
-            Ok(render_ai_native_discovery_report(&shortlist, &current))
+            Ok(render_ai_native_discovery_report(
+                &options.workspace_root,
+                &shortlist,
+                &current,
+            ))
         }
     }
 }

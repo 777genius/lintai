@@ -83,6 +83,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "skill-markdown-download-exec",
             "skill-markdown-path-traversal",
             "skill-mcp-config-mutable-launcher",
+            "skill-mcp-config-pipx-run-launcher",
             "skill-metadata-service-access",
             "skill-private-key-pem",
             "skill-tool-output-developer-instructions",

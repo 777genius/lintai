@@ -354,6 +354,7 @@ dependencies = [
  "lintai-api",
  "lintai-engine",
  "lintai-fix",
+ "lintai-parse",
  "lintai-policy",
  "lintai-runtime",
  "lintai-testing",

@@ -1,0 +1,16 @@
+id = "skill-mcp-config-pipx-run-launcher"
+kind = "malicious"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = ["SEC335"]
+
+[[expected_findings]]
+rule_code = "SEC347"
+tier = "preview"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

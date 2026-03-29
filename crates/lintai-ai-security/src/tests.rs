@@ -404,7 +404,7 @@ fn finds_markdown_mutable_mcp_launcher_cli_example() {
 #[test]
 fn finds_markdown_mutable_mcp_launcher_config_example() {
     let provider = AiSecurityProvider::default();
-    let content = "```json\n{\n  \"mcpServers\": {\n    \"demo\": {\n      \"command\": \"npx\"\n    }\n  }\n}\n```\n";
+    let content = "```json\n{\n  \"mcpServers\": {\n    \"demo\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"olostep-mcp\"]\n    }\n  }\n}\n```\n";
     let findings = ProviderHarness::run(
         Arc::new(provider),
         ArtifactKind::Skill,
@@ -422,6 +422,35 @@ fn finds_markdown_mutable_mcp_launcher_uvx_cli_example() {
     let findings = ProviderHarness::run(
         Arc::new(provider),
         ArtifactKind::Instructions,
+        SourceFormat::Markdown,
+        content,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC347"));
+}
+
+#[test]
+fn finds_markdown_mutable_mcp_launcher_pnpm_dlx_config_example() {
+    let provider = AiSecurityProvider::default();
+    let content = "```yaml\nmcpServers:\n  demo:\n    command: pnpm\n    args: [\"dlx\", \"demo-mcp\"]\n```\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Instructions,
+        SourceFormat::Markdown,
+        content,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC347"));
+}
+
+#[test]
+fn finds_markdown_mutable_mcp_launcher_pipx_run_config_example() {
+    let provider = AiSecurityProvider::default();
+    let content =
+        "```yaml\nModel Context Protocol\ncommand: pipx\nargs: [\"run\", \"demo-mcp\"]\n```\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::CursorPluginCommand,
         SourceFormat::Markdown,
         content,
     );
@@ -449,6 +478,63 @@ fn ignores_markdown_command_snippet_without_mcp_context() {
     let findings = ProviderHarness::run(
         Arc::new(provider),
         ArtifactKind::CursorPluginAgent,
+        SourceFormat::Markdown,
+        content,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC347"));
+}
+
+#[test]
+fn ignores_markdown_bare_npx_command_without_args() {
+    let provider = AiSecurityProvider::default();
+    let content = "```json\n{\n  \"mcpServers\": {\n    \"demo\": {\n      \"command\": \"npx\"\n    }\n  }\n}\n```\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Skill,
+        SourceFormat::Markdown,
+        content,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC347"));
+}
+
+#[test]
+fn ignores_markdown_yarn_command_without_dlx() {
+    let provider = AiSecurityProvider::default();
+    let content =
+        "```yaml\nmcpServers:\n  demo:\n    command: yarn\n    args: [\"demo-mcp\"]\n```\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Instructions,
+        SourceFormat::Markdown,
+        content,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC347"));
+}
+
+#[test]
+fn ignores_markdown_pipx_command_without_run() {
+    let provider = AiSecurityProvider::default();
+    let content = "```yaml\nMCP server\ncommand: pipx\nargs: [\"demo-mcp\"]\n```\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::CursorRules,
+        SourceFormat::Markdown,
+        content,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC347"));
+}
+
+#[test]
+fn ignores_markdown_mutable_mcp_launcher_when_safety_guidance_is_present() {
+    let provider = AiSecurityProvider::default();
+    let content = "Do not use `\"command\": \"npx\"`; replace with a pinned MCP launcher instead of this pattern.\n";
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Instructions,
         SourceFormat::Markdown,
         content,
     );

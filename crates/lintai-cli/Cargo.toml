@@ -14,6 +14,7 @@ lintai-runtime.workspace = true
 lintai-ai-security.workspace = true
 lintai-policy.workspace = true
 lintai-fix.workspace = true
+lintai-parse.workspace = true
 globset.workspace = true
 ignore.workspace = true
 serde.workspace = true

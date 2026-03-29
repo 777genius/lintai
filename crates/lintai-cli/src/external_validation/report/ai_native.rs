@@ -4,6 +4,7 @@ use std::collections::BTreeMap;
 use std::path::Path;
 
 pub(crate) fn render_ai_native_discovery_report(
+    workspace_root: &Path,
     shortlist: &RepoShortlist,
     ledger: &ExternalValidationLedger,
 ) -> String {
@@ -31,6 +32,7 @@ pub(crate) fn render_ai_native_discovery_report(
     let sec349_hits = rule_count(ledger, &["SEC349"]);
     let sec350_hits = rule_count(ledger, &["SEC350"]);
     let sec351_hits = rule_count(ledger, &["SEC351"]);
+    let sec347_subtypes = sec347_subtype_counts(workspace_root, ledger);
     let sec313_repos = repos_with_rule_hits(ledger, &["SEC313"], false);
     let sec335_repos = repos_with_rule_hits(ledger, &["SEC335"], false);
     let sec347_repos = repos_with_rule_hits(ledger, &["SEC347"], false);
@@ -199,6 +201,10 @@ pub(crate) fn render_ai_native_discovery_report(
         "- AI-native markdown preview hits by rule code: `SEC313`=`{}`, `SEC335`=`{}`, `SEC347`=`{}`, `SEC348`=`{}`, `SEC349`=`{}`, `SEC350`=`{}`, `SEC351`=`{}`\n",
         sec313_hits, sec335_hits, sec347_hits, sec348_hits, sec349_hits, sec350_hits, sec351_hits
     ));
+    output.push_str(&format!(
+        "- `SEC347` subtype repo hits: CLI-form=`{}`, config-snippet-form=`{}`\n",
+        sec347_subtypes.cli_form_repos, sec347_subtypes.config_snippet_repos
+    ));
     if coverage.plugin_root_command_paths == 0 {
         output.push_str(
             "- current markdown usefulness is still mainly skills / `CLAUDE.md`; plugin-root command docs remain a non-driving surface with `0` admitted covered paths\n\n",
@@ -207,6 +213,12 @@ pub(crate) fn render_ai_native_discovery_report(
         output.push_str(
             "- plugin-root command docs are now part of the covered markdown surface, but skill / `CLAUDE.md` evidence still dominates current usefulness\n\n",
         );
+    }
+    if sec347_hits > 0 {
+        output.push_str(&format!(
+            "- current `SEC347` usefulness is being driven mainly by {}\n\n",
+            sec347_primary_driver_label(sec347_subtypes)
+        ));
     }
 
     for (label, repos) in [

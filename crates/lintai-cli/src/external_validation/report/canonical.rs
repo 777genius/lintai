@@ -1,6 +1,9 @@
+use std::path::Path;
+
 use crate::external_validation::*;
 
 pub(crate) fn render_report_from_ledgers(
+    workspace_root: &Path,
     baseline: &ExternalValidationLedger,
     current: &ExternalValidationLedger,
 ) -> String {
@@ -29,6 +32,7 @@ pub(crate) fn render_report_from_ledgers(
     let sec349_hits = rule_count(current, &["SEC349"]);
     let sec350_hits = rule_count(current, &["SEC350"]);
     let sec351_hits = rule_count(current, &["SEC351"]);
+    let sec347_subtypes = sec347_subtype_counts(workspace_root, current);
     let sec348_repos = repos_with_rule_hits(current, &["SEC348"], false);
     let sec349_repos = repos_with_rule_hits(current, &["SEC349"], false);
     let sec350_repos = repos_with_rule_hits(current, &["SEC350"], false);
@@ -172,8 +176,16 @@ pub(crate) fn render_report_from_ledgers(
         sec335_hits
     ));
     output.push_str(&format!(
-        "  - `SEC347` mutable MCP launcher examples: `{}`\n",
+        "  - `SEC347` mutable MCP setup launcher examples: `{}`\n",
         sec347_hits
+    ));
+    output.push_str(&format!(
+        "    - CLI-form repo hits: `{}`\n",
+        sec347_subtypes.cli_form_repos
+    ));
+    output.push_str(&format!(
+        "    - config-snippet-form repo hits: `{}`\n",
+        sec347_subtypes.config_snippet_repos
     ));
     output.push_str(&format!(
         "  - `SEC348` mutable Docker registry-image examples: `{}`\n",
@@ -191,6 +203,12 @@ pub(crate) fn render_report_from_ledgers(
         "  - `SEC351` approval-bypass instruction examples: `{}`\n",
         sec351_hits
     ));
+    if sec347_hits > 0 {
+        output.push_str(&format!(
+            "  - current `SEC347` usefulness is being driven mainly by {}\n",
+            sec347_primary_driver_label(sec347_subtypes)
+        ));
+    }
     output.push_str(&format!(
         "- repos with `tool_descriptor_json`: `{}`\n",
         expanded_surface_counts.tool_descriptor_json
