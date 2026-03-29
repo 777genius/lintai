@@ -74,6 +74,7 @@ Ship `lintai` publicly with honest positioning: narrow, precision-first, offline
 ### Work
 
 - Freeze the current `v0.1` product contract and present the release as `public beta`.
+- Freeze distribution posture for the beta itself: ship through GitHub Release assets only and avoid implying that Homebrew, npm, or `cargo install` are part of the current release contract.
 - Tighten public docs around:
   - who it is for
   - what surfaces it supports
@@ -92,6 +93,7 @@ Ship `lintai` publicly with honest positioning: narrow, precision-first, offline
 - Do not widen the public API surface for beta.
 - Keep `lintai-api` as the only stable publishable contract crate.
 - Keep the current CLI contract, JSON schema, SARIF, stable key, and fix surface unchanged unless a narrow bug fix forces an adjustment.
+- Treat additional installer channels as post-beta follow-up work, not beta-ship blockers or implied commitments.
 
 ## Phase 4 — Structural Rule Expansion After Beta
 
@@ -145,6 +147,7 @@ Only after the beta loop is stable:
 - consider broader ecosystem surfaces
 - revisit adapter split and deferred architecture items in `ARCH_GAPS.md`
 - consider broader fix coverage once rule/fix safety evidence supports it
+- evaluate whether extra distribution channels are worth the maintenance surface after at least one public beta cycle proves the binary-release flow is sufficient
 
 ## Operating Rules
 

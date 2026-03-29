@@ -7,7 +7,7 @@ pub(crate) use load::load_machine_policy;
 pub(crate) use model::{PolicyMatch, PolicyOsArgs, PolicyStats};
 
 #[cfg(test)]
-pub(crate) use model::{PolicyAction, MACHINE_POLICY_SCHEMA_VERSION};
+pub(crate) use model::{MACHINE_POLICY_SCHEMA_VERSION, PolicyAction};
 
 #[cfg(test)]
 mod tests;

@@ -5,8 +5,8 @@ use std::path::Path;
 use lintai_engine::normalize_path_string;
 
 use crate::policy_os::model::{
-    EvaluatedPolicyRules, MachinePolicy, MachinePolicyFile, PolicyAction,
-    MACHINE_POLICY_SCHEMA_VERSION,
+    EvaluatedPolicyRules, MACHINE_POLICY_SCHEMA_VERSION, MachinePolicy, MachinePolicyFile,
+    PolicyAction,
 };
 
 pub(crate) fn load_machine_policy(path: &Path) -> Result<MachinePolicy, String> {

@@ -107,29 +107,22 @@ pub(crate) struct RawDetectionOverride {
 
 fn rules_schema(generator: &mut SchemaGenerator) -> Schema {
     json_schema!({
-        "oneOf": [
-            {
-                "type": "object",
-                "additionalProperties": generator.subschema_for::<Severity>()
-            },
-            {
-                "type": "object",
-                "description": "rule parameters are reserved but unsupported in this release"
-            }
-        ]
+        "type": "object",
+        "description": "maps rule codes to severities; rule parameter objects are reserved but unsupported in this release",
+        "additionalProperties": generator.subschema_for::<Severity>()
     })
 }
 
 fn reserved_object_schema(_generator: &mut SchemaGenerator) -> Schema {
     json_schema!({
-        "type": "object",
-        "description": "reserved but unsupported in this release"
+        "description": "reserved but unsupported in this release; omit this property",
+        "not": {}
     })
 }
 
 fn reserved_array_schema(_generator: &mut SchemaGenerator) -> Schema {
     json_schema!({
-        "type": "array",
-        "description": "reserved but unsupported in this release"
+        "description": "reserved but unsupported in this release; omit this property",
+        "not": {}
     })
 }

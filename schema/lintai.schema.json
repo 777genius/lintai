@@ -394,8 +394,8 @@
   "properties": {
     "cache": {
       "default": null,
-      "description": "reserved but unsupported in this release",
-      "type": "object"
+      "description": "reserved but unsupported in this release; omit this property",
+      "not": {}
     },
     "capabilities": {
       "anyOf": [
@@ -458,13 +458,13 @@
     },
     "disallowed": {
       "default": null,
-      "description": "reserved but unsupported in this release",
-      "type": "object"
+      "description": "reserved but unsupported in this release; omit this property",
+      "not": {}
     },
     "extends": {
       "default": null,
-      "description": "reserved but unsupported in this release",
-      "type": "object"
+      "description": "reserved but unsupported in this release; omit this property",
+      "not": {}
     },
     "files": {
       "anyOf": [
@@ -478,8 +478,8 @@
     },
     "fix": {
       "default": null,
-      "description": "reserved but unsupported in this release",
-      "type": "object"
+      "description": "reserved but unsupported in this release; omit this property",
+      "not": {}
     },
     "output": {
       "anyOf": [
@@ -502,8 +502,8 @@
     },
     "plugins": {
       "default": null,
-      "description": "reserved but unsupported in this release",
-      "type": "array"
+      "description": "reserved but unsupported in this release; omit this property",
+      "not": {}
     },
     "policy": {
       "anyOf": [
@@ -526,19 +526,12 @@
       ]
     },
     "rules": {
+      "additionalProperties": {
+        "$ref": "#/$defs/Severity"
+      },
       "default": null,
-      "oneOf": [
-        {
-          "additionalProperties": {
-            "$ref": "#/$defs/Severity"
-          },
-          "type": "object"
-        },
-        {
-          "description": "rule parameters are reserved but unsupported in this release",
-          "type": "object"
-        }
-      ]
+      "description": "maps rule codes to severities; rule parameter objects are reserved but unsupported in this release",
+      "type": "object"
     },
     "suppress": {
       "anyOf": [

@@ -36,6 +36,7 @@ The shipping workflow must publish exactly these asset classes:
 4. Verify the GitHub Release is marked as prerelease.
 5. Verify the uploaded body matches [releases/v0.1.0-beta.1.md](releases/v0.1.0-beta.1.md).
 6. Verify the release assets and `SHA256SUMS` are present.
+7. Verify no parallel installer or registry publication step was introduced for this beta workflow.
 
 ## Post-Shipping Truth Check
 
@@ -44,3 +45,4 @@ The public-facing release posture is valid only if:
 - the GitHub Release uses the checked-in release note
 - the published assets match the expected target list above
 - no docs imply Homebrew, npm, or `cargo install` support for the CLI in this beta
+- no workflow or release note implies an alternative installation channel beyond downloading the published GitHub Release assets

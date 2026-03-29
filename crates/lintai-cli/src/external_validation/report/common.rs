@@ -1,4 +1,4 @@
-use crate::external_validation::{template_map, ExternalValidationLedger, RepoShortlist};
+use crate::external_validation::{ExternalValidationLedger, RepoShortlist, template_map};
 use std::collections::{BTreeMap, BTreeSet};
 
 pub(crate) fn preview_signal_repos(

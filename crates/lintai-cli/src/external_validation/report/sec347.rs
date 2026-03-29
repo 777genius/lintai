@@ -5,7 +5,7 @@ use lintai_parse::parse;
 use std::fs;
 use std::path::Path;
 
-use crate::external_validation::{repo_dir_name, ExternalValidationLedger};
+use crate::external_validation::{ExternalValidationLedger, repo_dir_name};
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub(crate) struct Sec347SubtypeCounts {

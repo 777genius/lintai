@@ -6,53 +6,49 @@ use lintai_api::{RuleMetadata, RuleTier};
 
 pub(crate) fn render_security_rules_markdown() -> String {
     let entries = shipped_security_rule_catalog_entries();
-    let native_provider_id = entries
-        .first()
-        .map(|entry| entry.provider_id)
-        .unwrap_or("lintai-ai-security");
-    let policy_provider_id = entries
-        .iter()
-        .find(|entry| entry.scope == RuleScope::Workspace)
-        .map(|entry| entry.provider_id)
-        .unwrap_or("lintai-policy-mismatch");
+    let provider_ids = provider_ids(&entries);
     let mut lines = vec![
         "# Security Rules Catalog".to_owned(),
         String::new(),
         "> Generated file. Do not edit by hand.".to_owned(),
-        "> Source: `lintai-cli` shipped rule inventory aggregated from provider catalogs.".to_owned(),
+        "> Source: `lintai-cli` shipped rule inventory aggregated from provider catalogs."
+            .to_owned(),
         String::new(),
         "Canonical catalog for the shipped security rules currently exposed by:".to_owned(),
-        format!("- `{native_provider_id}`"),
-        format!("- `{policy_provider_id}`"),
+    ];
+    for provider_id in &provider_ids {
+        lines.push(format!("- {}", render_inline_code(provider_id)));
+    }
+    lines.extend([
         String::new(),
         "## Summary".to_owned(),
         String::new(),
         "| Code | Summary | Tier | Lifecycle | Severity | Scope | Surface | Detection | Remediation |".to_owned(),
         "|---|---|---|---|---|---|---|---|---|".to_owned(),
-    ];
+    ]);
 
     let mut summary_entries = entries.clone();
     summary_entries.sort_by_key(|entry| entry.metadata.code);
     for entry in summary_entries {
         lines.push(format!(
-            "| `{}` | {} | {} | `{}` | {} | `{}` | `{}` | `{}` | `{}` |",
-            entry.metadata.code,
-            entry.metadata.summary,
+            "| {} | {} | {} | {} | {} | {} | {} | {} | {} |",
+            render_inline_code(entry.metadata.code),
+            escape_markdown_table_cell(entry.metadata.summary),
             format_tier(entry.metadata.tier),
-            entry.lifecycle_state(),
+            render_inline_code(entry.lifecycle_state()),
             format_severity(entry.metadata),
-            format_scope(entry.scope),
-            format_surface(entry.surface),
-            format_detection(entry.detection_class),
-            format_remediation(entry.remediation_support),
+            render_inline_code(format_scope(entry.scope)),
+            render_inline_code(format_surface(entry.surface)),
+            render_inline_code(format_detection(entry.detection_class)),
+            render_inline_code(format_remediation(entry.remediation_support)),
         ));
     }
 
     lines.extend(render_top_priority_section());
 
-    for provider_id in [native_provider_id, policy_provider_id] {
+    for provider_id in provider_ids {
         lines.push(String::new());
-        lines.push(format!("## Provider: `{provider_id}`"));
+        lines.push(format!("## Provider: {}", render_inline_code(provider_id)));
 
         for entry in entries
             .iter()
@@ -61,40 +57,59 @@ pub(crate) fn render_security_rules_markdown() -> String {
         {
             lines.push(String::new());
             lines.push(format!(
-                "### `{}` — {}",
-                entry.metadata.code, entry.metadata.summary
+                "### {} — {}",
+                render_inline_code(entry.metadata.code),
+                escape_markdown_text(entry.metadata.summary)
             ));
             lines.push(String::new());
-            lines.push(format!("- Provider: `{}`", entry.provider_id));
-            lines.push(format!("- Scope: `{}`", format_scope(entry.scope)));
-            lines.push(format!("- Surface: `{}`", format_surface(entry.surface)));
             lines.push(format!(
-                "- Detection: `{}`",
-                format_detection(entry.detection_class)
+                "- Provider: {}",
+                render_inline_code(entry.provider_id)
             ));
             lines.push(format!(
-                "- Default Severity: `{}`",
-                format_severity(entry.metadata)
+                "- Scope: {}",
+                render_inline_code(format_scope(entry.scope))
             ));
             lines.push(format!(
-                "- Default Confidence: `{}`",
-                format_confidence(entry.metadata)
+                "- Surface: {}",
+                render_inline_code(format_surface(entry.surface))
             ));
-            lines.push(format!("- Tier: `{}`", format_tier(entry.metadata.tier)));
             lines.push(format!(
-                "- Remediation: `{}`",
-                format_remediation(entry.remediation_support)
+                "- Detection: {}",
+                render_inline_code(format_detection(entry.detection_class))
             ));
-            lines.push(format!("- Lifecycle: `{}`", entry.lifecycle_state()));
+            lines.push(format!(
+                "- Default Severity: {}",
+                render_inline_code(format_severity(entry.metadata))
+            ));
+            lines.push(format!(
+                "- Default Confidence: {}",
+                render_inline_code(format_confidence(entry.metadata))
+            ));
+            lines.push(format!(
+                "- Tier: {}",
+                render_inline_code(format_tier(entry.metadata.tier))
+            ));
+            lines.push(format!(
+                "- Remediation: {}",
+                render_inline_code(format_remediation(entry.remediation_support))
+            ));
+            lines.push(format!(
+                "- Lifecycle: {}",
+                render_inline_code(entry.lifecycle_state())
+            ));
             match entry.lifecycle {
                 CatalogRuleLifecycle::Preview {
                     blocker,
                     promotion_requirements,
                 } => {
-                    lines.push(format!("- Promotion Blocker: {}", blocker));
+                    lines.push(format!(
+                        "- Promotion Blocker: {}",
+                        escape_markdown_text(blocker)
+                    ));
                     lines.push(format!(
                         "- Promotion Requirements: {}",
-                        promotion_requirements
+                        escape_markdown_text(promotion_requirements)
                     ));
                 }
                 CatalogRuleLifecycle::Stable {
@@ -105,10 +120,13 @@ pub(crate) fn render_security_rules_markdown() -> String {
                     remediation_reviewed,
                     deterministic_signal_basis,
                 } => {
-                    lines.push(format!("- Graduation Rationale: {}", rationale));
+                    lines.push(format!(
+                        "- Graduation Rationale: {}",
+                        escape_markdown_text(rationale)
+                    ));
                     lines.push(format!(
                         "- Deterministic Signal Basis: {}",
-                        deterministic_signal_basis
+                        escape_markdown_text(deterministic_signal_basis)
                     ));
                     lines.push(format!(
                         "- Malicious Corpus: {}",
@@ -128,12 +146,25 @@ pub(crate) fn render_security_rules_markdown() -> String {
                     ));
                 }
             }
-            lines.push(format!("- Canonical Note: {}", entry.canonical_note()));
+            lines.push(format!(
+                "- Canonical Note: {}",
+                escape_markdown_text(entry.canonical_note())
+            ));
         }
     }
 
     lines.push(String::new());
     lines.join("\n")
+}
+
+fn provider_ids(entries: &[crate::shipped_rules::SecurityRuleCatalogEntry]) -> Vec<&'static str> {
+    let mut provider_ids = Vec::new();
+    for entry in entries {
+        if !provider_ids.contains(&entry.provider_id) {
+            provider_ids.push(entry.provider_id);
+        }
+    }
+    provider_ids
 }
 
 fn render_top_priority_section() -> Vec<String> {
@@ -226,7 +257,7 @@ fn format_confidence(metadata: RuleMetadata) -> &'static str {
 fn format_case_ids(case_ids: &[&str]) -> String {
     case_ids
         .iter()
-        .map(|case_id| format!("`{case_id}`"))
+        .map(|case_id| render_inline_code(case_id))
         .collect::<Vec<_>>()
         .join(", ")
 }
@@ -235,11 +266,50 @@ fn format_bool(value: bool) -> &'static str {
     if value { "true" } else { "false" }
 }
 
+fn render_inline_code(text: &str) -> String {
+    let normalized = normalize_line_breaks(text, " ");
+    let max_backtick_run = normalized
+        .chars()
+        .fold((0usize, 0usize), |(max_run, current_run), ch| {
+            if ch == '`' {
+                let next_run = current_run + 1;
+                (max_run.max(next_run), next_run)
+            } else {
+                (max_run, 0)
+            }
+        })
+        .0;
+    let fence = "`".repeat(max_backtick_run + 1);
+    if normalized.starts_with('`') || normalized.ends_with('`') {
+        format!("{fence} {normalized} {fence}")
+    } else {
+        format!("{fence}{normalized}{fence}")
+    }
+}
+
+fn escape_markdown_table_cell(text: &str) -> String {
+    escape_markdown_text(text).replace('|', "\\|")
+}
+
+fn escape_markdown_text(text: &str) -> String {
+    normalize_line_breaks(text, " ")
+        .replace('&', "&amp;")
+        .replace('<', "&lt;")
+        .replace('>', "&gt;")
+}
+
+fn normalize_line_breaks(text: &str, separator: &str) -> String {
+    text.replace("\r\n", "\n").replace(['\r', '\n'], separator)
+}
+
 #[cfg(test)]
 mod tests {
     use std::collections::BTreeSet;
 
-    use super::{CatalogDetectionClass, CatalogRuleLifecycle, render_security_rules_markdown};
+    use super::{
+        CatalogDetectionClass, CatalogRuleLifecycle, escape_markdown_table_cell,
+        escape_markdown_text, render_inline_code, render_security_rules_markdown,
+    };
     use crate::shipped_rules::{provider_sort_key, shipped_security_rule_catalog_entries};
     use lintai_ai_security::{NativeCatalogDetectionClass, native_rule_catalog_entries};
     use lintai_api::RuleTier;
@@ -328,5 +398,47 @@ mod tests {
                 }
             }
         }
+    }
+
+    #[test]
+    fn detail_sections_cover_every_provider_and_rule() {
+        let markdown = render_security_rules_markdown();
+        let mut provider_ids = BTreeSet::new();
+
+        for entry in shipped_security_rule_catalog_entries() {
+            provider_ids.insert(entry.provider_id);
+            assert!(
+                markdown.contains(&format!(
+                    "### {} — {}",
+                    render_inline_code(entry.metadata.code),
+                    escape_markdown_text(entry.metadata.summary)
+                )),
+                "missing detail section for {}",
+                entry.metadata.code
+            );
+        }
+
+        for provider_id in provider_ids {
+            assert!(
+                markdown.contains(&format!("## Provider: {}", render_inline_code(provider_id))),
+                "missing provider section for {provider_id}"
+            );
+        }
+    }
+
+    #[test]
+    fn markdown_escape_helpers_neutralize_tables_html_and_line_breaks() {
+        assert_eq!(
+            escape_markdown_table_cell("rule | <b>x</b>\nnext & more"),
+            "rule \\| &lt;b&gt;x&lt;/b&gt; next &amp; more"
+        );
+        assert_eq!(
+            escape_markdown_text("alpha\r\nbeta<gamma>"),
+            "alpha beta&lt;gamma&gt;"
+        );
+        assert_eq!(
+            render_inline_code("tick`value`\nnext"),
+            "``tick`value` next``"
+        );
     }
 }

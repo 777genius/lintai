@@ -197,11 +197,40 @@ fn public_beta_release_doc_exists_and_matches_current_posture() {
     assert!(text.contains("v0.1.0-beta.1"));
     assert!(text.contains("public beta"));
     assert!(text.contains("GitHub Releases with prebuilt binaries only"));
+    assert!(text.contains("release promise for this phase is intentionally limited"));
     assert!(text.contains("`lintai-api` remains the only stable publishable crate"));
     assert!(text.contains("EXTERNAL_VALIDATION_REPORT.md"));
     assert!(text.contains("does **not** promise Homebrew, npm, or `cargo install`"));
     assert!(text.contains("positioned as `1.0`"));
     assert!(text.contains("PUBLIC_BETA_SHIPPING_CHECKLIST.md"));
+}
+
+#[test]
+fn beta_roadmap_and_shipping_checklist_lock_release_only_distribution() {
+    let roadmap = include_str!("../../../docs/BETA_TO_1_0_ROADMAP.md");
+    let checklist = include_str!("../../../docs/PUBLIC_BETA_SHIPPING_CHECKLIST.md");
+    let index = include_str!("../../../docs/INDEX.md");
+
+    assert!(
+        roadmap.contains("ship through GitHub Release assets only"),
+        "BETA_TO_1_0_ROADMAP.md should treat GitHub Release assets as the explicit beta distribution posture"
+    );
+    assert!(
+        roadmap.contains("additional installer channels as post-beta follow-up work"),
+        "BETA_TO_1_0_ROADMAP.md should defer installer channels until after the beta loop"
+    );
+    assert!(
+        checklist.contains("no parallel installer or registry publication step"),
+        "PUBLIC_BETA_SHIPPING_CHECKLIST.md should forbid parallel installer publication in the beta workflow"
+    );
+    assert!(
+        checklist.contains("alternative installation channel beyond downloading the published GitHub Release assets"),
+        "PUBLIC_BETA_SHIPPING_CHECKLIST.md should keep the release-assets-only truth check explicit"
+    );
+    assert!(
+        index.contains("GitHub Release binaries only"),
+        "INDEX.md should summarize the release-only beta distribution decision"
+    );
 }
 
 #[test]

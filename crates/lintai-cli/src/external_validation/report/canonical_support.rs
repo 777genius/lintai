@@ -1,5 +1,5 @@
 use crate::external_validation::{
-    count_any_surface_presence, count_surface_presence, ExternalValidationLedger,
+    ExternalValidationLedger, count_any_surface_presence, count_surface_presence,
 };
 
 pub(crate) struct ExpandedSurfaceCounts {

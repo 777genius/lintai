@@ -28,6 +28,8 @@ fn config_schema_value() -> Value {
 mod tests {
     use std::path::PathBuf;
 
+    use serde_json::json;
+
     use super::config_schema_pretty;
 
     #[test]
@@ -62,6 +64,30 @@ mod tests {
             "\"disallowed\"",
         ] {
             assert!(schema.contains(needle), "missing {needle} in schema");
+        }
+    }
+
+    #[test]
+    fn schema_matches_runtime_contract_for_rules_and_reserved_sections() {
+        let schema: serde_json::Value = serde_json::from_str(&config_schema_pretty()).unwrap();
+        let properties = schema["properties"]
+            .as_object()
+            .expect("schema properties should be an object");
+
+        let rules = &properties["rules"];
+        assert_eq!(rules["type"], "object");
+        assert_eq!(rules["additionalProperties"]["$ref"], "#/$defs/Severity");
+        assert!(
+            rules.get("oneOf").is_none(),
+            "rules schema should not silently accept unsupported parameter objects"
+        );
+
+        for key in ["extends", "plugins", "cache", "fix", "disallowed"] {
+            assert_eq!(
+                properties[key]["not"],
+                json!({}),
+                "{key} should remain schema-invalid until runtime support lands"
+            );
         }
     }
 }
