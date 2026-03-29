@@ -58,7 +58,7 @@ Manual archive install remains the fallback.
 Download `lintai-installer.sh` from the `v0.1.0-beta.1` GitHub Release, or fetch it directly:
 
 ```bash
-curl -fsSLO https://github.com/<owner>/<repo>/releases/download/v0.1.0-beta.1/lintai-installer.sh
+curl -fsSLO https://github.com/777genius/lintai/releases/download/v0.1.0-beta.1/lintai-installer.sh
 sh ./lintai-installer.sh
 ```
 
@@ -68,7 +68,7 @@ It does not edit your shell profile; instead it prints the exact `PATH` follow-u
 ### Install via release script on Windows PowerShell
 
 ```powershell
-Invoke-WebRequest -Uri https://github.com/<owner>/<repo>/releases/download/v0.1.0-beta.1/lintai-installer.ps1 -OutFile .\lintai-installer.ps1
+Invoke-WebRequest -Uri https://github.com/777genius/lintai/releases/download/v0.1.0-beta.1/lintai-installer.ps1 -OutFile .\lintai-installer.ps1
 powershell -ExecutionPolicy Bypass -File .\lintai-installer.ps1
 ```
 

@@ -1,9 +1,8 @@
-use std::io::{Read, Write};
+use std::io::Write;
 use std::path::PathBuf;
-use std::process::{Child, ChildStderr, ChildStdout, Command, ExitStatus, Stdio};
+use std::process::{Command, Stdio};
 use std::sync::Arc;
-use std::thread;
-use std::time::{Duration, Instant};
+use std::time::Duration;
 
 use lintai_api::{
     ProviderError, ProviderScanResult, RuleMetadata, ScanContext, ScanScope, WorkspaceScanContext,
@@ -12,6 +11,14 @@ use serde::Serialize;
 
 use crate::backend::ProviderBackend;
 use crate::protocol::{RunnerPhase, RunnerRequest, RunnerResponse};
+
+mod child;
+mod io;
+mod wait;
+
+use child::{CompletedChild, PreparedChildRequest, RunningChild, terminate_child};
+use io::read_child_output;
+use wait::{ChildWaitPolicy, wait_for_exit};
 
 pub type ExecutableResolver = Arc<dyn Fn() -> Result<PathBuf, String> + Send + Sync>;
 
@@ -235,98 +242,4 @@ where
     fn timeout(&self) -> Duration {
         self.timeout
     }
-}
-
-fn read_optional_stderr(stderr: &mut Option<std::process::ChildStderr>) -> String {
-    let Some(stderr) = stderr.as_mut() else {
-        return String::new();
-    };
-    let mut output = String::new();
-    let _ = stderr.read_to_string(&mut output);
-    output.trim().to_owned()
-}
-
-struct RunningChild {
-    child: Child,
-    stdout: ChildStdout,
-    stderr: Option<ChildStderr>,
-}
-
-struct ChildOutput {
-    stdout: String,
-    stderr: String,
-}
-
-struct PreparedChildRequest {
-    executable: PathBuf,
-    request_json: Vec<u8>,
-}
-
-struct CompletedChild {
-    status: ExitStatus,
-    output: ChildOutput,
-}
-
-struct ChildWaitPolicy {
-    timeout: Duration,
-    poll_interval: Duration,
-}
-
-impl ChildWaitPolicy {
-    fn new(timeout: Duration) -> Self {
-        Self {
-            timeout,
-            poll_interval: Duration::from_millis(5),
-        }
-    }
-}
-
-fn read_stdout(stdout: &mut ChildStdout) -> String {
-    let mut output = String::new();
-    let _ = stdout.read_to_string(&mut output);
-    output
-}
-
-fn read_child_output(child: &mut RunningChild) -> ChildOutput {
-    ChildOutput {
-        stdout: read_stdout(&mut child.stdout),
-        stderr: read_optional_stderr(&mut child.stderr),
-    }
-}
-
-fn wait_for_exit(
-    child: &mut Child,
-    policy: ChildWaitPolicy,
-    provider_id: &str,
-) -> Result<ExitStatus, ProviderError> {
-    let started = Instant::now();
-    loop {
-        match child.try_wait() {
-            Ok(Some(status)) => return Ok(status),
-            Ok(None) => {
-                if started.elapsed() >= policy.timeout {
-                    terminate_child(child);
-                    return Err(ProviderError::timeout(
-                        provider_id,
-                        format!(
-                            "isolated provider child was terminated after exceeding timeout {:?}",
-                            policy.timeout
-                        ),
-                    ));
-                }
-                thread::sleep(policy.poll_interval);
-            }
-            Err(error) => {
-                return Err(ProviderError::new(
-                    provider_id,
-                    format!("provider runner wait failed: {error}"),
-                ));
-            }
-        }
-    }
-}
-
-fn terminate_child(child: &mut Child) {
-    let _ = child.kill();
-    let _ = child.wait();
 }
