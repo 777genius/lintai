@@ -1,4 +1,3 @@
-
 use std::path::Path;
 
 use lintai_api::ArtifactKind;

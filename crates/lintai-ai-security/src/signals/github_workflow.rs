@@ -2,7 +2,7 @@ use lintai_api::{ArtifactKind, ScanContext};
 
 use crate::helpers::yaml_semantics;
 
-use super::shared::*;
+use super::shared::github_workflow::*;
 use super::{GithubWorkflowSignals, SignalWorkBudget};
 
 impl GithubWorkflowSignals {

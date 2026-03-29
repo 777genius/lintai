@@ -1,4 +1,3 @@
-
 use lintai_api::{
     Artifact, ArtifactKind, DocumentSemantics, JsonSemantics, ParsedDocument, RegionKind,
     ScanContext, SourceFormat, Span, TextRegion,

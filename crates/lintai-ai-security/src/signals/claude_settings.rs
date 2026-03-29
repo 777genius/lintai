@@ -3,7 +3,9 @@ use lintai_api::{ArtifactKind, ScanContext};
 use crate::helpers::json_semantics;
 use crate::json_locator::JsonLocationMap;
 
-use super::shared::*;
+use super::shared::{
+    json::visit_claude_settings_value, markdown::is_fixture_like_claude_settings_path,
+};
 use super::{ClaudeSettingsSignals, SignalWorkBudget};
 
 impl ClaudeSettingsSignals {

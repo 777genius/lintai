@@ -4,7 +4,7 @@ use serde_json::Value;
 use crate::helpers::json_semantics;
 use crate::json_locator::{JsonLocationMap, JsonPathSegment};
 
-use super::shared::*;
+use super::shared::json::*;
 use super::{ServerJsonSignals, SignalWorkBudget};
 
 impl ServerJsonSignals {

@@ -1,6 +1,6 @@
 use lintai_api::{ArtifactKind, ScanContext};
 
-use super::shared::*;
+use super::shared::hook::collect_hook_line;
 use super::{HookSignals, SignalWorkBudget};
 
 impl HookSignals {

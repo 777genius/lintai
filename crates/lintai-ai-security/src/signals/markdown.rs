@@ -2,7 +2,7 @@ use lintai_api::{ArtifactKind, RegionKind, ScanContext, Span};
 
 use crate::helpers::span_text;
 
-use super::shared::*;
+use super::shared::{common::*, hook::has_base64_exec, markdown::*};
 use super::{MarkdownSignals, SignalWorkBudget};
 
 impl MarkdownSignals {

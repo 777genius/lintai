@@ -3,7 +3,7 @@ use lintai_api::{ArtifactKind, ScanContext};
 use crate::helpers::json_semantics;
 use crate::json_locator::JsonLocationMap;
 
-use super::shared::*;
+use super::shared::{json::visit_tool_json_value, markdown::is_fixture_like_tool_json_path};
 use super::{SignalWorkBudget, ToolJsonSignals};
 
 impl ToolJsonSignals {
