@@ -8,6 +8,21 @@
 
 Смотрите обновлённую секцию ниже: **## Актуализация (2026-03-29): top-6 правил для `skills markdown` (самые полезные)**.
 
+## Полевой апдейт (2026-03-30): что выносить на первый экран
+
+После реального прогона по `1545` файлам из official, community и stratified cohorts, лучший первый экран для сайта и docs сейчас такой:
+
+1. `SEC352` — unscoped `Bash` grant в AI-native frontmatter. Увер. `9/10`, Надёж. `9/10`
+2. `SEC347` — mutable MCP launcher в markdown setup docs. Увер. `9/10`, Надёж. `9/10`
+3. `SEC340` — mutable package launcher в committed Claude hook settings. Увер. `9/10`, Надёж. `9/10`
+4. `SEC329` — mutable package launcher в committed `mcp.json`. Увер. `9/10`, Надёж. `9/10`
+
+Почему именно так:
+
+- `SEC352` сейчас даёт лучший signal/noise на обычных community skills, а не только на offensive-security corpus.
+- `SEC347`, `SEC340` и `SEC329` остаются самыми defendable operational rules для MCP / Claude wiring.
+- Эвристические и domain-sensitive правила вроде `SEC102`, `SEC313`, `SEC335`, `SEC348`, `SEC349`, `SEC351` полезны, но хуже подходят для "первого впечатления" о качестве ruleset.
+
 ## Синтез 15 исследовательских агентов (март 2026)
 
 Был запущен **параллельный ресёрч** (15 подзадач) по направлениям: OWASP LLM Top 10 → статические аналоги; MITRE ATLAS mitigations → проверки в репо; официальный **MCP security** (в т.ч. spec 2025-11-25); **Cursor / VS Code / Claude Code** формы конфигов; **Agent Skills** spec; **ENISA ETL 2025**; **NIST AI 600-1**; **GitHub Copilot** custom instructions; **hooks / tasks / pre-commit**; **небезопасная сериализация весов** (HF/PyTorch guidance); **CVE** на MCP и AI-IDE; **JSON Schema** Tool (MCP); **RAG chunk** инварианты; **plugin.json** Cursor/Anthropic; **SBOM / ML-BOM**.
@@ -59,7 +74,7 @@
 
 Ниже — 6 правил с максимальной практической ценностью для `SKILL.md`, `AGENTS.md`, `.mdc`, `.github/instructions`, `.github/copilot-instructions.md`, `.cursor` и MCP-конфигов.
 
-### Топ-6 правил (приоритет сообщества)
+### Топ-6 правил (старший ручной приоритет до полевого прогона)
 
 | Ранг | Правило | Почему полезно | Уверенность | Надёжность |
 |---|---|---|---:|---:|
@@ -74,9 +89,9 @@
 
 - `SEC352` — AI-native markdown frontmatter grants unscoped Bash tool access
   - статус: `Preview`
-  - community usefulness сейчас: `7/10`
+  - community usefulness сейчас: `9.5/10`
   - надёжность: `9/10`
-  - почему важно: ловит слишком широкий shell grant в AI instruction frontmatter без расплывчатой prose-эвристики
+  - почему важно: после последнего external validation это самый сильный skills-markdown rule по signal/noise; ловит слишком широкий shell grant в AI instruction frontmatter без расплывчатой prose-эвристики
 - `SEC353` — GitHub Copilot instruction markdown exceeds the 4000-character guidance limit
   - статус: `Preview`
   - community usefulness сейчас: `8/10`
@@ -232,6 +247,11 @@
   - community usefulness сейчас: `9/10`
   - надёжность: `9/10`
   - почему важно: отсутствие `matcher` на `PreToolUse` / `PostToolUse` выглядит как безобидная мелочь, но quietly размывает scope hook policy; это точный и практичный team-config contract check
+- `SEC384` — Claude settings permissions allow bare `WebSearch`
+  - статус: `Preview`
+  - community usefulness сейчас: `9/10`
+  - надёжность: `9/10`
+  - почему важно: bare `WebSearch` — это очень широкий network-search grant в shared AI policy; rule exact, practical и уже grounded на живых repo configs
 
 ### Минимальный релизный набор (1-й проход)
 

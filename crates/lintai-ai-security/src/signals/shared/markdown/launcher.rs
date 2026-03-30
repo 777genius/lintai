@@ -19,6 +19,8 @@ pub(crate) const MARKDOWN_MUTABLE_MCP_SAFETY_MARKERS: &[&str] = &[
     "replace with",
     "instead of",
 ];
+pub(crate) const MARKDOWN_MUTABLE_MCP_EXCLUDED_PACKAGE_PREFIXES: &[&str] =
+    &["mcp-remote", "@modelcontextprotocol/inspector", "inspector"];
 
 pub(crate) fn find_mutable_mcp_launcher_relative_span(text: &str) -> Option<Span> {
     let lowered_region = text.to_ascii_lowercase();
@@ -31,6 +33,7 @@ pub(crate) fn find_mutable_mcp_launcher_relative_span(text: &str) -> Option<Span
         let lowered = line.to_ascii_lowercase();
         if lowered.contains("claude mcp add")
             && let Some(relative) = find_mutable_launcher_token_relative_span(line)
+            && !contains_excluded_mutable_mcp_package(line)
             && !has_markdown_mutable_mcp_safety_context(line, &relative)
         {
             return Some(Span::new(
@@ -51,6 +54,7 @@ pub(crate) fn find_mutable_mcp_launcher_relative_span(text: &str) -> Option<Span
         let lowered = text.to_ascii_lowercase();
         if lowered.contains("claude mcp add")
             && let Some(relative) = find_mutable_launcher_token_relative_span(text)
+            && !contains_excluded_mutable_mcp_package(text)
             && !has_markdown_mutable_mcp_safety_context(text, &relative)
         {
             return Some(relative);
@@ -134,8 +138,26 @@ pub(crate) fn contains_package_like_arg(args_window: &str, excluded_tokens: &[&s
             !token.is_empty()
                 && token.chars().any(|ch| ch.is_ascii_alphabetic())
                 && token != "args"
+                && !token.starts_with("http://")
+                && !token.starts_with("https://")
+                && !is_excluded_mutable_mcp_package_token(token)
                 && !excluded_tokens.iter().any(|excluded| token == *excluded)
         })
+}
+
+pub(crate) fn contains_excluded_mutable_mcp_package(text: &str) -> bool {
+    tokenize_markdown_shell_command(text)
+        .into_iter()
+        .map(|(token, _, _)| normalized_markdown_shell_token(token))
+        .any(is_excluded_mutable_mcp_package_token)
+}
+
+pub(crate) fn is_excluded_mutable_mcp_package_token(token: &str) -> bool {
+    let normalized =
+        token.trim_matches(|ch| matches!(ch, '"' | '\'' | '[' | ']' | ',' | ':' | '`'));
+    MARKDOWN_MUTABLE_MCP_EXCLUDED_PACKAGE_PREFIXES
+        .iter()
+        .any(|prefix| normalized.starts_with(prefix))
 }
 
 pub(crate) fn has_markdown_mutable_mcp_safety_context(text: &str, marker_span: &Span) -> bool {
@@ -146,4 +168,43 @@ pub(crate) fn has_markdown_mutable_mcp_safety_context(text: &str, marker_span: &
     MARKDOWN_MUTABLE_MCP_SAFETY_MARKERS
         .iter()
         .any(|marker| window.contains(marker))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{
+        contains_excluded_mutable_mcp_package, find_markdown_command_launcher_relative_span,
+        find_mutable_mcp_launcher_relative_span,
+    };
+
+    #[test]
+    fn ignores_remote_bridge_mcp_config_example() {
+        let content = "```json\n{\n  \"mcpServers\": {\n    \"my-server\": {\n      \"command\": \"npx\",\n      \"args\": [\"mcp-remote\", \"https://my-mcp.workers.dev/mcp\"]\n    }\n  }\n}\n```\n";
+
+        assert_eq!(find_markdown_command_launcher_relative_span(content), None);
+    }
+
+    #[test]
+    fn ignores_remote_bridge_cli_example() {
+        let content = "claude mcp add exa uvx mcp-remote https://mcp.exa.ai/mcp\n";
+
+        assert_eq!(find_mutable_mcp_launcher_relative_span(content), None);
+    }
+
+    #[test]
+    fn still_detects_real_mutable_mcp_server_package() {
+        let content = "```json\n{\n  \"mcpServers\": {\n    \"demo\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"olostep-mcp\"]\n    }\n  }\n}\n```\n";
+
+        assert!(find_markdown_command_launcher_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn recognizes_excluded_bridge_packages() {
+        assert!(contains_excluded_mutable_mcp_package(
+            "\"args\": [\"mcp-remote\", \"https://example.com/mcp\"]"
+        ));
+        assert!(contains_excluded_mutable_mcp_package(
+            "npx @modelcontextprotocol/inspector@latest"
+        ));
+    }
 }

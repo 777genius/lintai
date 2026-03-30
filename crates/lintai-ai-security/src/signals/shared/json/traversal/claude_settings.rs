@@ -43,7 +43,10 @@ fn find_external_absolute_hook_command_relative_span(command: &str) -> Option<li
     if HOME_PREFIXES.iter().any(|prefix| token.starts_with(prefix)) {
         return None;
     }
-    if TARGET_PREFIXES.iter().any(|prefix| token.starts_with(prefix)) {
+    if TARGET_PREFIXES
+        .iter()
+        .any(|prefix| token.starts_with(prefix))
+    {
         return Some(lintai_api::Span::new(0, token.len()));
     }
     None

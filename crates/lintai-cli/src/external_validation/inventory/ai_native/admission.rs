@@ -82,7 +82,13 @@ pub(crate) fn is_ai_native_docker_config_path(normalized_path: &str) -> bool {
 }
 
 pub(crate) fn is_ai_native_claude_settings_path(normalized_path: &str) -> bool {
-    normalized_path == ".claude/settings.json" || normalized_path == "claude/settings.json"
+    matches!(
+        normalized_path,
+        ".claude/settings.json"
+            | "claude/settings.json"
+            | ".claude/settings.local.json"
+            | "claude/settings.local.json"
+    )
 }
 
 pub(crate) fn gemini_surface_label(normalized_path: &str) -> &'static str {
@@ -94,5 +100,46 @@ pub(crate) fn gemini_surface_label(normalized_path: &str) -> &'static str {
         "vscode.settings.json"
     } else {
         "gemini-extension.json"
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::fs;
+    use std::path::PathBuf;
+    use std::sync::atomic::{AtomicU64, Ordering};
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    use super::admitted_ai_native_paths;
+
+    fn unique_temp_dir(prefix: &str) -> PathBuf {
+        static NEXT_TEMP_ID: AtomicU64 = AtomicU64::new(0);
+        let nanos = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let sequence = NEXT_TEMP_ID.fetch_add(1, Ordering::Relaxed);
+        std::env::temp_dir().join(format!(
+            "{prefix}-{}-{nanos}-{sequence}",
+            std::process::id()
+        ))
+    }
+
+    #[test]
+    fn admits_local_claude_settings_with_command_hooks() {
+        let temp_dir = unique_temp_dir("lintai-cli-ai-native");
+        let settings_dir = temp_dir.join(".claude");
+        fs::create_dir_all(&settings_dir).unwrap();
+        fs::write(
+            settings_dir.join("settings.local.json"),
+            r#"{"hooks":{"PreToolUse":[{"hooks":[{"type":"command","command":"./hook.sh"}]}]}}"#,
+        )
+        .unwrap();
+
+        let admitted = admitted_ai_native_paths(&temp_dir).unwrap();
+
+        fs::remove_dir_all(&temp_dir).unwrap();
+
+        assert_eq!(admitted, vec![".claude/settings.local.json".to_owned()]);
     }
 }

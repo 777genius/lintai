@@ -125,6 +125,21 @@ fn parses_json_semantics_for_claude_settings() {
 }
 
 #[test]
+fn parses_json_semantics_for_local_claude_settings() {
+    let parsed = parse_document(
+        &Artifact::new(
+            ".claude/settings.local.json",
+            ArtifactKind::ClaudeSettings,
+            SourceFormat::Json,
+        ),
+        r#"{"permissions":{"allow":["Bash(echo hi)"]}}"#,
+    )
+    .unwrap();
+
+    assert!(matches!(parsed.semantics, Some(DocumentSemantics::Json(_))));
+}
+
+#[test]
 fn parses_yaml_semantics_for_github_workflow() {
     let parsed = parse_document(
         &Artifact::new(

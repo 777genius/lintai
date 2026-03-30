@@ -79,11 +79,8 @@ pub(crate) fn inventory_surfaces(repo_root: &Path) -> Result<InventoryArtifact, 
         if normalized.contains(".claude/mcp/") && normalized.ends_with(".json") {
             surfaces.insert(".claude/mcp/*.json".to_owned());
         }
-        if normalized == ".claude/settings.json" {
-            surfaces.insert(".claude/settings.json".to_owned());
-        }
-        if normalized == "claude/settings.json" {
-            surfaces.insert("claude/settings.json".to_owned());
+        if is_claude_settings_path(&normalized) {
+            surfaces.insert(normalized.clone());
         }
         if is_mcp_config_path(&normalized) {
             if let Ok(text) = std::fs::read_to_string(entry.path()) {
@@ -200,4 +197,55 @@ fn is_expanded_mcp_client_variant_path(normalized_path: &str) -> bool {
         || normalized_path.ends_with("gemini.settings.json")
         || normalized_path.ends_with(".gemini/settings.json")
         || normalized_path.ends_with("vscode.settings.json")
+}
+
+fn is_claude_settings_path(normalized_path: &str) -> bool {
+    matches!(
+        normalized_path,
+        ".claude/settings.json"
+            | "claude/settings.json"
+            | ".claude/settings.local.json"
+            | "claude/settings.local.json"
+    )
+}
+
+#[cfg(test)]
+mod tests {
+    use std::fs;
+    use std::path::PathBuf;
+    use std::sync::atomic::{AtomicU64, Ordering};
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    use super::inventory_surfaces;
+
+    fn unique_temp_dir(prefix: &str) -> PathBuf {
+        static NEXT_TEMP_ID: AtomicU64 = AtomicU64::new(0);
+        let nanos = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let sequence = NEXT_TEMP_ID.fetch_add(1, Ordering::Relaxed);
+        std::env::temp_dir().join(format!(
+            "{prefix}-{}-{nanos}-{sequence}",
+            std::process::id()
+        ))
+    }
+
+    #[test]
+    fn inventories_local_claude_settings_surface() {
+        let temp_dir = unique_temp_dir("lintai-cli-surfaces");
+        let settings_dir = temp_dir.join(".claude");
+        fs::create_dir_all(&settings_dir).unwrap();
+        fs::write(settings_dir.join("settings.local.json"), "{}").unwrap();
+
+        let inventory = inventory_surfaces(&temp_dir).unwrap();
+
+        fs::remove_dir_all(&temp_dir).unwrap();
+
+        assert!(
+            inventory
+                .surfaces_present
+                .contains(&".claude/settings.local.json".to_owned())
+        );
+    }
 }

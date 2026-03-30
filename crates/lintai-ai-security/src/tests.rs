@@ -320,6 +320,42 @@ fn ignores_repo_local_reference_markdown_in_sibling_skill() {
 }
 
 #[test]
+fn ignores_repo_local_assets_directory_reference_in_sibling_skill() {
+    let temp_dir = unique_temp_dir("lintai-sec105-assets-dir-safe");
+    std::fs::create_dir_all(temp_dir.join("skills/seo-sitemap")).unwrap();
+    std::fs::create_dir_all(temp_dir.join("skills/seo-plan/assets")).unwrap();
+    std::fs::write(
+        temp_dir.join("skills/seo-sitemap/SKILL.md"),
+        "Load industry template from `../seo-plan/assets/` directory.\n",
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        "[presets]\nenable = [\"base\", \"preview\", \"skills\", \"guidance\"]\n",
+    )
+    .unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
+    let summary = EngineBuilder::default()
+        .with_config(workspace.engine_config.clone())
+        .with_suppressions(Arc::new(suppressions))
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .all(|finding| finding.rule_code != "SEC105")
+    );
+}
+
+#[test]
 fn finds_markdown_private_key_pem() {
     let provider = AiSecurityProvider::default();
     let content = "```pem\n-----BEGIN OPENSSH PRIVATE KEY-----\nsecret\n-----END OPENSSH PRIVATE KEY-----\n```\n";
@@ -349,6 +385,19 @@ fn ignores_markdown_public_key_pem() {
         ArtifactKind::Skill,
         SourceFormat::Markdown,
         "```pem\n-----BEGIN PUBLIC KEY-----\npublic\n-----END PUBLIC KEY-----\n```\n",
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC312"));
+}
+
+#[test]
+fn ignores_markdown_private_key_search_string_literal() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Skill,
+        SourceFormat::Markdown,
+        "```bash\nmemory search \"BEGIN RSA PRIVATE KEY\" --string\n```\n",
     );
 
     assert!(!findings.iter().any(|finding| finding.rule_code == "SEC312"));
@@ -3600,10 +3649,7 @@ fn finds_claude_settings_matcher_on_stop_event() {
         .find(|finding| finding.rule_code == "SEC382")
         .unwrap();
     let start = content.find("\"\"").unwrap() + 1;
-    assert_eq!(
-        finding.location.span,
-        lintai_api::Span::new(start, start)
-    );
+    assert_eq!(finding.location.span, lintai_api::Span::new(start, start));
 }
 
 #[test]

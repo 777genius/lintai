@@ -533,7 +533,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 28] = [
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
-            blocker: "Broad Bash grants in AI-native frontmatter can be intentional, so the first release stays least-privilege guidance-only.",
+            blocker: "External validation now shows strong usefulness, but promotion still requires the completed stable checklist and one broader cross-cohort precision pass.",
             promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
         },
         check: check_unscoped_bash_allowed_tools,

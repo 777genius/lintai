@@ -166,6 +166,26 @@ fn detects_v0_1_file_types() {
     assert_eq!(
         detector
             .detect(
+                Path::new("/tmp/project/.claude/settings.local.json"),
+                ".claude/settings.local.json"
+            )
+            .unwrap()
+            .kind,
+        ArtifactKind::ClaudeSettings
+    );
+    assert_eq!(
+        detector
+            .detect(
+                Path::new("/tmp/project/claude/settings.local.json"),
+                "claude/settings.local.json"
+            )
+            .unwrap()
+            .kind,
+        ArtifactKind::ClaudeSettings
+    );
+    assert_eq!(
+        detector
+            .detect(
                 Path::new("/tmp/project/.claude/mcp/chrome-devtools.json"),
                 ".claude/mcp/chrome-devtools.json"
             )

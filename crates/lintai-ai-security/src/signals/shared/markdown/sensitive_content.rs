@@ -1,6 +1,8 @@
 use lintai_api::Span;
 
-use super::super::common::{contains_ascii_case_insensitive, has_download_exec};
+use super::super::common::{
+    contains_ascii_case_insensitive, find_ascii_case_insensitive, has_download_exec,
+};
 
 pub(crate) const MARKDOWN_PRIVATE_KEY_MARKERS: &[&str] = &[
     "BEGIN RSA PRIVATE KEY",
@@ -24,8 +26,11 @@ pub(crate) fn find_private_key_relative_span(text: &str) -> Option<Span> {
     }
 
     MARKDOWN_PRIVATE_KEY_MARKERS.iter().find_map(|marker| {
-        text.find(marker)
-            .map(|start| Span::new(start, start + marker.len()))
+        let pem_marker = format!("-----{marker}-----");
+        find_ascii_case_insensitive(text, &pem_marker).map(|start| {
+            let marker_start = pem_marker.find(marker).unwrap_or_default();
+            Span::new(start + marker_start, start + marker_start + marker.len())
+        })
     })
 }
 

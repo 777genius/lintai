@@ -108,6 +108,26 @@ const CLAUDE_SETTINGS_RULES: &[DetectionRuleSpec] = &[
         artifact_kind: ArtifactKind::ClaudeSettings,
         format: SourceFormat::Json,
     },
+    DetectionRuleSpec {
+        priority: 1,
+        file_name: Some("settings.local.json"),
+        file_name_fragment: None,
+        suffix: None,
+        parent_dir: Some(".claude"),
+        path_fragment: None,
+        artifact_kind: ArtifactKind::ClaudeSettings,
+        format: SourceFormat::Json,
+    },
+    DetectionRuleSpec {
+        priority: 1,
+        file_name: Some("settings.local.json"),
+        file_name_fragment: None,
+        suffix: None,
+        parent_dir: Some("claude"),
+        path_fragment: None,
+        artifact_kind: ArtifactKind::ClaudeSettings,
+        format: SourceFormat::Json,
+    },
 ];
 
 const CURSOR_PLUGIN_MANIFEST_RULES: &[DetectionRuleSpec] = &[DetectionRuleSpec {

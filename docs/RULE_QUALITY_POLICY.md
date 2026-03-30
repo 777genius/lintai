@@ -39,6 +39,45 @@
   - remediation review state
 - Hard gates enforce это через tests; prose сама по себе не считается достаточной защитой от дрейфа quality bar.
 
+## Product presentation lanes
+
+Для сайта, beta narrative и "первого экрана" rules делим ещё и по product роли:
+
+- **Flagship rules**:
+  - правила с лучшим signal/noise на реальных community cohort
+  - подходят для homepage, demos, top-rules docs и first-run examples
+  - типичный профиль: structural, легко объясняются, remediation очевиден
+- **Domain-sensitive rules**:
+  - правила полезные, но сильно зависящие от offensive-security, research или teaching контекста
+  - не должны быть "лицом продукта", даже если часто матчятся
+  - их ценность показываем через precision notes и cohort-specific reports, а не через hero placement
+
+На текущем срезе это означает:
+
+- `Flagship`: `SEC352`, `SEC347`, `SEC340`, `SEC329`
+- `Domain-sensitive`: `SEC102`, `SEC313`, `SEC335`, `SEC348`, `SEC349`, `SEC351`
+
+## Flagship promotion track
+
+Для `Flagship` rules нужен ещё один промежуточный статус мышления, даже если в runtime lifecycle его пока нет:
+
+- **stable-candidate**:
+  - правило уже сильное продуктово и по precision
+  - правило ещё не переведено в `Stable`
+  - remaining work касается formal graduation package, а не raw detector usefulness
+
+Минимальные требования для такого статуса:
+
+- structural или иным образом детерминированный сигнал
+- linked malicious и benign corpus cases
+- regression coverage на positive и negative формы
+- внешний field signal вне "слишком чистого" official cohort
+- отсутствие текущего FP cluster в последнем ручном разборе
+
+Текущий основной stable-candidate:
+
+- `SEC352`
+
 ## Запрещённые подходы (anti-patterns)
 
 - “Хардкод текста” как основа правила: правила не должны опираться на одну-две фразы, которые легко перефразировать и которые дают FP.
