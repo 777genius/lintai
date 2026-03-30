@@ -171,6 +171,7 @@ Important merge rules:
 - `[[overrides]]` can change severities for matching files, but cannot change preset membership
 - category overrides do not implicitly activate rules outside the resolved preset set
 - explicit `[rules] SECxxx = "..."` can opt a specific rule in on purpose
+- shipped rule catalogs carry preset membership as source-of-truth metadata, so docs, engine resolution, and explainability stay aligned
 
 For teams evaluating the beta, a good default is:
 

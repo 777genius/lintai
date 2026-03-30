@@ -1,4 +1,5 @@
 use crate::output::model::ReportEnvelope;
+use crate::shipped_rules::shipped_rule_docs_url;
 
 use super::common::{changed_root_fragment, client_for_inventory_finding};
 
@@ -124,6 +125,9 @@ pub(super) fn append_inventory_sections(output: &mut String, report: &ReportEnve
                 ),
                 finding.location.normalized_path
             ));
+            if let Some(url) = shipped_rule_docs_url(&finding.rule_code) {
+                output.push_str(&format!("  docs: {url}\n"));
+            }
         }
     }
 }

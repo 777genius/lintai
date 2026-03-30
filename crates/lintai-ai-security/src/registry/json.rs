@@ -17,6 +17,7 @@ declare_rule! {
     pub struct McpShellWrapperRule {
         code: "SEC301",
         summary: "MCP configuration shells out through sh -c or bash -c",
+        doc_title: "MCP config: shell trampoline",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -28,6 +29,7 @@ declare_rule! {
     pub struct PlainHttpConfigRule {
         code: "SEC302",
         summary: "Configuration contains an insecure http:// endpoint",
+        doc_title: "Config: insecure HTTP endpoint",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -39,6 +41,7 @@ declare_rule! {
     pub struct McpCredentialEnvPassthroughRule {
         code: "SEC303",
         summary: "MCP configuration passes through credential environment variables",
+        doc_title: "MCP config: credential env passthrough",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -50,6 +53,7 @@ declare_rule! {
     pub struct TrustVerificationDisabledConfigRule {
         code: "SEC304",
         summary: "Configuration disables TLS or certificate verification",
+        doc_title: "Config: TLS verification disabled",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -61,6 +65,7 @@ declare_rule! {
     pub struct StaticAuthExposureConfigRule {
         code: "SEC305",
         summary: "Configuration embeds static authentication material in a connection or auth value",
+        doc_title: "Config: hardcoded auth material",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -72,6 +77,7 @@ declare_rule! {
     pub struct JsonHiddenInstructionRule {
         code: "SEC306",
         summary: "JSON configuration description contains override-style hidden instructions",
+        doc_title: "JSON config: hidden override instructions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -83,6 +89,7 @@ declare_rule! {
     pub struct JsonSensitiveEnvReferenceRule {
         code: "SEC307",
         summary: "Configuration forwards sensitive environment variable references",
+        doc_title: "Config: sensitive env forwarding",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -94,6 +101,7 @@ declare_rule! {
     pub struct JsonSuspiciousRemoteEndpointRule {
         code: "SEC308",
         summary: "Configuration points at a suspicious remote endpoint",
+        doc_title: "Config: suspicious remote endpoint",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -105,6 +113,7 @@ declare_rule! {
     pub struct JsonLiteralSecretRule {
         code: "SEC309",
         summary: "Configuration commits literal secret material in env, auth, or header values",
+        doc_title: "Config: literal secrets in config",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -116,6 +125,7 @@ declare_rule! {
     pub struct JsonDangerousEndpointHostRule {
         code: "SEC310",
         summary: "Configuration endpoint targets a metadata or private-network host literal",
+        doc_title: "Config: metadata or private-network host",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -127,6 +137,7 @@ declare_rule! {
     pub struct CursorPluginUnsafePathRule {
         code: "SEC311",
         summary: "Cursor plugin manifest contains an unsafe absolute or parent-traversing path",
+        doc_title: "Cursor plugin: unsafe path traversal",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -138,6 +149,7 @@ declare_rule! {
     pub struct McpMutableLauncherRule {
         code: "SEC329",
         summary: "MCP configuration launches tooling through a mutable package runner",
+        doc_title: "MCP config: mutable package runner",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -149,6 +161,7 @@ declare_rule! {
     pub struct McpInlineDownloadExecRule {
         code: "SEC330",
         summary: "MCP configuration command downloads remote content and pipes it into a shell",
+        doc_title: "MCP config: remote content piped to shell",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -160,6 +173,7 @@ declare_rule! {
     pub struct McpNetworkTlsBypassCommandRule {
         code: "SEC331",
         summary: "MCP configuration command disables TLS verification in a network-capable execution path",
+        doc_title: "MCP config: TLS verification disabled",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -171,6 +185,7 @@ declare_rule! {
     pub struct McpBroadEnvFileRule {
         code: "SEC336",
         summary: "Repo-local MCP client config loads a broad dotenv-style envFile",
+        doc_title: "MCP client config: broad envFile",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -182,6 +197,7 @@ declare_rule! {
     pub struct McpUnpinnedDockerImageRule {
         code: "SEC337",
         summary: "MCP configuration launches Docker with an image reference that is not digest-pinned",
+        doc_title: "MCP config: Docker image not digest-pinned",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -193,6 +209,7 @@ declare_rule! {
     pub struct McpSensitiveDockerMountRule {
         code: "SEC338",
         summary: "MCP configuration launches Docker with a bind mount of sensitive host material",
+        doc_title: "MCP config: sensitive host bind mount",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -204,6 +221,7 @@ declare_rule! {
     pub struct McpDangerousDockerFlagRule {
         code: "SEC339",
         summary: "MCP configuration launches Docker with a host-escape or privileged runtime flag",
+        doc_title: "MCP config: privileged Docker flags",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -215,6 +233,7 @@ declare_rule! {
     pub struct McpMutableDockerPullRule {
         code: "SEC346",
         summary: "MCP configuration forces Docker to refresh from a mutable registry source",
+        doc_title: "MCP config: mutable registry refresh",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -226,6 +245,7 @@ declare_rule! {
     pub struct PluginHookMutableLauncherRule {
         code: "SEC343",
         summary: "Plugin hook command uses a mutable package launcher",
+        doc_title: "Plugin hook: mutable package launcher",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -237,6 +257,7 @@ declare_rule! {
     pub struct PluginHookInlineDownloadExecRule {
         code: "SEC344",
         summary: "Plugin hook command downloads remote content and pipes it into a shell",
+        doc_title: "Plugin hook: remote content piped to shell",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -248,6 +269,7 @@ declare_rule! {
     pub struct PluginHookNetworkTlsBypassRule {
         code: "SEC345",
         summary: "Plugin hook command disables TLS verification in a network-capable execution path",
+        doc_title: "Plugin hook: TLS verification disabled",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -259,6 +281,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit shell-wrapper command structure in JSON config.",
@@ -278,6 +301,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: PlainHttpConfigRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit insecure http:// endpoints in configuration values.",
@@ -297,6 +321,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: McpCredentialEnvPassthroughRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit credential env passthrough by key inside configuration env maps.",
@@ -316,6 +341,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: TrustVerificationDisabledConfigRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit TLS or certificate verification disable flags in configuration.",
@@ -335,6 +361,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: StaticAuthExposureConfigRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches literal static auth material embedded directly in configuration values.",
@@ -354,6 +381,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: JsonHiddenInstructionRule::METADATA,
         surface: Surface::Json,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Depends on descriptive-field phrase heuristics in JSON text.",
@@ -369,6 +397,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: JsonSensitiveEnvReferenceRule::METADATA,
         surface: Surface::Json,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Depends on sensitive env-name heuristics in forwarded references.",
@@ -384,6 +413,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: JsonSuspiciousRemoteEndpointRule::METADATA,
         surface: Surface::Json,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Depends on suspicious host-marker heuristics for remote endpoints.",
@@ -399,6 +429,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: JsonLiteralSecretRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches literal secret material committed into env, header, or auth-like JSON fields.",
@@ -418,6 +449,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: JsonDangerousEndpointHostRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit metadata-service or private-network host literals in endpoint-like configuration values.",
@@ -437,6 +469,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: CursorPluginUnsafePathRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches absolute or parent-traversing paths in committed Cursor plugin manifest path fields.",
@@ -456,6 +489,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: McpMutableLauncherRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP config command launchers for mutable package-runner forms such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.",
@@ -475,6 +509,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: McpInlineDownloadExecRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP config command and args values for explicit curl|shell or wget|shell execution chains.",
@@ -494,6 +529,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: McpNetworkTlsBypassCommandRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP config command and args values for explicit TLS-bypass tokens in a network-capable execution context.",
@@ -513,6 +549,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: McpBroadEnvFileRule::METADATA,
         surface: Surface::Json,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Broad envFile loading is useful review signal, but whether it is materially risky still depends on repo-local review policy and env contents.",
@@ -528,6 +565,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: McpUnpinnedDockerImageRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP config Docker launch paths for image references that are not pinned by digest, including tag-only refs such as :latest or :1.2.3.",
@@ -547,6 +585,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: McpSensitiveDockerMountRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP config Docker launch paths for bind mounts of sensitive host sources such as docker.sock, SSH material, cloud credentials, and kubeconfig directories.",
@@ -566,6 +605,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: McpDangerousDockerFlagRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP config Docker launch paths for privileged or host-escape runtime flags such as --privileged, --network host, --pid host, and --ipc host.",
@@ -585,6 +625,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: McpMutableDockerPullRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP config Docker launch paths for explicit --pull always refresh policies that force a mutable registry fetch at runtime.",
@@ -604,6 +645,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: PluginHookMutableLauncherRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for mutable package launchers such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.",
@@ -623,6 +665,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: PluginHookInlineDownloadExecRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit curl|shell or wget|shell execution chains.",
@@ -642,6 +685,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
     NativeRuleSpec {
         metadata: PluginHookNetworkTlsBypassRule::METADATA,
         surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit TLS-bypass tokens in a network-capable execution context.",

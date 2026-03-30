@@ -19,6 +19,7 @@ mod policy_os;
 mod sample_repo_tests;
 mod security_rule_catalog;
 mod shipped_rules;
+mod site_catalog;
 
 pub fn run_cli() -> Result<ExitCode, String> {
     app::run()
@@ -30,4 +31,8 @@ pub fn run_external_validation_cli(args: impl Iterator<Item = String>) -> Result
 
 pub fn render_security_rules_catalog() -> String {
     security_rule_catalog::render_security_rules_markdown()
+}
+
+pub fn render_site_catalog_json() -> String {
+    site_catalog::render_site_catalog_json()
 }

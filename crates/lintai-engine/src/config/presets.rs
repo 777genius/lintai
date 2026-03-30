@@ -1,8 +1,8 @@
 use std::collections::{BTreeMap, BTreeSet};
 
-use lintai_ai_security::native_catalog::{NativeCatalogSurface, native_rule_catalog_entries};
-use lintai_api::{Category, RuleTier, Severity};
-use lintai_policy::catalog::policy_rule_catalog_entries;
+use lintai_ai_security::native_rule_catalog_entries;
+use lintai_api::{Category, Severity};
+use lintai_policy::policy_rule_catalog_entries;
 
 use super::ConfigError;
 
@@ -20,6 +20,7 @@ pub(crate) struct BuiltinPresetSpec {
 #[derive(Clone, Debug, Default)]
 pub(crate) struct ResolvedPresetPolicy {
     pub enabled_presets: Vec<String>,
+    pub known_rules: BTreeSet<String>,
     pub active_rules: BTreeSet<String>,
     pub category_overrides: BTreeMap<Category, Severity>,
     pub rule_overrides: BTreeMap<String, Severity>,
@@ -39,6 +40,7 @@ pub(crate) fn resolve_builtin_presets(
             .collect()
     });
     let mut resolved = ResolvedPresetPolicy::default();
+    resolved.known_rules = known_builtin_rules();
     let mut expanded = BTreeSet::new();
     let mut ordered = Vec::new();
 
@@ -81,11 +83,7 @@ fn builtin_preset_spec(name: &str) -> Result<BuiltinPresetSpec, ConfigError> {
         "base" => Ok(BuiltinPresetSpec {
             name: "base",
             extends: &[],
-            active_rules: all_rules()
-                .into_iter()
-                .filter(|(_, tier)| *tier == RuleTier::Stable)
-                .map(|(rule_code, _)| rule_code)
-                .collect(),
+            active_rules: rules_for_preset("base"),
             ..Default::default()
         }),
         "strict" => Ok(BuiltinPresetSpec {
@@ -97,60 +95,31 @@ fn builtin_preset_spec(name: &str) -> Result<BuiltinPresetSpec, ConfigError> {
         "compat" => Ok(BuiltinPresetSpec {
             name: "compat",
             extends: &[],
-            active_rules: policy_rule_catalog_entries()
-                .iter()
-                .map(|entry| entry.metadata.code.to_owned())
-                .collect(),
+            active_rules: rules_for_preset("compat"),
             ..Default::default()
         }),
         "preview" => Ok(BuiltinPresetSpec {
             name: "preview",
             extends: &[],
-            active_rules: all_rules()
-                .into_iter()
-                .filter(|(_, tier)| *tier == RuleTier::Preview)
-                .map(|(rule_code, _)| rule_code)
-                .collect(),
+            active_rules: rules_for_preset("preview"),
             ..Default::default()
         }),
         "skills" => Ok(BuiltinPresetSpec {
             name: "skills",
             extends: &[],
-            active_rules: native_rule_catalog_entries()
-                .into_iter()
-                .filter(|entry| entry.surface == NativeCatalogSurface::Markdown)
-                .map(|entry| entry.metadata.code.to_owned())
-                .collect(),
+            active_rules: rules_for_preset("skills"),
             ..Default::default()
         }),
         "mcp" => Ok(BuiltinPresetSpec {
             name: "mcp",
             extends: &[],
-            active_rules: native_rule_catalog_entries()
-                .into_iter()
-                .filter(|entry| {
-                    matches!(
-                        entry.surface,
-                        NativeCatalogSurface::Json
-                            | NativeCatalogSurface::ToolJson
-                            | NativeCatalogSurface::ServerJson
-                    )
-                })
-                .map(|entry| entry.metadata.code.to_owned())
-                .collect(),
+            active_rules: rules_for_preset("mcp"),
             ..Default::default()
         }),
         "claude" => Ok(BuiltinPresetSpec {
             name: "claude",
             extends: &[],
-            active_rules: native_rule_catalog_entries()
-                .into_iter()
-                .filter(|entry| {
-                    entry.surface == NativeCatalogSurface::ClaudeSettings
-                        && entry.metadata.tier == RuleTier::Stable
-                })
-                .map(|entry| entry.metadata.code.to_owned())
-                .collect(),
+            active_rules: rules_for_preset("claude"),
             ..Default::default()
         }),
         other => Err(ConfigError::new(format!(
@@ -159,15 +128,30 @@ fn builtin_preset_spec(name: &str) -> Result<BuiltinPresetSpec, ConfigError> {
     }
 }
 
-fn all_rules() -> Vec<(String, RuleTier)> {
-    let mut rules = native_rule_catalog_entries()
+fn rules_for_preset(preset: &str) -> BTreeSet<String> {
+    known_catalog_entries()
         .into_iter()
-        .map(|entry| (entry.metadata.code.to_owned(), entry.metadata.tier))
+        .filter(|(default_presets, _)| default_presets.contains(&preset))
+        .map(|(_, code)| code)
+        .collect()
+}
+
+fn known_builtin_rules() -> BTreeSet<String> {
+    known_catalog_entries()
+        .into_iter()
+        .map(|(_, code)| code)
+        .collect()
+}
+
+fn known_catalog_entries() -> Vec<(&'static [&'static str], String)> {
+    let mut entries = native_rule_catalog_entries()
+        .into_iter()
+        .map(|entry| (entry.default_presets, entry.metadata.code.to_owned()))
         .collect::<Vec<_>>();
-    rules.extend(
+    entries.extend(
         policy_rule_catalog_entries()
             .iter()
-            .map(|entry| (entry.metadata.code.to_owned(), entry.metadata.tier)),
+            .map(|entry| (entry.default_presets, entry.metadata.code.to_owned())),
     );
-    rules
+    entries
 }

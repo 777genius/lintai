@@ -1,6 +1,7 @@
 use std::path::Path;
 use std::process::ExitCode;
 
+use lintai_api::ArtifactKind;
 use lintai_engine::{ResolvedFileConfig, explain_file_config, load_workspace_config};
 
 use crate::args::parse_explain_config_args;
@@ -37,6 +38,14 @@ pub(crate) fn format_explain_config(
     output.push_str(&format!("detected_kind={:?}\n", resolved.detected_kind));
     output.push_str(&format!("detected_format={:?}\n", resolved.detected_format));
     output.push_str(&format!("enabled_presets={:?}\n", resolved.enabled_presets));
+    output.push_str(&format!(
+        "relevant_surface_presets={:?}\n",
+        relevant_surface_presets(resolved.detected_kind)
+    ));
+    output.push_str(&format!(
+        "active_rule_count={}\n",
+        resolved.active_rule_codes.len()
+    ));
     output.push_str(&format!("output={:?}\n", resolved.output_format));
     output.push_str(&format!("ci_fail_on={:?}\n", resolved.ci_policy.fail_on));
     output.push_str(&format!(
@@ -69,4 +78,26 @@ pub(crate) fn format_explain_config(
     ));
     output.push_str(&format!("rule_overrides={:?}\n", resolved.rule_overrides));
     output
+}
+
+fn relevant_surface_presets(detected_kind: Option<ArtifactKind>) -> Vec<&'static str> {
+    match detected_kind {
+        Some(
+            ArtifactKind::Skill
+            | ArtifactKind::Instructions
+            | ArtifactKind::CursorRules
+            | ArtifactKind::CursorPluginCommand
+            | ArtifactKind::CursorPluginAgent,
+        ) => vec!["skills"],
+        Some(
+            ArtifactKind::McpConfig
+            | ArtifactKind::ServerRegistryConfig
+            | ArtifactKind::ToolDescriptorJson
+            | ArtifactKind::CursorPluginManifest
+            | ArtifactKind::CursorPluginHooks,
+        ) => vec!["mcp"],
+        Some(ArtifactKind::ClaudeSettings) => vec!["claude"],
+        Some(ArtifactKind::GitHubWorkflow | ArtifactKind::CursorHookScript) | None => Vec::new(),
+        Some(_) => Vec::new(),
+    }
 }

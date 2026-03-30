@@ -97,6 +97,7 @@ pub struct EngineConfig {
     pub(crate) exclude_patterns: Vec<String>,
     pub(crate) exclude_matcher: GlobSet,
     pub(crate) enabled_presets: Vec<String>,
+    pub(crate) known_rule_codes: BTreeSet<String>,
     pub(crate) active_rule_codes: BTreeSet<String>,
     pub(crate) preset_category_overrides: BTreeMap<Category, Severity>,
     pub(crate) preset_rule_overrides: BTreeMap<String, Severity>,
@@ -116,6 +117,8 @@ pub struct ResolvedFileConfig {
     pub project_capabilities: Option<CapabilityProfile>,
     pub capability_conflict_mode: CapabilityConflictMode,
     pub enabled_presets: Vec<String>,
+    #[serde(skip_serializing)]
+    pub(crate) known_rule_codes: BTreeSet<String>,
     pub preset_category_overrides: BTreeMap<Category, Severity>,
     pub preset_rule_overrides: BTreeMap<String, Severity>,
     pub applied_overrides: Vec<Vec<String>>,
@@ -132,7 +135,8 @@ impl ResolvedFileConfig {
             return explicit_rule_override;
         }
 
-        if !self.active_rule_codes.contains(rule_code) {
+        if self.known_rule_codes.contains(rule_code) && !self.active_rule_codes.contains(rule_code)
+        {
             return Severity::Allow;
         }
 

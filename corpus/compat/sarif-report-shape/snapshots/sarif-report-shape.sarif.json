@@ -105,33 +105,36 @@
           "name": "lintai",
           "rules": [
             {
+              "helpUri": "https://777genius.github.io/lintai/rules/lintai-ai-security/sec202",
               "id": "SEC202",
               "properties": {
                 "cwe": [],
                 "tags": []
               },
               "shortDescription": {
-                "text": "SEC202"
+                "text": "Hook script: secret exfiltration"
               }
             },
             {
+              "helpUri": "https://777genius.github.io/lintai/rules/lintai-ai-security/sec203",
               "id": "SEC203",
               "properties": {
                 "cwe": [],
                 "tags": []
               },
               "shortDescription": {
-                "text": "SEC203"
+                "text": "Hook script: insecure HTTP secret send"
               }
             },
             {
+              "helpUri": "https://777genius.github.io/lintai/rules/lintai-ai-security/sec205",
               "id": "SEC205",
               "properties": {
                 "cwe": [],
                 "tags": []
               },
               "shortDescription": {
-                "text": "SEC205"
+                "text": "Hook script: hardcoded auth in network call"
               }
             }
           ]

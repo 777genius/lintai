@@ -11,6 +11,7 @@ declare_rule! {
     pub struct ServerJsonInsecureRemoteUrlRule {
         code: "SEC319",
         summary: "server.json remotes entry uses an insecure or non-public remote URL",
+        doc_title: "server.json remotes: insecure or private URL",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -22,6 +23,7 @@ declare_rule! {
     pub struct ServerJsonUnresolvedRemoteVariableRule {
         code: "SEC320",
         summary: "server.json remotes URL references an undefined template variable",
+        doc_title: "server.json remotes: undefined template variable",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -33,6 +35,7 @@ declare_rule! {
     pub struct ServerJsonLiteralAuthHeaderRule {
         code: "SEC321",
         summary: "server.json remotes header commits literal authentication material",
+        doc_title: "server.json remotes: literal auth header",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -44,6 +47,7 @@ declare_rule! {
     pub struct ServerJsonUnresolvedHeaderVariableRule {
         code: "SEC322",
         summary: "server.json remotes header value references an undefined template variable",
+        doc_title: "server.json remotes: undefined header variable",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -55,6 +59,7 @@ declare_rule! {
     pub struct ServerJsonAuthHeaderPolicyMismatchRule {
         code: "SEC323",
         summary: "server.json auth header carries material without an explicit secret flag",
+        doc_title: "server.json auth: missing explicit secret flag",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -66,6 +71,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: ServerJsonInsecureRemoteUrlRule::METADATA,
         surface: Surface::ServerJson,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks MCP registry remotes[] URLs for insecure HTTP and non-public host literals without inspecting local package transport URLs.",
@@ -85,6 +91,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: ServerJsonUnresolvedRemoteVariableRule::METADATA,
         surface: Surface::ServerJson,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks server.json remotes[] URL templates against variables defined on the same remote entry.",
@@ -104,6 +111,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: ServerJsonLiteralAuthHeaderRule::METADATA,
         surface: Surface::ServerJson,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks remotes[].headers[] auth-like values for literal bearer/basic material or literal API key style values.",
@@ -123,6 +131,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: ServerJsonUnresolvedHeaderVariableRule::METADATA,
         surface: Surface::ServerJson,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks auth-like remotes[].headers[].value placeholders against variables defined on the same header object.",
@@ -142,6 +151,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: ServerJsonAuthHeaderPolicyMismatchRule::METADATA,
         surface: Surface::ServerJson,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Secret policy expectations can vary across registry producers, so the first release keeps this as guidance-only.",

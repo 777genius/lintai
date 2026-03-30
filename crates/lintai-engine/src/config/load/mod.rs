@@ -142,6 +142,7 @@ pub fn load_workspace_config(target: &Path) -> Result<WorkspaceConfig, ConfigErr
             exclude_patterns,
             exclude_matcher,
             enabled_presets: preset_policy.enabled_presets,
+            known_rule_codes: preset_policy.known_rules,
             active_rule_codes: preset_policy.active_rules,
             preset_category_overrides: preset_policy.category_overrides,
             preset_rule_overrides: preset_policy.rule_overrides,

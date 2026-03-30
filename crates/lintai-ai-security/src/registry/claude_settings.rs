@@ -10,6 +10,7 @@ declare_rule! {
     pub struct ClaudeSettingsMutableLauncherRule {
         code: "SEC340",
         summary: "Claude settings command hook uses a mutable package launcher",
+        doc_title: "Claude hook: mutable package launcher",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -21,6 +22,7 @@ declare_rule! {
     pub struct ClaudeSettingsInlineDownloadExecRule {
         code: "SEC341",
         summary: "Claude settings command hook downloads remote content and pipes it into a shell",
+        doc_title: "Claude hook: remote content piped to shell",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -32,6 +34,7 @@ declare_rule! {
     pub struct ClaudeSettingsNetworkTlsBypassRule {
         code: "SEC342",
         summary: "Claude settings command hook disables TLS verification in a network-capable execution path",
+        doc_title: "Claude hook: TLS verification disabled",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -43,6 +46,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 3] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsMutableLauncherRule::METADATA,
         surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for mutable package launcher forms such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.",
@@ -62,6 +66,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 3] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInlineDownloadExecRule::METADATA,
         surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit curl|shell or wget|shell execution chains.",
@@ -81,6 +86,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 3] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsNetworkTlsBypassRule::METADATA,
         surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit TLS-bypass tokens in a network-capable execution context.",

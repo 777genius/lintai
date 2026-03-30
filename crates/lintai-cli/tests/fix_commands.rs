@@ -66,6 +66,9 @@ fn fix_preview_reports_planned_fixes_without_mutating_files() {
     let stdout = stdout_string(&output);
     assert!(stdout.contains("plan SEC101"));
     assert!(stdout.contains("plan SEC103"));
+    assert!(
+        stdout.contains("docs: https://777genius.github.io/lintai/rules/lintai-ai-security/sec101")
+    );
     assert!(stdout.contains("planned 2 fix(es)"));
     assert!(stdout.contains("surfaced 0 suggestion-bearing finding(s)"));
     assert!(stdout.contains("surfaced 0 suggestion edit(s)"));
@@ -85,6 +88,10 @@ fn fix_apply_removes_comment_spans_and_follow_up_scan_is_clean() {
     let apply_stdout = stdout_string(&apply_output);
     assert!(apply_stdout.contains("apply SEC101"));
     assert!(apply_stdout.contains("apply SEC103"));
+    assert!(
+        apply_stdout
+            .contains("docs: https://777genius.github.io/lintai/rules/lintai-ai-security/sec103")
+    );
     assert!(apply_stdout.contains("applied 2 fix(es)"));
 
     let updated = fs::read_to_string(&skill_path).unwrap();

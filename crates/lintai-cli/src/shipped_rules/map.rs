@@ -26,6 +26,7 @@ pub(super) fn native_catalog_entry(entry: NativeRuleCatalogEntry) -> SecurityRul
             NativeCatalogSurface::ServerJson => CatalogSurface::ServerJson,
             NativeCatalogSurface::GithubWorkflow => CatalogSurface::GithubWorkflow,
         },
+        default_presets: entry.default_presets,
         detection_class: match entry.detection_class {
             NativeCatalogDetectionClass::Structural => CatalogDetectionClass::Structural,
             NativeCatalogDetectionClass::Heuristic => CatalogDetectionClass::Heuristic,
@@ -71,6 +72,7 @@ pub(super) fn policy_catalog_entry(entry: PolicyRuleCatalogEntry) -> SecurityRul
         surface: match entry.surface {
             PolicySurface::Workspace => CatalogSurface::Workspace,
         },
+        default_presets: entry.default_presets,
         detection_class: match entry.detection_class {
             PolicyDetectionClass::Structural => CatalogDetectionClass::Structural,
         },

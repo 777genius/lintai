@@ -54,6 +54,7 @@ macro_rules! declare_rule {
         $vis:vis struct $name:ident {
             code: $code:literal,
             summary: $summary:literal,
+            $(doc_title: $doc_title:literal,)?
             category: $category:expr,
             default_severity: $severity:expr,
             default_confidence: $confidence:expr,
@@ -66,9 +67,10 @@ macro_rules! declare_rule {
 
         impl $name {
             pub const METADATA: $crate::RuleMetadata =
-                $crate::RuleMetadata::new(
+                $crate::RuleMetadata::new_with_doc_title(
                     $code,
                     $summary,
+                    $crate::declare_rule!(@doc_title $summary $(, $doc_title )?),
                     $category,
                     $severity,
                     $confidence,
@@ -86,6 +88,12 @@ macro_rules! declare_rule {
     (@tier) => {
         $crate::RuleTier::Stable
     };
+    (@doc_title $summary:expr, $doc_title:expr) => {
+        $doc_title
+    };
+    (@doc_title $summary:expr) => {
+        $summary
+    };
 }
 
 #[cfg(test)]
@@ -96,6 +104,7 @@ mod tests {
         struct SampleRule {
             code: "SEC999",
             summary: "sample",
+            doc_title: "Sample rule",
             category: Category::Security,
             default_severity: Severity::Warn,
             default_confidence: Confidence::High,
@@ -110,6 +119,7 @@ mod tests {
 
         assert_eq!(metadata.code, "SEC999");
         assert_eq!(metadata.summary, "sample");
+        assert_eq!(metadata.doc_title, "Sample rule");
         assert_eq!(metadata.category, Category::Security);
         assert_eq!(metadata.default_severity, Severity::Warn);
         assert_eq!(metadata.default_confidence, Confidence::High);

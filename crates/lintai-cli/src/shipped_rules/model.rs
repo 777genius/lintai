@@ -54,6 +54,7 @@ pub(crate) struct SecurityRuleCatalogEntry {
     pub(crate) provider_id: &'static str,
     pub(crate) scope: RuleScope,
     pub(crate) surface: CatalogSurface,
+    pub(crate) default_presets: &'static [&'static str],
     pub(crate) detection_class: CatalogDetectionClass,
     pub(crate) lifecycle: CatalogRuleLifecycle,
     pub(crate) remediation_support: CatalogRemediationSupport,
@@ -61,24 +62,7 @@ pub(crate) struct SecurityRuleCatalogEntry {
 
 impl SecurityRuleCatalogEntry {
     pub(crate) fn default_presets(self) -> Vec<&'static str> {
-        let mut presets = Vec::new();
-
-        match self.metadata.tier {
-            RuleTier::Stable => presets.push("base"),
-            RuleTier::Preview => presets.push("preview"),
-        }
-
-        match self.surface {
-            CatalogSurface::Markdown => presets.push("skills"),
-            CatalogSurface::Json | CatalogSurface::ToolJson | CatalogSurface::ServerJson => {
-                presets.push("mcp");
-            }
-            CatalogSurface::ClaudeSettings => presets.push("claude"),
-            CatalogSurface::Workspace => presets.push("compat"),
-            CatalogSurface::Hook | CatalogSurface::GithubWorkflow => {}
-        }
-
-        presets
+        self.default_presets.to_vec()
     }
 
     pub(crate) fn canonical_note(self) -> &'static str {

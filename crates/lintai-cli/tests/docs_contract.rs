@@ -47,6 +47,24 @@ fn index_links_security_rules_catalog() {
 }
 
 #[test]
+fn security_rules_snapshot_does_not_mix_in_strategy_appendix() {
+    let text = include_str!("../../../docs/SECURITY_RULES.md");
+
+    assert!(
+        !text.contains("## Top-Important AI Security Rules"),
+        "SECURITY_RULES.md should remain a generated reference snapshot without strategy appendix"
+    );
+    assert!(
+        !text.contains("SEC:ai-trusted-context-boundary"),
+        "SECURITY_RULES.md should not embed narrative rule-prioritization content"
+    );
+    assert!(
+        text.contains("## Builtin preset activation model"),
+        "SECURITY_RULES.md should keep the generated preset activation reference"
+    );
+}
+
+#[test]
 fn index_links_positioning_and_scope_doc() {
     let text = include_str!("../../../docs/INDEX.md");
 

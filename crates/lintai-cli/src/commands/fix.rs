@@ -8,6 +8,7 @@ use lintai_fix::{apply_planned_fixes, plan_fixes};
 
 use crate::args::parse_fix_args;
 use crate::execution::{build_engine, load_validated_workspace};
+use crate::shipped_rules::shipped_rule_docs_url;
 
 pub(crate) fn run(
     current_dir: &Path,
@@ -80,6 +81,7 @@ pub(crate) fn run(
                 finding.location.span.start_byte,
                 finding.location.span.end_byte
             ));
+            append_docs_link(&mut output, &finding.rule_code);
         }
 
         if plan.applicable.is_empty() {
@@ -107,6 +109,7 @@ pub(crate) fn run(
                             finding.location.span.start_byte,
                             finding.location.span.end_byte
                         ));
+                        append_docs_link(&mut output, &finding.rule_code);
                     }
                 }
                 Err(error) => {
@@ -130,6 +133,7 @@ pub(crate) fn run(
                     finding.location.span.start_byte,
                     finding.location.span.end_byte
                 ));
+                append_docs_link(&mut output, &finding.rule_code);
             }
         }
     }
@@ -149,6 +153,7 @@ pub(crate) fn run(
                     fix.span.end_byte,
                     suggestion.message
                 ));
+                append_docs_link(&mut output, &finding.rule_code);
                 output.push_str(&format!(
                     "  replacement: {}\n",
                     clipped_debug_string(&fix.replacement)
@@ -163,6 +168,7 @@ pub(crate) fn run(
                     finding.location.span.end_byte,
                     suggestion.message
                 ));
+                append_docs_link(&mut output, &finding.rule_code);
             }
         }
     }
@@ -215,4 +221,10 @@ fn clipped_debug_string(value: &str) -> String {
         value.to_owned()
     };
     format!("{clipped:?}")
+}
+
+fn append_docs_link(output: &mut String, rule_code: &str) {
+    if let Some(url) = shipped_rule_docs_url(rule_code) {
+        output.push_str(&format!("  docs: {url}\n"));
+    }
 }

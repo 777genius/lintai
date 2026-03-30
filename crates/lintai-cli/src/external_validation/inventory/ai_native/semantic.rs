@@ -1,5 +1,5 @@
 use super::super::super::*;
-use super::super::common::json_descendants;
+use super::super::common::json::json_descendants;
 
 pub(crate) fn contains_semantic_docker_mcp_launch(text: &str) -> bool {
     let Ok(value) = serde_json::from_str::<Value>(text) else {

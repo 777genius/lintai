@@ -5,7 +5,8 @@ use lintai_adapters::route_for_artifact_kind;
 use crate::normalize::normalize_path;
 
 use super::{
-    DEFAULT_EXCLUDE_PATTERNS, DEFAULT_INCLUDE_PATTERNS, EngineConfig, ResolvedFileConfig, WorkspaceConfig,
+    DEFAULT_EXCLUDE_PATTERNS, DEFAULT_INCLUDE_PATTERNS, EngineConfig, ResolvedFileConfig,
+    WorkspaceConfig,
 };
 
 impl Default for EngineConfig {
@@ -32,6 +33,7 @@ impl Default for EngineConfig {
             exclude_matcher: super::load::compile_globset(DEFAULT_EXCLUDE_PATTERNS)
                 .expect("default exclude"),
             enabled_presets: preset_policy.enabled_presets,
+            known_rule_codes: preset_policy.known_rules,
             active_rule_codes: preset_policy.active_rules,
             preset_category_overrides: preset_policy.category_overrides,
             preset_rule_overrides: preset_policy.rule_overrides,
@@ -134,6 +136,7 @@ impl EngineConfig {
             project_capabilities: self.capability_profile.clone(),
             capability_conflict_mode: self.capability_conflict_mode,
             enabled_presets: self.enabled_presets.clone(),
+            known_rule_codes: self.known_rule_codes.clone(),
             preset_category_overrides: self.preset_category_overrides.clone(),
             preset_rule_overrides: self.preset_rule_overrides.clone(),
             applied_overrides,

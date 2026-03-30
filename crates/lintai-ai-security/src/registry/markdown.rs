@@ -15,6 +15,7 @@ declare_rule! {
     pub struct HtmlCommentDirectiveRule {
         code: "SEC101",
         summary: "Hidden HTML comment contains dangerous agent instructions",
+        doc_title: "HTML comment: dangerous instructions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -26,6 +27,7 @@ declare_rule! {
     pub struct MarkdownDownloadExecRule {
         code: "SEC102",
         summary: "Markdown contains remote download-and-execute instruction outside code blocks",
+        doc_title: "Markdown: remote execution instruction",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -37,6 +39,7 @@ declare_rule! {
     pub struct HtmlCommentDownloadExecRule {
         code: "SEC103",
         summary: "Hidden HTML comment contains remote download-and-execute instruction",
+        doc_title: "HTML comment: remote execution instruction",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -48,6 +51,7 @@ declare_rule! {
     pub struct MarkdownBase64ExecRule {
         code: "SEC104",
         summary: "Markdown contains a base64-decoded executable payload outside code blocks",
+        doc_title: "Markdown: base64 executable payload",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -59,6 +63,7 @@ declare_rule! {
     pub struct MarkdownPathTraversalRule {
         code: "SEC105",
         summary: "Markdown instructions reference parent-directory traversal for file access",
+        doc_title: "Markdown: parent-directory file access",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -70,6 +75,7 @@ declare_rule! {
     pub struct MarkdownMetadataServiceAccessRule {
         code: "SEC335",
         summary: "AI-native markdown contains a direct cloud metadata-service access example",
+        doc_title: "AI markdown: metadata-service access",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -81,6 +87,7 @@ declare_rule! {
     pub struct MarkdownMutableMcpLauncherRule {
         code: "SEC347",
         summary: "AI-native markdown example launches MCP through a mutable package runner",
+        doc_title: "AI markdown: MCP via mutable package runner",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -92,6 +99,7 @@ declare_rule! {
     pub struct MarkdownMutableDockerImageRule {
         code: "SEC348",
         summary: "AI-native markdown Docker example uses a mutable registry image",
+        doc_title: "AI markdown: mutable Docker image",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -103,6 +111,7 @@ declare_rule! {
     pub struct MarkdownDockerHostEscapeRule {
         code: "SEC349",
         summary: "AI-native markdown Docker example uses a host-escape or privileged runtime pattern",
+        doc_title: "AI markdown: privileged Docker pattern",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -114,6 +123,7 @@ declare_rule! {
     pub struct UntrustedInstructionPromotionRule {
         code: "SEC350",
         summary: "Instruction markdown promotes untrusted external content to developer/system-level instructions",
+        doc_title: "Instruction markdown: untrusted content promoted",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -125,6 +135,7 @@ declare_rule! {
     pub struct ApprovalBypassInstructionRule {
         code: "SEC351",
         summary: "AI-native instruction explicitly disables user approval or confirmation",
+        doc_title: "AI instruction: disables user approval",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -136,6 +147,7 @@ declare_rule! {
     pub struct MarkdownPrivateKeyPemRule {
         code: "SEC312",
         summary: "Markdown contains committed private key material",
+        doc_title: "Markdown: private key material",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -147,6 +159,7 @@ declare_rule! {
     pub struct MarkdownFencedPipeShellRule {
         code: "SEC313",
         summary: "Fenced shell example pipes remote content directly into a shell",
+        doc_title: "Shell example: remote content piped to shell",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -158,6 +171,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Depends on suspicious phrase heuristics inside hidden HTML comments.",
@@ -171,6 +185,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
     NativeRuleSpec {
         metadata: MarkdownDownloadExecRule::METADATA,
         surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Depends on prose command heuristics outside code blocks.",
@@ -186,6 +201,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
     NativeRuleSpec {
         metadata: HtmlCommentDownloadExecRule::METADATA,
         surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Depends on hidden-comment command heuristics rather than a structural execution model.",
@@ -199,6 +215,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
     NativeRuleSpec {
         metadata: MarkdownBase64ExecRule::METADATA,
         surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Depends on prose base64-and-exec text heuristics.",
@@ -214,6 +231,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
     NativeRuleSpec {
         metadata: MarkdownPathTraversalRule::METADATA,
         surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Depends on prose path-traversal and access-verb heuristics.",
@@ -229,6 +247,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
     NativeRuleSpec {
         metadata: MarkdownMetadataServiceAccessRule::METADATA,
         surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Metadata-service examples can appear in legitimate security training content, so the first release stays guidance-only.",
@@ -244,6 +263,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
     NativeRuleSpec {
         metadata: MarkdownMutableMcpLauncherRule::METADATA,
         surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Mutable MCP launcher examples in markdown can be legitimate setup guidance, so the first release stays guidance-only.",
@@ -259,6 +279,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
     NativeRuleSpec {
         metadata: MarkdownMutableDockerImageRule::METADATA,
         surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Mutable Docker image examples in markdown can be legitimate setup guidance, so the first release stays guidance-only.",
@@ -274,6 +295,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
     NativeRuleSpec {
         metadata: MarkdownDockerHostEscapeRule::METADATA,
         surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Docker host-escape examples in markdown can be legitimate ops guidance, so the first release stays guidance-only.",
@@ -289,6 +311,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
     NativeRuleSpec {
         metadata: UntrustedInstructionPromotionRule::METADATA,
         surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Instruction-boundary promotion in markdown is prose-aware and needs external usefulness review before any stronger posture.",
@@ -304,6 +327,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
     NativeRuleSpec {
         metadata: ApprovalBypassInstructionRule::METADATA,
         surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Approval-bypass guidance in markdown is prose-aware and needs external usefulness review before any stronger posture.",
@@ -319,6 +343,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
     NativeRuleSpec {
         metadata: MarkdownPrivateKeyPemRule::METADATA,
         surface: Surface::Markdown,
+        default_presets: BASE_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit committed private-key PEM markers inside agent markdown surfaces.",
@@ -338,6 +363,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
     NativeRuleSpec {
         metadata: MarkdownFencedPipeShellRule::METADATA,
         surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Depends on fenced shell-example command heuristics and still needs broader external precision review.",

@@ -245,22 +245,6 @@
       },
       "type": "object"
     },
-    "RawPresets": {
-      "additionalProperties": false,
-      "properties": {
-        "enable": {
-          "default": null,
-          "items": {
-            "type": "string"
-          },
-          "type": [
-            "array",
-            "null"
-          ]
-        }
-      },
-      "type": "object"
-    },
     "RawOverride": {
       "additionalProperties": false,
       "properties": {
@@ -325,6 +309,22 @@
             }
           ],
           "default": null
+        }
+      },
+      "type": "object"
+    },
+    "RawPresets": {
+      "additionalProperties": false,
+      "properties": {
+        "enable": {
+          "default": null,
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
         }
       },
       "type": "object"
@@ -516,16 +516,6 @@
         "null"
       ]
     },
-    "presets": {
-      "anyOf": [
-        {
-          "$ref": "#/$defs/RawPresets"
-        },
-        {
-          "type": "null"
-        }
-      ]
-    },
     "plugins": {
       "default": null,
       "description": "reserved but unsupported in this release; omit this property",
@@ -535,6 +525,16 @@
       "anyOf": [
         {
           "$ref": "#/$defs/RawPolicy"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "presets": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RawPresets"
         },
         {
           "type": "null"

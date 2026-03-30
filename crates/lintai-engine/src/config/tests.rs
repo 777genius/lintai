@@ -192,7 +192,11 @@ enable = ["base", "unknown"]
     .unwrap();
 
     let error = load_workspace_config(&temp_dir).unwrap_err();
-    assert!(error.to_string().contains("unknown builtin preset `unknown`"));
+    assert!(
+        error
+            .to_string()
+            .contains("unknown builtin preset `unknown`")
+    );
 }
 
 #[test]

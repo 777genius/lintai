@@ -15,6 +15,7 @@ pub enum RuleTier {
 pub struct RuleMetadata {
     pub code: &'static str,
     pub summary: &'static str,
+    pub doc_title: &'static str,
     pub category: Category,
     pub default_severity: Severity,
     pub default_confidence: Confidence,
@@ -30,9 +31,30 @@ impl RuleMetadata {
         default_confidence: Confidence,
         tier: RuleTier,
     ) -> Self {
+        Self::new_with_doc_title(
+            code,
+            summary,
+            summary,
+            category,
+            default_severity,
+            default_confidence,
+            tier,
+        )
+    }
+
+    pub const fn new_with_doc_title(
+        code: &'static str,
+        summary: &'static str,
+        doc_title: &'static str,
+        category: Category,
+        default_severity: Severity,
+        default_confidence: Confidence,
+        tier: RuleTier,
+    ) -> Self {
         Self {
             code,
             summary,
+            doc_title,
             category,
             default_severity,
             default_confidence,

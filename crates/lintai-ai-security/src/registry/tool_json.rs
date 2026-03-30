@@ -12,6 +12,7 @@ declare_rule! {
     pub struct McpToolRequiredFieldsRule {
         code: "SEC314",
         summary: "MCP-style tool descriptor is missing required machine fields",
+        doc_title: "Tool descriptor: missing machine fields",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -23,6 +24,7 @@ declare_rule! {
     pub struct McpDuplicateToolNamesRule {
         code: "SEC315",
         summary: "MCP-style tool descriptor collection contains duplicate tool names",
+        doc_title: "Tool descriptors: duplicate tool names",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -34,6 +36,7 @@ declare_rule! {
     pub struct OpenAiStrictAdditionalPropertiesRule {
         code: "SEC316",
         summary: "OpenAI strict tool schema omits recursive additionalProperties: false",
+        doc_title: "OpenAI strict schema: missing additionalProperties false",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -45,6 +48,7 @@ declare_rule! {
     pub struct OpenAiStrictRequiredCoverageRule {
         code: "SEC317",
         summary: "OpenAI strict tool schema does not require every declared property",
+        doc_title: "OpenAI strict schema: properties not all required",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -56,6 +60,7 @@ declare_rule! {
     pub struct AnthropicStrictInputSchemaRule {
         code: "SEC318",
         summary: "Anthropic strict tool input schema omits additionalProperties: false",
+        doc_title: "Anthropic strict schema: missing additionalProperties false",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -67,6 +72,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: McpToolRequiredFieldsRule::METADATA,
         surface: Surface::ToolJson,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks unambiguous MCP-style tool descriptors for missing machine fields instead of relying on prose heuristics.",
@@ -86,6 +92,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: McpDuplicateToolNamesRule::METADATA,
         surface: Surface::ToolJson,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks structured MCP-style tool collections for duplicate names that can shadow one another.",
@@ -105,6 +112,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: OpenAiStrictAdditionalPropertiesRule::METADATA,
         surface: Surface::ToolJson,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks OpenAI strict tool schemas for recursive object locking with additionalProperties: false.",
@@ -124,6 +132,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: OpenAiStrictRequiredCoverageRule::METADATA,
         surface: Surface::ToolJson,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks OpenAI strict tool schemas for full required coverage of declared properties.",
@@ -143,6 +152,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: AnthropicStrictInputSchemaRule::METADATA,
         surface: Surface::ToolJson,
+        default_presets: BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks Anthropic strict tool input_schema objects for explicit additionalProperties: false.",

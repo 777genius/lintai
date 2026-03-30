@@ -3,6 +3,7 @@ use std::collections::BTreeSet;
 use lintai_api::Severity;
 
 use super::model::ReportEnvelope;
+use crate::shipped_rules::{shipped_rule_doc_title, shipped_rule_docs_url};
 
 pub(crate) fn format_sarif(report: &ReportEnvelope<'_>) -> Result<String, serde_json::Error> {
     let mut results = report
@@ -72,20 +73,27 @@ pub(crate) fn format_sarif(report: &ReportEnvelope<'_>) -> Result<String, serde_
             }
         })
     }));
-    let mut rules = report
-        .findings
-        .iter()
-        .map(|finding| {
-            serde_json::json!({
-                "id": finding.rule_code,
-                "shortDescription": { "text": finding.rule_code },
-                "properties": {
-                    "tags": finding.tags,
-                    "cwe": finding.cwe,
-                }
-            })
-        })
-        .collect::<Vec<_>>();
+    let mut rules = Vec::new();
+    let mut seen_finding_rules = BTreeSet::new();
+    for finding in report.findings {
+        if !seen_finding_rules.insert(finding.rule_code.clone()) {
+            continue;
+        }
+        let mut descriptor = serde_json::json!({
+            "id": finding.rule_code,
+            "shortDescription": {
+                "text": shipped_rule_doc_title(&finding.rule_code).unwrap_or(finding.rule_code.as_str())
+            },
+            "properties": {
+                "tags": finding.tags,
+                "cwe": finding.cwe,
+            }
+        });
+        if let Some(url) = shipped_rule_docs_url(&finding.rule_code) {
+            descriptor["helpUri"] = serde_json::Value::String(url);
+        }
+        rules.push(descriptor);
+    }
     let mut seen_policy_rules = BTreeSet::new();
     for policy_match in &report.policy_matches {
         if !seen_policy_rules.insert(policy_match.policy_id.clone()) {

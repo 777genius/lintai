@@ -130,10 +130,20 @@ fn sample_repos_render_all_real_output_formats() {
         let sarif = format_sarif(&report).unwrap();
         let sarif_value: serde_json::Value = serde_json::from_str(&sarif).unwrap();
         let results = sarif_value["runs"][0]["results"].as_array().unwrap();
+        let rules = sarif_value["runs"][0]["tool"]["driver"]["rules"]
+            .as_array()
+            .unwrap();
         assert_eq!(results.len(), summary.findings.len());
         for result in results {
             assert!(result.get("ruleId").is_some());
             assert!(result["partialFingerprints"].get("stableKey").is_some());
+        }
+        if !summary.findings.is_empty() {
+            assert!(
+                rules.iter().any(|rule| rule.get("helpUri").is_some()),
+                "sample repo {} sarif output should expose public docs links",
+                manifest.id
+            );
         }
     }
 }
@@ -215,6 +225,12 @@ fn fixable_comments_sample_repo_emits_fixable_comment_rules() {
         sample_repo_rule_codes(&summary),
         BTreeSet::from(["SEC101", "SEC103"])
     );
+    assert!(
+        text.contains("docs: https://777genius.github.io/lintai/rules/lintai-ai-security/sec101")
+    );
+    assert!(
+        text.contains("docs: https://777genius.github.io/lintai/rules/lintai-ai-security/sec103")
+    );
     for rule_code in ["SEC101", "SEC103"] {
         assert!(text.contains(rule_code));
         let finding = summary
@@ -240,6 +256,9 @@ fn cursor_plugin_sample_repo_emits_plugin_rule_set() {
         sample_repo_rule_codes(&summary),
         BTreeSet::from(["SEC201", "SEC202", "SEC203", "SEC205"])
     );
+    assert!(
+        text.contains("docs: https://777genius.github.io/lintai/rules/lintai-ai-security/sec202")
+    );
     for rule_code in ["SEC201", "SEC202", "SEC203", "SEC205"] {
         assert!(text.contains(rule_code));
         assert!(text.contains("  suggest:"));
@@ -261,11 +280,19 @@ fn policy_mismatch_sample_repo_emits_preview_and_stable_findings() {
     let case_dir = sample_repo("policy-mismatch");
     let manifest = load_case(&case_dir);
     let summary = harness().scan_case(&case_dir).unwrap();
+    let workspace = load_workspace(&manifest.entry_root(&case_dir));
+    let report = build_real_report(&summary, &workspace);
+    let text = format_text(&report);
 
     assert_case_summary(&manifest, &summary);
     assert_eq!(
         sample_repo_rule_codes(&summary),
         BTreeSet::from(["SEC201", "SEC401", "SEC402", "SEC403"])
+    );
+    assert!(
+        text.contains(
+            "docs: https://777genius.github.io/lintai/rules/lintai-policy-mismatch/sec401"
+        )
     );
 
     for rule_code in ["SEC401", "SEC402", "SEC403"] {
@@ -302,6 +329,8 @@ fn policy_mismatch_explain_config_is_informative() {
     assert!(formatted.contains("detected_kind=Some(CursorPluginAgent)"));
     assert!(formatted.contains("detected_format=Some(Markdown)"));
     assert!(formatted.contains("enabled_presets=[\"base\", \"compat\"]"));
+    assert!(formatted.contains("relevant_surface_presets=[\"skills\"]"));
+    assert!(formatted.contains("active_rule_count="));
     assert!(formatted.contains("capability_conflict_mode=Deny"));
     assert!(formatted.contains("project_capabilities=Some("));
     assert!(formatted.contains("applied_overrides=[[\"custom/**/*.md\"]]"));

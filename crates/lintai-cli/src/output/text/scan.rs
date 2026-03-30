@@ -1,4 +1,5 @@
 use crate::output::model::ReportEnvelope;
+use crate::shipped_rules::shipped_rule_docs_url;
 
 use super::common::{
     diagnostic_label, error_kind_label, provider_execution_phase_label, severity_label,
@@ -26,6 +27,9 @@ pub(super) fn append_scan_results(output: &mut String, report: &ReportEnvelope<'
             finding.location.span.end_byte,
             finding.message
         ));
+        if let Some(url) = shipped_rule_docs_url(&finding.rule_code) {
+            output.push_str(&format!("  docs: {url}\n"));
+        }
         for suggestion in &finding.suggestions {
             output.push_str(&format!("  suggest: {}\n", suggestion.message));
         }

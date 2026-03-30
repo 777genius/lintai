@@ -5,7 +5,10 @@ mod map;
 #[path = "shipped_rules/model.rs"]
 mod model;
 
-pub(crate) use index::{provider_sort_key, shipped_rule_tiers};
+pub(crate) use index::{
+    canonical_rule_path, provider_slug, provider_sort_key, rule_slug, shipped_rule_doc_title,
+    shipped_rule_docs_url, shipped_rule_tiers,
+};
 pub(crate) use model::{
     CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleLifecycle, CatalogSurface,
     RuleScope, SecurityRuleCatalogEntry,

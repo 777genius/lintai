@@ -10,6 +10,7 @@ declare_rule! {
     pub struct HookDownloadExecRule {
         code: "SEC201",
         summary: "Hook script downloads remote code and executes it",
+        doc_title: "Hook script: remote code execution",
         category: Category::Security,
         default_severity: Severity::Deny,
         default_confidence: Confidence::High,
@@ -21,6 +22,7 @@ declare_rule! {
     pub struct HookSecretExfilRule {
         code: "SEC202",
         summary: "Hook script appears to exfiltrate secrets through a network call",
+        doc_title: "Hook script: secret exfiltration",
         category: Category::Security,
         default_severity: Severity::Deny,
         default_confidence: Confidence::High,
@@ -32,6 +34,7 @@ declare_rule! {
     pub struct HookPlainHttpExfilRule {
         code: "SEC203",
         summary: "Hook script sends secret material to an insecure http:// endpoint",
+        doc_title: "Hook script: insecure HTTP secret send",
         category: Category::Security,
         default_severity: Severity::Deny,
         default_confidence: Confidence::High,
@@ -43,6 +46,7 @@ declare_rule! {
     pub struct HookTlsBypassRule {
         code: "SEC204",
         summary: "Hook script disables TLS or certificate verification for a network call",
+        doc_title: "Hook script: TLS verification disabled",
         category: Category::Security,
         default_severity: Severity::Deny,
         default_confidence: Confidence::High,
@@ -54,6 +58,7 @@ declare_rule! {
     pub struct HookStaticAuthExposureRule {
         code: "SEC205",
         summary: "Hook script embeds static authentication material in a network call",
+        doc_title: "Hook script: hardcoded auth in network call",
         category: Category::Security,
         default_severity: Severity::Deny,
         default_confidence: Confidence::High,
@@ -65,6 +70,7 @@ declare_rule! {
     pub struct HookBase64ExecRule {
         code: "SEC206",
         summary: "Hook script decodes a base64 payload and executes it",
+        doc_title: "Hook script: base64 payload execution",
         category: Category::Security,
         default_severity: Severity::Deny,
         default_confidence: Confidence::High,
@@ -76,6 +82,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 6] = [
     NativeRuleSpec {
         metadata: HookDownloadExecRule::METADATA,
         surface: Surface::Hook,
+        default_presets: BASE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit remote download-and-execute behavior in hook shell lines, not prose text.",
@@ -95,6 +102,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 6] = [
     NativeRuleSpec {
         metadata: HookSecretExfilRule::METADATA,
         surface: Surface::Hook,
+        default_presets: BASE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches secret-bearing network exfil behavior in executable hook lines.",
@@ -114,6 +122,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 6] = [
     NativeRuleSpec {
         metadata: HookPlainHttpExfilRule::METADATA,
         surface: Surface::Hook,
+        default_presets: BASE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches insecure HTTP transport on a secret-bearing hook exfil path.",
@@ -133,6 +142,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 6] = [
     NativeRuleSpec {
         metadata: HookTlsBypassRule::METADATA,
         surface: Surface::Hook,
+        default_presets: BASE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit TLS verification bypass tokens in executable hook network context.",
@@ -152,6 +162,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 6] = [
     NativeRuleSpec {
         metadata: HookStaticAuthExposureRule::METADATA,
         surface: Surface::Hook,
+        default_presets: BASE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches literal static auth material in hook URLs or authorization headers.",
@@ -171,6 +182,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 6] = [
     NativeRuleSpec {
         metadata: HookBase64ExecRule::METADATA,
         surface: Surface::Hook,
+        default_presets: BASE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit base64 decode-and-execute behavior in executable hook lines.",
