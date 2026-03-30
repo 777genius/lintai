@@ -273,6 +273,8 @@ impl ClaudeSettingsSignals {
         );
         signals.git_commit_permission_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git commit:*)");
+        signals.git_stash_permission_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git stash:*)");
         signals.glob_wildcard_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Glob(*)");
         signals.grep_wildcard_span =
