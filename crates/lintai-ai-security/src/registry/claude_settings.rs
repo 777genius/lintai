@@ -5,11 +5,12 @@ use crate::claude_settings_rules::{
     check_claude_settings_bash_wildcard, check_claude_settings_bypass_permissions,
     check_claude_settings_dangerous_http_hook_host, check_claude_settings_edit_wildcard,
     check_claude_settings_external_absolute_hook_command, check_claude_settings_glob_wildcard,
-    check_claude_settings_home_directory_hook_command, check_claude_settings_inline_download_exec,
-    check_claude_settings_insecure_http_hook_url, check_claude_settings_missing_schema,
-    check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
-    check_claude_settings_read_wildcard, check_claude_settings_webfetch_wildcard,
-    check_claude_settings_websearch_wildcard, check_claude_settings_write_wildcard,
+    check_claude_settings_grep_wildcard, check_claude_settings_home_directory_hook_command,
+    check_claude_settings_inline_download_exec, check_claude_settings_insecure_http_hook_url,
+    check_claude_settings_missing_schema, check_claude_settings_mutable_launcher,
+    check_claude_settings_network_tls_bypass, check_claude_settings_read_wildcard,
+    check_claude_settings_webfetch_wildcard, check_claude_settings_websearch_wildcard,
+    check_claude_settings_write_wildcard,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
 
@@ -66,6 +67,18 @@ declare_rule! {
         code: "SEC375",
         summary: "Claude settings permissions allow `Glob(*)` in a shared committed config",
         doc_title: "Claude settings: wildcard Glob permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGrepWildcardRule {
+        code: "SEC376",
+        summary: "Claude settings permissions allow `Grep(*)` in a shared committed config",
+        doc_title: "Claude settings: wildcard Grep permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -205,7 +218,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 16] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 17] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsWriteWildcardRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -283,6 +296,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 16] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace `Glob(*)` with a narrower allowlist of reviewed glob patterns or remove broad file-discovery access from the shared Claude settings file",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGrepWildcardRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Wildcard Grep grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_grep_wildcard,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `Grep(*)` with a narrower allowlist of reviewed grep patterns or remove broad content-search access from the shared Claude settings file",
         ),
         suggestion_fix: None,
     },

@@ -162,6 +162,7 @@ mod tests {
             Some("CLAUDE-WEBSEARCH-WILDCARD")
         );
         assert_eq!(shipped_rule_alias("SEC375"), Some("CLAUDE-GLOB-WILDCARD"));
+        assert_eq!(shipped_rule_alias("SEC376"), Some("CLAUDE-GREP-WILDCARD"));
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

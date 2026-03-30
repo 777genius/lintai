@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Grep(todo:)",
+      "Read(*)"
+    ]
+  }
+}

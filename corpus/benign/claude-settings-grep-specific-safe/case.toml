@@ -1,0 +1,3 @@
+id = "claude-settings-grep-specific-safe"
+kind = "benign"
+entry = "repo/.claude/settings.json"

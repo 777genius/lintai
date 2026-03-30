@@ -150,6 +150,8 @@ impl ClaudeSettingsSignals {
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "WebSearch(*)");
         signals.glob_wildcard_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Glob(*)");
+        signals.grep_wildcard_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Grep(*)");
         let mut path = Vec::new();
         visit_claude_settings_value(
             value,

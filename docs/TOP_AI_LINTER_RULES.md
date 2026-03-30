@@ -192,6 +192,11 @@
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9/10`
   - почему важно: wildcard file-discovery grant в shared AI config слишком широко раскрывает workspace surface; сообществу это легко объяснить как exact least-privilege smell без prose-эвристик
+- `SEC376` — Claude settings permissions allow `Grep(*)` in a shared committed config
+  - статус: `Preview`
+  - community usefulness сейчас: `8.5/10`
+  - надёжность: `9/10`
+  - почему важно: wildcard content-search grant в shared AI config даёт слишком широкую search surface; это хорошо воспринимается сообществом как точный least-privilege contract check
 
 ### Минимальный релизный набор (1-й проход)
 

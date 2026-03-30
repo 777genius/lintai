@@ -30,6 +30,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "claude-settings-edit-wildcard-fixture-safe",
             "claude-settings-glob-specific-safe",
             "claude-settings-glob-wildcard-fixture-safe",
+            "claude-settings-grep-specific-safe",
+            "claude-settings-grep-wildcard-fixture-safe",
             "claude-settings-http-hook-fixture-safe",
             "claude-settings-http-hook-loopback-safe",
             "claude-settings-http-hook-safe",

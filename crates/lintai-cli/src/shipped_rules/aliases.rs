@@ -83,6 +83,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC373" => "CLAUDE-EDIT-WILDCARD",
         "SEC374" => "CLAUDE-WEBSEARCH-WILDCARD",
         "SEC375" => "CLAUDE-GLOB-WILDCARD",
+        "SEC376" => "CLAUDE-GREP-WILDCARD",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",
