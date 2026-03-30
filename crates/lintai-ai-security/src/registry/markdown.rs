@@ -9,6 +9,7 @@ use crate::markdown_rules::{
     check_markdown_fenced_pipe_shell, check_markdown_metadata_service_access,
     check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
     check_markdown_path_traversal, check_markdown_private_key_pem,
+    check_plugin_agent_hooks_frontmatter, check_plugin_agent_mcp_servers_frontmatter,
     check_plugin_agent_permission_mode, check_unscoped_bash_allowed_tools,
     check_untrusted_instruction_promotion, check_wildcard_tool_access,
 };
@@ -206,6 +207,30 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct PluginAgentHooksFrontmatterRule {
+        code: "SEC357",
+        summary: "Plugin agent frontmatter sets `hooks`",
+        doc_title: "Plugin agent: `hooks` in frontmatter",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct PluginAgentMcpServersFrontmatterRule {
+        code: "SEC358",
+        summary: "Plugin agent frontmatter sets `mcpServers`",
+        doc_title: "Plugin agent: `mcpServers` in frontmatter",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct MarkdownPrivateKeyPemRule {
         code: "SEC312",
         summary: "Markdown contains committed private key material",
@@ -229,7 +254,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 18] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 20] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -479,6 +504,38 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 18] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove `permissionMode` from plugin agent frontmatter and manage permissions in plugin or user-level configuration instead",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginAgentHooksFrontmatterRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Plugin agent frontmatter can still include unsupported hook experiments, so the first release stays spec-guidance-only.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_plugin_agent_hooks_frontmatter,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove `hooks` from plugin agent frontmatter and keep hook execution in plugin-level hook configuration instead",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginAgentMcpServersFrontmatterRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Plugin agent frontmatter can still include unsupported MCP server experiments, so the first release stays spec-guidance-only.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_plugin_agent_mcp_servers_frontmatter,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove `mcpServers` from plugin agent frontmatter and define MCP servers in plugin or client configuration instead",
         ),
         suggestion_fix: None,
     },

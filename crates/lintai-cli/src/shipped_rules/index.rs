@@ -128,6 +128,11 @@ mod tests {
             shipped_rule_alias("SEC356"),
             Some("PLUGIN-AGENT-PERMISSIONMODE")
         );
+        assert_eq!(shipped_rule_alias("SEC357"), Some("PLUGIN-AGENT-HOOKS"));
+        assert_eq!(
+            shipped_rule_alias("SEC358"),
+            Some("PLUGIN-AGENT-MCPSERVERS")
+        );
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

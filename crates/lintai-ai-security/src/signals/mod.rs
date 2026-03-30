@@ -101,6 +101,8 @@ pub(crate) struct MarkdownSignals {
     pub(crate) unscoped_bash_allowed_tools_spans: Vec<Span>,
     pub(crate) wildcard_tool_access_spans: Vec<Span>,
     pub(crate) plugin_agent_permission_mode_spans: Vec<Span>,
+    pub(crate) plugin_agent_hooks_spans: Vec<Span>,
+    pub(crate) plugin_agent_mcp_servers_spans: Vec<Span>,
     pub(crate) copilot_instruction_too_long_spans: Vec<Span>,
     pub(crate) copilot_instruction_missing_apply_to_spans: Vec<Span>,
 }

@@ -1149,6 +1149,55 @@ fn ignores_plugin_agent_permission_mode_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_plugin_agent_hooks_in_frontmatter() {
+    let content = "---\nhooks:\n  on-save: ./hooks/review.sh\n---\n# Agent\n";
+    let summary = scan_preview_skill_fixture(".cursor-plugin/agents/review.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC357")
+        .unwrap();
+    let start = content.find("hooks").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "hooks".len())
+    );
+}
+
+#[test]
+fn finds_plugin_agent_mcp_servers_in_frontmatter() {
+    let content = "---\nmcpServers:\n  demo:\n    command: npx\n---\n# Agent\n";
+    let summary = scan_preview_skill_fixture(".cursor-plugin/agents/review.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC358")
+        .unwrap();
+    let start = content.find("mcpServers").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "mcpServers".len())
+    );
+}
+
+#[test]
+fn ignores_plugin_agent_hooks_and_mcp_servers_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/examples/.cursor-plugin/agents/review.md",
+        "---\nhooks:\n  stop: ./hooks/stop.sh\nmcpServers:\n  demo:\n    command: npx\n---\n# Fixture agent\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| matches!(finding.rule_code.as_str(), "SEC357" | "SEC358"))
+    );
+}
+
+#[test]
 fn finds_copilot_instruction_file_above_4000_chars() {
     let content = format!("# Copilot\n\n{}\n", "A".repeat(4_100));
     let summary = scan_preview_skill_fixture(".github/copilot-instructions.md", &content);
@@ -3559,6 +3608,8 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC354"
                         | "SEC355"
                         | "SEC356"
+                        | "SEC357"
+                        | "SEC358"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

@@ -86,7 +86,9 @@
         "lintai-ai-security:SEC351",
         "lintai-ai-security:SEC352",
         "lintai-ai-security:SEC355",
-        "lintai-ai-security:SEC356"
+        "lintai-ai-security:SEC356",
+        "lintai-ai-security:SEC357",
+        "lintai-ai-security:SEC358"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -125,7 +127,9 @@
         "lintai-ai-security:SEC351",
         "lintai-ai-security:SEC352",
         "lintai-ai-security:SEC355",
-        "lintai-ai-security:SEC356"
+        "lintai-ai-security:SEC356",
+        "lintai-ai-security:SEC357",
+        "lintai-ai-security:SEC358"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -2510,6 +2514,68 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Plugin agent frontmatter can still include unsupported permission policy experiments, so the first release stays spec-guidance-only.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC357",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC357",
+      "alias": "PLUGIN-AGENT-HOOKS",
+      "displayLabel": "SEC357 / PLUGIN-AGENT-HOOKS",
+      "docTitle": "Plugin agent: `hooks` in frontmatter",
+      "slug": "sec357",
+      "canonicalPath": "/rules/lintai-ai-security/sec357",
+      "summary": "Plugin agent frontmatter sets `hooks`",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Plugin agent frontmatter can still include unsupported hook experiments, so the first release stays spec-guidance-only.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC358",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC358",
+      "alias": "PLUGIN-AGENT-MCPSERVERS",
+      "displayLabel": "SEC358 / PLUGIN-AGENT-MCPSERVERS",
+      "docTitle": "Plugin agent: `mcpServers` in frontmatter",
+      "slug": "sec358",
+      "canonicalPath": "/rules/lintai-ai-security/sec358",
+      "summary": "Plugin agent frontmatter sets `mcpServers`",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Plugin agent frontmatter can still include unsupported MCP server experiments, so the first release stays spec-guidance-only.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

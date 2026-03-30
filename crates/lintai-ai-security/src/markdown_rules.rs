@@ -259,6 +259,38 @@ pub(crate) fn check_plugin_agent_permission_mode(
     )
 }
 
+pub(crate) fn check_plugin_agent_hooks_frontmatter(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.plugin_agent_hooks_spans.as_slice())
+            .unwrap_or(&[]),
+        "plugin agent frontmatter sets `hooks`",
+    )
+}
+
+pub(crate) fn check_plugin_agent_mcp_servers_frontmatter(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.plugin_agent_mcp_servers_spans.as_slice())
+            .unwrap_or(&[]),
+        "plugin agent frontmatter sets `mcpServers`",
+    )
+}
+
 pub(crate) fn check_copilot_instruction_too_long(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

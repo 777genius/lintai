@@ -97,6 +97,16 @@
   - community usefulness сейчас: `8/10`
   - надёжность: `9.5/10`
   - почему важно: структурно запрещает смешивать permission policy с plugin agent content; это narrow spec-aligned signal, который легко объяснить сообществу
+- `SEC357` — Plugin agent frontmatter sets `hooks`
+  - статус: `Preview`
+  - community usefulness сейчас: `7.5/10`
+  - надёжность: `9.5/10`
+  - почему важно: не даёт прятать hook execution policy внутрь agent content; остаётся узким и spec-aligned
+- `SEC358` — Plugin agent frontmatter sets `mcpServers`
+  - статус: `Preview`
+  - community usefulness сейчас: `7.5/10`
+  - надёжность: `9.5/10`
+  - почему важно: отделяет plugin agent docs от client/server wiring; сообществу проще ревьюить такие boundary violations, чем широкие prose rules
 
 ### Минимальный релизный набор (1-й проход)
 
