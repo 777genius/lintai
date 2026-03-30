@@ -202,6 +202,15 @@ pub(super) fn analyze_json_object<'a>(
             signals.autoapprove_tools_true_span =
                 Some(resolve_child_value_span(path, key, locator, fallback_len));
         }
+
+        if signals.trust_tools_true_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "trustTools"
+            && nested.as_bool() == Some(true)
+        {
+            signals.trust_tools_true_span =
+                Some(resolve_child_value_span(path, key, locator, fallback_len));
+        }
     }
 
     JsonObjectCommandShape {

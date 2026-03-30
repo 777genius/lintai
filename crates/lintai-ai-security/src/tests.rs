@@ -2544,6 +2544,42 @@ fn ignores_mcp_autoapprove_tools_false() {
 }
 
 #[test]
+fn finds_mcp_trust_tools_true() {
+    let provider = AiSecurityProvider::default();
+    let content =
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"trustTools":true}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC396")
+        .unwrap();
+    let start = content.find("true").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "true".len())
+    );
+}
+
+#[test]
+fn ignores_mcp_trust_tools_false() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"trustTools":false}}}"#,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC396"));
+}
+
+#[test]
 fn finds_claude_settings_missing_schema() {
     let content = r#"{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -4926,6 +4962,7 @@ fn fixture_like_expanded_mcp_paths_do_not_emit_mcp_findings() {
                 | "SEC346"
                 | "SEC394"
                 | "SEC395"
+                | "SEC396"
                 | "SEC340"
                 | "SEC341"
                 | "SEC342"

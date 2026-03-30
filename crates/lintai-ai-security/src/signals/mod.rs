@@ -144,6 +144,7 @@ pub(crate) struct JsonSignals {
     pub(crate) dangerous_docker_flag_span: Option<Span>,
     pub(crate) autoapprove_wildcard_span: Option<Span>,
     pub(crate) autoapprove_tools_true_span: Option<Span>,
+    pub(crate) trust_tools_true_span: Option<Span>,
     pub(crate) broad_env_file_span: Option<Span>,
     pub(crate) plain_http_endpoint_span: Option<Span>,
     pub(crate) credential_env_passthrough_span: Option<Span>,

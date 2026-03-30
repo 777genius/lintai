@@ -58,7 +58,8 @@
         "lintai-ai-security:SEC345",
         "lintai-ai-security:SEC346",
         "lintai-ai-security:SEC394",
-        "lintai-ai-security:SEC395"
+        "lintai-ai-security:SEC395",
+        "lintai-ai-security:SEC396"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -207,7 +208,8 @@
         "lintai-ai-security:SEC345",
         "lintai-ai-security:SEC346",
         "lintai-ai-security:SEC394",
-        "lintai-ai-security:SEC395"
+        "lintai-ai-security:SEC395",
+        "lintai-ai-security:SEC396"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -3643,6 +3645,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact boolean detection for `autoApproveTools: true` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC396",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC396",
+      "alias": "MCP-TRUST-TOOLS",
+      "displayLabel": "SEC396 / MCP-TRUST-TOOLS",
+      "docTitle": "MCP config: trustTools true",
+      "slug": "sec396",
+      "canonicalPath": "/rules/lintai-ai-security/sec396",
+      "summary": "MCP configuration fully trusts tools with `trustTools: true`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit blanket tool trust in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-trust-tools-true"
+        ],
+        "benignCaseIds": [
+          "mcp-trust-tools-false-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact boolean detection for `trustTools: true` on parsed MCP configuration."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

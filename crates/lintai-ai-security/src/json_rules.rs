@@ -108,6 +108,21 @@ pub(crate) fn check_mcp_autoapprove_tools_true(
     )
 }
 
+pub(crate) fn check_mcp_trust_tools_true(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.trust_tools_true_span.clone()),
+        "MCP configuration fully trusts tools with `trustTools: true`",
+    )
+}
+
 pub(crate) fn check_mcp_unpinned_docker_image(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

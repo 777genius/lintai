@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "demo": {
+      "command": "node",
+      "args": ["server.js"],
+      "trustTools": true
+    }
+  }
+}
+
