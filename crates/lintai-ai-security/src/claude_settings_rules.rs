@@ -243,6 +243,21 @@ pub(crate) fn check_claude_settings_git_push_permission(
     )
 }
 
+pub(crate) fn check_claude_settings_git_add_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.git_add_permission_span.clone()),
+        "Claude settings permissions allow `Bash(git add:*)` in a shared committed config",
+    )
+}
+
 pub(crate) fn check_claude_settings_npx_permission(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

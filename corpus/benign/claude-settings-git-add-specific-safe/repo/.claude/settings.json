@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add src/lib.rs)",
+      "Read(*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}
