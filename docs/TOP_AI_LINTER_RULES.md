@@ -197,6 +197,11 @@
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9/10`
   - почему важно: wildcard content-search grant в shared AI config даёт слишком широкую search surface; это хорошо воспринимается сообществом как точный least-privilege contract check
+- `SEC377` — path-specific GitHub Copilot instruction markdown has an invalid `applyTo` glob pattern
+  - статус: `Preview`
+  - community usefulness сейчас: `9/10`
+  - надёжность: `9/10`
+  - почему важно: invalid `applyTo` glob выглядит как обычная конфигурация, но silently ломает targeting Copilot instructions; это один из самых defendable community-facing AI config checks
 
 ### Минимальный релизный набор (1-й проход)
 

@@ -323,6 +323,7 @@ name = "lintai-ai-security"
 version = "0.0.0"
 dependencies = [
  "criterion",
+ "globset",
  "lintai-adapters",
  "lintai-api",
  "lintai-engine",

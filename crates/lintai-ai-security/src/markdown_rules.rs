@@ -247,6 +247,26 @@ pub(crate) fn check_copilot_instruction_invalid_apply_to(
     )
 }
 
+pub(crate) fn check_copilot_instruction_invalid_apply_to_glob(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| {
+                signals
+                    .copilot_instruction_invalid_apply_to_glob_spans
+                    .as_slice()
+            })
+            .unwrap_or(&[]),
+        "path-specific GitHub Copilot instruction markdown `applyTo` must use valid glob patterns",
+    )
+}
+
 pub(crate) fn check_unscoped_bash_allowed_tools(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

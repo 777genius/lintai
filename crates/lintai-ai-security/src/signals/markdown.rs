@@ -1,9 +1,21 @@
+use globset::Glob;
 use lintai_api::{ArtifactKind, RegionKind, ScanContext, Span};
 
 use crate::helpers::{markdown_semantics, span_text};
 
 use super::shared::{common::*, hook::has_base64_exec, markdown::*};
 use super::{MarkdownSignals, SignalWorkBudget};
+
+fn copilot_apply_to_contains_invalid_glob(value: &serde_json::Value) -> bool {
+    match value {
+        serde_json::Value::String(pattern) => Glob::new(pattern).is_err(),
+        serde_json::Value::Array(items) => items.iter().any(|item| match item.as_str() {
+            Some(pattern) => Glob::new(pattern).is_err(),
+            None => false,
+        }),
+        _ => false,
+    }
+}
 
 impl MarkdownSignals {
     pub(super) fn from_context(ctx: &ScanContext, metrics: &mut SignalWorkBudget) -> Option<Self> {
@@ -427,6 +439,26 @@ impl MarkdownSignals {
             {
                 signals
                     .copilot_instruction_invalid_apply_to_spans
+                    .push(Span::new(
+                        region.span.start_byte + relative.start_byte,
+                        region.span.start_byte + relative.end_byte,
+                    ));
+            }
+
+            if let Some(frontmatter) = parsed_frontmatter
+                && let Some(value) = frontmatter.value.get("applyTo")
+                && !copilot_apply_to_requires_string_or_sequence(value)
+                && copilot_apply_to_contains_invalid_glob(value)
+                && let Some(region) = ctx
+                    .document
+                    .regions
+                    .iter()
+                    .find(|region| matches!(region.kind, RegionKind::Frontmatter))
+                && let Some(snippet) = span_text(&ctx.content, &region.span)
+                && let Some(relative) = find_frontmatter_key_relative_span(snippet, "applyTo")
+            {
+                signals
+                    .copilot_instruction_invalid_apply_to_glob_spans
                     .push(Span::new(
                         region.span.start_byte + relative.start_byte,
                         region.span.start_byte + relative.end_byte,

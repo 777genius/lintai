@@ -233,6 +233,11 @@ fn report_renderer_emits_delta_and_phase_targets() {
         markdown
             .contains("`SEC371` path-specific Copilot instructions with invalid `applyTo`: `0`")
     );
+    assert!(
+        markdown.contains(
+            "`SEC377` path-specific Copilot instructions with invalid `applyTo` globs: `0`"
+        )
+    );
     assert!(markdown.contains("`SEC372` Claude settings wildcard `Read(*)` permissions: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings wildcard `Edit(*)` permissions: `0`"));
     assert!(markdown.contains("`SEC374` Claude settings wildcard `WebSearch(*)` permissions: `0`"));
@@ -348,6 +353,10 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(
         markdown
             .contains("- `SEC376` produced no repo-level preview hits yet on the canonical cohort")
+    );
+    assert!(
+        markdown
+            .contains("- `SEC377` produced no repo-level preview hits yet on the canonical cohort")
     );
     assert!(markdown.contains("## Delta From Previous Wave"));
     assert!(markdown.contains("`datadog-labs/cursor-plugin`: `improved`"));
@@ -808,9 +817,11 @@ fn ai_native_discovery_report_has_required_sections() {
         markdown
             .contains("`SEC371` path-specific Copilot instructions with invalid `applyTo`: `0`")
     );
+    assert!(markdown.contains("`SEC377`=`0`"));
     assert!(markdown.contains("`SEC372` Claude settings files allowing `Read(*)`: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings files allowing `Edit(*)`: `0`"));
     assert!(markdown.contains("`SEC374` Claude settings files allowing `WebSearch(*)`: `0`"));
     assert!(markdown.contains("`SEC375` Claude settings files allowing `Glob(*)`: `0`"));
     assert!(markdown.contains("`SEC376` Claude settings files allowing `Grep(*)`: `0`"));
+    assert!(markdown.contains("`SEC377`=`0`"));
 }

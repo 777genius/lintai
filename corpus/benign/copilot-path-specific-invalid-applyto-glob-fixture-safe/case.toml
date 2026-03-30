@@ -1,0 +1,3 @@
+id = "copilot-path-specific-invalid-applyto-glob-fixture-safe"
+kind = "benign"
+entry = "repo/tests/fixtures/.github/instructions/review.instructions.md"

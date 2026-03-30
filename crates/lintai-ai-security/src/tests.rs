@@ -1570,6 +1570,57 @@ fn ignores_path_specific_copilot_instruction_with_valid_apply_to_array() {
 }
 
 #[test]
+fn finds_path_specific_copilot_instruction_with_invalid_apply_to_glob() {
+    let summary = scan_preview_skill_fixture(
+        ".github/instructions/review.instructions.md",
+        "---\napplyTo: \"[unclosed\"\n---\n# Review Instructions\n",
+    );
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC377")
+        .unwrap();
+    let start = "---\napplyTo: \"[unclosed\"\n---\n# Review Instructions\n"
+        .find("applyTo")
+        .unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "applyTo".len())
+    );
+}
+
+#[test]
+fn finds_path_specific_copilot_instruction_with_invalid_apply_to_glob_in_array() {
+    let summary = scan_preview_skill_fixture(
+        ".github/instructions/review.instructions.md",
+        "---\napplyTo:\n  - \"**/*.rs\"\n  - \"[unclosed\"\n---\n# Review Instructions\n",
+    );
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC377")
+    );
+}
+
+#[test]
+fn ignores_path_specific_copilot_instruction_with_valid_apply_to_glob_for_sec377() {
+    let summary = scan_preview_skill_fixture(
+        ".github/instructions/review.instructions.md",
+        "---\napplyTo: \"**/*.rs\"\n---\n# Review Instructions\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC377")
+    );
+}
+
+#[test]
 fn ignores_invalid_apply_to_on_fixture_like_path() {
     let summary = scan_preview_skill_fixture(
         "tests/fixtures/.github/instructions/review.instructions.md",
@@ -1581,6 +1632,21 @@ fn ignores_invalid_apply_to_on_fixture_like_path() {
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC371")
+    );
+}
+
+#[test]
+fn ignores_invalid_apply_to_glob_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/.github/instructions/review.instructions.md",
+        "---\napplyTo: \"[unclosed\"\n---\n# Fixture Instructions\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC377")
     );
 }
 
@@ -4784,6 +4850,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC374"
                         | "SEC375"
                         | "SEC376"
+                        | "SEC377"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

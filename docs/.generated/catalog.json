@@ -230,7 +230,8 @@
         "lintai-ai-security:SEC353",
         "lintai-ai-security:SEC354",
         "lintai-ai-security:SEC370",
-        "lintai-ai-security:SEC371"
+        "lintai-ai-security:SEC371",
+        "lintai-ai-security:SEC377"
       ],
       "canonicalPath": "/presets/guidance"
     },
@@ -3166,6 +3167,36 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Wildcard Grep grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC377",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC377",
+      "alias": "COPILOT-APPLYTO-GLOB",
+      "displayLabel": "SEC377 / COPILOT-APPLYTO-GLOB",
+      "docTitle": "Copilot instructions: invalid `applyTo` glob",
+      "slug": "sec377",
+      "canonicalPath": "/rules/lintai-ai-security/sec377",
+      "summary": "Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` glob pattern",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "guidance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Invalid `applyTo` glob patterns on path-specific Copilot instruction files are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

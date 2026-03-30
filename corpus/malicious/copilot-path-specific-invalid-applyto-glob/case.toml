@@ -1,0 +1,5 @@
+id = "copilot-path-specific-invalid-applyto-glob"
+kind = "malicious"
+entry = "repo/.github/instructions/review.instructions.md"
+
+expected_findings = ["SEC377"]
