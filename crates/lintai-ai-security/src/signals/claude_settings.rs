@@ -335,6 +335,8 @@ impl ClaudeSettingsSignals {
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git clone:*)");
         signals.gh_pr_permission_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(gh pr:*)");
+        signals.git_fetch_permission_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git fetch:*)");
         signals.npx_permission_span =
             resolve_permissions_allow_prefix_span(value, locator_ref.as_ref(), "Bash(npx ");
         signals.package_install_permission_span = resolve_permissions_allow_any_exact_span(

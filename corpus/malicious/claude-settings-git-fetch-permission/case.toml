@@ -1,0 +1,6 @@
+name = "claude-settings-git-fetch-permission"
+path = ".claude/settings.json"
+expect_findings = ["SEC409"]
+
+[metadata]
+description = "Shared Claude settings grant blanket git fetch permissions"

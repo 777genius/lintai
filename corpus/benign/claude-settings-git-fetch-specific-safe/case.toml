@@ -1,0 +1,6 @@
+name = "claude-settings-git-fetch-specific-safe"
+path = ".claude/settings.json"
+expect_findings = []
+
+[metadata]
+description = "Specific git fetch command stays clean"

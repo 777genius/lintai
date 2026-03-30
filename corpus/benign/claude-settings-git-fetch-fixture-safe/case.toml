@@ -1,0 +1,6 @@
+name = "claude-settings-git-fetch-fixture-safe"
+path = "tests/fixtures/.claude/settings.json"
+expect_findings = []
+
+[metadata]
+description = "Fixture-like Claude settings path is suppressed for git fetch permission checks"
