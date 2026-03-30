@@ -1,5 +1,5 @@
 use crate::output::model::ReportEnvelope;
-use crate::shipped_rules::shipped_rule_docs_url;
+use crate::shipped_rules::{shipped_rule_display_label, shipped_rule_docs_url};
 
 use super::common::{
     diagnostic_label, error_kind_label, provider_execution_phase_label, severity_label,
@@ -20,7 +20,7 @@ pub(super) fn append_scan_results(output: &mut String, report: &ReportEnvelope<'
     for finding in report.findings {
         output.push_str(&format!(
             "{} [{}] {}:{}-{} {}\n",
-            finding.rule_code,
+            shipped_rule_display_label(&finding.rule_code),
             severity_label(finding.severity),
             finding.location.normalized_path,
             finding.location.span.start_byte,

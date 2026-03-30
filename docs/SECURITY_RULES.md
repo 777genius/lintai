@@ -11,71 +11,71 @@ Canonical catalog for the shipped security rules currently exposed by:
 
 | Code | Summary | Tier | Lifecycle | Severity | Scope | Surface | Detection | Remediation | Presets |
 |---|---|---|---|---|---|---|---|---|---|
-| `SEC101` | Hidden HTML comment contains dangerous agent instructions | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `safe_fix` | `preview`, `skills` |
-| `SEC102` | Markdown contains remote download-and-execute instruction outside code blocks | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `suggestion` | `preview`, `skills` |
-| `SEC103` | Hidden HTML comment contains remote download-and-execute instruction | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `safe_fix` | `preview`, `skills` |
-| `SEC104` | Markdown contains a base64-decoded executable payload outside code blocks | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC105` | Markdown instructions reference parent-directory traversal for file access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC201` | Hook script downloads remote code and executes it | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
-| `SEC202` | Hook script appears to exfiltrate secrets through a network call | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
-| `SEC203` | Hook script sends secret material to an insecure http:// endpoint | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
-| `SEC204` | Hook script disables TLS or certificate verification for a network call | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC205` | Hook script embeds static authentication material in a network call | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC206` | Hook script decodes a base64 payload and executes it | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
-| `SEC301` | MCP configuration shells out through sh -c or bash -c | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC302` | Configuration contains an insecure http:// endpoint | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `suggestion` | `base`, `mcp` |
-| `SEC303` | MCP configuration passes through credential environment variables | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC304` | Configuration disables TLS or certificate verification | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC305` | Configuration embeds static authentication material in a connection or auth value | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC306` | JSON configuration description contains override-style hidden instructions | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
-| `SEC307` | Configuration forwards sensitive environment variable references | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
-| `SEC308` | Configuration points at a suspicious remote endpoint | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
-| `SEC309` | Configuration commits literal secret material in env, auth, or header values | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC310` | Configuration endpoint targets a metadata or private-network host literal | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC311` | Cursor plugin manifest contains an unsafe absolute or parent-traversing path | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC312` | Markdown contains committed private key material | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `base`, `skills` |
-| `SEC313` | Fenced shell example pipes remote content directly into a shell | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC314` | MCP-style tool descriptor is missing required machine fields | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC315` | MCP-style tool descriptor collection contains duplicate tool names | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC316` | OpenAI strict tool schema omits recursive additionalProperties: false | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC317` | OpenAI strict tool schema does not require every declared property | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC318` | Anthropic strict tool input schema omits additionalProperties: false | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC319` | server.json remotes entry uses an insecure or non-public remote URL | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC320` | server.json remotes URL references an undefined template variable | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC321` | server.json remotes header commits literal authentication material | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC322` | server.json remotes header value references an undefined template variable | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC323` | server.json auth header carries material without an explicit secret flag | Preview | `preview_blocked` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC324` | GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `base` |
-| `SEC325` | GitHub Actions workflow interpolates untrusted expression data directly inside a run command | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `preview` |
-| `SEC326` | GitHub Actions pull_request_target workflow checks out untrusted pull request head content | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `base` |
-| `SEC327` | GitHub Actions workflow grants GITHUB_TOKEN write-all permissions | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `base` |
-| `SEC328` | GitHub Actions workflow combines explicit write-capable permissions with a third-party action | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `preview` |
-| `SEC329` | MCP configuration launches tooling through a mutable package runner | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC330` | MCP configuration command downloads remote content and pipes it into a shell | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC331` | MCP configuration command disables TLS verification in a network-capable execution path | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC335` | AI-native markdown contains a direct cloud metadata-service access example | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC336` | Repo-local MCP client config loads a broad dotenv-style envFile | Preview | `preview_blocked` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC337` | MCP configuration launches Docker with an image reference that is not digest-pinned | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC338` | MCP configuration launches Docker with a bind mount of sensitive host material | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC339` | MCP configuration launches Docker with a host-escape or privileged runtime flag | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC340` | Claude settings command hook uses a mutable package launcher | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC341` | Claude settings command hook downloads remote content and pipes it into a shell | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC342` | Claude settings command hook disables TLS verification in a network-capable execution path | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC343` | Plugin hook command uses a mutable package launcher | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC344` | Plugin hook command downloads remote content and pipes it into a shell | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC345` | Plugin hook command disables TLS verification in a network-capable execution path | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC346` | MCP configuration forces Docker to refresh from a mutable registry source | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC347` | AI-native markdown example launches MCP through a mutable package runner | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC348` | AI-native markdown Docker example uses a mutable registry image | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC349` | AI-native markdown Docker example uses a host-escape or privileged runtime pattern | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC350` | Instruction markdown promotes untrusted external content to developer/system-level instructions | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC351` | AI-native instruction explicitly disables user approval or confirmation | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC352` | AI-native markdown frontmatter grants unscoped Bash tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC353` | GitHub Copilot instruction markdown exceeds the 4000-character guidance limit | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC354` | Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC401` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `preview`, `compat` |
-| `SEC402` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `preview`, `compat` |
-| `SEC403` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `preview`, `compat` |
+| `SEC101 / MD-HIDDEN-INSTRUCTIONS` | Hidden HTML comment contains dangerous agent instructions | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `safe_fix` | `preview`, `skills` |
+| `SEC102 / MD-DOWNLOAD-EXEC` | Markdown contains remote download-and-execute instruction outside code blocks | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `suggestion` | `preview`, `skills` |
+| `SEC103 / MD-HIDDEN-DOWNLOAD-EXEC` | Hidden HTML comment contains remote download-and-execute instruction | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `safe_fix` | `preview`, `skills` |
+| `SEC104 / MD-BASE64-EXEC` | Markdown contains a base64-decoded executable payload outside code blocks | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
+| `SEC105 / MD-PATH-TRAVERSAL` | Markdown instructions reference parent-directory traversal for file access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
+| `SEC201 / HOOK-DOWNLOAD-EXEC` | Hook script downloads remote code and executes it | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
+| `SEC202 / HOOK-SECRET-EXFIL` | Hook script appears to exfiltrate secrets through a network call | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
+| `SEC203 / HOOK-PLAIN-HTTP-SECRET-EXFIL` | Hook script sends secret material to an insecure http:// endpoint | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
+| `SEC204 / HOOK-TLS-BYPASS` | Hook script disables TLS or certificate verification for a network call | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC205 / HOOK-STATIC-AUTH` | Hook script embeds static authentication material in a network call | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC206 / HOOK-BASE64-EXEC` | Hook script decodes a base64 payload and executes it | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
+| `SEC301 / MCP-SHELL-WRAPPER` | MCP configuration shells out through sh -c or bash -c | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC302 / MCP-PLAIN-HTTP-ENDPOINT` | Configuration contains an insecure http:// endpoint | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `suggestion` | `base`, `mcp` |
+| `SEC303 / MCP-CREDENTIAL-ENV-PASSTHROUGH` | MCP configuration passes through credential environment variables | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC304 / MCP-TLS-BYPASS` | Configuration disables TLS or certificate verification | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC305 / MCP-STATIC-AUTH` | Configuration embeds static authentication material in a connection or auth value | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC306 / MCP-HIDDEN-INSTRUCTIONS` | JSON configuration description contains override-style hidden instructions | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
+| `SEC307 / MCP-SENSITIVE-ENV-REFERENCE` | Configuration forwards sensitive environment variable references | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
+| `SEC308 / MCP-SUSPICIOUS-ENDPOINT` | Configuration points at a suspicious remote endpoint | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
+| `SEC309 / MCP-LITERAL-SECRET` | Configuration commits literal secret material in env, auth, or header values | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC310 / MCP-METADATA-HOST-LITERAL` | Configuration endpoint targets a metadata or private-network host literal | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC311 / PLUGIN-UNSAFE-PATH` | Cursor plugin manifest contains an unsafe absolute or parent-traversing path | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC312 / MD-PRIVATE-KEY` | Markdown contains committed private key material | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `base`, `skills` |
+| `SEC313 / MD-PIPE-SHELL` | Fenced shell example pipes remote content directly into a shell | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC314 / TOOL-MISSING-MACHINE-FIELDS` | MCP-style tool descriptor is missing required machine fields | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC315 / TOOL-DUPLICATE-NAMES` | MCP-style tool descriptor collection contains duplicate tool names | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC316 / OPENAI-STRICT-ADDITIONAL-PROPERTIES` | OpenAI strict tool schema omits recursive additionalProperties: false | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC317 / OPENAI-STRICT-REQUIRED-COVERAGE` | OpenAI strict tool schema does not require every declared property | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC318 / ANTHROPIC-STRICT-ADDITIONAL-PROPERTIES` | Anthropic strict tool input schema omits additionalProperties: false | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC319 / SERVER-REMOTE-URL` | server.json remotes entry uses an insecure or non-public remote URL | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC320 / SERVER-UNDEFINED-URL-VAR` | server.json remotes URL references an undefined template variable | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC321 / SERVER-LITERAL-AUTH-HEADER` | server.json remotes header commits literal authentication material | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC322 / SERVER-UNDEFINED-HEADER-VAR` | server.json remotes header value references an undefined template variable | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC323 / SERVER-AUTH-SECRET-FLAG` | server.json auth header carries material without an explicit secret flag | Preview | `preview_blocked` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC324 / GHA-UNPINNED-ACTION` | GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `base` |
+| `SEC325 / GHA-UNTRUSTED-RUN-INTERPOLATION` | GitHub Actions workflow interpolates untrusted expression data directly inside a run command | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `preview` |
+| `SEC326 / GHA-PR-TARGET-HEAD-CHECKOUT` | GitHub Actions pull_request_target workflow checks out untrusted pull request head content | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `base` |
+| `SEC327 / GHA-WRITE-ALL-PERMISSIONS` | GitHub Actions workflow grants GITHUB_TOKEN write-all permissions | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `base` |
+| `SEC328 / GHA-WRITE-CAPABLE-THIRD-PARTY-ACTION` | GitHub Actions workflow combines explicit write-capable permissions with a third-party action | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `preview` |
+| `SEC329 / MCP-MUTABLE-LAUNCHER` | MCP configuration launches tooling through a mutable package runner | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC330 / MCP-DOWNLOAD-EXEC` | MCP configuration command downloads remote content and pipes it into a shell | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC331 / MCP-TLS-BYPASS` | MCP configuration command disables TLS verification in a network-capable execution path | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC335 / MD-METADATA-SERVICE-ACCESS` | AI-native markdown contains a direct cloud metadata-service access example | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC336 / MCP-BROAD-ENVFILE` | Repo-local MCP client config loads a broad dotenv-style envFile | Preview | `preview_blocked` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC337 / MCP-DOCKER-UNPINNED-IMAGE` | MCP configuration launches Docker with an image reference that is not digest-pinned | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC338 / MCP-DOCKER-SENSITIVE-MOUNT` | MCP configuration launches Docker with a bind mount of sensitive host material | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC339 / MCP-DOCKER-HOST-ESCAPE` | MCP configuration launches Docker with a host-escape or privileged runtime flag | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC340 / CLAUDE-HOOK-MUTABLE-LAUNCHER` | Claude settings command hook uses a mutable package launcher | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC341 / CLAUDE-HOOK-DOWNLOAD-EXEC` | Claude settings command hook downloads remote content and pipes it into a shell | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC342 / CLAUDE-HOOK-TLS-BYPASS` | Claude settings command hook disables TLS verification in a network-capable execution path | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC343 / PLUGIN-HOOK-MUTABLE-LAUNCHER` | Plugin hook command uses a mutable package launcher | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC344 / PLUGIN-HOOK-DOWNLOAD-EXEC` | Plugin hook command downloads remote content and pipes it into a shell | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC345 / PLUGIN-HOOK-TLS-BYPASS` | Plugin hook command disables TLS verification in a network-capable execution path | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC346 / MCP-DOCKER-PULL-ALWAYS` | MCP configuration forces Docker to refresh from a mutable registry source | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC347 / MD-MCP-MUTABLE-LAUNCHER` | AI-native markdown example launches MCP through a mutable package runner | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC348 / MD-DOCKER-MUTABLE-IMAGE` | AI-native markdown Docker example uses a mutable registry image | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC349 / MD-DOCKER-HOST-ESCAPE` | AI-native markdown Docker example uses a host-escape or privileged runtime pattern | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC350 / MD-UNTRUSTED-INSTRUCTION-PROMOTION` | Instruction markdown promotes untrusted external content to developer/system-level instructions | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
+| `SEC351 / MD-APPROVAL-BYPASS` | AI-native instruction explicitly disables user approval or confirmation | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
+| `SEC352 / MD-UNSCOPED-BASH` | AI-native markdown frontmatter grants unscoped Bash tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC353 / COPILOT-4K` | GitHub Copilot instruction markdown exceeds the 4000-character guidance limit | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC354 / COPILOT-PATH-APPLYTO` | Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC401 / POLICY-EXEC-MISMATCH` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `preview`, `compat` |
+| `SEC402 / POLICY-NETWORK-MISMATCH` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `preview`, `compat` |
+| `SEC403 / POLICY-SKILL-CAPABILITIES-MISMATCH` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `preview`, `compat` |
 
 ## Builtin preset activation model
 
@@ -97,9 +97,10 @@ Important behavior:
 
 ## Provider: `lintai-ai-security`
 
-### `SEC101` — Hidden HTML comment contains dangerous agent instructions
+### `SEC101 / MD-HIDDEN-INSTRUCTIONS` — Hidden HTML comment contains dangerous agent instructions
 
 - Provider: `lintai-ai-security`
+- Alias: `MD-HIDDEN-INSTRUCTIONS`
 - Scope: `per_file`
 - Surface: `markdown`
 - Detection: `heuristic`
@@ -113,9 +114,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.
 - Canonical Note: Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.
 
-### `SEC102` — Markdown contains remote download-and-execute instruction outside code blocks
+### `SEC102 / MD-DOWNLOAD-EXEC` — Markdown contains remote download-and-execute instruction outside code blocks
 
 - Provider: `lintai-ai-security`
+- Alias: `MD-DOWNLOAD-EXEC`
 - Scope: `per_file`
 - Surface: `markdown`
 - Detection: `heuristic`
@@ -129,9 +131,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.
 - Canonical Note: Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.
 
-### `SEC103` — Hidden HTML comment contains remote download-and-execute instruction
+### `SEC103 / MD-HIDDEN-DOWNLOAD-EXEC` — Hidden HTML comment contains remote download-and-execute instruction
 
 - Provider: `lintai-ai-security`
+- Alias: `MD-HIDDEN-DOWNLOAD-EXEC`
 - Scope: `per_file`
 - Surface: `markdown`
 - Detection: `heuristic`
@@ -145,9 +148,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.
 - Canonical Note: Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.
 
-### `SEC104` — Markdown contains a base64-decoded executable payload outside code blocks
+### `SEC104 / MD-BASE64-EXEC` — Markdown contains a base64-decoded executable payload outside code blocks
 
 - Provider: `lintai-ai-security`
+- Alias: `MD-BASE64-EXEC`
 - Scope: `per_file`
 - Surface: `markdown`
 - Detection: `heuristic`
@@ -161,9 +165,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.
 - Canonical Note: Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.
 
-### `SEC105` — Markdown instructions reference parent-directory traversal for file access
+### `SEC105 / MD-PATH-TRAVERSAL` — Markdown instructions reference parent-directory traversal for file access
 
 - Provider: `lintai-ai-security`
+- Alias: `MD-PATH-TRAVERSAL`
 - Scope: `per_file`
 - Surface: `markdown`
 - Detection: `heuristic`
@@ -177,9 +182,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.
 - Canonical Note: Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.
 
-### `SEC201` — Hook script downloads remote code and executes it
+### `SEC201 / HOOK-DOWNLOAD-EXEC` — Hook script downloads remote code and executes it
 
 - Provider: `lintai-ai-security`
+- Alias: `HOOK-DOWNLOAD-EXEC`
 - Scope: `per_file`
 - Surface: `hook`
 - Detection: `structural`
@@ -197,9 +203,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC202` — Hook script appears to exfiltrate secrets through a network call
+### `SEC202 / HOOK-SECRET-EXFIL` — Hook script appears to exfiltrate secrets through a network call
 
 - Provider: `lintai-ai-security`
+- Alias: `HOOK-SECRET-EXFIL`
 - Scope: `per_file`
 - Surface: `hook`
 - Detection: `structural`
@@ -217,9 +224,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC203` — Hook script sends secret material to an insecure http:// endpoint
+### `SEC203 / HOOK-PLAIN-HTTP-SECRET-EXFIL` — Hook script sends secret material to an insecure http:// endpoint
 
 - Provider: `lintai-ai-security`
+- Alias: `HOOK-PLAIN-HTTP-SECRET-EXFIL`
 - Scope: `per_file`
 - Surface: `hook`
 - Detection: `structural`
@@ -237,9 +245,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC204` — Hook script disables TLS or certificate verification for a network call
+### `SEC204 / HOOK-TLS-BYPASS` — Hook script disables TLS or certificate verification for a network call
 
 - Provider: `lintai-ai-security`
+- Alias: `HOOK-TLS-BYPASS`
 - Scope: `per_file`
 - Surface: `hook`
 - Detection: `structural`
@@ -257,9 +266,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC205` — Hook script embeds static authentication material in a network call
+### `SEC205 / HOOK-STATIC-AUTH` — Hook script embeds static authentication material in a network call
 
 - Provider: `lintai-ai-security`
+- Alias: `HOOK-STATIC-AUTH`
 - Scope: `per_file`
 - Surface: `hook`
 - Detection: `structural`
@@ -277,9 +287,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC206` — Hook script decodes a base64 payload and executes it
+### `SEC206 / HOOK-BASE64-EXEC` — Hook script decodes a base64 payload and executes it
 
 - Provider: `lintai-ai-security`
+- Alias: `HOOK-BASE64-EXEC`
 - Scope: `per_file`
 - Surface: `hook`
 - Detection: `structural`
@@ -297,9 +308,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC301` — MCP configuration shells out through sh -c or bash -c
+### `SEC301 / MCP-SHELL-WRAPPER` — MCP configuration shells out through sh -c or bash -c
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-SHELL-WRAPPER`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -317,9 +329,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC302` — Configuration contains an insecure http:// endpoint
+### `SEC302 / MCP-PLAIN-HTTP-ENDPOINT` — Configuration contains an insecure http:// endpoint
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-PLAIN-HTTP-ENDPOINT`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -337,9 +350,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC303` — MCP configuration passes through credential environment variables
+### `SEC303 / MCP-CREDENTIAL-ENV-PASSTHROUGH` — MCP configuration passes through credential environment variables
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-CREDENTIAL-ENV-PASSTHROUGH`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -357,9 +371,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC304` — Configuration disables TLS or certificate verification
+### `SEC304 / MCP-TLS-BYPASS` — Configuration disables TLS or certificate verification
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-TLS-BYPASS`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -377,9 +392,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC305` — Configuration embeds static authentication material in a connection or auth value
+### `SEC305 / MCP-STATIC-AUTH` — Configuration embeds static authentication material in a connection or auth value
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-STATIC-AUTH`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -397,9 +413,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC306` — JSON configuration description contains override-style hidden instructions
+### `SEC306 / MCP-HIDDEN-INSTRUCTIONS` — JSON configuration description contains override-style hidden instructions
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-HIDDEN-INSTRUCTIONS`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `heuristic`
@@ -413,9 +430,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.
 - Canonical Note: Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.
 
-### `SEC307` — Configuration forwards sensitive environment variable references
+### `SEC307 / MCP-SENSITIVE-ENV-REFERENCE` — Configuration forwards sensitive environment variable references
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-SENSITIVE-ENV-REFERENCE`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `heuristic`
@@ -429,9 +447,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.
 - Canonical Note: Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.
 
-### `SEC308` — Configuration points at a suspicious remote endpoint
+### `SEC308 / MCP-SUSPICIOUS-ENDPOINT` — Configuration points at a suspicious remote endpoint
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-SUSPICIOUS-ENDPOINT`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `heuristic`
@@ -445,9 +464,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.
 - Canonical Note: Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.
 
-### `SEC309` — Configuration commits literal secret material in env, auth, or header values
+### `SEC309 / MCP-LITERAL-SECRET` — Configuration commits literal secret material in env, auth, or header values
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-LITERAL-SECRET`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -465,9 +485,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC310` — Configuration endpoint targets a metadata or private-network host literal
+### `SEC310 / MCP-METADATA-HOST-LITERAL` — Configuration endpoint targets a metadata or private-network host literal
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-METADATA-HOST-LITERAL`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -485,9 +506,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC311` — Cursor plugin manifest contains an unsafe absolute or parent-traversing path
+### `SEC311 / PLUGIN-UNSAFE-PATH` — Cursor plugin manifest contains an unsafe absolute or parent-traversing path
 
 - Provider: `lintai-ai-security`
+- Alias: `PLUGIN-UNSAFE-PATH`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -505,9 +527,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC312` — Markdown contains committed private key material
+### `SEC312 / MD-PRIVATE-KEY` — Markdown contains committed private key material
 
 - Provider: `lintai-ai-security`
+- Alias: `MD-PRIVATE-KEY`
 - Scope: `per_file`
 - Surface: `markdown`
 - Detection: `structural`
@@ -525,9 +548,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC313` — Fenced shell example pipes remote content directly into a shell
+### `SEC313 / MD-PIPE-SHELL` — Fenced shell example pipes remote content directly into a shell
 
 - Provider: `lintai-ai-security`
+- Alias: `MD-PIPE-SHELL`
 - Scope: `per_file`
 - Surface: `markdown`
 - Detection: `structural`
@@ -541,9 +565,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
-### `SEC314` — MCP-style tool descriptor is missing required machine fields
+### `SEC314 / TOOL-MISSING-MACHINE-FIELDS` — MCP-style tool descriptor is missing required machine fields
 
 - Provider: `lintai-ai-security`
+- Alias: `TOOL-MISSING-MACHINE-FIELDS`
 - Scope: `per_file`
 - Surface: `tool_json`
 - Detection: `structural`
@@ -561,9 +586,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC315` — MCP-style tool descriptor collection contains duplicate tool names
+### `SEC315 / TOOL-DUPLICATE-NAMES` — MCP-style tool descriptor collection contains duplicate tool names
 
 - Provider: `lintai-ai-security`
+- Alias: `TOOL-DUPLICATE-NAMES`
 - Scope: `per_file`
 - Surface: `tool_json`
 - Detection: `structural`
@@ -581,9 +607,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC316` — OpenAI strict tool schema omits recursive additionalProperties: false
+### `SEC316 / OPENAI-STRICT-ADDITIONAL-PROPERTIES` — OpenAI strict tool schema omits recursive additionalProperties: false
 
 - Provider: `lintai-ai-security`
+- Alias: `OPENAI-STRICT-ADDITIONAL-PROPERTIES`
 - Scope: `per_file`
 - Surface: `tool_json`
 - Detection: `structural`
@@ -601,9 +628,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC317` — OpenAI strict tool schema does not require every declared property
+### `SEC317 / OPENAI-STRICT-REQUIRED-COVERAGE` — OpenAI strict tool schema does not require every declared property
 
 - Provider: `lintai-ai-security`
+- Alias: `OPENAI-STRICT-REQUIRED-COVERAGE`
 - Scope: `per_file`
 - Surface: `tool_json`
 - Detection: `structural`
@@ -621,9 +649,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC318` — Anthropic strict tool input schema omits additionalProperties: false
+### `SEC318 / ANTHROPIC-STRICT-ADDITIONAL-PROPERTIES` — Anthropic strict tool input schema omits additionalProperties: false
 
 - Provider: `lintai-ai-security`
+- Alias: `ANTHROPIC-STRICT-ADDITIONAL-PROPERTIES`
 - Scope: `per_file`
 - Surface: `tool_json`
 - Detection: `structural`
@@ -641,9 +670,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC319` — server.json remotes entry uses an insecure or non-public remote URL
+### `SEC319 / SERVER-REMOTE-URL` — server.json remotes entry uses an insecure or non-public remote URL
 
 - Provider: `lintai-ai-security`
+- Alias: `SERVER-REMOTE-URL`
 - Scope: `per_file`
 - Surface: `server_json`
 - Detection: `structural`
@@ -661,9 +691,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC320` — server.json remotes URL references an undefined template variable
+### `SEC320 / SERVER-UNDEFINED-URL-VAR` — server.json remotes URL references an undefined template variable
 
 - Provider: `lintai-ai-security`
+- Alias: `SERVER-UNDEFINED-URL-VAR`
 - Scope: `per_file`
 - Surface: `server_json`
 - Detection: `structural`
@@ -681,9 +712,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC321` — server.json remotes header commits literal authentication material
+### `SEC321 / SERVER-LITERAL-AUTH-HEADER` — server.json remotes header commits literal authentication material
 
 - Provider: `lintai-ai-security`
+- Alias: `SERVER-LITERAL-AUTH-HEADER`
 - Scope: `per_file`
 - Surface: `server_json`
 - Detection: `structural`
@@ -701,9 +733,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC322` — server.json remotes header value references an undefined template variable
+### `SEC322 / SERVER-UNDEFINED-HEADER-VAR` — server.json remotes header value references an undefined template variable
 
 - Provider: `lintai-ai-security`
+- Alias: `SERVER-UNDEFINED-HEADER-VAR`
 - Scope: `per_file`
 - Surface: `server_json`
 - Detection: `structural`
@@ -721,9 +754,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC323` — server.json auth header carries material without an explicit secret flag
+### `SEC323 / SERVER-AUTH-SECRET-FLAG` — server.json auth header carries material without an explicit secret flag
 
 - Provider: `lintai-ai-security`
+- Alias: `SERVER-AUTH-SECRET-FLAG`
 - Scope: `per_file`
 - Surface: `server_json`
 - Detection: `structural`
@@ -737,9 +771,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
-### `SEC324` — GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA
+### `SEC324 / GHA-UNPINNED-ACTION` — GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA
 
 - Provider: `lintai-ai-security`
+- Alias: `GHA-UNPINNED-ACTION`
 - Scope: `per_file`
 - Surface: `github_workflow`
 - Detection: `structural`
@@ -757,9 +792,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
-### `SEC325` — GitHub Actions workflow interpolates untrusted expression data directly inside a run command
+### `SEC325 / GHA-UNTRUSTED-RUN-INTERPOLATION` — GitHub Actions workflow interpolates untrusted expression data directly inside a run command
 
 - Provider: `lintai-ai-security`
+- Alias: `GHA-UNTRUSTED-RUN-INTERPOLATION`
 - Scope: `per_file`
 - Surface: `github_workflow`
 - Detection: `structural`
@@ -773,9 +809,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
-### `SEC326` — GitHub Actions pull_request_target workflow checks out untrusted pull request head content
+### `SEC326 / GHA-PR-TARGET-HEAD-CHECKOUT` — GitHub Actions pull_request_target workflow checks out untrusted pull request head content
 
 - Provider: `lintai-ai-security`
+- Alias: `GHA-PR-TARGET-HEAD-CHECKOUT`
 - Scope: `per_file`
 - Surface: `github_workflow`
 - Detection: `structural`
@@ -793,9 +830,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC327` — GitHub Actions workflow grants GITHUB_TOKEN write-all permissions
+### `SEC327 / GHA-WRITE-ALL-PERMISSIONS` — GitHub Actions workflow grants GITHUB_TOKEN write-all permissions
 
 - Provider: `lintai-ai-security`
+- Alias: `GHA-WRITE-ALL-PERMISSIONS`
 - Scope: `per_file`
 - Surface: `github_workflow`
 - Detection: `structural`
@@ -813,9 +851,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC328` — GitHub Actions workflow combines explicit write-capable permissions with a third-party action
+### `SEC328 / GHA-WRITE-CAPABLE-THIRD-PARTY-ACTION` — GitHub Actions workflow combines explicit write-capable permissions with a third-party action
 
 - Provider: `lintai-ai-security`
+- Alias: `GHA-WRITE-CAPABLE-THIRD-PARTY-ACTION`
 - Scope: `per_file`
 - Surface: `github_workflow`
 - Detection: `structural`
@@ -829,9 +868,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
-### `SEC329` — MCP configuration launches tooling through a mutable package runner
+### `SEC329 / MCP-MUTABLE-LAUNCHER` — MCP configuration launches tooling through a mutable package runner
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-MUTABLE-LAUNCHER`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -849,9 +889,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC330` — MCP configuration command downloads remote content and pipes it into a shell
+### `SEC330 / MCP-DOWNLOAD-EXEC` — MCP configuration command downloads remote content and pipes it into a shell
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-DOWNLOAD-EXEC`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -869,9 +910,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC331` — MCP configuration command disables TLS verification in a network-capable execution path
+### `SEC331 / MCP-TLS-BYPASS` — MCP configuration command disables TLS verification in a network-capable execution path
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-TLS-BYPASS`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -889,9 +931,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC335` — AI-native markdown contains a direct cloud metadata-service access example
+### `SEC335 / MD-METADATA-SERVICE-ACCESS` — AI-native markdown contains a direct cloud metadata-service access example
 
 - Provider: `lintai-ai-security`
+- Alias: `MD-METADATA-SERVICE-ACCESS`
 - Scope: `per_file`
 - Surface: `markdown`
 - Detection: `structural`
@@ -905,9 +948,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
-### `SEC336` — Repo-local MCP client config loads a broad dotenv-style envFile
+### `SEC336 / MCP-BROAD-ENVFILE` — Repo-local MCP client config loads a broad dotenv-style envFile
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-BROAD-ENVFILE`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -921,9 +965,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
-### `SEC337` — MCP configuration launches Docker with an image reference that is not digest-pinned
+### `SEC337 / MCP-DOCKER-UNPINNED-IMAGE` — MCP configuration launches Docker with an image reference that is not digest-pinned
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-DOCKER-UNPINNED-IMAGE`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -941,9 +986,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC338` — MCP configuration launches Docker with a bind mount of sensitive host material
+### `SEC338 / MCP-DOCKER-SENSITIVE-MOUNT` — MCP configuration launches Docker with a bind mount of sensitive host material
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-DOCKER-SENSITIVE-MOUNT`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -961,9 +1007,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC339` — MCP configuration launches Docker with a host-escape or privileged runtime flag
+### `SEC339 / MCP-DOCKER-HOST-ESCAPE` — MCP configuration launches Docker with a host-escape or privileged runtime flag
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-DOCKER-HOST-ESCAPE`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -981,9 +1028,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC340` — Claude settings command hook uses a mutable package launcher
+### `SEC340 / CLAUDE-HOOK-MUTABLE-LAUNCHER` — Claude settings command hook uses a mutable package launcher
 
 - Provider: `lintai-ai-security`
+- Alias: `CLAUDE-HOOK-MUTABLE-LAUNCHER`
 - Scope: `per_file`
 - Surface: `claude_settings`
 - Detection: `structural`
@@ -1001,9 +1049,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC341` — Claude settings command hook downloads remote content and pipes it into a shell
+### `SEC341 / CLAUDE-HOOK-DOWNLOAD-EXEC` — Claude settings command hook downloads remote content and pipes it into a shell
 
 - Provider: `lintai-ai-security`
+- Alias: `CLAUDE-HOOK-DOWNLOAD-EXEC`
 - Scope: `per_file`
 - Surface: `claude_settings`
 - Detection: `structural`
@@ -1021,9 +1070,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC342` — Claude settings command hook disables TLS verification in a network-capable execution path
+### `SEC342 / CLAUDE-HOOK-TLS-BYPASS` — Claude settings command hook disables TLS verification in a network-capable execution path
 
 - Provider: `lintai-ai-security`
+- Alias: `CLAUDE-HOOK-TLS-BYPASS`
 - Scope: `per_file`
 - Surface: `claude_settings`
 - Detection: `structural`
@@ -1041,9 +1091,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC343` — Plugin hook command uses a mutable package launcher
+### `SEC343 / PLUGIN-HOOK-MUTABLE-LAUNCHER` — Plugin hook command uses a mutable package launcher
 
 - Provider: `lintai-ai-security`
+- Alias: `PLUGIN-HOOK-MUTABLE-LAUNCHER`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -1061,9 +1112,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC344` — Plugin hook command downloads remote content and pipes it into a shell
+### `SEC344 / PLUGIN-HOOK-DOWNLOAD-EXEC` — Plugin hook command downloads remote content and pipes it into a shell
 
 - Provider: `lintai-ai-security`
+- Alias: `PLUGIN-HOOK-DOWNLOAD-EXEC`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -1081,9 +1133,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC345` — Plugin hook command disables TLS verification in a network-capable execution path
+### `SEC345 / PLUGIN-HOOK-TLS-BYPASS` — Plugin hook command disables TLS verification in a network-capable execution path
 
 - Provider: `lintai-ai-security`
+- Alias: `PLUGIN-HOOK-TLS-BYPASS`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -1101,9 +1154,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC346` — MCP configuration forces Docker to refresh from a mutable registry source
+### `SEC346 / MCP-DOCKER-PULL-ALWAYS` — MCP configuration forces Docker to refresh from a mutable registry source
 
 - Provider: `lintai-ai-security`
+- Alias: `MCP-DOCKER-PULL-ALWAYS`
 - Scope: `per_file`
 - Surface: `json`
 - Detection: `structural`
@@ -1121,9 +1175,10 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
-### `SEC347` — AI-native markdown example launches MCP through a mutable package runner
+### `SEC347 / MD-MCP-MUTABLE-LAUNCHER` — AI-native markdown example launches MCP through a mutable package runner
 
 - Provider: `lintai-ai-security`
+- Alias: `MD-MCP-MUTABLE-LAUNCHER`
 - Scope: `per_file`
 - Surface: `markdown`
 - Detection: `structural`
@@ -1137,9 +1192,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
-### `SEC348` — AI-native markdown Docker example uses a mutable registry image
+### `SEC348 / MD-DOCKER-MUTABLE-IMAGE` — AI-native markdown Docker example uses a mutable registry image
 
 - Provider: `lintai-ai-security`
+- Alias: `MD-DOCKER-MUTABLE-IMAGE`
 - Scope: `per_file`
 - Surface: `markdown`
 - Detection: `structural`
@@ -1153,9 +1209,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
-### `SEC349` — AI-native markdown Docker example uses a host-escape or privileged runtime pattern
+### `SEC349 / MD-DOCKER-HOST-ESCAPE` — AI-native markdown Docker example uses a host-escape or privileged runtime pattern
 
 - Provider: `lintai-ai-security`
+- Alias: `MD-DOCKER-HOST-ESCAPE`
 - Scope: `per_file`
 - Surface: `markdown`
 - Detection: `structural`
@@ -1169,9 +1226,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
-### `SEC350` — Instruction markdown promotes untrusted external content to developer/system-level instructions
+### `SEC350 / MD-UNTRUSTED-INSTRUCTION-PROMOTION` — Instruction markdown promotes untrusted external content to developer/system-level instructions
 
 - Provider: `lintai-ai-security`
+- Alias: `MD-UNTRUSTED-INSTRUCTION-PROMOTION`
 - Scope: `per_file`
 - Surface: `markdown`
 - Detection: `heuristic`
@@ -1185,9 +1243,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.
 - Canonical Note: Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.
 
-### `SEC351` — AI-native instruction explicitly disables user approval or confirmation
+### `SEC351 / MD-APPROVAL-BYPASS` — AI-native instruction explicitly disables user approval or confirmation
 
 - Provider: `lintai-ai-security`
+- Alias: `MD-APPROVAL-BYPASS`
 - Scope: `per_file`
 - Surface: `markdown`
 - Detection: `heuristic`
@@ -1201,9 +1260,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.
 - Canonical Note: Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.
 
-### `SEC352` — AI-native markdown frontmatter grants unscoped Bash tool access
+### `SEC352 / MD-UNSCOPED-BASH` — AI-native markdown frontmatter grants unscoped Bash tool access
 
 - Provider: `lintai-ai-security`
+- Alias: `MD-UNSCOPED-BASH`
 - Scope: `per_file`
 - Surface: `markdown`
 - Detection: `structural`
@@ -1217,9 +1277,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
-### `SEC353` — GitHub Copilot instruction markdown exceeds the 4000-character guidance limit
+### `SEC353 / COPILOT-4K` — GitHub Copilot instruction markdown exceeds the 4000-character guidance limit
 
 - Provider: `lintai-ai-security`
+- Alias: `COPILOT-4K`
 - Scope: `per_file`
 - Surface: `markdown`
 - Detection: `structural`
@@ -1233,9 +1294,10 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
-### `SEC354` — Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter
+### `SEC354 / COPILOT-PATH-APPLYTO` — Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter
 
 - Provider: `lintai-ai-security`
+- Alias: `COPILOT-PATH-APPLYTO`
 - Scope: `per_file`
 - Surface: `markdown`
 - Detection: `structural`
@@ -1251,9 +1313,10 @@ Important behavior:
 
 ## Provider: `lintai-policy-mismatch`
 
-### `SEC401` — Project policy forbids execution, but repository contains executable behavior
+### `SEC401 / POLICY-EXEC-MISMATCH` — Project policy forbids execution, but repository contains executable behavior
 
 - Provider: `lintai-policy-mismatch`
+- Alias: `POLICY-EXEC-MISMATCH`
 - Scope: `workspace`
 - Surface: `workspace`
 - Detection: `structural`
@@ -1267,9 +1330,10 @@ Important behavior:
 - Promotion Requirements: Needs workspace precision review, linked benign/malicious corpus proof, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
-### `SEC402` — Project policy forbids network access, but repository contains network behavior
+### `SEC402 / POLICY-NETWORK-MISMATCH` — Project policy forbids network access, but repository contains network behavior
 
 - Provider: `lintai-policy-mismatch`
+- Alias: `POLICY-NETWORK-MISMATCH`
 - Scope: `workspace`
 - Surface: `workspace`
 - Detection: `structural`
@@ -1283,9 +1347,10 @@ Important behavior:
 - Promotion Requirements: Needs workspace precision review, linked benign/malicious corpus proof, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
-### `SEC403` — Skill frontmatter capabilities conflict with project policy
+### `SEC403 / POLICY-SKILL-CAPABILITIES-MISMATCH` — Skill frontmatter capabilities conflict with project policy
 
 - Provider: `lintai-policy-mismatch`
+- Alias: `POLICY-SKILL-CAPABILITIES-MISMATCH`
 - Scope: `workspace`
 - Surface: `workspace`
 - Detection: `structural`

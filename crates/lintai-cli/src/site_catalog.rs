@@ -5,7 +5,7 @@ use serde::Serialize;
 use crate::shipped_rules::{
     CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleLifecycle, CatalogSurface,
     RuleScope, SecurityRuleCatalogEntry, canonical_rule_path, provider_slug, provider_sort_key,
-    rule_slug, shipped_security_rule_catalog_entries,
+    rule_slug, shipped_rule_alias, shipped_security_rule_catalog_entries,
 };
 
 #[derive(Debug, Serialize)]
@@ -49,6 +49,8 @@ struct SiteRule {
     provider_id: String,
     provider_slug: String,
     display_code: Option<String>,
+    alias: Option<String>,
+    display_label: String,
     doc_title: String,
     slug: String,
     canonical_path: String,
@@ -213,12 +215,20 @@ fn site_rule(
         .expect("provider slug should exist")
         .clone();
     let slug = rule_slug(entry.metadata.code);
+    let alias = shipped_rule_alias(entry.metadata.code).map(str::to_owned);
+    let display_code = entry.metadata.code.to_owned();
+    let display_label = alias
+        .as_ref()
+        .map(|alias| format!("{display_code} / {alias}"))
+        .unwrap_or_else(|| display_code.clone());
 
     SiteRule {
         rule_id: format!("{}:{}", entry.provider_id, entry.metadata.code),
         provider_id: entry.provider_id.to_owned(),
         provider_slug: provider_slug.clone(),
-        display_code: Some(entry.metadata.code.to_owned()),
+        display_code: Some(display_code),
+        alias,
+        display_label,
         doc_title: entry.metadata.doc_title.to_owned(),
         slug: slug.clone(),
         canonical_path: canonical_rule_path(entry.provider_id, entry.metadata.code),
@@ -464,6 +474,12 @@ mod tests {
         assert_eq!(sec101.doc_title, "HTML comment: dangerous instructions");
         assert_eq!(sec340.doc_title, "Claude hook: mutable package launcher");
         assert_eq!(sec401.doc_title, "Policy mismatch: execution");
+        assert_eq!(sec101.alias.as_deref(), Some("MD-HIDDEN-INSTRUCTIONS"));
+        assert_eq!(
+            sec340.alias.as_deref(),
+            Some("CLAUDE-HOOK-MUTABLE-LAUNCHER")
+        );
+        assert_eq!(sec401.alias.as_deref(), Some("POLICY-EXEC-MISMATCH"));
     }
 
     #[test]

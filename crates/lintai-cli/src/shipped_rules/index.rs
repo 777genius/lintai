@@ -7,13 +7,22 @@ use super::shipped_security_rule_catalog_entries;
 
 const DOCS_SITE_URL: &str = "https://777genius.github.io/lintai";
 
-static SHIPPED_RULE_DOCS_INDEX: LazyLock<BTreeMap<&'static str, (&'static str, &'static str)>> =
+#[derive(Clone, Copy)]
+struct ShippedRuleDocIndexEntry {
+    provider_id: &'static str,
+    doc_title: &'static str,
+}
+
+static SHIPPED_RULE_DOCS_INDEX: LazyLock<BTreeMap<&'static str, ShippedRuleDocIndexEntry>> =
     LazyLock::new(|| {
         let mut index = BTreeMap::new();
         for entry in shipped_security_rule_catalog_entries() {
             index.insert(
                 entry.metadata.code,
-                (entry.provider_id, entry.metadata.doc_title),
+                ShippedRuleDocIndexEntry {
+                    provider_id: entry.provider_id,
+                    doc_title: entry.metadata.doc_title,
+                },
             );
         }
         index
@@ -49,19 +58,17 @@ pub(crate) fn canonical_rule_path(provider_id: &str, rule_code: &str) -> String 
 pub(crate) fn shipped_rule_doc_title(rule_code: &str) -> Option<&'static str> {
     SHIPPED_RULE_DOCS_INDEX
         .get(rule_code)
-        .map(|(_, doc_title)| *doc_title)
+        .map(|entry| entry.doc_title)
 }
 
 pub(crate) fn shipped_rule_docs_url(rule_code: &str) -> Option<String> {
-    SHIPPED_RULE_DOCS_INDEX
-        .get(rule_code)
-        .map(|(provider_id, _)| {
-            format!(
-                "{}{}",
-                docs_site_url(),
-                canonical_rule_path(provider_id, rule_code)
-            )
-        })
+    SHIPPED_RULE_DOCS_INDEX.get(rule_code).map(|entry| {
+        format!(
+            "{}{}",
+            docs_site_url(),
+            canonical_rule_path(entry.provider_id, rule_code)
+        )
+    })
 }
 
 pub(crate) fn provider_sort_key(provider_id: &str) -> usize {
@@ -91,6 +98,8 @@ fn slugify(input: &str) -> String {
 
 #[cfg(test)]
 mod tests {
+    use crate::shipped_rules::shipped_rule_alias;
+
     use super::{
         canonical_rule_path, docs_site_url, shipped_rule_doc_title, shipped_rule_docs_url,
     };
@@ -113,6 +122,8 @@ mod tests {
             shipped_rule_doc_title("SEC340"),
             Some("Claude hook: mutable package launcher")
         );
+        assert_eq!(shipped_rule_alias("SEC353"), Some("COPILOT-4K"));
+        assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");
     }

@@ -3,7 +3,7 @@ use std::collections::BTreeSet;
 use super::format::{escape_markdown_table_cell, escape_markdown_text, render_inline_code};
 use super::render_security_rules_markdown;
 use crate::shipped_rules::{
-    CatalogDetectionClass, CatalogRuleLifecycle, provider_sort_key,
+    CatalogDetectionClass, CatalogRuleLifecycle, provider_sort_key, shipped_rule_alias,
     shipped_security_rule_catalog_entries,
 };
 use lintai_ai_security::{NativeCatalogDetectionClass, native_rule_catalog_entries};
@@ -136,10 +136,14 @@ fn detail_sections_cover_every_provider_and_rule() {
 
     for entry in shipped_security_rule_catalog_entries() {
         provider_ids.insert(entry.provider_id);
+        let rendered_code = match shipped_rule_alias(entry.metadata.code) {
+            Some(alias) => render_inline_code(&format!("{} / {}", entry.metadata.code, alias)),
+            None => render_inline_code(entry.metadata.code),
+        };
         assert!(
             markdown.contains(&format!(
                 "### {} — {}",
-                render_inline_code(entry.metadata.code),
+                rendered_code,
                 escape_markdown_text(entry.metadata.summary)
             )),
             "missing detail section for {}",

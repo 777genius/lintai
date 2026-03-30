@@ -3,7 +3,7 @@ use std::collections::BTreeSet;
 use lintai_api::Severity;
 
 use super::model::ReportEnvelope;
-use crate::shipped_rules::{shipped_rule_doc_title, shipped_rule_docs_url};
+use crate::shipped_rules::{shipped_rule_alias, shipped_rule_doc_title, shipped_rule_docs_url};
 
 pub(crate) fn format_sarif(report: &ReportEnvelope<'_>) -> Result<String, serde_json::Error> {
     let mut results = report
@@ -79,10 +79,19 @@ pub(crate) fn format_sarif(report: &ReportEnvelope<'_>) -> Result<String, serde_
         if !seen_finding_rules.insert(finding.rule_code.clone()) {
             continue;
         }
+        let short_description = match (
+            shipped_rule_alias(&finding.rule_code),
+            shipped_rule_doc_title(&finding.rule_code),
+        ) {
+            (Some(alias), Some(title)) => format!("{alias} — {title}"),
+            (Some(alias), None) => alias.to_owned(),
+            (None, Some(title)) => title.to_owned(),
+            (None, None) => finding.rule_code.clone(),
+        };
         let mut descriptor = serde_json::json!({
             "id": finding.rule_code,
             "shortDescription": {
-                "text": shipped_rule_doc_title(&finding.rule_code).unwrap_or(finding.rule_code.as_str())
+                "text": short_description
             },
             "properties": {
                 "tags": finding.tags,

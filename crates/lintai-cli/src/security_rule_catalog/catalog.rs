@@ -3,7 +3,14 @@ use crate::security_rule_catalog::format::{
     format_confidence, format_detection, format_presets, format_remediation, format_scope,
     format_severity, format_surface, format_tier, render_inline_code,
 };
-use crate::shipped_rules::{CatalogRuleLifecycle, SecurityRuleCatalogEntry};
+use crate::shipped_rules::{CatalogRuleLifecycle, SecurityRuleCatalogEntry, shipped_rule_alias};
+
+fn render_rule_identity(code: &str) -> String {
+    match shipped_rule_alias(code) {
+        Some(alias) => render_inline_code(&format!("{code} / {alias}")),
+        None => render_inline_code(code),
+    }
+}
 
 pub(super) fn provider_ids(entries: &[SecurityRuleCatalogEntry]) -> Vec<&'static str> {
     let mut provider_ids = Vec::new();
@@ -39,7 +46,7 @@ pub(super) fn render_summary(entries: &[SecurityRuleCatalogEntry]) -> Vec<String
     for entry in summary_entries {
         lines.push(format!(
             "| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |",
-            render_inline_code(entry.metadata.code),
+            render_rule_identity(entry.metadata.code),
             escape_markdown_table_cell(entry.metadata.summary),
             format_tier(entry.metadata.tier),
             render_inline_code(entry.lifecycle_state()),
@@ -105,11 +112,17 @@ fn render_detail_section(entry: SecurityRuleCatalogEntry) -> Vec<String> {
         String::new(),
         format!(
             "### {} — {}",
-            render_inline_code(entry.metadata.code),
+            render_rule_identity(entry.metadata.code),
             escape_markdown_text(entry.metadata.summary)
         ),
         String::new(),
         format!("- Provider: {}", render_inline_code(entry.provider_id)),
+        format!(
+            "- Alias: {}",
+            shipped_rule_alias(entry.metadata.code)
+                .map(render_inline_code)
+                .unwrap_or_else(|| render_inline_code("none"))
+        ),
         format!("- Scope: {}", render_inline_code(format_scope(entry.scope))),
         format!(
             "- Surface: {}",

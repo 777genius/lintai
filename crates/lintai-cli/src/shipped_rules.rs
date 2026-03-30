@@ -1,3 +1,5 @@
+#[path = "shipped_rules/aliases.rs"]
+mod aliases;
 #[path = "shipped_rules/index.rs"]
 mod index;
 #[path = "shipped_rules/map.rs"]
@@ -5,6 +7,7 @@ mod map;
 #[path = "shipped_rules/model.rs"]
 mod model;
 
+pub(crate) use aliases::{shipped_rule_alias, shipped_rule_display_label};
 pub(crate) use index::{
     canonical_rule_path, provider_slug, provider_sort_key, rule_slug, shipped_rule_doc_title,
     shipped_rule_docs_url, shipped_rule_tiers,
