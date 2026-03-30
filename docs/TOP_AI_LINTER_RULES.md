@@ -122,6 +122,11 @@
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9.5/10`
   - почему важно: даёт понятный quality contract для shared `.claude/settings.json`, улучшает editor validation и делает командные Claude settings проще для ревью и поддержки
+- `SEC362` — Claude settings permissions allow `Bash(*)` in a shared committed config
+  - статус: `Preview`
+  - community usefulness сейчас: `9/10`
+  - надёжность: `9/10`
+  - почему важно: ловит прямой overly-broad shell grant в shared Claude settings; для AI infra это более practically actionable signal, чем broad prose guidance
 
 ### Минимальный релизный набор (1-й проход)
 

@@ -2,10 +2,23 @@ use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
 
 use super::*;
 use crate::claude_settings_rules::{
-    check_claude_settings_inline_download_exec, check_claude_settings_missing_schema,
-    check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
+    check_claude_settings_bash_wildcard, check_claude_settings_inline_download_exec,
+    check_claude_settings_missing_schema, check_claude_settings_mutable_launcher,
+    check_claude_settings_network_tls_bypass,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
+
+declare_rule! {
+    pub struct ClaudeSettingsBashWildcardRule {
+        code: "SEC362",
+        summary: "Claude settings permissions allow `Bash(*)` in a shared committed config",
+        doc_title: "Claude settings: wildcard Bash permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
 
 declare_rule! {
     pub struct ClaudeSettingsMissingSchemaRule {
@@ -55,7 +68,23 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 4] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
+    NativeRuleSpec {
+        metadata: ClaudeSettingsBashWildcardRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Wildcard Bash grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_bash_wildcard,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `Bash(*)` with a narrower allowlist of reviewed command patterns in the committed Claude settings file",
+        ),
+        suggestion_fix: None,
+    },
     NativeRuleSpec {
         metadata: ClaudeSettingsMissingSchemaRule::METADATA,
         surface: Surface::ClaudeSettings,

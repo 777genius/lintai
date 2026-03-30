@@ -1,7 +1,7 @@
 use lintai_api::{ArtifactKind, ScanContext, Span};
 
 use crate::helpers::json_semantics;
-use crate::json_locator::JsonLocationMap;
+use crate::json_locator::{JsonLocationMap, JsonPathSegment};
 
 use super::shared::{
     json::visit_claude_settings_value, markdown::is_fixture_like_claude_settings_path,
@@ -13,6 +13,25 @@ fn leading_json_file_relative_span(content: &str) -> Option<Span> {
         .char_indices()
         .find(|(_, ch)| !ch.is_whitespace())
         .map(|(index, ch)| Span::new(index, index + ch.len_utf8()))
+}
+
+fn resolve_permissions_allow_bash_wildcard_span(
+    value: &serde_json::Value,
+    locator: Option<&JsonLocationMap>,
+) -> Option<Span> {
+    let allow = value
+        .get("permissions")
+        .and_then(|permissions| permissions.get("allow"))
+        .and_then(serde_json::Value::as_array)?;
+    let index = allow
+        .iter()
+        .position(|entry| entry.as_str() == Some("Bash(*)"))?;
+    let path = vec![
+        JsonPathSegment::Key("permissions".to_owned()),
+        JsonPathSegment::Key("allow".to_owned()),
+        JsonPathSegment::Index(index),
+    ];
+    locator.and_then(|locator| locator.value_span(&path).cloned())
 }
 
 impl ClaudeSettingsSignals {
@@ -39,6 +58,8 @@ impl ClaudeSettingsSignals {
         if value.is_object() && !value.get("$schema").is_some() {
             signals.missing_schema_span = leading_json_file_relative_span(&ctx.content);
         }
+        signals.bash_wildcard_span =
+            resolve_permissions_allow_bash_wildcard_span(value, locator_ref.as_ref());
         let mut path = Vec::new();
         visit_claude_settings_value(
             value,

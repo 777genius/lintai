@@ -21,6 +21,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "agents-autonomy-without-bypass-safe",
             "agents-untrusted-input-warning-safe",
             "claude-never-header-approval-safe",
+            "claude-settings-bash-specific-safe",
             "claude-settings-network-command-safe",
             "claude-settings-network-tls-verified-safe",
             "claude-settings-pinned-launcher-safe",

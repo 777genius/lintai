@@ -23,6 +23,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "agents-pr-body-override",
             "claude-markdown-mutable-mcp-launcher",
             "claude-sensitive-action-without-permission",
+            "claude-settings-bash-wildcard",
             "claude-settings-command-tls-bypass",
             "claude-settings-inline-download-exec",
             "claude-settings-missing-schema",
