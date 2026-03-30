@@ -1,0 +1,5 @@
+id = "claude-settings-glob-wildcard"
+kind = "malicious"
+entry = "repo/.claude/settings.json"
+
+expected_findings = ["SEC375"]

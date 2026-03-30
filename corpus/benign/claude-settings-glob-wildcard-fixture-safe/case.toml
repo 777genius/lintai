@@ -1,0 +1,3 @@
+id = "claude-settings-glob-wildcard-fixture-safe"
+kind = "benign"
+entry = "repo/tests/fixtures/.claude/settings.json"

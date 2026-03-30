@@ -28,6 +28,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-settings-command-tls-bypass",
             "claude-settings-dangerous-http-hook-host",
             "claude-settings-edit-wildcard",
+            "claude-settings-glob-wildcard",
             "claude-settings-http-hook-url",
             "claude-settings-home-directory-hook-path",
             "claude-settings-inline-download-exec",

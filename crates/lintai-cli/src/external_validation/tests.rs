@@ -236,6 +236,7 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(markdown.contains("`SEC372` Claude settings wildcard `Read(*)` permissions: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings wildcard `Edit(*)` permissions: `0`"));
     assert!(markdown.contains("`SEC374` Claude settings wildcard `WebSearch(*)` permissions: `0`"));
+    assert!(markdown.contains("`SEC375` Claude settings wildcard `Glob(*)` permissions: `0`"));
     assert!(markdown.contains("- repos with `tool_descriptor_json`: `1`"));
     assert!(markdown.contains(
         "- repos where new MCP client-config variants existed only under fixture-like paths: `0`"
@@ -338,6 +339,10 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(
         markdown
             .contains("- `SEC374` produced no repo-level preview hits yet on the canonical cohort")
+    );
+    assert!(
+        markdown
+            .contains("- `SEC375` produced no repo-level preview hits yet on the canonical cohort")
     );
     assert!(markdown.contains("## Delta From Previous Wave"));
     assert!(markdown.contains("`datadog-labs/cursor-plugin`: `improved`"));
@@ -801,4 +806,5 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC372` Claude settings files allowing `Read(*)`: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings files allowing `Edit(*)`: `0`"));
     assert!(markdown.contains("`SEC374` Claude settings files allowing `WebSearch(*)`: `0`"));
+    assert!(markdown.contains("`SEC375` Claude settings files allowing `Glob(*)`: `0`"));
 }

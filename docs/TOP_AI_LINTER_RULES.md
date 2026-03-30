@@ -187,6 +187,11 @@
   - community usefulness сейчас: `8.5/10`
   - надёжность: `8.5/10`
   - почему важно: wildcard search grant в shared AI config задаёт слишком широкую external-information surface; это понятный least-privilege signal для AI workflows, где search должен быть reviewable и scoped
+- `SEC375` — Claude settings permissions allow `Glob(*)` in a shared committed config
+  - статус: `Preview`
+  - community usefulness сейчас: `8.5/10`
+  - надёжность: `9/10`
+  - почему важно: wildcard file-discovery grant в shared AI config слишком широко раскрывает workspace surface; сообществу это легко объяснить как exact least-privilege smell без prose-эвристик
 
 ### Минимальный релизный набор (1-й проход)
 

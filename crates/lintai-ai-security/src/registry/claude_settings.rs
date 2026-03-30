@@ -4,7 +4,7 @@ use super::*;
 use crate::claude_settings_rules::{
     check_claude_settings_bash_wildcard, check_claude_settings_bypass_permissions,
     check_claude_settings_dangerous_http_hook_host, check_claude_settings_edit_wildcard,
-    check_claude_settings_external_absolute_hook_command,
+    check_claude_settings_external_absolute_hook_command, check_claude_settings_glob_wildcard,
     check_claude_settings_home_directory_hook_command, check_claude_settings_inline_download_exec,
     check_claude_settings_insecure_http_hook_url, check_claude_settings_missing_schema,
     check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
@@ -54,6 +54,18 @@ declare_rule! {
         code: "SEC374",
         summary: "Claude settings permissions allow `WebSearch(*)` in a shared committed config",
         doc_title: "Claude settings: wildcard WebSearch permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGlobWildcardRule {
+        code: "SEC375",
+        summary: "Claude settings permissions allow `Glob(*)` in a shared committed config",
+        doc_title: "Claude settings: wildcard Glob permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -193,7 +205,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 15] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 16] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsWriteWildcardRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -255,6 +267,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 15] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace `WebSearch(*)` with a narrower allowlist of reviewed search patterns or remove broad search access from the shared Claude settings file",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGlobWildcardRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Wildcard Glob grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_glob_wildcard,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `Glob(*)` with a narrower allowlist of reviewed glob patterns or remove broad file-discovery access from the shared Claude settings file",
         ),
         suggestion_fix: None,
     },
