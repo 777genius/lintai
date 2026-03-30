@@ -24,6 +24,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-markdown-mutable-mcp-launcher",
             "claude-sensitive-action-without-permission",
             "claude-settings-bash-wildcard",
+            "claude-settings-bypass-permissions",
             "claude-settings-command-tls-bypass",
             "claude-settings-home-directory-hook-path",
             "claude-settings-inline-download-exec",

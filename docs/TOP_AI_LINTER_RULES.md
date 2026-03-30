@@ -132,6 +132,11 @@
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9/10`
   - почему важно: ловит не-portable shared Claude hook wiring; для AI команд это понятный config smell, который легко чинится переходом на `$CLAUDE_PROJECT_DIR`
+- `SEC364` — Claude settings set `permissions.defaultMode` to `bypassPermissions` in a shared committed config
+  - статус: `Preview`
+  - community usefulness сейчас: `8.5/10`
+  - надёжность: `9/10`
+  - почему важно: это очень явный over-agency smell в shared Claude policy; сообществу легко объяснить, почему committed bypass default хуже, чем явные reviewed allowlists
 
 ### Минимальный релизный набор (1-й проход)
 

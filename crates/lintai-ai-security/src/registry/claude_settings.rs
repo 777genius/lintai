@@ -2,11 +2,24 @@ use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
 
 use super::*;
 use crate::claude_settings_rules::{
-    check_claude_settings_bash_wildcard, check_claude_settings_home_directory_hook_command,
-    check_claude_settings_inline_download_exec, check_claude_settings_missing_schema,
-    check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
+    check_claude_settings_bash_wildcard, check_claude_settings_bypass_permissions,
+    check_claude_settings_home_directory_hook_command, check_claude_settings_inline_download_exec,
+    check_claude_settings_missing_schema, check_claude_settings_mutable_launcher,
+    check_claude_settings_network_tls_bypass,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
+
+declare_rule! {
+    pub struct ClaudeSettingsBypassPermissionsRule {
+        code: "SEC364",
+        summary: "Claude settings set `permissions.defaultMode` to `bypassPermissions` in a shared committed config",
+        doc_title: "Claude settings: bypassPermissions default mode",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
 
 declare_rule! {
     pub struct ClaudeSettingsHomeDirectoryHookCommandRule {
@@ -80,7 +93,23 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 6] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 7] = [
+    NativeRuleSpec {
+        metadata: ClaudeSettingsBypassPermissionsRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Committed Claude settings with `permissions.defaultMode = bypassPermissions` are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_bypass_permissions,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `permissions.defaultMode = bypassPermissions` with a narrower shared permissions mode and explicit reviewed allowlists",
+        ),
+        suggestion_fix: None,
+    },
     NativeRuleSpec {
         metadata: ClaudeSettingsHomeDirectoryHookCommandRule::METADATA,
         surface: Surface::ClaudeSettings,

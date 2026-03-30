@@ -34,6 +34,24 @@ fn resolve_permissions_allow_bash_wildcard_span(
     locator.and_then(|locator| locator.value_span(&path).cloned())
 }
 
+fn resolve_bypass_permissions_span(
+    value: &serde_json::Value,
+    locator: Option<&JsonLocationMap>,
+) -> Option<Span> {
+    let mode = value
+        .get("permissions")
+        .and_then(|permissions| permissions.get("defaultMode"))
+        .and_then(serde_json::Value::as_str)?;
+    if mode != "bypassPermissions" {
+        return None;
+    }
+    let path = vec![
+        JsonPathSegment::Key("permissions".to_owned()),
+        JsonPathSegment::Key("defaultMode".to_owned()),
+    ];
+    locator.and_then(|locator| locator.value_span(&path).cloned())
+}
+
 impl ClaudeSettingsSignals {
     pub(super) fn from_context(ctx: &ScanContext, metrics: &mut SignalWorkBudget) -> Option<Self> {
         if ctx.artifact.kind != ArtifactKind::ClaudeSettings {
@@ -55,6 +73,8 @@ impl ClaudeSettingsSignals {
         if signals.fixture_like_path {
             return Some(signals);
         }
+        signals.bypass_permissions_span =
+            resolve_bypass_permissions_span(value, locator_ref.as_ref());
         if value.is_object() && !value.get("$schema").is_some() {
             signals.missing_schema_span = leading_json_file_relative_span(&ctx.content);
         }

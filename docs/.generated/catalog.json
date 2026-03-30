@@ -93,7 +93,8 @@
         "lintai-ai-security:SEC360",
         "lintai-ai-security:SEC361",
         "lintai-ai-security:SEC362",
-        "lintai-ai-security:SEC363"
+        "lintai-ai-security:SEC363",
+        "lintai-ai-security:SEC364"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -194,7 +195,8 @@
         "lintai-ai-security:SEC342",
         "lintai-ai-security:SEC361",
         "lintai-ai-security:SEC362",
-        "lintai-ai-security:SEC363"
+        "lintai-ai-security:SEC363",
+        "lintai-ai-security:SEC364"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -2741,6 +2743,37 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Home-directory hook paths in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC364",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC364",
+      "alias": "CLAUDE-BYPASS-PERMISSIONS",
+      "displayLabel": "SEC364 / CLAUDE-BYPASS-PERMISSIONS",
+      "docTitle": "Claude settings: bypassPermissions default mode",
+      "slug": "sec364",
+      "canonicalPath": "/rules/lintai-ai-security/sec364",
+      "summary": "Claude settings set `permissions.defaultMode` to `bypassPermissions` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Committed Claude settings with `permissions.defaultMode = bypassPermissions` are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

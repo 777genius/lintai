@@ -71,6 +71,7 @@ Currently covered admission paths:
 - `SEC361` Claude settings files missing `$schema`: `0`
 - `SEC362` Claude settings files allowing `Bash(*)`: `0`
 - `SEC363` Claude settings files with home-directory hook commands: `0`
+- `SEC364` Claude settings files with `permissions.defaultMode = bypassPermissions`: `0`
 - AI-native markdown preview hits by rule code: `SEC313`=`0`, `SEC335`=`0`, `SEC347`=`1`, `SEC348`=`0`, `SEC349`=`0`, `SEC350`=`0`, `SEC351`=`0`, `SEC352`=`0`, `SEC353`=`0`, `SEC354`=`0`, `SEC355`=`0`, `SEC356`=`0`, `SEC357`=`0`, `SEC358`=`0`, `SEC359`=`0`, `SEC360`=`0`
 - `SEC347` subtype repo hits: CLI-form=`1`, config-snippet-form=`1`
 - current markdown usefulness is still mainly skills / `CLAUDE.md`; plugin-root command docs remain a non-driving surface with `0` admitted covered paths
@@ -96,6 +97,7 @@ Currently covered admission paths:
 - `SEC361` produced no repo-level external preview hits in this wave
 - `SEC362` produced no repo-level external preview hits in this wave
 - `SEC363` produced no repo-level external preview hits in this wave
+- `SEC364` produced no repo-level external preview hits in this wave
 
 ## Runtime / Diagnostic Notes
 

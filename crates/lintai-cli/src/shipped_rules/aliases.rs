@@ -71,6 +71,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC361" => "CLAUDE-SETTINGS-SCHEMA",
         "SEC362" => "CLAUDE-BASH-WILDCARD",
         "SEC363" => "CLAUDE-HOME-HOOK-PATH",
+        "SEC364" => "CLAUDE-BYPASS-PERMISSIONS",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

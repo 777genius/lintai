@@ -22,6 +22,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "agents-untrusted-input-warning-safe",
             "claude-never-header-approval-safe",
             "claude-settings-bash-specific-safe",
+            "claude-settings-bypass-fixture-safe",
+            "claude-settings-bypass-safe",
             "claude-settings-home-directory-fixture-safe",
             "claude-settings-home-directory-redirect-safe",
             "claude-settings-home-directory-safe-project-scoped",
