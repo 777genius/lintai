@@ -72,6 +72,7 @@ Current wave inventory for the newly expanded JSON lanes:
   - `SEC370` path-specific Copilot instructions using the wrong suffix: `0`
   - `SEC371` path-specific Copilot instructions with invalid `applyTo`: `0`
   - `SEC372` Claude settings wildcard `Read(*)` permissions: `0`
+  - `SEC373` Claude settings wildcard `Edit(*)` permissions: `0`
   - current `SEC347` usefulness is being driven mainly by MCP config snippets
 - repos with `tool_descriptor_json`: `3`
 - findings from `SEC314`-`SEC318`: `0`
@@ -106,6 +107,7 @@ Current wave inventory for the newly expanded JSON lanes:
 - `SEC370` produced no repo-level preview hits yet on the canonical cohort
 - `SEC371` produced no repo-level preview hits yet on the canonical cohort
 - `SEC372` produced no repo-level preview hits yet on the canonical cohort
+- `SEC373` produced no repo-level preview hits yet on the canonical cohort
 - fixture/testdata/example suppression stayed active for the newly added MCP client-config variants and did not create a fake usefulness signal from fixture-like paths
 
 ## Delta From Previous Wave

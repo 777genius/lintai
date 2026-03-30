@@ -144,6 +144,8 @@ impl ClaudeSettingsSignals {
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Write(*)");
         signals.read_wildcard_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Read(*)");
+        signals.edit_wildcard_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Edit(*)");
         let mut path = Vec::new();
         visit_claude_settings_value(
             value,

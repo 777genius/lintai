@@ -3,7 +3,7 @@ use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
 use super::*;
 use crate::claude_settings_rules::{
     check_claude_settings_bash_wildcard, check_claude_settings_bypass_permissions,
-    check_claude_settings_dangerous_http_hook_host,
+    check_claude_settings_dangerous_http_hook_host, check_claude_settings_edit_wildcard,
     check_claude_settings_external_absolute_hook_command,
     check_claude_settings_home_directory_hook_command, check_claude_settings_inline_download_exec,
     check_claude_settings_insecure_http_hook_url, check_claude_settings_missing_schema,
@@ -30,6 +30,18 @@ declare_rule! {
         code: "SEC372",
         summary: "Claude settings permissions allow `Read(*)` in a shared committed config",
         doc_title: "Claude settings: wildcard Read permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsEditWildcardRule {
+        code: "SEC373",
+        summary: "Claude settings permissions allow `Edit(*)` in a shared committed config",
+        doc_title: "Claude settings: wildcard Edit permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -169,7 +181,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 14] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsWriteWildcardRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -199,6 +211,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace `Read(*)` with a narrower allowlist of reviewed read patterns or remove broad read access from the shared Claude settings file",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsEditWildcardRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Wildcard Edit grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_edit_wildcard,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `Edit(*)` with a narrower allowlist of reviewed edit patterns or remove broad edit access from the shared Claude settings file",
         ),
         suggestion_fix: None,
     },

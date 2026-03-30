@@ -80,6 +80,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC370" => "COPILOT-PATH-SUFFIX",
         "SEC371" => "COPILOT-APPLYTO-TYPE",
         "SEC372" => "CLAUDE-READ-WILDCARD",
+        "SEC373" => "CLAUDE-EDIT-WILDCARD",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

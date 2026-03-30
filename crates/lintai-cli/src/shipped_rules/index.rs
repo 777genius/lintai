@@ -156,6 +156,7 @@ mod tests {
         assert_eq!(shipped_rule_alias("SEC370"), Some("COPILOT-PATH-SUFFIX"));
         assert_eq!(shipped_rule_alias("SEC371"), Some("COPILOT-APPLYTO-TYPE"));
         assert_eq!(shipped_rule_alias("SEC372"), Some("CLAUDE-READ-WILDCARD"));
+        assert_eq!(shipped_rule_alias("SEC373"), Some("CLAUDE-EDIT-WILDCARD"));
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

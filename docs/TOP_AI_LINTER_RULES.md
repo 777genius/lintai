@@ -177,6 +177,11 @@
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9/10`
   - почему важно: exact wildcard read grant в shared AI config очень легко объяснить сообществу как least-privilege smell; remediation такой же defendable, как у `Write(*)`, но с уклоном в data exposure
+- `SEC373` — Claude settings permissions allow `Edit(*)` in a shared committed config
+  - статус: `Preview`
+  - community usefulness сейчас: `9/10`
+  - надёжность: `9/10`
+  - почему важно: wildcard edit grant в shared AI config напрямую размывает safety boundary для file mutation; сообществу это объяснять почти так же просто, как `Write(*)`, но ещё ближе к повседневому AI coding workflow
 
 ### Минимальный релизный набор (1-й проход)
 
