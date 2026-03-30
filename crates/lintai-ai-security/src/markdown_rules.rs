@@ -291,6 +291,22 @@ pub(crate) fn check_plugin_agent_mcp_servers_frontmatter(
     )
 }
 
+pub(crate) fn check_cursor_rule_always_apply_type(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.cursor_rule_always_apply_type_spans.as_slice())
+            .unwrap_or(&[]),
+        "Cursor rule frontmatter `alwaysApply` must be boolean",
+    )
+}
+
 pub(crate) fn check_copilot_instruction_too_long(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

@@ -212,6 +212,7 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(markdown.contains("`SEC356` plugin agent frontmatter `permissionMode`: `0`"));
     assert!(markdown.contains("`SEC357` plugin agent frontmatter `hooks`: `0`"));
     assert!(markdown.contains("`SEC358` plugin agent frontmatter `mcpServers`: `0`"));
+    assert!(markdown.contains("`SEC359` Cursor rule non-boolean `alwaysApply`: `0`"));
     assert!(markdown.contains("- repos with `tool_descriptor_json`: `1`"));
     assert!(markdown.contains(
         "- repos where new MCP client-config variants existed only under fixture-like paths: `0`"
@@ -262,6 +263,10 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(
         markdown
             .contains("- `SEC358` produced no repo-level preview hits yet on the canonical cohort")
+    );
+    assert!(
+        markdown
+            .contains("- `SEC359` produced no repo-level preview hits yet on the canonical cohort")
     );
     assert!(markdown.contains("## Delta From Previous Wave"));
     assert!(markdown.contains("`datadog-labs/cursor-plugin`: `improved`"));
@@ -691,4 +696,5 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC356`=`0`"));
     assert!(markdown.contains("`SEC357`=`0`"));
     assert!(markdown.contains("`SEC358`=`0`"));
+    assert!(markdown.contains("`SEC359`=`0`"));
 }

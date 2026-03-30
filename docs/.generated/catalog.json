@@ -88,7 +88,8 @@
         "lintai-ai-security:SEC355",
         "lintai-ai-security:SEC356",
         "lintai-ai-security:SEC357",
-        "lintai-ai-security:SEC358"
+        "lintai-ai-security:SEC358",
+        "lintai-ai-security:SEC359"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -129,7 +130,8 @@
         "lintai-ai-security:SEC355",
         "lintai-ai-security:SEC356",
         "lintai-ai-security:SEC357",
-        "lintai-ai-security:SEC358"
+        "lintai-ai-security:SEC358",
+        "lintai-ai-security:SEC359"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -2576,6 +2578,37 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Plugin agent frontmatter can still include unsupported MCP server experiments, so the first release stays spec-guidance-only.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC359",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC359",
+      "alias": "CURSOR-RULE-ALWAYSAPPLY",
+      "displayLabel": "SEC359 / CURSOR-RULE-ALWAYSAPPLY",
+      "docTitle": "Cursor rule: `alwaysApply` type",
+      "slug": "sec359",
+      "canonicalPath": "/rules/lintai-ai-security/sec359",
+      "summary": "Cursor rule frontmatter `alwaysApply` must be boolean",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Cursor rule frontmatter shape mismatches are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

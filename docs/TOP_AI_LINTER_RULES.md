@@ -107,6 +107,11 @@
   - community usefulness сейчас: `7.5/10`
   - надёжность: `9.5/10`
   - почему важно: отделяет plugin agent docs от client/server wiring; сообществу проще ревьюить такие boundary violations, чем широкие prose rules
+- `SEC359` — Cursor rule frontmatter `alwaysApply` must be boolean
+  - статус: `Preview`
+  - community usefulness сейчас: `8/10`
+  - надёжность: `9.5/10`
+  - почему важно: ловит очень понятный contract bug в `.mdc` / `.cursorrules`, из-за которого Cursor rules могут применяться не так, как автор ожидал
 
 ### Минимальный релизный набор (1-й проход)
 

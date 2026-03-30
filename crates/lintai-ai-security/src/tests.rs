@@ -1198,6 +1198,53 @@ fn ignores_plugin_agent_hooks_and_mcp_servers_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_cursor_rule_non_boolean_always_apply() {
+    let content = "---\nalwaysApply: yes\n---\n# Cursor Rule\n";
+    let summary = scan_preview_skill_fixture("rules/review.mdc", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC359")
+        .unwrap();
+    let start = content.find("alwaysApply").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "alwaysApply".len())
+    );
+}
+
+#[test]
+fn ignores_cursor_rule_boolean_always_apply() {
+    let summary = scan_preview_skill_fixture(
+        "rules/review.mdc",
+        "---\nalwaysApply: true\n---\n# Cursor Rule\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC359")
+    );
+}
+
+#[test]
+fn ignores_cursor_rule_non_boolean_always_apply_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/rules/review.mdc",
+        "---\nalwaysApply: yes\n---\n# Fixture Cursor Rule\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC359")
+    );
+}
+
+#[test]
 fn finds_copilot_instruction_file_above_4000_chars() {
     let content = format!("# Copilot\n\n{}\n", "A".repeat(4_100));
     let summary = scan_preview_skill_fixture(".github/copilot-instructions.md", &content);
@@ -3610,6 +3657,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC356"
                         | "SEC357"
                         | "SEC358"
+                        | "SEC359"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

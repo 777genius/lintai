@@ -35,6 +35,7 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec356_hits = rule_count(current, &["SEC356"]);
     let sec357_hits = rule_count(current, &["SEC357"]);
     let sec358_hits = rule_count(current, &["SEC358"]);
+    let sec359_hits = rule_count(current, &["SEC359"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, current);
     let sec348_repos = repos_with_rule_hits(current, &["SEC348"], false);
     let sec349_repos = repos_with_rule_hits(current, &["SEC349"], false);
@@ -47,6 +48,7 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec356_repos = repos_with_rule_hits(current, &["SEC356"], false);
     let sec357_repos = repos_with_rule_hits(current, &["SEC357"], false);
     let sec358_repos = repos_with_rule_hits(current, &["SEC358"], false);
+    let sec359_repos = repos_with_rule_hits(current, &["SEC359"], false);
 
     output.push_str("## Hybrid Scope Expansion Results\n\n");
     output.push_str("Current wave inventory for the newly expanded JSON lanes:\n\n");
@@ -169,6 +171,10 @@ pub(super) fn append_hybrid_scope_expansion(
         "  - `SEC358` plugin agent frontmatter `mcpServers`: `{}`\n",
         sec358_hits
     ));
+    output.push_str(&format!(
+        "  - `SEC359` Cursor rule non-boolean `alwaysApply`: `{}`\n",
+        sec359_hits
+    ));
     if sec347_hits > 0 {
         output.push_str(&format!(
             "  - current `SEC347` usefulness is being driven mainly by {}\n",
@@ -205,5 +211,6 @@ pub(super) fn append_hybrid_scope_expansion(
     append_rule_repo_hits(output, "SEC356", sec356_repos);
     append_rule_repo_hits(output, "SEC357", sec357_repos);
     append_rule_repo_hits(output, "SEC358", sec358_repos);
+    append_rule_repo_hits(output, "SEC359", sec359_repos);
     output.push_str("- fixture/testdata/example suppression stayed active for the newly added MCP client-config variants and did not create a fake usefulness signal from fixture-like paths\n\n");
 }

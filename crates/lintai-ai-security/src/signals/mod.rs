@@ -103,6 +103,7 @@ pub(crate) struct MarkdownSignals {
     pub(crate) plugin_agent_permission_mode_spans: Vec<Span>,
     pub(crate) plugin_agent_hooks_spans: Vec<Span>,
     pub(crate) plugin_agent_mcp_servers_spans: Vec<Span>,
+    pub(crate) cursor_rule_always_apply_type_spans: Vec<Span>,
     pub(crate) copilot_instruction_too_long_spans: Vec<Span>,
     pub(crate) copilot_instruction_missing_apply_to_spans: Vec<Span>,
 }
