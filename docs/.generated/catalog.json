@@ -110,7 +110,8 @@
         "lintai-ai-security:SEC380",
         "lintai-ai-security:SEC381",
         "lintai-ai-security:SEC382",
-        "lintai-ai-security:SEC383"
+        "lintai-ai-security:SEC383",
+        "lintai-ai-security:SEC384"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -228,7 +229,8 @@
         "lintai-ai-security:SEC376",
         "lintai-ai-security:SEC381",
         "lintai-ai-security:SEC382",
-        "lintai-ai-security:SEC383"
+        "lintai-ai-security:SEC383",
+        "lintai-ai-security:SEC384"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -3395,6 +3397,37 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Missing matchers on matcher-capable Claude hook events are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC384",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC384",
+      "alias": "CLAUDE-WEBSEARCH-UNSCOPED",
+      "displayLabel": "SEC384 / CLAUDE-WEBSEARCH-UNSCOPED",
+      "docTitle": "Claude settings: bare WebSearch permissions",
+      "slug": "sec384",
+      "canonicalPath": "/rules/lintai-ai-security/sec384",
+      "summary": "Claude settings permissions allow bare `WebSearch` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Bare WebSearch grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

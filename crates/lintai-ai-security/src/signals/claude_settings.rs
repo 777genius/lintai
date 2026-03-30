@@ -262,6 +262,8 @@ impl ClaudeSettingsSignals {
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Edit(*)");
         signals.websearch_wildcard_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "WebSearch(*)");
+        signals.unscoped_websearch_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "WebSearch");
         signals.glob_wildcard_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Glob(*)");
         signals.grep_wildcard_span =

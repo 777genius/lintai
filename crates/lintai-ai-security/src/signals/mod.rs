@@ -173,6 +173,7 @@ pub(crate) struct ClaudeSettingsSignals {
     pub(crate) read_wildcard_span: Option<Span>,
     pub(crate) edit_wildcard_span: Option<Span>,
     pub(crate) websearch_wildcard_span: Option<Span>,
+    pub(crate) unscoped_websearch_span: Option<Span>,
     pub(crate) glob_wildcard_span: Option<Span>,
     pub(crate) grep_wildcard_span: Option<Span>,
     pub(crate) home_directory_hook_command_span: Option<Span>,

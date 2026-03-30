@@ -1,0 +1,12 @@
+id = "claude-settings-websearch-scoped-safe"
+kind = "benign"
+entry_path = "repo/.claude/settings.json"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC384"]
+
+[snapshot]
+kind = "none"
+name = "none"

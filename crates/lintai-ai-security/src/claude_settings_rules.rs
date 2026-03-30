@@ -213,6 +213,21 @@ pub(crate) fn check_claude_settings_websearch_wildcard(
     )
 }
 
+pub(crate) fn check_claude_settings_unscoped_websearch(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.unscoped_websearch_span.clone()),
+        "Claude settings permissions allow bare `WebSearch` in a shared committed config",
+    )
+}
+
 pub(crate) fn check_claude_settings_glob_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

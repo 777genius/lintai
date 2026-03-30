@@ -87,6 +87,7 @@ Currently covered admission paths:
 - `SEC381` Claude settings command hooks missing `timeout`: `0`
 - `SEC382` Claude settings `matcher` on unsupported hook events: `0`
 - `SEC383` Claude settings missing `matcher` on matcher-capable hook events: `0`
+- `SEC384` Claude settings bare `WebSearch` permissions: `0`
 - AI-native markdown preview hits by rule code: `SEC313`=`0`, `SEC335`=`0`, `SEC347`=`1`, `SEC348`=`0`, `SEC349`=`0`, `SEC350`=`0`, `SEC351`=`0`, `SEC352`=`0`, `SEC353`=`0`, `SEC354`=`0`, `SEC355`=`0`, `SEC356`=`0`, `SEC357`=`0`, `SEC358`=`0`, `SEC359`=`0`, `SEC360`=`0`, `SEC370`=`0`, `SEC371`=`0`, `SEC377`=`0`, `SEC378`=`0`, `SEC379`=`0`, `SEC380`=`0`
 - `SEC347` subtype repo hits: CLI-form=`1`, config-snippet-form=`1`
 - current markdown usefulness is still mainly skills / `CLAUDE.md`; plugin-root command docs remain a non-driving surface with `0` admitted covered paths
@@ -132,6 +133,7 @@ Currently covered admission paths:
 - `SEC381` produced no repo-level external preview hits in this wave
 - `SEC382` produced no repo-level external preview hits in this wave
 - `SEC383` produced no repo-level external preview hits in this wave
+- `SEC384` produced no repo-level external preview hits in this wave
 
 ## Runtime / Diagnostic Notes
 
