@@ -50,6 +50,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "cursor-rule-alwaysapply-nonboolean",
             "cursor-rule-alwaysapply-redundant-globs",
             "cursor-rule-globs-scalar",
+            "cursor-rule-unknown-frontmatter-key",
             "gemini-mcp-docker-pull-always",
             "gemini-mcp-docker-unpinned-image",
             "gemini-mcp-fixture-suppressed",

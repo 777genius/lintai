@@ -243,6 +243,38 @@ fn ignores_project_scoped_markdown_file_reference() {
 }
 
 #[test]
+fn ignores_repo_local_markdown_link_reference() {
+    let temp_dir = unique_temp_dir("lintai-sec105-link-safe");
+    std::fs::create_dir_all(temp_dir.join("skills/firecrawl-scrape")).unwrap();
+    std::fs::create_dir_all(temp_dir.join("skills/firecrawl-search")).unwrap();
+    std::fs::write(
+        temp_dir.join("skills/firecrawl-scrape/SKILL.md"),
+        "- [firecrawl-search](../firecrawl-search/SKILL.md) — find pages when you don't have a URL\n",
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("skills/firecrawl-search/SKILL.md"),
+        "# Search\n",
+    )
+    .unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .all(|finding| finding.rule_code != "SEC105")
+    );
+}
+
+#[test]
 fn finds_markdown_private_key_pem() {
     let provider = AiSecurityProvider::default();
     let content = "```pem\n-----BEGIN OPENSSH PRIVATE KEY-----\nsecret\n-----END OPENSSH PRIVATE KEY-----\n```\n";
@@ -416,7 +448,7 @@ fn finds_markdown_mutable_mcp_launcher_config_example() {
 }
 
 #[test]
-fn finds_markdown_mutable_mcp_launcher_uvx_cli_example() {
+fn ignores_markdown_remote_bridge_uvx_cli_example() {
     let provider = AiSecurityProvider::default();
     let content = "claude mcp add exa uvx mcp-remote https://mcp.exa.ai/mcp\n";
     let findings = ProviderHarness::run(
@@ -426,7 +458,7 @@ fn finds_markdown_mutable_mcp_launcher_uvx_cli_example() {
         content,
     );
 
-    assert!(findings.iter().any(|finding| finding.rule_code == "SEC347"));
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC347"));
 }
 
 #[test]
@@ -1375,6 +1407,53 @@ fn ignores_cursor_rule_redundant_globs_on_fixture_like_path() {
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC378")
+    );
+}
+
+#[test]
+fn finds_cursor_rule_unknown_frontmatter_key() {
+    let content = "---\ndescription: Review guidance\ninclusion: always\n---\n# Cursor Rule\n";
+    let summary = scan_preview_skill_fixture("rules/review.mdc", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC379")
+        .unwrap();
+    let start = content.find("inclusion").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "inclusion".len())
+    );
+}
+
+#[test]
+fn ignores_cursor_rule_supported_frontmatter_keys_for_sec379() {
+    let summary = scan_preview_skill_fixture(
+        "rules/review.mdc",
+        "---\ndescription: Review guidance\nglobs:\n  - \"**/*.rs\"\nalwaysApply: false\n---\n# Cursor Rule\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC379")
+    );
+}
+
+#[test]
+fn ignores_cursor_rule_unknown_frontmatter_key_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/rules/review.mdc",
+        "---\ndescription: Fixture review guidance\ninclusion: always\n---\n# Fixture Cursor Rule\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC379")
     );
 }
 
@@ -4899,6 +4978,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC376"
                         | "SEC377"
                         | "SEC378"
+                        | "SEC379"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

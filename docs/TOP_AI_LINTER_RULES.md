@@ -207,6 +207,11 @@
   - community usefulness сейчас: `9/10`
   - надёжность: `9/10`
   - почему важно: global Cursor rule с одновременными `globs` создаёт двусмысленный routing contract; правило structural-only и очень легко принимается сообществом как config hygiene check
+- `SEC379` — Cursor rule frontmatter contains an unknown key
+  - статус: `Preview`
+  - community usefulness сейчас: `9/10`
+  - надёжность: `9/10`
+  - почему важно: неизвестные ключи в `.mdc` создают ложное ощущение поддерживаемой конфигурации; это точный и практичный contract check для shared AI rule packs
 
 ### Минимальный релизный набор (1-й проход)
 

@@ -105,7 +105,8 @@
         "lintai-ai-security:SEC374",
         "lintai-ai-security:SEC375",
         "lintai-ai-security:SEC376",
-        "lintai-ai-security:SEC378"
+        "lintai-ai-security:SEC378",
+        "lintai-ai-security:SEC379"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -149,7 +150,8 @@
         "lintai-ai-security:SEC358",
         "lintai-ai-security:SEC359",
         "lintai-ai-security:SEC360",
-        "lintai-ai-security:SEC378"
+        "lintai-ai-security:SEC378",
+        "lintai-ai-security:SEC379"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -3230,6 +3232,37 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Redundant `globs` alongside `alwaysApply: true` is deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC379",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC379",
+      "alias": "CURSOR-UNKNOWN-FRONTMATTER",
+      "displayLabel": "SEC379 / CURSOR-UNKNOWN-FRONTMATTER",
+      "docTitle": "Cursor rule: unknown frontmatter key",
+      "slug": "sec379",
+      "canonicalPath": "/rules/lintai-ai-security/sec379",
+      "summary": "Cursor rule frontmatter contains an unknown key",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Unknown Cursor rule frontmatter keys are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

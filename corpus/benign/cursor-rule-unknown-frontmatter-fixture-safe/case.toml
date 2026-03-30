@@ -1,0 +1,3 @@
+description = "Fixture-like Cursor rule unknown frontmatter key stays suppressed"
+entrypoint = "repo/tests/fixtures/rules/review.mdc"
+

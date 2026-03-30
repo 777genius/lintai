@@ -6,6 +6,8 @@ use crate::helpers::{markdown_semantics, span_text};
 use super::shared::{common::*, hook::has_base64_exec, markdown::*};
 use super::{MarkdownSignals, SignalWorkBudget};
 
+const CURSOR_RULE_FRONTMATTER_KEYS: &[&str] = &["description", "globs", "alwaysApply"];
+
 fn copilot_apply_to_contains_invalid_glob(value: &serde_json::Value) -> bool {
     match value {
         serde_json::Value::String(pattern) => Glob::new(pattern).is_err(),
@@ -393,6 +395,25 @@ impl MarkdownSignals {
                     region.span.start_byte + relative.start_byte,
                     region.span.start_byte + relative.end_byte,
                 ));
+            }
+
+            if let Some(frontmatter) = parsed_frontmatter
+                && let Some(mapping) = frontmatter.value.as_object()
+            {
+                for key in mapping.keys() {
+                    if CURSOR_RULE_FRONTMATTER_KEYS.contains(&key.as_str()) {
+                        continue;
+                    }
+
+                    if let Some(relative) = find_frontmatter_key_relative_span(snippet, key) {
+                        signals
+                            .cursor_rule_unknown_frontmatter_key_spans
+                            .push(Span::new(
+                                region.span.start_byte + relative.start_byte,
+                                region.span.start_byte + relative.end_byte,
+                            ));
+                    }
+                }
             }
         }
 

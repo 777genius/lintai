@@ -1,0 +1,4 @@
+description = "Cursor rule frontmatter contains an unknown key"
+entrypoint = "repo/rules/review.mdc"
+expected_findings = ["SEC379"]
+
