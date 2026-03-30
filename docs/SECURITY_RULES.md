@@ -101,6 +101,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC380 / CURSOR-DESCRIPTION` | Cursor rule frontmatter should include `description` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC381 / CLAUDE-HOOK-TIMEOUT` | Claude settings command hook should set `timeout` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC382 / CLAUDE-HOOK-MATCHER-EVENT` | Claude settings should not use `matcher` on unsupported hook events | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC383 / CLAUDE-HOOK-MISSING-MATCHER` | Claude settings should set `matcher` on matcher-capable hook events | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC401 / POLICY-EXEC-MISMATCH` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC402 / POLICY-NETWORK-MISMATCH` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC403 / POLICY-SKILL-CAPABILITIES-MISMATCH` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
@@ -1814,6 +1815,23 @@ Important behavior:
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Unsupported hook-event matchers in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC383 / CLAUDE-HOOK-MISSING-MATCHER` — Claude settings should set `matcher` on matcher-capable hook events
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-HOOK-MISSING-MATCHER`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Missing matchers on matcher-capable Claude hook events are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 

@@ -3352,6 +3352,101 @@ fn ignores_claude_settings_invalid_hook_matcher_event_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_claude_settings_missing_matcher_on_pre_tool_use() {
+    let content = r#"{"hooks":{"PreToolUse":[{"hooks":[{"type":"command","command":"echo done","timeout":5}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC383")
+        .unwrap();
+    let start = content.match_indices("\"hooks\"").nth(1).unwrap().0 + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "hooks".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_missing_matcher_on_post_tool_use() {
+    let content = r#"{"hooks":{"PostToolUse":[{"hooks":[{"type":"command","command":"echo done","timeout":5}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC383")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_missing_matcher_when_present() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"hooks":{"PreToolUse":[{"matcher":"Bash","hooks":[{"type":"command","command":"echo done","timeout":5}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC383")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_missing_matcher_on_stop_event() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done","timeout":5}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC383")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_missing_required_hook_matcher_on_fixture_like_path() {
+    let temp_dir = unique_temp_dir("lintai-claude-settings-missing-matcher-fixture");
+    std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("tests/fixtures/.claude/settings.json"),
+        br#"{"hooks":{"PreToolUse":[{"hooks":[{"type":"command","command":"echo done","timeout":5}]}]}}"#,
+    )
+    .unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
+    let summary = EngineBuilder::default()
+        .with_config(workspace.engine_config.clone())
+        .with_suppressions(Arc::new(suppressions))
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC383")
+    );
+}
+
+#[test]
 fn finds_claude_settings_home_directory_hook_command() {
     let content = r#"{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"$HOME/.claude/hooks/audit.sh"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -5235,6 +5330,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC380"
                         | "SEC381"
                         | "SEC382"
+                        | "SEC383"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

@@ -227,6 +227,11 @@
   - community usefulness сейчас: `9/10`
   - надёжность: `9.5/10`
   - почему важно: это точный hook-contract check с живым real-world example; rule не спорит про политику, а ловит тихий config drift, который сообществу легко принять
+- `SEC383` — Claude settings should set `matcher` on matcher-capable hook events
+  - статус: `Preview`
+  - community usefulness сейчас: `9/10`
+  - надёжность: `9/10`
+  - почему важно: отсутствие `matcher` на `PreToolUse` / `PostToolUse` выглядит как безобидная мелочь, но quietly размывает scope hook policy; это точный и практичный team-config contract check
 
 ### Минимальный релизный набор (1-й проход)
 

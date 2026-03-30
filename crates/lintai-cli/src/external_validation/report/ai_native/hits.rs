@@ -111,6 +111,7 @@ pub(super) fn append_hit_sections(
     let sec380_hits = rule_count(ledger, &["SEC380"]);
     let sec381_hits = rule_count(ledger, &["SEC381"]);
     let sec382_hits = rule_count(ledger, &["SEC382"]);
+    let sec383_hits = rule_count(ledger, &["SEC383"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, ledger);
     let sec313_repos = repos_with_rule_hits(ledger, &["SEC313"], false);
     let sec335_repos = repos_with_rule_hits(ledger, &["SEC335"], false);
@@ -150,6 +151,7 @@ pub(super) fn append_hit_sections(
     let sec380_repos = repos_with_rule_hits(ledger, &["SEC380"], false);
     let sec381_repos = repos_with_rule_hits(ledger, &["SEC381"], false);
     let sec382_repos = repos_with_rule_hits(ledger, &["SEC382"], false);
+    let sec383_repos = repos_with_rule_hits(ledger, &["SEC383"], false);
 
     output.push_str("## Stable Hits\n\n");
     output.push_str(&format!("- current AI-native MCP rule families produced `{}` repo-level rule-code hits in this discovery wave\n", ai_native_rule_hits));
@@ -248,6 +250,10 @@ pub(super) fn append_hit_sections(
         "- `SEC382` Claude settings `matcher` on unsupported hook events: `{}`\n",
         sec382_hits
     ));
+    output.push_str(&format!(
+        "- `SEC383` Claude settings missing `matcher` on matcher-capable hook events: `{}`\n",
+        sec383_hits
+    ));
     output.push_str(&format!("- AI-native markdown preview hits by rule code: `SEC313`=`{}`, `SEC335`=`{}`, `SEC347`=`{}`, `SEC348`=`{}`, `SEC349`=`{}`, `SEC350`=`{}`, `SEC351`=`{}`, `SEC352`=`{}`, `SEC353`=`{}`, `SEC354`=`{}`, `SEC355`=`{}`, `SEC356`=`{}`, `SEC357`=`{}`, `SEC358`=`{}`, `SEC359`=`{}`, `SEC360`=`{}`, `SEC370`=`{}`, `SEC371`=`{}`, `SEC377`=`{}`, `SEC378`=`{}`, `SEC379`=`{}`, `SEC380`=`{}`\n", sec313_hits, sec335_hits, sec347_hits, sec348_hits, sec349_hits, sec350_hits, sec351_hits, sec352_hits, sec353_hits, sec354_hits, sec355_hits, sec356_hits, sec357_hits, sec358_hits, sec359_hits, sec360_hits, sec370_hits, sec371_hits, sec377_hits, sec378_hits, sec379_hits, sec380_hits));
     output.push_str(&format!(
         "- `SEC347` subtype repo hits: CLI-form=`{}`, config-snippet-form=`{}`\n",
@@ -304,6 +310,7 @@ pub(super) fn append_hit_sections(
         ("SEC380", sec380_repos),
         ("SEC381", sec381_repos),
         ("SEC382", sec382_repos),
+        ("SEC383", sec383_repos),
     ] {
         if repos.is_empty() {
             output.push_str(&format!(

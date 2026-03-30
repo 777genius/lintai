@@ -90,6 +90,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC380" => "CURSOR-DESCRIPTION",
         "SEC381" => "CLAUDE-HOOK-TIMEOUT",
         "SEC382" => "CLAUDE-HOOK-MATCHER-EVENT",
+        "SEC383" => "CLAUDE-HOOK-MISSING-MATCHER",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

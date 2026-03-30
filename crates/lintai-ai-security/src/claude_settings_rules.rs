@@ -63,6 +63,21 @@ pub(crate) fn check_claude_settings_invalid_hook_matcher_event(
     )
 }
 
+pub(crate) fn check_claude_settings_missing_required_hook_matcher(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.missing_required_hook_matcher_span.clone()),
+        "Claude settings omit `matcher` on a hook event that expects scoped matching",
+    )
+}
+
 pub(crate) fn check_claude_settings_bypass_permissions(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

@@ -8,10 +8,10 @@ use crate::claude_settings_rules::{
     check_claude_settings_grep_wildcard, check_claude_settings_home_directory_hook_command,
     check_claude_settings_inline_download_exec, check_claude_settings_insecure_http_hook_url,
     check_claude_settings_invalid_hook_matcher_event, check_claude_settings_missing_hook_timeout,
-    check_claude_settings_missing_schema, check_claude_settings_mutable_launcher,
-    check_claude_settings_network_tls_bypass, check_claude_settings_read_wildcard,
-    check_claude_settings_webfetch_wildcard, check_claude_settings_websearch_wildcard,
-    check_claude_settings_write_wildcard,
+    check_claude_settings_missing_required_hook_matcher, check_claude_settings_missing_schema,
+    check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
+    check_claude_settings_read_wildcard, check_claude_settings_webfetch_wildcard,
+    check_claude_settings_websearch_wildcard, check_claude_settings_write_wildcard,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
 
@@ -32,6 +32,18 @@ declare_rule! {
         code: "SEC382",
         summary: "Claude settings should not use `matcher` on unsupported hook events",
         doc_title: "Claude settings: `matcher` on unsupported hook event",
+        category: Category::Quality,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsMissingRequiredHookMatcherRule {
+        code: "SEC383",
+        summary: "Claude settings should set `matcher` on matcher-capable hook events",
+        doc_title: "Claude settings: missing `matcher` on matcher-capable hook event",
         category: Category::Quality,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -243,7 +255,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 20] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -257,6 +269,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 19] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove `matcher` from unsupported hook events or move the hook under a matcher-capable event like `PreToolUse` or `PostToolUse`",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsMissingRequiredHookMatcherRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Missing matchers on matcher-capable Claude hook events are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_missing_required_hook_matcher,
+        safe_fix: None,
+        suggestion_message: Some(
+            "add an explicit `matcher` to each shared `PreToolUse` or `PostToolUse` hook entry, or move the hook under a broader event if scoped matching is not intended",
         ),
         suggestion_fix: None,
     },
