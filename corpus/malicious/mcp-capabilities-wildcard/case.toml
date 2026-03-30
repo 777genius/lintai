@@ -1,0 +1,11 @@
+id = "mcp-capabilities-wildcard"
+mode = "malicious"
+entry = "mcp.json"
+
+expected_findings = [
+  "lintai-ai-security:SEC398",
+]
+
+[metadata]
+title = "MCP config with wildcard capabilities"
+description = "Flags exact wildcard capability grants in committed MCP client config."

@@ -60,7 +60,8 @@
         "lintai-ai-security:SEC394",
         "lintai-ai-security:SEC395",
         "lintai-ai-security:SEC396",
-        "lintai-ai-security:SEC397"
+        "lintai-ai-security:SEC397",
+        "lintai-ai-security:SEC398"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -211,7 +212,8 @@
         "lintai-ai-security:SEC394",
         "lintai-ai-security:SEC395",
         "lintai-ai-security:SEC396",
-        "lintai-ai-security:SEC397"
+        "lintai-ai-security:SEC397",
+        "lintai-ai-security:SEC398"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -3725,6 +3727,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact boolean detection for `sandbox: false` or `disableSandbox: true` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC398",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC398",
+      "alias": "MCP-CAPABILITIES-WILDCARD",
+      "displayLabel": "SEC398 / MCP-CAPABILITIES-WILDCARD",
+      "docTitle": "MCP config: wildcard capabilities",
+      "slug": "sec398",
+      "canonicalPath": "/rules/lintai-ai-security/sec398",
+      "summary": "MCP configuration grants all capabilities with `capabilities: [\"*\"]` or `capabilities: \"*\"`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit wildcard capability grants in MCP config.",
+        "maliciousCaseIds": [
+          "mcp-capabilities-wildcard"
+        ],
+        "benignCaseIds": [
+          "mcp-capabilities-scoped-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact wildcard detection for `capabilities` scalar or array values on parsed MCP configuration."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

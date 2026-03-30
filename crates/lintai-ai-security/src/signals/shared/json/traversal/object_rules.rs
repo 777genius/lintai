@@ -220,6 +220,21 @@ pub(super) fn analyze_json_object<'a>(
             signals.sandbox_disabled_span =
                 Some(resolve_child_value_span(path, key, locator, fallback_len));
         }
+
+        if signals.capabilities_wildcard_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "capabilities"
+        {
+            if let Some(index) = find_string_array_item_index(nested, "*") {
+                let key_path = with_child_key(path, key);
+                let item_path = with_child_index(&key_path, index);
+                signals.capabilities_wildcard_span =
+                    Some(resolve_value_span(&item_path, locator, fallback_len));
+            } else if nested.as_str() == Some("*") {
+                signals.capabilities_wildcard_span =
+                    Some(resolve_child_value_span(path, key, locator, fallback_len));
+            }
+        }
     }
 
     JsonObjectCommandShape {

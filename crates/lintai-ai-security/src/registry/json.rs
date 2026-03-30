@@ -5,9 +5,10 @@ use crate::json_rules::{
     check_json_dangerous_endpoint_host, check_json_hidden_instruction, check_json_literal_secret,
     check_json_sensitive_env_reference, check_json_suspicious_remote_endpoint,
     check_json_unsafe_plugin_path, check_mcp_autoapprove_tools_true,
-    check_mcp_autoapprove_wildcard, check_mcp_broad_env_file, check_mcp_credential_env_passthrough,
-    check_mcp_dangerous_docker_flag, check_mcp_inline_download_exec, check_mcp_mutable_docker_pull,
-    check_mcp_mutable_launcher, check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
+    check_mcp_autoapprove_wildcard, check_mcp_broad_env_file, check_mcp_capabilities_wildcard,
+    check_mcp_credential_env_passthrough, check_mcp_dangerous_docker_flag,
+    check_mcp_inline_download_exec, check_mcp_mutable_docker_pull, check_mcp_mutable_launcher,
+    check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
     check_mcp_sensitive_docker_mount, check_mcp_shell_wrapper, check_mcp_trust_tools_true,
     check_mcp_unpinned_docker_image, check_plain_http_config,
     check_plugin_hook_inline_download_exec, check_plugin_hook_mutable_launcher,
@@ -244,6 +245,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpCapabilitiesWildcardRule {
+        code: "SEC398",
+        summary: "MCP configuration grants all capabilities with `capabilities: [\"*\"]` or `capabilities: \"*\"`",
+        doc_title: "MCP config: wildcard capabilities",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpUnpinnedDockerImageRule {
         code: "SEC337",
         summary: "MCP configuration launches Docker with an image reference that is not digest-pinned",
@@ -327,7 +340,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 26] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 27] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -689,6 +702,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 26] = [
         safe_fix: None,
         suggestion_message: Some(
             "re-enable sandboxing and prefer reviewed, least-privilege MCP isolation settings",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpCapabilitiesWildcardRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit wildcard capability grants in MCP config.",
+            malicious_case_ids: &["mcp-capabilities-wildcard"],
+            benign_case_ids: &["mcp-capabilities-scoped-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact wildcard detection for `capabilities` scalar or array values on parsed MCP configuration.",
+        },
+        check: check_mcp_capabilities_wildcard,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace wildcard capabilities with only the narrowly reviewed MCP capabilities that are actually required",
         ),
         suggestion_fix: None,
     },

@@ -111,6 +111,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC395 / MCP-AUTOAPPROVE-TOOLS` | MCP configuration auto-approves all tools with `autoApproveTools: true` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC396 / MCP-TRUST-TOOLS` | MCP configuration fully trusts tools with `trustTools: true` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC397 / MCP-SANDBOX-DISABLED` | MCP configuration disables sandboxing with `sandbox: false` or `disableSandbox: true` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC398 / MCP-CAPABILITIES-WILDCARD` | MCP configuration grants all capabilities with `capabilities: ["*"]` or `capabilities: "*"` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC401 / POLICY-EXEC-MISMATCH` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC402 / POLICY-NETWORK-MISMATCH` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC403 / POLICY-SKILL-CAPABILITIES-MISMATCH` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
@@ -2009,6 +2010,27 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals exact boolean detection for `sandbox: false` or `disableSandbox: true` on parsed MCP configuration.
 - Malicious Corpus: `mcp-sandbox-disabled`
 - Benign Corpus: `mcp-sandbox-enabled-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC398 / MCP-CAPABILITIES-WILDCARD` — MCP configuration grants all capabilities with `capabilities: ["*"]` or `capabilities: "*"`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-CAPABILITIES-WILDCARD`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit wildcard capability grants in MCP config.
+- Deterministic Signal Basis: JsonSignals exact wildcard detection for `capabilities` scalar or array values on parsed MCP configuration.
+- Malicious Corpus: `mcp-capabilities-wildcard`
+- Benign Corpus: `mcp-capabilities-scoped-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

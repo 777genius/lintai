@@ -138,6 +138,21 @@ pub(crate) fn check_mcp_sandbox_disabled(
     )
 }
 
+pub(crate) fn check_mcp_capabilities_wildcard(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.capabilities_wildcard_span.clone()),
+        "MCP configuration grants all capabilities with `capabilities: [\"*\"]` or `capabilities: \"*\"`",
+    )
+}
+
 pub(crate) fn check_mcp_unpinned_docker_image(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

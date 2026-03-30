@@ -2652,6 +2652,65 @@ fn ignores_mcp_disable_sandbox_false() {
 }
 
 #[test]
+fn finds_mcp_capabilities_wildcard_array() {
+    let provider = AiSecurityProvider::default();
+    let content =
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"capabilities":["*"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC398")
+        .unwrap();
+    let start = content.find("\"*\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + 1)
+    );
+}
+
+#[test]
+fn finds_mcp_capabilities_wildcard_scalar() {
+    let provider = AiSecurityProvider::default();
+    let content =
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"capabilities":"*"}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC398")
+        .unwrap();
+    let start = content.find("\"*\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + 1)
+    );
+}
+
+#[test]
+fn ignores_mcp_capabilities_scoped_values() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"capabilities":["tools","resources"]}}}"#,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC398"));
+}
+
+#[test]
 fn finds_claude_settings_missing_schema() {
     let content = r#"{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -5036,6 +5095,7 @@ fn fixture_like_expanded_mcp_paths_do_not_emit_mcp_findings() {
                 | "SEC395"
                 | "SEC396"
                 | "SEC397"
+                | "SEC398"
                 | "SEC340"
                 | "SEC341"
                 | "SEC342"
