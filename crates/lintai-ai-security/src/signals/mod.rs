@@ -182,6 +182,7 @@ pub(crate) struct ClaudeSettingsSignals {
     pub(crate) git_push_permission_span: Option<Span>,
     pub(crate) npx_permission_span: Option<Span>,
     pub(crate) enabled_mcpjson_servers_span: Option<Span>,
+    pub(crate) package_install_permission_span: Option<Span>,
     pub(crate) git_checkout_permission_span: Option<Span>,
     pub(crate) git_commit_permission_span: Option<Span>,
     pub(crate) git_stash_permission_span: Option<Span>,

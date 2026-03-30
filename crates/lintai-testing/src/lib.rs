@@ -628,6 +628,7 @@ fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
         | "SEC381" | "SEC382" | "SEC383" | "SEC384" | "SEC385" | "SEC386" | "SEC387" | "SEC388"
         | "SEC399"
         | "SEC400"
+        | "SEC405"
         | "SEC401" | "SEC402" | "SEC403" => Some(RuleTier::Preview),
         _ => None,
     }

@@ -3109,6 +3109,23 @@ fn finds_claude_settings_npx_permission() {
 }
 
 #[test]
+fn finds_claude_settings_package_install_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(yarn install)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC405")
+        .unwrap();
+    let start = content.find("Bash(yarn install)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(yarn install)".len())
+    );
+}
+
+#[test]
 fn finds_claude_settings_git_checkout_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git checkout:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -3194,6 +3211,21 @@ fn finds_claude_settings_grep_wildcard() {
 }
 
 #[test]
+fn ignores_claude_settings_specific_package_command_without_install() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(yarn test:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC405")
+    );
+}
+
+#[test]
 fn ignores_claude_settings_empty_enabled_mcpjson_servers() {
     let summary = scan_preview_claude_settings_fixture(
         ".claude/settings.json",
@@ -3205,6 +3237,41 @@ fn ignores_claude_settings_empty_enabled_mcpjson_servers() {
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC400")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_package_install_permission_on_fixture_like_path() {
+    let temp_dir = unique_temp_dir("lintai-claude-package-install-fixture");
+    std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("tests/fixtures/.claude/settings.json"),
+        br#"{"permissions":{"allow":["Bash(yarn install)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    )
+    .unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
+    let summary = EngineBuilder::default()
+        .with_config(workspace.engine_config.clone())
+        .with_suppressions(Arc::new(suppressions))
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC405")
     );
 }
 
@@ -6097,6 +6164,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC388"
                         | "SEC399"
                         | "SEC400"
+                        | "SEC405"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

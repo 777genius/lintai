@@ -273,6 +273,21 @@ pub(crate) fn check_claude_settings_enabled_mcpjson_servers(
     )
 }
 
+pub(crate) fn check_claude_settings_package_install_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.package_install_permission_span.clone()),
+        "Claude settings permissions allow package installation commands in a shared committed config",
+    )
+}
+
 pub(crate) fn check_claude_settings_git_checkout_permission(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

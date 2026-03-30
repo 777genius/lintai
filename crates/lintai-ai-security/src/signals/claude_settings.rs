@@ -62,6 +62,28 @@ fn resolve_permissions_allow_prefix_span(
     locator.and_then(|locator| locator.value_span(&path).cloned())
 }
 
+fn resolve_permissions_allow_any_exact_span(
+    value: &serde_json::Value,
+    locator: Option<&JsonLocationMap>,
+    permissions: &[&str],
+) -> Option<Span> {
+    let allow = value
+        .get("permissions")
+        .and_then(|permissions| permissions.get("allow"))
+        .and_then(serde_json::Value::as_array)?;
+    let index = allow.iter().position(|entry| {
+        entry
+            .as_str()
+            .is_some_and(|permission| permissions.contains(&permission))
+    })?;
+    let path = vec![
+        JsonPathSegment::Key("permissions".to_owned()),
+        JsonPathSegment::Key("allow".to_owned()),
+        JsonPathSegment::Index(index),
+    ];
+    locator.and_then(|locator| locator.value_span(&path).cloned())
+}
+
 fn resolve_bypass_permissions_span(
     value: &serde_json::Value,
     locator: Option<&JsonLocationMap>,
@@ -309,6 +331,16 @@ impl ClaudeSettingsSignals {
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git push)");
         signals.npx_permission_span =
             resolve_permissions_allow_prefix_span(value, locator_ref.as_ref(), "Bash(npx ");
+        signals.package_install_permission_span = resolve_permissions_allow_any_exact_span(
+            value,
+            locator_ref.as_ref(),
+            &[
+                "Bash(yarn install)",
+                "Bash(npm install)",
+                "Bash(pnpm install)",
+                "Bash(bun install)",
+            ],
+        );
         signals.git_checkout_permission_span = resolve_permissions_allow_exact_span(
             value,
             locator_ref.as_ref(),

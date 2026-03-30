@@ -14,9 +14,10 @@ use crate::claude_settings_rules::{
     check_claude_settings_missing_hook_timeout,
     check_claude_settings_missing_required_hook_matcher, check_claude_settings_missing_schema,
     check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
-    check_claude_settings_npx_permission, check_claude_settings_read_wildcard,
-    check_claude_settings_unscoped_websearch, check_claude_settings_webfetch_wildcard,
-    check_claude_settings_websearch_wildcard, check_claude_settings_write_wildcard,
+    check_claude_settings_npx_permission, check_claude_settings_package_install_permission,
+    check_claude_settings_read_wildcard, check_claude_settings_unscoped_websearch,
+    check_claude_settings_webfetch_wildcard, check_claude_settings_websearch_wildcard,
+    check_claude_settings_write_wildcard,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
 
@@ -133,6 +134,18 @@ declare_rule! {
         code: "SEC400",
         summary: "Claude settings enable `enabledMcpjsonServers` in a shared committed config",
         doc_title: "Claude settings: shared enabledMcpjsonServers",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsPackageInstallPermissionRule {
+        code: "SEC405",
+        summary: "Claude settings permissions allow package installation commands in a shared committed config",
+        doc_title: "Claude settings: shared package install permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -344,7 +357,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 27] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 28] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -502,6 +515,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 27] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `enabledMcpjsonServers` defaults or keep MCP server enablement as a locally reviewed opt-in step",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsPackageInstallPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared package installation permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_package_install_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared package installation permissions or replace them with a narrower reviewed wrapper that avoids blanket package-manager installs in default team config",
         ),
         suggestion_fix: None,
     },
