@@ -46,6 +46,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "copilot-instructions-too-long-fixture-safe",
             "copilot-instructions-within-limit-safe",
             "copilot-path-specific-fixture-safe",
+            "copilot-path-specific-correct-suffix-safe",
+            "copilot-path-specific-wrong-suffix-fixture-safe",
             "copilot-path-specific-with-applyto-safe",
             "copilot-untrusted-input-generic-safe",
             "cursor-plugin-clean-basic",

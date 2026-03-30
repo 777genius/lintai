@@ -211,6 +211,22 @@ pub(crate) fn check_approval_bypass_instruction(
     )
 }
 
+pub(crate) fn check_copilot_instruction_wrong_suffix(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.copilot_instruction_wrong_suffix_spans.as_slice())
+            .unwrap_or(&[]),
+        "path-specific GitHub Copilot instruction markdown under `.github/instructions/` must end with `.instructions.md`",
+    )
+}
+
 pub(crate) fn check_unscoped_bash_allowed_tools(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

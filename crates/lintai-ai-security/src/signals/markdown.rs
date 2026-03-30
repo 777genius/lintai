@@ -380,6 +380,17 @@ impl MarkdownSignals {
         }
 
         if matches!(ctx.artifact.kind, ArtifactKind::Instructions)
+            && is_github_copilot_instruction_directory_markdown_path(&ctx.artifact.normalized_path)
+            && !is_github_copilot_path_specific_instruction_path(&ctx.artifact.normalized_path)
+            && !is_fixture_like_markdown_instruction_path(&ctx.artifact.normalized_path)
+            && let Some(relative) = leading_markdown_file_relative_span(&ctx.content)
+        {
+            signals
+                .copilot_instruction_wrong_suffix_spans
+                .push(relative);
+        }
+
+        if matches!(ctx.artifact.kind, ArtifactKind::Instructions)
             && is_github_copilot_path_specific_instruction_path(&ctx.artifact.normalized_path)
             && !is_fixture_like_markdown_instruction_path(&ctx.artifact.normalized_path)
         {

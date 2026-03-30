@@ -162,6 +162,11 @@
   - community usefulness сейчас: `9/10`
   - надёжность: `9/10`
   - почему важно: wildcard write grant в shared AI config сообществу объяснять проще всего; это очень явный least-privilege smell с очевидным remediation path
+- `SEC370` — path-specific GitHub Copilot instruction markdown under `.github/instructions/` uses the wrong file suffix
+  - статус: `Preview`
+  - community usefulness сейчас: `8.5/10`
+  - надёжность: `9.5/10`
+  - почему важно: это очень понятный structural rule для AI tooling layout; если path-specific Copilot file не заканчивается на `.instructions.md`, repo получает тихий config drift, который сложно заметить в review
 
 ### Минимальный релизный набор (1-й проход)
 

@@ -12,6 +12,10 @@ pub(crate) fn is_github_copilot_path_specific_instruction_path(normalized_path: 
         && normalized_path.ends_with(".instructions.md")
 }
 
+pub(crate) fn is_github_copilot_instruction_directory_markdown_path(normalized_path: &str) -> bool {
+    normalized_path.starts_with(".github/instructions/") && normalized_path.ends_with(".md")
+}
+
 pub(crate) fn leading_markdown_file_relative_span(content: &str) -> Option<Span> {
     if content.is_empty() {
         return None;

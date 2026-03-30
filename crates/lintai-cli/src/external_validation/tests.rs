@@ -225,6 +225,10 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(markdown.contains("`SEC367` Claude settings wildcard `WebFetch(*)` permissions: `0`"));
     assert!(markdown.contains("`SEC368` Claude settings repo-external absolute hook paths: `0`"));
     assert!(markdown.contains("`SEC369` Claude settings wildcard `Write(*)` permissions: `0`"));
+    assert!(
+        markdown
+            .contains("`SEC370` path-specific Copilot instructions using the wrong suffix: `0`")
+    );
     assert!(markdown.contains("- repos with `tool_descriptor_json`: `1`"));
     assert!(markdown.contains(
         "- repos where new MCP client-config variants existed only under fixture-like paths: `0`"
@@ -307,6 +311,10 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(
         markdown
             .contains("- `SEC366` produced no repo-level preview hits yet on the canonical cohort")
+    );
+    assert!(
+        markdown
+            .contains("- `SEC370` produced no repo-level preview hits yet on the canonical cohort")
     );
     assert!(markdown.contains("## Delta From Previous Wave"));
     assert!(markdown.contains("`datadog-labs/cursor-plugin`: `improved`"));
@@ -754,6 +762,13 @@ fn ai_native_discovery_report_has_required_sections() {
         "`SEC366` Claude settings files with dangerous host literals in `allowedHttpHookUrls`: `0`"
     ));
     assert!(markdown.contains("`SEC367` Claude settings files allowing `WebFetch(*)`: `0`"));
-    assert!(markdown.contains("`SEC368` Claude settings files with repo-external absolute hook paths: `0`"));
+    assert!(
+        markdown
+            .contains("`SEC368` Claude settings files with repo-external absolute hook paths: `0`")
+    );
     assert!(markdown.contains("`SEC369` Claude settings files allowing `Write(*)`: `0`"));
+    assert!(
+        markdown
+            .contains("`SEC370` path-specific Copilot instructions using the wrong suffix: `0`")
+    );
 }

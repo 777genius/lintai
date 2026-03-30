@@ -218,7 +218,8 @@
       "extends": [],
       "ruleIds": [
         "lintai-ai-security:SEC353",
-        "lintai-ai-security:SEC354"
+        "lintai-ai-security:SEC354",
+        "lintai-ai-security:SEC370"
       ],
       "canonicalPath": "/presets/guidance"
     },
@@ -2939,6 +2940,36 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Wildcard Write grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC370",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC370",
+      "alias": "COPILOT-PATH-SUFFIX",
+      "displayLabel": "SEC370 / COPILOT-PATH-SUFFIX",
+      "docTitle": "Copilot instructions: wrong path-specific suffix",
+      "slug": "sec370",
+      "canonicalPath": "/rules/lintai-ai-security/sec370",
+      "summary": "Path-specific GitHub Copilot instruction markdown under `.github/instructions/` uses the wrong file suffix",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "guidance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Wrong suffix on path-specific Copilot instruction files is deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

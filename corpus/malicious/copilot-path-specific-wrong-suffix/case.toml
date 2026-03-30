@@ -1,0 +1,6 @@
+id = "copilot-path-specific-wrong-suffix"
+description = "Path-specific Copilot instruction markdown under .github/instructions/ uses the wrong suffix"
+
+[[expect_findings]]
+rule_code = "SEC370"
+path = ".github/instructions/review.md"

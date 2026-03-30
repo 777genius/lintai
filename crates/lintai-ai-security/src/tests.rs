@@ -937,7 +937,7 @@ fn scan_preview_skill_fixture(relative_path: &str, content: &str) -> lintai_engi
     std::fs::create_dir_all(file_path.parent().unwrap()).unwrap();
     std::fs::write(
         temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"skills\"]\n",
+        "[presets]\nenable = [\"base\", \"preview\", \"skills\", \"guidance\"]\n",
     )
     .unwrap();
     std::fs::write(&file_path, content).unwrap();
@@ -1472,6 +1472,49 @@ fn ignores_missing_apply_to_on_fixture_like_path() {
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC354")
+    );
+}
+
+#[test]
+fn finds_path_specific_copilot_instruction_with_wrong_suffix() {
+    let summary =
+        scan_preview_skill_fixture(".github/instructions/review.md", "# Review Instructions\n");
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC370")
+        .unwrap();
+    assert_eq!(finding.location.span, lintai_api::Span::new(0, 21));
+}
+
+#[test]
+fn ignores_path_specific_copilot_instruction_with_correct_suffix_for_sec370() {
+    let summary = scan_preview_skill_fixture(
+        ".github/instructions/review.instructions.md",
+        "# Review Instructions\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC370")
+    );
+}
+
+#[test]
+fn ignores_wrong_suffix_copilot_instruction_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/.github/instructions/review.md",
+        "# Fixture Review Instructions\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC370")
     );
 }
 
@@ -2297,8 +2340,7 @@ fn finds_claude_settings_webfetch_wildcard() {
 
 #[test]
 fn finds_claude_settings_write_wildcard() {
-    let content =
-        r#"{"permissions":{"allow":["Write(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let content = r#"{"permissions":{"allow":["Write(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
@@ -2482,8 +2524,7 @@ fn finds_claude_settings_home_directory_hook_command() {
 
 #[test]
 fn finds_claude_settings_external_absolute_hook_command() {
-    let content =
-        r#"{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"/opt/team/hooks/audit.sh"}]}]}}"#;
+    let content = r#"{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"/opt/team/hooks/audit.sh"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
@@ -4335,6 +4376,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC367"
                         | "SEC368"
                         | "SEC369"
+                        | "SEC370"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

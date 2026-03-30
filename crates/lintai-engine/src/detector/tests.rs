@@ -45,6 +45,16 @@ fn detects_v0_1_file_types() {
     assert_eq!(
         detector
             .detect(
+                Path::new("/tmp/project/.github/instructions/review.md"),
+                ".github/instructions/review.md"
+            )
+            .unwrap()
+            .kind,
+        ArtifactKind::Instructions
+    );
+    assert_eq!(
+        detector
+            .detect(
                 Path::new("/tmp/project/docs/security.agent.md"),
                 "docs/security.agent.md"
             )

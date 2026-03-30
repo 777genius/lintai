@@ -56,6 +56,16 @@ const INSTRUCTIONS_RULES: &[DetectionRuleSpec] = &[
         format: SourceFormat::Markdown,
     },
     DetectionRuleSpec {
+        priority: 2,
+        file_name: None,
+        file_name_fragment: None,
+        suffix: Some(".md"),
+        parent_dir: Some("instructions"),
+        path_fragment: Some(".github/instructions/"),
+        artifact_kind: ArtifactKind::Instructions,
+        format: SourceFormat::Markdown,
+    },
+    DetectionRuleSpec {
         priority: 1,
         file_name: None,
         file_name_fragment: None,

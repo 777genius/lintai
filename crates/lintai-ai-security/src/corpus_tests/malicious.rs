@@ -37,6 +37,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-settings-write-wildcard",
             "copilot-instructions-too-long",
             "copilot-path-specific-missing-applyto",
+            "copilot-path-specific-wrong-suffix",
             "copilot-webpage-system-prompt-promotion",
             "cursor-plugin-unsafe-path",
             "cursor-rule-alwaysapply-nonboolean",
