@@ -1,0 +1,6 @@
+name = "claude-settings-gh-pr-permission"
+path = ".claude/settings.json"
+expect_findings = ["SEC408"]
+
+[metadata]
+description = "Shared Claude settings grant blanket gh pr permissions"

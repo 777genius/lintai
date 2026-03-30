@@ -31,6 +31,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "claude-settings-empty-enabled-mcpjson-servers-safe",
             "claude-settings-git-add-fixture-safe",
             "claude-settings-git-add-specific-safe",
+            "claude-settings-gh-pr-fixture-safe",
+            "claude-settings-gh-pr-specific-safe",
             "claude-settings-git-clone-fixture-safe",
             "claude-settings-git-clone-specific-safe",
             "claude-settings-glob-specific-safe",

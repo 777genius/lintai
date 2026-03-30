@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh pr diff:*)",
+      "Read(*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}

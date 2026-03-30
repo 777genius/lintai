@@ -1,0 +1,6 @@
+name = "claude-settings-gh-pr-specific-safe"
+path = ".claude/settings.json"
+expect_findings = []
+
+[metadata]
+description = "Specific gh pr subcommand stays clean"

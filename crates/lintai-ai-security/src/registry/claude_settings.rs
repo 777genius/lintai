@@ -5,7 +5,8 @@ use crate::claude_settings_rules::{
     check_claude_settings_bash_wildcard, check_claude_settings_bypass_permissions,
     check_claude_settings_dangerous_http_hook_host, check_claude_settings_edit_wildcard,
     check_claude_settings_enabled_mcpjson_servers,
-    check_claude_settings_external_absolute_hook_command, check_claude_settings_git_add_permission,
+    check_claude_settings_external_absolute_hook_command, check_claude_settings_gh_pr_permission,
+    check_claude_settings_git_add_permission,
     check_claude_settings_git_checkout_permission, check_claude_settings_git_clone_permission,
     check_claude_settings_git_commit_permission, check_claude_settings_git_push_permission,
     check_claude_settings_git_stash_permission, check_claude_settings_glob_wildcard,
@@ -146,6 +147,18 @@ declare_rule! {
         code: "SEC407",
         summary: "Claude settings permissions allow `Bash(git clone:*)` in a shared committed config",
         doc_title: "Claude settings: shared git clone permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGhPrPermissionRule {
+        code: "SEC408",
+        summary: "Claude settings permissions allow `Bash(gh pr:*)` in a shared committed config",
+        doc_title: "Claude settings: shared gh pr permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -381,7 +394,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 30] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 31] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -555,6 +568,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 30] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `git clone` permissions or replace them with a narrower reviewed workflow that keeps repository fetching under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGhPrPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh pr` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_gh_pr_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh pr` permissions or replace them with narrower reviewed subcommands that keep pull-request operations under explicit user control",
         ),
         suggestion_fix: None,
     },

@@ -1,0 +1,6 @@
+name = "claude-settings-gh-pr-fixture-safe"
+path = "tests/fixtures/.claude/settings.json"
+expect_findings = []
+
+[metadata]
+description = "Fixture-like Claude settings path is suppressed for gh pr permission checks"
