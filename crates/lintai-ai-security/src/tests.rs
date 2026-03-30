@@ -2279,6 +2279,73 @@ fn finds_claude_settings_bash_wildcard() {
 }
 
 #[test]
+fn finds_claude_settings_webfetch_wildcard() {
+    let content = r#"{"permissions":{"allow":["WebFetch(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC367")
+        .unwrap();
+    let start = content.find("WebFetch(*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "WebFetch(*)".len())
+    );
+}
+
+#[test]
+fn ignores_claude_settings_specific_webfetch_permissions() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["WebFetch(https://api.example.com/*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC367")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_webfetch_wildcard_on_fixture_like_path() {
+    let temp_dir = unique_temp_dir("lintai-claude-settings-webfetch-fixture");
+    std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("tests/fixtures/.claude/settings.json"),
+        br#"{"permissions":{"allow":["WebFetch(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    )
+    .unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
+    let summary = EngineBuilder::default()
+        .with_config(workspace.engine_config.clone())
+        .with_suppressions(Arc::new(suppressions))
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC367")
+    );
+}
+
+#[test]
 fn ignores_claude_settings_specific_bash_permissions() {
     let summary = scan_preview_claude_settings_fixture(
         ".claude/settings.json",
@@ -4129,6 +4196,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC364"
                         | "SEC365"
                         | "SEC366"
+                        | "SEC367"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

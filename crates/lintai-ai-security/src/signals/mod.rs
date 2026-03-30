@@ -159,6 +159,7 @@ pub(crate) struct ClaudeSettingsSignals {
     pub(crate) bypass_permissions_span: Option<Span>,
     pub(crate) missing_schema_span: Option<Span>,
     pub(crate) bash_wildcard_span: Option<Span>,
+    pub(crate) webfetch_wildcard_span: Option<Span>,
     pub(crate) home_directory_hook_command_span: Option<Span>,
     pub(crate) mutable_launcher_span: Option<Span>,
     pub(crate) inline_download_exec_span: Option<Span>,

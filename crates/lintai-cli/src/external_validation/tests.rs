@@ -222,6 +222,7 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(markdown.contains(
         "`SEC366` Claude settings dangerous host literals in `allowedHttpHookUrls`: `0`"
     ));
+    assert!(markdown.contains("`SEC367` Claude settings wildcard `WebFetch(*)` permissions: `0`"));
     assert!(markdown.contains("- repos with `tool_descriptor_json`: `1`"));
     assert!(markdown.contains(
         "- repos where new MCP client-config variants existed only under fixture-like paths: `0`"
@@ -750,4 +751,5 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains(
         "`SEC366` Claude settings files with dangerous host literals in `allowedHttpHookUrls`: `0`"
     ));
+    assert!(markdown.contains("`SEC367` Claude settings files allowing `WebFetch(*)`: `0`"));
 }

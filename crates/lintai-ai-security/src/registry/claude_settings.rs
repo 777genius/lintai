@@ -7,8 +7,21 @@ use crate::claude_settings_rules::{
     check_claude_settings_home_directory_hook_command, check_claude_settings_inline_download_exec,
     check_claude_settings_insecure_http_hook_url, check_claude_settings_missing_schema,
     check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
+    check_claude_settings_webfetch_wildcard,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
+
+declare_rule! {
+    pub struct ClaudeSettingsWebFetchWildcardRule {
+        code: "SEC367",
+        summary: "Claude settings permissions allow `WebFetch(*)` in a shared committed config",
+        doc_title: "Claude settings: wildcard WebFetch permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
 
 declare_rule! {
     pub struct ClaudeSettingsDangerousHttpHookHostRule {
@@ -118,7 +131,23 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 9] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 10] = [
+    NativeRuleSpec {
+        metadata: ClaudeSettingsWebFetchWildcardRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Wildcard WebFetch grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_webfetch_wildcard,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `WebFetch(*)` with a narrower allowlist of reviewed fetch patterns or remove broad network access from the shared Claude settings file",
+        ),
+        suggestion_fix: None,
+    },
     NativeRuleSpec {
         metadata: ClaudeSettingsDangerousHttpHookHostRule::METADATA,
         surface: Surface::ClaudeSettings,

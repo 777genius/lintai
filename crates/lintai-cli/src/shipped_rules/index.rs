@@ -147,6 +147,10 @@ mod tests {
         );
         assert_eq!(shipped_rule_alias("SEC365"), Some("CLAUDE-HTTP-HOOK-URL"));
         assert_eq!(shipped_rule_alias("SEC366"), Some("CLAUDE-HTTP-HOOK-HOST"));
+        assert_eq!(
+            shipped_rule_alias("SEC367"),
+            Some("CLAUDE-WEBFETCH-WILDCARD")
+        );
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

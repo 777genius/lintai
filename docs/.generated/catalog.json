@@ -96,7 +96,8 @@
         "lintai-ai-security:SEC363",
         "lintai-ai-security:SEC364",
         "lintai-ai-security:SEC365",
-        "lintai-ai-security:SEC366"
+        "lintai-ai-security:SEC366",
+        "lintai-ai-security:SEC367"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -200,7 +201,8 @@
         "lintai-ai-security:SEC363",
         "lintai-ai-security:SEC364",
         "lintai-ai-security:SEC365",
-        "lintai-ai-security:SEC366"
+        "lintai-ai-security:SEC366",
+        "lintai-ai-security:SEC367"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -2840,6 +2842,37 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Committed Claude settings with dangerous host literals in `allowedHttpHookUrls` are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC367",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC367",
+      "alias": "CLAUDE-WEBFETCH-WILDCARD",
+      "displayLabel": "SEC367 / CLAUDE-WEBFETCH-WILDCARD",
+      "docTitle": "Claude settings: wildcard WebFetch permissions",
+      "slug": "sec367",
+      "canonicalPath": "/rules/lintai-ai-security/sec367",
+      "summary": "Claude settings permissions allow `WebFetch(*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Wildcard WebFetch grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

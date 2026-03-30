@@ -32,6 +32,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-settings-inline-download-exec",
             "claude-settings-missing-schema",
             "claude-settings-mutable-launcher",
+            "claude-settings-webfetch-wildcard",
             "copilot-instructions-too-long",
             "copilot-path-specific-missing-applyto",
             "copilot-webpage-system-prompt-promotion",

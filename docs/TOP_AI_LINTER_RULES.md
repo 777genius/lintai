@@ -147,6 +147,11 @@
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9/10`
   - почему важно: metadata/private-network hook hosts в shared config выглядят как очень понятный SSRF/exfil policy smell и хорошо объясняются сообществу
+- `SEC367` — Claude settings permissions allow `WebFetch(*)` in a shared committed config
+  - статус: `Preview`
+  - community usefulness сейчас: `8.5/10`
+  - надёжность: `9/10`
+  - почему важно: даёт очень понятный least-privilege signal для shared Claude network access; wildcard fetch grant легче всего оспорить в code review и легко сузить до reviewed endpoints
 
 ### Минимальный релизный набор (1-й проход)
 

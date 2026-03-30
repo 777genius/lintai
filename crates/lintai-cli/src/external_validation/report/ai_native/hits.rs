@@ -95,6 +95,7 @@ pub(super) fn append_hit_sections(
     let sec364_hits = rule_count(ledger, &["SEC364"]);
     let sec365_hits = rule_count(ledger, &["SEC365"]);
     let sec366_hits = rule_count(ledger, &["SEC366"]);
+    let sec367_hits = rule_count(ledger, &["SEC367"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, ledger);
     let sec313_repos = repos_with_rule_hits(ledger, &["SEC313"], false);
     let sec335_repos = repos_with_rule_hits(ledger, &["SEC335"], false);
@@ -118,6 +119,7 @@ pub(super) fn append_hit_sections(
     let sec364_repos = repos_with_rule_hits(ledger, &["SEC364"], false);
     let sec365_repos = repos_with_rule_hits(ledger, &["SEC365"], false);
     let sec366_repos = repos_with_rule_hits(ledger, &["SEC366"], false);
+    let sec367_repos = repos_with_rule_hits(ledger, &["SEC367"], false);
 
     output.push_str("## Stable Hits\n\n");
     output.push_str(&format!("- current AI-native MCP rule families produced `{}` repo-level rule-code hits in this discovery wave\n", ai_native_rule_hits));
@@ -168,6 +170,10 @@ pub(super) fn append_hit_sections(
         "- `SEC366` Claude settings files with dangerous host literals in `allowedHttpHookUrls`: `{}`\n",
         sec366_hits
     ));
+    output.push_str(&format!(
+        "- `SEC367` Claude settings files allowing `WebFetch(*)`: `{}`\n",
+        sec367_hits
+    ));
     output.push_str(&format!("- AI-native markdown preview hits by rule code: `SEC313`=`{}`, `SEC335`=`{}`, `SEC347`=`{}`, `SEC348`=`{}`, `SEC349`=`{}`, `SEC350`=`{}`, `SEC351`=`{}`, `SEC352`=`{}`, `SEC353`=`{}`, `SEC354`=`{}`, `SEC355`=`{}`, `SEC356`=`{}`, `SEC357`=`{}`, `SEC358`=`{}`, `SEC359`=`{}`, `SEC360`=`{}`\n", sec313_hits, sec335_hits, sec347_hits, sec348_hits, sec349_hits, sec350_hits, sec351_hits, sec352_hits, sec353_hits, sec354_hits, sec355_hits, sec356_hits, sec357_hits, sec358_hits, sec359_hits, sec360_hits));
     output.push_str(&format!(
         "- `SEC347` subtype repo hits: CLI-form=`{}`, config-snippet-form=`{}`\n",
@@ -208,6 +214,7 @@ pub(super) fn append_hit_sections(
         ("SEC364", sec364_repos),
         ("SEC365", sec365_repos),
         ("SEC366", sec366_repos),
+        ("SEC367", sec367_repos),
     ] {
         if repos.is_empty() {
             output.push_str(&format!(
