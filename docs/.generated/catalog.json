@@ -56,7 +56,8 @@
         "lintai-ai-security:SEC343",
         "lintai-ai-security:SEC344",
         "lintai-ai-security:SEC345",
-        "lintai-ai-security:SEC346"
+        "lintai-ai-security:SEC346",
+        "lintai-ai-security:SEC394"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -203,7 +204,8 @@
         "lintai-ai-security:SEC343",
         "lintai-ai-security:SEC344",
         "lintai-ai-security:SEC345",
-        "lintai-ai-security:SEC346"
+        "lintai-ai-security:SEC346",
+        "lintai-ai-security:SEC394"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -3563,6 +3565,45 @@
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC394",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC394",
+      "alias": "MCP-AUTOAPPROVE-WILDCARD",
+      "displayLabel": "SEC394 / MCP-AUTOAPPROVE-WILDCARD",
+      "docTitle": "MCP config: wildcard auto-approve",
+      "slug": "sec394",
+      "canonicalPath": "/rules/lintai-ai-security/sec394",
+      "summary": "MCP configuration auto-approves all tools with `autoApprove: [\"*\"]`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit wildcard auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-wildcard"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"*\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {

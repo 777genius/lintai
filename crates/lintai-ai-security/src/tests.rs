@@ -2472,6 +2472,42 @@ fn ignores_mcp_non_mutable_docker_pull_policy() {
 }
 
 #[test]
+fn finds_mcp_autoapprove_wildcard() {
+    let provider = AiSecurityProvider::default();
+    let content =
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["*"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC394")
+        .unwrap();
+    let start = content.find("\"*\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + 1)
+    );
+}
+
+#[test]
+fn ignores_mcp_specific_autoapprove_list() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["read_file","search_docs"]}}}"#,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC394"));
+}
+
+#[test]
 fn finds_claude_settings_missing_schema() {
     let content = r#"{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -4852,6 +4888,7 @@ fn fixture_like_expanded_mcp_paths_do_not_emit_mcp_findings() {
                 | "SEC338"
                 | "SEC339"
                 | "SEC346"
+                | "SEC394"
                 | "SEC340"
                 | "SEC341"
                 | "SEC342"

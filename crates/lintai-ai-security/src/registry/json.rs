@@ -4,13 +4,14 @@ use super::*;
 use crate::json_rules::{
     check_json_dangerous_endpoint_host, check_json_hidden_instruction, check_json_literal_secret,
     check_json_sensitive_env_reference, check_json_suspicious_remote_endpoint,
-    check_json_unsafe_plugin_path, check_mcp_broad_env_file, check_mcp_credential_env_passthrough,
-    check_mcp_dangerous_docker_flag, check_mcp_inline_download_exec, check_mcp_mutable_docker_pull,
-    check_mcp_mutable_launcher, check_mcp_network_tls_bypass_command,
-    check_mcp_sensitive_docker_mount, check_mcp_shell_wrapper, check_mcp_unpinned_docker_image,
-    check_plain_http_config, check_plugin_hook_inline_download_exec,
-    check_plugin_hook_mutable_launcher, check_plugin_hook_network_tls_bypass,
-    check_static_auth_exposure_config, check_trust_verification_disabled_config,
+    check_json_unsafe_plugin_path, check_mcp_autoapprove_wildcard, check_mcp_broad_env_file,
+    check_mcp_credential_env_passthrough, check_mcp_dangerous_docker_flag,
+    check_mcp_inline_download_exec, check_mcp_mutable_docker_pull, check_mcp_mutable_launcher,
+    check_mcp_network_tls_bypass_command, check_mcp_sensitive_docker_mount,
+    check_mcp_shell_wrapper, check_mcp_unpinned_docker_image, check_plain_http_config,
+    check_plugin_hook_inline_download_exec, check_plugin_hook_mutable_launcher,
+    check_plugin_hook_network_tls_bypass, check_static_auth_exposure_config,
+    check_trust_verification_disabled_config,
 };
 
 declare_rule! {
@@ -194,6 +195,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApproveWildcardRule {
+        code: "SEC394",
+        summary: "MCP configuration auto-approves all tools with `autoApprove: [\"*\"]`",
+        doc_title: "MCP config: wildcard auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpUnpinnedDockerImageRule {
         code: "SEC337",
         summary: "MCP configuration launches Docker with an image reference that is not digest-pinned",
@@ -277,7 +290,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 23] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -559,6 +572,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 22] = [
         safe_fix: None,
         suggestion_message: Some(
             "prefer narrower env injection over broad repo-local .env files for committed MCP client configs",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveWildcardRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit wildcard auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-wildcard"],
+            benign_case_ids: &["mcp-autoapprove-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"*\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_wildcard,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove wildcard auto-approval and explicitly list only narrowly reviewed MCP tools",
         ),
         suggestion_fix: None,
     },

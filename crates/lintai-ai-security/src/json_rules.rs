@@ -78,6 +78,21 @@ pub(crate) fn check_mcp_broad_env_file(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_wildcard(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_wildcard_span.clone()),
+        "MCP configuration auto-approves all tools with `autoApprove: [\"*\"]`",
+    )
+}
+
 pub(crate) fn check_mcp_unpinned_docker_image(
     ctx: &ScanContext,
     signals: &ArtifactSignals,
