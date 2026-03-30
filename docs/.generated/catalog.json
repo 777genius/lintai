@@ -1,0 +1,2310 @@
+{
+  "version": 1,
+  "providers": [
+    {
+      "id": "lintai-ai-security",
+      "slug": "lintai-ai-security",
+      "title": "lintai-ai-security"
+    },
+    {
+      "id": "lintai-policy-mismatch",
+      "slug": "lintai-policy-mismatch",
+      "title": "lintai-policy-mismatch"
+    }
+  ],
+  "presets": [
+    {
+      "id": "base",
+      "kind": "membership",
+      "title": "base",
+      "description": "Core shipped rules for the default lintai baseline.",
+      "extends": [],
+      "ruleIds": [
+        "lintai-ai-security:SEC201",
+        "lintai-ai-security:SEC202",
+        "lintai-ai-security:SEC203",
+        "lintai-ai-security:SEC204",
+        "lintai-ai-security:SEC205",
+        "lintai-ai-security:SEC206",
+        "lintai-ai-security:SEC301",
+        "lintai-ai-security:SEC302",
+        "lintai-ai-security:SEC303",
+        "lintai-ai-security:SEC304",
+        "lintai-ai-security:SEC305",
+        "lintai-ai-security:SEC309",
+        "lintai-ai-security:SEC310",
+        "lintai-ai-security:SEC311",
+        "lintai-ai-security:SEC312",
+        "lintai-ai-security:SEC314",
+        "lintai-ai-security:SEC315",
+        "lintai-ai-security:SEC316",
+        "lintai-ai-security:SEC317",
+        "lintai-ai-security:SEC318",
+        "lintai-ai-security:SEC319",
+        "lintai-ai-security:SEC320",
+        "lintai-ai-security:SEC321",
+        "lintai-ai-security:SEC322",
+        "lintai-ai-security:SEC324",
+        "lintai-ai-security:SEC326",
+        "lintai-ai-security:SEC327",
+        "lintai-ai-security:SEC329",
+        "lintai-ai-security:SEC330",
+        "lintai-ai-security:SEC331",
+        "lintai-ai-security:SEC337",
+        "lintai-ai-security:SEC338",
+        "lintai-ai-security:SEC339",
+        "lintai-ai-security:SEC340",
+        "lintai-ai-security:SEC341",
+        "lintai-ai-security:SEC342",
+        "lintai-ai-security:SEC343",
+        "lintai-ai-security:SEC344",
+        "lintai-ai-security:SEC345",
+        "lintai-ai-security:SEC346"
+      ],
+      "canonicalPath": "/presets/base"
+    },
+    {
+      "id": "preview",
+      "kind": "membership",
+      "title": "preview",
+      "description": "Preview rules that expand coverage beyond the stable baseline.",
+      "extends": [],
+      "ruleIds": [
+        "lintai-ai-security:SEC101",
+        "lintai-ai-security:SEC102",
+        "lintai-ai-security:SEC103",
+        "lintai-ai-security:SEC104",
+        "lintai-ai-security:SEC105",
+        "lintai-ai-security:SEC306",
+        "lintai-ai-security:SEC307",
+        "lintai-ai-security:SEC308",
+        "lintai-ai-security:SEC313",
+        "lintai-ai-security:SEC323",
+        "lintai-ai-security:SEC325",
+        "lintai-ai-security:SEC328",
+        "lintai-ai-security:SEC335",
+        "lintai-ai-security:SEC336",
+        "lintai-ai-security:SEC347",
+        "lintai-ai-security:SEC348",
+        "lintai-ai-security:SEC349",
+        "lintai-ai-security:SEC350",
+        "lintai-ai-security:SEC351",
+        "lintai-policy-mismatch:SEC401",
+        "lintai-policy-mismatch:SEC402",
+        "lintai-policy-mismatch:SEC403"
+      ],
+      "canonicalPath": "/presets/preview"
+    },
+    {
+      "id": "compat",
+      "kind": "membership",
+      "title": "compat",
+      "description": "Rules that flag mismatches between workspace policy and repository behavior.",
+      "extends": [],
+      "ruleIds": [
+        "lintai-policy-mismatch:SEC401",
+        "lintai-policy-mismatch:SEC402",
+        "lintai-policy-mismatch:SEC403"
+      ],
+      "canonicalPath": "/presets/compat"
+    },
+    {
+      "id": "skills",
+      "kind": "membership",
+      "title": "skills",
+      "description": "Rules for instruction and skills markdown, including preview-only coverage.",
+      "extends": [],
+      "ruleIds": [
+        "lintai-ai-security:SEC101",
+        "lintai-ai-security:SEC102",
+        "lintai-ai-security:SEC103",
+        "lintai-ai-security:SEC104",
+        "lintai-ai-security:SEC105",
+        "lintai-ai-security:SEC312",
+        "lintai-ai-security:SEC313",
+        "lintai-ai-security:SEC335",
+        "lintai-ai-security:SEC347",
+        "lintai-ai-security:SEC348",
+        "lintai-ai-security:SEC349",
+        "lintai-ai-security:SEC350",
+        "lintai-ai-security:SEC351"
+      ],
+      "canonicalPath": "/presets/skills"
+    },
+    {
+      "id": "mcp",
+      "kind": "membership",
+      "title": "mcp",
+      "description": "Rules for MCP, tool, and server JSON configs, including preview-only coverage.",
+      "extends": [],
+      "ruleIds": [
+        "lintai-ai-security:SEC301",
+        "lintai-ai-security:SEC302",
+        "lintai-ai-security:SEC303",
+        "lintai-ai-security:SEC304",
+        "lintai-ai-security:SEC305",
+        "lintai-ai-security:SEC306",
+        "lintai-ai-security:SEC307",
+        "lintai-ai-security:SEC308",
+        "lintai-ai-security:SEC309",
+        "lintai-ai-security:SEC310",
+        "lintai-ai-security:SEC311",
+        "lintai-ai-security:SEC314",
+        "lintai-ai-security:SEC315",
+        "lintai-ai-security:SEC316",
+        "lintai-ai-security:SEC317",
+        "lintai-ai-security:SEC318",
+        "lintai-ai-security:SEC319",
+        "lintai-ai-security:SEC320",
+        "lintai-ai-security:SEC321",
+        "lintai-ai-security:SEC322",
+        "lintai-ai-security:SEC323",
+        "lintai-ai-security:SEC329",
+        "lintai-ai-security:SEC330",
+        "lintai-ai-security:SEC331",
+        "lintai-ai-security:SEC336",
+        "lintai-ai-security:SEC337",
+        "lintai-ai-security:SEC338",
+        "lintai-ai-security:SEC339",
+        "lintai-ai-security:SEC343",
+        "lintai-ai-security:SEC344",
+        "lintai-ai-security:SEC345",
+        "lintai-ai-security:SEC346"
+      ],
+      "canonicalPath": "/presets/mcp"
+    },
+    {
+      "id": "claude",
+      "kind": "membership",
+      "title": "claude",
+      "description": "Rules for Claude settings and command-hook configuration.",
+      "extends": [],
+      "ruleIds": [
+        "lintai-ai-security:SEC340",
+        "lintai-ai-security:SEC341",
+        "lintai-ai-security:SEC342"
+      ],
+      "canonicalPath": "/presets/claude"
+    },
+    {
+      "id": "strict",
+      "kind": "overlay",
+      "title": "strict",
+      "description": "Severity overlay for active security rules; it does not activate additional rules by itself.",
+      "extends": [
+        "base"
+      ],
+      "ruleIds": [],
+      "canonicalPath": "/presets/strict"
+    }
+  ],
+  "rules": [
+    {
+      "ruleId": "lintai-ai-security:SEC101",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC101",
+      "docTitle": "HTML comment: dangerous instructions",
+      "slug": "sec101",
+      "canonicalPath": "/rules/lintai-ai-security/sec101",
+      "summary": "Hidden HTML comment contains dangerous agent instructions",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "heuristic",
+      "remediationSupport": "safe_fix",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Depends on suspicious phrase heuristics inside hidden HTML comments.",
+        "promotionRequirements": "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC102",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC102",
+      "docTitle": "Markdown: remote execution instruction",
+      "slug": "sec102",
+      "canonicalPath": "/rules/lintai-ai-security/sec102",
+      "summary": "Markdown contains remote download-and-execute instruction outside code blocks",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "heuristic",
+      "remediationSupport": "suggestion",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Depends on prose command heuristics outside code blocks.",
+        "promotionRequirements": "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC103",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC103",
+      "docTitle": "HTML comment: remote execution instruction",
+      "slug": "sec103",
+      "canonicalPath": "/rules/lintai-ai-security/sec103",
+      "summary": "Hidden HTML comment contains remote download-and-execute instruction",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "heuristic",
+      "remediationSupport": "safe_fix",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Depends on hidden-comment command heuristics rather than a structural execution model.",
+        "promotionRequirements": "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC104",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC104",
+      "docTitle": "Markdown: base64 executable payload",
+      "slug": "sec104",
+      "canonicalPath": "/rules/lintai-ai-security/sec104",
+      "summary": "Markdown contains a base64-decoded executable payload outside code blocks",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "heuristic",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Depends on prose base64-and-exec text heuristics.",
+        "promotionRequirements": "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC105",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC105",
+      "docTitle": "Markdown: parent-directory file access",
+      "slug": "sec105",
+      "canonicalPath": "/rules/lintai-ai-security/sec105",
+      "summary": "Markdown instructions reference parent-directory traversal for file access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "heuristic",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Depends on prose path-traversal and access-verb heuristics.",
+        "promotionRequirements": "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC201",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC201",
+      "docTitle": "Hook script: remote code execution",
+      "slug": "sec201",
+      "canonicalPath": "/rules/lintai-ai-security/sec201",
+      "summary": "Hook script downloads remote code and executes it",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "suggestion",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit remote download-and-execute behavior in hook shell lines, not prose text.",
+        "maliciousCaseIds": [
+          "hook-download-exec"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals download-and-execute observation over non-comment hook lines."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC202",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC202",
+      "docTitle": "Hook script: secret exfiltration",
+      "slug": "sec202",
+      "canonicalPath": "/rules/lintai-ai-security/sec202",
+      "summary": "Hook script appears to exfiltrate secrets through a network call",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "suggestion",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches secret-bearing network exfil behavior in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-secret-exfil"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals secret exfil observation from network markers plus secret markers on non-comment lines."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC203",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC203",
+      "docTitle": "Hook script: insecure HTTP secret send",
+      "slug": "sec203",
+      "canonicalPath": "/rules/lintai-ai-security/sec203",
+      "summary": "Hook script sends secret material to an insecure http:// endpoint",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "suggestion",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches insecure HTTP transport on a secret-bearing hook exfil path.",
+        "maliciousCaseIds": [
+          "hook-plain-http-secret-exfil"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals precise http:// span observation gated by concurrent secret exfil markers."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC204",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC204",
+      "docTitle": "Hook script: TLS verification disabled",
+      "slug": "sec204",
+      "canonicalPath": "/rules/lintai-ai-security/sec204",
+      "summary": "Hook script disables TLS or certificate verification for a network call",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit TLS verification bypass tokens in executable hook network context.",
+        "maliciousCaseIds": [
+          "hook-tls-bypass"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-tls-verified-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals TLS-bypass token observation over parsed hook line tokens and network context."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC205",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC205",
+      "docTitle": "Hook script: hardcoded auth in network call",
+      "slug": "sec205",
+      "canonicalPath": "/rules/lintai-ai-security/sec205",
+      "summary": "Hook script embeds static authentication material in a network call",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches literal static auth material in hook URLs or authorization headers.",
+        "maliciousCaseIds": [
+          "hook-static-auth-userinfo"
+        ],
+        "benignCaseIds": [
+          "hook-auth-dynamic-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals userinfo/header literal extraction excluding dynamic references."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC206",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC206",
+      "docTitle": "Hook script: base64 payload execution",
+      "slug": "sec206",
+      "canonicalPath": "/rules/lintai-ai-security/sec206",
+      "summary": "Hook script decodes a base64 payload and executes it",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "suggestion",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit base64 decode-and-execute behavior in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-base64-exec"
+        ],
+        "benignCaseIds": [
+          "hook-base64-decode-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals base64-decode plus exec observation over non-comment hook lines."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC301",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC301",
+      "docTitle": "MCP config: shell trampoline",
+      "slug": "sec301",
+      "canonicalPath": "/rules/lintai-ai-security/sec301",
+      "summary": "MCP configuration shells out through sh -c or bash -c",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit shell-wrapper command structure in JSON config.",
+        "maliciousCaseIds": [
+          "mcp-shell-wrapper"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command and args structure observation for sh -c or bash -c wrappers."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC302",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC302",
+      "docTitle": "Config: insecure HTTP endpoint",
+      "slug": "sec302",
+      "canonicalPath": "/rules/lintai-ai-security/sec302",
+      "summary": "Configuration contains an insecure http:// endpoint",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "suggestion",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit insecure http:// endpoints in configuration values.",
+        "maliciousCaseIds": [
+          "mcp-plain-http"
+        ],
+        "benignCaseIds": [
+          "mcp-trusted-endpoint-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals precise http:// endpoint span resolution from parsed JSON location map."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC303",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC303",
+      "docTitle": "MCP config: credential env passthrough",
+      "slug": "sec303",
+      "canonicalPath": "/rules/lintai-ai-security/sec303",
+      "summary": "MCP configuration passes through credential environment variables",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit credential env passthrough by key inside configuration env maps.",
+        "maliciousCaseIds": [
+          "mcp-credential-env-passthrough"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals env-map key observation for credential passthrough keys."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC304",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC304",
+      "docTitle": "Config: TLS verification disabled",
+      "slug": "sec304",
+      "canonicalPath": "/rules/lintai-ai-security/sec304",
+      "summary": "Configuration disables TLS or certificate verification",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit TLS or certificate verification disable flags in configuration.",
+        "maliciousCaseIds": [
+          "mcp-trust-verification-disabled"
+        ],
+        "benignCaseIds": [
+          "mcp-trust-verified-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals boolean and key observation for trust-verification disable settings."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC305",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC305",
+      "docTitle": "Config: hardcoded auth material",
+      "slug": "sec305",
+      "canonicalPath": "/rules/lintai-ai-security/sec305",
+      "summary": "Configuration embeds static authentication material in a connection or auth value",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches literal static auth material embedded directly in configuration values.",
+        "maliciousCaseIds": [
+          "mcp-static-authorization"
+        ],
+        "benignCaseIds": [
+          "mcp-authorization-placeholder-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals literal authorization or userinfo span extraction excluding dynamic placeholders."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC306",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC306",
+      "docTitle": "JSON config: hidden override instructions",
+      "slug": "sec306",
+      "canonicalPath": "/rules/lintai-ai-security/sec306",
+      "summary": "JSON configuration description contains override-style hidden instructions",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "heuristic",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "mcp"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Depends on descriptive-field phrase heuristics in JSON text.",
+        "promotionRequirements": "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC307",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC307",
+      "docTitle": "Config: sensitive env forwarding",
+      "slug": "sec307",
+      "canonicalPath": "/rules/lintai-ai-security/sec307",
+      "summary": "Configuration forwards sensitive environment variable references",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "heuristic",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "mcp"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Depends on sensitive env-name heuristics in forwarded references.",
+        "promotionRequirements": "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC308",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC308",
+      "docTitle": "Config: suspicious remote endpoint",
+      "slug": "sec308",
+      "canonicalPath": "/rules/lintai-ai-security/sec308",
+      "summary": "Configuration points at a suspicious remote endpoint",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "heuristic",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "mcp"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Depends on suspicious host-marker heuristics for remote endpoints.",
+        "promotionRequirements": "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC309",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC309",
+      "docTitle": "Config: literal secrets in config",
+      "slug": "sec309",
+      "canonicalPath": "/rules/lintai-ai-security/sec309",
+      "summary": "Configuration commits literal secret material in env, auth, or header values",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches literal secret material committed into env, header, or auth-like JSON fields.",
+        "maliciousCaseIds": [
+          "mcp-literal-secret-config"
+        ],
+        "benignCaseIds": [
+          "mcp-secret-placeholder-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals literal secret observation over env, header, and auth-like keys excluding dynamic placeholders."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC310",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC310",
+      "docTitle": "Config: metadata or private-network host",
+      "slug": "sec310",
+      "canonicalPath": "/rules/lintai-ai-security/sec310",
+      "summary": "Configuration endpoint targets a metadata or private-network host literal",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit metadata-service or private-network host literals in endpoint-like configuration values.",
+        "maliciousCaseIds": [
+          "mcp-metadata-host-literal"
+        ],
+        "benignCaseIds": [
+          "mcp-public-endpoint-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals endpoint-host extraction over URL-like endpoint fields with metadata/private-host classification."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC311",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC311",
+      "docTitle": "Cursor plugin: unsafe path traversal",
+      "slug": "sec311",
+      "canonicalPath": "/rules/lintai-ai-security/sec311",
+      "summary": "Cursor plugin manifest contains an unsafe absolute or parent-traversing path",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches absolute or parent-traversing paths in committed Cursor plugin manifest path fields.",
+        "maliciousCaseIds": [
+          "cursor-plugin-unsafe-path"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-safe-paths"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals plugin-manifest path observation limited to known plugin path fields."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC312",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC312",
+      "docTitle": "Markdown: private key material",
+      "slug": "sec312",
+      "canonicalPath": "/rules/lintai-ai-security/sec312",
+      "summary": "Markdown contains committed private key material",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit committed private-key PEM markers inside agent markdown surfaces.",
+        "maliciousCaseIds": [
+          "skill-private-key-pem"
+        ],
+        "benignCaseIds": [
+          "skill-public-key-pem-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals private-key marker observation across parsed markdown regions excluding placeholder examples."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC313",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC313",
+      "docTitle": "Shell example: remote content piped to shell",
+      "slug": "sec313",
+      "canonicalPath": "/rules/lintai-ai-security/sec313",
+      "summary": "Fenced shell example pipes remote content directly into a shell",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Depends on fenced shell-example command heuristics and still needs broader external precision review.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC314",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC314",
+      "docTitle": "Tool descriptor: missing machine fields",
+      "slug": "sec314",
+      "canonicalPath": "/rules/lintai-ai-security/sec314",
+      "summary": "MCP-style tool descriptor is missing required machine fields",
+      "scope": "per_file",
+      "surface": "tool_json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks unambiguous MCP-style tool descriptors for missing machine fields instead of relying on prose heuristics.",
+        "maliciousCaseIds": [
+          "tool-json-mcp-missing-machine-fields"
+        ],
+        "benignCaseIds": [
+          "tool-json-mcp-valid-tool"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ToolJsonSignals MCP collection analysis over parsed tool descriptor JSON."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC315",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC315",
+      "docTitle": "Tool descriptors: duplicate tool names",
+      "slug": "sec315",
+      "canonicalPath": "/rules/lintai-ai-security/sec315",
+      "summary": "MCP-style tool descriptor collection contains duplicate tool names",
+      "scope": "per_file",
+      "surface": "tool_json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks structured MCP-style tool collections for duplicate names that can shadow one another.",
+        "maliciousCaseIds": [
+          "tool-json-duplicate-tool-names"
+        ],
+        "benignCaseIds": [
+          "tool-json-unique-tool-names"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ToolJsonSignals duplicate-name detection over MCP-style tool collections."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC316",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC316",
+      "docTitle": "OpenAI strict schema: missing additionalProperties false",
+      "slug": "sec316",
+      "canonicalPath": "/rules/lintai-ai-security/sec316",
+      "summary": "OpenAI strict tool schema omits recursive additionalProperties: false",
+      "scope": "per_file",
+      "surface": "tool_json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks OpenAI strict tool schemas for recursive object locking with additionalProperties: false.",
+        "maliciousCaseIds": [
+          "tool-json-openai-strict-additional-properties"
+        ],
+        "benignCaseIds": [
+          "tool-json-openai-strict-locked"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ToolJsonSignals recursive schema walk over OpenAI function.parameters when strict mode is enabled."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC317",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC317",
+      "docTitle": "OpenAI strict schema: properties not all required",
+      "slug": "sec317",
+      "canonicalPath": "/rules/lintai-ai-security/sec317",
+      "summary": "OpenAI strict tool schema does not require every declared property",
+      "scope": "per_file",
+      "surface": "tool_json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks OpenAI strict tool schemas for full required coverage of declared properties.",
+        "maliciousCaseIds": [
+          "tool-json-openai-strict-required-coverage"
+        ],
+        "benignCaseIds": [
+          "tool-json-openai-strict-required-complete"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ToolJsonSignals recursive required-versus-properties comparison over strict OpenAI schemas."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC318",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC318",
+      "docTitle": "Anthropic strict schema: missing additionalProperties false",
+      "slug": "sec318",
+      "canonicalPath": "/rules/lintai-ai-security/sec318",
+      "summary": "Anthropic strict tool input schema omits additionalProperties: false",
+      "scope": "per_file",
+      "surface": "tool_json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks Anthropic strict tool input_schema objects for explicit additionalProperties: false.",
+        "maliciousCaseIds": [
+          "tool-json-anthropic-strict-open-schema"
+        ],
+        "benignCaseIds": [
+          "tool-json-anthropic-strict-locked"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ToolJsonSignals recursive schema walk over Anthropic input_schema when strict mode is enabled."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC319",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC319",
+      "docTitle": "server.json remotes: insecure or private URL",
+      "slug": "sec319",
+      "canonicalPath": "/rules/lintai-ai-security/sec319",
+      "summary": "server.json remotes entry uses an insecure or non-public remote URL",
+      "scope": "per_file",
+      "surface": "server_json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks MCP registry remotes[] URLs for insecure HTTP and non-public host literals without inspecting local package transport URLs.",
+        "maliciousCaseIds": [
+          "server-json-insecure-remote-url"
+        ],
+        "benignCaseIds": [
+          "server-json-loopback-package-transport-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ServerJsonSignals remotes[] URL analysis limited to streamable-http and sse entries."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC320",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC320",
+      "docTitle": "server.json remotes: undefined template variable",
+      "slug": "sec320",
+      "canonicalPath": "/rules/lintai-ai-security/sec320",
+      "summary": "server.json remotes URL references an undefined template variable",
+      "scope": "per_file",
+      "surface": "server_json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks server.json remotes[] URL templates against variables defined on the same remote entry.",
+        "maliciousCaseIds": [
+          "server-json-unresolved-remote-variable"
+        ],
+        "benignCaseIds": [
+          "server-json-remote-variable-defined"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ServerJsonSignals placeholder extraction over remotes[] URLs compared with remotes[].variables keys."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC321",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC321",
+      "docTitle": "server.json remotes: literal auth header",
+      "slug": "sec321",
+      "canonicalPath": "/rules/lintai-ai-security/sec321",
+      "summary": "server.json remotes header commits literal authentication material",
+      "scope": "per_file",
+      "surface": "server_json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks remotes[].headers[] auth-like values for literal bearer/basic material or literal API key style values.",
+        "maliciousCaseIds": [
+          "server-json-literal-auth-header"
+        ],
+        "benignCaseIds": [
+          "server-json-auth-header-placeholder-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ServerJsonSignals inspects remotes[].headers[] auth-like names and value literals without looking at packages[].transport."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC322",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC322",
+      "docTitle": "server.json remotes: undefined header variable",
+      "slug": "sec322",
+      "canonicalPath": "/rules/lintai-ai-security/sec322",
+      "summary": "server.json remotes header value references an undefined template variable",
+      "scope": "per_file",
+      "surface": "server_json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks auth-like remotes[].headers[].value placeholders against variables defined on the same header object.",
+        "maliciousCaseIds": [
+          "server-json-unresolved-header-variable"
+        ],
+        "benignCaseIds": [
+          "server-json-header-variable-defined"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ServerJsonSignals placeholder extraction over remotes[].headers[].value compared with headers[].variables keys."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC323",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC323",
+      "docTitle": "server.json auth: missing explicit secret flag",
+      "slug": "sec323",
+      "canonicalPath": "/rules/lintai-ai-security/sec323",
+      "summary": "server.json auth header carries material without an explicit secret flag",
+      "scope": "per_file",
+      "surface": "server_json",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "mcp"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Secret policy expectations can vary across registry producers, so the first release keeps this as guidance-only.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC324",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC324",
+      "docTitle": "GitHub Actions: unpinned third-party action",
+      "slug": "sec324",
+      "canonicalPath": "/rules/lintai-ai-security/sec324",
+      "summary": "GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA",
+      "scope": "per_file",
+      "surface": "github_workflow",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks workflow uses: entries for third-party actions that rely on mutable refs instead of immutable commit SHAs; positioned as a supply-chain hardening control rather than a direct exploit claim.",
+        "maliciousCaseIds": [
+          "github-workflow-third-party-unpinned-action"
+        ],
+        "benignCaseIds": [
+          "github-workflow-pinned-third-party-action"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "GithubWorkflowSignals line-level uses: extraction gated by semantically confirmed workflow YAML."
+      },
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC325",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC325",
+      "docTitle": "GitHub Actions: untrusted expression in run",
+      "slug": "sec325",
+      "canonicalPath": "/rules/lintai-ai-security/sec325",
+      "summary": "GitHub Actions workflow interpolates untrusted expression data directly inside a run command",
+      "scope": "per_file",
+      "surface": "github_workflow",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shell safety depends on how the interpolated expression is consumed inside the run command.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC326",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC326",
+      "docTitle": "GitHub Actions: pull_request_target checkout",
+      "slug": "sec326",
+      "canonicalPath": "/rules/lintai-ai-security/sec326",
+      "summary": "GitHub Actions pull_request_target workflow checks out untrusted pull request head content",
+      "scope": "per_file",
+      "surface": "github_workflow",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks pull_request_target workflows for actions/checkout steps that explicitly pull untrusted pull request head refs instead of the safer default merge context.",
+        "maliciousCaseIds": [
+          "github-workflow-pull-request-target-head-checkout"
+        ],
+        "benignCaseIds": [
+          "github-workflow-pull-request-target-safe-checkout"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "GithubWorkflowSignals event gating plus line-level checkout ref extraction for pull_request_target workflows."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC327",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC327",
+      "docTitle": "GitHub Actions: write-all token",
+      "slug": "sec327",
+      "canonicalPath": "/rules/lintai-ai-security/sec327",
+      "summary": "GitHub Actions workflow grants GITHUB_TOKEN write-all permissions",
+      "scope": "per_file",
+      "surface": "github_workflow",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks workflow permissions for the explicit write-all shortcut, which exceeds least-privilege guidance for GITHUB_TOKEN.",
+        "maliciousCaseIds": [
+          "github-workflow-write-all-permissions"
+        ],
+        "benignCaseIds": [
+          "github-workflow-read-only-permissions"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "GithubWorkflowSignals line-level permissions extraction for semantically confirmed workflow YAML."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC328",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC328",
+      "docTitle": "GitHub Actions: write-capable third-party action",
+      "slug": "sec328",
+      "canonicalPath": "/rules/lintai-ai-security/sec328",
+      "summary": "GitHub Actions workflow combines explicit write-capable permissions with a third-party action",
+      "scope": "per_file",
+      "surface": "github_workflow",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Write-capable token scopes and third-party action usage are compositional and need more corpus-backed precision review before a stable launch.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC329",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC329",
+      "docTitle": "MCP config: mutable package runner",
+      "slug": "sec329",
+      "canonicalPath": "/rules/lintai-ai-security/sec329",
+      "summary": "MCP configuration launches tooling through a mutable package runner",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP config command launchers for mutable package-runner forms such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.",
+        "maliciousCaseIds": [
+          "mcp-mutable-launcher"
+        ],
+        "benignCaseIds": [
+          "mcp-pinned-launcher-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command/args analysis over ArtifactKind::McpConfig objects with launcher-specific argument gating."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC330",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC330",
+      "docTitle": "MCP config: remote content piped to shell",
+      "slug": "sec330",
+      "canonicalPath": "/rules/lintai-ai-security/sec330",
+      "summary": "MCP configuration command downloads remote content and pipes it into a shell",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP config command and args values for explicit curl|shell or wget|shell execution chains.",
+        "maliciousCaseIds": [
+          "mcp-inline-download-exec"
+        ],
+        "benignCaseIds": [
+          "mcp-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command/args string analysis over ArtifactKind::McpConfig objects, limited to explicit download-pipe-shell patterns."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC331",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC331",
+      "docTitle": "MCP config: TLS verification disabled",
+      "slug": "sec331",
+      "canonicalPath": "/rules/lintai-ai-security/sec331",
+      "summary": "MCP configuration command disables TLS verification in a network-capable execution path",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP config command and args values for explicit TLS-bypass tokens in a network-capable execution context.",
+        "maliciousCaseIds": [
+          "mcp-command-tls-bypass"
+        ],
+        "benignCaseIds": [
+          "mcp-network-tls-verified-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command/args string analysis over ArtifactKind::McpConfig objects gated by network markers plus TLS-bypass tokens."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC335",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC335",
+      "docTitle": "AI markdown: metadata-service access",
+      "slug": "sec335",
+      "canonicalPath": "/rules/lintai-ai-security/sec335",
+      "summary": "AI-native markdown contains a direct cloud metadata-service access example",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Metadata-service examples can appear in legitimate security training content, so the first release stays guidance-only.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC336",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC336",
+      "docTitle": "MCP client config: broad envFile",
+      "slug": "sec336",
+      "canonicalPath": "/rules/lintai-ai-security/sec336",
+      "summary": "Repo-local MCP client config loads a broad dotenv-style envFile",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "mcp"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Broad envFile loading is useful review signal, but whether it is materially risky still depends on repo-local review policy and env contents.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC337",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC337",
+      "docTitle": "MCP config: Docker image not digest-pinned",
+      "slug": "sec337",
+      "canonicalPath": "/rules/lintai-ai-security/sec337",
+      "summary": "MCP configuration launches Docker with an image reference that is not digest-pinned",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP config Docker launch paths for image references that are not pinned by digest, including tag-only refs such as :latest or :1.2.3.",
+        "maliciousCaseIds": [
+          "mcp-docker-unpinned-image"
+        ],
+        "benignCaseIds": [
+          "mcp-docker-digest-pinned-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals docker run argument analysis over ArtifactKind::McpConfig objects, limited to command == docker plus args beginning with run."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC338",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC338",
+      "docTitle": "MCP config: sensitive host bind mount",
+      "slug": "sec338",
+      "canonicalPath": "/rules/lintai-ai-security/sec338",
+      "summary": "MCP configuration launches Docker with a bind mount of sensitive host material",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP config Docker launch paths for bind mounts of sensitive host sources such as docker.sock, SSH material, cloud credentials, and kubeconfig directories.",
+        "maliciousCaseIds": [
+          "mcp-docker-sensitive-mount"
+        ],
+        "benignCaseIds": [
+          "mcp-docker-named-volume-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals docker run argument analysis over ArtifactKind::McpConfig objects, limited to -v/--volume and --mount bind forms with sensitive host-path markers."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC339",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC339",
+      "docTitle": "MCP config: privileged Docker flags",
+      "slug": "sec339",
+      "canonicalPath": "/rules/lintai-ai-security/sec339",
+      "summary": "MCP configuration launches Docker with a host-escape or privileged runtime flag",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP config Docker launch paths for privileged or host-escape runtime flags such as --privileged, --network host, --pid host, and --ipc host.",
+        "maliciousCaseIds": [
+          "mcp-docker-host-escape"
+        ],
+        "benignCaseIds": [
+          "mcp-docker-safe-run"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals docker run argument analysis over ArtifactKind::McpConfig objects, limited to explicit privileged and host namespace flags."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC340",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC340",
+      "docTitle": "Claude hook: mutable package launcher",
+      "slug": "sec340",
+      "canonicalPath": "/rules/lintai-ai-security/sec340",
+      "summary": "Claude settings command hook uses a mutable package launcher",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for mutable package launcher forms such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.",
+        "maliciousCaseIds": [
+          "claude-settings-mutable-launcher"
+        ],
+        "benignCaseIds": [
+          "claude-settings-pinned-launcher-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook analysis over committed .claude/settings.json or claude/settings.json objects with type == command under hooks."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC341",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC341",
+      "docTitle": "Claude hook: remote content piped to shell",
+      "slug": "sec341",
+      "canonicalPath": "/rules/lintai-ai-security/sec341",
+      "summary": "Claude settings command hook downloads remote content and pipes it into a shell",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit curl|shell or wget|shell execution chains.",
+        "maliciousCaseIds": [
+          "claude-settings-inline-download-exec"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command, limited to explicit download-pipe-shell patterns."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC342",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC342",
+      "docTitle": "Claude hook: TLS verification disabled",
+      "slug": "sec342",
+      "canonicalPath": "/rules/lintai-ai-security/sec342",
+      "summary": "Claude settings command hook disables TLS verification in a network-capable execution path",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit TLS-bypass tokens in a network-capable execution context.",
+        "maliciousCaseIds": [
+          "claude-settings-command-tls-bypass"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-tls-verified-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command, gated by network markers plus TLS-bypass tokens."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC343",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC343",
+      "docTitle": "Plugin hook: mutable package launcher",
+      "slug": "sec343",
+      "canonicalPath": "/rules/lintai-ai-security/sec343",
+      "summary": "Plugin hook command uses a mutable package launcher",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for mutable package launchers such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-mutable-launcher"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks objects limited to actual hook command values."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC344",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC344",
+      "docTitle": "Plugin hook: remote content piped to shell",
+      "slug": "sec344",
+      "canonicalPath": "/rules/lintai-ai-security/sec344",
+      "summary": "Plugin hook command downloads remote content and pipes it into a shell",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit curl|shell or wget|shell execution chains.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-inline-download-exec"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks objects, limited to explicit download-pipe-shell patterns."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC345",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC345",
+      "docTitle": "Plugin hook: TLS verification disabled",
+      "slug": "sec345",
+      "canonicalPath": "/rules/lintai-ai-security/sec345",
+      "summary": "Plugin hook command disables TLS verification in a network-capable execution path",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit TLS-bypass tokens in a network-capable execution context.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-tls-bypass"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks objects gated by network markers plus TLS-bypass tokens."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC346",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC346",
+      "docTitle": "MCP config: mutable registry refresh",
+      "slug": "sec346",
+      "canonicalPath": "/rules/lintai-ai-security/sec346",
+      "summary": "MCP configuration forces Docker to refresh from a mutable registry source",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP config Docker launch paths for explicit --pull always refresh policies that force a mutable registry fetch at runtime.",
+        "maliciousCaseIds": [
+          "gemini-mcp-docker-pull-always"
+        ],
+        "benignCaseIds": [
+          "gemini-mcp-docker-digest-pinned-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals docker run argument analysis over ArtifactKind::McpConfig objects, limited to explicit --pull=always or --pull always forms."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC347",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC347",
+      "docTitle": "AI markdown: MCP via mutable package runner",
+      "slug": "sec347",
+      "canonicalPath": "/rules/lintai-ai-security/sec347",
+      "summary": "AI-native markdown example launches MCP through a mutable package runner",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Mutable MCP launcher examples in markdown can be legitimate setup guidance, so the first release stays guidance-only.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC348",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC348",
+      "docTitle": "AI markdown: mutable Docker image",
+      "slug": "sec348",
+      "canonicalPath": "/rules/lintai-ai-security/sec348",
+      "summary": "AI-native markdown Docker example uses a mutable registry image",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Mutable Docker image examples in markdown can be legitimate setup guidance, so the first release stays guidance-only.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC349",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC349",
+      "docTitle": "AI markdown: privileged Docker pattern",
+      "slug": "sec349",
+      "canonicalPath": "/rules/lintai-ai-security/sec349",
+      "summary": "AI-native markdown Docker example uses a host-escape or privileged runtime pattern",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Docker host-escape examples in markdown can be legitimate ops guidance, so the first release stays guidance-only.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC350",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC350",
+      "docTitle": "Instruction markdown: untrusted content promoted",
+      "slug": "sec350",
+      "canonicalPath": "/rules/lintai-ai-security/sec350",
+      "summary": "Instruction markdown promotes untrusted external content to developer/system-level instructions",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "heuristic",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Instruction-boundary promotion in markdown is prose-aware and needs external usefulness review before any stronger posture.",
+        "promotionRequirements": "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC351",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC351",
+      "docTitle": "AI instruction: disables user approval",
+      "slug": "sec351",
+      "canonicalPath": "/rules/lintai-ai-security/sec351",
+      "summary": "AI-native instruction explicitly disables user approval or confirmation",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "heuristic",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Approval-bypass guidance in markdown is prose-aware and needs external usefulness review before any stronger posture.",
+        "promotionRequirements": "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-policy-mismatch:SEC401",
+      "providerId": "lintai-policy-mismatch",
+      "providerSlug": "lintai-policy-mismatch",
+      "displayCode": "SEC401",
+      "docTitle": "Policy mismatch: execution",
+      "slug": "sec401",
+      "canonicalPath": "/rules/lintai-policy-mismatch/sec401",
+      "summary": "Project policy forbids execution, but repository contains executable behavior",
+      "scope": "workspace",
+      "surface": "workspace",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "none",
+      "defaultPresets": [
+        "preview",
+        "compat"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Needs workspace-level precision review and linked graduation corpus before promotion to Stable.",
+        "promotionRequirements": "Needs workspace precision review, linked benign/malicious corpus proof, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-policy-mismatch:SEC402",
+      "providerId": "lintai-policy-mismatch",
+      "providerSlug": "lintai-policy-mismatch",
+      "displayCode": "SEC402",
+      "docTitle": "Policy mismatch: network access",
+      "slug": "sec402",
+      "canonicalPath": "/rules/lintai-policy-mismatch/sec402",
+      "summary": "Project policy forbids network access, but repository contains network behavior",
+      "scope": "workspace",
+      "surface": "workspace",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "none",
+      "defaultPresets": [
+        "preview",
+        "compat"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Needs workspace-level network precision review and linked graduation corpus before promotion to Stable.",
+        "promotionRequirements": "Needs workspace precision review, linked benign/malicious corpus proof, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-policy-mismatch:SEC403",
+      "providerId": "lintai-policy-mismatch",
+      "providerSlug": "lintai-policy-mismatch",
+      "displayCode": "SEC403",
+      "docTitle": "Skill capabilities mismatch",
+      "slug": "sec403",
+      "canonicalPath": "/rules/lintai-policy-mismatch/sec403",
+      "summary": "Skill frontmatter capabilities conflict with project policy",
+      "scope": "workspace",
+      "surface": "workspace",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "none",
+      "defaultPresets": [
+        "preview",
+        "compat"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Needs workspace-level capability-conflict precision review and linked graduation corpus before promotion to Stable.",
+        "promotionRequirements": "Needs workspace precision review, linked benign/malicious corpus proof, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    }
+  ]
+}

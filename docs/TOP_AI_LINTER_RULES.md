@@ -39,13 +39,13 @@
 
 1. **`initializeCommand` devcontainer** выполняется на **хосте**; **Features** из произвольного OCI-реестра; **bind-mount** `~/.ssh`, cloud CLI, **`docker.sock`**.  
 2. **Lifecycle** в **`LABEL devcontainer.metadata`** в образе — скрытый от ревью `devcontainer.json` вектор.  
-3. **GHA:** выражения **`${{ inputs.* }}` / event** прямо в **`run:`** → script injection; **third-party `uses:`** не на **полный SHA**; сочетание **`contents: write`** с checkout **кода из форка**; **cache** общий между недоверенным и привилегированным job.  
+3. **GHA:** выражения **`$\{\{ inputs.* \}\}` / event** прямо в **`run:`** → script injection; **third-party `uses:`** не на **полный SHA**; сочетание **`contents: write`** с checkout **кода из форка**; **cache** общий между недоверенным и привилегированным job.  
 4. **YAML:** теги **`!!python/object*`** в workflow/compose; **anchors + `<<`** рядом с **`permissions` / `environment`**.  
 5. **Lockfile `hasInstallScript`** без политики allowlist; **`dangerouslyAllowAllBuilds`** (pnpm); **`packageManager`** без **integrity hash** (Corepack).  
 6. **`--extra-index-url` / `PIP_EXTRA_INDEX_URL`** на неутверждённый хост (dependency confusion); **git+ без pin коммита**; **`exec`/`eval` в `setup.py`**.  
 7. **Committed URL** DVC remote / **`MLFLOW_TRACKING_URI`** / **`WANDB_BASE_URL`** / **`HF_ENDPOINT`**: **http** или **private/metadata** хосты.  
 8. **Экспорт телеметрии:** литералы **API key** в YAML коллектора; **LangSmith** `HIDE_INPUTS=false` в prod-шаблонах при включённом tracing.  
-9. **SSTI-слой:** **`Environment.from_string` / `Template(`** с f-string/конкатенацией из ненадёжных данных; **delimiters шаблонов** в закоммиченных промптах без политики **variables-only / `{% raw %}`**.  
+9. **SSTI-слой:** **`Environment.from_string` / `Template(`** с f-string/конкатенацией из ненадёжных данных; **delimiters шаблонов** в закоммиченных промптах без политики **variables-only / `\{% raw %\}`**.  
 10. **Tool / `operationId`:** **ASCII-only** machine id; запрет **default-ignorable** / ZWSP в идентификаторах (UTS #39).  
 11. **ReDoS:** эвристики на значениях ключей **`pattern` / `regex` / `regexp`** (вложенные квантификаторы, `(a|aa)+`).  
 12. **Extism:** **`allowed_hosts: null`** = произвольный исходящий HTTP; узкие **`allowed_paths`**.  
@@ -152,7 +152,7 @@
 | **SEC-DEVCONTAINER-BIND-SENSITIVE** | **`mounts`**: bind source содержит **`.ssh`**, **`.aws`**, **`.kube`**, **`docker.sock`** и т.п. | Утечка хост-секретов / захват docker daemon | devcontainer, compose под devcontainer |
 | **SEC-DEVCONTAINER-METADATA-LABEL** | В **Dockerfile** в **`LABEL devcontainer.metadata=`** есть lifecycle-ключи (`postCreateCommand`, …) | Скрытое автовыполнение относительно json в репо | `Dockerfile`, `*.Dockerfile` |
 | **SEC-YAML-PYTHON-TAG** | В workflow/compose/MCP yaml встречаются теги **`!!python/object`** и аналоги | Небезопасная десериализация при «не тем» парсере | `.github/workflows/**`, `docker-compose*.yml`, `mcp*.yaml` |
-| **SEC-GHA-RUN-INJECT-INPUT** | В **`run:`** встроены **`${{ inputs.* }}` / `github.event.*`** (недоверенный контекст) без вынесения в **`env:`** | [Script injection](https://docs.github.com/en/actions/concepts/security/script-injections) | `.github/workflows/**` |
+| **SEC-GHA-RUN-INJECT-INPUT** | В **`run:`** встроены **`$\{\{ inputs.* \}\}` / `github.event.*`** (недоверенный контекст) без вынесения в **`env:`** | [Script injection](https://docs.github.com/en/actions/concepts/security/script-injections) | `.github/workflows/**` |
 | **SEC-GHA-ACTION-NO-SHA** | **`uses: owner/repo@ref`** для сторонних action: **ref не 40-char SHA** (тег/ветка/короткий SHA) | Подмена тега | workflows |
 | **SEC-GHA-WRITE-UNTRUSTED-CODE** | **`permissions`** с **write** + checkout/запуск кода с **head форка** / `pull_request_target` без изоляции | Pwn request класс | workflows |
 | **SEC-GHA-CACHE-POISON** | Один и тот же ключ **`actions/cache`** записывается из **недоверенного** workflow и читается **привилегированным** | Cache poisoning | workflows |
@@ -187,7 +187,7 @@
 | **SPEC-GHA-YAML-ON-KEY** | В GHA YAML корневой ключ **`on:`** в кавычках / валидный триггер (избежать boolean `on` в YAML 1.1) | [Workflow syntax](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions), [yaml bool](https://yaml.org/type/bool.html) |
 | **SPEC-YAML-MERGE-REVIEW** | Наличие **`<<:` merge** в compose/workflow — флаг на **ручной аудит** порядка слияния | [YAML merge](https://yaml.org/type/merge.html), [Compose merge](https://docs.docker.com/reference/compose-file/merge/) |
 | **SEC-YAML-ANCHOR-PERMISSIONS** | **Anchors (`&`/`*`) + merge** рядом с **`permissions:`** / **`env:`** в GHA | Скрытые capabilities при ревью | `.github/workflows/**` |
-| **SEC-TPL-JINJA-IN-PROMPT** | В `**/prompts/**`, `SKILL.md`, `**/templates/**`: delimiters **`{{`/`{%`** без документированной политики **raw / variables-only** | SSTI + [LLM01](https://genai.owasp.org/llmrisk/llm01/) indirect | см. [WSTG SSTI](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07_Input_Validation_Testing/18-Testing_for_Server-side_Template_Injection) |
+| **SEC-TPL-JINJA-IN-PROMPT** | В `**/prompts/**`, `SKILL.md`, `**/templates/**`: delimiters **`\{\{`/`\{%`** без документированной политики **raw / variables-only** | SSTI + [LLM01](https://genai.owasp.org/llmrisk/llm01/) indirect | см. [WSTG SSTI](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07_Input_Validation_Testing/18-Testing_for_Server-side_Template_Injection) |
 | **SEC-TPL-BUILD-FROM-STRING** | **`Template(` / `from_string` / `render_template_string`** с шаблоном из f-string/concat из ненадёжного источника | Классический SSTI | `**/*.py` (и стек-специфика) |
 | **SEC-NPM-BIN-SHADOW** | **`bin`** в `package.json` с именами **`node`/`npm`/`npx`/…** (PATH confusion) | Вредоносный shim при отключённых scripts | `package.json` — [Socket](https://socket.dev/blog/npm-bin-script-confusion) |
 | **SEC-OVERRIDES-DRIFT** | Есть **`overrides`/`resolutions`**, но lockfile **не отражает** ожидаемые версии (эвристика) | Ложное чувство патча CVE | `package.json`, locks |

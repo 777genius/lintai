@@ -92,29 +92,6 @@ Important behavior:
 - Category overrides do not activate rules outside the resolved preset set.
 - Explicit `[rules] SECxxx = "..."` remains the escape hatch for intentional per-rule opt-in outside the default preset set.
 
-## Top-Important AI Security Rules (2026-03-29)
-
-### Обновлённый top-3 приоритизации
-
-Если поднимать только три новых AI/MCP/agent-skills правила в ближайший top-3, приоритет должен быть таким:
-
-| Rank | Rule | Axis | Почему поднимать сейчас | Уверенность | Надёжность |
-|---|---|---|---|---:|---:|
-| 1 | `SEC:ai-trusted-context-boundary` | Trust boundary | Закрывает базовую ошибку класса agentic systems: tool output, MCP metadata, RAG content и plugin responses не должны становиться system/developer instructions. Это наиболее общий и самый частый confused-deputy/prompt-injection boundary, который бьёт сразу по skills, MCP и plugin surfaces. | `10/10` | `10/10` |
-| 2 | `SEC:ai-manifest-integrity` | Manifest integrity | Без проверки подписи, digest/hash pinning и происхождения skill/plugin/tool manifests любой последующий schema- или policy-check можно обойти подменой артефакта до загрузки. Это прямой supply-chain choke point. | `10/10` | `9/10` |
-| 3 | `SEC:ai-tool-intent-gate` | Runtime control | На рантайме нужен deny-by-default слой: сверка цели, scope, destructive action policy, cost/rate limits и explicit approval перед tool execution. Это сдерживает blast radius даже когда boundary и manifest уже частично обойдены. | `9/10` | `9/10` |
-
-### Rationale
-
-- `SEC:ai-trusted-context-boundary` стоит первым, потому что это первичный барьер между недоверенным контентом и управляющими инструкциями; без него остальные контроли слишком легко обходятся через reinterpretation attack surface.
-- `SEC:ai-manifest-integrity` стоит вторым, потому что защищает точку входа артефакта до выполнения: если манифест или descriptor подменён, trust model уже сломана до старта runtime.
-- `SEC:ai-tool-intent-gate` стоит третьим, потому что это лучший прикладной runtime control для v0.1/v0.2: он ограничивает реальные действия, а не только их аудит post factum.
-
-### Почему не `SEC:ai-runtime-provenance` в top-3
-
-- `SEC:ai-runtime-provenance` важен, но для ближайшего top-3 он слабее как immediate control: provenance и attestation чаще улучшают расследование, доверие и policy enforcement, чем напрямую режут execution blast radius в момент вызова.
-- Поэтому оптимальный порядок сейчас: boundary first, artifact integrity second, execution control third; provenance идёт сразу следом как top-4 кандидат. Уверенность: `9/10`, Надёжность: `9/10`.
-
 ## Provider: `lintai-ai-security`
 
 ### `SEC101` — Hidden HTML comment contains dangerous agent instructions
