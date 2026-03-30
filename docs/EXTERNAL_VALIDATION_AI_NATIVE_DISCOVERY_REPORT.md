@@ -76,6 +76,7 @@ Currently covered admission paths:
 - `SEC366` Claude settings files with dangerous host literals in `allowedHttpHookUrls`: `0`
 - `SEC367` Claude settings files allowing `WebFetch(*)`: `0`
 - `SEC368` Claude settings files with repo-external absolute hook paths: `0`
+- `SEC369` Claude settings files allowing `Write(*)`: `0`
 - AI-native markdown preview hits by rule code: `SEC313`=`0`, `SEC335`=`0`, `SEC347`=`1`, `SEC348`=`0`, `SEC349`=`0`, `SEC350`=`0`, `SEC351`=`0`, `SEC352`=`0`, `SEC353`=`0`, `SEC354`=`0`, `SEC355`=`0`, `SEC356`=`0`, `SEC357`=`0`, `SEC358`=`0`, `SEC359`=`0`, `SEC360`=`0`
 - `SEC347` subtype repo hits: CLI-form=`1`, config-snippet-form=`1`
 - current markdown usefulness is still mainly skills / `CLAUDE.md`; plugin-root command docs remain a non-driving surface with `0` admitted covered paths
@@ -106,6 +107,7 @@ Currently covered admission paths:
 - `SEC366` produced no repo-level external preview hits in this wave
 - `SEC367` produced no repo-level external preview hits in this wave
 - `SEC368` produced no repo-level external preview hits in this wave
+- `SEC369` produced no repo-level external preview hits in this wave
 
 ## Runtime / Diagnostic Notes
 

@@ -98,7 +98,8 @@
         "lintai-ai-security:SEC365",
         "lintai-ai-security:SEC366",
         "lintai-ai-security:SEC367",
-        "lintai-ai-security:SEC368"
+        "lintai-ai-security:SEC368",
+        "lintai-ai-security:SEC369"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -204,7 +205,8 @@
         "lintai-ai-security:SEC365",
         "lintai-ai-security:SEC366",
         "lintai-ai-security:SEC367",
-        "lintai-ai-security:SEC368"
+        "lintai-ai-security:SEC368",
+        "lintai-ai-security:SEC369"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -2906,6 +2908,37 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Repo-external absolute hook paths in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC369",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC369",
+      "alias": "CLAUDE-WRITE-WILDCARD",
+      "displayLabel": "SEC369 / CLAUDE-WRITE-WILDCARD",
+      "docTitle": "Claude settings: wildcard Write permissions",
+      "slug": "sec369",
+      "canonicalPath": "/rules/lintai-ai-security/sec369",
+      "summary": "Claude settings permissions allow `Write(*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Wildcard Write grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

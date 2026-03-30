@@ -41,6 +41,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "claude-settings-schema-present-safe",
             "claude-settings-webfetch-specific-safe",
             "claude-settings-webfetch-wildcard-fixture-safe",
+            "claude-settings-write-specific-safe",
+            "claude-settings-write-wildcard-fixture-safe",
             "copilot-instructions-too-long-fixture-safe",
             "copilot-instructions-within-limit-safe",
             "copilot-path-specific-fixture-safe",

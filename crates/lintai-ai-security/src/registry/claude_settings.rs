@@ -8,9 +8,21 @@ use crate::claude_settings_rules::{
     check_claude_settings_home_directory_hook_command, check_claude_settings_inline_download_exec,
     check_claude_settings_insecure_http_hook_url, check_claude_settings_missing_schema,
     check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
-    check_claude_settings_webfetch_wildcard,
+    check_claude_settings_webfetch_wildcard, check_claude_settings_write_wildcard,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
+
+declare_rule! {
+    pub struct ClaudeSettingsWriteWildcardRule {
+        code: "SEC369",
+        summary: "Claude settings permissions allow `Write(*)` in a shared committed config",
+        doc_title: "Claude settings: wildcard Write permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
 
 declare_rule! {
     pub struct ClaudeSettingsExternalAbsoluteHookCommandRule {
@@ -144,7 +156,23 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 11] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 12] = [
+    NativeRuleSpec {
+        metadata: ClaudeSettingsWriteWildcardRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Wildcard Write grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_write_wildcard,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `Write(*)` with a narrower allowlist of reviewed write patterns or remove broad write access from the shared Claude settings file",
+        ),
+        suggestion_fix: None,
+    },
     NativeRuleSpec {
         metadata: ClaudeSettingsExternalAbsoluteHookCommandRule::METADATA,
         surface: Surface::ClaudeSettings,

@@ -140,6 +140,8 @@ impl ClaudeSettingsSignals {
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(*)");
         signals.webfetch_wildcard_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "WebFetch(*)");
+        signals.write_wildcard_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Write(*)");
         let mut path = Vec::new();
         visit_claude_settings_value(
             value,

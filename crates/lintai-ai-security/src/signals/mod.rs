@@ -160,6 +160,7 @@ pub(crate) struct ClaudeSettingsSignals {
     pub(crate) missing_schema_span: Option<Span>,
     pub(crate) bash_wildcard_span: Option<Span>,
     pub(crate) webfetch_wildcard_span: Option<Span>,
+    pub(crate) write_wildcard_span: Option<Span>,
     pub(crate) home_directory_hook_command_span: Option<Span>,
     pub(crate) external_absolute_hook_command_span: Option<Span>,
     pub(crate) mutable_launcher_span: Option<Span>,

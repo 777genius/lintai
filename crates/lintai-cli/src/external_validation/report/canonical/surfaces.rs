@@ -45,6 +45,7 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec366_hits = rule_count(current, &["SEC366"]);
     let sec367_hits = rule_count(current, &["SEC367"]);
     let sec368_hits = rule_count(current, &["SEC368"]);
+    let sec369_hits = rule_count(current, &["SEC369"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, current);
     let sec348_repos = repos_with_rule_hits(current, &["SEC348"], false);
     let sec349_repos = repos_with_rule_hits(current, &["SEC349"], false);
@@ -67,6 +68,7 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec366_repos = repos_with_rule_hits(current, &["SEC366"], false);
     let sec367_repos = repos_with_rule_hits(current, &["SEC367"], false);
     let sec368_repos = repos_with_rule_hits(current, &["SEC368"], false);
+    let sec369_repos = repos_with_rule_hits(current, &["SEC369"], false);
 
     output.push_str("## Hybrid Scope Expansion Results\n\n");
     output.push_str("Current wave inventory for the newly expanded JSON lanes:\n\n");
@@ -229,6 +231,10 @@ pub(super) fn append_hybrid_scope_expansion(
         "  - `SEC368` Claude settings repo-external absolute hook paths: `{}`\n",
         sec368_hits
     ));
+    output.push_str(&format!(
+        "  - `SEC369` Claude settings wildcard `Write(*)` permissions: `{}`\n",
+        sec369_hits
+    ));
     if sec347_hits > 0 {
         output.push_str(&format!(
             "  - current `SEC347` usefulness is being driven mainly by {}\n",
@@ -275,5 +281,6 @@ pub(super) fn append_hybrid_scope_expansion(
     append_rule_repo_hits(output, "SEC366", sec366_repos);
     append_rule_repo_hits(output, "SEC367", sec367_repos);
     append_rule_repo_hits(output, "SEC368", sec368_repos);
+    append_rule_repo_hits(output, "SEC369", sec369_repos);
     output.push_str("- fixture/testdata/example suppression stayed active for the newly added MCP client-config variants and did not create a fake usefulness signal from fixture-like paths\n\n");
 }

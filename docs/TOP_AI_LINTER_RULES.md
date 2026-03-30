@@ -157,6 +157,11 @@
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9/10`
   - почему важно: ловит team-facing Claude hook wiring, которое жёстко привязано к внешнему filesystem path; community-friendly remediation очевиден — перейти на `$CLAUDE_PROJECT_DIR`
+- `SEC369` — Claude settings permissions allow `Write(*)` in a shared committed config
+  - статус: `Preview`
+  - community usefulness сейчас: `9/10`
+  - надёжность: `9/10`
+  - почему важно: wildcard write grant в shared AI config сообществу объяснять проще всего; это очень явный least-privilege smell с очевидным remediation path
 
 ### Минимальный релизный набор (1-й проход)
 
