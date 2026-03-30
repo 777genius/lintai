@@ -30,6 +30,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-settings-edit-wildcard",
             "claude-settings-enabled-mcpjson-servers",
             "claude-settings-git-add-permission",
+            "claude-settings-git-clone-permission",
             "claude-settings-glob-wildcard",
             "claude-settings-grep-wildcard",
             "claude-settings-http-hook-url",

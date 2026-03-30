@@ -101,6 +101,7 @@ Currently covered admission paths:
 - `SEC400` Claude settings shared `enabledMcpjsonServers`: `0`
 - `SEC405` Claude settings shared package installation permissions: `0`
 - `SEC406` Claude settings shared `git add` permissions: `0`
+- `SEC407` Claude settings shared `git clone` permissions: `0`
 - AI-native markdown preview hits by rule code: `SEC313`=`0`, `SEC335`=`0`, `SEC347`=`1`, `SEC348`=`0`, `SEC349`=`0`, `SEC350`=`0`, `SEC351`=`0`, `SEC352`=`0`, `SEC353`=`0`, `SEC354`=`0`, `SEC355`=`0`, `SEC356`=`0`, `SEC357`=`0`, `SEC358`=`0`, `SEC359`=`0`, `SEC360`=`0`, `SEC370`=`0`, `SEC371`=`0`, `SEC377`=`0`, `SEC378`=`0`, `SEC379`=`0`, `SEC380`=`0`
 - `SEC347` subtype repo hits: CLI-form=`1`, config-snippet-form=`1`
 - current markdown usefulness is still mainly skills / `CLAUDE.md`; plugin-root command docs remain a non-driving surface with `0` admitted covered paths
@@ -160,6 +161,7 @@ Currently covered admission paths:
 - `SEC400` produced no repo-level external preview hits in this wave
 - `SEC405` produced no repo-level external preview hits in this wave
 - `SEC406` produced no repo-level external preview hits in this wave
+- `SEC407` produced no repo-level external preview hits in this wave
 
 ## Runtime / Diagnostic Notes
 

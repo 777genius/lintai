@@ -92,6 +92,7 @@ Current wave inventory for the newly expanded JSON lanes:
   - `SEC400` Claude settings shared `enabledMcpjsonServers`: `0`
   - `SEC405` Claude settings shared package installation permissions: `0`
   - `SEC406` Claude settings shared `git add` permissions: `0`
+  - `SEC407` Claude settings shared `git clone` permissions: `0`
   - `SEC372` Claude settings wildcard `Read(*)` permissions: `0`
   - `SEC373` Claude settings wildcard `Edit(*)` permissions: `0`
   - `SEC374` Claude settings wildcard `WebSearch(*)` permissions: `0`
@@ -151,6 +152,7 @@ Current wave inventory for the newly expanded JSON lanes:
 - `SEC400` produced no repo-level preview hits yet on the canonical cohort
 - `SEC405` produced no repo-level preview hits yet on the canonical cohort
 - `SEC406` produced no repo-level preview hits yet on the canonical cohort
+- `SEC407` produced no repo-level preview hits yet on the canonical cohort
 - `SEC394` produced no repo-level stable hits yet on the canonical cohort
 - `SEC395` produced no repo-level stable hits yet on the canonical cohort
 - `SEC396` produced no repo-level stable hits yet on the canonical cohort
