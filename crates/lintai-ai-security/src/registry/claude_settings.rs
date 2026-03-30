@@ -7,6 +7,7 @@ use crate::claude_settings_rules::{
     check_claude_settings_enabled_mcpjson_servers,
     check_claude_settings_external_absolute_hook_command, check_claude_settings_gh_pr_permission,
     check_claude_settings_git_add_permission, check_claude_settings_git_fetch_permission,
+    check_claude_settings_git_ls_remote_permission,
     check_claude_settings_git_checkout_permission, check_claude_settings_git_clone_permission,
     check_claude_settings_git_commit_permission, check_claude_settings_git_push_permission,
     check_claude_settings_git_stash_permission, check_claude_settings_glob_wildcard,
@@ -171,6 +172,18 @@ declare_rule! {
         code: "SEC409",
         summary: "Claude settings permissions allow `Bash(git fetch:*)` in a shared committed config",
         doc_title: "Claude settings: shared git fetch permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGitLsRemotePermissionRule {
+        code: "SEC410",
+        summary: "Claude settings permissions allow `Bash(git ls-remote:*)` in a shared committed config",
+        doc_title: "Claude settings: shared git ls-remote permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -406,7 +419,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 33] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -612,6 +625,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `git fetch` permissions or replace them with a narrower reviewed workflow that keeps repository synchronization under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGitLsRemotePermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `git ls-remote` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_git_ls_remote_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `git ls-remote` permissions or replace them with a narrower reviewed workflow that keeps remote repository inspection under explicit user control",
         ),
         suggestion_fix: None,
     },

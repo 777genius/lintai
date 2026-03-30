@@ -1,0 +1,6 @@
+name = "claude-settings-git-ls-remote-permission"
+path = ".claude/settings.json"
+expect_findings = ["SEC410"]
+
+[metadata]
+description = "Shared Claude settings grant blanket git ls-remote permissions"

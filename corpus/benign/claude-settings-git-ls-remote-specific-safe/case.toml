@@ -1,0 +1,6 @@
+name = "claude-settings-git-ls-remote-specific-safe"
+path = ".claude/settings.json"
+expect_findings = []
+
+[metadata]
+description = "Specific git ls-remote command stays clean"

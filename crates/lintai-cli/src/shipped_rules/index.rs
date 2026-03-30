@@ -238,6 +238,10 @@ mod tests {
             shipped_rule_alias("SEC409"),
             Some("CLAUDE-GIT-FETCH-PERMISSION")
         );
+        assert_eq!(
+            shipped_rule_alias("SEC410"),
+            Some("CLAUDE-GIT-LS-REMOTE-PERMISSION")
+        );
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");
