@@ -6,12 +6,14 @@ Included surfaces:
 
 - `docs/SKILL.md`
 
+The sample repo explicitly enables the `preview` preset so the HTML-comment rules are active.
+
 Expected result before fixing:
 
 - findings for `SEC101` and `SEC103`
 - zero diagnostics
 - zero runtime errors
-- non-blocking findings under the current defaults
+- non-blocking findings under the current sample config
 - `scan` exits `0`
 - `fix` preview exits `0`
 

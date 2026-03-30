@@ -12,10 +12,11 @@ Included surfaces:
 
 Expected findings:
 
-- `SEC201` download-and-exec hook
 - `SEC401` preview rule for executable behavior vs declared policy
 - `SEC402` preview rule for network behavior vs declared policy
 - `SEC403` preview rule for frontmatter capability conflict
+
+The sample config explicitly overrides `SEC201` to `allow`, so the stable hook finding is not surfaced in the final scan output even though the hook behavior is still what powers the policy mismatch evidence.
 
 `SEC401` through `SEC403` are preview-tier rules in `v0.1`.
 

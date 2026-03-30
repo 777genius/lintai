@@ -287,7 +287,7 @@ fn policy_mismatch_sample_repo_emits_preview_and_stable_findings() {
     assert_case_summary(&manifest, &summary);
     assert_eq!(
         sample_repo_rule_codes(&summary),
-        BTreeSet::from(["SEC201", "SEC401", "SEC402", "SEC403"])
+        BTreeSet::from(["SEC401", "SEC402", "SEC403"])
     );
     assert!(
         text.contains(
