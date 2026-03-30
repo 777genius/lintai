@@ -2046,6 +2046,88 @@ fn finds_claude_settings_missing_schema() {
 }
 
 #[test]
+fn finds_claude_settings_insecure_http_hook_url() {
+    let content = r#"{"allowedHttpHookUrls":["http://hooks.example.test/notify","https://hooks.example.test/notify"]}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC365")
+        .unwrap();
+    let start = content.find("http://").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "http://".len())
+    );
+}
+
+#[test]
+fn ignores_claude_settings_https_hook_urls() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"allowedHttpHookUrls":["https://hooks.example.test/notify"]}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC365")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_loopback_http_hook_urls() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"allowedHttpHookUrls":["http://localhost:8899/hook"]}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC365")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_insecure_http_hook_url_on_fixture_like_path() {
+    let temp_dir = unique_temp_dir("lintai-claude-settings-http-hook-fixture");
+    std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("tests/fixtures/.claude/settings.json"),
+        br#"{"allowedHttpHookUrls":["http://hooks.example.test/notify"]}"#,
+    )
+    .unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
+    let summary = EngineBuilder::default()
+        .with_config(workspace.engine_config.clone())
+        .with_suppressions(Arc::new(suppressions))
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC365")
+    );
+}
+
+#[test]
 fn ignores_claude_settings_with_schema() {
     let summary = scan_preview_claude_settings_fixture(
         ".claude/settings.json",
@@ -4028,6 +4110,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC362"
                         | "SEC363"
                         | "SEC364"
+                        | "SEC365"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

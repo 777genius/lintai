@@ -4,10 +4,22 @@ use super::*;
 use crate::claude_settings_rules::{
     check_claude_settings_bash_wildcard, check_claude_settings_bypass_permissions,
     check_claude_settings_home_directory_hook_command, check_claude_settings_inline_download_exec,
-    check_claude_settings_missing_schema, check_claude_settings_mutable_launcher,
-    check_claude_settings_network_tls_bypass,
+    check_claude_settings_insecure_http_hook_url, check_claude_settings_missing_schema,
+    check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
+
+declare_rule! {
+    pub struct ClaudeSettingsInsecureHttpHookUrlRule {
+        code: "SEC365",
+        summary: "Claude settings allow non-HTTPS HTTP hook URLs in a shared committed config",
+        doc_title: "Claude settings: non-HTTPS allowed HTTP hook URL",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
 
 declare_rule! {
     pub struct ClaudeSettingsBypassPermissionsRule {
@@ -93,7 +105,23 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 7] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 8] = [
+    NativeRuleSpec {
+        metadata: ClaudeSettingsInsecureHttpHookUrlRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Committed Claude settings with non-HTTPS `allowedHttpHookUrls` entries are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_insecure_http_hook_url,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace non-HTTPS `allowedHttpHookUrls` entries with reviewed `https://` endpoints or remove them from the shared Claude settings file",
+        ),
+        suggestion_fix: None,
+    },
     NativeRuleSpec {
         metadata: ClaudeSettingsBypassPermissionsRule::METADATA,
         surface: Surface::ClaudeSettings,

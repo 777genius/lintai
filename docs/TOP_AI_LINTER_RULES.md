@@ -137,6 +137,11 @@
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9/10`
   - почему важно: это очень явный over-agency smell в shared Claude policy; сообществу легко объяснить, почему committed bypass default хуже, чем явные reviewed allowlists
+- `SEC365` — Claude settings allow non-HTTPS `allowedHttpHookUrls` in a shared committed config
+  - статус: `Preview`
+  - community usefulness сейчас: `8.5/10`
+  - надёжность: `9/10`
+  - почему важно: это прямой transport-policy smell для shared Claude hook allowlist; `https://` проще защищать и публично отстаивать как командный стандарт
 
 ### Минимальный релизный набор (1-й проход)
 

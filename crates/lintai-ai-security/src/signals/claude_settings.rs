@@ -1,10 +1,12 @@
 use lintai_api::{ArtifactKind, ScanContext, Span};
+use serde_json::Value;
 
 use crate::helpers::json_semantics;
 use crate::json_locator::{JsonLocationMap, JsonPathSegment};
 
 use super::shared::{
-    json::visit_claude_settings_value, markdown::is_fixture_like_claude_settings_path,
+    json::{find_non_loopback_http_relative_span, visit_claude_settings_value},
+    markdown::is_fixture_like_claude_settings_path,
 };
 use super::{ClaudeSettingsSignals, SignalWorkBudget};
 
@@ -52,6 +54,30 @@ fn resolve_bypass_permissions_span(
     locator.and_then(|locator| locator.value_span(&path).cloned())
 }
 
+fn resolve_insecure_http_hook_url_span(
+    value: &serde_json::Value,
+    locator: Option<&JsonLocationMap>,
+) -> Option<Span> {
+    let urls = value.get("allowedHttpHookUrls").and_then(Value::as_array)?;
+    let (index, relative) = urls.iter().enumerate().find_map(|(index, entry)| {
+        let url = entry.as_str()?;
+        let relative = find_non_loopback_http_relative_span(url)?;
+        Some((index, relative))
+    })?;
+    let path = vec![
+        JsonPathSegment::Key("allowedHttpHookUrls".to_owned()),
+        JsonPathSegment::Index(index),
+    ];
+    locator
+        .and_then(|locator| locator.value_span(&path).cloned())
+        .map(|span| {
+            Span::new(
+                span.start_byte + relative.start_byte,
+                span.start_byte + relative.end_byte,
+            )
+        })
+}
+
 impl ClaudeSettingsSignals {
     pub(super) fn from_context(ctx: &ScanContext, metrics: &mut SignalWorkBudget) -> Option<Self> {
         if ctx.artifact.kind != ArtifactKind::ClaudeSettings {
@@ -73,6 +99,8 @@ impl ClaudeSettingsSignals {
         if signals.fixture_like_path {
             return Some(signals);
         }
+        signals.insecure_http_hook_url_span =
+            resolve_insecure_http_hook_url_span(value, locator_ref.as_ref());
         signals.bypass_permissions_span =
             resolve_bypass_permissions_span(value, locator_ref.as_ref());
         if value.is_object() && !value.get("$schema").is_some() {

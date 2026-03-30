@@ -48,6 +48,21 @@ pub(crate) fn check_claude_settings_bypass_permissions(
     )
 }
 
+pub(crate) fn check_claude_settings_insecure_http_hook_url(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.insecure_http_hook_url_span.clone()),
+        "Claude settings allow non-HTTPS HTTP hook URLs in a shared committed config",
+    )
+}
+
 pub(crate) fn check_claude_settings_bash_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

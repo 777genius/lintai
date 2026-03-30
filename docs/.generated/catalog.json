@@ -94,7 +94,8 @@
         "lintai-ai-security:SEC361",
         "lintai-ai-security:SEC362",
         "lintai-ai-security:SEC363",
-        "lintai-ai-security:SEC364"
+        "lintai-ai-security:SEC364",
+        "lintai-ai-security:SEC365"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -196,7 +197,8 @@
         "lintai-ai-security:SEC361",
         "lintai-ai-security:SEC362",
         "lintai-ai-security:SEC363",
-        "lintai-ai-security:SEC364"
+        "lintai-ai-security:SEC364",
+        "lintai-ai-security:SEC365"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -2774,6 +2776,37 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Committed Claude settings with `permissions.defaultMode = bypassPermissions` are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC365",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC365",
+      "alias": "CLAUDE-HTTP-HOOK-URL",
+      "displayLabel": "SEC365 / CLAUDE-HTTP-HOOK-URL",
+      "docTitle": "Claude settings: non-HTTPS allowed HTTP hook URL",
+      "slug": "sec365",
+      "canonicalPath": "/rules/lintai-ai-security/sec365",
+      "summary": "Claude settings allow non-HTTPS HTTP hook URLs in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Committed Claude settings with non-HTTPS `allowedHttpHookUrls` entries are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
