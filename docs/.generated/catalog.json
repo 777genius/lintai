@@ -89,6 +89,7 @@
         "lintai-ai-security:SEC349",
         "lintai-ai-security:SEC350",
         "lintai-ai-security:SEC351",
+        "lintai-ai-security:SEC352",
         "lintai-policy-mismatch:SEC401",
         "lintai-policy-mismatch:SEC402",
         "lintai-policy-mismatch:SEC403"
@@ -127,7 +128,8 @@
         "lintai-ai-security:SEC348",
         "lintai-ai-security:SEC349",
         "lintai-ai-security:SEC350",
-        "lintai-ai-security:SEC351"
+        "lintai-ai-security:SEC351",
+        "lintai-ai-security:SEC352"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -2217,6 +2219,35 @@
         "promotionRequirements": "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata."
       },
       "canonicalNote": "Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC352",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC352",
+      "docTitle": "AI markdown: unscoped Bash tool grant",
+      "slug": "sec352",
+      "canonicalPath": "/rules/lintai-ai-security/sec352",
+      "summary": "AI-native markdown frontmatter grants unscoped Bash tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Broad Bash grants in AI-native frontmatter can be intentional, so the first release stays least-privilege guidance-only.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {

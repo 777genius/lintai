@@ -98,6 +98,7 @@ pub(crate) struct MarkdownSignals {
     pub(crate) docker_host_escape_spans: Vec<Span>,
     pub(crate) untrusted_instruction_promotion_spans: Vec<Span>,
     pub(crate) approval_bypass_instruction_spans: Vec<Span>,
+    pub(crate) unscoped_bash_allowed_tools_spans: Vec<Span>,
 }
 
 #[derive(Clone, Debug, Default)]

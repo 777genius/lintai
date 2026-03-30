@@ -211,6 +211,22 @@ pub(crate) fn check_approval_bypass_instruction(
     )
 }
 
+pub(crate) fn check_unscoped_bash_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.unscoped_bash_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants unscoped Bash tool access",
+    )
+}
+
 fn findings_for_spans(
     ctx: &ScanContext,
     meta: RuleMetadata,

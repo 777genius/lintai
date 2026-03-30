@@ -28,11 +28,13 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec349_hits = rule_count(current, &["SEC349"]);
     let sec350_hits = rule_count(current, &["SEC350"]);
     let sec351_hits = rule_count(current, &["SEC351"]);
+    let sec352_hits = rule_count(current, &["SEC352"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, current);
     let sec348_repos = repos_with_rule_hits(current, &["SEC348"], false);
     let sec349_repos = repos_with_rule_hits(current, &["SEC349"], false);
     let sec350_repos = repos_with_rule_hits(current, &["SEC350"], false);
     let sec351_repos = repos_with_rule_hits(current, &["SEC351"], false);
+    let sec352_repos = repos_with_rule_hits(current, &["SEC352"], false);
 
     output.push_str("## Hybrid Scope Expansion Results\n\n");
     output.push_str("Current wave inventory for the newly expanded JSON lanes:\n\n");
@@ -127,6 +129,10 @@ pub(super) fn append_hybrid_scope_expansion(
         "  - `SEC351` approval-bypass instruction examples: `{}`\n",
         sec351_hits
     ));
+    output.push_str(&format!(
+        "  - `SEC352` unscoped Bash tool grants in frontmatter: `{}`\n",
+        sec352_hits
+    ));
     if sec347_hits > 0 {
         output.push_str(&format!(
             "  - current `SEC347` usefulness is being driven mainly by {}\n",
@@ -156,5 +162,6 @@ pub(super) fn append_hybrid_scope_expansion(
     append_rule_repo_hits(output, "SEC349", sec349_repos);
     append_rule_repo_hits(output, "SEC350", sec350_repos);
     append_rule_repo_hits(output, "SEC351", sec351_repos);
+    append_rule_repo_hits(output, "SEC352", sec352_repos);
     output.push_str("- fixture/testdata/example suppression stayed active for the newly added MCP client-config variants and did not create a fake usefulness signal from fixture-like paths\n\n");
 }

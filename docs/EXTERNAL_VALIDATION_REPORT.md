@@ -46,12 +46,13 @@ Current wave inventory for the newly expanded JSON lanes:
   - `SEC335` metadata-service access examples: `1`
   - `SEC347` mutable MCP setup launcher examples: `3`
     - CLI-form repo hits: `2`
-    - config-snippet-form repo hits: `1`
+    - config-snippet-form repo hits: `3`
   - `SEC348` mutable Docker registry-image examples: `2`
   - `SEC349` Docker host-escape or privileged runtime examples: `0`
   - `SEC350` untrusted-input instruction-promotion examples: `0`
   - `SEC351` approval-bypass instruction examples: `0`
-  - current `SEC347` usefulness is being driven mainly by command-line onboarding examples
+  - `SEC352` unscoped Bash tool grants in frontmatter: `0`
+  - current `SEC347` usefulness is being driven mainly by MCP config snippets
 - repos with `tool_descriptor_json`: `3`
 - findings from `SEC314`-`SEC318`: `0`
 - repos where new MCP client-config variants existed only under fixture-like paths: `1`
@@ -64,6 +65,7 @@ Current wave inventory for the newly expanded JSON lanes:
 - `SEC349` produced no repo-level preview hits yet on the canonical cohort
 - `SEC350` produced no repo-level preview hits yet on the canonical cohort
 - `SEC351` produced no repo-level preview hits yet on the canonical cohort
+- `SEC352` produced no repo-level preview hits yet on the canonical cohort
 - fixture/testdata/example suppression stayed active for the newly added MCP client-config variants and did not create a fake usefulness signal from fixture-like paths
 
 ## Delta From Previous Wave

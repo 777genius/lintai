@@ -86,6 +86,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "skill-mcp-config-pipx-run-launcher",
             "skill-metadata-service-access",
             "skill-private-key-pem",
+            "skill-unscoped-bash-allowed-tools",
             "skill-tool-output-developer-instructions",
             "tool-json-anthropic-strict-open-schema",
             "tool-json-duplicate-tool-names",

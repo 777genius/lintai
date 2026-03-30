@@ -75,6 +75,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-mutable-mcp-launcher-safety-guidance-safe",
             "skill-project-scoped-path-safe",
             "skill-public-key-pem-safe",
+            "skill-scoped-bash-allowed-tools-safe",
+            "skill-unscoped-bash-fixture-safe",
             "skill-untrusted-input-negated-safe",
             "tool-json-anthropic-strict-locked",
             "tool-json-mcp-valid-tool",

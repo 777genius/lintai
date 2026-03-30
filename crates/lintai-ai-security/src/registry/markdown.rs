@@ -8,7 +8,7 @@ use crate::markdown_rules::{
     check_markdown_fenced_pipe_shell, check_markdown_metadata_service_access,
     check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
     check_markdown_path_traversal, check_markdown_private_key_pem,
-    check_untrusted_instruction_promotion,
+    check_unscoped_bash_allowed_tools, check_untrusted_instruction_promotion,
 };
 
 declare_rule! {
@@ -144,6 +144,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct UnscopedBashAllowedToolsRule {
+        code: "SEC352",
+        summary: "AI-native markdown frontmatter grants unscoped Bash tool access",
+        doc_title: "AI markdown: unscoped Bash tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct MarkdownPrivateKeyPemRule {
         code: "SEC312",
         summary: "Markdown contains committed private key material",
@@ -167,7 +179,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 14] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -337,6 +349,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 13] = [
         safe_fix: None,
         suggestion_message: Some(
             "rewrite the instruction so risky actions require explicit approval or confirmation instead of bypassing it",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: UnscopedBashAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Broad Bash grants in AI-native frontmatter can be intentional, so the first release stays least-privilege guidance-only.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_unscoped_bash_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "scope Bash to explicit command patterns like `Bash(git:*)` instead of granting the full Bash tool",
         ),
         suggestion_fix: None,
     },

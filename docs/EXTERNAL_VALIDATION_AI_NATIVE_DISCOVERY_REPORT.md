@@ -10,6 +10,13 @@
 - `5` `claude_settings_command` repos
 - `1` `plugin_execution_reference` repos
 
+## Overall Counts
+
+- `45` stable findings across whole-repo scans
+- `31` preview findings across whole-repo scans
+- `0` runtime parser errors
+- `1` diagnostics
+
 ## Admission Results
 
 - `hashicorp/terraform-mcp-server` via `gemini-extension.json`. Committed Gemini extension config launches the MCP server via docker run from a repo-local JSON file.
@@ -50,13 +57,6 @@ Currently covered admission paths:
 - `hashicorp/terraform-mcp-server` is now `covered` under shipped AI-native detector coverage
 - `SonarSource/sonarqube-mcp-server` is now `covered` under shipped AI-native detector coverage
 
-## Overall Counts
-
-- `45` stable findings across whole-repo scans
-- `31` preview findings across whole-repo scans
-- `0` runtime parser errors
-- `1` diagnostics
-
 ## Stable Hits
 
 - current AI-native MCP rule families produced `7` repo-level rule-code hits in this discovery wave
@@ -68,11 +68,11 @@ Currently covered admission paths:
 
 - `31` preview hit(s) were observed at repo scope; these should not yet be interpreted as proof on discovery-only admission paths
 
-- AI-native markdown preview hits by rule code: `SEC313`=`0`, `SEC335`=`0`, `SEC347`=`1`, `SEC348`=`0`, `SEC349`=`0`, `SEC350`=`0`, `SEC351`=`0`
-- `SEC347` subtype repo hits: CLI-form=`1`, config-snippet-form=`0`
+- AI-native markdown preview hits by rule code: `SEC313`=`0`, `SEC335`=`0`, `SEC347`=`1`, `SEC348`=`0`, `SEC349`=`0`, `SEC350`=`0`, `SEC351`=`0`, `SEC352`=`0`
+- `SEC347` subtype repo hits: CLI-form=`1`, config-snippet-form=`1`
 - current markdown usefulness is still mainly skills / `CLAUDE.md`; plugin-root command docs remain a non-driving surface with `0` admitted covered paths
 
-- current `SEC347` usefulness is being driven mainly by command-line onboarding examples
+- current `SEC347` usefulness is being driven mainly by a split mix of command-line onboarding examples and MCP config snippets
 
 - `SEC313` produced no repo-level external preview hits in this wave
 - `SEC335` produced no repo-level external preview hits in this wave
@@ -81,6 +81,7 @@ Currently covered admission paths:
 - `SEC349` produced no repo-level external preview hits in this wave
 - `SEC350` produced no repo-level external preview hits in this wave
 - `SEC351` produced no repo-level external preview hits in this wave
+- `SEC352` produced no repo-level external preview hits in this wave
 
 ## Runtime / Diagnostic Notes
 

@@ -931,6 +931,103 @@ fn ignores_approval_bypass_in_frontmatter() {
     assert!(!findings.iter().any(|finding| finding.rule_code == "SEC351"));
 }
 
+fn scan_preview_skill_fixture(relative_path: &str, content: &str) -> lintai_engine::ScanSummary {
+    let temp_dir = unique_temp_dir("lintai-sec352-preview");
+    let file_path = temp_dir.join(relative_path);
+    std::fs::create_dir_all(file_path.parent().unwrap()).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        "[presets]\nenable = [\"base\", \"preview\", \"skills\"]\n",
+    )
+    .unwrap();
+    std::fs::write(&file_path, content).unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
+    EngineBuilder::default()
+        .with_config(workspace.engine_config.clone())
+        .with_suppressions(Arc::new(suppressions))
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap()
+}
+
+#[test]
+fn finds_unscoped_bash_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash, Read, Write\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC352")
+        .unwrap();
+    let start = content.find("Bash").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + 4)
+    );
+}
+
+#[test]
+fn finds_unscoped_bash_allowed_tools_in_yaml_list_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "AGENTS.md",
+        "---\nallowed-tools:\n  - Bash\n  - Read\n---\n# Agent\n",
+    );
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC352")
+    );
+}
+
+#[test]
+fn ignores_scoped_bash_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(git:*), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC352")
+    );
+}
+
+#[test]
+fn ignores_unscoped_bash_allowed_tools_on_fixture_like_path() {
+    let temp_dir = unique_temp_dir("lintai-sec352-fixture-safe");
+    std::fs::create_dir_all(temp_dir.join("tests/fixtures/skill")).unwrap();
+    std::fs::write(
+        temp_dir.join("tests/fixtures/skill/SKILL.md"),
+        "---\nallowed-tools: Bash, Read\n---\n# Fixture skill\n",
+    )
+    .unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC352")
+    );
+}
+
 #[test]
 fn manifest_backed_plugin_command_markdown_uses_existing_markdown_rules() {
     let temp_dir = unique_temp_dir("lintai-plugin-command-markdown-covered");
@@ -3193,6 +3290,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC348"
                         | "SEC349"
                         | "SEC350"
+                        | "SEC352"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"
