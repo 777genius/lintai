@@ -112,7 +112,8 @@
         "lintai-ai-security:SEC382",
         "lintai-ai-security:SEC383",
         "lintai-ai-security:SEC384",
-        "lintai-ai-security:SEC385"
+        "lintai-ai-security:SEC385",
+        "lintai-ai-security:SEC386"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -232,7 +233,8 @@
         "lintai-ai-security:SEC382",
         "lintai-ai-security:SEC383",
         "lintai-ai-security:SEC384",
-        "lintai-ai-security:SEC385"
+        "lintai-ai-security:SEC385",
+        "lintai-ai-security:SEC386"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -2442,7 +2444,7 @@
       "lifecycleState": "preview_blocked",
       "lifecycle": {
         "kind": "preview",
-        "blocker": "Broad Bash grants in AI-native frontmatter can be intentional, so the first release stays least-privilege guidance-only.",
+        "blocker": "External validation now shows strong usefulness, but promotion still requires the completed stable checklist and one broader cross-cohort precision pass.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
@@ -3461,6 +3463,37 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Shared git push permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC386",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC386",
+      "alias": "CLAUDE-GIT-CHECKOUT-PERMISSION",
+      "displayLabel": "SEC386 / CLAUDE-GIT-CHECKOUT-PERMISSION",
+      "docTitle": "Claude settings: shared git checkout permissions",
+      "slug": "sec386",
+      "canonicalPath": "/rules/lintai-ai-security/sec386",
+      "summary": "Claude settings permissions allow `Bash(git checkout:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared git checkout permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

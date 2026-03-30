@@ -93,6 +93,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC383" => "CLAUDE-HOOK-MISSING-MATCHER",
         "SEC384" => "CLAUDE-WEBSEARCH-UNSCOPED",
         "SEC385" => "CLAUDE-GIT-PUSH-PERMISSION",
+        "SEC386" => "CLAUDE-GIT-CHECKOUT-PERMISSION",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

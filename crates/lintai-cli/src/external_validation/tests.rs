@@ -252,6 +252,7 @@ fn report_renderer_emits_delta_and_phase_targets() {
     ));
     assert!(markdown.contains("`SEC384` Claude settings bare `WebSearch` permissions: `"));
     assert!(markdown.contains("`SEC385` Claude settings shared `git push` permissions: `"));
+    assert!(markdown.contains("`SEC386` Claude settings shared `git checkout:*` permissions: `"));
     assert!(markdown.contains("`SEC372` Claude settings wildcard `Read(*)` permissions: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings wildcard `Edit(*)` permissions: `0`"));
     assert!(markdown.contains("`SEC374` Claude settings wildcard `WebSearch(*)` permissions: `0`"));
@@ -398,6 +399,7 @@ fn report_renderer_emits_delta_and_phase_targets() {
     );
     assert!(markdown.contains("- `SEC384`"));
     assert!(markdown.contains("- `SEC385`"));
+    assert!(markdown.contains("- `SEC386`"));
     assert!(markdown.contains("## Delta From Previous Wave"));
     assert!(markdown.contains("`datadog-labs/cursor-plugin`: `improved`"));
     assert!(markdown.contains("`zebbern/claude-code-guide`: `2` preview finding(s) via `SEC313`"));
@@ -870,6 +872,7 @@ fn ai_native_discovery_report_has_required_sections() {
     ));
     assert!(markdown.contains("`SEC384` Claude settings bare `WebSearch` permissions: `"));
     assert!(markdown.contains("`SEC385` Claude settings shared `git push` permissions: `"));
+    assert!(markdown.contains("`SEC386` Claude settings shared `git checkout:*` permissions: `"));
     assert!(markdown.contains("`SEC372` Claude settings files allowing `Read(*)`: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings files allowing `Edit(*)`: `0`"));
     assert!(markdown.contains("`SEC374` Claude settings files allowing `WebSearch(*)`: `0`"));
@@ -890,4 +893,5 @@ fn ai_native_discovery_report_has_required_sections() {
     );
     assert!(markdown.contains("`SEC384`"));
     assert!(markdown.contains("`SEC385`"));
+    assert!(markdown.contains("`SEC386`"));
 }
