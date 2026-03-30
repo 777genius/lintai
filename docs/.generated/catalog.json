@@ -91,6 +91,7 @@
         "lintai-ai-security:SEC351",
         "lintai-ai-security:SEC352",
         "lintai-ai-security:SEC353",
+        "lintai-ai-security:SEC354",
         "lintai-policy-mismatch:SEC401",
         "lintai-policy-mismatch:SEC402",
         "lintai-policy-mismatch:SEC403"
@@ -131,7 +132,8 @@
         "lintai-ai-security:SEC350",
         "lintai-ai-security:SEC351",
         "lintai-ai-security:SEC352",
-        "lintai-ai-security:SEC353"
+        "lintai-ai-security:SEC353",
+        "lintai-ai-security:SEC354"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -2276,6 +2278,35 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Long Copilot instruction files can still be intentional, so the first release stays guidance-only while usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC354",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC354",
+      "docTitle": "Copilot instructions: missing `applyTo`",
+      "slug": "sec354",
+      "canonicalPath": "/rules/lintai-ai-security/sec354",
+      "summary": "Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Missing `applyTo` on path-specific Copilot instruction files is deterministic, but the first release stays guidance-only while external usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

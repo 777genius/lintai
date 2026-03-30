@@ -1083,6 +1083,96 @@ fn ignores_copilot_instruction_file_above_limit_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_path_specific_copilot_instruction_without_apply_to_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        ".github/instructions/review.instructions.md",
+        "# Review Instructions\n\nKeep reviews short.\n",
+    );
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC354")
+    );
+}
+
+#[test]
+fn finds_path_specific_copilot_instruction_frontmatter_without_apply_to() {
+    let summary = scan_preview_skill_fixture(
+        ".github/instructions/review.instructions.md",
+        "---\ntitle: Review\n---\n# Review Instructions\n",
+    );
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC354")
+    );
+}
+
+#[test]
+fn ignores_path_specific_copilot_instruction_with_apply_to_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        ".github/instructions/review.instructions.md",
+        "---\napplyTo: \"**/*.rs\"\n---\n# Review Instructions\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC354")
+    );
+}
+
+#[test]
+fn ignores_path_specific_copilot_instruction_with_invalid_frontmatter_for_sec354() {
+    let summary = scan_preview_skill_fixture(
+        ".github/instructions/review.instructions.md",
+        "---\napplyTo: [unclosed\n---\n# Review Instructions\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC354")
+    );
+}
+
+#[test]
+fn ignores_repo_level_copilot_instruction_without_apply_to() {
+    let summary = scan_preview_skill_fixture(
+        ".github/copilot-instructions.md",
+        "# Repo Copilot Instructions\n\nKeep code tidy.\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC354")
+    );
+}
+
+#[test]
+fn ignores_missing_apply_to_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/.github/instructions/review.instructions.md",
+        "# Fixture Instructions\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC354")
+    );
+}
+
+#[test]
 fn manifest_backed_plugin_command_markdown_uses_existing_markdown_rules() {
     let temp_dir = unique_temp_dir("lintai-plugin-command-markdown-covered");
     std::fs::create_dir_all(temp_dir.join("plugin/.cursor-plugin")).unwrap();
@@ -3346,6 +3436,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC350"
                         | "SEC353"
                         | "SEC352"
+                        | "SEC354"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

@@ -82,6 +82,11 @@
   - community usefulness сейчас: `8/10`
   - надёжность: `9.5/10`
   - почему важно: привязан к официальному GitHub guidance и ловит structure-level проблему, из-за которой хвост инструкций может перестать реально работать
+- `SEC354` — Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter
+  - статус: `Preview`
+  - community usefulness сейчас: `8.5/10`
+  - надёжность: `9.5/10`
+  - почему важно: ловит очень понятный structural misconfiguration, из-за которого path-specific Copilot instructions могут просто не применяться как задумано
 
 ### Минимальный релизный набор (1-й проход)
 

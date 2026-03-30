@@ -2,8 +2,9 @@ use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
 
 use super::*;
 use crate::markdown_rules::{
-    check_approval_bypass_instruction, check_copilot_instruction_too_long,
-    check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
+    check_approval_bypass_instruction, check_copilot_instruction_missing_apply_to,
+    check_copilot_instruction_too_long, check_html_comment_directive,
+    check_html_comment_download_exec, check_markdown_base64_exec,
     check_markdown_docker_host_escape, check_markdown_download_exec,
     check_markdown_fenced_pipe_shell, check_markdown_metadata_service_access,
     check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
@@ -168,6 +169,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct CopilotInstructionMissingApplyToRule {
+        code: "SEC354",
+        summary: "Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter",
+        doc_title: "Copilot instructions: missing `applyTo`",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct MarkdownPrivateKeyPemRule {
         code: "SEC312",
         summary: "Markdown contains committed private key material",
@@ -191,7 +204,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 15] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 16] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -393,6 +406,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 15] = [
         safe_fix: None,
         suggestion_message: Some(
             "split repository-level Copilot instructions into shorter shared guidance plus path-specific `.instructions.md` files",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: CopilotInstructionMissingApplyToRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Missing `applyTo` on path-specific Copilot instruction files is deterministic, but the first release stays guidance-only while external usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_copilot_instruction_missing_apply_to,
+        safe_fix: None,
+        suggestion_message: Some(
+            "add `applyTo` frontmatter to path-specific Copilot instructions or move the content into shared `.github/copilot-instructions.md` guidance",
         ),
         suggestion_fix: None,
     },

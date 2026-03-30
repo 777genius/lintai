@@ -246,6 +246,31 @@ impl MarkdownSignals {
             signals.copilot_instruction_too_long_spans.push(relative);
         }
 
+        if matches!(ctx.artifact.kind, ArtifactKind::Instructions)
+            && is_github_copilot_path_specific_instruction_path(&ctx.artifact.normalized_path)
+            && !is_fixture_like_markdown_instruction_path(&ctx.artifact.normalized_path)
+        {
+            let markdown = markdown_semantics(ctx);
+            let has_raw_frontmatter = ctx.document.raw_frontmatter.is_some();
+            let parsed_frontmatter = markdown.and_then(|markdown| markdown.frontmatter.as_ref());
+            let has_apply_to = parsed_frontmatter
+                .and_then(|frontmatter| frontmatter.value.get("applyTo"))
+                .is_some_and(|value| match value {
+                    serde_json::Value::String(text) => !text.trim().is_empty(),
+                    serde_json::Value::Array(items) => !items.is_empty(),
+                    _ => true,
+                });
+
+            if (!has_raw_frontmatter || parsed_frontmatter.is_some())
+                && !has_apply_to
+                && let Some(relative) = leading_markdown_file_relative_span(&ctx.content)
+            {
+                signals
+                    .copilot_instruction_missing_apply_to_spans
+                    .push(relative);
+            }
+        }
+
         Some(signals)
     }
 }

@@ -243,6 +243,26 @@ pub(crate) fn check_copilot_instruction_too_long(
     )
 }
 
+pub(crate) fn check_copilot_instruction_missing_apply_to(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| {
+                signals
+                    .copilot_instruction_missing_apply_to_spans
+                    .as_slice()
+            })
+            .unwrap_or(&[]),
+        "path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter",
+    )
+}
+
 fn findings_for_spans(
     ctx: &ScanContext,
     meta: RuleMetadata,

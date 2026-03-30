@@ -100,6 +100,7 @@ pub(crate) struct MarkdownSignals {
     pub(crate) approval_bypass_instruction_spans: Vec<Span>,
     pub(crate) unscoped_bash_allowed_tools_spans: Vec<Span>,
     pub(crate) copilot_instruction_too_long_spans: Vec<Span>,
+    pub(crate) copilot_instruction_missing_apply_to_spans: Vec<Span>,
 }
 
 #[derive(Clone, Debug, Default)]
