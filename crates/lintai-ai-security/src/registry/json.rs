@@ -7,7 +7,7 @@ use crate::json_rules::{
     check_json_unsafe_plugin_path, check_mcp_autoapprove_tools_true,
     check_mcp_autoapprove_wildcard, check_mcp_broad_env_file, check_mcp_credential_env_passthrough,
     check_mcp_dangerous_docker_flag, check_mcp_inline_download_exec, check_mcp_mutable_docker_pull,
-    check_mcp_mutable_launcher, check_mcp_network_tls_bypass_command,
+    check_mcp_mutable_launcher, check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
     check_mcp_sensitive_docker_mount, check_mcp_shell_wrapper, check_mcp_trust_tools_true,
     check_mcp_unpinned_docker_image, check_plain_http_config,
     check_plugin_hook_inline_download_exec, check_plugin_hook_mutable_launcher,
@@ -232,6 +232,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpSandboxDisabledRule {
+        code: "SEC397",
+        summary: "MCP configuration disables sandboxing with `sandbox: false` or `disableSandbox: true`",
+        doc_title: "MCP config: sandbox disabled",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpUnpinnedDockerImageRule {
         code: "SEC337",
         summary: "MCP configuration launches Docker with an image reference that is not digest-pinned",
@@ -315,7 +327,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 25] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 26] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -657,6 +669,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 25] = [
         safe_fix: None,
         suggestion_message: Some(
             "disable blanket tool trust and require explicit review or narrower tool approval settings",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpSandboxDisabledRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit MCP config booleans that disable sandbox isolation.",
+            malicious_case_ids: &["mcp-sandbox-disabled"],
+            benign_case_ids: &["mcp-sandbox-enabled-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact boolean detection for `sandbox: false` or `disableSandbox: true` on parsed MCP configuration.",
+        },
+        check: check_mcp_sandbox_disabled,
+        safe_fix: None,
+        suggestion_message: Some(
+            "re-enable sandboxing and prefer reviewed, least-privilege MCP isolation settings",
         ),
         suggestion_fix: None,
     },

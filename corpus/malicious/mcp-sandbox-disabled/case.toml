@@ -1,0 +1,11 @@
+id = "mcp-sandbox-disabled"
+mode = "malicious"
+entry = "mcp.json"
+
+expected_findings = [
+  "lintai-ai-security:SEC397",
+]
+
+[metadata]
+title = "MCP config disables sandbox isolation"
+description = "Flags exact `sandbox: false` or `disableSandbox: true` in committed MCP client config."

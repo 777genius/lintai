@@ -211,6 +211,15 @@ pub(super) fn analyze_json_object<'a>(
             signals.trust_tools_true_span =
                 Some(resolve_child_value_span(path, key, locator, fallback_len));
         }
+
+        if signals.sandbox_disabled_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && ((key == "sandbox" && nested.as_bool() == Some(false))
+                || (key == "disableSandbox" && nested.as_bool() == Some(true)))
+        {
+            signals.sandbox_disabled_span =
+                Some(resolve_child_value_span(path, key, locator, fallback_len));
+        }
     }
 
     JsonObjectCommandShape {

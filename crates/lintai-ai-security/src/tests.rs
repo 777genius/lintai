@@ -2580,6 +2580,78 @@ fn ignores_mcp_trust_tools_false() {
 }
 
 #[test]
+fn finds_mcp_sandbox_false() {
+    let provider = AiSecurityProvider::default();
+    let content =
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"sandbox":false}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC397")
+        .unwrap();
+    let start = content.find("false").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "false".len())
+    );
+}
+
+#[test]
+fn finds_mcp_disable_sandbox_true() {
+    let provider = AiSecurityProvider::default();
+    let content =
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"disableSandbox":true}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC397")
+        .unwrap();
+    let start = content.find("true").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "true".len())
+    );
+}
+
+#[test]
+fn ignores_mcp_sandbox_true() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"sandbox":true}}}"#,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC397"));
+}
+
+#[test]
+fn ignores_mcp_disable_sandbox_false() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"disableSandbox":false}}}"#,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC397"));
+}
+
+#[test]
 fn finds_claude_settings_missing_schema() {
     let content = r#"{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -4963,6 +5035,7 @@ fn fixture_like_expanded_mcp_paths_do_not_emit_mcp_findings() {
                 | "SEC394"
                 | "SEC395"
                 | "SEC396"
+                | "SEC397"
                 | "SEC340"
                 | "SEC341"
                 | "SEC342"

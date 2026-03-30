@@ -59,7 +59,8 @@
         "lintai-ai-security:SEC346",
         "lintai-ai-security:SEC394",
         "lintai-ai-security:SEC395",
-        "lintai-ai-security:SEC396"
+        "lintai-ai-security:SEC396",
+        "lintai-ai-security:SEC397"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -209,7 +210,8 @@
         "lintai-ai-security:SEC346",
         "lintai-ai-security:SEC394",
         "lintai-ai-security:SEC395",
-        "lintai-ai-security:SEC396"
+        "lintai-ai-security:SEC396",
+        "lintai-ai-security:SEC397"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -3684,6 +3686,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact boolean detection for `trustTools: true` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC397",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC397",
+      "alias": "MCP-SANDBOX-DISABLED",
+      "displayLabel": "SEC397 / MCP-SANDBOX-DISABLED",
+      "docTitle": "MCP config: sandbox disabled",
+      "slug": "sec397",
+      "canonicalPath": "/rules/lintai-ai-security/sec397",
+      "summary": "MCP configuration disables sandboxing with `sandbox: false` or `disableSandbox: true`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit MCP config booleans that disable sandbox isolation.",
+        "maliciousCaseIds": [
+          "mcp-sandbox-disabled"
+        ],
+        "benignCaseIds": [
+          "mcp-sandbox-enabled-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact boolean detection for `sandbox: false` or `disableSandbox: true` on parsed MCP configuration."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

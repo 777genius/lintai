@@ -16,7 +16,7 @@ pub(super) fn append_hybrid_scope_expansion(
         &[
             "SEC301", "SEC302", "SEC303", "SEC304", "SEC305", "SEC306", "SEC307", "SEC308",
             "SEC309", "SEC310", "SEC329", "SEC330", "SEC331", "SEC337", "SEC338", "SEC339",
-            "SEC346", "SEC394", "SEC395", "SEC396",
+            "SEC346", "SEC394", "SEC395", "SEC396", "SEC397",
         ],
     );
     let env_file_hits = rule_count(current, &["SEC336"]);
@@ -68,6 +68,7 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec394_hits = rule_count(current, &["SEC394"]);
     let sec395_hits = rule_count(current, &["SEC395"]);
     let sec396_hits = rule_count(current, &["SEC396"]);
+    let sec397_hits = rule_count(current, &["SEC397"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, current);
     let sec348_repos = repos_with_rule_hits(current, &["SEC348"], false);
     let sec349_repos = repos_with_rule_hits(current, &["SEC349"], false);
@@ -113,6 +114,7 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec394_repos = repos_with_rule_hits(current, &["SEC394"], false);
     let sec395_repos = repos_with_rule_hits(current, &["SEC395"], false);
     let sec396_repos = repos_with_rule_hits(current, &["SEC396"], false);
+    let sec397_repos = repos_with_rule_hits(current, &["SEC397"], false);
 
     output.push_str("## Hybrid Scope Expansion Results\n\n");
     output.push_str("Current wave inventory for the newly expanded JSON lanes:\n\n");
@@ -348,6 +350,10 @@ pub(super) fn append_hybrid_scope_expansion(
         sec396_hits
     ));
     output.push_str(&format!(
+        "  - `SEC397` MCP configs with sandbox disabled: `{}`\n",
+        sec397_hits
+    ));
+    output.push_str(&format!(
         "  - `SEC372` Claude settings wildcard `Read(*)` permissions: `{}`\n",
         sec372_hits
     ));
@@ -466,6 +472,19 @@ pub(super) fn append_hybrid_scope_expansion(
     } else {
         output.push_str("- `SEC396` repo-level stable hits on the canonical cohort:\n");
         for (repo, count, rule_codes) in sec396_repos {
+            output.push_str(&format!(
+                "  - `{repo}`: `{count}` stable finding(s) via {}\n",
+                format_rule_codes(&rule_codes)
+            ));
+        }
+    }
+    if sec397_repos.is_empty() {
+        output.push_str(
+            "- `SEC397` produced no repo-level stable hits yet on the canonical cohort\n",
+        );
+    } else {
+        output.push_str("- `SEC397` repo-level stable hits on the canonical cohort:\n");
+        for (repo, count, rule_codes) in sec397_repos {
             output.push_str(&format!(
                 "  - `{repo}`: `{count}` stable finding(s) via {}\n",
                 format_rule_codes(&rule_codes)
