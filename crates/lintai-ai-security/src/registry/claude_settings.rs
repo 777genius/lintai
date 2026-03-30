@@ -4,12 +4,25 @@ use super::*;
 use crate::claude_settings_rules::{
     check_claude_settings_bash_wildcard, check_claude_settings_bypass_permissions,
     check_claude_settings_dangerous_http_hook_host,
+    check_claude_settings_external_absolute_hook_command,
     check_claude_settings_home_directory_hook_command, check_claude_settings_inline_download_exec,
     check_claude_settings_insecure_http_hook_url, check_claude_settings_missing_schema,
     check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
     check_claude_settings_webfetch_wildcard,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
+
+declare_rule! {
+    pub struct ClaudeSettingsExternalAbsoluteHookCommandRule {
+        code: "SEC368",
+        summary: "Claude settings hook command uses a repo-external absolute path in a shared committed config",
+        doc_title: "Claude settings: repo-external absolute hook path",
+        category: Category::Quality,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
 
 declare_rule! {
     pub struct ClaudeSettingsWebFetchWildcardRule {
@@ -131,7 +144,23 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 10] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 11] = [
+    NativeRuleSpec {
+        metadata: ClaudeSettingsExternalAbsoluteHookCommandRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Repo-external absolute hook paths in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_external_absolute_hook_command,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace the repo-external absolute hook path with a project-scoped wrapper or a repo-relative path rooted in `$CLAUDE_PROJECT_DIR`",
+        ),
+        suggestion_fix: None,
+    },
     NativeRuleSpec {
         metadata: ClaudeSettingsWebFetchWildcardRule::METADATA,
         surface: Surface::ClaudeSettings,

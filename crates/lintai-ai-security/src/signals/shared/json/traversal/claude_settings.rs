@@ -19,6 +19,36 @@ fn find_home_directory_hook_command_relative_span(command: &str) -> Option<linta
         .map(|prefix| lintai_api::Span::new(0, prefix.len()))
 }
 
+fn find_external_absolute_hook_command_relative_span(command: &str) -> Option<lintai_api::Span> {
+    const SAFE_PREFIXES: [&str; 4] = ["/bin/", "/usr/bin/", "/usr/sbin/", "/sbin/"];
+    const HOME_PREFIXES: [&str; 2] = ["/Users/", "/home/"];
+    const TARGET_PREFIXES: [&str; 8] = [
+        "/opt/",
+        "/usr/local/",
+        "/etc/",
+        "/var/",
+        "/private/",
+        "/tmp/",
+        "/Volumes/",
+        "/srv/",
+    ];
+
+    let token = command.split_whitespace().next()?;
+    if !token.starts_with('/') {
+        return None;
+    }
+    if SAFE_PREFIXES.iter().any(|prefix| token.starts_with(prefix)) {
+        return None;
+    }
+    if HOME_PREFIXES.iter().any(|prefix| token.starts_with(prefix)) {
+        return None;
+    }
+    if TARGET_PREFIXES.iter().any(|prefix| token.starts_with(prefix)) {
+        return Some(lintai_api::Span::new(0, token.len()));
+    }
+    None
+}
+
 pub(crate) fn visit_claude_settings_value(
     value: &Value,
     path: &mut Vec<JsonPathSegment>,
@@ -38,6 +68,19 @@ pub(crate) fn visit_claude_settings_value(
             && let Some(relative) = find_home_directory_hook_command_relative_span(command)
         {
             signals.home_directory_hook_command_span = Some(resolve_child_relative_value_span(
+                path,
+                "command",
+                "command",
+                relative,
+                locator,
+                fallback_len,
+            ));
+        }
+
+        if signals.external_absolute_hook_command_span.is_none()
+            && let Some(relative) = find_external_absolute_hook_command_relative_span(command)
+        {
+            signals.external_absolute_hook_command_span = Some(resolve_child_relative_value_span(
                 path,
                 "command",
                 "command",

@@ -152,6 +152,11 @@
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9/10`
   - почему важно: даёт очень понятный least-privilege signal для shared Claude network access; wildcard fetch grant легче всего оспорить в code review и легко сузить до reviewed endpoints
+- `SEC368` — Claude settings hook command uses a repo-external absolute path in a shared committed config
+  - статус: `Preview`
+  - community usefulness сейчас: `8.5/10`
+  - надёжность: `9/10`
+  - почему важно: ловит team-facing Claude hook wiring, которое жёстко привязано к внешнему filesystem path; community-friendly remediation очевиден — перейти на `$CLAUDE_PROJECT_DIR`
 
 ### Минимальный релизный набор (1-й проход)
 

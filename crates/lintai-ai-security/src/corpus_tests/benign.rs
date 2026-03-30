@@ -35,6 +35,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "claude-settings-network-command-safe",
             "claude-settings-network-tls-verified-safe",
             "claude-settings-pinned-launcher-safe",
+            "claude-settings-repo-external-absolute-hook-fixture-safe",
+            "claude-settings-repo-external-absolute-hook-safe",
             "claude-settings-schema-fixture-safe",
             "claude-settings-schema-present-safe",
             "claude-settings-webfetch-specific-safe",

@@ -67,6 +67,7 @@ Current wave inventory for the newly expanded JSON lanes:
   - `SEC365` Claude settings non-HTTPS `allowedHttpHookUrls`: `0`
   - `SEC366` Claude settings dangerous host literals in `allowedHttpHookUrls`: `0`
   - `SEC367` Claude settings wildcard `WebFetch(*)` permissions: `0`
+  - `SEC368` Claude settings repo-external absolute hook paths: `0`
   - current `SEC347` usefulness is being driven mainly by MCP config snippets
 - repos with `tool_descriptor_json`: `3`
 - findings from `SEC314`-`SEC318`: `0`
@@ -96,6 +97,7 @@ Current wave inventory for the newly expanded JSON lanes:
 - `SEC365` produced no repo-level preview hits yet on the canonical cohort
 - `SEC366` produced no repo-level preview hits yet on the canonical cohort
 - `SEC367` produced no repo-level preview hits yet on the canonical cohort
+- `SEC368` produced no repo-level preview hits yet on the canonical cohort
 - fixture/testdata/example suppression stayed active for the newly added MCP client-config variants and did not create a fake usefulness signal from fixture-like paths
 
 ## Delta From Previous Wave

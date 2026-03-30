@@ -75,6 +75,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC365" => "CLAUDE-HTTP-HOOK-URL",
         "SEC366" => "CLAUDE-HTTP-HOOK-HOST",
         "SEC367" => "CLAUDE-WEBFETCH-WILDCARD",
+        "SEC368" => "CLAUDE-ABS-HOOK-PATH",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",
