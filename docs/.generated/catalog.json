@@ -57,7 +57,8 @@
         "lintai-ai-security:SEC344",
         "lintai-ai-security:SEC345",
         "lintai-ai-security:SEC346",
-        "lintai-ai-security:SEC394"
+        "lintai-ai-security:SEC394",
+        "lintai-ai-security:SEC395"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -205,7 +206,8 @@
         "lintai-ai-security:SEC344",
         "lintai-ai-security:SEC345",
         "lintai-ai-security:SEC346",
-        "lintai-ai-security:SEC394"
+        "lintai-ai-security:SEC394",
+        "lintai-ai-security:SEC395"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -3602,6 +3604,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"*\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC395",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC395",
+      "alias": "MCP-AUTOAPPROVE-TOOLS",
+      "displayLabel": "SEC395 / MCP-AUTOAPPROVE-TOOLS",
+      "docTitle": "MCP config: autoApproveTools true",
+      "slug": "sec395",
+      "canonicalPath": "/rules/lintai-ai-security/sec395",
+      "summary": "MCP configuration auto-approves all tools with `autoApproveTools: true`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit blanket auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-tools-true"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-tools-false-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact boolean detection for `autoApproveTools: true` on parsed MCP configuration."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

@@ -193,6 +193,15 @@ pub(super) fn analyze_json_object<'a>(
             signals.autoapprove_wildcard_span =
                 Some(resolve_value_span(&item_path, locator, fallback_len));
         }
+
+        if signals.autoapprove_tools_true_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApproveTools"
+            && nested.as_bool() == Some(true)
+        {
+            signals.autoapprove_tools_true_span =
+                Some(resolve_child_value_span(path, key, locator, fallback_len));
+        }
     }
 
     JsonObjectCommandShape {

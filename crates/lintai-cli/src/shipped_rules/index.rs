@@ -206,6 +206,7 @@ mod tests {
             shipped_rule_alias("SEC394"),
             Some("MCP-AUTOAPPROVE-WILDCARD")
         );
+        assert_eq!(shipped_rule_alias("SEC395"), Some("MCP-AUTOAPPROVE-TOOLS"));
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

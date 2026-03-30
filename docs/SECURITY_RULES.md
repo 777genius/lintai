@@ -108,6 +108,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC387 / CLAUDE-GIT-COMMIT-PERMISSION` | Claude settings permissions allow `Bash(git commit:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC388 / CLAUDE-GIT-STASH-PERMISSION` | Claude settings permissions allow `Bash(git stash:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC394 / MCP-AUTOAPPROVE-WILDCARD` | MCP configuration auto-approves all tools with `autoApprove: ["*"]` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC395 / MCP-AUTOAPPROVE-TOOLS` | MCP configuration auto-approves all tools with `autoApproveTools: true` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC401 / POLICY-EXEC-MISMATCH` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC402 / POLICY-NETWORK-MISMATCH` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC403 / POLICY-SKILL-CAPABILITIES-MISMATCH` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
@@ -1943,6 +1944,27 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["*"]` on parsed MCP configuration.
 - Malicious Corpus: `mcp-autoapprove-wildcard`
 - Benign Corpus: `mcp-autoapprove-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC395 / MCP-AUTOAPPROVE-TOOLS` — MCP configuration auto-approves all tools with `autoApproveTools: true`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-TOOLS`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit blanket auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact boolean detection for `autoApproveTools: true` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-tools-true`
+- Benign Corpus: `mcp-autoapprove-tools-false-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

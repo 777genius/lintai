@@ -84,6 +84,7 @@ Current wave inventory for the newly expanded JSON lanes:
   - `SEC387` Claude settings shared `git commit:*` permissions: `0`
   - `SEC388` Claude settings shared `git stash:*` permissions: `0`
   - `SEC394` MCP configs with wildcard `autoApprove`: `0`
+  - `SEC395` MCP configs with `autoApproveTools: true`: `0`
   - `SEC372` Claude settings wildcard `Read(*)` permissions: `0`
   - `SEC373` Claude settings wildcard `Edit(*)` permissions: `0`
   - `SEC374` Claude settings wildcard `WebSearch(*)` permissions: `0`
@@ -140,6 +141,7 @@ Current wave inventory for the newly expanded JSON lanes:
 - `SEC387` produced no repo-level preview hits yet on the canonical cohort
 - `SEC388` produced no repo-level preview hits yet on the canonical cohort
 - `SEC394` produced no repo-level stable hits yet on the canonical cohort
+- `SEC395` produced no repo-level stable hits yet on the canonical cohort
 - fixture/testdata/example suppression stayed active for the newly added MCP client-config variants and did not create a fake usefulness signal from fixture-like paths
 
 ## Delta From Previous Wave

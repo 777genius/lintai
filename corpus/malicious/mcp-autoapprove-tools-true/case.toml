@@ -1,0 +1,12 @@
+id = "mcp-autoapprove-tools-true"
+mode = "malicious"
+entry = "mcp.json"
+
+expected_findings = [
+  "lintai-ai-security:SEC395",
+]
+
+[metadata]
+title = "MCP config with blanket autoApproveTools"
+description = "Flags exact autoApproveTools: true in committed MCP client config."
+

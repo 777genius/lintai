@@ -97,6 +97,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC387" => "CLAUDE-GIT-COMMIT-PERMISSION",
         "SEC388" => "CLAUDE-GIT-STASH-PERMISSION",
         "SEC394" => "MCP-AUTOAPPROVE-WILDCARD",
+        "SEC395" => "MCP-AUTOAPPROVE-TOOLS",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

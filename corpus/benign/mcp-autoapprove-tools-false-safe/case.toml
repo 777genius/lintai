@@ -1,0 +1,12 @@
+id = "mcp-autoapprove-tools-false-safe"
+mode = "benign"
+entry = "mcp.json"
+
+must_not_find = [
+  "lintai-ai-security:SEC395",
+]
+
+[metadata]
+title = "MCP config without blanket autoApproveTools"
+description = "Does not flag exact false value for autoApproveTools."
+
