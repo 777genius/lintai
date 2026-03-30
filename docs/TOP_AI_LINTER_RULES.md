@@ -112,6 +112,11 @@
   - community usefulness сейчас: `8/10`
   - надёжность: `9.5/10`
   - почему важно: ловит очень понятный contract bug в `.mdc` / `.cursorrules`, из-за которого Cursor rules могут применяться не так, как автор ожидал
+- `SEC360` — Cursor rule frontmatter `globs` must be a sequence of patterns
+  - статус: `Preview`
+  - community usefulness сейчас: `8.5/10`
+  - надёжность: `9.5/10`
+  - почему важно: ловит path-targeting bug в `.mdc` / `.cursorrules`, из-за которого Cursor rule может тихо применяться не к тем файлам или не матчиться как задумано
 
 ### Минимальный релизный набор (1-й проход)
 

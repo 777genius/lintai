@@ -1,0 +1,7 @@
+---
+globs: "**/*.rs"
+---
+
+# Fixture Cursor Rule
+
+Review fixture examples only.

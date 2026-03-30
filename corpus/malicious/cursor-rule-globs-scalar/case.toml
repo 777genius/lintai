@@ -1,0 +1,6 @@
+[case]
+id = "cursor-rule-globs-scalar"
+summary = "Cursor rule frontmatter uses scalar globs instead of a sequence"
+
+expected_findings = ["SEC360"]
+

@@ -1,0 +1,6 @@
+[case]
+id = "cursor-rule-globs-sequence-safe"
+summary = "Cursor rule frontmatter uses a sequence for globs"
+
+expected_findings = []
+

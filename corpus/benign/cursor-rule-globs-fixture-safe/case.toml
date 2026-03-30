@@ -1,0 +1,6 @@
+[case]
+id = "cursor-rule-globs-fixture-safe"
+summary = "Fixture-like Cursor rule with scalar globs stays suppressed"
+
+expected_findings = []
+

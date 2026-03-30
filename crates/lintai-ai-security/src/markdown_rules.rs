@@ -307,6 +307,22 @@ pub(crate) fn check_cursor_rule_always_apply_type(
     )
 }
 
+pub(crate) fn check_cursor_rule_globs_type(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.cursor_rule_globs_type_spans.as_slice())
+            .unwrap_or(&[]),
+        "Cursor rule frontmatter `globs` must be a sequence of patterns",
+    )
+}
+
 pub(crate) fn check_copilot_instruction_too_long(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

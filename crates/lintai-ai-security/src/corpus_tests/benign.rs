@@ -34,6 +34,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "cursor-plugin-tls-verified-basic",
             "cursor-rule-alwaysapply-boolean-safe",
             "cursor-rule-alwaysapply-fixture-safe",
+            "cursor-rule-globs-fixture-safe",
+            "cursor-rule-globs-sequence-safe",
             "gemini-mcp-docker-digest-pinned-safe",
             "github-workflow-env-indirected-safe",
             "github-workflow-pinned-third-party-action",

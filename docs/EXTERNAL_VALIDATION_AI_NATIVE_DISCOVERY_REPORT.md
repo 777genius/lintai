@@ -68,7 +68,7 @@ Currently covered admission paths:
 
 - `31` preview hit(s) were observed at repo scope; these should not yet be interpreted as proof on discovery-only admission paths
 
-- AI-native markdown preview hits by rule code: `SEC313`=`0`, `SEC335`=`0`, `SEC347`=`1`, `SEC348`=`0`, `SEC349`=`0`, `SEC350`=`0`, `SEC351`=`0`, `SEC352`=`0`, `SEC353`=`0`, `SEC354`=`0`, `SEC355`=`0`, `SEC356`=`0`, `SEC357`=`0`, `SEC358`=`0`
+- AI-native markdown preview hits by rule code: `SEC313`=`0`, `SEC335`=`0`, `SEC347`=`1`, `SEC348`=`0`, `SEC349`=`0`, `SEC350`=`0`, `SEC351`=`0`, `SEC352`=`0`, `SEC353`=`0`, `SEC354`=`0`, `SEC355`=`0`, `SEC356`=`0`, `SEC357`=`0`, `SEC358`=`0`, `SEC359`=`0`, `SEC360`=`0`
 - `SEC347` subtype repo hits: CLI-form=`1`, config-snippet-form=`1`
 - current markdown usefulness is still mainly skills / `CLAUDE.md`; plugin-root command docs remain a non-driving surface with `0` admitted covered paths
 
@@ -88,6 +88,8 @@ Currently covered admission paths:
 - `SEC356` produced no repo-level external preview hits in this wave
 - `SEC357` produced no repo-level external preview hits in this wave
 - `SEC358` produced no repo-level external preview hits in this wave
+- `SEC359` produced no repo-level external preview hits in this wave
+- `SEC360` produced no repo-level external preview hits in this wave
 
 ## Runtime / Diagnostic Notes
 

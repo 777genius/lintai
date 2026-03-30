@@ -1,0 +1,8 @@
+---
+globs: *
+alwaysApply: true
+---
+
+# Cursor Rule
+
+Review Rust files carefully.

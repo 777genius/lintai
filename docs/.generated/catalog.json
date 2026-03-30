@@ -89,7 +89,8 @@
         "lintai-ai-security:SEC356",
         "lintai-ai-security:SEC357",
         "lintai-ai-security:SEC358",
-        "lintai-ai-security:SEC359"
+        "lintai-ai-security:SEC359",
+        "lintai-ai-security:SEC360"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -131,7 +132,8 @@
         "lintai-ai-security:SEC356",
         "lintai-ai-security:SEC357",
         "lintai-ai-security:SEC358",
-        "lintai-ai-security:SEC359"
+        "lintai-ai-security:SEC359",
+        "lintai-ai-security:SEC360"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -2609,6 +2611,37 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Cursor rule frontmatter shape mismatches are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC360",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC360",
+      "alias": "CURSOR-RULE-GLOBS",
+      "displayLabel": "SEC360 / CURSOR-RULE-GLOBS",
+      "docTitle": "Cursor rule: `globs` type",
+      "slug": "sec360",
+      "canonicalPath": "/rules/lintai-ai-security/sec360",
+      "summary": "Cursor rule frontmatter `globs` must be a sequence of patterns",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Cursor rule path-matching shape mismatches are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

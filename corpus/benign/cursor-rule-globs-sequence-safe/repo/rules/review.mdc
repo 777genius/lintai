@@ -1,0 +1,10 @@
+---
+globs:
+  - "**/*.rs"
+  - "**/*.toml"
+alwaysApply: false
+---
+
+# Cursor Rule
+
+Review Rust changes carefully.

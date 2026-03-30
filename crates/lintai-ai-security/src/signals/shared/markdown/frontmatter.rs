@@ -44,6 +44,15 @@ pub(crate) fn frontmatter_has_key(value: &Value, key: &str) -> bool {
         .is_some_and(|mapping| mapping.contains_key(key))
 }
 
+pub(crate) fn cursor_rule_globs_requires_sequence(value: &Value) -> bool {
+    match value {
+        Value::Array(items) => items
+            .iter()
+            .any(|item| item.as_str().is_none_or(|text| text.trim().is_empty())),
+        _ => true,
+    }
+}
+
 fn find_standalone_bash_relative_span(text: &str) -> Option<Span> {
     let lowered = text.to_ascii_lowercase();
     let needle = "bash";

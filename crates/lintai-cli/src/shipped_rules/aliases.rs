@@ -67,6 +67,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC357" => "PLUGIN-AGENT-HOOKS",
         "SEC358" => "PLUGIN-AGENT-MCPSERVERS",
         "SEC359" => "CURSOR-RULE-ALWAYSAPPLY",
+        "SEC360" => "CURSOR-RULE-GLOBS",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",
