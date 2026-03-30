@@ -142,6 +142,11 @@
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9/10`
   - почему важно: это прямой transport-policy smell для shared Claude hook allowlist; `https://` проще защищать и публично отстаивать как командный стандарт
+- `SEC366` — Claude settings allow dangerous host literals in `allowedHttpHookUrls`
+  - статус: `Preview`
+  - community usefulness сейчас: `8.5/10`
+  - надёжность: `9/10`
+  - почему важно: metadata/private-network hook hosts в shared config выглядят как очень понятный SSRF/exfil policy smell и хорошо объясняются сообществу
 
 ### Минимальный релизный набор (1-й проход)
 

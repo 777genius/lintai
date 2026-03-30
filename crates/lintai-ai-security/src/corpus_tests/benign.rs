@@ -24,6 +24,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "claude-settings-bash-specific-safe",
             "claude-settings-bypass-fixture-safe",
             "claude-settings-bypass-safe",
+            "claude-settings-dangerous-http-hook-fixture-safe",
+            "claude-settings-dangerous-http-hook-safe",
             "claude-settings-http-hook-fixture-safe",
             "claude-settings-http-hook-loopback-safe",
             "claude-settings-http-hook-safe",

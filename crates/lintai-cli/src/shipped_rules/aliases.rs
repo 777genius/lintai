@@ -73,6 +73,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC363" => "CLAUDE-HOME-HOOK-PATH",
         "SEC364" => "CLAUDE-BYPASS-PERMISSIONS",
         "SEC365" => "CLAUDE-HTTP-HOOK-URL",
+        "SEC366" => "CLAUDE-HTTP-HOOK-HOST",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

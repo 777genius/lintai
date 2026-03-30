@@ -2063,6 +2063,23 @@ fn finds_claude_settings_insecure_http_hook_url() {
 }
 
 #[test]
+fn finds_claude_settings_dangerous_http_hook_host() {
+    let content = r#"{"allowedHttpHookUrls":["https://169.254.169.254/latest/meta-data","https://hooks.example.test/notify"]}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC366")
+        .unwrap();
+    let start = content.find("169.254.169.254").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "169.254.169.254".len())
+    );
+}
+
+#[test]
 fn ignores_claude_settings_https_hook_urls() {
     let summary = scan_preview_claude_settings_fixture(
         ".claude/settings.json",
@@ -2073,7 +2090,7 @@ fn ignores_claude_settings_https_hook_urls() {
         !summary
             .findings
             .iter()
-            .any(|finding| finding.rule_code == "SEC365")
+            .any(|finding| matches!(finding.rule_code.as_str(), "SEC365" | "SEC366"))
     );
 }
 
@@ -2088,7 +2105,7 @@ fn ignores_claude_settings_loopback_http_hook_urls() {
         !summary
             .findings
             .iter()
-            .any(|finding| finding.rule_code == "SEC365")
+            .any(|finding| matches!(finding.rule_code.as_str(), "SEC365" | "SEC366"))
     );
 }
 
@@ -2123,7 +2140,7 @@ fn ignores_claude_settings_insecure_http_hook_url_on_fixture_like_path() {
         !summary
             .findings
             .iter()
-            .any(|finding| finding.rule_code == "SEC365")
+            .any(|finding| matches!(finding.rule_code.as_str(), "SEC365" | "SEC366"))
     );
 }
 
@@ -4111,6 +4128,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC363"
                         | "SEC364"
                         | "SEC365"
+                        | "SEC366"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

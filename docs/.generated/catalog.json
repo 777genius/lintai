@@ -95,7 +95,8 @@
         "lintai-ai-security:SEC362",
         "lintai-ai-security:SEC363",
         "lintai-ai-security:SEC364",
-        "lintai-ai-security:SEC365"
+        "lintai-ai-security:SEC365",
+        "lintai-ai-security:SEC366"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -198,7 +199,8 @@
         "lintai-ai-security:SEC362",
         "lintai-ai-security:SEC363",
         "lintai-ai-security:SEC364",
-        "lintai-ai-security:SEC365"
+        "lintai-ai-security:SEC365",
+        "lintai-ai-security:SEC366"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -2807,6 +2809,37 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Committed Claude settings with non-HTTPS `allowedHttpHookUrls` entries are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC366",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC366",
+      "alias": "CLAUDE-HTTP-HOOK-HOST",
+      "displayLabel": "SEC366 / CLAUDE-HTTP-HOOK-HOST",
+      "docTitle": "Claude settings: dangerous HTTP hook host literal",
+      "slug": "sec366",
+      "canonicalPath": "/rules/lintai-ai-security/sec366",
+      "summary": "Claude settings allow dangerous host literals in `allowedHttpHookUrls`",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Committed Claude settings with dangerous host literals in `allowedHttpHookUrls` are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

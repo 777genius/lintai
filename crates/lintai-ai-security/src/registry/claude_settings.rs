@@ -3,11 +3,24 @@ use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
 use super::*;
 use crate::claude_settings_rules::{
     check_claude_settings_bash_wildcard, check_claude_settings_bypass_permissions,
+    check_claude_settings_dangerous_http_hook_host,
     check_claude_settings_home_directory_hook_command, check_claude_settings_inline_download_exec,
     check_claude_settings_insecure_http_hook_url, check_claude_settings_missing_schema,
     check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
+
+declare_rule! {
+    pub struct ClaudeSettingsDangerousHttpHookHostRule {
+        code: "SEC366",
+        summary: "Claude settings allow dangerous host literals in `allowedHttpHookUrls`",
+        doc_title: "Claude settings: dangerous HTTP hook host literal",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
 
 declare_rule! {
     pub struct ClaudeSettingsInsecureHttpHookUrlRule {
@@ -105,7 +118,23 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 8] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 9] = [
+    NativeRuleSpec {
+        metadata: ClaudeSettingsDangerousHttpHookHostRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Committed Claude settings with dangerous host literals in `allowedHttpHookUrls` are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_dangerous_http_hook_host,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove metadata or private-network host literals from `allowedHttpHookUrls` and replace them with reviewed public endpoints",
+        ),
+        suggestion_fix: None,
+    },
     NativeRuleSpec {
         metadata: ClaudeSettingsInsecureHttpHookUrlRule::METADATA,
         surface: Surface::ClaudeSettings,

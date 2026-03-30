@@ -219,6 +219,9 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(markdown.contains("`SEC363` Claude settings home-directory hook commands: `0`"));
     assert!(markdown.contains("`SEC364` Claude settings `bypassPermissions` default mode: `0`"));
     assert!(markdown.contains("`SEC365` Claude settings non-HTTPS `allowedHttpHookUrls`: `0`"));
+    assert!(markdown.contains(
+        "`SEC366` Claude settings dangerous host literals in `allowedHttpHookUrls`: `0`"
+    ));
     assert!(markdown.contains("- repos with `tool_descriptor_json`: `1`"));
     assert!(markdown.contains(
         "- repos where new MCP client-config variants existed only under fixture-like paths: `0`"
@@ -297,6 +300,10 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(
         markdown
             .contains("- `SEC365` produced no repo-level preview hits yet on the canonical cohort")
+    );
+    assert!(
+        markdown
+            .contains("- `SEC366` produced no repo-level preview hits yet on the canonical cohort")
     );
     assert!(markdown.contains("## Delta From Previous Wave"));
     assert!(markdown.contains("`datadog-labs/cursor-plugin`: `improved`"));
@@ -740,4 +747,7 @@ fn ai_native_discovery_report_has_required_sections() {
         markdown
             .contains("`SEC365` Claude settings files with non-HTTPS `allowedHttpHookUrls`: `0`")
     );
+    assert!(markdown.contains(
+        "`SEC366` Claude settings files with dangerous host literals in `allowedHttpHookUrls`: `0`"
+    ));
 }

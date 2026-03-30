@@ -63,6 +63,21 @@ pub(crate) fn check_claude_settings_insecure_http_hook_url(
     )
 }
 
+pub(crate) fn check_claude_settings_dangerous_http_hook_host(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.dangerous_http_hook_host_span.clone()),
+        "Claude settings allow dangerous host literals in `allowedHttpHookUrls`",
+    )
+}
+
 pub(crate) fn check_claude_settings_bash_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

@@ -155,6 +155,7 @@ pub(crate) struct ClaudeSettingsSignals {
     pub(crate) locator: Option<JsonLocationMap>,
     pub(crate) fixture_like_path: bool,
     pub(crate) insecure_http_hook_url_span: Option<Span>,
+    pub(crate) dangerous_http_hook_host_span: Option<Span>,
     pub(crate) bypass_permissions_span: Option<Span>,
     pub(crate) missing_schema_span: Option<Span>,
     pub(crate) bash_wildcard_span: Option<Span>,
