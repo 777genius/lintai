@@ -1,0 +1,11 @@
+id = "skill-wildcard-tools-fixture-safe"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = ["SEC355"]
+
+[snapshot]
+kind = "none"
+name = ""

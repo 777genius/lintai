@@ -90,6 +90,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "skill-private-key-pem",
             "skill-tool-output-developer-instructions",
             "skill-unscoped-bash-allowed-tools",
+            "skill-wildcard-tools-frontmatter",
             "tool-json-anthropic-strict-open-schema",
             "tool-json-duplicate-tool-names",
             "tool-json-mcp-missing-machine-fields",

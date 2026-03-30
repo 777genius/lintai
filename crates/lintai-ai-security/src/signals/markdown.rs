@@ -237,6 +237,37 @@ impl MarkdownSignals {
             ));
         }
 
+        if matches!(
+            ctx.artifact.kind,
+            ArtifactKind::Skill
+                | ArtifactKind::Instructions
+                | ArtifactKind::CursorPluginCommand
+                | ArtifactKind::CursorPluginAgent
+        ) && !is_fixture_like_markdown_instruction_path(&ctx.artifact.normalized_path)
+            && let Some(frontmatter_value) = markdown_semantics(ctx)
+                .and_then(|markdown| markdown.frontmatter.as_ref())
+                .and_then(|frontmatter| {
+                    frontmatter
+                        .value
+                        .get("allowed-tools")
+                        .or_else(|| frontmatter.value.get("allowed_tools"))
+                        .or_else(|| frontmatter.value.get("tools"))
+                })
+            && frontmatter_has_wildcard_tool_access(frontmatter_value)
+            && let Some(region) = ctx
+                .document
+                .regions
+                .iter()
+                .find(|region| matches!(region.kind, RegionKind::Frontmatter))
+            && let Some(snippet) = span_text(&ctx.content, &region.span)
+            && let Some(relative) = find_wildcard_tool_frontmatter_relative_span(snippet)
+        {
+            signals.wildcard_tool_access_spans.push(Span::new(
+                region.span.start_byte + relative.start_byte,
+                region.span.start_byte + relative.end_byte,
+            ));
+        }
+
         if matches!(ctx.artifact.kind, ArtifactKind::Instructions)
             && is_github_copilot_instruction_path(&ctx.artifact.normalized_path)
             && !is_fixture_like_markdown_instruction_path(&ctx.artifact.normalized_path)

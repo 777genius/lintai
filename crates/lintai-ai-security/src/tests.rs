@@ -1029,6 +1029,79 @@ fn ignores_unscoped_bash_allowed_tools_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_wildcard_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: \"*\"\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC355")
+        .unwrap();
+    let start = content.find('*').unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + 1)
+    );
+}
+
+#[test]
+fn finds_wildcard_tools_array_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "AGENTS.md",
+        "---\ntools:\n  - \"*\"\n  - Read\n---\n# Agent\n",
+    );
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC355")
+    );
+}
+
+#[test]
+fn ignores_explicit_tool_allowlist_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Read, Write, Edit\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC355")
+    );
+}
+
+#[test]
+fn ignores_wildcard_tool_access_on_fixture_like_path() {
+    let temp_dir = unique_temp_dir("lintai-sec355-fixture-safe");
+    std::fs::create_dir_all(temp_dir.join("tests/examples/skill")).unwrap();
+    std::fs::write(
+        temp_dir.join("tests/examples/skill/AGENTS.md"),
+        "---\nallowed-tools: \"*\"\n---\n# Fixture skill\n",
+    )
+    .unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC355")
+    );
+}
+
+#[test]
 fn finds_copilot_instruction_file_above_4000_chars() {
     let content = format!("# Copilot\n\n{}\n", "A".repeat(4_100));
     let summary = scan_preview_skill_fixture(".github/copilot-instructions.md", &content);
@@ -3437,6 +3510,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC353"
                         | "SEC352"
                         | "SEC354"
+                        | "SEC355"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

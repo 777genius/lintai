@@ -82,6 +82,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-scoped-bash-allowed-tools-safe",
             "skill-unscoped-bash-fixture-safe",
             "skill-untrusted-input-negated-safe",
+            "skill-wildcard-tools-explicit-allowlist-safe",
+            "skill-wildcard-tools-fixture-safe",
             "tool-json-anthropic-strict-locked",
             "tool-json-mcp-valid-tool",
             "tool-json-openai-strict-locked",

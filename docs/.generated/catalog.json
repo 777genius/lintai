@@ -92,6 +92,7 @@
         "lintai-ai-security:SEC352",
         "lintai-ai-security:SEC353",
         "lintai-ai-security:SEC354",
+        "lintai-ai-security:SEC355",
         "lintai-policy-mismatch:SEC401",
         "lintai-policy-mismatch:SEC402",
         "lintai-policy-mismatch:SEC403"
@@ -133,7 +134,8 @@
         "lintai-ai-security:SEC351",
         "lintai-ai-security:SEC352",
         "lintai-ai-security:SEC353",
-        "lintai-ai-security:SEC354"
+        "lintai-ai-security:SEC354",
+        "lintai-ai-security:SEC355"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -2431,6 +2433,37 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Missing `applyTo` on path-specific Copilot instruction files is deterministic, but the first release stays guidance-only while external usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC355",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC355",
+      "alias": "MD-WILDCARD-TOOLS",
+      "displayLabel": "SEC355 / MD-WILDCARD-TOOLS",
+      "docTitle": "AI markdown: wildcard tool grant",
+      "slug": "sec355",
+      "canonicalPath": "/rules/lintai-ai-security/sec355",
+      "summary": "AI-native markdown frontmatter grants wildcard tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Wildcard tool grants in AI-native frontmatter can still appear in convenience-oriented docs, so the first release stays least-privilege guidance-only.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

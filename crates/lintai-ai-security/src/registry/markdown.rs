@@ -10,6 +10,7 @@ use crate::markdown_rules::{
     check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
     check_markdown_path_traversal, check_markdown_private_key_pem,
     check_unscoped_bash_allowed_tools, check_untrusted_instruction_promotion,
+    check_wildcard_tool_access,
 };
 
 declare_rule! {
@@ -181,6 +182,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct WildcardToolAccessRule {
+        code: "SEC355",
+        summary: "AI-native markdown frontmatter grants wildcard tool access",
+        doc_title: "AI markdown: wildcard tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct MarkdownPrivateKeyPemRule {
         code: "SEC312",
         summary: "Markdown contains committed private key material",
@@ -204,7 +217,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 16] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 17] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -422,6 +435,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 16] = [
         safe_fix: None,
         suggestion_message: Some(
             "add `applyTo` frontmatter to path-specific Copilot instructions or move the content into shared `.github/copilot-instructions.md` guidance",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: WildcardToolAccessRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Wildcard tool grants in AI-native frontmatter can still appear in convenience-oriented docs, so the first release stays least-privilege guidance-only.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_wildcard_tool_access,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace wildcard tool access with an explicit allowlist of only the tools the workflow actually needs",
         ),
         suggestion_fix: None,
     },

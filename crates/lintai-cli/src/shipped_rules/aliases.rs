@@ -62,6 +62,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC352" => "MD-UNSCOPED-BASH",
         "SEC353" => "COPILOT-4K",
         "SEC354" => "COPILOT-PATH-APPLYTO",
+        "SEC355" => "MD-WILDCARD-TOOLS",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

@@ -87,6 +87,11 @@
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9.5/10`
   - почему важно: ловит очень понятный structural misconfiguration, из-за которого path-specific Copilot instructions могут просто не применяться как задумано
+- `SEC355` — AI-native markdown frontmatter grants wildcard tool access
+  - статус: `Preview`
+  - community usefulness сейчас: `8.5/10`
+  - надёжность: `9.5/10`
+  - почему важно: very direct least-privilege rule для skills и shared instructions; wildcard `*` слишком расширяет agency и плохо переживает community review
 
 ### Минимальный релизный набор (1-й проход)
 
