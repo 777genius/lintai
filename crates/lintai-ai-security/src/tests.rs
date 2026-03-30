@@ -1458,6 +1458,49 @@ fn ignores_cursor_rule_unknown_frontmatter_key_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_cursor_rule_missing_description() {
+    let content = "---\nalwaysApply: true\n---\n# Cursor Rule\n";
+    let summary = scan_preview_skill_fixture("rules/review.mdc", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC380")
+        .unwrap();
+    assert_eq!(finding.location.span, lintai_api::Span::new(0, 3));
+}
+
+#[test]
+fn ignores_cursor_rule_with_description_for_sec380() {
+    let summary = scan_preview_skill_fixture(
+        "rules/review.mdc",
+        "---\ndescription: Review guidance\nalwaysApply: true\n---\n# Cursor Rule\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC380")
+    );
+}
+
+#[test]
+fn ignores_cursor_rule_missing_description_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/rules/review.mdc",
+        "---\nalwaysApply: true\n---\n# Fixture Cursor Rule\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC380")
+    );
+}
+
+#[test]
 fn finds_copilot_instruction_file_above_4000_chars() {
     let content = format!("# Copilot\n\n{}\n", "A".repeat(4_100));
     let summary = scan_preview_skill_fixture(".github/copilot-instructions.md", &content);
@@ -4979,6 +5022,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC377"
                         | "SEC378"
                         | "SEC379"
+                        | "SEC380"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

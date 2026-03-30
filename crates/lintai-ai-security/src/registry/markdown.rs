@@ -6,8 +6,9 @@ use crate::markdown_rules::{
     check_copilot_instruction_invalid_apply_to_glob, check_copilot_instruction_missing_apply_to,
     check_copilot_instruction_too_long, check_copilot_instruction_wrong_suffix,
     check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
-    check_cursor_rule_redundant_globs, check_cursor_rule_unknown_frontmatter_key,
-    check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
+    check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
+    check_cursor_rule_unknown_frontmatter_key, check_html_comment_directive,
+    check_html_comment_download_exec, check_markdown_base64_exec,
     check_markdown_docker_host_escape, check_markdown_download_exec,
     check_markdown_fenced_pipe_shell, check_markdown_metadata_service_access,
     check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
@@ -318,6 +319,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct CursorRuleMissingDescriptionRule {
+        code: "SEC380",
+        summary: "Cursor rule frontmatter should include `description`",
+        doc_title: "Cursor rule: missing `description`",
+        category: Category::Quality,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct MarkdownPrivateKeyPemRule {
         code: "SEC312",
         summary: "Markdown contains committed private key material",
@@ -341,7 +354,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 27] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 28] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -735,6 +748,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 27] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove unknown frontmatter keys or migrate them to supported Cursor rule fields like `description`, `globs`, or `alwaysApply`",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: CursorRuleMissingDescriptionRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Missing `description` on Cursor rules is deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_cursor_rule_missing_description,
+        safe_fix: None,
+        suggestion_message: Some(
+            "add a short `description` explaining when the Cursor rule should apply so shared rule packs stay reviewable",
         ),
         suggestion_fix: None,
     },

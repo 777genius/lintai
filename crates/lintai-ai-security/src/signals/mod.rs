@@ -107,6 +107,7 @@ pub(crate) struct MarkdownSignals {
     pub(crate) cursor_rule_globs_type_spans: Vec<Span>,
     pub(crate) cursor_rule_redundant_globs_spans: Vec<Span>,
     pub(crate) cursor_rule_unknown_frontmatter_key_spans: Vec<Span>,
+    pub(crate) cursor_rule_missing_description_spans: Vec<Span>,
     pub(crate) copilot_instruction_too_long_spans: Vec<Span>,
     pub(crate) copilot_instruction_missing_apply_to_spans: Vec<Span>,
     pub(crate) copilot_instruction_wrong_suffix_spans: Vec<Span>,

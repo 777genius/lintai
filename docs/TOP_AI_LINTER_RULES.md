@@ -212,6 +212,11 @@
   - community usefulness сейчас: `9/10`
   - надёжность: `9/10`
   - почему важно: неизвестные ключи в `.mdc` создают ложное ощущение поддерживаемой конфигурации; это точный и практичный contract check для shared AI rule packs
+- `SEC380` — Cursor rule frontmatter should include `description`
+  - статус: `Preview`
+  - community usefulness сейчас: `8.5/10`
+  - надёжность: `8.5/10`
+  - почему важно: правила без `description` тяжелее ревьюить и поддерживать в shared AI repo packs; remediation очевиден и rule хорошо воспринимается как quality contract
 
 ### Минимальный релизный набор (1-й проход)
 

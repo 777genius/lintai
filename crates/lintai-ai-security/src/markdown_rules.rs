@@ -411,6 +411,22 @@ pub(crate) fn check_cursor_rule_unknown_frontmatter_key(
     )
 }
 
+pub(crate) fn check_cursor_rule_missing_description(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.cursor_rule_missing_description_spans.as_slice())
+            .unwrap_or(&[]),
+        "Cursor rule frontmatter should include `description`",
+    )
+}
+
 pub(crate) fn check_copilot_instruction_too_long(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

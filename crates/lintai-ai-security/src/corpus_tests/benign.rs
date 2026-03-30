@@ -72,6 +72,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "cursor-rule-alwaysapply-redundant-globs-fixture-safe",
             "cursor-rule-globs-fixture-safe",
             "cursor-rule-globs-sequence-safe",
+            "cursor-rule-missing-description-fixture-safe",
+            "cursor-rule-missing-description-safe",
             "cursor-rule-unknown-frontmatter-fixture-safe",
             "cursor-rule-unknown-frontmatter-supported-keys-safe",
             "gemini-mcp-docker-digest-pinned-safe",

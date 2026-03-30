@@ -1,0 +1,4 @@
+description = "Cursor rule frontmatter is missing description"
+entrypoint = "repo/rules/review.mdc"
+expected_findings = ["SEC380"]
+

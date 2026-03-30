@@ -74,6 +74,7 @@ Current wave inventory for the newly expanded JSON lanes:
   - `SEC377` path-specific Copilot instructions with invalid `applyTo` globs: `0`
   - `SEC378` Cursor rules with redundant `globs` alongside `alwaysApply: true`: `0`
   - `SEC379` Cursor rules with unknown frontmatter keys: `0`
+  - `SEC380` Cursor rules missing `description`: `0`
   - `SEC372` Claude settings wildcard `Read(*)` permissions: `0`
   - `SEC373` Claude settings wildcard `Edit(*)` permissions: `0`
   - `SEC374` Claude settings wildcard `WebSearch(*)` permissions: `0`
@@ -120,6 +121,7 @@ Current wave inventory for the newly expanded JSON lanes:
 - `SEC377` produced no repo-level preview hits yet on the canonical cohort
 - `SEC378` produced no repo-level preview hits yet on the canonical cohort
 - `SEC379` produced no repo-level preview hits yet on the canonical cohort
+- `SEC380` produced no repo-level preview hits yet on the canonical cohort
 - fixture/testdata/example suppression stayed active for the newly added MCP client-config variants and did not create a fake usefulness signal from fixture-like paths
 
 ## Delta From Previous Wave

@@ -1,0 +1,3 @@
+description = "Cursor rule with description stays clean"
+entrypoint = "repo/rules/review.mdc"
+

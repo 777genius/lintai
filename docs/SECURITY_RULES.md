@@ -98,6 +98,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC377 / COPILOT-APPLYTO-GLOB` | Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` glob pattern | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC378 / CURSOR-ALWAYSAPPLY-GLOBS` | Cursor rule frontmatter should not set `globs` when `alwaysApply` is `true` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC379 / CURSOR-UNKNOWN-FRONTMATTER` | Cursor rule frontmatter contains an unknown key | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC380 / CURSOR-DESCRIPTION` | Cursor rule frontmatter should include `description` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC401 / POLICY-EXEC-MISMATCH` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC402 / POLICY-NETWORK-MISMATCH` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC403 / POLICY-SKILL-CAPABILITIES-MISMATCH` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
@@ -1760,6 +1761,23 @@ Important behavior:
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Unknown Cursor rule frontmatter keys are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC380 / CURSOR-DESCRIPTION` — Cursor rule frontmatter should include `description`
+
+- Provider: `lintai-ai-security`
+- Alias: `CURSOR-DESCRIPTION`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Missing `description` on Cursor rules is deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 

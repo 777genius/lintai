@@ -400,6 +400,18 @@ impl MarkdownSignals {
             if let Some(frontmatter) = parsed_frontmatter
                 && let Some(mapping) = frontmatter.value.as_object()
             {
+                if !mapping
+                    .get("description")
+                    .is_some_and(|value| value.as_str().is_some_and(|text| !text.trim().is_empty()))
+                {
+                    signals
+                        .cursor_rule_missing_description_spans
+                        .push(Span::new(
+                            region.span.start_byte,
+                            region.span.start_byte + 3,
+                        ));
+                }
+
                 for key in mapping.keys() {
                     if CURSOR_RULE_FRONTMATTER_KEYS.contains(&key.as_str()) {
                         continue;
