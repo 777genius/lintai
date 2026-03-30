@@ -107,7 +107,8 @@
         "lintai-ai-security:SEC376",
         "lintai-ai-security:SEC378",
         "lintai-ai-security:SEC379",
-        "lintai-ai-security:SEC380"
+        "lintai-ai-security:SEC380",
+        "lintai-ai-security:SEC381"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -222,7 +223,8 @@
         "lintai-ai-security:SEC373",
         "lintai-ai-security:SEC374",
         "lintai-ai-security:SEC375",
-        "lintai-ai-security:SEC376"
+        "lintai-ai-security:SEC376",
+        "lintai-ai-security:SEC381"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -3296,6 +3298,37 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Missing `description` on Cursor rules is deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC381",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC381",
+      "alias": "CLAUDE-HOOK-TIMEOUT",
+      "displayLabel": "SEC381 / CLAUDE-HOOK-TIMEOUT",
+      "docTitle": "Claude settings: command hook missing `timeout`",
+      "slug": "sec381",
+      "canonicalPath": "/rules/lintai-ai-security/sec381",
+      "summary": "Claude settings command hook should set `timeout` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Missing command-hook timeouts in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

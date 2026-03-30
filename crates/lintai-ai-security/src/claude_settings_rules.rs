@@ -33,6 +33,21 @@ pub(crate) fn check_claude_settings_missing_schema(
     )
 }
 
+pub(crate) fn check_claude_settings_missing_hook_timeout(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.missing_hook_timeout_span.clone()),
+        "Claude settings command hook is missing an explicit `timeout` in a shared committed config",
+    )
+}
+
 pub(crate) fn check_claude_settings_bypass_permissions(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

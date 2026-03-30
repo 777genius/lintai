@@ -106,6 +106,49 @@ fn resolve_dangerous_http_hook_host_span(
         })
 }
 
+fn resolve_missing_hook_timeout_span(
+    value: &serde_json::Value,
+    locator: Option<&JsonLocationMap>,
+) -> Option<Span> {
+    let hooks = value.get("hooks")?.as_object()?;
+
+    for (event_name, event_entries) in hooks {
+        let Some(event_entries) = event_entries.as_array() else {
+            continue;
+        };
+
+        for (entry_index, entry) in event_entries.iter().enumerate() {
+            let Some(entry_hooks) = entry.get("hooks").and_then(Value::as_array) else {
+                continue;
+            };
+
+            for (hook_index, hook) in entry_hooks.iter().enumerate() {
+                if hook.get("type").and_then(Value::as_str) != Some("command") {
+                    continue;
+                }
+                if hook.get("timeout").is_some() {
+                    continue;
+                }
+                if hook.get("command").and_then(Value::as_str).is_none() {
+                    continue;
+                }
+
+                let path = vec![
+                    JsonPathSegment::Key("hooks".to_owned()),
+                    JsonPathSegment::Key(event_name.clone()),
+                    JsonPathSegment::Index(entry_index),
+                    JsonPathSegment::Key("hooks".to_owned()),
+                    JsonPathSegment::Index(hook_index),
+                    JsonPathSegment::Key("command".to_owned()),
+                ];
+                return locator.and_then(|locator| locator.value_span(&path).cloned());
+            }
+        }
+    }
+
+    None
+}
+
 impl ClaudeSettingsSignals {
     pub(super) fn from_context(ctx: &ScanContext, metrics: &mut SignalWorkBudget) -> Option<Self> {
         if ctx.artifact.kind != ArtifactKind::ClaudeSettings {
@@ -133,6 +176,8 @@ impl ClaudeSettingsSignals {
             resolve_dangerous_http_hook_host_span(value, locator_ref.as_ref());
         signals.bypass_permissions_span =
             resolve_bypass_permissions_span(value, locator_ref.as_ref());
+        signals.missing_hook_timeout_span =
+            resolve_missing_hook_timeout_span(value, locator_ref.as_ref());
         if value.is_object() && !value.get("$schema").is_some() {
             signals.missing_schema_span = leading_json_file_relative_span(&ctx.content);
         }

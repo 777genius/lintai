@@ -217,6 +217,11 @@
   - community usefulness сейчас: `8.5/10`
   - надёжность: `8.5/10`
   - почему важно: правила без `description` тяжелее ревьюить и поддерживать в shared AI repo packs; remediation очевиден и rule хорошо воспринимается как quality contract
+- `SEC381` — Claude settings command hook should set `timeout` in a shared committed config
+  - статус: `Preview`
+  - community usefulness сейчас: `9/10`
+  - надёжность: `9/10`
+  - почему важно: shared Claude command hooks без `timeout` создают очень практичный operational smell; remediation в одну строку, а rule легко защитить перед сообществом как reviewable team-policy contract
 
 ### Минимальный релизный набор (1-й проход)
 

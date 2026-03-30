@@ -7,12 +7,24 @@ use crate::claude_settings_rules::{
     check_claude_settings_external_absolute_hook_command, check_claude_settings_glob_wildcard,
     check_claude_settings_grep_wildcard, check_claude_settings_home_directory_hook_command,
     check_claude_settings_inline_download_exec, check_claude_settings_insecure_http_hook_url,
-    check_claude_settings_missing_schema, check_claude_settings_mutable_launcher,
-    check_claude_settings_network_tls_bypass, check_claude_settings_read_wildcard,
-    check_claude_settings_webfetch_wildcard, check_claude_settings_websearch_wildcard,
-    check_claude_settings_write_wildcard,
+    check_claude_settings_missing_hook_timeout, check_claude_settings_missing_schema,
+    check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
+    check_claude_settings_read_wildcard, check_claude_settings_webfetch_wildcard,
+    check_claude_settings_websearch_wildcard, check_claude_settings_write_wildcard,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
+
+declare_rule! {
+    pub struct ClaudeSettingsMissingHookTimeoutRule {
+        code: "SEC381",
+        summary: "Claude settings command hook should set `timeout` in a shared committed config",
+        doc_title: "Claude settings: command hook missing `timeout`",
+        category: Category::Quality,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
 
 declare_rule! {
     pub struct ClaudeSettingsWriteWildcardRule {
@@ -218,7 +230,23 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 17] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 18] = [
+    NativeRuleSpec {
+        metadata: ClaudeSettingsMissingHookTimeoutRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Missing command-hook timeouts in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_missing_hook_timeout,
+        safe_fix: None,
+        suggestion_message: Some(
+            "add an explicit `timeout` to each shared command hook so hook execution stays bounded and reviewable",
+        ),
+        suggestion_fix: None,
+    },
     NativeRuleSpec {
         metadata: ClaudeSettingsWriteWildcardRule::METADATA,
         surface: Surface::ClaudeSettings,
