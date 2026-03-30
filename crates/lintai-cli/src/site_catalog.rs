@@ -98,7 +98,7 @@ struct BuiltinPresetSpec {
     extends: &'static [&'static str],
 }
 
-const BUILTIN_PRESETS: [BuiltinPresetSpec; 7] = [
+const BUILTIN_PRESETS: [BuiltinPresetSpec; 9] = [
     BuiltinPresetSpec {
         id: "base",
         kind: SitePresetKind::Membership,
@@ -114,13 +114,13 @@ const BUILTIN_PRESETS: [BuiltinPresetSpec; 7] = [
     BuiltinPresetSpec {
         id: "compat",
         kind: SitePresetKind::Membership,
-        description: "Rules that flag mismatches between workspace policy and repository behavior.",
+        description: "Policy and compatibility checks that compare declared workspace posture against repository behavior.",
         extends: &[],
     },
     BuiltinPresetSpec {
         id: "skills",
         kind: SitePresetKind::Membership,
-        description: "Rules for instruction and skills markdown, including preview-only coverage.",
+        description: "Rules for instruction and skills markdown that remain inside the core agent-artifact surface.",
         extends: &[],
     },
     BuiltinPresetSpec {
@@ -133,6 +133,18 @@ const BUILTIN_PRESETS: [BuiltinPresetSpec; 7] = [
         id: "claude",
         kind: SitePresetKind::Membership,
         description: "Rules for Claude settings and command-hook configuration.",
+        extends: &[],
+    },
+    BuiltinPresetSpec {
+        id: "guidance",
+        kind: SitePresetKind::Membership,
+        description: "Advice-oriented guidance rules that are useful, but intentionally not part of the core security baseline.",
+        extends: &[],
+    },
+    BuiltinPresetSpec {
+        id: "supply-chain",
+        kind: SitePresetKind::Membership,
+        description: "Sidecar supply-chain hardening rules, including GitHub Actions workflow checks.",
         extends: &[],
     },
     BuiltinPresetSpec {
@@ -462,7 +474,21 @@ mod tests {
             .iter()
             .find(|rule| rule.rule_id == "lintai-policy-mismatch:SEC401")
             .expect("SEC401 should exist");
-        assert_eq!(sec401.default_presets, vec!["preview", "compat"]);
+        assert_eq!(sec401.default_presets, vec!["compat"]);
+
+        let sec324 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC324")
+            .expect("SEC324 should exist");
+        assert_eq!(sec324.default_presets, vec!["supply-chain"]);
+
+        let sec353 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC353")
+            .expect("SEC353 should exist");
+        assert_eq!(sec353.default_presets, vec!["guidance"]);
 
         let strict = catalog
             .presets

@@ -122,11 +122,23 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec340.default_presets(), vec!["base", "claude"]);
 
+    let sec324 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC324")
+        .unwrap();
+    assert_eq!(sec324.default_presets(), vec!["supply-chain"]);
+
+    let sec353 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC353")
+        .unwrap();
+    assert_eq!(sec353.default_presets(), vec!["guidance"]);
+
     let sec401 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC401")
         .unwrap();
-    assert_eq!(sec401.default_presets(), vec!["preview", "compat"]);
+    assert_eq!(sec401.default_presets(), vec!["compat"]);
 }
 
 #[test]

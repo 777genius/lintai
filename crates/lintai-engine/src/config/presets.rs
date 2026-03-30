@@ -122,8 +122,20 @@ fn builtin_preset_spec(name: &str) -> Result<BuiltinPresetSpec, ConfigError> {
             active_rules: rules_for_preset("claude"),
             ..Default::default()
         }),
+        "guidance" => Ok(BuiltinPresetSpec {
+            name: "guidance",
+            extends: &[],
+            active_rules: rules_for_preset("guidance"),
+            ..Default::default()
+        }),
+        "supply-chain" => Ok(BuiltinPresetSpec {
+            name: "supply-chain",
+            extends: &[],
+            active_rules: rules_for_preset("supply-chain"),
+            ..Default::default()
+        }),
         other => Err(ConfigError::new(format!(
-            "unknown builtin preset `{other}`; expected one of: base, strict, compat, preview, skills, mcp, claude"
+            "unknown builtin preset `{other}`; expected one of: base, strict, compat, preview, skills, mcp, claude, guidance, supply-chain"
         ))),
     }
 }

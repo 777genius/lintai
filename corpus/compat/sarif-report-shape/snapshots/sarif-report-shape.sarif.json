@@ -112,7 +112,7 @@
                 "tags": []
               },
               "shortDescription": {
-                "text": "Hook script: secret exfiltration"
+                "text": "HOOK-SECRET-EXFIL — Hook script: secret exfiltration"
               }
             },
             {
@@ -123,7 +123,7 @@
                 "tags": []
               },
               "shortDescription": {
-                "text": "Hook script: insecure HTTP secret send"
+                "text": "HOOK-PLAIN-HTTP-SECRET-EXFIL — Hook script: insecure HTTP secret send"
               }
             },
             {
@@ -134,7 +134,7 @@
                 "tags": []
               },
               "shortDescription": {
-                "text": "Hook script: hardcoded auth in network call"
+                "text": "HOOK-STATIC-AUTH — Hook script: hardcoded auth in network call"
               }
             }
           ]

@@ -13,7 +13,7 @@ declare_rule! {
         code: "SEC324",
         summary: "GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA",
         doc_title: "GitHub Actions: unpinned third-party action",
-        category: Category::Security,
+        category: Category::Hardening,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Stable,
@@ -25,7 +25,7 @@ declare_rule! {
         code: "SEC325",
         summary: "GitHub Actions workflow interpolates untrusted expression data directly inside a run command",
         doc_title: "GitHub Actions: untrusted expression in run",
-        category: Category::Security,
+        category: Category::Hardening,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Preview,
@@ -37,7 +37,7 @@ declare_rule! {
         code: "SEC326",
         summary: "GitHub Actions pull_request_target workflow checks out untrusted pull request head content",
         doc_title: "GitHub Actions: pull_request_target checkout",
-        category: Category::Security,
+        category: Category::Hardening,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Stable,
@@ -49,7 +49,7 @@ declare_rule! {
         code: "SEC327",
         summary: "GitHub Actions workflow grants GITHUB_TOKEN write-all permissions",
         doc_title: "GitHub Actions: write-all token",
-        category: Category::Security,
+        category: Category::Hardening,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Stable,
@@ -61,7 +61,7 @@ declare_rule! {
         code: "SEC328",
         summary: "GitHub Actions workflow combines explicit write-capable permissions with a third-party action",
         doc_title: "GitHub Actions: write-capable third-party action",
-        category: Category::Security,
+        category: Category::Hardening,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Preview,
@@ -72,7 +72,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: GithubWorkflowUnpinnedThirdPartyActionRule::METADATA,
         surface: Surface::GithubWorkflow,
-        default_presets: BASE_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks workflow uses: entries for third-party actions that rely on mutable refs instead of immutable commit SHAs; positioned as a supply-chain hardening control rather than a direct exploit claim.",
@@ -92,7 +92,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: GithubWorkflowUntrustedRunInterpolationRule::METADATA,
         surface: Surface::GithubWorkflow,
-        default_presets: PREVIEW_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Shell safety depends on how the interpolated expression is consumed inside the run command.",
@@ -108,7 +108,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: GithubWorkflowPullRequestTargetHeadCheckoutRule::METADATA,
         surface: Surface::GithubWorkflow,
-        default_presets: BASE_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks pull_request_target workflows for actions/checkout steps that explicitly pull untrusted pull request head refs instead of the safer default merge context.",
@@ -128,7 +128,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: GithubWorkflowWriteAllPermissionsRule::METADATA,
         surface: Surface::GithubWorkflow,
-        default_presets: BASE_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks workflow permissions for the explicit write-all shortcut, which exceeds least-privilege guidance for GITHUB_TOKEN.",
@@ -148,7 +148,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: GithubWorkflowWriteCapableThirdPartyActionRule::METADATA,
         surface: Surface::GithubWorkflow,
-        default_presets: PREVIEW_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Write-capable token scopes and third-party action usage are compositional and need more corpus-backed precision review before a stable launch.",

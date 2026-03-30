@@ -38,14 +38,14 @@ pub struct PolicyRuleCatalogEntry {
     pub remediation_support: PolicyRemediationSupport,
 }
 
-const PREVIEW_COMPAT_PRESETS: &[&str] = &["preview", "compat"];
+const COMPAT_PRESETS: &[&str] = &["compat"];
 
 declare_rule! {
     pub struct ProjectExecMismatchRule {
         code: "SEC401",
         summary: "Project policy forbids execution, but repository contains executable behavior",
         doc_title: "Policy mismatch: execution",
-        category: lintai_api::Category::Security,
+        category: lintai_api::Category::Audit,
         default_severity: lintai_api::Severity::Warn,
         default_confidence: lintai_api::Confidence::High,
         tier: RuleTier::Preview,
@@ -57,7 +57,7 @@ declare_rule! {
         code: "SEC402",
         summary: "Project policy forbids network access, but repository contains network behavior",
         doc_title: "Policy mismatch: network access",
-        category: lintai_api::Category::Security,
+        category: lintai_api::Category::Audit,
         default_severity: lintai_api::Severity::Warn,
         default_confidence: lintai_api::Confidence::High,
         tier: RuleTier::Preview,
@@ -69,7 +69,7 @@ declare_rule! {
         code: "SEC403",
         summary: "Skill frontmatter capabilities conflict with project policy",
         doc_title: "Skill capabilities mismatch",
-        category: lintai_api::Category::Security,
+        category: lintai_api::Category::Audit,
         default_severity: lintai_api::Severity::Warn,
         default_confidence: lintai_api::Confidence::High,
         tier: RuleTier::Preview,
@@ -87,7 +87,7 @@ const POLICY_RULE_CATALOG_ENTRIES: [PolicyRuleCatalogEntry; 3] = [
         metadata: ProjectExecMismatchRule::METADATA,
         provider_id: PROVIDER_ID,
         surface: PolicySurface::Workspace,
-        default_presets: PREVIEW_COMPAT_PRESETS,
+        default_presets: COMPAT_PRESETS,
         detection_class: PolicyDetectionClass::Structural,
         lifecycle: PolicyRuleLifecycle::Preview {
             blocker: "Needs workspace-level precision review and linked graduation corpus before promotion to Stable.",
@@ -99,7 +99,7 @@ const POLICY_RULE_CATALOG_ENTRIES: [PolicyRuleCatalogEntry; 3] = [
         metadata: ProjectNetworkMismatchRule::METADATA,
         provider_id: PROVIDER_ID,
         surface: PolicySurface::Workspace,
-        default_presets: PREVIEW_COMPAT_PRESETS,
+        default_presets: COMPAT_PRESETS,
         detection_class: PolicyDetectionClass::Structural,
         lifecycle: PolicyRuleLifecycle::Preview {
             blocker: "Needs workspace-level network precision review and linked graduation corpus before promotion to Stable.",
@@ -111,7 +111,7 @@ const POLICY_RULE_CATALOG_ENTRIES: [PolicyRuleCatalogEntry; 3] = [
         metadata: CapabilityConflictRule::METADATA,
         provider_id: PROVIDER_ID,
         surface: PolicySurface::Workspace,
-        default_presets: PREVIEW_COMPAT_PRESETS,
+        default_presets: COMPAT_PRESETS,
         detection_class: PolicyDetectionClass::Structural,
         lifecycle: PolicyRuleLifecycle::Preview {
             blocker: "Needs workspace-level capability-conflict precision review and linked graduation corpus before promotion to Stable.",

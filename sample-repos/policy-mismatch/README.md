@@ -23,8 +23,8 @@ The sample config explicitly overrides `SEC201` to `allow`, so the stable hook f
 Expected result:
 
 - findings are expected
-- the current sample config keeps scan commands non-blocking
-- every documented `scan` command exits `0`
+- the current sample config makes scan commands blocking because policy conflict mode is set to `deny`
+- every documented `scan` command exits `1`
 - the documented `explain-config` command exits `0`
 
 Run these commands from `sample-repos/policy-mismatch/repo`:

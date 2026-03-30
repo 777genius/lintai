@@ -7,11 +7,6 @@ expected_runtime_error_kinds = ["parse"]
 expected_diagnostics = 0
 expected_absent_rules = []
 
-[[expected_findings]]
-rule_code = "SEC101"
-tier = "preview"
-min_evidence_count = 2
-
 [snapshot]
 kind = "json"
 name = "json-report-shape"

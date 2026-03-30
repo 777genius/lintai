@@ -146,7 +146,72 @@ enable = ["base", "compat"]
         vec!["base".to_owned(), "compat".to_owned()]
     );
     assert_eq!(
-        resolved.severity_for("SEC401", Category::Security, Severity::Warn),
+        resolved.severity_for("SEC401", Category::Audit, Severity::Warn),
+        Severity::Warn
+    );
+}
+
+#[test]
+fn guidance_preset_can_enable_advisory_lane() {
+    let temp_dir = unique_temp_dir("lintai-config-presets-guidance");
+    std::fs::create_dir_all(temp_dir.join(".github/instructions")).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        r#"
+[presets]
+enable = ["base", "guidance"]
+"#,
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join(".github/instructions/review.instructions.md"),
+        "# review\n",
+    )
+    .unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let resolved = explain_file_config(
+        &workspace,
+        &temp_dir.join(".github/instructions/review.instructions.md"),
+    );
+
+    assert_eq!(
+        resolved.enabled_presets,
+        vec!["base".to_owned(), "guidance".to_owned()]
+    );
+    assert_eq!(
+        resolved.severity_for("SEC353", Category::Quality, Severity::Warn),
+        Severity::Warn
+    );
+}
+
+#[test]
+fn supply_chain_preset_can_enable_sidecar_lane() {
+    let temp_dir = unique_temp_dir("lintai-config-presets-supply-chain");
+    std::fs::create_dir_all(temp_dir.join(".github/workflows")).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        r#"
+[presets]
+enable = ["base", "supply-chain"]
+"#,
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join(".github/workflows/ci.yml"),
+        "name: ci\non: push\njobs: {}\n",
+    )
+    .unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let resolved = explain_file_config(&workspace, &temp_dir.join(".github/workflows/ci.yml"));
+
+    assert_eq!(
+        resolved.enabled_presets,
+        vec!["base".to_owned(), "supply-chain".to_owned()]
+    );
+    assert_eq!(
+        resolved.severity_for("SEC324", Category::Hardening, Severity::Warn),
         Severity::Warn
     );
 }
