@@ -3075,6 +3075,23 @@ fn finds_claude_settings_git_push_permission() {
 }
 
 #[test]
+fn finds_claude_settings_npx_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(npx claude-flow:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC399")
+        .unwrap();
+    let start = content.find("Bash(npx claude-flow:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(npx claude-flow:*)".len())
+    );
+}
+
+#[test]
 fn finds_claude_settings_git_checkout_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git checkout:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -3156,6 +3173,21 @@ fn finds_claude_settings_grep_wildcard() {
     assert_eq!(
         finding.location.span,
         lintai_api::Span::new(start, start + "Grep(*)".len())
+    );
+}
+
+#[test]
+fn ignores_claude_settings_specific_bash_permission_without_npx() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(node server.js)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC399")
     );
 }
 
@@ -3261,6 +3293,41 @@ fn ignores_claude_settings_git_stash_permission_when_command_is_more_specific() 
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC388")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_npx_permission_on_fixture_like_path() {
+    let temp_dir = unique_temp_dir("lintai-claude-npx-permission-fixture");
+    std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("tests/fixtures/.claude/settings.json"),
+        br#"{"permissions":{"allow":["Bash(npx claude-flow:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    )
+    .unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
+    let summary = EngineBuilder::default()
+        .with_config(workspace.engine_config.clone())
+        .with_suppressions(Arc::new(suppressions))
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC399")
     );
 }
 
@@ -5961,6 +6028,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC386"
                         | "SEC387"
                         | "SEC388"
+                        | "SEC399"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

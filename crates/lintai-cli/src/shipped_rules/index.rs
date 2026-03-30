@@ -213,6 +213,7 @@ mod tests {
             shipped_rule_alias("SEC398"),
             Some("MCP-CAPABILITIES-WILDCARD")
         );
+        assert_eq!(shipped_rule_alias("SEC399"), Some("CLAUDE-NPX-PERMISSION"));
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

@@ -260,6 +260,7 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(markdown.contains("`SEC396` MCP configs with `trustTools: true`: `"));
     assert!(markdown.contains("`SEC397` MCP configs with sandbox disabled: `"));
     assert!(markdown.contains("`SEC398` MCP configs with wildcard capabilities: `"));
+    assert!(markdown.contains("`SEC399` Claude settings shared `Bash(npx ...)` permissions: `"));
     assert!(markdown.contains("`SEC372` Claude settings wildcard `Read(*)` permissions: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings wildcard `Edit(*)` permissions: `0`"));
     assert!(markdown.contains("`SEC374` Claude settings wildcard `WebSearch(*)` permissions: `0`"));
@@ -894,6 +895,7 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC396` MCP configs with `trustTools: true`: `"));
     assert!(markdown.contains("`SEC397` MCP configs with sandbox disabled: `"));
     assert!(markdown.contains("`SEC398` MCP configs with wildcard capabilities: `"));
+    assert!(markdown.contains("`SEC399` Claude settings shared `Bash(npx ...)` permissions: `"));
     assert!(markdown.contains("`SEC372` Claude settings files allowing `Read(*)`: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings files allowing `Edit(*)`: `0`"));
     assert!(markdown.contains("`SEC374` Claude settings files allowing `WebSearch(*)`: `0`"));
@@ -922,4 +924,5 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC396`"));
     assert!(markdown.contains("`SEC397`"));
     assert!(markdown.contains("`SEC398`"));
+    assert!(markdown.contains("`SEC399`"));
 }

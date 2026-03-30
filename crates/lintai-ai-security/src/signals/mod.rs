@@ -180,6 +180,7 @@ pub(crate) struct ClaudeSettingsSignals {
     pub(crate) websearch_wildcard_span: Option<Span>,
     pub(crate) unscoped_websearch_span: Option<Span>,
     pub(crate) git_push_permission_span: Option<Span>,
+    pub(crate) npx_permission_span: Option<Span>,
     pub(crate) git_checkout_permission_span: Option<Span>,
     pub(crate) git_commit_permission_span: Option<Span>,
     pub(crate) git_stash_permission_span: Option<Span>,

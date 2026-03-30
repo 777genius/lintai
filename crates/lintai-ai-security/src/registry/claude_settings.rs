@@ -13,9 +13,9 @@ use crate::claude_settings_rules::{
     check_claude_settings_missing_hook_timeout,
     check_claude_settings_missing_required_hook_matcher, check_claude_settings_missing_schema,
     check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
-    check_claude_settings_read_wildcard, check_claude_settings_unscoped_websearch,
-    check_claude_settings_webfetch_wildcard, check_claude_settings_websearch_wildcard,
-    check_claude_settings_write_wildcard,
+    check_claude_settings_npx_permission, check_claude_settings_read_wildcard,
+    check_claude_settings_unscoped_websearch, check_claude_settings_webfetch_wildcard,
+    check_claude_settings_websearch_wildcard, check_claude_settings_write_wildcard,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
 
@@ -120,6 +120,18 @@ declare_rule! {
         code: "SEC385",
         summary: "Claude settings permissions allow `Bash(git push)` in a shared committed config",
         doc_title: "Claude settings: shared git push permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsNpxPermissionRule {
+        code: "SEC399",
+        summary: "Claude settings permissions allow `Bash(npx ...)` in a shared committed config",
+        doc_title: "Claude settings: shared npx Bash permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -319,7 +331,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 25] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 26] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -461,6 +473,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 25] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `Bash(git push)` permissions, or replace them with a narrower reviewed workflow that does not grant direct push authority by default",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsNpxPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `Bash(npx ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_npx_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace shared `Bash(npx ...)` permissions with a pinned wrapper or a narrower reviewed command permission that does not grant mutable package execution by default",
         ),
         suggestion_fix: None,
     },

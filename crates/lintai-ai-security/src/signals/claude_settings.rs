@@ -40,6 +40,28 @@ fn resolve_permissions_allow_exact_span(
     locator.and_then(|locator| locator.value_span(&path).cloned())
 }
 
+fn resolve_permissions_allow_prefix_span(
+    value: &serde_json::Value,
+    locator: Option<&JsonLocationMap>,
+    prefix: &str,
+) -> Option<Span> {
+    let allow = value
+        .get("permissions")
+        .and_then(|permissions| permissions.get("allow"))
+        .and_then(serde_json::Value::as_array)?;
+    let index = allow.iter().position(|entry| {
+        entry
+            .as_str()
+            .is_some_and(|permission| permission.starts_with(prefix))
+    })?;
+    let path = vec![
+        JsonPathSegment::Key("permissions".to_owned()),
+        JsonPathSegment::Key("allow".to_owned()),
+        JsonPathSegment::Index(index),
+    ];
+    locator.and_then(|locator| locator.value_span(&path).cloned())
+}
+
 fn resolve_bypass_permissions_span(
     value: &serde_json::Value,
     locator: Option<&JsonLocationMap>,
@@ -266,6 +288,8 @@ impl ClaudeSettingsSignals {
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "WebSearch");
         signals.git_push_permission_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git push)");
+        signals.npx_permission_span =
+            resolve_permissions_allow_prefix_span(value, locator_ref.as_ref(), "Bash(npx ");
         signals.git_checkout_permission_span = resolve_permissions_allow_exact_span(
             value,
             locator_ref.as_ref(),
