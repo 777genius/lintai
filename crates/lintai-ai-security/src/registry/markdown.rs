@@ -2,11 +2,11 @@ use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
 
 use super::*;
 use crate::markdown_rules::{
-    check_approval_bypass_instruction, check_copilot_instruction_missing_apply_to,
-    check_copilot_instruction_too_long, check_copilot_instruction_wrong_suffix,
-    check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
-    check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
-    check_markdown_docker_host_escape, check_markdown_download_exec,
+    check_approval_bypass_instruction, check_copilot_instruction_invalid_apply_to,
+    check_copilot_instruction_missing_apply_to, check_copilot_instruction_too_long,
+    check_copilot_instruction_wrong_suffix, check_cursor_rule_always_apply_type,
+    check_cursor_rule_globs_type, check_html_comment_directive, check_html_comment_download_exec,
+    check_markdown_base64_exec, check_markdown_docker_host_escape, check_markdown_download_exec,
     check_markdown_fenced_pipe_shell, check_markdown_metadata_service_access,
     check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
     check_markdown_path_traversal, check_markdown_private_key_pem,
@@ -196,6 +196,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct CopilotInstructionInvalidApplyToRule {
+        code: "SEC371",
+        summary: "Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` shape",
+        doc_title: "Copilot instructions: invalid `applyTo` shape",
+        category: Category::Quality,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct WildcardToolAccessRule {
         code: "SEC355",
         summary: "AI-native markdown frontmatter grants wildcard tool access",
@@ -291,7 +303,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 23] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 24] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -525,6 +537,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 23] = [
         safe_fix: None,
         suggestion_message: Some(
             "rename path-specific Copilot instructions to `*.instructions.md` or move repository-wide guidance into `.github/copilot-instructions.md`",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: CopilotInstructionInvalidApplyToRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GUIDANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Invalid `applyTo` shape on path-specific Copilot instruction files is deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_copilot_instruction_invalid_apply_to,
+        safe_fix: None,
+        suggestion_message: Some(
+            "set `applyTo` to a non-empty string or a sequence of non-empty glob strings so Copilot can target files consistently",
         ),
         suggestion_fix: None,
     },

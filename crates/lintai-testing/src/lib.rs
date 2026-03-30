@@ -624,8 +624,8 @@ fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
         | "SEC313" | "SEC323" | "SEC325" | "SEC328" | "SEC335" | "SEC336" | "SEC347" | "SEC348"
         | "SEC349" | "SEC350" | "SEC351" | "SEC352" | "SEC353" | "SEC354" | "SEC355" | "SEC356"
         | "SEC357" | "SEC358" | "SEC359" | "SEC360" | "SEC361" | "SEC362" | "SEC363" | "SEC364"
-        | "SEC365" | "SEC366" | "SEC367" | "SEC368" | "SEC369" | "SEC370" | "SEC401" | "SEC402"
-        | "SEC403" => Some(RuleTier::Preview),
+        | "SEC365" | "SEC366" | "SEC367" | "SEC368" | "SEC369" | "SEC370" | "SEC371" | "SEC401"
+        | "SEC402" | "SEC403" => Some(RuleTier::Preview),
         _ => None,
     }
 }

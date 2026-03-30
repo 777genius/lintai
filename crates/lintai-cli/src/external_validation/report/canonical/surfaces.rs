@@ -47,6 +47,7 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec368_hits = rule_count(current, &["SEC368"]);
     let sec369_hits = rule_count(current, &["SEC369"]);
     let sec370_hits = rule_count(current, &["SEC370"]);
+    let sec371_hits = rule_count(current, &["SEC371"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, current);
     let sec348_repos = repos_with_rule_hits(current, &["SEC348"], false);
     let sec349_repos = repos_with_rule_hits(current, &["SEC349"], false);
@@ -71,6 +72,7 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec368_repos = repos_with_rule_hits(current, &["SEC368"], false);
     let sec369_repos = repos_with_rule_hits(current, &["SEC369"], false);
     let sec370_repos = repos_with_rule_hits(current, &["SEC370"], false);
+    let sec371_repos = repos_with_rule_hits(current, &["SEC371"], false);
 
     output.push_str("## Hybrid Scope Expansion Results\n\n");
     output.push_str("Current wave inventory for the newly expanded JSON lanes:\n\n");
@@ -241,6 +243,10 @@ pub(super) fn append_hybrid_scope_expansion(
         "  - `SEC370` path-specific Copilot instructions using the wrong suffix: `{}`\n",
         sec370_hits
     ));
+    output.push_str(&format!(
+        "  - `SEC371` path-specific Copilot instructions with invalid `applyTo`: `{}`\n",
+        sec371_hits
+    ));
     if sec347_hits > 0 {
         output.push_str(&format!(
             "  - current `SEC347` usefulness is being driven mainly by {}\n",
@@ -289,5 +295,6 @@ pub(super) fn append_hybrid_scope_expansion(
     append_rule_repo_hits(output, "SEC368", sec368_repos);
     append_rule_repo_hits(output, "SEC369", sec369_repos);
     append_rule_repo_hits(output, "SEC370", sec370_repos);
+    append_rule_repo_hits(output, "SEC371", sec371_repos);
     output.push_str("- fixture/testdata/example suppression stayed active for the newly added MCP client-config variants and did not create a fake usefulness signal from fixture-like paths\n\n");
 }

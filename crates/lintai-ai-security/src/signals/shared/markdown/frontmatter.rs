@@ -53,6 +53,19 @@ pub(crate) fn cursor_rule_globs_requires_sequence(value: &Value) -> bool {
     }
 }
 
+pub(crate) fn copilot_apply_to_requires_string_or_sequence(value: &Value) -> bool {
+    match value {
+        Value::String(text) => text.trim().is_empty(),
+        Value::Array(items) => {
+            items.is_empty()
+                || items
+                    .iter()
+                    .any(|item| item.as_str().is_none_or(|text| text.trim().is_empty()))
+        }
+        _ => true,
+    }
+}
+
 fn find_standalone_bash_relative_span(text: &str) -> Option<Span> {
     let lowered = text.to_ascii_lowercase();
     let needle = "bash";

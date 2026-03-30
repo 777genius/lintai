@@ -1,0 +1,6 @@
+id = "copilot-path-specific-valid-applyto-safe"
+description = "Path-specific Copilot instruction markdown with valid applyTo stays clean"
+
+[[expect_absent]]
+rule_code = "SEC371"
+path = ".github/instructions/review.instructions.md"

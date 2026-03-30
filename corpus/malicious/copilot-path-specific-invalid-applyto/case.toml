@@ -1,0 +1,6 @@
+id = "copilot-path-specific-invalid-applyto"
+description = "Path-specific Copilot instruction markdown has an invalid applyTo shape"
+
+[[expect_findings]]
+rule_code = "SEC371"
+path = ".github/instructions/review.instructions.md"

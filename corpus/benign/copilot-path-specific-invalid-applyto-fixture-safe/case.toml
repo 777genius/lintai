@@ -1,0 +1,6 @@
+id = "copilot-path-specific-invalid-applyto-fixture-safe"
+description = "Fixture-like path-specific Copilot instruction markdown with invalid applyTo is suppressed"
+
+[[expect_absent]]
+rule_code = "SEC371"
+path = "tests/fixtures/.github/instructions/review.instructions.md"

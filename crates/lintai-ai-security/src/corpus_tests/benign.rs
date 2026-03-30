@@ -45,6 +45,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "claude-settings-write-wildcard-fixture-safe",
             "copilot-instructions-too-long-fixture-safe",
             "copilot-instructions-within-limit-safe",
+            "copilot-path-specific-invalid-applyto-fixture-safe",
+            "copilot-path-specific-valid-applyto-safe",
             "copilot-path-specific-fixture-safe",
             "copilot-path-specific-correct-suffix-safe",
             "copilot-path-specific-wrong-suffix-fixture-safe",

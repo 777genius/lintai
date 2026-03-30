@@ -38,6 +38,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "copilot-instructions-too-long",
             "copilot-path-specific-missing-applyto",
             "copilot-path-specific-wrong-suffix",
+            "copilot-path-specific-invalid-applyto",
             "copilot-webpage-system-prompt-promotion",
             "cursor-plugin-unsafe-path",
             "cursor-rule-alwaysapply-nonboolean",

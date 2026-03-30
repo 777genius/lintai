@@ -413,6 +413,25 @@ impl MarkdownSignals {
                     .copilot_instruction_missing_apply_to_spans
                     .push(relative);
             }
+
+            if let Some(frontmatter) = parsed_frontmatter
+                && let Some(value) = frontmatter.value.get("applyTo")
+                && copilot_apply_to_requires_string_or_sequence(value)
+                && let Some(region) = ctx
+                    .document
+                    .regions
+                    .iter()
+                    .find(|region| matches!(region.kind, RegionKind::Frontmatter))
+                && let Some(snippet) = span_text(&ctx.content, &region.span)
+                && let Some(relative) = find_frontmatter_key_relative_span(snippet, "applyTo")
+            {
+                signals
+                    .copilot_instruction_invalid_apply_to_spans
+                    .push(Span::new(
+                        region.span.start_byte + relative.start_byte,
+                        region.span.start_byte + relative.end_byte,
+                    ));
+            }
         }
 
         Some(signals)

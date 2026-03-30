@@ -1519,6 +1519,72 @@ fn ignores_wrong_suffix_copilot_instruction_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_path_specific_copilot_instruction_with_empty_apply_to_string() {
+    let summary = scan_preview_skill_fixture(
+        ".github/instructions/review.instructions.md",
+        "---\napplyTo: \"\"\n---\n# Review Instructions\n",
+    );
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC371")
+        .unwrap();
+    let start = "---\napplyTo: \"\"\n---\n# Review Instructions\n"
+        .find("applyTo")
+        .unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "applyTo".len())
+    );
+}
+
+#[test]
+fn finds_path_specific_copilot_instruction_with_invalid_apply_to_array() {
+    let summary = scan_preview_skill_fixture(
+        ".github/instructions/review.instructions.md",
+        "---\napplyTo:\n  - \"**/*.rs\"\n  - \"\"\n---\n# Review Instructions\n",
+    );
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC371")
+    );
+}
+
+#[test]
+fn ignores_path_specific_copilot_instruction_with_valid_apply_to_array() {
+    let summary = scan_preview_skill_fixture(
+        ".github/instructions/review.instructions.md",
+        "---\napplyTo:\n  - \"**/*.rs\"\n  - \"**/*.ts\"\n---\n# Review Instructions\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC371")
+    );
+}
+
+#[test]
+fn ignores_invalid_apply_to_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/.github/instructions/review.instructions.md",
+        "---\napplyTo: []\n---\n# Fixture Instructions\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC371")
+    );
+}
+
+#[test]
 fn manifest_backed_plugin_command_markdown_uses_existing_markdown_rules() {
     let temp_dir = unique_temp_dir("lintai-plugin-command-markdown-covered");
     std::fs::create_dir_all(temp_dir.join("plugin/.cursor-plugin")).unwrap();
@@ -4377,6 +4443,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC368"
                         | "SEC369"
                         | "SEC370"
+                        | "SEC371"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

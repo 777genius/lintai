@@ -167,6 +167,11 @@
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9.5/10`
   - почему важно: это очень понятный structural rule для AI tooling layout; если path-specific Copilot file не заканчивается на `.instructions.md`, repo получает тихий config drift, который сложно заметить в review
+- `SEC371` — path-specific GitHub Copilot instruction markdown has an invalid `applyTo` shape
+  - статус: `Preview`
+  - community usefulness сейчас: `8/10`
+  - надёжность: `9.5/10`
+  - почему важно: rule хорошо объясняется сообществу как config-contract check; `applyTo` должен быть реально применимым target selector, а не пустым или malformed значением
 
 ### Минимальный релизный набор (1-й проход)
 

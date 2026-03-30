@@ -108,6 +108,7 @@ pub(crate) struct MarkdownSignals {
     pub(crate) copilot_instruction_too_long_spans: Vec<Span>,
     pub(crate) copilot_instruction_missing_apply_to_spans: Vec<Span>,
     pub(crate) copilot_instruction_wrong_suffix_spans: Vec<Span>,
+    pub(crate) copilot_instruction_invalid_apply_to_spans: Vec<Span>,
 }
 
 #[derive(Clone, Debug, Default)]

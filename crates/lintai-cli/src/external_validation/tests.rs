@@ -229,6 +229,10 @@ fn report_renderer_emits_delta_and_phase_targets() {
         markdown
             .contains("`SEC370` path-specific Copilot instructions using the wrong suffix: `0`")
     );
+    assert!(
+        markdown
+            .contains("`SEC371` path-specific Copilot instructions with invalid `applyTo`: `0`")
+    );
     assert!(markdown.contains("- repos with `tool_descriptor_json`: `1`"));
     assert!(markdown.contains(
         "- repos where new MCP client-config variants existed only under fixture-like paths: `0`"
@@ -315,6 +319,10 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(
         markdown
             .contains("- `SEC370` produced no repo-level preview hits yet on the canonical cohort")
+    );
+    assert!(
+        markdown
+            .contains("- `SEC371` produced no repo-level preview hits yet on the canonical cohort")
     );
     assert!(markdown.contains("## Delta From Previous Wave"));
     assert!(markdown.contains("`datadog-labs/cursor-plugin`: `improved`"));
@@ -770,5 +778,9 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(
         markdown
             .contains("`SEC370` path-specific Copilot instructions using the wrong suffix: `0`")
+    );
+    assert!(
+        markdown
+            .contains("`SEC371` path-specific Copilot instructions with invalid `applyTo`: `0`")
     );
 }
