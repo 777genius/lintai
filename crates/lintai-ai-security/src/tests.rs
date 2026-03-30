@@ -2422,6 +2422,23 @@ fn finds_claude_settings_write_wildcard() {
 }
 
 #[test]
+fn finds_claude_settings_read_wildcard() {
+    let content = r#"{"permissions":{"allow":["Read(*)","Bash(git status)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC372")
+        .unwrap();
+    let start = content.find("Read(*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Read(*)".len())
+    );
+}
+
+#[test]
 fn ignores_claude_settings_specific_webfetch_permissions() {
     let summary = scan_preview_claude_settings_fixture(
         ".claude/settings.json",
@@ -2448,6 +2465,21 @@ fn ignores_claude_settings_specific_write_permissions() {
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC369")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_specific_read_permissions() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Read(./docs/**)","Bash(git status)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC372")
     );
 }
 
@@ -2518,6 +2550,41 @@ fn ignores_claude_settings_write_wildcard_on_fixture_like_path() {
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC369")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_read_wildcard_on_fixture_like_path() {
+    let temp_dir = unique_temp_dir("lintai-claude-settings-read-fixture");
+    std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("tests/fixtures/.claude/settings.json"),
+        br#"{"permissions":{"allow":["Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    )
+    .unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
+    let summary = EngineBuilder::default()
+        .with_config(workspace.engine_config.clone())
+        .with_suppressions(Arc::new(suppressions))
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC372")
     );
 }
 

@@ -172,6 +172,11 @@
   - community usefulness сейчас: `8/10`
   - надёжность: `9.5/10`
   - почему важно: rule хорошо объясняется сообществу как config-contract check; `applyTo` должен быть реально применимым target selector, а не пустым или malformed значением
+- `SEC372` — Claude settings permissions allow `Read(*)` in a shared committed config
+  - статус: `Preview`
+  - community usefulness сейчас: `8.5/10`
+  - надёжность: `9/10`
+  - почему важно: exact wildcard read grant в shared AI config очень легко объяснить сообществу как least-privilege smell; remediation такой же defendable, как у `Write(*)`, но с уклоном в data exposure
 
 ### Минимальный релизный набор (1-й проход)
 

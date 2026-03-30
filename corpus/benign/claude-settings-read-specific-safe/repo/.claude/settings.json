@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(./docs/**)",
+      "Bash(git status)"
+    ]
+  }
+}

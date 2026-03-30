@@ -100,6 +100,7 @@ pub(super) fn append_hit_sections(
     let sec369_hits = rule_count(ledger, &["SEC369"]);
     let sec370_hits = rule_count(ledger, &["SEC370"]);
     let sec371_hits = rule_count(ledger, &["SEC371"]);
+    let sec372_hits = rule_count(ledger, &["SEC372"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, ledger);
     let sec313_repos = repos_with_rule_hits(ledger, &["SEC313"], false);
     let sec335_repos = repos_with_rule_hits(ledger, &["SEC335"], false);
@@ -128,6 +129,7 @@ pub(super) fn append_hit_sections(
     let sec369_repos = repos_with_rule_hits(ledger, &["SEC369"], false);
     let sec370_repos = repos_with_rule_hits(ledger, &["SEC370"], false);
     let sec371_repos = repos_with_rule_hits(ledger, &["SEC371"], false);
+    let sec372_repos = repos_with_rule_hits(ledger, &["SEC372"], false);
 
     output.push_str("## Stable Hits\n\n");
     output.push_str(&format!("- current AI-native MCP rule families produced `{}` repo-level rule-code hits in this discovery wave\n", ai_native_rule_hits));
@@ -198,6 +200,10 @@ pub(super) fn append_hit_sections(
         "- `SEC371` path-specific Copilot instructions with invalid `applyTo`: `{}`\n",
         sec371_hits
     ));
+    output.push_str(&format!(
+        "- `SEC372` Claude settings files allowing `Read(*)`: `{}`\n",
+        sec372_hits
+    ));
     output.push_str(&format!("- AI-native markdown preview hits by rule code: `SEC313`=`{}`, `SEC335`=`{}`, `SEC347`=`{}`, `SEC348`=`{}`, `SEC349`=`{}`, `SEC350`=`{}`, `SEC351`=`{}`, `SEC352`=`{}`, `SEC353`=`{}`, `SEC354`=`{}`, `SEC355`=`{}`, `SEC356`=`{}`, `SEC357`=`{}`, `SEC358`=`{}`, `SEC359`=`{}`, `SEC360`=`{}`, `SEC370`=`{}`, `SEC371`=`{}`\n", sec313_hits, sec335_hits, sec347_hits, sec348_hits, sec349_hits, sec350_hits, sec351_hits, sec352_hits, sec353_hits, sec354_hits, sec355_hits, sec356_hits, sec357_hits, sec358_hits, sec359_hits, sec360_hits, sec370_hits, sec371_hits));
     output.push_str(&format!(
         "- `SEC347` subtype repo hits: CLI-form=`{}`, config-snippet-form=`{}`\n",
@@ -243,6 +249,7 @@ pub(super) fn append_hit_sections(
         ("SEC369", sec369_repos),
         ("SEC370", sec370_repos),
         ("SEC371", sec371_repos),
+        ("SEC372", sec372_repos),
     ] {
         if repos.is_empty() {
             output.push_str(&format!(
