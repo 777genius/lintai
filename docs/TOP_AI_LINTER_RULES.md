@@ -70,6 +70,19 @@
 | 5 | `SEC-OPENAI-STRICT` + `SEC-OPENAI-STRICT-REQ` + `SEC-ANTHROPIC-STRICT` | Строгая валидация аргументов tool-call блокирует неожиданную семантику и подмену параметров. | 10/10 | 9/10 |
 | 6 | `SEC-MCP-LAUNCH` + `SEC-CURSOR-MCP-ENVFILE` + `SEC-CURSOR-IGNORE-NOT-BOUNDARY` | Реальный blast-radius контроль: запуск MCP без shell-пайпов + запрет утечки секретов через env/headers + не считаем `.cursorignore` security boundary. | 10/10 | 9/10 |
 
+### Уже зашипленные quality-first правила из этого трека
+
+- `SEC352` — AI-native markdown frontmatter grants unscoped Bash tool access
+  - статус: `Preview`
+  - community usefulness сейчас: `7/10`
+  - надёжность: `9/10`
+  - почему важно: ловит слишком широкий shell grant в AI instruction frontmatter без расплывчатой prose-эвристики
+- `SEC353` — GitHub Copilot instruction markdown exceeds the 4000-character guidance limit
+  - статус: `Preview`
+  - community usefulness сейчас: `8/10`
+  - надёжность: `9.5/10`
+  - почему важно: привязан к официальному GitHub guidance и ловит structure-level проблему, из-за которой хвост инструкций может перестать реально работать
+
 ### Минимальный релизный набор (1-й проход)
 
 1. `SEC-COPILOT-PATH-LAYOUT`

@@ -237,6 +237,15 @@ impl MarkdownSignals {
             ));
         }
 
+        if matches!(ctx.artifact.kind, ArtifactKind::Instructions)
+            && is_github_copilot_instruction_path(&ctx.artifact.normalized_path)
+            && !is_fixture_like_markdown_instruction_path(&ctx.artifact.normalized_path)
+            && ctx.content.chars().count() > GITHUB_COPILOT_INSTRUCTIONS_CHAR_LIMIT
+            && let Some(relative) = leading_markdown_file_relative_span(&ctx.content)
+        {
+            signals.copilot_instruction_too_long_spans.push(relative);
+        }
+
         Some(signals)
     }
 }

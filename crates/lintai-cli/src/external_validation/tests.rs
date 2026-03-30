@@ -204,6 +204,7 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(markdown.contains("`SEC350` untrusted-input instruction-promotion examples: `0`"));
     assert!(markdown.contains("`SEC351` approval-bypass instruction examples: `0`"));
     assert!(markdown.contains("`SEC352` unscoped Bash tool grants in frontmatter: `0`"));
+    assert!(markdown.contains("`SEC353` Copilot instruction files above 4000 chars: `0`"));
     assert!(markdown.contains("- repos with `tool_descriptor_json`: `1`"));
     assert!(markdown.contains(
         "- repos where new MCP client-config variants existed only under fixture-like paths: `0`"
@@ -230,6 +231,10 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(
         markdown
             .contains("- `SEC352` produced no repo-level preview hits yet on the canonical cohort")
+    );
+    assert!(
+        markdown
+            .contains("- `SEC353` produced no repo-level preview hits yet on the canonical cohort")
     );
     assert!(markdown.contains("## Delta From Previous Wave"));
     assert!(markdown.contains("`datadog-labs/cursor-plugin`: `improved`"));
@@ -653,4 +658,5 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC350`=`0`"));
     assert!(markdown.contains("`SEC351`=`0`"));
     assert!(markdown.contains("`SEC352`=`0`"));
+    assert!(markdown.contains("`SEC353`=`0`"));
 }

@@ -1,4 +1,5 @@
 pub(in crate::signals) mod approval_bypass;
+pub(in crate::signals) mod copilot;
 pub(in crate::signals) mod docker;
 pub(in crate::signals) mod docker_args;
 pub(in crate::signals) mod docker_scan;
@@ -11,6 +12,7 @@ pub(in crate::signals) mod sensitive_content;
 pub(in crate::signals) mod tokens;
 
 pub(in crate::signals) use approval_bypass::*;
+pub(in crate::signals) use copilot::*;
 pub(in crate::signals) use docker::*;
 pub(in crate::signals) use fixture_paths::*;
 pub(in crate::signals) use frontmatter::*;

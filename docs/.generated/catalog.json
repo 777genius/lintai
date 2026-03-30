@@ -90,6 +90,7 @@
         "lintai-ai-security:SEC350",
         "lintai-ai-security:SEC351",
         "lintai-ai-security:SEC352",
+        "lintai-ai-security:SEC353",
         "lintai-policy-mismatch:SEC401",
         "lintai-policy-mismatch:SEC402",
         "lintai-policy-mismatch:SEC403"
@@ -129,7 +130,8 @@
         "lintai-ai-security:SEC349",
         "lintai-ai-security:SEC350",
         "lintai-ai-security:SEC351",
-        "lintai-ai-security:SEC352"
+        "lintai-ai-security:SEC352",
+        "lintai-ai-security:SEC353"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -2245,6 +2247,35 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Broad Bash grants in AI-native frontmatter can be intentional, so the first release stays least-privilege guidance-only.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC353",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC353",
+      "docTitle": "Copilot instructions: exceeds 4000 chars",
+      "slug": "sec353",
+      "canonicalPath": "/rules/lintai-ai-security/sec353",
+      "summary": "GitHub Copilot instruction markdown exceeds the 4000-character guidance limit",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Long Copilot instruction files can still be intentional, so the first release stays guidance-only while usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

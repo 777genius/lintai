@@ -2,8 +2,8 @@ use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
 
 use super::*;
 use crate::markdown_rules::{
-    check_approval_bypass_instruction, check_html_comment_directive,
-    check_html_comment_download_exec, check_markdown_base64_exec,
+    check_approval_bypass_instruction, check_copilot_instruction_too_long,
+    check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
     check_markdown_docker_host_escape, check_markdown_download_exec,
     check_markdown_fenced_pipe_shell, check_markdown_metadata_service_access,
     check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
@@ -156,6 +156,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct CopilotInstructionTooLongRule {
+        code: "SEC353",
+        summary: "GitHub Copilot instruction markdown exceeds the 4000-character guidance limit",
+        doc_title: "Copilot instructions: exceeds 4000 chars",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct MarkdownPrivateKeyPemRule {
         code: "SEC312",
         summary: "Markdown contains committed private key material",
@@ -179,7 +191,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 14] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 15] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -365,6 +377,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 14] = [
         safe_fix: None,
         suggestion_message: Some(
             "scope Bash to explicit command patterns like `Bash(git:*)` instead of granting the full Bash tool",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: CopilotInstructionTooLongRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Long Copilot instruction files can still be intentional, so the first release stays guidance-only while usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_copilot_instruction_too_long,
+        safe_fix: None,
+        suggestion_message: Some(
+            "split repository-level Copilot instructions into shorter shared guidance plus path-specific `.instructions.md` files",
         ),
         suggestion_fix: None,
     },

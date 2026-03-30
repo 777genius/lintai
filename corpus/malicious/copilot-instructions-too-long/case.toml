@@ -1,0 +1,16 @@
+id = "copilot-instructions-too-long"
+kind = "malicious"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC353"
+tier = "preview"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

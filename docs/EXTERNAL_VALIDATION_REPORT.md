@@ -52,6 +52,7 @@ Current wave inventory for the newly expanded JSON lanes:
   - `SEC350` untrusted-input instruction-promotion examples: `0`
   - `SEC351` approval-bypass instruction examples: `0`
   - `SEC352` unscoped Bash tool grants in frontmatter: `0`
+  - `SEC353` Copilot instruction files above 4000 chars: `0`
   - current `SEC347` usefulness is being driven mainly by MCP config snippets
 - repos with `tool_descriptor_json`: `3`
 - findings from `SEC314`-`SEC318`: `0`
@@ -66,6 +67,7 @@ Current wave inventory for the newly expanded JSON lanes:
 - `SEC350` produced no repo-level preview hits yet on the canonical cohort
 - `SEC351` produced no repo-level preview hits yet on the canonical cohort
 - `SEC352` produced no repo-level preview hits yet on the canonical cohort
+- `SEC353` produced no repo-level preview hits yet on the canonical cohort
 - fixture/testdata/example suppression stayed active for the newly added MCP client-config variants and did not create a fake usefulness signal from fixture-like paths
 
 ## Delta From Previous Wave

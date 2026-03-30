@@ -1029,6 +1029,60 @@ fn ignores_unscoped_bash_allowed_tools_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_copilot_instruction_file_above_4000_chars() {
+    let content = format!("# Copilot\n\n{}\n", "A".repeat(4_100));
+    let summary = scan_preview_skill_fixture(".github/copilot-instructions.md", &content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC353")
+        .unwrap();
+    assert_eq!(finding.location.span, lintai_api::Span::new(0, 9));
+}
+
+#[test]
+fn finds_path_specific_copilot_instruction_file_above_4000_chars() {
+    let content = format!("# Review\n\n{}\n", "B".repeat(4_050));
+    let summary =
+        scan_preview_skill_fixture(".github/instructions/review.instructions.md", &content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC353")
+    );
+}
+
+#[test]
+fn ignores_copilot_instruction_file_within_limit() {
+    let content = format!("# Copilot\n\n{}\n", "A".repeat(3_900));
+    let summary = scan_preview_skill_fixture(".github/copilot-instructions.md", &content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC353")
+    );
+}
+
+#[test]
+fn ignores_copilot_instruction_file_above_limit_on_fixture_like_path() {
+    let content = format!("# Copilot\n\n{}\n", "A".repeat(4_100));
+    let summary =
+        scan_preview_skill_fixture("tests/fixtures/.github/copilot-instructions.md", &content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC353")
+    );
+}
+
+#[test]
 fn manifest_backed_plugin_command_markdown_uses_existing_markdown_rules() {
     let temp_dir = unique_temp_dir("lintai-plugin-command-markdown-covered");
     std::fs::create_dir_all(temp_dir.join("plugin/.cursor-plugin")).unwrap();
@@ -3290,6 +3344,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC348"
                         | "SEC349"
                         | "SEC350"
+                        | "SEC353"
                         | "SEC352"
                         | "SEC323"
                         | "SEC325"

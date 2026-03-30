@@ -227,6 +227,22 @@ pub(crate) fn check_unscoped_bash_allowed_tools(
     )
 }
 
+pub(crate) fn check_copilot_instruction_too_long(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.copilot_instruction_too_long_spans.as_slice())
+            .unwrap_or(&[]),
+        "GitHub Copilot instruction markdown exceeds the 4000-character guidance limit",
+    )
+}
+
 fn findings_for_spans(
     ctx: &ScanContext,
     meta: RuleMetadata,
