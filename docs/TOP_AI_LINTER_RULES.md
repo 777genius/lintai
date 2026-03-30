@@ -127,6 +127,11 @@
   - community usefulness сейчас: `9/10`
   - надёжность: `9/10`
   - почему важно: ловит прямой overly-broad shell grant в shared Claude settings; для AI infra это более practically actionable signal, чем broad prose guidance
+- `SEC363` — Claude settings hook command uses a home-directory path in a shared committed config
+  - статус: `Preview`
+  - community usefulness сейчас: `8.5/10`
+  - надёжность: `9/10`
+  - почему важно: ловит не-portable shared Claude hook wiring; для AI команд это понятный config smell, который легко чинится переходом на `$CLAUDE_PROJECT_DIR`
 
 ### Минимальный релизный набор (1-й проход)
 

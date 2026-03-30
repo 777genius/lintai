@@ -140,6 +140,7 @@ mod tests {
         assert_eq!(shipped_rule_alias("SEC360"), Some("CURSOR-RULE-GLOBS"));
         assert_eq!(shipped_rule_alias("SEC361"), Some("CLAUDE-SETTINGS-SCHEMA"));
         assert_eq!(shipped_rule_alias("SEC362"), Some("CLAUDE-BASH-WILDCARD"));
+        assert_eq!(shipped_rule_alias("SEC363"), Some("CLAUDE-HOME-HOOK-PATH"));
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

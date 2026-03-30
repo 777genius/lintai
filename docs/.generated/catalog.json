@@ -92,7 +92,8 @@
         "lintai-ai-security:SEC359",
         "lintai-ai-security:SEC360",
         "lintai-ai-security:SEC361",
-        "lintai-ai-security:SEC362"
+        "lintai-ai-security:SEC362",
+        "lintai-ai-security:SEC363"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -192,7 +193,8 @@
         "lintai-ai-security:SEC341",
         "lintai-ai-security:SEC342",
         "lintai-ai-security:SEC361",
-        "lintai-ai-security:SEC362"
+        "lintai-ai-security:SEC362",
+        "lintai-ai-security:SEC363"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -2708,6 +2710,37 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Wildcard Bash grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC363",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC363",
+      "alias": "CLAUDE-HOME-HOOK-PATH",
+      "displayLabel": "SEC363 / CLAUDE-HOME-HOOK-PATH",
+      "docTitle": "Claude settings: home-directory hook path",
+      "slug": "sec363",
+      "canonicalPath": "/rules/lintai-ai-security/sec363",
+      "summary": "Claude settings hook command uses a home-directory path in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Home-directory hook paths in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

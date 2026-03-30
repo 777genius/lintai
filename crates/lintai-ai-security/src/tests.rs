@@ -2163,6 +2163,88 @@ fn ignores_claude_settings_bash_wildcard_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_claude_settings_home_directory_hook_command() {
+    let content = r#"{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"$HOME/.claude/hooks/audit.sh"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC363")
+        .unwrap();
+    let start = content.find("$HOME/").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "$HOME/".len())
+    );
+}
+
+#[test]
+fn ignores_claude_settings_project_scoped_hook_command() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"$CLAUDE_PROJECT_DIR/scripts/audit.sh"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC363")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_home_directory_redirect_without_home_prefix_command() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"jq -r .tool_input.command >> $HOME/.claude/bash.log"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC363")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_home_directory_hook_command_on_fixture_like_path() {
+    let temp_dir = unique_temp_dir("lintai-claude-settings-home-path-fixture");
+    std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("tests/fixtures/.claude/settings.json"),
+        br#"{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"$HOME/.claude/hooks/audit.sh"}]}]}}"#,
+    )
+    .unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
+    let summary = EngineBuilder::default()
+        .with_config(workspace.engine_config.clone())
+        .with_suppressions(Arc::new(suppressions))
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC363")
+    );
+}
+
+#[test]
 fn finds_claude_settings_mutable_launcher() {
     let provider = AiSecurityProvider::default();
     let content = r#"{"hooks":{"PreToolUse":[{"hooks":[{"type":"command","command":"cat | xargs -0 -I {} npx claude-flow@alpha hooks pre-command --command '{}'"}]}]}}"#;
@@ -3877,6 +3959,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC360"
                         | "SEC361"
                         | "SEC362"
+                        | "SEC363"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

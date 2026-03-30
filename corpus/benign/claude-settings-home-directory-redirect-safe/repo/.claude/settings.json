@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r .tool_input.command >> $HOME/.claude/bash.log"
+          }
+        ]
+      }
+    ]
+  }
+}

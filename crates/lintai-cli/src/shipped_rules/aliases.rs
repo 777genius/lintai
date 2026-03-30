@@ -70,6 +70,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC360" => "CURSOR-RULE-GLOBS",
         "SEC361" => "CLAUDE-SETTINGS-SCHEMA",
         "SEC362" => "CLAUDE-BASH-WILDCARD",
+        "SEC363" => "CLAUDE-HOME-HOOK-PATH",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

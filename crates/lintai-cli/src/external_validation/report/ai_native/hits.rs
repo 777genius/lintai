@@ -91,6 +91,7 @@ pub(super) fn append_hit_sections(
     let sec360_hits = rule_count(ledger, &["SEC360"]);
     let sec361_hits = rule_count(ledger, &["SEC361"]);
     let sec362_hits = rule_count(ledger, &["SEC362"]);
+    let sec363_hits = rule_count(ledger, &["SEC363"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, ledger);
     let sec313_repos = repos_with_rule_hits(ledger, &["SEC313"], false);
     let sec335_repos = repos_with_rule_hits(ledger, &["SEC335"], false);
@@ -110,6 +111,7 @@ pub(super) fn append_hit_sections(
     let sec360_repos = repos_with_rule_hits(ledger, &["SEC360"], false);
     let sec361_repos = repos_with_rule_hits(ledger, &["SEC361"], false);
     let sec362_repos = repos_with_rule_hits(ledger, &["SEC362"], false);
+    let sec363_repos = repos_with_rule_hits(ledger, &["SEC363"], false);
 
     output.push_str("## Stable Hits\n\n");
     output.push_str(&format!("- current AI-native MCP rule families produced `{}` repo-level rule-code hits in this discovery wave\n", ai_native_rule_hits));
@@ -143,6 +145,10 @@ pub(super) fn append_hit_sections(
     output.push_str(&format!(
         "- `SEC362` Claude settings files allowing `Bash(*)`: `{}`\n",
         sec362_hits
+    ));
+    output.push_str(&format!(
+        "- `SEC363` Claude settings files with home-directory hook commands: `{}`\n",
+        sec363_hits
     ));
     output.push_str(&format!("- AI-native markdown preview hits by rule code: `SEC313`=`{}`, `SEC335`=`{}`, `SEC347`=`{}`, `SEC348`=`{}`, `SEC349`=`{}`, `SEC350`=`{}`, `SEC351`=`{}`, `SEC352`=`{}`, `SEC353`=`{}`, `SEC354`=`{}`, `SEC355`=`{}`, `SEC356`=`{}`, `SEC357`=`{}`, `SEC358`=`{}`, `SEC359`=`{}`, `SEC360`=`{}`\n", sec313_hits, sec335_hits, sec347_hits, sec348_hits, sec349_hits, sec350_hits, sec351_hits, sec352_hits, sec353_hits, sec354_hits, sec355_hits, sec356_hits, sec357_hits, sec358_hits, sec359_hits, sec360_hits));
     output.push_str(&format!(
@@ -180,6 +186,7 @@ pub(super) fn append_hit_sections(
         ("SEC360", sec360_repos),
         ("SEC361", sec361_repos),
         ("SEC362", sec362_repos),
+        ("SEC363", sec363_repos),
     ] {
         if repos.is_empty() {
             output.push_str(&format!(

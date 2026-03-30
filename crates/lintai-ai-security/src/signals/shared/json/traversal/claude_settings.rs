@@ -11,6 +11,14 @@ use super::super::spans::{
     path_contains_key, resolve_child_relative_value_span, resolve_child_value_span,
 };
 
+fn find_home_directory_hook_command_relative_span(command: &str) -> Option<lintai_api::Span> {
+    const PREFIXES: [&str; 3] = ["$HOME/", "/Users/", "/home/"];
+    PREFIXES
+        .iter()
+        .find_map(|prefix| command.strip_prefix(prefix).map(|_| *prefix))
+        .map(|prefix| lintai_api::Span::new(0, prefix.len()))
+}
+
 pub(crate) fn visit_claude_settings_value(
     value: &Value,
     path: &mut Vec<JsonPathSegment>,
@@ -26,6 +34,19 @@ pub(crate) fn visit_claude_settings_value(
         && map.get("type").and_then(Value::as_str) == Some("command")
         && let Some(command) = map.get("command").and_then(Value::as_str)
     {
+        if signals.home_directory_hook_command_span.is_none()
+            && let Some(relative) = find_home_directory_hook_command_relative_span(command)
+        {
+            signals.home_directory_hook_command_span = Some(resolve_child_relative_value_span(
+                path,
+                "command",
+                "command",
+                relative,
+                locator,
+                fallback_len,
+            ));
+        }
+
         if signals.mutable_launcher_span.is_none()
             && let Some(relative) = find_mutable_launcher_relative_span(command)
         {
