@@ -379,6 +379,22 @@ pub(crate) fn check_cursor_rule_globs_type(
     )
 }
 
+pub(crate) fn check_cursor_rule_redundant_globs(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.cursor_rule_redundant_globs_spans.as_slice())
+            .unwrap_or(&[]),
+        "Cursor rule frontmatter should not set `globs` when `alwaysApply` is `true`",
+    )
+}
+
 pub(crate) fn check_copilot_instruction_too_long(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

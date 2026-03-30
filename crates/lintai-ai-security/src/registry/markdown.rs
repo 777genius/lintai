@@ -6,7 +6,8 @@ use crate::markdown_rules::{
     check_copilot_instruction_invalid_apply_to_glob, check_copilot_instruction_missing_apply_to,
     check_copilot_instruction_too_long, check_copilot_instruction_wrong_suffix,
     check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
-    check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
+    check_cursor_rule_redundant_globs, check_html_comment_directive,
+    check_html_comment_download_exec, check_markdown_base64_exec,
     check_markdown_docker_host_escape, check_markdown_download_exec,
     check_markdown_fenced_pipe_shell, check_markdown_metadata_service_access,
     check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
@@ -293,6 +294,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct CursorRuleRedundantGlobsRule {
+        code: "SEC378",
+        summary: "Cursor rule frontmatter should not set `globs` when `alwaysApply` is `true`",
+        doc_title: "Cursor rule: redundant `globs` with `alwaysApply`",
+        category: Category::Quality,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct MarkdownPrivateKeyPemRule {
         code: "SEC312",
         summary: "Markdown contains committed private key material",
@@ -316,7 +329,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 25] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 26] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -678,6 +691,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 25] = [
         safe_fix: None,
         suggestion_message: Some(
             "set `globs` to a YAML sequence like `[\"**/*.ts\", \"**/*.tsx\"]` so Cursor rule loaders interpret path targeting consistently",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: CursorRuleRedundantGlobsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Redundant `globs` alongside `alwaysApply: true` is deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_cursor_rule_redundant_globs,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove `globs` when `alwaysApply` is `true`, or set `alwaysApply: false` if the rule should stay path-scoped",
         ),
         suggestion_fix: None,
     },

@@ -1,0 +1,4 @@
+description = "Cursor rule redundantly sets globs while alwaysApply is true"
+entrypoint = "repo/rules/review.mdc"
+expected_findings = ["SEC378"]
+

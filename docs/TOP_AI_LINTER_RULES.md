@@ -202,6 +202,11 @@
   - community usefulness сейчас: `9/10`
   - надёжность: `9/10`
   - почему важно: invalid `applyTo` glob выглядит как обычная конфигурация, но silently ломает targeting Copilot instructions; это один из самых defendable community-facing AI config checks
+- `SEC378` — Cursor rule frontmatter should not set `globs` when `alwaysApply` is `true`
+  - статус: `Preview`
+  - community usefulness сейчас: `9/10`
+  - надёжность: `9/10`
+  - почему важно: global Cursor rule с одновременными `globs` создаёт двусмысленный routing contract; правило structural-only и очень легко принимается сообществом как config hygiene check
 
 ### Минимальный релизный набор (1-й проход)
 

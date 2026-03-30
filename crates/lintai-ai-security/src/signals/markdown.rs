@@ -380,6 +380,20 @@ impl MarkdownSignals {
                     ));
                 }
             }
+
+            if let Some(frontmatter) = parsed_frontmatter
+                && frontmatter
+                    .value
+                    .get("alwaysApply")
+                    .is_some_and(|value| value.as_bool() == Some(true))
+                && frontmatter.value.get("globs").is_some()
+                && let Some(relative) = find_frontmatter_key_relative_span(snippet, "globs")
+            {
+                signals.cursor_rule_redundant_globs_spans.push(Span::new(
+                    region.span.start_byte + relative.start_byte,
+                    region.span.start_byte + relative.end_byte,
+                ));
+            }
         }
 
         if matches!(ctx.artifact.kind, ArtifactKind::Instructions)

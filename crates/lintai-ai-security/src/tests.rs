@@ -1332,6 +1332,53 @@ fn ignores_cursor_rule_scalar_globs_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_cursor_rule_redundant_globs_with_always_apply() {
+    let content = "---\nglobs:\n  - \"**/*.rs\"\nalwaysApply: true\n---\n# Cursor Rule\n";
+    let summary = scan_preview_skill_fixture("rules/review.mdc", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC378")
+        .unwrap();
+    let start = content.find("globs").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "globs".len())
+    );
+}
+
+#[test]
+fn ignores_cursor_rule_globs_when_always_apply_is_false() {
+    let summary = scan_preview_skill_fixture(
+        "rules/review.mdc",
+        "---\nglobs:\n  - \"**/*.rs\"\nalwaysApply: false\n---\n# Cursor Rule\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC378")
+    );
+}
+
+#[test]
+fn ignores_cursor_rule_redundant_globs_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/rules/review.mdc",
+        "---\nglobs:\n  - \"**/*.rs\"\nalwaysApply: true\n---\n# Fixture Cursor Rule\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC378")
+    );
+}
+
+#[test]
 fn finds_copilot_instruction_file_above_4000_chars() {
     let content = format!("# Copilot\n\n{}\n", "A".repeat(4_100));
     let summary = scan_preview_skill_fixture(".github/copilot-instructions.md", &content);
@@ -4851,6 +4898,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC375"
                         | "SEC376"
                         | "SEC377"
+                        | "SEC378"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

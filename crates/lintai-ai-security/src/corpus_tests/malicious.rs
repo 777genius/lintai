@@ -48,6 +48,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "copilot-webpage-system-prompt-promotion",
             "cursor-plugin-unsafe-path",
             "cursor-rule-alwaysapply-nonboolean",
+            "cursor-rule-alwaysapply-redundant-globs",
             "cursor-rule-globs-scalar",
             "gemini-mcp-docker-pull-always",
             "gemini-mcp-docker-unpinned-image",

@@ -1,0 +1,11 @@
+---
+description: Review guidance
+globs:
+  - "**/*.rs"
+alwaysApply: true
+---
+
+# Review Rule
+
+Apply review guidance globally.
+
