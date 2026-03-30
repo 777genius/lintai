@@ -243,6 +243,22 @@ pub(crate) fn check_wildcard_tool_access(
     )
 }
 
+pub(crate) fn check_plugin_agent_permission_mode(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.plugin_agent_permission_mode_spans.as_slice())
+            .unwrap_or(&[]),
+        "plugin agent frontmatter sets `permissionMode`",
+    )
+}
+
 pub(crate) fn check_copilot_instruction_too_long(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

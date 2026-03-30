@@ -268,6 +268,25 @@ impl MarkdownSignals {
             ));
         }
 
+        if matches!(ctx.artifact.kind, ArtifactKind::CursorPluginAgent)
+            && !is_fixture_like_markdown_instruction_path(&ctx.artifact.normalized_path)
+            && let Some(frontmatter) =
+                markdown_semantics(ctx).and_then(|markdown| markdown.frontmatter.as_ref())
+            && frontmatter_has_key(&frontmatter.value, "permissionMode")
+            && let Some(region) = ctx
+                .document
+                .regions
+                .iter()
+                .find(|region| matches!(region.kind, RegionKind::Frontmatter))
+            && let Some(snippet) = span_text(&ctx.content, &region.span)
+            && let Some(relative) = find_frontmatter_key_relative_span(snippet, "permissionMode")
+        {
+            signals.plugin_agent_permission_mode_spans.push(Span::new(
+                region.span.start_byte + relative.start_byte,
+                region.span.start_byte + relative.end_byte,
+            ));
+        }
+
         if matches!(ctx.artifact.kind, ArtifactKind::Instructions)
             && is_github_copilot_instruction_path(&ctx.artifact.normalized_path)
             && !is_fixture_like_markdown_instruction_path(&ctx.artifact.normalized_path)

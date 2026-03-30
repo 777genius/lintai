@@ -92,6 +92,11 @@
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9.5/10`
   - почему важно: very direct least-privilege rule для skills и shared instructions; wildcard `*` слишком расширяет agency и плохо переживает community review
+- `SEC356` — Plugin agent frontmatter sets `permissionMode`
+  - статус: `Preview`
+  - community usefulness сейчас: `8/10`
+  - надёжность: `9.5/10`
+  - почему важно: структурно запрещает смешивать permission policy с plugin agent content; это narrow spec-aligned signal, который легко объяснить сообществу
 
 ### Минимальный релизный набор (1-й проход)
 

@@ -44,9 +44,6 @@
         "lintai-ai-security:SEC320",
         "lintai-ai-security:SEC321",
         "lintai-ai-security:SEC322",
-        "lintai-ai-security:SEC324",
-        "lintai-ai-security:SEC326",
-        "lintai-ai-security:SEC327",
         "lintai-ai-security:SEC329",
         "lintai-ai-security:SEC330",
         "lintai-ai-security:SEC331",
@@ -80,8 +77,6 @@
         "lintai-ai-security:SEC308",
         "lintai-ai-security:SEC313",
         "lintai-ai-security:SEC323",
-        "lintai-ai-security:SEC325",
-        "lintai-ai-security:SEC328",
         "lintai-ai-security:SEC335",
         "lintai-ai-security:SEC336",
         "lintai-ai-security:SEC347",
@@ -90,12 +85,8 @@
         "lintai-ai-security:SEC350",
         "lintai-ai-security:SEC351",
         "lintai-ai-security:SEC352",
-        "lintai-ai-security:SEC353",
-        "lintai-ai-security:SEC354",
         "lintai-ai-security:SEC355",
-        "lintai-policy-mismatch:SEC401",
-        "lintai-policy-mismatch:SEC402",
-        "lintai-policy-mismatch:SEC403"
+        "lintai-ai-security:SEC356"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -103,7 +94,7 @@
       "id": "compat",
       "kind": "membership",
       "title": "compat",
-      "description": "Rules that flag mismatches between workspace policy and repository behavior.",
+      "description": "Policy and compatibility checks that compare declared workspace posture against repository behavior.",
       "extends": [],
       "ruleIds": [
         "lintai-policy-mismatch:SEC401",
@@ -116,7 +107,7 @@
       "id": "skills",
       "kind": "membership",
       "title": "skills",
-      "description": "Rules for instruction and skills markdown, including preview-only coverage.",
+      "description": "Rules for instruction and skills markdown that remain inside the core agent-artifact surface.",
       "extends": [],
       "ruleIds": [
         "lintai-ai-security:SEC101",
@@ -133,9 +124,8 @@
         "lintai-ai-security:SEC350",
         "lintai-ai-security:SEC351",
         "lintai-ai-security:SEC352",
-        "lintai-ai-security:SEC353",
-        "lintai-ai-security:SEC354",
-        "lintai-ai-security:SEC355"
+        "lintai-ai-security:SEC355",
+        "lintai-ai-security:SEC356"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -193,6 +183,33 @@
         "lintai-ai-security:SEC342"
       ],
       "canonicalPath": "/presets/claude"
+    },
+    {
+      "id": "guidance",
+      "kind": "membership",
+      "title": "guidance",
+      "description": "Advice-oriented guidance rules that are useful, but intentionally not part of the core security baseline.",
+      "extends": [],
+      "ruleIds": [
+        "lintai-ai-security:SEC353",
+        "lintai-ai-security:SEC354"
+      ],
+      "canonicalPath": "/presets/guidance"
+    },
+    {
+      "id": "supply-chain",
+      "kind": "membership",
+      "title": "supply-chain",
+      "description": "Sidecar supply-chain hardening rules, including GitHub Actions workflow checks.",
+      "extends": [],
+      "ruleIds": [
+        "lintai-ai-security:SEC324",
+        "lintai-ai-security:SEC325",
+        "lintai-ai-security:SEC326",
+        "lintai-ai-security:SEC327",
+        "lintai-ai-security:SEC328"
+      ],
+      "canonicalPath": "/presets/supply-chain"
     },
     {
       "id": "strict",
@@ -1466,7 +1483,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base"
+        "supply-chain"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -1504,7 +1521,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "supply-chain"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
@@ -1534,7 +1551,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base"
+        "supply-chain"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -1572,7 +1589,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base"
+        "supply-chain"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -1610,7 +1627,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "supply-chain"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
@@ -2395,8 +2412,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "guidance"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
@@ -2426,8 +2442,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "guidance"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
@@ -2470,6 +2485,37 @@
       "relatedRuleIds": []
     },
     {
+      "ruleId": "lintai-ai-security:SEC356",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC356",
+      "alias": "PLUGIN-AGENT-PERMISSIONMODE",
+      "displayLabel": "SEC356 / PLUGIN-AGENT-PERMISSIONMODE",
+      "docTitle": "Plugin agent: `permissionMode` in frontmatter",
+      "slug": "sec356",
+      "canonicalPath": "/rules/lintai-ai-security/sec356",
+      "summary": "Plugin agent frontmatter sets `permissionMode`",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Plugin agent frontmatter can still include unsupported permission policy experiments, so the first release stays spec-guidance-only.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
       "ruleId": "lintai-policy-mismatch:SEC401",
       "providerId": "lintai-policy-mismatch",
       "providerSlug": "lintai-policy-mismatch",
@@ -2488,7 +2534,6 @@
       "detectionClass": "structural",
       "remediationSupport": "none",
       "defaultPresets": [
-        "preview",
         "compat"
       ],
       "lifecycleState": "preview_blocked",
@@ -2519,7 +2564,6 @@
       "detectionClass": "structural",
       "remediationSupport": "none",
       "defaultPresets": [
-        "preview",
         "compat"
       ],
       "lifecycleState": "preview_blocked",
@@ -2550,7 +2594,6 @@
       "detectionClass": "structural",
       "remediationSupport": "none",
       "defaultPresets": [
-        "preview",
         "compat"
       ],
       "lifecycleState": "preview_blocked",

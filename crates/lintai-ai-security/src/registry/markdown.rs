@@ -9,8 +9,8 @@ use crate::markdown_rules::{
     check_markdown_fenced_pipe_shell, check_markdown_metadata_service_access,
     check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
     check_markdown_path_traversal, check_markdown_private_key_pem,
-    check_unscoped_bash_allowed_tools, check_untrusted_instruction_promotion,
-    check_wildcard_tool_access,
+    check_plugin_agent_permission_mode, check_unscoped_bash_allowed_tools,
+    check_untrusted_instruction_promotion, check_wildcard_tool_access,
 };
 
 declare_rule! {
@@ -162,7 +162,7 @@ declare_rule! {
         code: "SEC353",
         summary: "GitHub Copilot instruction markdown exceeds the 4000-character guidance limit",
         doc_title: "Copilot instructions: exceeds 4000 chars",
-        category: Category::Security,
+        category: Category::Quality,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Preview,
@@ -174,7 +174,7 @@ declare_rule! {
         code: "SEC354",
         summary: "Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter",
         doc_title: "Copilot instructions: missing `applyTo`",
-        category: Category::Security,
+        category: Category::Quality,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Preview,
@@ -186,6 +186,18 @@ declare_rule! {
         code: "SEC355",
         summary: "AI-native markdown frontmatter grants wildcard tool access",
         doc_title: "AI markdown: wildcard tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct PluginAgentPermissionModeRule {
+        code: "SEC356",
+        summary: "Plugin agent frontmatter sets `permissionMode`",
+        doc_title: "Plugin agent: `permissionMode` in frontmatter",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -217,7 +229,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 17] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 18] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -409,7 +421,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 17] = [
     NativeRuleSpec {
         metadata: CopilotInstructionTooLongRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GUIDANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Long Copilot instruction files can still be intentional, so the first release stays guidance-only while usefulness is measured.",
@@ -425,7 +437,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 17] = [
     NativeRuleSpec {
         metadata: CopilotInstructionMissingApplyToRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GUIDANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Missing `applyTo` on path-specific Copilot instruction files is deterministic, but the first release stays guidance-only while external usefulness is measured.",
@@ -451,6 +463,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 17] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace wildcard tool access with an explicit allowlist of only the tools the workflow actually needs",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginAgentPermissionModeRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Plugin agent frontmatter can still include unsupported permission policy experiments, so the first release stays spec-guidance-only.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_plugin_agent_permission_mode,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove `permissionMode` from plugin agent frontmatter and manage permissions in plugin or user-level configuration instead",
         ),
         suggestion_fix: None,
     },

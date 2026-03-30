@@ -124,6 +124,10 @@ mod tests {
         );
         assert_eq!(shipped_rule_alias("SEC353"), Some("COPILOT-4K"));
         assert_eq!(shipped_rule_alias("SEC355"), Some("MD-WILDCARD-TOOLS"));
+        assert_eq!(
+            shipped_rule_alias("SEC356"),
+            Some("PLUGIN-AGENT-PERMISSIONMODE")
+        );
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

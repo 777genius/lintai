@@ -62,6 +62,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "mcp-static-authorization",
             "mcp-suspicious-endpoint",
             "mcp-trust-verification-disabled",
+            "plugin-agent-permission-mode-frontmatter",
             "plugin-command-markdown-covered",
             "plugin-hook-command-inline-download-exec",
             "plugin-hook-command-mutable-launcher",

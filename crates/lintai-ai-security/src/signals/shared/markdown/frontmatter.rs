@@ -38,6 +38,12 @@ pub(crate) fn frontmatter_has_wildcard_tool_access(value: &Value) -> bool {
     }
 }
 
+pub(crate) fn frontmatter_has_key(value: &Value, key: &str) -> bool {
+    value
+        .as_object()
+        .is_some_and(|mapping| mapping.contains_key(key))
+}
+
 fn find_standalone_bash_relative_span(text: &str) -> Option<Span> {
     let lowered = text.to_ascii_lowercase();
     let needle = "bash";
@@ -185,6 +191,26 @@ pub(crate) fn find_wildcard_tool_frontmatter_relative_span(text: &str) -> Option
                 nested_offset += next_line.len();
                 lines.next();
             }
+        }
+        offset += line.len();
+    }
+
+    None
+}
+
+pub(crate) fn find_frontmatter_key_relative_span(text: &str, key: &str) -> Option<Span> {
+    let needle = format!("{key}:");
+    let lowered_needle = needle.to_ascii_lowercase();
+    let mut offset = 0usize;
+
+    for line in text.split_inclusive('\n') {
+        let trimmed = line.trim_start();
+        if trimmed
+            .to_ascii_lowercase()
+            .starts_with(lowered_needle.as_str())
+            && let Some(found) = line.find(key)
+        {
+            return Some(Span::new(offset + found, offset + found + key.len()));
         }
         offset += line.len();
     }

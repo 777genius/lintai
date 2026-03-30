@@ -1102,6 +1102,53 @@ fn ignores_wildcard_tool_access_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_plugin_agent_permission_mode_in_frontmatter() {
+    let content = "---\npermissionMode: acceptEdits\n---\n# Agent\n";
+    let summary = scan_preview_skill_fixture(".cursor-plugin/agents/review.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC356")
+        .unwrap();
+    let start = content.find("permissionMode").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "permissionMode".len())
+    );
+}
+
+#[test]
+fn ignores_permission_mode_outside_plugin_agent_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\npermissionMode: acceptEdits\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC356")
+    );
+}
+
+#[test]
+fn ignores_plugin_agent_permission_mode_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/.cursor-plugin/agents/review.md",
+        "---\npermissionMode: acceptEdits\n---\n# Fixture agent\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC356")
+    );
+}
+
+#[test]
 fn finds_copilot_instruction_file_above_4000_chars() {
     let content = format!("# Copilot\n\n{}\n", "A".repeat(4_100));
     let summary = scan_preview_skill_fixture(".github/copilot-instructions.md", &content);
@@ -3511,6 +3558,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC352"
                         | "SEC354"
                         | "SEC355"
+                        | "SEC356"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

@@ -45,11 +45,11 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC321 / SERVER-LITERAL-AUTH-HEADER` | server.json remotes header commits literal authentication material | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC322 / SERVER-UNDEFINED-HEADER-VAR` | server.json remotes header value references an undefined template variable | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC323 / SERVER-AUTH-SECRET-FLAG` | server.json auth header carries material without an explicit secret flag | Preview | `preview_blocked` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC324 / GHA-UNPINNED-ACTION` | GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `base` |
-| `SEC325 / GHA-UNTRUSTED-RUN-INTERPOLATION` | GitHub Actions workflow interpolates untrusted expression data directly inside a run command | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `preview` |
-| `SEC326 / GHA-PR-TARGET-HEAD-CHECKOUT` | GitHub Actions pull_request_target workflow checks out untrusted pull request head content | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `base` |
-| `SEC327 / GHA-WRITE-ALL-PERMISSIONS` | GitHub Actions workflow grants GITHUB_TOKEN write-all permissions | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `base` |
-| `SEC328 / GHA-WRITE-CAPABLE-THIRD-PARTY-ACTION` | GitHub Actions workflow combines explicit write-capable permissions with a third-party action | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `preview` |
+| `SEC324 / GHA-UNPINNED-ACTION` | GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
+| `SEC325 / GHA-UNTRUSTED-RUN-INTERPOLATION` | GitHub Actions workflow interpolates untrusted expression data directly inside a run command | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
+| `SEC326 / GHA-PR-TARGET-HEAD-CHECKOUT` | GitHub Actions pull_request_target workflow checks out untrusted pull request head content | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
+| `SEC327 / GHA-WRITE-ALL-PERMISSIONS` | GitHub Actions workflow grants GITHUB_TOKEN write-all permissions | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
+| `SEC328 / GHA-WRITE-CAPABLE-THIRD-PARTY-ACTION` | GitHub Actions workflow combines explicit write-capable permissions with a third-party action | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
 | `SEC329 / MCP-MUTABLE-LAUNCHER` | MCP configuration launches tooling through a mutable package runner | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC330 / MCP-DOWNLOAD-EXEC` | MCP configuration command downloads remote content and pipes it into a shell | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC331 / MCP-TLS-BYPASS` | MCP configuration command disables TLS verification in a network-capable execution path | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
@@ -71,28 +71,31 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC350 / MD-UNTRUSTED-INSTRUCTION-PROMOTION` | Instruction markdown promotes untrusted external content to developer/system-level instructions | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
 | `SEC351 / MD-APPROVAL-BYPASS` | AI-native instruction explicitly disables user approval or confirmation | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
 | `SEC352 / MD-UNSCOPED-BASH` | AI-native markdown frontmatter grants unscoped Bash tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC353 / COPILOT-4K` | GitHub Copilot instruction markdown exceeds the 4000-character guidance limit | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC354 / COPILOT-PATH-APPLYTO` | Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC353 / COPILOT-4K` | GitHub Copilot instruction markdown exceeds the 4000-character guidance limit | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC354 / COPILOT-PATH-APPLYTO` | Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC355 / MD-WILDCARD-TOOLS` | AI-native markdown frontmatter grants wildcard tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC401 / POLICY-EXEC-MISMATCH` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `preview`, `compat` |
-| `SEC402 / POLICY-NETWORK-MISMATCH` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `preview`, `compat` |
-| `SEC403 / POLICY-SKILL-CAPABILITIES-MISMATCH` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `preview`, `compat` |
+| `SEC356 / PLUGIN-AGENT-PERMISSIONMODE` | Plugin agent frontmatter sets `permissionMode` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC401 / POLICY-EXEC-MISMATCH` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
+| `SEC402 / POLICY-NETWORK-MISMATCH` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
+| `SEC403 / POLICY-SKILL-CAPABILITIES-MISMATCH` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 
 ## Builtin preset activation model
 
 All shipped rules now participate in the preset model through a deterministic surface-and-tier mapping:
 
-- `base`: every shipped `Stable` rule
-- `preview`: every shipped `Preview` rule
-- `compat`: workspace policy mismatch rules (`SEC401`-`SEC403`)
-- `skills`: all markdown-surface rules, including markdown preview rules
+- `base`: the core shipped stable rule set for repo-local agent artifacts
+- `preview`: core preview rules that expand the main artifact-security lane without enabling separate sidecar lanes
+- `compat`: workspace policy mismatch rules (`SEC401`-`SEC403`) kept as a separate policy lane
+- `skills`: markdown-surface rules for the core instruction/skills lane
 - `mcp`: all `json`, `tool_json`, and `server_json` surface rules, including preview MCP/config rules
 - `claude`: all `claude_settings` surface rules
+- `guidance`: advice-oriented guidance checks such as Copilot instruction layout and length guidance
+- `supply-chain`: sidecar supply-chain hardening checks such as GitHub Actions workflow rules
 
 Important behavior:
 
 - `strict` is a severity overlay, not a membership preset: when enabled, active security rules are raised through preset policy instead of silently activating new rules by itself.
-- Hook and GitHub workflow rules are activated by `base`/`preview` according to tier; they do not currently have a dedicated surface overlay preset in v1.
+- Dedicated sidecar lanes such as `compat`, `guidance`, and `supply-chain` stay opt-in and are not implied by `base` or `preview`.
 - Category overrides do not activate rules outside the resolved preset set.
 - Explicit `[rules] SECxxx = "..."` remains the escape hatch for intentional per-rule opt-in outside the default preset set.
 
@@ -782,7 +785,7 @@ Important behavior:
 - Default Severity: `Warn`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `supply-chain`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks workflow uses: entries for third-party actions that rely on mutable refs instead of immutable commit SHAs; positioned as a supply-chain hardening control rather than a direct exploit claim.
@@ -803,7 +806,7 @@ Important behavior:
 - Default Severity: `Warn`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`
+- Default Presets: `supply-chain`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Shell safety depends on how the interpolated expression is consumed inside the run command.
@@ -820,7 +823,7 @@ Important behavior:
 - Default Severity: `Warn`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `supply-chain`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks pull_request_target workflows for actions/checkout steps that explicitly pull untrusted pull request head refs instead of the safer default merge context.
@@ -841,7 +844,7 @@ Important behavior:
 - Default Severity: `Warn`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `supply-chain`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks workflow permissions for the explicit write-all shortcut, which exceeds least-privilege guidance for GITHUB_TOKEN.
@@ -862,7 +865,7 @@ Important behavior:
 - Default Severity: `Warn`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`
+- Default Presets: `supply-chain`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Write-capable token scopes and third-party action usage are compositional and need more corpus-backed precision review before a stable launch.
@@ -1288,7 +1291,7 @@ Important behavior:
 - Default Severity: `Warn`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `guidance`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Long Copilot instruction files can still be intentional, so the first release stays guidance-only while usefulness is measured.
@@ -1305,7 +1308,7 @@ Important behavior:
 - Default Severity: `Warn`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `guidance`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Missing `applyTo` on path-specific Copilot instruction files is deterministic, but the first release stays guidance-only while external usefulness is measured.
@@ -1329,6 +1332,23 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
+### `SEC356 / PLUGIN-AGENT-PERMISSIONMODE` — Plugin agent frontmatter sets `permissionMode`
+
+- Provider: `lintai-ai-security`
+- Alias: `PLUGIN-AGENT-PERMISSIONMODE`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Plugin agent frontmatter can still include unsupported permission policy experiments, so the first release stays spec-guidance-only.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
 ## Provider: `lintai-policy-mismatch`
 
 ### `SEC401 / POLICY-EXEC-MISMATCH` — Project policy forbids execution, but repository contains executable behavior
@@ -1341,7 +1361,7 @@ Important behavior:
 - Default Severity: `Warn`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `compat`
+- Default Presets: `compat`
 - Remediation: `none`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Needs workspace-level precision review and linked graduation corpus before promotion to Stable.
@@ -1358,7 +1378,7 @@ Important behavior:
 - Default Severity: `Warn`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `compat`
+- Default Presets: `compat`
 - Remediation: `none`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Needs workspace-level network precision review and linked graduation corpus before promotion to Stable.
@@ -1375,7 +1395,7 @@ Important behavior:
 - Default Severity: `Warn`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `compat`
+- Default Presets: `compat`
 - Remediation: `none`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Needs workspace-level capability-conflict precision review and linked graduation corpus before promotion to Stable.
