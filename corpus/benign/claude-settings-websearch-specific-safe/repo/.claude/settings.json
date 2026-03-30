@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch(site:docs.example.com)",
+      "Read(*)"
+    ]
+  }
+}

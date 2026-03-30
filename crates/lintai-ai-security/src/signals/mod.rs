@@ -165,6 +165,7 @@ pub(crate) struct ClaudeSettingsSignals {
     pub(crate) write_wildcard_span: Option<Span>,
     pub(crate) read_wildcard_span: Option<Span>,
     pub(crate) edit_wildcard_span: Option<Span>,
+    pub(crate) websearch_wildcard_span: Option<Span>,
     pub(crate) home_directory_hook_command_span: Option<Span>,
     pub(crate) external_absolute_hook_command_span: Option<Span>,
     pub(crate) mutable_launcher_span: Option<Span>,

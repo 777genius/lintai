@@ -182,6 +182,11 @@
   - community usefulness сейчас: `9/10`
   - надёжность: `9/10`
   - почему важно: wildcard edit grant в shared AI config напрямую размывает safety boundary для file mutation; сообществу это объяснять почти так же просто, как `Write(*)`, но ещё ближе к повседневому AI coding workflow
+- `SEC374` — Claude settings permissions allow `WebSearch(*)` in a shared committed config
+  - статус: `Preview`
+  - community usefulness сейчас: `8.5/10`
+  - надёжность: `8.5/10`
+  - почему важно: wildcard search grant в shared AI config задаёт слишком широкую external-information surface; это понятный least-privilege signal для AI workflows, где search должен быть reviewable и scoped
 
 ### Минимальный релизный набор (1-й проход)
 

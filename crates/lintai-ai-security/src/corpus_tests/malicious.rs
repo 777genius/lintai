@@ -35,6 +35,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-settings-mutable-launcher",
             "claude-settings-read-wildcard",
             "claude-settings-repo-external-absolute-hook-path",
+            "claude-settings-websearch-wildcard",
             "claude-settings-webfetch-wildcard",
             "claude-settings-write-wildcard",
             "copilot-instructions-too-long",

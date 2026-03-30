@@ -43,6 +43,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "claude-settings-repo-external-absolute-hook-safe",
             "claude-settings-schema-fixture-safe",
             "claude-settings-schema-present-safe",
+            "claude-settings-websearch-specific-safe",
+            "claude-settings-websearch-wildcard-fixture-safe",
             "claude-settings-webfetch-specific-safe",
             "claude-settings-webfetch-wildcard-fixture-safe",
             "claude-settings-write-specific-safe",

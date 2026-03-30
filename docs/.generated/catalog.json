@@ -101,7 +101,8 @@
         "lintai-ai-security:SEC368",
         "lintai-ai-security:SEC369",
         "lintai-ai-security:SEC372",
-        "lintai-ai-security:SEC373"
+        "lintai-ai-security:SEC373",
+        "lintai-ai-security:SEC374"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -210,7 +211,8 @@
         "lintai-ai-security:SEC368",
         "lintai-ai-security:SEC369",
         "lintai-ai-security:SEC372",
-        "lintai-ai-security:SEC373"
+        "lintai-ai-security:SEC373",
+        "lintai-ai-security:SEC374"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -3067,6 +3069,37 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Wildcard Edit grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC374",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC374",
+      "alias": "CLAUDE-WEBSEARCH-WILDCARD",
+      "displayLabel": "SEC374 / CLAUDE-WEBSEARCH-WILDCARD",
+      "docTitle": "Claude settings: wildcard WebSearch permissions",
+      "slug": "sec374",
+      "canonicalPath": "/rules/lintai-ai-security/sec374",
+      "summary": "Claude settings permissions allow `WebSearch(*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Wildcard WebSearch grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

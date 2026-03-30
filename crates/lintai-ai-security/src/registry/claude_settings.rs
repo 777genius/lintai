@@ -9,7 +9,7 @@ use crate::claude_settings_rules::{
     check_claude_settings_insecure_http_hook_url, check_claude_settings_missing_schema,
     check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
     check_claude_settings_read_wildcard, check_claude_settings_webfetch_wildcard,
-    check_claude_settings_write_wildcard,
+    check_claude_settings_websearch_wildcard, check_claude_settings_write_wildcard,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
 
@@ -42,6 +42,18 @@ declare_rule! {
         code: "SEC373",
         summary: "Claude settings permissions allow `Edit(*)` in a shared committed config",
         doc_title: "Claude settings: wildcard Edit permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsWebSearchWildcardRule {
+        code: "SEC374",
+        summary: "Claude settings permissions allow `WebSearch(*)` in a shared committed config",
+        doc_title: "Claude settings: wildcard WebSearch permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -181,7 +193,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 14] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 15] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsWriteWildcardRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -227,6 +239,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 14] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace `Edit(*)` with a narrower allowlist of reviewed edit patterns or remove broad edit access from the shared Claude settings file",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsWebSearchWildcardRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Wildcard WebSearch grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_websearch_wildcard,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `WebSearch(*)` with a narrower allowlist of reviewed search patterns or remove broad search access from the shared Claude settings file",
         ),
         suggestion_fix: None,
     },
