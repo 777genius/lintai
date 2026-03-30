@@ -222,6 +222,11 @@
   - community usefulness сейчас: `9/10`
   - надёжность: `9/10`
   - почему важно: shared Claude command hooks без `timeout` создают очень практичный operational smell; remediation в одну строку, а rule легко защитить перед сообществом как reviewable team-policy contract
+- `SEC382` — Claude settings should not use `matcher` on unsupported hook events
+  - статус: `Preview`
+  - community usefulness сейчас: `9/10`
+  - надёжность: `9.5/10`
+  - почему важно: это точный hook-contract check с живым real-world example; rule не спорит про политику, а ловит тихий config drift, который сообществу легко принять
 
 ### Минимальный релизный набор (1-й проход)
 

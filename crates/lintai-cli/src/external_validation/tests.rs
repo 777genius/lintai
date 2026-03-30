@@ -244,6 +244,9 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(markdown.contains("`SEC379` Cursor rules with unknown frontmatter keys: `0`"));
     assert!(markdown.contains("`SEC380` Cursor rules missing `description`: `0`"));
     assert!(markdown.contains("`SEC381` Claude settings command hooks missing `timeout`: `0`"));
+    assert!(
+        markdown.contains("`SEC382` Claude settings `matcher` on unsupported hook events: `0`")
+    );
     assert!(markdown.contains("`SEC372` Claude settings wildcard `Read(*)` permissions: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings wildcard `Edit(*)` permissions: `0`"));
     assert!(markdown.contains("`SEC374` Claude settings wildcard `WebSearch(*)` permissions: `0`"));
@@ -379,6 +382,10 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(
         markdown
             .contains("- `SEC381` produced no repo-level preview hits yet on the canonical cohort")
+    );
+    assert!(
+        markdown
+            .contains("- `SEC382` produced no repo-level preview hits yet on the canonical cohort")
     );
     assert!(markdown.contains("## Delta From Previous Wave"));
     assert!(markdown.contains("`datadog-labs/cursor-plugin`: `improved`"));
@@ -844,6 +851,9 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC379`=`0`"));
     assert!(markdown.contains("`SEC380`=`0`"));
     assert!(markdown.contains("`SEC381` Claude settings command hooks missing `timeout`: `0`"));
+    assert!(
+        markdown.contains("`SEC382` Claude settings `matcher` on unsupported hook events: `0`")
+    );
     assert!(markdown.contains("`SEC372` Claude settings files allowing `Read(*)`: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings files allowing `Edit(*)`: `0`"));
     assert!(markdown.contains("`SEC374` Claude settings files allowing `WebSearch(*)`: `0`"));
@@ -855,5 +865,8 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC380`=`0`"));
     assert!(
         markdown.contains("`SEC381` produced no repo-level external preview hits in this wave")
+    );
+    assert!(
+        markdown.contains("`SEC382` produced no repo-level external preview hits in this wave")
     );
 }

@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

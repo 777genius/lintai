@@ -58,6 +58,7 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec379_hits = rule_count(current, &["SEC379"]);
     let sec380_hits = rule_count(current, &["SEC380"]);
     let sec381_hits = rule_count(current, &["SEC381"]);
+    let sec382_hits = rule_count(current, &["SEC382"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, current);
     let sec348_repos = repos_with_rule_hits(current, &["SEC348"], false);
     let sec349_repos = repos_with_rule_hits(current, &["SEC349"], false);
@@ -93,6 +94,7 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec379_repos = repos_with_rule_hits(current, &["SEC379"], false);
     let sec380_repos = repos_with_rule_hits(current, &["SEC380"], false);
     let sec381_repos = repos_with_rule_hits(current, &["SEC381"], false);
+    let sec382_repos = repos_with_rule_hits(current, &["SEC382"], false);
 
     output.push_str("## Hybrid Scope Expansion Results\n\n");
     output.push_str("Current wave inventory for the newly expanded JSON lanes:\n\n");
@@ -288,6 +290,10 @@ pub(super) fn append_hybrid_scope_expansion(
         sec381_hits
     ));
     output.push_str(&format!(
+        "  - `SEC382` Claude settings `matcher` on unsupported hook events: `{}`\n",
+        sec382_hits
+    ));
+    output.push_str(&format!(
         "  - `SEC372` Claude settings wildcard `Read(*)` permissions: `{}`\n",
         sec372_hits
     ));
@@ -366,5 +372,6 @@ pub(super) fn append_hybrid_scope_expansion(
     append_rule_repo_hits(output, "SEC379", sec379_repos);
     append_rule_repo_hits(output, "SEC380", sec380_repos);
     append_rule_repo_hits(output, "SEC381", sec381_repos);
+    append_rule_repo_hits(output, "SEC382", sec382_repos);
     output.push_str("- fixture/testdata/example suppression stayed active for the newly added MCP client-config variants and did not create a fake usefulness signal from fixture-like paths\n\n");
 }

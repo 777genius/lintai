@@ -149,6 +149,39 @@ fn resolve_missing_hook_timeout_span(
     None
 }
 
+fn resolve_invalid_hook_matcher_event_span(
+    value: &serde_json::Value,
+    locator: Option<&JsonLocationMap>,
+) -> Option<Span> {
+    let hooks = value.get("hooks")?.as_object()?;
+
+    for (event_name, event_entries) in hooks {
+        if matches!(event_name.as_str(), "PreToolUse" | "PostToolUse") {
+            continue;
+        }
+
+        let Some(event_entries) = event_entries.as_array() else {
+            continue;
+        };
+
+        for (entry_index, entry) in event_entries.iter().enumerate() {
+            if entry.get("matcher").is_none() {
+                continue;
+            }
+
+            let path = vec![
+                JsonPathSegment::Key("hooks".to_owned()),
+                JsonPathSegment::Key(event_name.clone()),
+                JsonPathSegment::Index(entry_index),
+                JsonPathSegment::Key("matcher".to_owned()),
+            ];
+            return locator.and_then(|locator| locator.value_span(&path).cloned());
+        }
+    }
+
+    None
+}
+
 impl ClaudeSettingsSignals {
     pub(super) fn from_context(ctx: &ScanContext, metrics: &mut SignalWorkBudget) -> Option<Self> {
         if ctx.artifact.kind != ArtifactKind::ClaudeSettings {
@@ -178,6 +211,8 @@ impl ClaudeSettingsSignals {
             resolve_bypass_permissions_span(value, locator_ref.as_ref());
         signals.missing_hook_timeout_span =
             resolve_missing_hook_timeout_span(value, locator_ref.as_ref());
+        signals.invalid_hook_matcher_event_span =
+            resolve_invalid_hook_matcher_event_span(value, locator_ref.as_ref());
         if value.is_object() && !value.get("$schema").is_some() {
             signals.missing_schema_span = leading_json_file_relative_span(&ctx.content);
         }

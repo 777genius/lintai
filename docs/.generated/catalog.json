@@ -108,7 +108,8 @@
         "lintai-ai-security:SEC378",
         "lintai-ai-security:SEC379",
         "lintai-ai-security:SEC380",
-        "lintai-ai-security:SEC381"
+        "lintai-ai-security:SEC381",
+        "lintai-ai-security:SEC382"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -224,7 +225,8 @@
         "lintai-ai-security:SEC374",
         "lintai-ai-security:SEC375",
         "lintai-ai-security:SEC376",
-        "lintai-ai-security:SEC381"
+        "lintai-ai-security:SEC381",
+        "lintai-ai-security:SEC382"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -3329,6 +3331,37 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Missing command-hook timeouts in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC382",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC382",
+      "alias": "CLAUDE-HOOK-MATCHER-EVENT",
+      "displayLabel": "SEC382 / CLAUDE-HOOK-MATCHER-EVENT",
+      "docTitle": "Claude settings: `matcher` on unsupported hook event",
+      "slug": "sec382",
+      "canonicalPath": "/rules/lintai-ai-security/sec382",
+      "summary": "Claude settings should not use `matcher` on unsupported hook events",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Unsupported hook-event matchers in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

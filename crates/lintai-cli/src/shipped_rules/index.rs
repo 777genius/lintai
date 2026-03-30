@@ -174,6 +174,10 @@ mod tests {
         );
         assert_eq!(shipped_rule_alias("SEC380"), Some("CURSOR-DESCRIPTION"));
         assert_eq!(shipped_rule_alias("SEC381"), Some("CLAUDE-HOOK-TIMEOUT"));
+        assert_eq!(
+            shipped_rule_alias("SEC382"),
+            Some("CLAUDE-HOOK-MATCHER-EVENT")
+        );
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

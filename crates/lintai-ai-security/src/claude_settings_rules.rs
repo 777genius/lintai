@@ -48,6 +48,21 @@ pub(crate) fn check_claude_settings_missing_hook_timeout(
     )
 }
 
+pub(crate) fn check_claude_settings_invalid_hook_matcher_event(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.invalid_hook_matcher_event_span.clone()),
+        "Claude settings use `matcher` on a hook event that does not support it",
+    )
+}
+
 pub(crate) fn check_claude_settings_bypass_permissions(
     ctx: &ScanContext,
     signals: &ArtifactSignals,
