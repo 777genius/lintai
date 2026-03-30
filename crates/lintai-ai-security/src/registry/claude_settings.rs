@@ -2,9 +2,22 @@ use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
 
 use super::*;
 use crate::claude_settings_rules::{
-    check_claude_settings_inline_download_exec, check_claude_settings_mutable_launcher,
-    check_claude_settings_network_tls_bypass,
+    check_claude_settings_inline_download_exec, check_claude_settings_missing_schema,
+    check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
 };
+use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
+
+declare_rule! {
+    pub struct ClaudeSettingsMissingSchemaRule {
+        code: "SEC361",
+        summary: "Claude settings file is missing a top-level `$schema` reference",
+        doc_title: "Claude settings: missing `$schema`",
+        category: Category::Quality,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
 
 declare_rule! {
     pub struct ClaudeSettingsMutableLauncherRule {
@@ -42,7 +55,23 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 3] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 4] = [
+    NativeRuleSpec {
+        metadata: ClaudeSettingsMissingSchemaRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Schema references in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_missing_schema,
+        safe_fix: None,
+        suggestion_message: Some(
+            "add the Claude settings SchemaStore URL as top-level `$schema`, for example `https://json.schemastore.org/claude-code-settings.json`",
+        ),
+        suggestion_fix: None,
+    },
     NativeRuleSpec {
         metadata: ClaudeSettingsMutableLauncherRule::METADATA,
         surface: Surface::ClaudeSettings,

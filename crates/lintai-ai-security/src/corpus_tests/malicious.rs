@@ -25,6 +25,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-sensitive-action-without-permission",
             "claude-settings-command-tls-bypass",
             "claude-settings-inline-download-exec",
+            "claude-settings-missing-schema",
             "claude-settings-mutable-launcher",
             "copilot-instructions-too-long",
             "copilot-path-specific-missing-applyto",

@@ -89,6 +89,7 @@ pub(super) fn append_hit_sections(
     let sec358_hits = rule_count(ledger, &["SEC358"]);
     let sec359_hits = rule_count(ledger, &["SEC359"]);
     let sec360_hits = rule_count(ledger, &["SEC360"]);
+    let sec361_hits = rule_count(ledger, &["SEC361"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, ledger);
     let sec313_repos = repos_with_rule_hits(ledger, &["SEC313"], false);
     let sec335_repos = repos_with_rule_hits(ledger, &["SEC335"], false);
@@ -106,6 +107,7 @@ pub(super) fn append_hit_sections(
     let sec358_repos = repos_with_rule_hits(ledger, &["SEC358"], false);
     let sec359_repos = repos_with_rule_hits(ledger, &["SEC359"], false);
     let sec360_repos = repos_with_rule_hits(ledger, &["SEC360"], false);
+    let sec361_repos = repos_with_rule_hits(ledger, &["SEC361"], false);
 
     output.push_str("## Stable Hits\n\n");
     output.push_str(&format!("- current AI-native MCP rule families produced `{}` repo-level rule-code hits in this discovery wave\n", ai_native_rule_hits));
@@ -132,6 +134,10 @@ pub(super) fn append_hit_sections(
     } else {
         output.push_str(&format!("- `{}` preview hit(s) were observed at repo scope; these should not yet be interpreted as proof on discovery-only admission paths\n\n", counts.preview_findings));
     }
+    output.push_str(&format!(
+        "- `SEC361` Claude settings files missing `$schema`: `{}`\n",
+        sec361_hits
+    ));
     output.push_str(&format!("- AI-native markdown preview hits by rule code: `SEC313`=`{}`, `SEC335`=`{}`, `SEC347`=`{}`, `SEC348`=`{}`, `SEC349`=`{}`, `SEC350`=`{}`, `SEC351`=`{}`, `SEC352`=`{}`, `SEC353`=`{}`, `SEC354`=`{}`, `SEC355`=`{}`, `SEC356`=`{}`, `SEC357`=`{}`, `SEC358`=`{}`, `SEC359`=`{}`, `SEC360`=`{}`\n", sec313_hits, sec335_hits, sec347_hits, sec348_hits, sec349_hits, sec350_hits, sec351_hits, sec352_hits, sec353_hits, sec354_hits, sec355_hits, sec356_hits, sec357_hits, sec358_hits, sec359_hits, sec360_hits));
     output.push_str(&format!(
         "- `SEC347` subtype repo hits: CLI-form=`{}`, config-snippet-form=`{}`\n",
@@ -166,6 +172,7 @@ pub(super) fn append_hit_sections(
         ("SEC358", sec358_repos),
         ("SEC359", sec359_repos),
         ("SEC360", sec360_repos),
+        ("SEC361", sec361_repos),
     ] {
         if repos.is_empty() {
             output.push_str(&format!(

@@ -60,6 +60,7 @@ Current wave inventory for the newly expanded JSON lanes:
   - `SEC358` plugin agent frontmatter `mcpServers`: `0`
   - `SEC359` Cursor rule non-boolean `alwaysApply`: `0`
   - `SEC360` Cursor rule non-sequence `globs`: `0`
+  - `SEC361` Claude settings missing `$schema`: `0`
   - current `SEC347` usefulness is being driven mainly by MCP config snippets
 - repos with `tool_descriptor_json`: `3`
 - findings from `SEC314`-`SEC318`: `0`
@@ -82,6 +83,7 @@ Current wave inventory for the newly expanded JSON lanes:
 - `SEC358` produced no repo-level preview hits yet on the canonical cohort
 - `SEC359` produced no repo-level preview hits yet on the canonical cohort
 - `SEC360` produced no repo-level preview hits yet on the canonical cohort
+- `SEC361` produced no repo-level preview hits yet on the canonical cohort
 - fixture/testdata/example suppression stayed active for the newly added MCP client-config variants and did not create a fake usefulness signal from fixture-like paths
 
 ## Delta From Previous Wave

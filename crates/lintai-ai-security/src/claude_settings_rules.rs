@@ -18,6 +18,21 @@ pub(crate) fn check_claude_settings_mutable_launcher(
     )
 }
 
+pub(crate) fn check_claude_settings_missing_schema(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.missing_schema_span.clone()),
+        "Claude settings file is missing a top-level `$schema` reference",
+    )
+}
+
 pub(crate) fn check_claude_settings_inline_download_exec(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

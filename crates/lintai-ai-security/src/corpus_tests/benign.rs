@@ -24,6 +24,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "claude-settings-network-command-safe",
             "claude-settings-network-tls-verified-safe",
             "claude-settings-pinned-launcher-safe",
+            "claude-settings-schema-fixture-safe",
+            "claude-settings-schema-present-safe",
             "copilot-instructions-too-long-fixture-safe",
             "copilot-instructions-within-limit-safe",
             "copilot-path-specific-fixture-safe",

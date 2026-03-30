@@ -90,7 +90,8 @@
         "lintai-ai-security:SEC357",
         "lintai-ai-security:SEC358",
         "lintai-ai-security:SEC359",
-        "lintai-ai-security:SEC360"
+        "lintai-ai-security:SEC360",
+        "lintai-ai-security:SEC361"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -188,7 +189,8 @@
       "ruleIds": [
         "lintai-ai-security:SEC340",
         "lintai-ai-security:SEC341",
-        "lintai-ai-security:SEC342"
+        "lintai-ai-security:SEC342",
+        "lintai-ai-security:SEC361"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -2642,6 +2644,37 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Cursor rule path-matching shape mismatches are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC361",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC361",
+      "alias": "CLAUDE-SETTINGS-SCHEMA",
+      "displayLabel": "SEC361 / CLAUDE-SETTINGS-SCHEMA",
+      "docTitle": "Claude settings: missing `$schema`",
+      "slug": "sec361",
+      "canonicalPath": "/rules/lintai-ai-security/sec361",
+      "summary": "Claude settings file is missing a top-level `$schema` reference",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Schema references in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

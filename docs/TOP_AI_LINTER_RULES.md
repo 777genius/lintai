@@ -117,6 +117,11 @@
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9.5/10`
   - почему важно: ловит path-targeting bug в `.mdc` / `.cursorrules`, из-за которого Cursor rule может тихо применяться не к тем файлам или не матчиться как задумано
+- `SEC361` — Claude settings file is missing a top-level `$schema` reference
+  - статус: `Preview`
+  - community usefulness сейчас: `8.5/10`
+  - надёжность: `9.5/10`
+  - почему важно: даёт понятный quality contract для shared `.claude/settings.json`, улучшает editor validation и делает командные Claude settings проще для ревью и поддержки
 
 ### Минимальный релизный набор (1-й проход)
 

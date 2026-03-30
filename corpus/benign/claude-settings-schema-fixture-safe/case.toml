@@ -1,0 +1,6 @@
+[case]
+id = "claude-settings-schema-fixture-safe"
+summary = "Fixture-like Claude settings file missing $schema stays suppressed"
+
+expected_findings = []
+

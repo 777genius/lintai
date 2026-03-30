@@ -1,0 +1,6 @@
+[case]
+id = "claude-settings-schema-present-safe"
+summary = "Committed Claude settings file includes top-level $schema"
+
+expected_findings = []
+

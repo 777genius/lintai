@@ -1,0 +1,6 @@
+[case]
+id = "claude-settings-missing-schema"
+summary = "Committed Claude settings file omits top-level $schema"
+
+expected_findings = ["SEC361"]
+
