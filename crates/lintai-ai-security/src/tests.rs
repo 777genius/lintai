@@ -2770,6 +2770,23 @@ fn finds_claude_settings_unscoped_websearch() {
 }
 
 #[test]
+fn finds_claude_settings_git_push_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(git push)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC385")
+        .unwrap();
+    let start = content.find("Bash(git push)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git push)".len())
+    );
+}
+
+#[test]
 fn finds_claude_settings_glob_wildcard() {
     let content = r#"{"permissions":{"allow":["Glob(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -2849,6 +2866,21 @@ fn ignores_claude_settings_unscoped_websearch_when_wildcard_form_used() {
 }
 
 #[test]
+fn ignores_claude_settings_git_push_permission_when_command_is_more_specific() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(git push origin main)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC385")
+    );
+}
+
+#[test]
 fn ignores_claude_settings_unscoped_websearch_on_fixture_like_path() {
     let temp_dir = unique_temp_dir("lintai-claude-websearch-unscoped-fixture");
     std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
@@ -2880,6 +2912,41 @@ fn ignores_claude_settings_unscoped_websearch_on_fixture_like_path() {
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC384")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_git_push_permission_on_fixture_like_path() {
+    let temp_dir = unique_temp_dir("lintai-claude-git-push-fixture");
+    std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("tests/fixtures/.claude/settings.json"),
+        br#"{"permissions":{"allow":["Bash(git push)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    )
+    .unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
+    let summary = EngineBuilder::default()
+        .with_config(workspace.engine_config.clone())
+        .with_suppressions(Arc::new(suppressions))
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC385")
     );
 }
 
@@ -5399,6 +5466,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC382"
                         | "SEC383"
                         | "SEC384"
+                        | "SEC385"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"

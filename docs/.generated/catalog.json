@@ -111,7 +111,8 @@
         "lintai-ai-security:SEC381",
         "lintai-ai-security:SEC382",
         "lintai-ai-security:SEC383",
-        "lintai-ai-security:SEC384"
+        "lintai-ai-security:SEC384",
+        "lintai-ai-security:SEC385"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -230,7 +231,8 @@
         "lintai-ai-security:SEC381",
         "lintai-ai-security:SEC382",
         "lintai-ai-security:SEC383",
-        "lintai-ai-security:SEC384"
+        "lintai-ai-security:SEC384",
+        "lintai-ai-security:SEC385"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -3428,6 +3430,37 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Bare WebSearch grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC385",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC385",
+      "alias": "CLAUDE-GIT-PUSH-PERMISSION",
+      "displayLabel": "SEC385 / CLAUDE-GIT-PUSH-PERMISSION",
+      "docTitle": "Claude settings: shared git push permissions",
+      "slug": "sec385",
+      "canonicalPath": "/rules/lintai-ai-security/sec385",
+      "summary": "Claude settings permissions allow `Bash(git push)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared git push permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

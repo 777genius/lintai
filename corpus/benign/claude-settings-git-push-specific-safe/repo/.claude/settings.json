@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": ["Bash(git push origin main)", "Read(*)"]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}

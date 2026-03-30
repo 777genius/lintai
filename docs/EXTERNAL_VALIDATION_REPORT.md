@@ -79,6 +79,7 @@ Current wave inventory for the newly expanded JSON lanes:
   - `SEC382` Claude settings `matcher` on unsupported hook events: `0`
   - `SEC383` Claude settings missing `matcher` on matcher-capable hook events: `0`
   - `SEC384` Claude settings bare `WebSearch` permissions: `0`
+  - `SEC385` Claude settings shared `git push` permissions: `0`
   - `SEC372` Claude settings wildcard `Read(*)` permissions: `0`
   - `SEC373` Claude settings wildcard `Edit(*)` permissions: `0`
   - `SEC374` Claude settings wildcard `WebSearch(*)` permissions: `0`
@@ -130,6 +131,7 @@ Current wave inventory for the newly expanded JSON lanes:
 - `SEC382` produced no repo-level preview hits yet on the canonical cohort
 - `SEC383` produced no repo-level preview hits yet on the canonical cohort
 - `SEC384` produced no repo-level preview hits yet on the canonical cohort
+- `SEC385` produced no repo-level preview hits yet on the canonical cohort
 - fixture/testdata/example suppression stayed active for the newly added MCP client-config variants and did not create a fake usefulness signal from fixture-like paths
 
 ## Delta From Previous Wave
