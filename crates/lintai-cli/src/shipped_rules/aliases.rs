@@ -102,6 +102,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC397" => "MCP-SANDBOX-DISABLED",
         "SEC398" => "MCP-CAPABILITIES-WILDCARD",
         "SEC399" => "CLAUDE-NPX-PERMISSION",
+        "SEC400" => "CLAUDE-ENABLED-MCPJSON-SERVERS",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

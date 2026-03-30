@@ -80,6 +80,23 @@ fn resolve_bypass_permissions_span(
     locator.and_then(|locator| locator.value_span(&path).cloned())
 }
 
+fn resolve_enabled_mcpjson_servers_span(
+    value: &serde_json::Value,
+    locator: Option<&JsonLocationMap>,
+) -> Option<Span> {
+    let entry = value.get("enabledMcpjsonServers")?;
+    let is_enabled = match entry {
+        Value::Array(values) => !values.is_empty(),
+        Value::String(value) => !value.trim().is_empty(),
+        _ => false,
+    };
+    if !is_enabled {
+        return None;
+    }
+    let path = vec![JsonPathSegment::Key("enabledMcpjsonServers".to_owned())];
+    locator.and_then(|locator| locator.key_span(&path).cloned())
+}
+
 fn resolve_insecure_http_hook_url_span(
     value: &serde_json::Value,
     locator: Option<&JsonLocationMap>,
@@ -263,6 +280,8 @@ impl ClaudeSettingsSignals {
             resolve_dangerous_http_hook_host_span(value, locator_ref.as_ref());
         signals.bypass_permissions_span =
             resolve_bypass_permissions_span(value, locator_ref.as_ref());
+        signals.enabled_mcpjson_servers_span =
+            resolve_enabled_mcpjson_servers_span(value, locator_ref.as_ref());
         signals.missing_hook_timeout_span =
             resolve_missing_hook_timeout_span(value, locator_ref.as_ref());
         signals.invalid_hook_matcher_event_span =

@@ -4,6 +4,7 @@ use super::*;
 use crate::claude_settings_rules::{
     check_claude_settings_bash_wildcard, check_claude_settings_bypass_permissions,
     check_claude_settings_dangerous_http_hook_host, check_claude_settings_edit_wildcard,
+    check_claude_settings_enabled_mcpjson_servers,
     check_claude_settings_external_absolute_hook_command,
     check_claude_settings_git_checkout_permission, check_claude_settings_git_commit_permission,
     check_claude_settings_git_push_permission, check_claude_settings_git_stash_permission,
@@ -120,6 +121,18 @@ declare_rule! {
         code: "SEC385",
         summary: "Claude settings permissions allow `Bash(git push)` in a shared committed config",
         doc_title: "Claude settings: shared git push permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsEnabledMcpjsonServersRule {
+        code: "SEC400",
+        summary: "Claude settings enable `enabledMcpjsonServers` in a shared committed config",
+        doc_title: "Claude settings: shared enabledMcpjsonServers",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -331,7 +344,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 26] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 27] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -473,6 +486,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 26] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `Bash(git push)` permissions, or replace them with a narrower reviewed workflow that does not grant direct push authority by default",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsEnabledMcpjsonServersRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `enabledMcpjsonServers` in committed Claude settings is deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_enabled_mcpjson_servers,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `enabledMcpjsonServers` defaults or keep MCP server enablement as a locally reviewed opt-in step",
         ),
         suggestion_fix: None,
     },
