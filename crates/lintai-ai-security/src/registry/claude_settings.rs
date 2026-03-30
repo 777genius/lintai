@@ -3,23 +3,23 @@ use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
 use super::*;
 use crate::claude_settings_rules::{
     check_claude_settings_bash_wildcard, check_claude_settings_bypass_permissions,
-    check_claude_settings_dangerous_http_hook_host, check_claude_settings_edit_wildcard,
-    check_claude_settings_enabled_mcpjson_servers,
+    check_claude_settings_curl_permission, check_claude_settings_dangerous_http_hook_host,
+    check_claude_settings_edit_wildcard, check_claude_settings_enabled_mcpjson_servers,
     check_claude_settings_external_absolute_hook_command, check_claude_settings_gh_pr_permission,
-    check_claude_settings_git_add_permission, check_claude_settings_git_fetch_permission,
-    check_claude_settings_git_ls_remote_permission,
-    check_claude_settings_git_checkout_permission, check_claude_settings_git_clone_permission,
-    check_claude_settings_git_commit_permission, check_claude_settings_git_push_permission,
-    check_claude_settings_git_stash_permission, check_claude_settings_glob_wildcard,
-    check_claude_settings_grep_wildcard, check_claude_settings_home_directory_hook_command,
-    check_claude_settings_inline_download_exec, check_claude_settings_insecure_http_hook_url,
-    check_claude_settings_invalid_hook_matcher_event, check_claude_settings_missing_hook_timeout,
+    check_claude_settings_git_add_permission, check_claude_settings_git_checkout_permission,
+    check_claude_settings_git_clone_permission, check_claude_settings_git_commit_permission,
+    check_claude_settings_git_fetch_permission, check_claude_settings_git_ls_remote_permission,
+    check_claude_settings_git_push_permission, check_claude_settings_git_stash_permission,
+    check_claude_settings_glob_wildcard, check_claude_settings_grep_wildcard,
+    check_claude_settings_home_directory_hook_command, check_claude_settings_inline_download_exec,
+    check_claude_settings_insecure_http_hook_url, check_claude_settings_invalid_hook_matcher_event,
+    check_claude_settings_missing_hook_timeout,
     check_claude_settings_missing_required_hook_matcher, check_claude_settings_missing_schema,
     check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
     check_claude_settings_npx_permission, check_claude_settings_package_install_permission,
     check_claude_settings_read_wildcard, check_claude_settings_unscoped_websearch,
     check_claude_settings_webfetch_wildcard, check_claude_settings_websearch_wildcard,
-    check_claude_settings_write_wildcard,
+    check_claude_settings_wget_permission, check_claude_settings_write_wildcard,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
 
@@ -184,6 +184,30 @@ declare_rule! {
         code: "SEC410",
         summary: "Claude settings permissions allow `Bash(git ls-remote:*)` in a shared committed config",
         doc_title: "Claude settings: shared git ls-remote permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsCurlPermissionRule {
+        code: "SEC411",
+        summary: "Claude settings permissions allow `Bash(curl:*)` in a shared committed config",
+        doc_title: "Claude settings: shared curl permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsWgetPermissionRule {
+        code: "SEC412",
+        summary: "Claude settings permissions allow `Bash(wget:*)` in a shared committed config",
+        doc_title: "Claude settings: shared wget permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -419,7 +443,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 33] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 35] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -641,6 +665,38 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 33] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `git ls-remote` permissions or replace them with a narrower reviewed workflow that keeps remote repository inspection under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsCurlPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `Bash(curl:*)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_curl_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `Bash(curl:*)` permissions or replace them with a narrower reviewed workflow that keeps direct network downloads under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsWgetPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `Bash(wget:*)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_wget_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `Bash(wget:*)` permissions or replace them with a narrower reviewed workflow that keeps direct network downloads under explicit user control",
         ),
         suggestion_fix: None,
     },

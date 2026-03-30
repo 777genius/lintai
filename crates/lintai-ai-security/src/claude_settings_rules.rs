@@ -333,6 +333,36 @@ pub(crate) fn check_claude_settings_npx_permission(
     )
 }
 
+pub(crate) fn check_claude_settings_curl_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.curl_permission_span.clone()),
+        "Claude settings permissions allow `Bash(curl:*)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_wget_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.wget_permission_span.clone()),
+        "Claude settings permissions allow `Bash(wget:*)` in a shared committed config",
+    )
+}
+
 pub(crate) fn check_claude_settings_enabled_mcpjson_servers(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

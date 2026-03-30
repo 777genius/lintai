@@ -109,6 +109,8 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC408" => "CLAUDE-GH-PR-PERMISSION",
         "SEC409" => "CLAUDE-GIT-FETCH-PERMISSION",
         "SEC410" => "CLAUDE-GIT-LS-REMOTE-PERMISSION",
+        "SEC411" => "CLAUDE-CURL-PERMISSION",
+        "SEC412" => "CLAUDE-WGET-PERMISSION",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",
