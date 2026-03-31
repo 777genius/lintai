@@ -1,0 +1,5 @@
+id = "claude-unpinned-pip-git-install"
+kind = "Skill"
+format = "Markdown"
+path = "SKILL.md"
+expect_findings = ["SEC417"]

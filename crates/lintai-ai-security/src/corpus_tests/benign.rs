@@ -94,6 +94,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "claude-settings-write-wildcard-fixture-safe",
             "claude-transcript-bare-pip-no-uv-preference-safe",
             "claude-transcript-uv-pip-safe",
+            "claude-unpinned-pip-git-install-commit-pinned-safe",
             "copilot-instructions-too-long-fixture-safe",
             "copilot-instructions-within-limit-safe",
             "copilot-path-specific-correct-suffix-safe",

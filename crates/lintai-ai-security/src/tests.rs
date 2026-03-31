@@ -863,7 +863,12 @@ Claude: "I'll use pip install requests"
 "#;
     let summary = scan_preview_skill_fixture("CLAUDE.md", content);
 
-    assert!(summary.findings.iter().any(|finding| finding.rule_code == "SEC416"));
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC416")
+    );
 }
 
 #[test]
@@ -875,7 +880,12 @@ Claude: uv pip install requests
 "#;
     let summary = scan_preview_skill_fixture("CLAUDE.md", content);
 
-    assert!(!summary.findings.iter().any(|finding| finding.rule_code == "SEC416"));
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC416")
+    );
 }
 
 #[test]
@@ -887,7 +897,53 @@ Claude: pip install pytest
 "#;
     let summary = scan_preview_skill_fixture("CLAUDE.md", content);
 
-    assert!(!summary.findings.iter().any(|finding| finding.rule_code == "SEC416"));
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC416")
+    );
+}
+
+#[test]
+fn finds_markdown_unpinned_pip_git_install() {
+    let content = "pip install git+https://github.com/pytorch/ao.git\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC417")
+        .unwrap();
+    let start = content.find("git+https://").unwrap();
+    let end = content.find('\n').unwrap();
+    assert_eq!(finding.location.span, lintai_api::Span::new(start, end));
+}
+
+#[test]
+fn finds_markdown_branch_pinned_pip_git_install_as_mutable() {
+    let content = "pip install -v --no-build-isolation -U git+https://github.com/facebookresearch/xformers.git@main#egg=xformers\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC417")
+    );
+}
+
+#[test]
+fn ignores_markdown_commit_pinned_pip_git_install() {
+    let content = r#"pip3 install "cut-cross-entropy[transformers] @ git+https://github.com/axolotl-ai-cloud/ml-cross-entropy.git@8a1a0ec""#;
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC417")
+    );
 }
 
 #[test]

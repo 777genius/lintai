@@ -85,10 +85,15 @@ impl MarkdownSignals {
                         ));
                     }
                     if has_uv_preference
-                        && let Some(relative) =
-                            find_claude_bare_pip_install_relative_span(snippet)
+                        && let Some(relative) = find_claude_bare_pip_install_relative_span(snippet)
                     {
                         signals.claude_bare_pip_install_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
+                    if let Some(relative) = find_unpinned_pip_git_install_relative_span(snippet) {
+                        signals.unpinned_pip_git_install_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
                             region.span.start_byte + relative.end_byte,
                         ));
@@ -155,10 +160,15 @@ impl MarkdownSignals {
                         ));
                     }
                     if has_uv_preference
-                        && let Some(relative) =
-                            find_claude_bare_pip_install_relative_span(snippet)
+                        && let Some(relative) = find_claude_bare_pip_install_relative_span(snippet)
                     {
                         signals.claude_bare_pip_install_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
+                    if let Some(relative) = find_unpinned_pip_git_install_relative_span(snippet) {
+                        signals.unpinned_pip_git_install_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
                             region.span.start_byte + relative.end_byte,
                         ));
@@ -199,10 +209,15 @@ impl MarkdownSignals {
                         ));
                     }
                     if has_uv_preference
-                        && let Some(relative) =
-                            find_claude_bare_pip_install_relative_span(snippet)
+                        && let Some(relative) = find_claude_bare_pip_install_relative_span(snippet)
                     {
                         signals.claude_bare_pip_install_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
+                    if let Some(relative) = find_unpinned_pip_git_install_relative_span(snippet) {
+                        signals.unpinned_pip_git_install_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
                             region.span.start_byte + relative.end_byte,
                         ));

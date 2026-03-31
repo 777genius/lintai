@@ -5,15 +5,15 @@ use crate::markdown_rules::{
     check_approval_bypass_instruction, check_copilot_instruction_invalid_apply_to,
     check_copilot_instruction_invalid_apply_to_glob, check_copilot_instruction_missing_apply_to,
     check_copilot_instruction_too_long, check_copilot_instruction_wrong_suffix,
-    check_markdown_claude_bare_pip_install,
     check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
     check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
     check_cursor_rule_unknown_frontmatter_key, check_html_comment_directive,
     check_html_comment_download_exec, check_markdown_base64_exec,
-    check_markdown_docker_host_escape, check_markdown_download_exec,
-    check_markdown_fenced_pipe_shell, check_markdown_metadata_service_access,
-    check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
-    check_markdown_path_traversal, check_markdown_private_key_pem,
+    check_markdown_claude_bare_pip_install, check_markdown_docker_host_escape,
+    check_markdown_download_exec, check_markdown_fenced_pipe_shell,
+    check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
+    check_markdown_mutable_mcp_launcher, check_markdown_path_traversal,
+    check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
     check_plugin_agent_hooks_frontmatter, check_plugin_agent_mcp_servers_frontmatter,
     check_plugin_agent_permission_mode, check_unscoped_bash_allowed_tools,
     check_untrusted_instruction_promotion, check_wildcard_tool_access,
@@ -108,6 +108,18 @@ declare_rule! {
         code: "SEC416",
         summary: "AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance",
         doc_title: "AI markdown: Claude bare pip install",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownUnpinnedPipGitInstallRule {
+        code: "SEC417",
+        summary: "AI-native markdown installs Python packages from an unpinned `git+https://` source",
+        doc_title: "AI markdown: unpinned pip git install",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -367,7 +379,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 29] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 30] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -489,6 +501,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 29] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace bare `pip install` Claude transcript examples with `uv pip install` or mark them as intentionally incorrect pre-correction behavior",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownUnpinnedPipGitInstallRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Git-backed `pip install` examples in markdown can be legitimate setup guidance, so the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_markdown_unpinned_pip_git_install,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace the unpinned `git+https://` install with a commit-pinned reference or a published package release",
         ),
         suggestion_fix: None,
     },

@@ -62,6 +62,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-settings-wget-permission",
             "claude-settings-write-wildcard",
             "claude-transcript-bare-pip-install",
+            "claude-unpinned-pip-git-install",
             "copilot-instructions-too-long",
             "copilot-path-specific-invalid-applyto",
             "copilot-path-specific-invalid-applyto-glob",

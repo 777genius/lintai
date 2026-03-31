@@ -1,0 +1,5 @@
+id = "claude-unpinned-pip-git-install-commit-pinned-safe"
+kind = "Skill"
+format = "Markdown"
+path = "SKILL.md"
+expect_findings = []

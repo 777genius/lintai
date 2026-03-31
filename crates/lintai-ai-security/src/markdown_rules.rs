@@ -163,6 +163,22 @@ pub(crate) fn check_markdown_claude_bare_pip_install(
     )
 }
 
+pub(crate) fn check_markdown_unpinned_pip_git_install(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.unpinned_pip_git_install_spans.as_slice())
+            .unwrap_or(&[]),
+        "AI-native markdown installs Python packages from an unpinned `git+https://` source",
+    )
+}
+
 pub(crate) fn check_markdown_mutable_docker_image(
     ctx: &ScanContext,
     signals: &ArtifactSignals,
