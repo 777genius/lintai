@@ -11,6 +11,7 @@ const UV_PREFERENCE_MARKERS: &[&str] = &[
 const CLAUDE_PIP_INSTALL_MARKERS: &[&str] = &["python -m pip install", "pip install"];
 const PIP_GIT_INSTALL_MARKERS: &[&str] = &["python -m pip install", "pip install", "pip3 install"];
 const NPM_INSTALL_MARKERS: &[&str] = &["npm install", "npm i", "pnpm install", "pnpm add"];
+const CARGO_INSTALL_MARKERS: &[&str] = &["cargo install"];
 
 pub(crate) fn has_uv_instead_of_pip_preference(text: &str) -> bool {
     let lowered = text.to_ascii_lowercase();
@@ -109,6 +110,25 @@ pub(crate) fn find_npm_http_registry_relative_span(text: &str) -> Option<Span> {
 
     if !text.ends_with('\n') {
         return find_npm_http_registry_in_line(text);
+    }
+
+    None
+}
+
+pub(crate) fn find_cargo_http_git_install_relative_span(text: &str) -> Option<Span> {
+    let mut offset = 0usize;
+    for line in text.split_inclusive('\n') {
+        if let Some(relative) = find_cargo_http_git_install_in_line(line) {
+            return Some(Span::new(
+                offset + relative.start_byte,
+                offset + relative.end_byte,
+            ));
+        }
+        offset += line.len();
+    }
+
+    if !text.ends_with('\n') {
+        return find_cargo_http_git_install_in_line(text);
     }
 
     None
@@ -228,6 +248,26 @@ fn find_npm_http_registry_in_line(line: &str) -> Option<Span> {
     Some(Span::new(start, start + "http://".len()))
 }
 
+fn find_cargo_http_git_install_in_line(line: &str) -> Option<Span> {
+    let lowered = line.to_ascii_lowercase();
+    let mut install_start = None;
+    for marker in CARGO_INSTALL_MARKERS {
+        if let Some(relative) = lowered.find(marker) {
+            install_start = Some(relative + marker.len());
+            break;
+        }
+    }
+    let Some(search_start) = install_start else {
+        return None;
+    };
+
+    let search_slice = &lowered[search_start..];
+    let marker = "--git http://";
+    let relative_http = search_slice.find(marker)?;
+    let start = search_start + relative_http + marker.len() - "http://".len();
+    Some(Span::new(start, start + "http://".len()))
+}
+
 fn has_immutable_git_ref(url: &str) -> bool {
     let Some(scheme_start) = url.find("git+https://") else {
         return false;
@@ -247,9 +287,10 @@ fn has_immutable_git_ref(url: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::{
-        find_claude_bare_pip_install_relative_span, find_npm_http_registry_relative_span,
-        find_pip_http_index_relative_span, find_pip_trusted_host_relative_span,
-        find_unpinned_pip_git_install_relative_span, has_uv_instead_of_pip_preference,
+        find_cargo_http_git_install_relative_span, find_claude_bare_pip_install_relative_span,
+        find_npm_http_registry_relative_span, find_pip_http_index_relative_span,
+        find_pip_trusted_host_relative_span, find_unpinned_pip_git_install_relative_span,
+        has_uv_instead_of_pip_preference,
     };
 
     #[test]
@@ -324,5 +365,17 @@ mod tests {
     fn ignores_npm_https_registry() {
         let content = "pnpm add demo --registry https://registry.example.test/\n";
         assert_eq!(find_npm_http_registry_relative_span(content), None);
+    }
+
+    #[test]
+    fn finds_cargo_http_git_install() {
+        let content = "cargo install --git http://git.example.test/demo.git\n";
+        assert!(find_cargo_http_git_install_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn ignores_cargo_https_git_install() {
+        let content = "cargo install --git https://git.example.test/demo.git\n";
+        assert_eq!(find_cargo_http_git_install_relative_span(content), None);
     }
 }

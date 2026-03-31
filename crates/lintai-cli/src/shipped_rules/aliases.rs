@@ -155,6 +155,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC448" => "MD-PIP-TRUSTED-HOST",
         "SEC449" => "MD-PIP-HTTP-INDEX",
         "SEC450" => "MD-NPM-HTTP-REGISTRY",
+        "SEC451" => "MD-CARGO-HTTP-GIT-INSTALL",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

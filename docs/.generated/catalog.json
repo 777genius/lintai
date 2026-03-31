@@ -170,7 +170,8 @@
         "lintai-ai-security:SEC447",
         "lintai-ai-security:SEC448",
         "lintai-ai-security:SEC449",
-        "lintai-ai-security:SEC450"
+        "lintai-ai-security:SEC450",
+        "lintai-ai-security:SEC451"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -250,7 +251,8 @@
         "lintai-ai-security:SEC447",
         "lintai-ai-security:SEC448",
         "lintai-ai-security:SEC449",
-        "lintai-ai-security:SEC450"
+        "lintai-ai-security:SEC450",
+        "lintai-ai-security:SEC451"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -5864,6 +5866,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `npm install` or `pnpm add/install` token analysis with `--registry http://` detection inside parsed markdown regions."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC451",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC451",
+      "alias": "MD-CARGO-HTTP-GIT-INSTALL",
+      "displayLabel": "SEC451 / MD-CARGO-HTTP-GIT-INSTALL",
+      "docTitle": "AI markdown: cargo http git install",
+      "slug": "sec451",
+      "canonicalPath": "/rules/lintai-ai-security/sec451",
+      "summary": "AI-native markdown installs Rust packages from an insecure `http://` git source",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for `cargo install` examples that fetch a crate directly from an `http://` git source.",
+        "maliciousCaseIds": [
+          "skill-cargo-http-git-install"
+        ],
+        "benignCaseIds": [
+          "skill-cargo-https-git-install-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `cargo install` token analysis with `--git http://` detection inside parsed markdown regions."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

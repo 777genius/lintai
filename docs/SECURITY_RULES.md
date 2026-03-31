@@ -169,6 +169,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC448 / MD-PIP-TRUSTED-HOST` | AI-native markdown installs Python packages with `--trusted-host` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC449 / MD-PIP-HTTP-INDEX` | AI-native markdown installs Python packages from an insecure `http://` package index | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC450 / MD-NPM-HTTP-REGISTRY` | AI-native markdown installs JavaScript packages from an insecure `http://` registry | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC451 / MD-CARGO-HTTP-GIT-INSTALL` | AI-native markdown installs Rust packages from an insecure `http://` git source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -3160,6 +3161,27 @@ Important behavior:
 - Deterministic Signal Basis: MarkdownSignals exact `npm install` or `pnpm add/install` token analysis with `--registry http://` detection inside parsed markdown regions.
 - Malicious Corpus: `skill-npm-http-registry`
 - Benign Corpus: `skill-npm-https-registry-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC451 / MD-CARGO-HTTP-GIT-INSTALL` — AI-native markdown installs Rust packages from an insecure `http://` git source
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-CARGO-HTTP-GIT-INSTALL`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown for `cargo install` examples that fetch a crate directly from an `http://` git source.
+- Deterministic Signal Basis: MarkdownSignals exact `cargo install` token analysis with `--git http://` detection inside parsed markdown regions.
+- Malicious Corpus: `skill-cargo-http-git-install`
+- Benign Corpus: `skill-cargo-https-git-install-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

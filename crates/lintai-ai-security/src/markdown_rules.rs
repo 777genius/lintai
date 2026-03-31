@@ -227,6 +227,22 @@ pub(crate) fn check_markdown_npm_http_registry(
     )
 }
 
+pub(crate) fn check_markdown_cargo_http_git_install(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.cargo_http_git_install_spans.as_slice())
+            .unwrap_or(&[]),
+        "AI-native markdown installs Rust packages from an insecure `http://` git source",
+    )
+}
+
 pub(crate) fn check_markdown_mutable_docker_image(
     ctx: &ScanContext,
     signals: &ArtifactSignals,
