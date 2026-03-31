@@ -7,21 +7,24 @@ use crate::markdown_rules::{
     check_copilot_instruction_too_long, check_copilot_instruction_wrong_suffix,
     check_curl_allowed_tools, check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
     check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
-    check_cursor_rule_unknown_frontmatter_key, check_git_checkout_allowed_tools,
-    check_git_clone_allowed_tools, check_git_commit_allowed_tools, check_git_push_allowed_tools,
-    check_git_stash_allowed_tools, check_html_comment_directive, check_html_comment_download_exec,
-    check_markdown_base64_exec, check_markdown_claude_bare_pip_install,
-    check_markdown_docker_host_escape, check_markdown_download_exec,
-    check_markdown_fenced_pipe_shell, check_markdown_metadata_service_access,
-    check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
-    check_markdown_path_traversal, check_markdown_private_key_pem,
-    check_markdown_unpinned_pip_git_install, check_plugin_agent_hooks_frontmatter,
-    check_plugin_agent_mcp_servers_frontmatter, check_plugin_agent_permission_mode,
+    check_cursor_rule_unknown_frontmatter_key, check_edit_unsafe_path_allowed_tools,
+    check_git_checkout_allowed_tools, check_git_clone_allowed_tools,
+    check_git_commit_allowed_tools, check_git_push_allowed_tools, check_git_stash_allowed_tools,
+    check_glob_unsafe_path_allowed_tools, check_html_comment_directive,
+    check_html_comment_download_exec, check_markdown_base64_exec,
+    check_markdown_claude_bare_pip_install, check_markdown_docker_host_escape,
+    check_markdown_download_exec, check_markdown_fenced_pipe_shell,
+    check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
+    check_markdown_mutable_mcp_launcher, check_markdown_path_traversal,
+    check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
+    check_plugin_agent_hooks_frontmatter, check_plugin_agent_mcp_servers_frontmatter,
+    check_plugin_agent_permission_mode, check_read_unsafe_path_allowed_tools,
     check_unscoped_bash_allowed_tools, check_unscoped_edit_allowed_tools,
     check_unscoped_glob_allowed_tools, check_unscoped_grep_allowed_tools,
     check_unscoped_read_allowed_tools, check_unscoped_webfetch_allowed_tools,
     check_unscoped_websearch_allowed_tools, check_unscoped_write_allowed_tools,
     check_untrusted_instruction_promotion, check_wget_allowed_tools, check_wildcard_tool_access,
+    check_write_unsafe_path_allowed_tools,
 };
 
 declare_rule! {
@@ -433,6 +436,54 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct ReadUnsafePathAllowedToolsRule {
+        code: "SEC428",
+        summary: "AI-native markdown frontmatter grants `Read(...)` over an unsafe repo-external path",
+        doc_title: "AI markdown: unsafe Read path grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct WriteUnsafePathAllowedToolsRule {
+        code: "SEC429",
+        summary: "AI-native markdown frontmatter grants `Write(...)` over an unsafe repo-external path",
+        doc_title: "AI markdown: unsafe Write path grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct EditUnsafePathAllowedToolsRule {
+        code: "SEC430",
+        summary: "AI-native markdown frontmatter grants `Edit(...)` over an unsafe repo-external path",
+        doc_title: "AI markdown: unsafe Edit path grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct GlobUnsafePathAllowedToolsRule {
+        code: "SEC431",
+        summary: "AI-native markdown frontmatter grants `Glob(...)` over an unsafe repo-external path",
+        doc_title: "AI markdown: unsafe Glob path grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct PluginAgentPermissionModeRule {
         code: "SEC356",
         summary: "Plugin agent frontmatter sets `permissionMode`",
@@ -552,7 +603,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 44] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 48] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -682,9 +733,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 44] = [
         surface: Surface::Markdown,
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Git-backed `pip install` examples in markdown can be legitimate setup guidance, so the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown for `pip install` examples that pull directly from mutable git+https sources without commit pinning.",
+            malicious_case_ids: &["claude-unpinned-pip-git-install"],
+            benign_case_ids: &["claude-unpinned-pip-git-install-commit-pinned-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact `pip install` plus `git+https://` token analysis with commit-pin detection inside parsed markdown regions.",
         },
         check: check_markdown_unpinned_pip_git_install,
         safe_fix: None,
@@ -874,9 +929,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 44] = [
         surface: Surface::Markdown,
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `Bash(curl:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for explicit wildcard curl grants in shared allowed-tools policy.",
+            malicious_case_ids: &["skill-curl-allowed-tools"],
+            benign_case_ids: &["skill-curl-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Bash(curl:*)` inside allowed-tools or allowed_tools.",
         },
         check: check_curl_allowed_tools,
         safe_fix: None,
@@ -890,9 +949,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 44] = [
         surface: Surface::Markdown,
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `Bash(wget:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for explicit wildcard wget grants in shared allowed-tools policy.",
+            malicious_case_ids: &["skill-wget-allowed-tools"],
+            benign_case_ids: &["skill-wget-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Bash(wget:*)` inside allowed-tools or allowed_tools.",
         },
         check: check_wget_allowed_tools,
         safe_fix: None,
@@ -906,9 +969,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 44] = [
         surface: Surface::Markdown,
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `Bash(git clone:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for wildcard git clone grants in shared allowed-tools policy.",
+            malicious_case_ids: &["skill-git-clone-allowed-tools"],
+            benign_case_ids: &["skill-git-clone-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Bash(git clone:*)` inside allowed-tools or allowed_tools.",
         },
         check: check_git_clone_allowed_tools,
         safe_fix: None,
@@ -922,9 +989,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 44] = [
         surface: Surface::Markdown,
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Bare Read grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for bare Read grants that omit a reviewed repo-local scope.",
+            malicious_case_ids: &["skill-unscoped-read-allowed-tools"],
+            benign_case_ids: &["skill-unscoped-read-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for bare `Read` inside allowed-tools or allowed_tools.",
         },
         check: check_unscoped_read_allowed_tools,
         safe_fix: None,
@@ -938,9 +1009,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 44] = [
         surface: Surface::Markdown,
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Bare Write grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for bare Write grants that omit a reviewed repo-local scope.",
+            malicious_case_ids: &["skill-unscoped-write-allowed-tools"],
+            benign_case_ids: &["skill-unscoped-write-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for bare `Write` inside allowed-tools or allowed_tools.",
         },
         check: check_unscoped_write_allowed_tools,
         safe_fix: None,
@@ -954,9 +1029,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 44] = [
         surface: Surface::Markdown,
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Bare Edit grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for bare Edit grants that omit a reviewed repo-local scope.",
+            malicious_case_ids: &["skill-unscoped-edit-allowed-tools"],
+            benign_case_ids: &["skill-unscoped-edit-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for bare `Edit` inside allowed-tools or allowed_tools.",
         },
         check: check_unscoped_edit_allowed_tools,
         safe_fix: None,
@@ -1050,9 +1129,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 44] = [
         surface: Surface::Markdown,
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Bare Glob grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for bare Glob grants that omit a reviewed repo-local discovery scope.",
+            malicious_case_ids: &["skill-unscoped-glob-allowed-tools"],
+            benign_case_ids: &["skill-unscoped-glob-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for bare `Glob` inside allowed-tools or allowed_tools.",
         },
         check: check_unscoped_glob_allowed_tools,
         safe_fix: None,
@@ -1066,14 +1149,98 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 44] = [
         surface: Surface::Markdown,
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Bare Grep grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for bare Grep grants that omit a reviewed search scope.",
+            malicious_case_ids: &["skill-unscoped-grep-allowed-tools"],
+            benign_case_ids: &["skill-unscoped-grep-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for bare `Grep` inside allowed-tools or allowed_tools.",
         },
         check: check_unscoped_grep_allowed_tools,
         safe_fix: None,
         suggestion_message: Some(
             "replace bare `Grep` with narrower reviewed grep patterns or remove broad content-search authority from the shared frontmatter grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ReadUnsafePathAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for `Read(...)` grants scoped to absolute, home-relative, drive-letter, or parent-traversing paths outside the repository boundary.",
+            malicious_case_ids: &["skill-read-unsafe-path-allowed-tools"],
+            benign_case_ids: &["skill-read-unsafe-path-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token analysis for `Read(...)` scopes with absolute, home-relative, drive-letter, or parent-traversing path markers.",
+        },
+        check: check_read_unsafe_path_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace repo-external `Read(...)` grants with narrower repo-local paths like `Read(./docs/**)` or remove shared read access outside the project",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: WriteUnsafePathAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for `Write(...)` grants scoped to absolute, home-relative, drive-letter, or parent-traversing paths outside the repository boundary.",
+            malicious_case_ids: &["skill-write-unsafe-path-allowed-tools"],
+            benign_case_ids: &["skill-write-unsafe-path-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token analysis for `Write(...)` scopes with absolute, home-relative, drive-letter, or parent-traversing path markers.",
+        },
+        check: check_write_unsafe_path_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace repo-external `Write(...)` grants with narrower repo-local paths like `Write(./artifacts/**)` or remove shared write access outside the project",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: EditUnsafePathAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for `Edit(...)` grants scoped to absolute, home-relative, drive-letter, or parent-traversing paths outside the repository boundary.",
+            malicious_case_ids: &["skill-edit-unsafe-path-allowed-tools"],
+            benign_case_ids: &["skill-edit-unsafe-path-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token analysis for `Edit(...)` scopes with absolute, home-relative, drive-letter, or parent-traversing path markers.",
+        },
+        check: check_edit_unsafe_path_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace repo-external `Edit(...)` grants with narrower repo-local paths like `Edit(./docs/**)` or remove shared edit access outside the project",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GlobUnsafePathAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for `Glob(...)` grants scoped to absolute, home-relative, drive-letter, or parent-traversing paths outside the repository boundary.",
+            malicious_case_ids: &["skill-glob-unsafe-path-allowed-tools"],
+            benign_case_ids: &["skill-glob-unsafe-path-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token analysis for `Glob(...)` scopes with absolute, home-relative, drive-letter, or parent-traversing path markers.",
+        },
+        check: check_glob_unsafe_path_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace repo-external `Glob(...)` grants with narrower repo-local discovery patterns like `Glob(./docs/**)` or remove shared file-discovery access outside the project",
         ),
         suggestion_fix: None,
     },

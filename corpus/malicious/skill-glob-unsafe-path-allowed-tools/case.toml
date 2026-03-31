@@ -1,0 +1,12 @@
+id = "skill-glob-unsafe-path-allowed-tools"
+kind = "malicious"
+description = "AI-native markdown frontmatter grants Glob over a repo-external path"
+
+[[artifacts]]
+path = "SKILL.md"
+kind = "Skill"
+source_format = "markdown"
+
+[[expectations]]
+rule = "SEC431"
+path = "SKILL.md"

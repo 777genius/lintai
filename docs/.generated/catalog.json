@@ -147,7 +147,11 @@
         "lintai-ai-security:SEC424",
         "lintai-ai-security:SEC425",
         "lintai-ai-security:SEC426",
-        "lintai-ai-security:SEC427"
+        "lintai-ai-security:SEC427",
+        "lintai-ai-security:SEC428",
+        "lintai-ai-security:SEC429",
+        "lintai-ai-security:SEC430",
+        "lintai-ai-security:SEC431"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -205,7 +209,11 @@
         "lintai-ai-security:SEC424",
         "lintai-ai-security:SEC425",
         "lintai-ai-security:SEC426",
-        "lintai-ai-security:SEC427"
+        "lintai-ai-security:SEC427",
+        "lintai-ai-security:SEC428",
+        "lintai-ai-security:SEC429",
+        "lintai-ai-security:SEC430",
+        "lintai-ai-security:SEC431"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -4290,11 +4298,19 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `Bash(curl:*)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for explicit wildcard curl execution grants.",
+        "maliciousCaseIds": [
+          "claude-settings-curl-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-curl-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(curl:*)` inside permissions.allow on parsed Claude settings JSON."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -4321,11 +4337,19 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `Bash(wget:*)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for explicit wildcard wget execution grants.",
+        "maliciousCaseIds": [
+          "claude-settings-wget-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-wget-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(wget:*)` inside permissions.allow on parsed Claude settings JSON."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -4352,11 +4376,19 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `git config` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for wildcard git config mutation grants.",
+        "maliciousCaseIds": [
+          "claude-settings-git-config-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-git-config-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(git config:*)` inside permissions.allow on parsed Claude settings JSON."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -4383,11 +4415,19 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `git tag` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for wildcard git tag mutation grants.",
+        "maliciousCaseIds": [
+          "claude-settings-git-tag-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-git-tag-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(git tag:*)` inside permissions.allow on parsed Claude settings JSON."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -4414,11 +4454,19 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `git branch` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for wildcard git branch mutation grants.",
+        "maliciousCaseIds": [
+          "claude-settings-git-branch-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-git-branch-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(git branch:*)` inside permissions.allow on parsed Claude settings JSON."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -4476,11 +4524,19 @@
         "preview",
         "skills"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Git-backed `pip install` examples in markdown can be legitimate setup guidance, so the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for `pip install` examples that pull directly from mutable git+https sources without commit pinning.",
+        "maliciousCaseIds": [
+          "claude-unpinned-pip-git-install"
+        ],
+        "benignCaseIds": [
+          "claude-unpinned-pip-git-install-commit-pinned-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `pip install` plus `git+https://` token analysis with commit-pin detection inside parsed markdown regions."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -4507,11 +4563,19 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `WebFetch(domain:raw.githubusercontent.com)` grants are useful review signals, but the first release stays Preview while broader external usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for explicit raw GitHub content fetch grants.",
+        "maliciousCaseIds": [
+          "claude-settings-webfetch-raw-github-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-webfetch-raw-github-fixture-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `WebFetch(domain:raw.githubusercontent.com)` inside permissions.allow on parsed Claude settings JSON."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -4538,11 +4602,19 @@
         "preview",
         "skills"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `Bash(curl:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for explicit wildcard curl grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-curl-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-curl-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(curl:*)` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -4569,11 +4641,19 @@
         "preview",
         "skills"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `Bash(wget:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for explicit wildcard wget grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-wget-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-wget-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(wget:*)` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -4600,11 +4680,19 @@
         "preview",
         "skills"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `Bash(git clone:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for wildcard git clone grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-git-clone-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-git-clone-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(git clone:*)` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -4670,11 +4758,19 @@
         "preview",
         "skills"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Bare Read grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for bare Read grants that omit a reviewed repo-local scope.",
+        "maliciousCaseIds": [
+          "skill-unscoped-read-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-unscoped-read-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for bare `Read` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -4701,11 +4797,19 @@
         "preview",
         "skills"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Bare Write grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for bare Write grants that omit a reviewed repo-local scope.",
+        "maliciousCaseIds": [
+          "skill-unscoped-write-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-unscoped-write-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for bare `Write` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -4732,11 +4836,19 @@
         "preview",
         "skills"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Bare Edit grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for bare Edit grants that omit a reviewed repo-local scope.",
+        "maliciousCaseIds": [
+          "skill-unscoped-edit-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-unscoped-edit-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for bare `Edit` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -4763,11 +4875,19 @@
         "preview",
         "skills"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Bare Glob grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for bare Glob grants that omit a reviewed repo-local discovery scope.",
+        "maliciousCaseIds": [
+          "skill-unscoped-glob-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-unscoped-glob-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for bare `Glob` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -4794,11 +4914,175 @@
         "preview",
         "skills"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Bare Grep grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for bare Grep grants that omit a reviewed search scope.",
+        "maliciousCaseIds": [
+          "skill-unscoped-grep-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-unscoped-grep-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for bare `Grep` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC428",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC428",
+      "alias": "MD-READ-UNSAFE-PATH",
+      "displayLabel": "SEC428 / MD-READ-UNSAFE-PATH",
+      "docTitle": "AI markdown: unsafe Read path grant",
+      "slug": "sec428",
+      "canonicalPath": "/rules/lintai-ai-security/sec428",
+      "summary": "AI-native markdown frontmatter grants `Read(...)` over an unsafe repo-external path",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for `Read(...)` grants scoped to absolute, home-relative, drive-letter, or parent-traversing paths outside the repository boundary.",
+        "maliciousCaseIds": [
+          "skill-read-unsafe-path-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-read-unsafe-path-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token analysis for `Read(...)` scopes with absolute, home-relative, drive-letter, or parent-traversing path markers."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC429",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC429",
+      "alias": "MD-WRITE-UNSAFE-PATH",
+      "displayLabel": "SEC429 / MD-WRITE-UNSAFE-PATH",
+      "docTitle": "AI markdown: unsafe Write path grant",
+      "slug": "sec429",
+      "canonicalPath": "/rules/lintai-ai-security/sec429",
+      "summary": "AI-native markdown frontmatter grants `Write(...)` over an unsafe repo-external path",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for `Write(...)` grants scoped to absolute, home-relative, drive-letter, or parent-traversing paths outside the repository boundary.",
+        "maliciousCaseIds": [
+          "skill-write-unsafe-path-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-write-unsafe-path-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token analysis for `Write(...)` scopes with absolute, home-relative, drive-letter, or parent-traversing path markers."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC430",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC430",
+      "alias": "MD-EDIT-UNSAFE-PATH",
+      "displayLabel": "SEC430 / MD-EDIT-UNSAFE-PATH",
+      "docTitle": "AI markdown: unsafe Edit path grant",
+      "slug": "sec430",
+      "canonicalPath": "/rules/lintai-ai-security/sec430",
+      "summary": "AI-native markdown frontmatter grants `Edit(...)` over an unsafe repo-external path",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for `Edit(...)` grants scoped to absolute, home-relative, drive-letter, or parent-traversing paths outside the repository boundary.",
+        "maliciousCaseIds": [
+          "skill-edit-unsafe-path-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-edit-unsafe-path-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token analysis for `Edit(...)` scopes with absolute, home-relative, drive-letter, or parent-traversing path markers."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC431",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC431",
+      "alias": "MD-GLOB-UNSAFE-PATH",
+      "displayLabel": "SEC431 / MD-GLOB-UNSAFE-PATH",
+      "docTitle": "AI markdown: unsafe Glob path grant",
+      "slug": "sec431",
+      "canonicalPath": "/rules/lintai-ai-security/sec431",
+      "summary": "AI-native markdown frontmatter grants `Glob(...)` over an unsafe repo-external path",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for `Glob(...)` grants scoped to absolute, home-relative, drive-letter, or parent-traversing paths outside the repository boundary.",
+        "maliciousCaseIds": [
+          "skill-glob-unsafe-path-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-glob-unsafe-path-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token analysis for `Glob(...)` scopes with absolute, home-relative, drive-letter, or parent-traversing path markers."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

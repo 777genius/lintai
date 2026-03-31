@@ -129,23 +129,27 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC408 / CLAUDE-GH-PR-PERMISSION` | Claude settings permissions allow `Bash(gh pr:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC409 / CLAUDE-GIT-FETCH-PERMISSION` | Claude settings permissions allow `Bash(git fetch:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC410 / CLAUDE-GIT-LS-REMOTE-PERMISSION` | Claude settings permissions allow `Bash(git ls-remote:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC411 / CLAUDE-CURL-PERMISSION` | Claude settings permissions allow `Bash(curl:*)` in a shared committed config | Stable | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC412 / CLAUDE-WGET-PERMISSION` | Claude settings permissions allow `Bash(wget:*)` in a shared committed config | Stable | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC413 / CLAUDE-GIT-CONFIG-PERMISSION` | Claude settings permissions allow `Bash(git config:*)` in a shared committed config | Stable | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC414 / CLAUDE-GIT-TAG-PERMISSION` | Claude settings permissions allow `Bash(git tag:*)` in a shared committed config | Stable | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC415 / CLAUDE-GIT-BRANCH-PERMISSION` | Claude settings permissions allow `Bash(git branch:*)` in a shared committed config | Stable | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC411 / CLAUDE-CURL-PERMISSION` | Claude settings permissions allow `Bash(curl:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC412 / CLAUDE-WGET-PERMISSION` | Claude settings permissions allow `Bash(wget:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC413 / CLAUDE-GIT-CONFIG-PERMISSION` | Claude settings permissions allow `Bash(git config:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC414 / CLAUDE-GIT-TAG-PERMISSION` | Claude settings permissions allow `Bash(git tag:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC415 / CLAUDE-GIT-BRANCH-PERMISSION` | Claude settings permissions allow `Bash(git branch:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC416 / MD-CLAUDE-PIP-INSTALL` | AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC417 / MD-PIP-GIT-UNPINNED` | AI-native markdown installs Python packages from an unpinned `git+https://` source | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC418 / CLAUDE-WEBFETCH-RAW-GITHUB` | Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config | Stable | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC419 / MD-CURL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(curl:*)` authority | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC420 / MD-WGET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(wget:*)` authority | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC421 / MD-GIT-CLONE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git clone:*)` authority | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC417 / MD-PIP-GIT-UNPINNED` | AI-native markdown installs Python packages from an unpinned `git+https://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC418 / CLAUDE-WEBFETCH-RAW-GITHUB` | Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC419 / MD-CURL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(curl:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC420 / MD-WGET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(wget:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC421 / MD-GIT-CLONE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git clone:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC422 / MCP-COMMAND-SUDO` | MCP configuration launches the server through `sudo` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC423 / MD-READ-UNSCOPED` | AI-native markdown frontmatter grants bare `Read` tool access | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC424 / MD-WRITE-UNSCOPED` | AI-native markdown frontmatter grants bare `Write` tool access | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC425 / MD-EDIT-UNSCOPED` | AI-native markdown frontmatter grants bare `Edit` tool access | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC426 / MD-GLOB-UNSCOPED` | AI-native markdown frontmatter grants bare `Glob` tool access | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC427 / MD-GREP-UNSCOPED` | AI-native markdown frontmatter grants bare `Grep` tool access | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC423 / MD-READ-UNSCOPED` | AI-native markdown frontmatter grants bare `Read` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC424 / MD-WRITE-UNSCOPED` | AI-native markdown frontmatter grants bare `Write` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC425 / MD-EDIT-UNSCOPED` | AI-native markdown frontmatter grants bare `Edit` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC426 / MD-GLOB-UNSCOPED` | AI-native markdown frontmatter grants bare `Glob` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC427 / MD-GREP-UNSCOPED` | AI-native markdown frontmatter grants bare `Grep` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC428 / MD-READ-UNSAFE-PATH` | AI-native markdown frontmatter grants `Read(...)` over an unsafe repo-external path | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC429 / MD-WRITE-UNSAFE-PATH` | AI-native markdown frontmatter grants `Write(...)` over an unsafe repo-external path | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC430 / MD-EDIT-UNSAFE-PATH` | AI-native markdown frontmatter grants `Edit(...)` over an unsafe repo-external path | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC431 / MD-GLOB-UNSAFE-PATH` | AI-native markdown frontmatter grants `Glob(...)` over an unsafe repo-external path | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -2317,9 +2321,13 @@ Important behavior:
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `Bash(curl:*)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for explicit wildcard curl execution grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(curl:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-curl-permission`
+- Benign Corpus: `claude-settings-curl-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC412 / CLAUDE-WGET-PERMISSION` — Claude settings permissions allow `Bash(wget:*)` in a shared committed config
@@ -2334,9 +2342,13 @@ Important behavior:
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `Bash(wget:*)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for explicit wildcard wget execution grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(wget:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-wget-permission`
+- Benign Corpus: `claude-settings-wget-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC413 / CLAUDE-GIT-CONFIG-PERMISSION` — Claude settings permissions allow `Bash(git config:*)` in a shared committed config
@@ -2351,9 +2363,13 @@ Important behavior:
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `git config` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for wildcard git config mutation grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(git config:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-git-config-permission`
+- Benign Corpus: `claude-settings-git-config-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC414 / CLAUDE-GIT-TAG-PERMISSION` — Claude settings permissions allow `Bash(git tag:*)` in a shared committed config
@@ -2368,9 +2384,13 @@ Important behavior:
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `git tag` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for wildcard git tag mutation grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(git tag:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-git-tag-permission`
+- Benign Corpus: `claude-settings-git-tag-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC415 / CLAUDE-GIT-BRANCH-PERMISSION` — Claude settings permissions allow `Bash(git branch:*)` in a shared committed config
@@ -2385,9 +2405,13 @@ Important behavior:
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `git branch` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for wildcard git branch mutation grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(git branch:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-git-branch-permission`
+- Benign Corpus: `claude-settings-git-branch-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC416 / MD-CLAUDE-PIP-INSTALL` — AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance
@@ -2419,9 +2443,13 @@ Important behavior:
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Git-backed `pip install` examples in markdown can be legitimate setup guidance, so the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown for `pip install` examples that pull directly from mutable git+https sources without commit pinning.
+- Deterministic Signal Basis: MarkdownSignals exact `pip install` plus `git+https://` token analysis with commit-pin detection inside parsed markdown regions.
+- Malicious Corpus: `claude-unpinned-pip-git-install`
+- Benign Corpus: `claude-unpinned-pip-git-install-commit-pinned-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC418 / CLAUDE-WEBFETCH-RAW-GITHUB` — Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config
@@ -2436,9 +2464,13 @@ Important behavior:
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `WebFetch(domain:raw.githubusercontent.com)` grants are useful review signals, but the first release stays Preview while broader external usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for explicit raw GitHub content fetch grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `WebFetch(domain:raw.githubusercontent.com)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-webfetch-raw-github-permission`
+- Benign Corpus: `claude-settings-webfetch-raw-github-fixture-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC419 / MD-CURL-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(curl:*)` authority
@@ -2453,9 +2485,13 @@ Important behavior:
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `Bash(curl:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for explicit wildcard curl grants in shared allowed-tools policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Bash(curl:*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-curl-allowed-tools`
+- Benign Corpus: `skill-curl-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC420 / MD-WGET-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(wget:*)` authority
@@ -2470,9 +2506,13 @@ Important behavior:
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `Bash(wget:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for explicit wildcard wget grants in shared allowed-tools policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Bash(wget:*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-wget-allowed-tools`
+- Benign Corpus: `skill-wget-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC421 / MD-GIT-CLONE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(git clone:*)` authority
@@ -2487,9 +2527,13 @@ Important behavior:
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `Bash(git clone:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for wildcard git clone grants in shared allowed-tools policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Bash(git clone:*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-git-clone-allowed-tools`
+- Benign Corpus: `skill-git-clone-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC422 / MCP-COMMAND-SUDO` — MCP configuration launches the server through `sudo`
@@ -2525,9 +2569,13 @@ Important behavior:
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Bare Read grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for bare Read grants that omit a reviewed repo-local scope.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for bare `Read` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-unscoped-read-allowed-tools`
+- Benign Corpus: `skill-unscoped-read-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC424 / MD-WRITE-UNSCOPED` — AI-native markdown frontmatter grants bare `Write` tool access
@@ -2542,9 +2590,13 @@ Important behavior:
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Bare Write grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for bare Write grants that omit a reviewed repo-local scope.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for bare `Write` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-unscoped-write-allowed-tools`
+- Benign Corpus: `skill-unscoped-write-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC425 / MD-EDIT-UNSCOPED` — AI-native markdown frontmatter grants bare `Edit` tool access
@@ -2559,9 +2611,13 @@ Important behavior:
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Bare Edit grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for bare Edit grants that omit a reviewed repo-local scope.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for bare `Edit` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-unscoped-edit-allowed-tools`
+- Benign Corpus: `skill-unscoped-edit-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC426 / MD-GLOB-UNSCOPED` — AI-native markdown frontmatter grants bare `Glob` tool access
@@ -2576,9 +2632,13 @@ Important behavior:
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Bare Glob grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for bare Glob grants that omit a reviewed repo-local discovery scope.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for bare `Glob` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-unscoped-glob-allowed-tools`
+- Benign Corpus: `skill-unscoped-glob-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC427 / MD-GREP-UNSCOPED` — AI-native markdown frontmatter grants bare `Grep` tool access
@@ -2593,9 +2653,97 @@ Important behavior:
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Bare Grep grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for bare Grep grants that omit a reviewed search scope.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for bare `Grep` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-unscoped-grep-allowed-tools`
+- Benign Corpus: `skill-unscoped-grep-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC428 / MD-READ-UNSAFE-PATH` — AI-native markdown frontmatter grants `Read(...)` over an unsafe repo-external path
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-READ-UNSAFE-PATH`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for `Read(...)` grants scoped to absolute, home-relative, drive-letter, or parent-traversing paths outside the repository boundary.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token analysis for `Read(...)` scopes with absolute, home-relative, drive-letter, or parent-traversing path markers.
+- Malicious Corpus: `skill-read-unsafe-path-allowed-tools`
+- Benign Corpus: `skill-read-unsafe-path-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC429 / MD-WRITE-UNSAFE-PATH` — AI-native markdown frontmatter grants `Write(...)` over an unsafe repo-external path
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-WRITE-UNSAFE-PATH`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for `Write(...)` grants scoped to absolute, home-relative, drive-letter, or parent-traversing paths outside the repository boundary.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token analysis for `Write(...)` scopes with absolute, home-relative, drive-letter, or parent-traversing path markers.
+- Malicious Corpus: `skill-write-unsafe-path-allowed-tools`
+- Benign Corpus: `skill-write-unsafe-path-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC430 / MD-EDIT-UNSAFE-PATH` — AI-native markdown frontmatter grants `Edit(...)` over an unsafe repo-external path
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-EDIT-UNSAFE-PATH`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for `Edit(...)` grants scoped to absolute, home-relative, drive-letter, or parent-traversing paths outside the repository boundary.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token analysis for `Edit(...)` scopes with absolute, home-relative, drive-letter, or parent-traversing path markers.
+- Malicious Corpus: `skill-edit-unsafe-path-allowed-tools`
+- Benign Corpus: `skill-edit-unsafe-path-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC431 / MD-GLOB-UNSAFE-PATH` — AI-native markdown frontmatter grants `Glob(...)` over an unsafe repo-external path
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GLOB-UNSAFE-PATH`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for `Glob(...)` grants scoped to absolute, home-relative, drive-letter, or parent-traversing paths outside the repository boundary.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token analysis for `Glob(...)` scopes with absolute, home-relative, drive-letter, or parent-traversing path markers.
+- Malicious Corpus: `skill-glob-unsafe-path-allowed-tools`
+- Benign Corpus: `skill-glob-unsafe-path-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ## Provider: `lintai-policy-mismatch`

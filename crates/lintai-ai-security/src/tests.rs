@@ -1835,6 +1835,134 @@ fn ignores_unscoped_grep_allowed_tools_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_read_unsafe_path_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Read(/etc/**), Write(./artifacts/**)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC428")
+        .unwrap();
+    let start = content.find("Read(/etc/**)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Read(/etc/**)".len())
+    );
+}
+
+#[test]
+fn ignores_repo_local_read_scope_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Read(./docs/**), Write(./artifacts/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC428")
+    );
+}
+
+#[test]
+fn finds_write_unsafe_path_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Write(../shared/**), Read(./docs/**)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC429")
+        .unwrap();
+    let start = content.find("Write(../shared/**)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Write(../shared/**)".len())
+    );
+}
+
+#[test]
+fn ignores_repo_local_write_scope_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Write(./artifacts/**), Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC429")
+    );
+}
+
+#[test]
+fn finds_edit_unsafe_path_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Edit(~/workspace/**), Read(./docs/**)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC430")
+        .unwrap();
+    let start = content.find("Edit(~/workspace/**)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Edit(~/workspace/**)".len())
+    );
+}
+
+#[test]
+fn ignores_repo_local_edit_scope_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Edit(./docs/**), Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC430")
+    );
+}
+
+#[test]
+fn finds_glob_unsafe_path_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Glob(/var/log/**), Read(./docs/**)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC431")
+        .unwrap();
+    let start = content.find("Glob(/var/log/**)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Glob(/var/log/**)".len())
+    );
+}
+
+#[test]
+fn ignores_repo_local_glob_scope_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Glob(./docs/**), Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC431")
+    );
+}
+
+#[test]
 fn finds_wildcard_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: \"*\"\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

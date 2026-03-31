@@ -20,6 +20,32 @@ fn is_wildcard_tool_token(token: &str) -> bool {
     token.trim() == "*"
 }
 
+fn tool_has_unsafe_path_scope(token: &str, tool_name: &str) -> bool {
+    let trimmed = token.trim();
+    let Some(inner) = trimmed
+        .strip_prefix(tool_name)
+        .and_then(|remainder| remainder.strip_prefix('('))
+        .and_then(|remainder| remainder.strip_suffix(')'))
+    else {
+        return false;
+    };
+
+    is_unsafe_tool_scope_path(inner)
+}
+
+fn is_unsafe_tool_scope_path(value: &str) -> bool {
+    let normalized = value.trim();
+    normalized.starts_with('/')
+        || normalized.starts_with("~/")
+        || normalized.starts_with("~\\")
+        || normalized.contains("../")
+        || normalized.contains("..\\")
+        || normalized
+            .as_bytes()
+            .get(1)
+            .is_some_and(|byte| *byte == b':')
+}
+
 fn normalize_tool_token(token: &str) -> &str {
     token
         .trim()
@@ -118,6 +144,10 @@ pub(crate) fn frontmatter_has_wildcard_tool_access(value: &Value) -> bool {
 
 pub(crate) fn frontmatter_has_exact_allowed_tool(value: &Value, permission: &str) -> bool {
     frontmatter_has_matching_tool(value, |token| token == permission)
+}
+
+pub(crate) fn frontmatter_has_unsafe_path_allowed_tool(value: &Value, tool_name: &str) -> bool {
+    frontmatter_has_matching_tool(value, |token| tool_has_unsafe_path_scope(token, tool_name))
 }
 
 pub(crate) fn frontmatter_has_key(value: &Value, key: &str) -> bool {
@@ -283,6 +313,15 @@ pub(crate) fn find_exact_allowed_tool_frontmatter_relative_span(
 ) -> Option<Span> {
     find_matching_tool_frontmatter_relative_span(text, ALLOWED_TOOLS_KEYS, |token| {
         token == permission
+    })
+}
+
+pub(crate) fn find_unsafe_path_allowed_tool_frontmatter_relative_span(
+    text: &str,
+    tool_name: &str,
+) -> Option<Span> {
+    find_matching_tool_frontmatter_relative_span(text, ALLOWED_TOOLS_KEYS, |token| {
+        tool_has_unsafe_path_scope(token, tool_name)
     })
 }
 

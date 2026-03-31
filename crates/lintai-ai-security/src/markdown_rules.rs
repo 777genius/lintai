@@ -539,6 +539,70 @@ pub(crate) fn check_unscoped_grep_allowed_tools(
     )
 }
 
+pub(crate) fn check_read_unsafe_path_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.read_unsafe_path_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Read(...)` over an unsafe absolute, home-relative, or parent-traversing path",
+    )
+}
+
+pub(crate) fn check_write_unsafe_path_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.write_unsafe_path_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Write(...)` over an unsafe absolute, home-relative, or parent-traversing path",
+    )
+}
+
+pub(crate) fn check_edit_unsafe_path_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.edit_unsafe_path_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Edit(...)` over an unsafe absolute, home-relative, or parent-traversing path",
+    )
+}
+
+pub(crate) fn check_glob_unsafe_path_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.glob_unsafe_path_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Glob(...)` over an unsafe absolute, home-relative, or parent-traversing path",
+    )
+}
+
 pub(crate) fn check_wildcard_tool_access(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

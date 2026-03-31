@@ -1,0 +1,8 @@
+id = "skill-write-unsafe-path-allowed-tools-specific-safe"
+kind = "benign"
+description = "AI-native markdown frontmatter keeps Write scoped to repo-local paths"
+
+[[artifacts]]
+path = "SKILL.md"
+kind = "Skill"
+source_format = "markdown"
