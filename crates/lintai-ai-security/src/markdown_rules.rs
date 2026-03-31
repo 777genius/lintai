@@ -331,6 +331,22 @@ pub(crate) fn check_curl_allowed_tools(
     )
 }
 
+pub(crate) fn check_wget_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.wget_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(wget:*)` authority",
+    )
+}
+
 pub(crate) fn check_wildcard_tool_access(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

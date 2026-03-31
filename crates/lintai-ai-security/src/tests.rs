@@ -1347,6 +1347,53 @@ fn ignores_curl_allowed_tools_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_wget_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(wget:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC420")
+        .unwrap();
+    let start = content.find("Bash(wget:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(wget:*)".len())
+    );
+}
+
+#[test]
+fn ignores_wget_allowed_tools_when_command_is_more_specific() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(wget https://example.com/tool.tgz), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC420")
+    );
+}
+
+#[test]
+fn ignores_wget_allowed_tools_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/skill/SKILL.md",
+        "---\nallowed-tools: Bash(wget:*), Read\n---\n# Fixture skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC420")
+    );
+}
+
+#[test]
 fn finds_wildcard_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: \"*\"\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

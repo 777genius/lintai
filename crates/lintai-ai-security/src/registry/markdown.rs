@@ -17,7 +17,7 @@ use crate::markdown_rules::{
     check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
     check_plugin_agent_hooks_frontmatter, check_plugin_agent_mcp_servers_frontmatter,
     check_plugin_agent_permission_mode, check_unscoped_bash_allowed_tools,
-    check_untrusted_instruction_promotion, check_wildcard_tool_access,
+    check_untrusted_instruction_promotion, check_wget_allowed_tools, check_wildcard_tool_access,
 };
 
 declare_rule! {
@@ -273,6 +273,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct WgetAllowedToolsRule {
+        code: "SEC420",
+        summary: "AI-native markdown frontmatter grants `Bash(wget:*)` authority",
+        doc_title: "AI markdown: `Bash(wget:*)` tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct PluginAgentPermissionModeRule {
         code: "SEC356",
         summary: "Plugin agent frontmatter sets `permissionMode`",
@@ -392,7 +404,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 31] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -626,6 +638,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 31] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(curl:*)` authority is really needed, or replace it with a narrower reviewed fetch workflow instead of a default team-wide grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: WgetAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `Bash(wget:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_wget_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(wget:*)` authority is really needed, or replace it with a narrower reviewed fetch workflow instead of a default team-wide grant",
         ),
         suggestion_fix: None,
     },
