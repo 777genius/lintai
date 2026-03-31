@@ -195,6 +195,22 @@ pub(crate) fn check_markdown_pip_trusted_host(
     )
 }
 
+pub(crate) fn check_markdown_pip_http_index(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.pip_http_index_spans.as_slice())
+            .unwrap_or(&[]),
+        "AI-native markdown installs Python packages from an insecure `http://` package index",
+    )
+}
+
 pub(crate) fn check_markdown_mutable_docker_image(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

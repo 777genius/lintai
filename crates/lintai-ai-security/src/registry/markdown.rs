@@ -21,7 +21,7 @@ use crate::markdown_rules::{
     check_markdown_download_exec, check_markdown_fenced_pipe_shell,
     check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
     check_markdown_mutable_mcp_launcher, check_markdown_path_traversal,
-    check_markdown_pip_trusted_host, check_markdown_private_key_pem,
+    check_markdown_pip_http_index, check_markdown_pip_trusted_host, check_markdown_private_key_pem,
     check_markdown_unpinned_pip_git_install, check_package_install_allowed_tools,
     check_plugin_agent_hooks_frontmatter, check_plugin_agent_mcp_servers_frontmatter,
     check_plugin_agent_permission_mode, check_read_unsafe_path_allowed_tools,
@@ -146,6 +146,18 @@ declare_rule! {
         code: "SEC448",
         summary: "AI-native markdown installs Python packages with `--trusted-host`",
         doc_title: "AI markdown: pip trusted-host",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownPipHttpIndexRule {
+        code: "SEC449",
+        summary: "AI-native markdown installs Python packages from an insecure `http://` package index",
+        doc_title: "AI markdown: pip http index",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -801,7 +813,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 64] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 65] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -963,6 +975,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 64] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove `--trusted-host` and use a normal TLS-verified Python package source instead",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownPipHttpIndexRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown for `pip install` examples that point package index resolution at `http://` sources.",
+            malicious_case_ids: &["skill-pip-http-index"],
+            benign_case_ids: &["skill-pip-https-index-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact `pip install` token analysis with `--index-url http://` or `--extra-index-url http://` detection inside parsed markdown regions.",
+        },
+        check: check_markdown_pip_http_index,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace the insecure `http://` package index with a normal TLS-verified `https://` source",
         ),
         suggestion_fix: None,
     },

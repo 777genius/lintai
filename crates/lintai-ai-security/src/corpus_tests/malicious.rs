@@ -163,6 +163,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "skill-mcp-config-pipx-run-launcher",
             "skill-metadata-service-access",
             "skill-package-install-allowed-tools",
+            "skill-pip-http-index",
             "skill-pip-trusted-host",
             "skill-private-key-pem",
             "skill-read-unsafe-path-allowed-tools",

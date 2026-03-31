@@ -75,6 +75,25 @@ pub(crate) fn find_pip_trusted_host_relative_span(text: &str) -> Option<Span> {
     None
 }
 
+pub(crate) fn find_pip_http_index_relative_span(text: &str) -> Option<Span> {
+    let mut offset = 0usize;
+    for line in text.split_inclusive('\n') {
+        if let Some(relative) = find_pip_http_index_in_line(line) {
+            return Some(Span::new(
+                offset + relative.start_byte,
+                offset + relative.end_byte,
+            ));
+        }
+        offset += line.len();
+    }
+
+    if !text.ends_with('\n') {
+        return find_pip_http_index_in_line(text);
+    }
+
+    None
+}
+
 fn find_claude_bare_pip_install_in_line(line: &str) -> Option<Span> {
     let lowered = line.to_ascii_lowercase();
     let Some(claude_start) = lowered.find("claude:") else {
@@ -145,6 +164,30 @@ fn find_pip_trusted_host_in_line(line: &str) -> Option<Span> {
     Some(Span::new(start, start + "--trusted-host".len()))
 }
 
+fn find_pip_http_index_in_line(line: &str) -> Option<Span> {
+    let lowered = line.to_ascii_lowercase();
+    let mut install_start = None;
+    for marker in PIP_GIT_INSTALL_MARKERS {
+        if let Some(relative) = lowered.find(marker) {
+            install_start = Some(relative + marker.len());
+            break;
+        }
+    }
+    let Some(search_start) = install_start else {
+        return None;
+    };
+
+    let search_slice = &lowered[search_start..];
+    for marker in ["--index-url http://", "--extra-index-url http://"] {
+        if let Some(relative_http) = search_slice.find(marker) {
+            let start = search_start + relative_http + marker.len() - "http://".len();
+            return Some(Span::new(start, start + "http://".len()));
+        }
+    }
+
+    None
+}
+
 fn has_immutable_git_ref(url: &str) -> bool {
     let Some(scheme_start) = url.find("git+https://") else {
         return false;
@@ -164,8 +207,9 @@ fn has_immutable_git_ref(url: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::{
-        find_claude_bare_pip_install_relative_span, find_pip_trusted_host_relative_span,
-        find_unpinned_pip_git_install_relative_span, has_uv_instead_of_pip_preference,
+        find_claude_bare_pip_install_relative_span, find_pip_http_index_relative_span,
+        find_pip_trusted_host_relative_span, find_unpinned_pip_git_install_relative_span,
+        has_uv_instead_of_pip_preference,
     };
 
     #[test]
@@ -216,5 +260,17 @@ mod tests {
     fn ignores_non_pip_trusted_host() {
         let content = "curl --trusted-host pypi.example.test https://example.test/install.sh\n";
         assert_eq!(find_pip_trusted_host_relative_span(content), None);
+    }
+
+    #[test]
+    fn finds_pip_http_index() {
+        let content = "pip install --index-url http://pypi.example.test/simple demo\n";
+        assert!(find_pip_http_index_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn ignores_pip_https_index() {
+        let content = "pip install --index-url https://pypi.example.test/simple demo\n";
+        assert_eq!(find_pip_http_index_relative_span(content), None);
     }
 }

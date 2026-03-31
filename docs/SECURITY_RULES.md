@@ -167,6 +167,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC446 / MCP-ARGS-SUDO` | MCP configuration passes `sudo` as the first launch argument | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC447 / MD-PACKAGE-INSTALL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants package installation authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC448 / MD-PIP-TRUSTED-HOST` | AI-native markdown installs Python packages with `--trusted-host` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC449 / MD-PIP-HTTP-INDEX` | AI-native markdown installs Python packages from an insecure `http://` package index | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -3116,6 +3117,27 @@ Important behavior:
 - Deterministic Signal Basis: MarkdownSignals exact `pip install` token analysis with `--trusted-host` detection inside parsed markdown regions.
 - Malicious Corpus: `skill-pip-trusted-host`
 - Benign Corpus: `skill-pip-index-url-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC449 / MD-PIP-HTTP-INDEX` — AI-native markdown installs Python packages from an insecure `http://` package index
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-PIP-HTTP-INDEX`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown for `pip install` examples that point package index resolution at `http://` sources.
+- Deterministic Signal Basis: MarkdownSignals exact `pip install` token analysis with `--index-url http://` or `--extra-index-url http://` detection inside parsed markdown regions.
+- Malicious Corpus: `skill-pip-http-index`
+- Benign Corpus: `skill-pip-https-index-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
