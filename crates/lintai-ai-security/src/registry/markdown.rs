@@ -20,10 +20,11 @@ use crate::markdown_rules::{
     check_markdown_cargo_http_git_install, check_markdown_cargo_http_index,
     check_markdown_claude_bare_pip_install, check_markdown_docker_host_escape,
     check_markdown_download_exec, check_markdown_fenced_pipe_shell,
-    check_markdown_js_package_strict_ssl_false, check_markdown_metadata_service_access,
-    check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
-    check_markdown_npm_http_registry, check_markdown_npm_http_source,
-    check_markdown_path_traversal, check_markdown_pip_http_find_links,
+    check_markdown_js_package_config_http_registry, check_markdown_js_package_strict_ssl_false,
+    check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
+    check_markdown_mutable_mcp_launcher, check_markdown_npm_http_registry,
+    check_markdown_npm_http_source, check_markdown_path_traversal,
+    check_markdown_pip_config_http_index, check_markdown_pip_http_find_links,
     check_markdown_pip_http_git_install, check_markdown_pip_http_index,
     check_markdown_pip_http_source, check_markdown_pip_trusted_host,
     check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
@@ -195,10 +196,34 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct MarkdownPipConfigHttpIndexRule {
+        code: "SEC458",
+        summary: "AI-native markdown configures Python package resolution with an insecure `http://` package index",
+        doc_title: "AI markdown: pip config http index",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct MarkdownNpmHttpRegistryRule {
         code: "SEC450",
         summary: "AI-native markdown installs JavaScript packages from an insecure `http://` registry",
         doc_title: "AI markdown: npm http registry",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownJsPackageConfigHttpRegistryRule {
+        code: "SEC459",
+        summary: "AI-native markdown configures a JavaScript package manager with an insecure `http://` registry",
+        doc_title: "AI markdown: js package config http registry",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -914,7 +939,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 73] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 75] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1140,6 +1165,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 73] = [
         suggestion_fix: None,
     },
     NativeRuleSpec {
+        metadata: MarkdownPipConfigHttpIndexRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown for `pip config set` commands that point package index configuration at `http://` sources.",
+            malicious_case_ids: &["skill-pip-config-http-index"],
+            benign_case_ids: &["skill-pip-config-https-index-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact `pip config set`, `pip3 config set`, or `python -m pip config set` token analysis with `global.index-url http://` or `global.extra-index-url http://` detection inside parsed markdown regions.",
+        },
+        check: check_markdown_pip_config_http_index,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace the insecure `http://` package index config with a normal TLS-verified `https://` source",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
         metadata: MarkdownNpmHttpRegistryRule::METADATA,
         surface: Surface::Markdown,
         default_presets: PREVIEW_SKILLS_PRESETS,
@@ -1156,6 +1201,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 73] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace the insecure `http://` registry with a normal TLS-verified `https://` source",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownJsPackageConfigHttpRegistryRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown for JavaScript package-manager config commands that point registry configuration at `http://` sources.",
+            malicious_case_ids: &["skill-js-package-config-http-registry"],
+            benign_case_ids: &["skill-js-package-config-https-registry-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact `npm config set`, `pnpm config set`, or `yarn config set` token analysis with `registry http://` or `registry=http://` detection inside parsed markdown regions.",
+        },
+        check: check_markdown_js_package_config_http_registry,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace the insecure `http://` registry config with a normal TLS-verified `https://` source",
         ),
         suggestion_fix: None,
     },

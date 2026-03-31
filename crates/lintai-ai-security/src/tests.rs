@@ -1158,6 +1158,50 @@ fn ignores_markdown_pip_https_find_links() {
 }
 
 #[test]
+fn finds_markdown_pip_config_http_index() {
+    let content = "pip config set global.index-url http://pypi.example.test/simple\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC458")
+        .unwrap();
+    let start = content.find("http://").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "http://".len())
+    );
+}
+
+#[test]
+fn finds_markdown_python_dash_m_pip_config_http_extra_index_equals_form() {
+    let content =
+        "python -m pip config set global.extra-index-url=http://pypi.example.test/simple\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC458")
+    );
+}
+
+#[test]
+fn ignores_markdown_pip_config_https_index() {
+    let content = "pip config set global.index-url https://pypi.example.test/simple\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC458")
+    );
+}
+
+#[test]
 fn finds_markdown_pip_http_source() {
     let content = "pip install http://packages.example.test/demo.whl\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);
@@ -1227,6 +1271,49 @@ fn finds_markdown_npm_http_registry() {
     assert_eq!(
         finding.location.span,
         lintai_api::Span::new(start, start + "http://".len())
+    );
+}
+
+#[test]
+fn finds_markdown_npm_config_http_registry() {
+    let content = "npm config set registry http://registry.example.test/\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC459")
+        .unwrap();
+    let start = content.find("http://").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "http://".len())
+    );
+}
+
+#[test]
+fn finds_markdown_yarn_config_http_registry_equals_form() {
+    let content = "yarn config set registry=http://registry.example.test/\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC459")
+    );
+}
+
+#[test]
+fn ignores_markdown_pnpm_config_https_registry() {
+    let content = "pnpm config set registry https://registry.example.test/\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC459")
     );
 }
 

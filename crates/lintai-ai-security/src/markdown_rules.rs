@@ -243,6 +243,22 @@ pub(crate) fn check_markdown_pip_http_find_links(
     )
 }
 
+pub(crate) fn check_markdown_pip_config_http_index(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.pip_config_http_index_spans.as_slice())
+            .unwrap_or(&[]),
+        "AI-native markdown configures Python package resolution with an insecure `http://` package index",
+    )
+}
+
 pub(crate) fn check_markdown_pip_http_source(
     ctx: &ScanContext,
     signals: &ArtifactSignals,
@@ -256,6 +272,22 @@ pub(crate) fn check_markdown_pip_http_source(
             .map(|signals| signals.pip_http_source_spans.as_slice())
             .unwrap_or(&[]),
         "AI-native markdown installs Python packages from an insecure direct `http://` source",
+    )
+}
+
+pub(crate) fn check_markdown_js_package_config_http_registry(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.js_package_config_http_registry_spans.as_slice())
+            .unwrap_or(&[]),
+        "AI-native markdown configures a JavaScript package manager with an insecure `http://` registry",
     )
 }
 

@@ -177,7 +177,9 @@
         "lintai-ai-security:SEC454",
         "lintai-ai-security:SEC455",
         "lintai-ai-security:SEC456",
-        "lintai-ai-security:SEC457"
+        "lintai-ai-security:SEC457",
+        "lintai-ai-security:SEC458",
+        "lintai-ai-security:SEC459"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -264,7 +266,9 @@
         "lintai-ai-security:SEC454",
         "lintai-ai-security:SEC455",
         "lintai-ai-security:SEC456",
-        "lintai-ai-security:SEC457"
+        "lintai-ai-security:SEC457",
+        "lintai-ai-security:SEC458",
+        "lintai-ai-security:SEC459"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -6151,6 +6155,84 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `npm config set`, `pnpm config set`, or `yarn config set` token analysis with `strict-ssl false` or `strict-ssl=false` detection inside parsed markdown regions."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC458",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC458",
+      "alias": "MD-PIP-CONFIG-HTTP-INDEX",
+      "displayLabel": "SEC458 / MD-PIP-CONFIG-HTTP-INDEX",
+      "docTitle": "AI markdown: pip config http index",
+      "slug": "sec458",
+      "canonicalPath": "/rules/lintai-ai-security/sec458",
+      "summary": "AI-native markdown configures Python package resolution with an insecure `http://` package index",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for `pip config set` commands that point package index configuration at `http://` sources.",
+        "maliciousCaseIds": [
+          "skill-pip-config-http-index"
+        ],
+        "benignCaseIds": [
+          "skill-pip-config-https-index-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `pip config set`, `pip3 config set`, or `python -m pip config set` token analysis with `global.index-url http://` or `global.extra-index-url http://` detection inside parsed markdown regions."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC459",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC459",
+      "alias": "MD-JS-PACKAGE-CONFIG-HTTP-REGISTRY",
+      "displayLabel": "SEC459 / MD-JS-PACKAGE-CONFIG-HTTP-REGISTRY",
+      "docTitle": "AI markdown: js package config http registry",
+      "slug": "sec459",
+      "canonicalPath": "/rules/lintai-ai-security/sec459",
+      "summary": "AI-native markdown configures a JavaScript package manager with an insecure `http://` registry",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for JavaScript package-manager config commands that point registry configuration at `http://` sources.",
+        "maliciousCaseIds": [
+          "skill-js-package-config-http-registry"
+        ],
+        "benignCaseIds": [
+          "skill-js-package-config-https-registry-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `npm config set`, `pnpm config set`, or `yarn config set` token analysis with `registry http://` or `registry=http://` detection inside parsed markdown regions."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

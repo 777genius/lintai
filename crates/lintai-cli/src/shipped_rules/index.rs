@@ -310,8 +310,16 @@ mod tests {
         );
         assert_eq!(shipped_rule_alias("SEC456"), Some("MD-PIP-HTTP-FIND-LINKS"));
         assert_eq!(
+            shipped_rule_alias("SEC458"),
+            Some("MD-PIP-CONFIG-HTTP-INDEX")
+        );
+        assert_eq!(
             shipped_rule_alias("SEC457"),
             Some("MD-JS-PACKAGE-STRICT-SSL-FALSE")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC459"),
+            Some("MD-JS-PACKAGE-CONFIG-HTTP-REGISTRY")
         );
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);

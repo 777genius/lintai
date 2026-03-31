@@ -10,6 +10,11 @@ const UV_PREFERENCE_MARKERS: &[&str] = &[
 
 const CLAUDE_PIP_INSTALL_MARKERS: &[&str] = &["python -m pip install", "pip install"];
 const PIP_GIT_INSTALL_MARKERS: &[&str] = &["python -m pip install", "pip install", "pip3 install"];
+const PIP_CONFIG_SET_MARKERS: &[&str] = &[
+    "python -m pip config set",
+    "pip config set",
+    "pip3 config set",
+];
 const NPM_INSTALL_MARKERS: &[&str] = &[
     "npm install",
     "npm i",
@@ -143,6 +148,25 @@ pub(crate) fn find_pip_http_find_links_relative_span(text: &str) -> Option<Span>
     None
 }
 
+pub(crate) fn find_pip_config_http_index_relative_span(text: &str) -> Option<Span> {
+    let mut offset = 0usize;
+    for line in text.split_inclusive('\n') {
+        if let Some(relative) = find_pip_config_http_index_in_line(line) {
+            return Some(Span::new(
+                offset + relative.start_byte,
+                offset + relative.end_byte,
+            ));
+        }
+        offset += line.len();
+    }
+
+    if !text.ends_with('\n') {
+        return find_pip_config_http_index_in_line(text);
+    }
+
+    None
+}
+
 pub(crate) fn find_pip_http_source_relative_span(text: &str) -> Option<Span> {
     let mut offset = 0usize;
     for line in text.split_inclusive('\n') {
@@ -157,6 +181,25 @@ pub(crate) fn find_pip_http_source_relative_span(text: &str) -> Option<Span> {
 
     if !text.ends_with('\n') {
         return find_pip_http_source_in_line(text);
+    }
+
+    None
+}
+
+pub(crate) fn find_js_package_config_http_registry_relative_span(text: &str) -> Option<Span> {
+    let mut offset = 0usize;
+    for line in text.split_inclusive('\n') {
+        if let Some(relative) = find_js_package_config_http_registry_in_line(line) {
+            return Some(Span::new(
+                offset + relative.start_byte,
+                offset + relative.end_byte,
+            ));
+        }
+        offset += line.len();
+    }
+
+    if !text.ends_with('\n') {
+        return find_js_package_config_http_registry_in_line(text);
     }
 
     None
@@ -436,6 +479,35 @@ fn find_pip_http_find_links_in_line(line: &str) -> Option<Span> {
     None
 }
 
+fn find_pip_config_http_index_in_line(line: &str) -> Option<Span> {
+    let lowered = line.to_ascii_lowercase();
+    let mut command_start = None;
+    for marker in PIP_CONFIG_SET_MARKERS {
+        if let Some(relative) = lowered.find(marker) {
+            command_start = Some(relative + marker.len());
+            break;
+        }
+    }
+    let Some(search_start) = command_start else {
+        return None;
+    };
+
+    let search_slice = &lowered[search_start..];
+    for marker in [
+        "global.index-url http://",
+        "global.extra-index-url http://",
+        "global.index-url=http://",
+        "global.extra-index-url=http://",
+    ] {
+        if let Some(relative_http) = search_slice.find(marker) {
+            let start = search_start + relative_http + marker.len() - "http://".len();
+            return Some(Span::new(start, start + "http://".len()));
+        }
+    }
+
+    None
+}
+
 fn find_npm_http_registry_in_line(line: &str) -> Option<Span> {
     let lowered = line.to_ascii_lowercase();
     let mut install_start = None;
@@ -451,6 +523,30 @@ fn find_npm_http_registry_in_line(line: &str) -> Option<Span> {
 
     let search_slice = &lowered[search_start..];
     for marker in ["--registry http://", "--registry=http://"] {
+        if let Some(relative_http) = search_slice.find(marker) {
+            let start = search_start + relative_http + marker.len() - "http://".len();
+            return Some(Span::new(start, start + "http://".len()));
+        }
+    }
+
+    None
+}
+
+fn find_js_package_config_http_registry_in_line(line: &str) -> Option<Span> {
+    let lowered = line.to_ascii_lowercase();
+    let mut command_start = None;
+    for marker in JS_PACKAGE_CONFIG_MARKERS {
+        if let Some(relative) = lowered.find(marker) {
+            command_start = Some(relative + marker.len());
+            break;
+        }
+    }
+    let Some(search_start) = command_start else {
+        return None;
+    };
+
+    let search_slice = &lowered[search_start..];
+    for marker in ["registry http://", "registry=http://"] {
         if let Some(relative_http) = search_slice.find(marker) {
             let start = search_start + relative_http + marker.len() - "http://".len();
             return Some(Span::new(start, start + "http://".len()));
@@ -582,8 +678,10 @@ fn has_immutable_git_ref(url: &str) -> bool {
 mod tests {
     use super::{
         find_cargo_http_git_install_relative_span, find_cargo_http_index_relative_span,
-        find_claude_bare_pip_install_relative_span, find_js_package_strict_ssl_false_relative_span,
-        find_npm_http_registry_relative_span, find_npm_http_source_relative_span,
+        find_claude_bare_pip_install_relative_span,
+        find_js_package_config_http_registry_relative_span,
+        find_js_package_strict_ssl_false_relative_span, find_npm_http_registry_relative_span,
+        find_npm_http_source_relative_span, find_pip_config_http_index_relative_span,
         find_pip_http_find_links_relative_span, find_pip_http_git_install_relative_span,
         find_pip_http_index_relative_span, find_pip_http_source_relative_span,
         find_pip_trusted_host_relative_span, find_unpinned_pip_git_install_relative_span,
@@ -701,6 +799,25 @@ mod tests {
     }
 
     #[test]
+    fn finds_pip_config_http_index() {
+        let content = "pip config set global.index-url http://pypi.example.test/simple\n";
+        assert!(find_pip_config_http_index_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_python_dash_m_pip_config_http_extra_index_equals_form() {
+        let content =
+            "python -m pip config set global.extra-index-url=http://pypi.example.test/simple\n";
+        assert!(find_pip_config_http_index_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn ignores_pip_config_https_index() {
+        let content = "pip config set global.index-url https://pypi.example.test/simple\n";
+        assert_eq!(find_pip_config_http_index_relative_span(content), None);
+    }
+
+    #[test]
     fn ignores_pip_https_find_links() {
         let content = "pip install --find-links https://packages.example.test/simple demo\n";
         assert_eq!(find_pip_http_find_links_relative_span(content), None);
@@ -782,6 +899,27 @@ mod tests {
     fn finds_npm_strict_ssl_false() {
         let content = "npm config set strict-ssl false\n";
         assert!(find_js_package_strict_ssl_false_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_npm_config_http_registry() {
+        let content = "npm config set registry http://registry.example.test/\n";
+        assert!(find_js_package_config_http_registry_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_yarn_config_http_registry_equals_form() {
+        let content = "yarn config set registry=http://registry.example.test/\n";
+        assert!(find_js_package_config_http_registry_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn ignores_pnpm_config_https_registry() {
+        let content = "pnpm config set registry https://registry.example.test/\n";
+        assert_eq!(
+            find_js_package_config_http_registry_relative_span(content),
+            None
+        );
     }
 
     #[test]
