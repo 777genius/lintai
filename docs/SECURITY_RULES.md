@@ -178,6 +178,8 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC457 / MD-JS-PACKAGE-STRICT-SSL-FALSE` | AI-native markdown disables strict SSL verification for JavaScript package manager config | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC458 / MD-PIP-CONFIG-HTTP-INDEX` | AI-native markdown configures Python package resolution with an insecure `http://` package index | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC459 / MD-JS-PACKAGE-CONFIG-HTTP-REGISTRY` | AI-native markdown configures a JavaScript package manager with an insecure `http://` registry | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC460 / MD-PIP-CONFIG-HTTP-FIND-LINKS` | AI-native markdown configures Python package discovery with insecure `http://` find-links | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC461 / MD-PIP-CONFIG-TRUSTED-HOST` | AI-native markdown configures Python package resolution with `trusted-host` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -3358,6 +3360,48 @@ Important behavior:
 - Deterministic Signal Basis: MarkdownSignals exact `npm config set`, `pnpm config set`, or `yarn config set` token analysis with `registry http://` or `registry=http://` detection inside parsed markdown regions.
 - Malicious Corpus: `skill-js-package-config-http-registry`
 - Benign Corpus: `skill-js-package-config-https-registry-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC460 / MD-PIP-CONFIG-HTTP-FIND-LINKS` — AI-native markdown configures Python package discovery with insecure `http://` find-links
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-PIP-CONFIG-HTTP-FIND-LINKS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown for `pip config set` commands that point package discovery configuration at `http://` find-links sources.
+- Deterministic Signal Basis: MarkdownSignals exact `pip config set`, `pip3 config set`, or `python -m pip config set` token analysis with `global.find-links http://` detection inside parsed markdown regions.
+- Malicious Corpus: `skill-pip-config-http-find-links`
+- Benign Corpus: `skill-pip-config-https-find-links-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC461 / MD-PIP-CONFIG-TRUSTED-HOST` — AI-native markdown configures Python package resolution with `trusted-host`
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-PIP-CONFIG-TRUSTED-HOST`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown for `pip config set` commands that configure trusted-host bypass behavior.
+- Deterministic Signal Basis: MarkdownSignals exact `pip config set`, `pip3 config set`, or `python -m pip config set` token analysis with `global.trusted-host` detection inside parsed markdown regions.
+- Malicious Corpus: `skill-pip-config-trusted-host`
+- Benign Corpus: `skill-pip-config-unrelated-key-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

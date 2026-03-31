@@ -167,6 +167,44 @@ pub(crate) fn find_pip_config_http_index_relative_span(text: &str) -> Option<Spa
     None
 }
 
+pub(crate) fn find_pip_config_http_find_links_relative_span(text: &str) -> Option<Span> {
+    let mut offset = 0usize;
+    for line in text.split_inclusive('\n') {
+        if let Some(relative) = find_pip_config_http_find_links_in_line(line) {
+            return Some(Span::new(
+                offset + relative.start_byte,
+                offset + relative.end_byte,
+            ));
+        }
+        offset += line.len();
+    }
+
+    if !text.ends_with('\n') {
+        return find_pip_config_http_find_links_in_line(text);
+    }
+
+    None
+}
+
+pub(crate) fn find_pip_config_trusted_host_relative_span(text: &str) -> Option<Span> {
+    let mut offset = 0usize;
+    for line in text.split_inclusive('\n') {
+        if let Some(relative) = find_pip_config_trusted_host_in_line(line) {
+            return Some(Span::new(
+                offset + relative.start_byte,
+                offset + relative.end_byte,
+            ));
+        }
+        offset += line.len();
+    }
+
+    if !text.ends_with('\n') {
+        return find_pip_config_trusted_host_in_line(text);
+    }
+
+    None
+}
+
 pub(crate) fn find_pip_http_source_relative_span(text: &str) -> Option<Span> {
     let mut offset = 0usize;
     for line in text.split_inclusive('\n') {
@@ -508,6 +546,54 @@ fn find_pip_config_http_index_in_line(line: &str) -> Option<Span> {
     None
 }
 
+fn find_pip_config_http_find_links_in_line(line: &str) -> Option<Span> {
+    let lowered = line.to_ascii_lowercase();
+    let mut command_start = None;
+    for marker in PIP_CONFIG_SET_MARKERS {
+        if let Some(relative) = lowered.find(marker) {
+            command_start = Some(relative + marker.len());
+            break;
+        }
+    }
+    let Some(search_start) = command_start else {
+        return None;
+    };
+
+    let search_slice = &lowered[search_start..];
+    for marker in ["global.find-links http://", "global.find-links=http://"] {
+        if let Some(relative_http) = search_slice.find(marker) {
+            let start = search_start + relative_http + marker.len() - "http://".len();
+            return Some(Span::new(start, start + "http://".len()));
+        }
+    }
+
+    None
+}
+
+fn find_pip_config_trusted_host_in_line(line: &str) -> Option<Span> {
+    let lowered = line.to_ascii_lowercase();
+    let mut command_start = None;
+    for marker in PIP_CONFIG_SET_MARKERS {
+        if let Some(relative) = lowered.find(marker) {
+            command_start = Some(relative + marker.len());
+            break;
+        }
+    }
+    let Some(search_start) = command_start else {
+        return None;
+    };
+
+    let search_slice = &lowered[search_start..];
+    for marker in ["global.trusted-host ", "global.trusted-host="] {
+        if let Some(relative_marker) = search_slice.find(marker) {
+            let start = search_start + relative_marker;
+            return Some(Span::new(start, start + "global.trusted-host".len()));
+        }
+    }
+
+    None
+}
+
 fn find_npm_http_registry_in_line(line: &str) -> Option<Span> {
     let lowered = line.to_ascii_lowercase();
     let mut install_start = None;
@@ -681,7 +767,8 @@ mod tests {
         find_claude_bare_pip_install_relative_span,
         find_js_package_config_http_registry_relative_span,
         find_js_package_strict_ssl_false_relative_span, find_npm_http_registry_relative_span,
-        find_npm_http_source_relative_span, find_pip_config_http_index_relative_span,
+        find_npm_http_source_relative_span, find_pip_config_http_find_links_relative_span,
+        find_pip_config_http_index_relative_span, find_pip_config_trusted_host_relative_span,
         find_pip_http_find_links_relative_span, find_pip_http_git_install_relative_span,
         find_pip_http_index_relative_span, find_pip_http_source_relative_span,
         find_pip_trusted_host_relative_span, find_unpinned_pip_git_install_relative_span,
@@ -815,6 +902,42 @@ mod tests {
     fn ignores_pip_config_https_index() {
         let content = "pip config set global.index-url https://pypi.example.test/simple\n";
         assert_eq!(find_pip_config_http_index_relative_span(content), None);
+    }
+
+    #[test]
+    fn finds_pip_config_http_find_links() {
+        let content = "pip config set global.find-links http://packages.example.test/simple\n";
+        assert!(find_pip_config_http_find_links_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_pip3_config_http_find_links_equals_form() {
+        let content = "pip3 config set global.find-links=http://packages.example.test/simple\n";
+        assert!(find_pip_config_http_find_links_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn ignores_pip_config_https_find_links() {
+        let content = "pip config set global.find-links https://packages.example.test/simple\n";
+        assert_eq!(find_pip_config_http_find_links_relative_span(content), None);
+    }
+
+    #[test]
+    fn finds_pip_config_trusted_host() {
+        let content = "pip config set global.trusted-host pypi.example.test\n";
+        assert!(find_pip_config_trusted_host_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_python_dash_m_pip_config_trusted_host_equals_form() {
+        let content = "python -m pip config set global.trusted-host=pypi.example.test\n";
+        assert!(find_pip_config_trusted_host_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn ignores_pip_config_unrelated_key() {
+        let content = "pip config set global.timeout 60\n";
+        assert_eq!(find_pip_config_trusted_host_relative_span(content), None);
     }
 
     #[test]

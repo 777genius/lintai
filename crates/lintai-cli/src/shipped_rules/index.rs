@@ -321,6 +321,14 @@ mod tests {
             shipped_rule_alias("SEC459"),
             Some("MD-JS-PACKAGE-CONFIG-HTTP-REGISTRY")
         );
+        assert_eq!(
+            shipped_rule_alias("SEC460"),
+            Some("MD-PIP-CONFIG-HTTP-FIND-LINKS")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC461"),
+            Some("MD-PIP-CONFIG-TRUSTED-HOST")
+        );
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

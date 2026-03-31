@@ -24,7 +24,8 @@ use crate::markdown_rules::{
     check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
     check_markdown_mutable_mcp_launcher, check_markdown_npm_http_registry,
     check_markdown_npm_http_source, check_markdown_path_traversal,
-    check_markdown_pip_config_http_index, check_markdown_pip_http_find_links,
+    check_markdown_pip_config_http_find_links, check_markdown_pip_config_http_index,
+    check_markdown_pip_config_trusted_host, check_markdown_pip_http_find_links,
     check_markdown_pip_http_git_install, check_markdown_pip_http_index,
     check_markdown_pip_http_source, check_markdown_pip_trusted_host,
     check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
@@ -208,10 +209,34 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct MarkdownPipConfigHttpFindLinksRule {
+        code: "SEC460",
+        summary: "AI-native markdown configures Python package discovery with insecure `http://` find-links",
+        doc_title: "AI markdown: pip config http find-links",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct MarkdownNpmHttpRegistryRule {
         code: "SEC450",
         summary: "AI-native markdown installs JavaScript packages from an insecure `http://` registry",
         doc_title: "AI markdown: npm http registry",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownPipConfigTrustedHostRule {
+        code: "SEC461",
+        summary: "AI-native markdown configures Python package resolution with `trusted-host`",
+        doc_title: "AI markdown: pip config trusted-host",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -939,7 +964,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 75] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 77] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1185,6 +1210,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 75] = [
         suggestion_fix: None,
     },
     NativeRuleSpec {
+        metadata: MarkdownPipConfigHttpFindLinksRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown for `pip config set` commands that point package discovery configuration at `http://` find-links sources.",
+            malicious_case_ids: &["skill-pip-config-http-find-links"],
+            benign_case_ids: &["skill-pip-config-https-find-links-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact `pip config set`, `pip3 config set`, or `python -m pip config set` token analysis with `global.find-links http://` detection inside parsed markdown regions.",
+        },
+        check: check_markdown_pip_config_http_find_links,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace the insecure `http://` find-links config with a normal TLS-verified `https://` source",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
         metadata: MarkdownNpmHttpRegistryRule::METADATA,
         surface: Surface::Markdown,
         default_presets: PREVIEW_SKILLS_PRESETS,
@@ -1201,6 +1246,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 75] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace the insecure `http://` registry with a normal TLS-verified `https://` source",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownPipConfigTrustedHostRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown for `pip config set` commands that configure trusted-host bypass behavior.",
+            malicious_case_ids: &["skill-pip-config-trusted-host"],
+            benign_case_ids: &["skill-pip-config-unrelated-key-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact `pip config set`, `pip3 config set`, or `python -m pip config set` token analysis with `global.trusted-host` detection inside parsed markdown regions.",
+        },
+        check: check_markdown_pip_config_trusted_host,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the trusted-host config and rely on normal TLS-verified Python package sources instead",
         ),
         suggestion_fix: None,
     },

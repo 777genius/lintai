@@ -1202,6 +1202,92 @@ fn ignores_markdown_pip_config_https_index() {
 }
 
 #[test]
+fn finds_markdown_pip_config_http_find_links() {
+    let content = "pip config set global.find-links http://packages.example.test/simple\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC460")
+        .unwrap();
+    let start = content.find("http://").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "http://".len())
+    );
+}
+
+#[test]
+fn finds_markdown_pip3_config_http_find_links_equals_form() {
+    let content = "pip3 config set global.find-links=http://packages.example.test/simple\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC460")
+    );
+}
+
+#[test]
+fn ignores_markdown_pip_config_https_find_links() {
+    let content = "pip config set global.find-links https://packages.example.test/simple\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC460")
+    );
+}
+
+#[test]
+fn finds_markdown_pip_config_trusted_host() {
+    let content = "pip config set global.trusted-host pypi.example.test\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC461")
+        .unwrap();
+    let start = content.find("global.trusted-host").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "global.trusted-host".len())
+    );
+}
+
+#[test]
+fn finds_markdown_python_dash_m_pip_config_trusted_host_equals_form() {
+    let content = "python -m pip config set global.trusted-host=pypi.example.test\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC461")
+    );
+}
+
+#[test]
+fn ignores_markdown_pip_config_unrelated_key() {
+    let content = "pip config set global.timeout 60\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC461")
+    );
+}
+
+#[test]
 fn finds_markdown_pip_http_source() {
     let content = "pip install http://packages.example.test/demo.whl\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

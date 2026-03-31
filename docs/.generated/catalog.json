@@ -179,7 +179,9 @@
         "lintai-ai-security:SEC456",
         "lintai-ai-security:SEC457",
         "lintai-ai-security:SEC458",
-        "lintai-ai-security:SEC459"
+        "lintai-ai-security:SEC459",
+        "lintai-ai-security:SEC460",
+        "lintai-ai-security:SEC461"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -268,7 +270,9 @@
         "lintai-ai-security:SEC456",
         "lintai-ai-security:SEC457",
         "lintai-ai-security:SEC458",
-        "lintai-ai-security:SEC459"
+        "lintai-ai-security:SEC459",
+        "lintai-ai-security:SEC460",
+        "lintai-ai-security:SEC461"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -6233,6 +6237,84 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `npm config set`, `pnpm config set`, or `yarn config set` token analysis with `registry http://` or `registry=http://` detection inside parsed markdown regions."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC460",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC460",
+      "alias": "MD-PIP-CONFIG-HTTP-FIND-LINKS",
+      "displayLabel": "SEC460 / MD-PIP-CONFIG-HTTP-FIND-LINKS",
+      "docTitle": "AI markdown: pip config http find-links",
+      "slug": "sec460",
+      "canonicalPath": "/rules/lintai-ai-security/sec460",
+      "summary": "AI-native markdown configures Python package discovery with insecure `http://` find-links",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for `pip config set` commands that point package discovery configuration at `http://` find-links sources.",
+        "maliciousCaseIds": [
+          "skill-pip-config-http-find-links"
+        ],
+        "benignCaseIds": [
+          "skill-pip-config-https-find-links-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `pip config set`, `pip3 config set`, or `python -m pip config set` token analysis with `global.find-links http://` detection inside parsed markdown regions."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC461",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC461",
+      "alias": "MD-PIP-CONFIG-TRUSTED-HOST",
+      "displayLabel": "SEC461 / MD-PIP-CONFIG-TRUSTED-HOST",
+      "docTitle": "AI markdown: pip config trusted-host",
+      "slug": "sec461",
+      "canonicalPath": "/rules/lintai-ai-security/sec461",
+      "summary": "AI-native markdown configures Python package resolution with `trusted-host`",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for `pip config set` commands that configure trusted-host bypass behavior.",
+        "maliciousCaseIds": [
+          "skill-pip-config-trusted-host"
+        ],
+        "benignCaseIds": [
+          "skill-pip-config-unrelated-key-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `pip config set`, `pip3 config set`, or `python -m pip config set` token analysis with `global.trusted-host` detection inside parsed markdown regions."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
