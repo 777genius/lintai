@@ -7,19 +7,21 @@ use crate::markdown_rules::{
     check_copilot_instruction_too_long, check_copilot_instruction_wrong_suffix,
     check_curl_allowed_tools, check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
     check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
-    check_cursor_rule_unknown_frontmatter_key, check_git_clone_allowed_tools,
-    check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
-    check_markdown_claude_bare_pip_install, check_markdown_docker_host_escape,
-    check_markdown_download_exec, check_markdown_fenced_pipe_shell,
-    check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
-    check_markdown_mutable_mcp_launcher, check_markdown_path_traversal,
-    check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
-    check_plugin_agent_hooks_frontmatter, check_plugin_agent_mcp_servers_frontmatter,
-    check_plugin_agent_permission_mode, check_unscoped_bash_allowed_tools,
-    check_unscoped_edit_allowed_tools, check_unscoped_glob_allowed_tools,
-    check_unscoped_grep_allowed_tools, check_unscoped_read_allowed_tools,
-    check_unscoped_write_allowed_tools, check_untrusted_instruction_promotion,
-    check_wget_allowed_tools, check_wildcard_tool_access,
+    check_cursor_rule_unknown_frontmatter_key, check_git_checkout_allowed_tools,
+    check_git_clone_allowed_tools, check_git_commit_allowed_tools, check_git_push_allowed_tools,
+    check_git_stash_allowed_tools, check_html_comment_directive, check_html_comment_download_exec,
+    check_markdown_base64_exec, check_markdown_claude_bare_pip_install,
+    check_markdown_docker_host_escape, check_markdown_download_exec,
+    check_markdown_fenced_pipe_shell, check_markdown_metadata_service_access,
+    check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
+    check_markdown_path_traversal, check_markdown_private_key_pem,
+    check_markdown_unpinned_pip_git_install, check_plugin_agent_hooks_frontmatter,
+    check_plugin_agent_mcp_servers_frontmatter, check_plugin_agent_permission_mode,
+    check_unscoped_bash_allowed_tools, check_unscoped_edit_allowed_tools,
+    check_unscoped_glob_allowed_tools, check_unscoped_grep_allowed_tools,
+    check_unscoped_read_allowed_tools, check_unscoped_webfetch_allowed_tools,
+    check_unscoped_websearch_allowed_tools, check_unscoped_write_allowed_tools,
+    check_untrusted_instruction_promotion, check_wget_allowed_tools, check_wildcard_tool_access,
 };
 
 declare_rule! {
@@ -183,6 +185,78 @@ declare_rule! {
         code: "SEC352",
         summary: "AI-native markdown frontmatter grants unscoped Bash tool access",
         doc_title: "AI markdown: unscoped Bash tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct UnscopedWebSearchAllowedToolsRule {
+        code: "SEC389",
+        summary: "AI-native markdown frontmatter grants bare `WebSearch` tool access",
+        doc_title: "AI markdown: bare WebSearch tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GitPushAllowedToolsRule {
+        code: "SEC390",
+        summary: "AI-native markdown frontmatter grants `Bash(git push)` tool access",
+        doc_title: "AI markdown: shared git push tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GitCheckoutAllowedToolsRule {
+        code: "SEC391",
+        summary: "AI-native markdown frontmatter grants `Bash(git checkout:*)` tool access",
+        doc_title: "AI markdown: shared git checkout tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GitCommitAllowedToolsRule {
+        code: "SEC392",
+        summary: "AI-native markdown frontmatter grants `Bash(git commit:*)` tool access",
+        doc_title: "AI markdown: shared git commit tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GitStashAllowedToolsRule {
+        code: "SEC393",
+        summary: "AI-native markdown frontmatter grants `Bash(git stash:*)` tool access",
+        doc_title: "AI markdown: shared git stash tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct UnscopedWebFetchAllowedToolsRule {
+        code: "SEC404",
+        summary: "AI-native markdown frontmatter grants bare `WebFetch` tool access",
+        doc_title: "AI markdown: bare WebFetch tool grant",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -478,7 +552,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 38] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 44] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -696,6 +770,102 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 38] = [
         safe_fix: None,
         suggestion_message: Some(
             "scope Bash to explicit command patterns like `Bash(git:*)` instead of granting the full Bash tool",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: UnscopedWebSearchAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Bare WebSearch grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_unscoped_websearch_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace bare `WebSearch` with a narrower reviewed search pattern or remove broad search authority from the shared frontmatter grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GitPushAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared git push grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_git_push_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(git push)` access is really needed, or replace it with a narrower workflow-specific permission",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GitCheckoutAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared git checkout grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_git_checkout_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(git checkout:*)` access is really needed, or replace it with a narrower workflow-specific permission",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GitCommitAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared git commit grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_git_commit_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(git commit:*)` access is really needed, or replace it with a narrower workflow-specific permission",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GitStashAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared git stash grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_git_stash_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(git stash:*)` access is really needed, or replace it with a narrower workflow-specific permission",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: UnscopedWebFetchAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Bare WebFetch grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_unscoped_webfetch_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace bare `WebFetch` with a narrower reviewed fetch pattern or remove broad fetch authority from the shared frontmatter grant",
         ),
         suggestion_fix: None,
     },

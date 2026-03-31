@@ -1199,6 +1199,33 @@ fn scan_preview_skill_fixture(relative_path: &str, content: &str) -> lintai_engi
         .unwrap()
 }
 
+fn scan_preview_governance_skill_fixture(
+    relative_path: &str,
+    content: &str,
+) -> lintai_engine::ScanSummary {
+    let temp_dir = unique_temp_dir("lintai-sec390-preview");
+    let file_path = temp_dir.join(relative_path);
+    std::fs::create_dir_all(file_path.parent().unwrap()).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        "[presets]\nenable = [\"base\", \"preview\", \"skills\", \"guidance\", \"governance\"]\n",
+    )
+    .unwrap();
+    std::fs::write(&file_path, content).unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
+    EngineBuilder::default()
+        .with_config(workspace.engine_config.clone())
+        .with_suppressions(Arc::new(suppressions))
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap()
+}
+
 fn scan_preview_claude_settings_fixture(
     relative_path: &str,
     content: &str,
@@ -1296,6 +1323,138 @@ fn ignores_unscoped_bash_allowed_tools_on_fixture_like_path() {
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC352")
+    );
+}
+
+#[test]
+fn finds_unscoped_websearch_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: WebSearch, Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC389")
+        .unwrap();
+    let start = content.find("WebSearch").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "WebSearch".len())
+    );
+}
+
+#[test]
+fn ignores_scoped_websearch_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: WebSearch(site:docs.example.com), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC389")
+    );
+}
+
+#[test]
+fn finds_git_push_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(git push), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC390")
+        .unwrap();
+    let start = content.find("Bash(git push)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git push)".len())
+    );
+}
+
+#[test]
+fn finds_git_checkout_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(git checkout:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC391")
+        .unwrap();
+    let start = content.find("Bash(git checkout:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git checkout:*)".len())
+    );
+}
+
+#[test]
+fn finds_git_commit_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(git commit:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC392")
+        .unwrap();
+    let start = content.find("Bash(git commit:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git commit:*)".len())
+    );
+}
+
+#[test]
+fn finds_git_stash_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(git stash:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC393")
+        .unwrap();
+    let start = content.find("Bash(git stash:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git stash:*)".len())
+    );
+}
+
+#[test]
+fn finds_unscoped_webfetch_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: WebFetch, Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC404")
+        .unwrap();
+    let start = content.find("WebFetch").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "WebFetch".len())
+    );
+}
+
+#[test]
+fn ignores_scoped_webfetch_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: WebFetch(domain:docs.example.com), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC404")
     );
 }
 
@@ -7395,8 +7554,14 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC386"
                         | "SEC387"
                         | "SEC388"
+                        | "SEC389"
+                        | "SEC390"
+                        | "SEC391"
+                        | "SEC392"
+                        | "SEC393"
                         | "SEC399"
                         | "SEC400"
+                        | "SEC404"
                         | "SEC405"
                         | "SEC406"
                         | "SEC407"

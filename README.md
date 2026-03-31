@@ -142,6 +142,7 @@ Default behavior:
 - `base` means the stable baseline
 - `preview` is explicit opt-in
 - `compat` is explicit opt-in for project policy mismatch rules such as `SEC401`-`SEC403`
+- `governance` is explicit opt-in for workflow-policy review rules that should not read like headline security findings
 
 Example:
 
@@ -165,6 +166,9 @@ Builtin preset intent:
 - `skills`: instruction and skills markdown overlays
 - `mcp`: MCP and tool/server config overlays
 - `claude`: Claude-specific config overlays
+- `guidance`: advice-oriented guidance lane
+- `governance`: opt-in review lane for shared mutation authority and similar workflow-policy decisions
+- `supply-chain`: sidecar supply-chain hardening lane
 
 Important merge rules:
 

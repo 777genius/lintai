@@ -15,4 +15,4 @@ Use it when you want wider discovery for the core product thesis and are willing
 
 ## Tradeoffs
 
-This preset can surface more noise than `base`; dedicated sidecar lanes like `compat`, `guidance`, and `supply-chain` still stay explicit.
+This preset can surface more noise than `base`; dedicated sidecar lanes like `compat`, `guidance`, `governance`, and `supply-chain` still stay explicit.

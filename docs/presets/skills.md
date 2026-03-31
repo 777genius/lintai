@@ -15,4 +15,4 @@ Use it when your primary trust boundary is repo-local agent instructions and ski
 
 ## Tradeoffs
 
-It does not broaden non-markdown coverage by itself, and advice-oriented Copilot guidance stays in the separate `guidance` lane.
+It does not broaden non-markdown coverage by itself, and sidecar lanes like `guidance` or `governance` stay separate even when the file surface is markdown.

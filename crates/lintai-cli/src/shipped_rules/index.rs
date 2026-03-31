@@ -202,6 +202,20 @@ mod tests {
             shipped_rule_alias("SEC388"),
             Some("CLAUDE-GIT-STASH-PERMISSION")
         );
+        assert_eq!(shipped_rule_alias("SEC389"), Some("MD-WEBSEARCH-UNSCOPED"));
+        assert_eq!(shipped_rule_alias("SEC390"), Some("MD-GIT-PUSH-PERMISSION"));
+        assert_eq!(
+            shipped_rule_alias("SEC391"),
+            Some("MD-GIT-CHECKOUT-PERMISSION")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC392"),
+            Some("MD-GIT-COMMIT-PERMISSION")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC393"),
+            Some("MD-GIT-STASH-PERMISSION")
+        );
         assert_eq!(
             shipped_rule_alias("SEC394"),
             Some("MCP-AUTOAPPROVE-WILDCARD")
@@ -218,6 +232,7 @@ mod tests {
             shipped_rule_alias("SEC400"),
             Some("CLAUDE-ENABLED-MCPJSON-SERVERS")
         );
+        assert_eq!(shipped_rule_alias("SEC404"), Some("MD-WEBFETCH-UNSCOPED"));
         assert_eq!(
             shipped_rule_alias("SEC405"),
             Some("CLAUDE-PACKAGE-INSTALL-PERMISSION")

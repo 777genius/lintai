@@ -98,7 +98,7 @@ struct BuiltinPresetSpec {
     extends: &'static [&'static str],
 }
 
-const BUILTIN_PRESETS: [BuiltinPresetSpec; 9] = [
+const BUILTIN_PRESETS: [BuiltinPresetSpec; 10] = [
     BuiltinPresetSpec {
         id: "base",
         kind: SitePresetKind::Membership,
@@ -139,6 +139,12 @@ const BUILTIN_PRESETS: [BuiltinPresetSpec; 9] = [
         id: "guidance",
         kind: SitePresetKind::Membership,
         description: "Advice-oriented guidance rules that are useful, but intentionally not part of the core security baseline.",
+        extends: &[],
+    },
+    BuiltinPresetSpec {
+        id: "governance",
+        kind: SitePresetKind::Membership,
+        description: "Opt-in review rules for shared mutation authority and similar workflow-governance decisions that should not read like headline security findings.",
         extends: &[],
     },
     BuiltinPresetSpec {
@@ -490,13 +496,32 @@ mod tests {
             .expect("SEC353 should exist");
         assert_eq!(sec353.default_presets, vec!["guidance"]);
 
+        let sec390 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC390")
+            .expect("SEC390 should exist");
+        assert_eq!(sec390.default_presets, vec!["governance"]);
+
         let strict = catalog
             .presets
             .iter()
             .find(|preset| preset.id == "strict")
             .expect("strict preset should exist");
+        let governance = catalog
+            .presets
+            .iter()
+            .find(|preset| preset.id == "governance")
+            .expect("governance preset should exist");
         assert!(matches!(strict.kind, super::SitePresetKind::Overlay));
         assert!(strict.rule_ids.is_empty());
+        assert!(matches!(governance.kind, super::SitePresetKind::Membership));
+        assert!(
+            governance
+                .rule_ids
+                .iter()
+                .any(|rule_id| rule_id == "lintai-ai-security:SEC390")
+        );
         assert_eq!(sec101.doc_title, "HTML comment: dangerous instructions");
         assert_eq!(sec340.doc_title, "Claude hook: mutable package launcher");
         assert_eq!(sec401.doc_title, "Policy mismatch: execution");

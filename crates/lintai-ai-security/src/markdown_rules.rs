@@ -315,6 +315,102 @@ pub(crate) fn check_unscoped_bash_allowed_tools(
     )
 }
 
+pub(crate) fn check_unscoped_websearch_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.unscoped_websearch_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants bare WebSearch tool access",
+    )
+}
+
+pub(crate) fn check_unscoped_webfetch_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.unscoped_webfetch_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants bare WebFetch tool access",
+    )
+}
+
+pub(crate) fn check_git_push_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.git_push_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(git push)` tool access",
+    )
+}
+
+pub(crate) fn check_git_checkout_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.git_checkout_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(git checkout:*)` tool access",
+    )
+}
+
+pub(crate) fn check_git_commit_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.git_commit_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(git commit:*)` tool access",
+    )
+}
+
+pub(crate) fn check_git_stash_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.git_stash_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(git stash:*)` tool access",
+    )
+}
+
 pub(crate) fn check_curl_allowed_tools(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

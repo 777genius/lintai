@@ -61,7 +61,8 @@
         "lintai-ai-security:SEC395",
         "lintai-ai-security:SEC396",
         "lintai-ai-security:SEC397",
-        "lintai-ai-security:SEC398"
+        "lintai-ai-security:SEC398",
+        "lintai-ai-security:SEC422"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -120,7 +121,33 @@
         "lintai-ai-security:SEC385",
         "lintai-ai-security:SEC386",
         "lintai-ai-security:SEC387",
-        "lintai-ai-security:SEC388"
+        "lintai-ai-security:SEC388",
+        "lintai-ai-security:SEC389",
+        "lintai-ai-security:SEC399",
+        "lintai-ai-security:SEC400",
+        "lintai-ai-security:SEC404",
+        "lintai-ai-security:SEC405",
+        "lintai-ai-security:SEC406",
+        "lintai-ai-security:SEC407",
+        "lintai-ai-security:SEC408",
+        "lintai-ai-security:SEC409",
+        "lintai-ai-security:SEC410",
+        "lintai-ai-security:SEC411",
+        "lintai-ai-security:SEC412",
+        "lintai-ai-security:SEC413",
+        "lintai-ai-security:SEC414",
+        "lintai-ai-security:SEC415",
+        "lintai-ai-security:SEC416",
+        "lintai-ai-security:SEC417",
+        "lintai-ai-security:SEC418",
+        "lintai-ai-security:SEC419",
+        "lintai-ai-security:SEC420",
+        "lintai-ai-security:SEC421",
+        "lintai-ai-security:SEC423",
+        "lintai-ai-security:SEC424",
+        "lintai-ai-security:SEC425",
+        "lintai-ai-security:SEC426",
+        "lintai-ai-security:SEC427"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -166,7 +193,19 @@
         "lintai-ai-security:SEC360",
         "lintai-ai-security:SEC378",
         "lintai-ai-security:SEC379",
-        "lintai-ai-security:SEC380"
+        "lintai-ai-security:SEC380",
+        "lintai-ai-security:SEC389",
+        "lintai-ai-security:SEC404",
+        "lintai-ai-security:SEC416",
+        "lintai-ai-security:SEC417",
+        "lintai-ai-security:SEC419",
+        "lintai-ai-security:SEC420",
+        "lintai-ai-security:SEC421",
+        "lintai-ai-security:SEC423",
+        "lintai-ai-security:SEC424",
+        "lintai-ai-security:SEC425",
+        "lintai-ai-security:SEC426",
+        "lintai-ai-security:SEC427"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -213,7 +252,8 @@
         "lintai-ai-security:SEC395",
         "lintai-ai-security:SEC396",
         "lintai-ai-security:SEC397",
-        "lintai-ai-security:SEC398"
+        "lintai-ai-security:SEC398",
+        "lintai-ai-security:SEC422"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -248,7 +288,21 @@
         "lintai-ai-security:SEC385",
         "lintai-ai-security:SEC386",
         "lintai-ai-security:SEC387",
-        "lintai-ai-security:SEC388"
+        "lintai-ai-security:SEC388",
+        "lintai-ai-security:SEC399",
+        "lintai-ai-security:SEC400",
+        "lintai-ai-security:SEC405",
+        "lintai-ai-security:SEC406",
+        "lintai-ai-security:SEC407",
+        "lintai-ai-security:SEC408",
+        "lintai-ai-security:SEC409",
+        "lintai-ai-security:SEC410",
+        "lintai-ai-security:SEC411",
+        "lintai-ai-security:SEC412",
+        "lintai-ai-security:SEC413",
+        "lintai-ai-security:SEC414",
+        "lintai-ai-security:SEC415",
+        "lintai-ai-security:SEC418"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -266,6 +320,20 @@
         "lintai-ai-security:SEC377"
       ],
       "canonicalPath": "/presets/guidance"
+    },
+    {
+      "id": "governance",
+      "kind": "membership",
+      "title": "governance",
+      "description": "Opt-in review rules for shared mutation authority and similar workflow-governance decisions that should not read like headline security findings.",
+      "extends": [],
+      "ruleIds": [
+        "lintai-ai-security:SEC390",
+        "lintai-ai-security:SEC391",
+        "lintai-ai-security:SEC392",
+        "lintai-ai-security:SEC393"
+      ],
+      "canonicalPath": "/presets/governance"
     },
     {
       "id": "supply-chain",
@@ -3576,6 +3644,157 @@
       "relatedRuleIds": []
     },
     {
+      "ruleId": "lintai-ai-security:SEC389",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC389",
+      "alias": "MD-WEBSEARCH-UNSCOPED",
+      "displayLabel": "SEC389 / MD-WEBSEARCH-UNSCOPED",
+      "docTitle": "AI markdown: bare WebSearch tool grant",
+      "slug": "sec389",
+      "canonicalPath": "/rules/lintai-ai-security/sec389",
+      "summary": "AI-native markdown frontmatter grants bare `WebSearch` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Bare WebSearch grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC390",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC390",
+      "alias": "MD-GIT-PUSH-PERMISSION",
+      "displayLabel": "SEC390 / MD-GIT-PUSH-PERMISSION",
+      "docTitle": "AI markdown: shared git push tool grant",
+      "slug": "sec390",
+      "canonicalPath": "/rules/lintai-ai-security/sec390",
+      "summary": "AI-native markdown frontmatter grants `Bash(git push)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared git push grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC391",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC391",
+      "alias": "MD-GIT-CHECKOUT-PERMISSION",
+      "displayLabel": "SEC391 / MD-GIT-CHECKOUT-PERMISSION",
+      "docTitle": "AI markdown: shared git checkout tool grant",
+      "slug": "sec391",
+      "canonicalPath": "/rules/lintai-ai-security/sec391",
+      "summary": "AI-native markdown frontmatter grants `Bash(git checkout:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared git checkout grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC392",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC392",
+      "alias": "MD-GIT-COMMIT-PERMISSION",
+      "displayLabel": "SEC392 / MD-GIT-COMMIT-PERMISSION",
+      "docTitle": "AI markdown: shared git commit tool grant",
+      "slug": "sec392",
+      "canonicalPath": "/rules/lintai-ai-security/sec392",
+      "summary": "AI-native markdown frontmatter grants `Bash(git commit:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared git commit grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC393",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC393",
+      "alias": "MD-GIT-STASH-PERMISSION",
+      "displayLabel": "SEC393 / MD-GIT-STASH-PERMISSION",
+      "docTitle": "AI markdown: shared git stash tool grant",
+      "slug": "sec393",
+      "canonicalPath": "/rules/lintai-ai-security/sec393",
+      "summary": "AI-native markdown frontmatter grants `Bash(git stash:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared git stash grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
       "ruleId": "lintai-ai-security:SEC394",
       "providerId": "lintai-ai-security",
       "providerSlug": "lintai-ai-security",
@@ -3768,6 +3987,820 @@
         "deterministicSignalBasis": "JsonSignals exact wildcard detection for `capabilities` scalar or array values on parsed MCP configuration."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC399",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC399",
+      "alias": "CLAUDE-NPX-PERMISSION",
+      "displayLabel": "SEC399 / CLAUDE-NPX-PERMISSION",
+      "docTitle": "Claude settings: shared npx Bash permissions",
+      "slug": "sec399",
+      "canonicalPath": "/rules/lintai-ai-security/sec399",
+      "summary": "Claude settings permissions allow `Bash(npx ...)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `Bash(npx ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC400",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC400",
+      "alias": "CLAUDE-ENABLED-MCPJSON-SERVERS",
+      "displayLabel": "SEC400 / CLAUDE-ENABLED-MCPJSON-SERVERS",
+      "docTitle": "Claude settings: shared enabledMcpjsonServers",
+      "slug": "sec400",
+      "canonicalPath": "/rules/lintai-ai-security/sec400",
+      "summary": "Claude settings enable `enabledMcpjsonServers` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `enabledMcpjsonServers` in committed Claude settings is deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC404",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC404",
+      "alias": "MD-WEBFETCH-UNSCOPED",
+      "displayLabel": "SEC404 / MD-WEBFETCH-UNSCOPED",
+      "docTitle": "AI markdown: bare WebFetch tool grant",
+      "slug": "sec404",
+      "canonicalPath": "/rules/lintai-ai-security/sec404",
+      "summary": "AI-native markdown frontmatter grants bare `WebFetch` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Bare WebFetch grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC405",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC405",
+      "alias": "CLAUDE-PACKAGE-INSTALL-PERMISSION",
+      "displayLabel": "SEC405 / CLAUDE-PACKAGE-INSTALL-PERMISSION",
+      "docTitle": "Claude settings: shared package install permissions",
+      "slug": "sec405",
+      "canonicalPath": "/rules/lintai-ai-security/sec405",
+      "summary": "Claude settings permissions allow package installation commands in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared package installation permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC406",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC406",
+      "alias": "CLAUDE-GIT-ADD-PERMISSION",
+      "displayLabel": "SEC406 / CLAUDE-GIT-ADD-PERMISSION",
+      "docTitle": "Claude settings: shared git add permissions",
+      "slug": "sec406",
+      "canonicalPath": "/rules/lintai-ai-security/sec406",
+      "summary": "Claude settings permissions allow `Bash(git add:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `git add` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC407",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC407",
+      "alias": "CLAUDE-GIT-CLONE-PERMISSION",
+      "displayLabel": "SEC407 / CLAUDE-GIT-CLONE-PERMISSION",
+      "docTitle": "Claude settings: shared git clone permissions",
+      "slug": "sec407",
+      "canonicalPath": "/rules/lintai-ai-security/sec407",
+      "summary": "Claude settings permissions allow `Bash(git clone:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `git clone` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC408",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC408",
+      "alias": "CLAUDE-GH-PR-PERMISSION",
+      "displayLabel": "SEC408 / CLAUDE-GH-PR-PERMISSION",
+      "docTitle": "Claude settings: shared gh pr permissions",
+      "slug": "sec408",
+      "canonicalPath": "/rules/lintai-ai-security/sec408",
+      "summary": "Claude settings permissions allow `Bash(gh pr:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `gh pr` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC409",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC409",
+      "alias": "CLAUDE-GIT-FETCH-PERMISSION",
+      "displayLabel": "SEC409 / CLAUDE-GIT-FETCH-PERMISSION",
+      "docTitle": "Claude settings: shared git fetch permissions",
+      "slug": "sec409",
+      "canonicalPath": "/rules/lintai-ai-security/sec409",
+      "summary": "Claude settings permissions allow `Bash(git fetch:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `git fetch` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC410",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC410",
+      "alias": "CLAUDE-GIT-LS-REMOTE-PERMISSION",
+      "displayLabel": "SEC410 / CLAUDE-GIT-LS-REMOTE-PERMISSION",
+      "docTitle": "Claude settings: shared git ls-remote permissions",
+      "slug": "sec410",
+      "canonicalPath": "/rules/lintai-ai-security/sec410",
+      "summary": "Claude settings permissions allow `Bash(git ls-remote:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `git ls-remote` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC411",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC411",
+      "alias": "CLAUDE-CURL-PERMISSION",
+      "displayLabel": "SEC411 / CLAUDE-CURL-PERMISSION",
+      "docTitle": "Claude settings: shared curl permissions",
+      "slug": "sec411",
+      "canonicalPath": "/rules/lintai-ai-security/sec411",
+      "summary": "Claude settings permissions allow `Bash(curl:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `Bash(curl:*)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC412",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC412",
+      "alias": "CLAUDE-WGET-PERMISSION",
+      "displayLabel": "SEC412 / CLAUDE-WGET-PERMISSION",
+      "docTitle": "Claude settings: shared wget permissions",
+      "slug": "sec412",
+      "canonicalPath": "/rules/lintai-ai-security/sec412",
+      "summary": "Claude settings permissions allow `Bash(wget:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `Bash(wget:*)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC413",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC413",
+      "alias": "CLAUDE-GIT-CONFIG-PERMISSION",
+      "displayLabel": "SEC413 / CLAUDE-GIT-CONFIG-PERMISSION",
+      "docTitle": "Claude settings: shared git config permissions",
+      "slug": "sec413",
+      "canonicalPath": "/rules/lintai-ai-security/sec413",
+      "summary": "Claude settings permissions allow `Bash(git config:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `git config` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC414",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC414",
+      "alias": "CLAUDE-GIT-TAG-PERMISSION",
+      "displayLabel": "SEC414 / CLAUDE-GIT-TAG-PERMISSION",
+      "docTitle": "Claude settings: shared git tag permissions",
+      "slug": "sec414",
+      "canonicalPath": "/rules/lintai-ai-security/sec414",
+      "summary": "Claude settings permissions allow `Bash(git tag:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `git tag` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC415",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC415",
+      "alias": "CLAUDE-GIT-BRANCH-PERMISSION",
+      "displayLabel": "SEC415 / CLAUDE-GIT-BRANCH-PERMISSION",
+      "docTitle": "Claude settings: shared git branch permissions",
+      "slug": "sec415",
+      "canonicalPath": "/rules/lintai-ai-security/sec415",
+      "summary": "Claude settings permissions allow `Bash(git branch:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `git branch` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC416",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC416",
+      "alias": "MD-CLAUDE-PIP-INSTALL",
+      "displayLabel": "SEC416 / MD-CLAUDE-PIP-INSTALL",
+      "docTitle": "AI markdown: Claude bare pip install",
+      "slug": "sec416",
+      "canonicalPath": "/rules/lintai-ai-security/sec416",
+      "summary": "AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "heuristic",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "This rule depends on transcript-shaped markdown plus explicit `uv` preference context in the same AI-native document, so the first release stays guidance-only while broader ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC417",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC417",
+      "alias": "MD-PIP-GIT-UNPINNED",
+      "displayLabel": "SEC417 / MD-PIP-GIT-UNPINNED",
+      "docTitle": "AI markdown: unpinned pip git install",
+      "slug": "sec417",
+      "canonicalPath": "/rules/lintai-ai-security/sec417",
+      "summary": "AI-native markdown installs Python packages from an unpinned `git+https://` source",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Git-backed `pip install` examples in markdown can be legitimate setup guidance, so the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC418",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC418",
+      "alias": "CLAUDE-WEBFETCH-RAW-GITHUB",
+      "displayLabel": "SEC418 / CLAUDE-WEBFETCH-RAW-GITHUB",
+      "docTitle": "Claude settings: shared raw.githubusercontent.com WebFetch permissions",
+      "slug": "sec418",
+      "canonicalPath": "/rules/lintai-ai-security/sec418",
+      "summary": "Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `WebFetch(domain:raw.githubusercontent.com)` grants are useful review signals, but the first release stays Preview while broader external usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC419",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC419",
+      "alias": "MD-CURL-ALLOWED-TOOLS",
+      "displayLabel": "SEC419 / MD-CURL-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(curl:*)` tool grant",
+      "slug": "sec419",
+      "canonicalPath": "/rules/lintai-ai-security/sec419",
+      "summary": "AI-native markdown frontmatter grants `Bash(curl:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `Bash(curl:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC420",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC420",
+      "alias": "MD-WGET-ALLOWED-TOOLS",
+      "displayLabel": "SEC420 / MD-WGET-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(wget:*)` tool grant",
+      "slug": "sec420",
+      "canonicalPath": "/rules/lintai-ai-security/sec420",
+      "summary": "AI-native markdown frontmatter grants `Bash(wget:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `Bash(wget:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC421",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC421",
+      "alias": "MD-GIT-CLONE-ALLOWED-TOOLS",
+      "displayLabel": "SEC421 / MD-GIT-CLONE-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(git clone:*)` tool grant",
+      "slug": "sec421",
+      "canonicalPath": "/rules/lintai-ai-security/sec421",
+      "summary": "AI-native markdown frontmatter grants `Bash(git clone:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `Bash(git clone:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC422",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC422",
+      "alias": "MCP-COMMAND-SUDO",
+      "displayLabel": "SEC422 / MCP-COMMAND-SUDO",
+      "docTitle": "MCP config: sudo command",
+      "slug": "sec422",
+      "canonicalPath": "/rules/lintai-ai-security/sec422",
+      "summary": "MCP configuration launches the server through `sudo`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact MCP server launch paths that run under `sudo`.",
+        "maliciousCaseIds": [
+          "mcp-command-sudo"
+        ],
+        "benignCaseIds": [
+          "mcp-command-non-sudo-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact string detection for `command: \"sudo\"` on parsed MCP configuration objects."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC423",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC423",
+      "alias": "MD-READ-UNSCOPED",
+      "displayLabel": "SEC423 / MD-READ-UNSCOPED",
+      "docTitle": "AI markdown: bare Read tool grant",
+      "slug": "sec423",
+      "canonicalPath": "/rules/lintai-ai-security/sec423",
+      "summary": "AI-native markdown frontmatter grants bare `Read` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Bare Read grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC424",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC424",
+      "alias": "MD-WRITE-UNSCOPED",
+      "displayLabel": "SEC424 / MD-WRITE-UNSCOPED",
+      "docTitle": "AI markdown: bare Write tool grant",
+      "slug": "sec424",
+      "canonicalPath": "/rules/lintai-ai-security/sec424",
+      "summary": "AI-native markdown frontmatter grants bare `Write` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Bare Write grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC425",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC425",
+      "alias": "MD-EDIT-UNSCOPED",
+      "displayLabel": "SEC425 / MD-EDIT-UNSCOPED",
+      "docTitle": "AI markdown: bare Edit tool grant",
+      "slug": "sec425",
+      "canonicalPath": "/rules/lintai-ai-security/sec425",
+      "summary": "AI-native markdown frontmatter grants bare `Edit` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Bare Edit grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC426",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC426",
+      "alias": "MD-GLOB-UNSCOPED",
+      "displayLabel": "SEC426 / MD-GLOB-UNSCOPED",
+      "docTitle": "AI markdown: bare Glob tool grant",
+      "slug": "sec426",
+      "canonicalPath": "/rules/lintai-ai-security/sec426",
+      "summary": "AI-native markdown frontmatter grants bare `Glob` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Bare Glob grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC427",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC427",
+      "alias": "MD-GREP-UNSCOPED",
+      "displayLabel": "SEC427 / MD-GREP-UNSCOPED",
+      "docTitle": "AI markdown: bare Grep tool grant",
+      "slug": "sec427",
+      "canonicalPath": "/rules/lintai-ai-security/sec427",
+      "summary": "AI-native markdown frontmatter grants bare `Grep` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Bare Grep grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
