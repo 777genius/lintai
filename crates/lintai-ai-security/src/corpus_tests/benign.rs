@@ -196,6 +196,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-html-comment-safe",
             "skill-metadata-service-deny-list-safe",
             "skill-mutable-mcp-launcher-safety-guidance-safe",
+            "skill-package-command-allowed-tools-safe",
             "skill-project-scoped-path-safe",
             "skill-public-key-pem-safe",
             "skill-read-unsafe-path-allowed-tools-specific-safe",

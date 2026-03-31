@@ -2054,6 +2054,70 @@ fn ignores_git_am_allowed_tools_when_command_is_more_specific() {
 }
 
 #[test]
+fn finds_package_install_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(pip install), Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC447")
+        .unwrap();
+    let start = content.find("Bash(pip install)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(pip install)".len())
+    );
+}
+
+#[test]
+fn finds_python_dash_m_pip_install_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(python -m pip install), Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC447")
+        .unwrap();
+    let start = content.find("Bash(python -m pip install)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(python -m pip install)".len())
+    );
+}
+
+#[test]
+fn ignores_package_install_allowed_tools_when_command_is_more_specific() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(pip cache purge), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC447")
+    );
+}
+
+#[test]
+fn ignores_package_install_allowed_tools_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/skill/SKILL.md",
+        "---\nallowed-tools: Bash(npm install), Read\n---\n# Fixture skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC447")
+    );
+}
+
+#[test]
 fn finds_unscoped_read_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Read, Write(./artifacts/**)\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

@@ -166,7 +166,8 @@
         "lintai-ai-security:SEC442",
         "lintai-ai-security:SEC443",
         "lintai-ai-security:SEC444",
-        "lintai-ai-security:SEC445"
+        "lintai-ai-security:SEC445",
+        "lintai-ai-security:SEC447"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -242,7 +243,8 @@
         "lintai-ai-security:SEC442",
         "lintai-ai-security:SEC443",
         "lintai-ai-security:SEC444",
-        "lintai-ai-security:SEC445"
+        "lintai-ai-security:SEC445",
+        "lintai-ai-security:SEC447"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -5700,6 +5702,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact string detection for `args[0] == \"sudo\"` on parsed MCP configuration objects."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC447",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC447",
+      "alias": "MD-PACKAGE-INSTALL-ALLOWED-TOOLS",
+      "displayLabel": "SEC447 / MD-PACKAGE-INSTALL-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: package installation tool grant",
+      "slug": "sec447",
+      "canonicalPath": "/rules/lintai-ai-security/sec447",
+      "summary": "AI-native markdown frontmatter grants package installation authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for shared package-install grants in allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-package-install-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-package-command-allowed-tools-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for package-install permissions such as `Bash(pip install)` and `Bash(npm install)` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

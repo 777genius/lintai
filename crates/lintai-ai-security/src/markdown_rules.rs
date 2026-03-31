@@ -683,6 +683,22 @@ pub(crate) fn check_git_am_allowed_tools(
     )
 }
 
+pub(crate) fn check_package_install_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.package_install_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants package installation authority",
+    )
+}
+
 pub(crate) fn check_unscoped_read_allowed_tools(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

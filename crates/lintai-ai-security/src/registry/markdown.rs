@@ -22,14 +22,15 @@ use crate::markdown_rules::{
     check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
     check_markdown_mutable_mcp_launcher, check_markdown_path_traversal,
     check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
-    check_plugin_agent_hooks_frontmatter, check_plugin_agent_mcp_servers_frontmatter,
-    check_plugin_agent_permission_mode, check_read_unsafe_path_allowed_tools,
-    check_unscoped_bash_allowed_tools, check_unscoped_edit_allowed_tools,
-    check_unscoped_glob_allowed_tools, check_unscoped_grep_allowed_tools,
-    check_unscoped_read_allowed_tools, check_unscoped_webfetch_allowed_tools,
-    check_unscoped_websearch_allowed_tools, check_unscoped_write_allowed_tools,
-    check_untrusted_instruction_promotion, check_webfetch_raw_github_allowed_tools,
-    check_wget_allowed_tools, check_wildcard_tool_access, check_write_unsafe_path_allowed_tools,
+    check_package_install_allowed_tools, check_plugin_agent_hooks_frontmatter,
+    check_plugin_agent_mcp_servers_frontmatter, check_plugin_agent_permission_mode,
+    check_read_unsafe_path_allowed_tools, check_unscoped_bash_allowed_tools,
+    check_unscoped_edit_allowed_tools, check_unscoped_glob_allowed_tools,
+    check_unscoped_grep_allowed_tools, check_unscoped_read_allowed_tools,
+    check_unscoped_webfetch_allowed_tools, check_unscoped_websearch_allowed_tools,
+    check_unscoped_write_allowed_tools, check_untrusted_instruction_promotion,
+    check_webfetch_raw_github_allowed_tools, check_wget_allowed_tools, check_wildcard_tool_access,
+    check_write_unsafe_path_allowed_tools,
 };
 
 declare_rule! {
@@ -549,6 +550,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct PackageInstallAllowedToolsRule {
+        code: "SEC447",
+        summary: "AI-native markdown frontmatter grants package installation authority",
+        doc_title: "AI markdown: package installation tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct UnscopedReadAllowedToolsRule {
         code: "SEC423",
         summary: "AI-native markdown frontmatter grants bare `Read` tool access",
@@ -776,7 +789,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 62] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 63] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1434,6 +1447,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 62] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(git am:*)` authority is really needed, or replace it with a narrower reviewed email-patch workflow instead of a default team-wide grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PackageInstallAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for shared package-install grants in allowed-tools policy.",
+            malicious_case_ids: &["skill-package-install-allowed-tools"],
+            benign_case_ids: &["skill-package-command-allowed-tools-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for package-install permissions such as `Bash(pip install)` and `Bash(npm install)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_package_install_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace shared package-install authority with a narrower reviewed workflow or remove install privileges from shared frontmatter",
         ),
         suggestion_fix: None,
     },
