@@ -363,6 +363,9 @@ impl ClaudeSettingsSignals {
             value,
             locator_ref.as_ref(),
             &[
+                "Bash(pip install)",
+                "Bash(pip3 install)",
+                "Bash(python -m pip install)",
                 "Bash(yarn install)",
                 "Bash(npm install)",
                 "Bash(pnpm install)",

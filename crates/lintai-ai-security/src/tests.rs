@@ -4649,6 +4649,40 @@ fn finds_claude_settings_package_install_permission() {
 }
 
 #[test]
+fn finds_claude_settings_pip_install_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(pip install)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC405")
+        .unwrap();
+    let start = content.find("Bash(pip install)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(pip install)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_python_m_pip_install_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(python -m pip install)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC405")
+        .unwrap();
+    let start = content.find("Bash(python -m pip install)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(python -m pip install)".len())
+    );
+}
+
+#[test]
 fn finds_claude_settings_git_checkout_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git checkout:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);

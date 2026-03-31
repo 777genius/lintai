@@ -75,6 +75,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "claude-settings-npx-specific-safe",
             "claude-settings-package-command-safe",
             "claude-settings-pinned-launcher-safe",
+            "claude-settings-pip-command-safe",
             "claude-settings-read-specific-safe",
             "claude-settings-read-wildcard-fixture-safe",
             "claude-settings-repo-external-absolute-hook-fixture-safe",

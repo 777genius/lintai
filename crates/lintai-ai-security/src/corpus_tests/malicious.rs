@@ -54,6 +54,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-settings-mutable-launcher",
             "claude-settings-npx-permission",
             "claude-settings-package-install-permission",
+            "claude-settings-pip-install-permission",
             "claude-settings-read-wildcard",
             "claude-settings-repo-external-absolute-hook-path",
             "claude-settings-unscoped-websearch",
