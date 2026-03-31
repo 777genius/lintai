@@ -94,6 +94,7 @@ pub(crate) struct MarkdownSignals {
     pub(crate) fenced_pipe_shell_spans: Vec<Span>,
     pub(crate) metadata_service_access_spans: Vec<Span>,
     pub(crate) mutable_mcp_launcher_spans: Vec<Span>,
+    pub(crate) claude_bare_pip_install_spans: Vec<Span>,
     pub(crate) mutable_docker_image_spans: Vec<Span>,
     pub(crate) docker_host_escape_spans: Vec<Span>,
     pub(crate) untrusted_instruction_promotion_spans: Vec<Span>,

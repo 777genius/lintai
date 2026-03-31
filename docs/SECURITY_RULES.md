@@ -128,6 +128,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC413 / CLAUDE-GIT-CONFIG-PERMISSION` | Claude settings permissions allow `Bash(git config:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC414 / CLAUDE-GIT-TAG-PERMISSION` | Claude settings permissions allow `Bash(git tag:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC415 / CLAUDE-GIT-BRANCH-PERMISSION` | Claude settings permissions allow `Bash(git branch:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC416 / MD-CLAUDE-PIP-INSTALL` | AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -2268,6 +2269,23 @@ Important behavior:
 - Promotion Blocker: Shared `git branch` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC416 / MD-CLAUDE-PIP-INSTALL` — AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-CLAUDE-PIP-INSTALL`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `heuristic`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: This rule depends on transcript-shaped markdown plus explicit `uv` preference context in the same AI-native document, so the first release stays guidance-only while broader ecosystem usefulness is measured.
+- Promotion Requirements: Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.
+- Canonical Note: Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.
 
 ## Provider: `lintai-policy-mismatch`
 

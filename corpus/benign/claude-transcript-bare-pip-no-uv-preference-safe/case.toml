@@ -1,0 +1,12 @@
+description = "Bare pip install transcript without uv preference context stays clean"
+
+[input]
+path = "CLAUDE.md"
+content = """
+```text
+Claude: pip install pytest
+```
+"""
+
+[[expect_absent]]
+rule = "SEC416"

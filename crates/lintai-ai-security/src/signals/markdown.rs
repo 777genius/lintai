@@ -33,6 +33,7 @@ impl MarkdownSignals {
         }
 
         let mut signals = Self::default();
+        let has_uv_preference = has_uv_instead_of_pip_preference(&ctx.content);
 
         for region in &ctx.document.regions {
             metrics.markdown_regions_visited += 1;
@@ -79,6 +80,15 @@ impl MarkdownSignals {
                     }
                     if let Some(relative) = find_mutable_mcp_launcher_relative_span(snippet) {
                         signals.mutable_mcp_launcher_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
+                    if has_uv_preference
+                        && let Some(relative) =
+                            find_claude_bare_pip_install_relative_span(snippet)
+                    {
+                        signals.claude_bare_pip_install_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
                             region.span.start_byte + relative.end_byte,
                         ));
@@ -144,6 +154,15 @@ impl MarkdownSignals {
                             region.span.start_byte + relative.end_byte,
                         ));
                     }
+                    if has_uv_preference
+                        && let Some(relative) =
+                            find_claude_bare_pip_install_relative_span(snippet)
+                    {
+                        signals.claude_bare_pip_install_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
                     if let Some(relative) =
                         find_markdown_mutable_docker_image_relative_span(snippet)
                     {
@@ -175,6 +194,15 @@ impl MarkdownSignals {
                     }
                     if let Some(relative) = find_mutable_mcp_launcher_relative_span(snippet) {
                         signals.mutable_mcp_launcher_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
+                    if has_uv_preference
+                        && let Some(relative) =
+                            find_claude_bare_pip_install_relative_span(snippet)
+                    {
+                        signals.claude_bare_pip_install_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
                             region.span.start_byte + relative.end_byte,
                         ));

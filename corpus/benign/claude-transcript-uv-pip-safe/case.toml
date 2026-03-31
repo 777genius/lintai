@@ -1,0 +1,14 @@
+description = "AI-native markdown that models Claude using uv pip install stays clean"
+
+[input]
+path = "CLAUDE.md"
+content = """
+Use uv not pip for Python projects.
+
+```text
+Claude: uv pip install pytest
+```
+"""
+
+[[expect_absent]]
+rule = "SEC416"

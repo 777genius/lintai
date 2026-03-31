@@ -147,6 +147,22 @@ pub(crate) fn check_markdown_mutable_mcp_launcher(
     )
 }
 
+pub(crate) fn check_markdown_claude_bare_pip_install(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.claude_bare_pip_install_spans.as_slice())
+            .unwrap_or(&[]),
+        "AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance",
+    )
+}
+
 pub(crate) fn check_markdown_mutable_docker_image(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

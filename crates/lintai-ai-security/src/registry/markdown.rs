@@ -5,6 +5,7 @@ use crate::markdown_rules::{
     check_approval_bypass_instruction, check_copilot_instruction_invalid_apply_to,
     check_copilot_instruction_invalid_apply_to_glob, check_copilot_instruction_missing_apply_to,
     check_copilot_instruction_too_long, check_copilot_instruction_wrong_suffix,
+    check_markdown_claude_bare_pip_install,
     check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
     check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
     check_cursor_rule_unknown_frontmatter_key, check_html_comment_directive,
@@ -95,6 +96,18 @@ declare_rule! {
         code: "SEC347",
         summary: "AI-native markdown example launches MCP through a mutable package runner",
         doc_title: "AI markdown: MCP via mutable package runner",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownClaudeBarePipInstallRule {
+        code: "SEC416",
+        summary: "AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance",
+        doc_title: "AI markdown: Claude bare pip install",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -354,7 +367,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 28] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 29] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -460,6 +473,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 28] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace mutable MCP launcher examples with pinned alternatives or add explicit supply-chain safety framing",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownClaudeBarePipInstallRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Heuristic,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "This rule depends on transcript-shaped markdown plus explicit `uv` preference context in the same AI-native document, so the first release stays guidance-only while broader ecosystem usefulness is measured.",
+            promotion_requirements: HEURISTIC_PREVIEW_REQUIREMENTS,
+        },
+        check: check_markdown_claude_bare_pip_install,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace bare `pip install` Claude transcript examples with `uv pip install` or mark them as intentionally incorrect pre-correction behavior",
         ),
         suggestion_fix: None,
     },

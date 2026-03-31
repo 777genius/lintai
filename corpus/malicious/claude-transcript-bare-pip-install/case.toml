@@ -1,0 +1,18 @@
+description = "AI-native markdown models Claude using bare pip install despite explicit uv preference guidance"
+
+[input]
+path = "CLAUDE.md"
+content = """
+# Preferences
+
+- Always use `uv` instead of `pip` for Python packages
+
+```text
+User: "Install pytest"
+Claude: pip install pytest
+```
+"""
+
+[[expect_findings]]
+rule = "SEC416"
+tier = "preview"

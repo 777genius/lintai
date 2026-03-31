@@ -8,6 +8,7 @@ pub(in crate::signals) mod frontmatter;
 pub(in crate::signals) mod instruction_promotion;
 pub(in crate::signals) mod launcher;
 pub(in crate::signals) mod paths;
+pub(in crate::signals) mod package_manager;
 pub(in crate::signals) mod sensitive_content;
 pub(in crate::signals) mod tokens;
 
@@ -19,4 +20,5 @@ pub(in crate::signals) use frontmatter::*;
 pub(in crate::signals) use instruction_promotion::*;
 pub(in crate::signals) use launcher::*;
 pub(in crate::signals) use paths::*;
+pub(in crate::signals) use package_manager::*;
 pub(in crate::signals) use sensitive_content::*;
