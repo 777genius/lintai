@@ -4,7 +4,7 @@ use serde_json::Value;
 use crate::json_locator::{JsonLocationMap, JsonPathSegment};
 use crate::signals::{JsonSignals, SignalWorkBudget};
 
-use super::spans::resolve_child_value_span;
+use super::spans::{resolve_child_value_span, resolve_value_span, with_child_index, with_child_key};
 
 mod claude_settings;
 mod mcp_command;
@@ -65,6 +65,16 @@ pub(crate) fn visit_json_value(
                 locator,
                 fallback_len,
             ));
+        } else if signals.shell_wrapper_span.is_none()
+            && command_shape.shell_has_dash_c
+            && let Some(args) = command_shape.args
+            && args
+                .first()
+                .and_then(Value::as_str)
+                .is_some_and(|arg0| arg0 == "sh" || arg0 == "bash")
+        {
+            let arg_path = with_child_index(&with_child_key(path, "args"), 0);
+            signals.shell_wrapper_span = Some(resolve_value_span(&arg_path, locator, fallback_len));
         }
     }
 

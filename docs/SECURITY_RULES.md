@@ -413,10 +413,10 @@ Important behavior:
 - Default Presets: `base`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
-- Graduation Rationale: Matches explicit shell-wrapper command structure in JSON config.
-- Deterministic Signal Basis: JsonSignals command and args structure observation for sh -c or bash -c wrappers.
-- Malicious Corpus: `mcp-shell-wrapper`
-- Benign Corpus: `mcp-safe-basic`
+- Graduation Rationale: Matches explicit shell-wrapper command structure in JSON config, whether the shell is the command itself or the first launch argument.
+- Deterministic Signal Basis: JsonSignals command and args structure observation for sh -c or bash -c wrappers, either through `command` or `args[0]`.
+- Malicious Corpus: `mcp-shell-wrapper`, `mcp-shell-wrapper-args0`
+- Benign Corpus: `mcp-safe-basic`, `mcp-shell-wrapper-args-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

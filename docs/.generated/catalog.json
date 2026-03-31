@@ -809,16 +809,18 @@
       "lifecycleState": "stable_gated",
       "lifecycle": {
         "kind": "stable",
-        "rationale": "Matches explicit shell-wrapper command structure in JSON config.",
+        "rationale": "Matches explicit shell-wrapper command structure in JSON config, whether the shell is the command itself or the first launch argument.",
         "maliciousCaseIds": [
-          "mcp-shell-wrapper"
+          "mcp-shell-wrapper",
+          "mcp-shell-wrapper-args0"
         ],
         "benignCaseIds": [
-          "mcp-safe-basic"
+          "mcp-safe-basic",
+          "mcp-shell-wrapper-args-safe"
         ],
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
-        "deterministicSignalBasis": "JsonSignals command and args structure observation for sh -c or bash -c wrappers."
+        "deterministicSignalBasis": "JsonSignals command and args structure observation for sh -c or bash -c wrappers, either through `command` or `args[0]`."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

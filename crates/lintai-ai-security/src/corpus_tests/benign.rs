@@ -146,6 +146,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "mcp-safe-client-envfile-config",
             "mcp-sandbox-enabled-safe",
             "mcp-secret-placeholder-safe",
+            "mcp-shell-wrapper-args-safe",
             "mcp-trust-tools-false-safe",
             "mcp-trust-verified-basic",
             "mcp-trusted-endpoint-safe",

@@ -111,6 +111,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "mcp-sandbox-disabled",
             "mcp-sensitive-env-reference",
             "mcp-shell-wrapper",
+            "mcp-shell-wrapper-args0",
             "mcp-static-authorization",
             "mcp-suspicious-endpoint",
             "mcp-trust-tools-true",

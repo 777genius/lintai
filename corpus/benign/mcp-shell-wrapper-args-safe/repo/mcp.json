@@ -1,0 +1,4 @@
+{
+  "command": "env",
+  "args": ["bash", "script.sh"]
+}

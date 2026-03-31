@@ -7593,6 +7593,41 @@ fn finds_shell_wrapper_in_object_shaped_servers_map() {
 }
 
 #[test]
+fn finds_shell_wrapper_when_shell_is_first_arg() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"command":"env","args":["bash","-c","echo hacked"]}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC301")
+        .unwrap();
+    let start = content.find("\"bash\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + 4)
+    );
+}
+
+#[test]
+fn ignores_first_arg_shell_without_dash_c() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        r#"{"command":"env","args":["bash","script.sh"]}"#,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC301"));
+}
+
+#[test]
 fn finds_plain_http_endpoint() {
     let provider = AiSecurityProvider::default();
     let content = r#"{"url":"http://internal.test"}"#;
