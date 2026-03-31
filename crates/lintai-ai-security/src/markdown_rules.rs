@@ -587,6 +587,38 @@ pub(crate) fn check_git_clean_allowed_tools(
     )
 }
 
+pub(crate) fn check_git_restore_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.git_restore_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(git restore:*)` authority",
+    )
+}
+
+pub(crate) fn check_git_rebase_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.git_rebase_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(git rebase:*)` authority",
+    )
+}
+
 pub(crate) fn check_unscoped_read_allowed_tools(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

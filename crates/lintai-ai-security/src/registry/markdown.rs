@@ -11,7 +11,8 @@ use crate::markdown_rules::{
     check_git_add_allowed_tools, check_git_branch_allowed_tools, check_git_checkout_allowed_tools,
     check_git_clean_allowed_tools, check_git_clone_allowed_tools, check_git_commit_allowed_tools,
     check_git_config_allowed_tools, check_git_fetch_allowed_tools, check_git_push_allowed_tools,
-    check_git_reset_allowed_tools, check_git_stash_allowed_tools, check_git_tag_allowed_tools,
+    check_git_rebase_allowed_tools, check_git_reset_allowed_tools, check_git_restore_allowed_tools,
+    check_git_stash_allowed_tools, check_git_tag_allowed_tools,
     check_glob_unsafe_path_allowed_tools, check_html_comment_directive,
     check_html_comment_download_exec, check_markdown_base64_exec,
     check_markdown_claude_bare_pip_install, check_markdown_docker_host_escape,
@@ -474,6 +475,30 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct GitRestoreAllowedToolsRule {
+        code: "SEC440",
+        summary: "AI-native markdown frontmatter grants `Bash(git restore:*)` authority",
+        doc_title: "AI markdown: `Bash(git restore:*)` tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct GitRebaseAllowedToolsRule {
+        code: "SEC441",
+        summary: "AI-native markdown frontmatter grants `Bash(git rebase:*)` authority",
+        doc_title: "AI markdown: `Bash(git rebase:*)` tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct UnscopedReadAllowedToolsRule {
         code: "SEC423",
         summary: "AI-native markdown frontmatter grants bare `Read` tool access",
@@ -701,7 +726,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 56] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 58] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1239,6 +1264,46 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 56] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(git clean:*)` authority is really needed, or replace it with a narrower reviewed cleanup workflow instead of a default team-wide grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GitRestoreAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for wildcard git restore grants in shared allowed-tools policy.",
+            malicious_case_ids: &["skill-git-restore-allowed-tools"],
+            benign_case_ids: &["skill-git-restore-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Bash(git restore:*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_git_restore_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(git restore:*)` authority is really needed, or replace it with a narrower reviewed restore workflow instead of a default team-wide grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GitRebaseAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for wildcard git rebase grants in shared allowed-tools policy.",
+            malicious_case_ids: &["skill-git-rebase-allowed-tools"],
+            benign_case_ids: &["skill-git-rebase-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Bash(git rebase:*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_git_rebase_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(git rebase:*)` authority is really needed, or replace it with a narrower reviewed history-rewrite workflow instead of a default team-wide grant",
         ),
         suggestion_fix: None,
     },

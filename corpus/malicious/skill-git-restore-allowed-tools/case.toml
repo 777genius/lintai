@@ -1,0 +1,6 @@
+id = "skill-git-restore-allowed-tools"
+rule = "SEC440"
+description = "AI-native markdown frontmatter grants Bash(git restore:*) authority"
+severity = "warning"
+category = "security"
+expected = 1

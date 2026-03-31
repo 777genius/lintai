@@ -1,0 +1,6 @@
+id = "skill-git-rebase-allowed-tools"
+rule = "SEC441"
+description = "AI-native markdown frontmatter grants Bash(git rebase:*) authority"
+severity = "warning"
+category = "security"
+expected = 1

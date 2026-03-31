@@ -1,0 +1,4 @@
+id = "skill-git-rebase-allowed-tools-specific-safe"
+rule = "SEC441"
+description = "AI-native markdown frontmatter allows only a specific git rebase command"
+expected = 0

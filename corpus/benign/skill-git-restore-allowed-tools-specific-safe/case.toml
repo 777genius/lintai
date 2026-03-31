@@ -1,0 +1,4 @@
+id = "skill-git-restore-allowed-tools-specific-safe"
+rule = "SEC440"
+description = "AI-native markdown frontmatter allows only a specific git restore command"
+expected = 0

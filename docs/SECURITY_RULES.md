@@ -158,6 +158,8 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC437 / MD-GIT-BRANCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git branch:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC438 / MD-GIT-RESET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git reset:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC439 / MD-GIT-CLEAN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git clean:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC440 / MD-GIT-RESTORE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git restore:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC441 / MD-GIT-REBASE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git rebase:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -2918,6 +2920,48 @@ Important behavior:
 - Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Bash(git clean:*)` inside allowed-tools or allowed_tools.
 - Malicious Corpus: `skill-git-clean-allowed-tools`
 - Benign Corpus: `skill-git-clean-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC440 / MD-GIT-RESTORE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(git restore:*)` authority
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GIT-RESTORE-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for wildcard git restore grants in shared allowed-tools policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Bash(git restore:*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-git-restore-allowed-tools`
+- Benign Corpus: `skill-git-restore-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC441 / MD-GIT-REBASE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(git rebase:*)` authority
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GIT-REBASE-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for wildcard git rebase grants in shared allowed-tools policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Bash(git rebase:*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-git-rebase-allowed-tools`
+- Benign Corpus: `skill-git-rebase-allowed-tools-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

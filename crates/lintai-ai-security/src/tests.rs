@@ -1862,6 +1862,70 @@ fn ignores_git_clean_allowed_tools_when_command_is_more_specific() {
 }
 
 #[test]
+fn finds_git_restore_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(git restore:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC440")
+        .unwrap();
+    let start = content.find("Bash(git restore:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git restore:*)".len())
+    );
+}
+
+#[test]
+fn ignores_git_restore_allowed_tools_when_command_is_more_specific() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(git restore src/lib.rs), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC440")
+    );
+}
+
+#[test]
+fn finds_git_rebase_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(git rebase:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC441")
+        .unwrap();
+    let start = content.find("Bash(git rebase:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git rebase:*)".len())
+    );
+}
+
+#[test]
+fn ignores_git_rebase_allowed_tools_when_command_is_more_specific() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(git rebase main), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC441")
+    );
+}
+
+#[test]
 fn finds_unscoped_read_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Read, Write(./artifacts/**)\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

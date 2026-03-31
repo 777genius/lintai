@@ -159,7 +159,9 @@
         "lintai-ai-security:SEC436",
         "lintai-ai-security:SEC437",
         "lintai-ai-security:SEC438",
-        "lintai-ai-security:SEC439"
+        "lintai-ai-security:SEC439",
+        "lintai-ai-security:SEC440",
+        "lintai-ai-security:SEC441"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -229,7 +231,9 @@
         "lintai-ai-security:SEC436",
         "lintai-ai-security:SEC437",
         "lintai-ai-security:SEC438",
-        "lintai-ai-security:SEC439"
+        "lintai-ai-security:SEC439",
+        "lintai-ai-security:SEC440",
+        "lintai-ai-security:SEC441"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -5411,6 +5415,84 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(git clean:*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC440",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC440",
+      "alias": "MD-GIT-RESTORE-ALLOWED-TOOLS",
+      "displayLabel": "SEC440 / MD-GIT-RESTORE-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(git restore:*)` tool grant",
+      "slug": "sec440",
+      "canonicalPath": "/rules/lintai-ai-security/sec440",
+      "summary": "AI-native markdown frontmatter grants `Bash(git restore:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for wildcard git restore grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-git-restore-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-git-restore-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(git restore:*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC441",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC441",
+      "alias": "MD-GIT-REBASE-ALLOWED-TOOLS",
+      "displayLabel": "SEC441 / MD-GIT-REBASE-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(git rebase:*)` tool grant",
+      "slug": "sec441",
+      "canonicalPath": "/rules/lintai-ai-security/sec441",
+      "summary": "AI-native markdown frontmatter grants `Bash(git rebase:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for wildcard git rebase grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-git-rebase-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-git-rebase-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(git rebase:*)` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
