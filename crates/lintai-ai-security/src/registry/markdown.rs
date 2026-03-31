@@ -20,11 +20,12 @@ use crate::markdown_rules::{
     check_markdown_cargo_http_git_install, check_markdown_cargo_http_index,
     check_markdown_claude_bare_pip_install, check_markdown_docker_host_escape,
     check_markdown_download_exec, check_markdown_fenced_pipe_shell,
-    check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
-    check_markdown_mutable_mcp_launcher, check_markdown_npm_http_registry,
-    check_markdown_npm_http_source, check_markdown_path_traversal,
-    check_markdown_pip_http_find_links, check_markdown_pip_http_git_install,
-    check_markdown_pip_http_index, check_markdown_pip_http_source, check_markdown_pip_trusted_host,
+    check_markdown_js_package_strict_ssl_false, check_markdown_metadata_service_access,
+    check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
+    check_markdown_npm_http_registry, check_markdown_npm_http_source,
+    check_markdown_path_traversal, check_markdown_pip_http_find_links,
+    check_markdown_pip_http_git_install, check_markdown_pip_http_index,
+    check_markdown_pip_http_source, check_markdown_pip_trusted_host,
     check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
     check_package_install_allowed_tools, check_plugin_agent_hooks_frontmatter,
     check_plugin_agent_mcp_servers_frontmatter, check_plugin_agent_permission_mode,
@@ -198,6 +199,18 @@ declare_rule! {
         code: "SEC450",
         summary: "AI-native markdown installs JavaScript packages from an insecure `http://` registry",
         doc_title: "AI markdown: npm http registry",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownJsPackageStrictSslFalseRule {
+        code: "SEC457",
+        summary: "AI-native markdown disables strict SSL verification for JavaScript package manager config",
+        doc_title: "AI markdown: js package strict-ssl false",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -901,7 +914,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 72] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 73] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1143,6 +1156,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 72] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace the insecure `http://` registry with a normal TLS-verified `https://` source",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownJsPackageStrictSslFalseRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown for JavaScript package-manager config commands that explicitly disable strict SSL verification.",
+            malicious_case_ids: &["skill-js-package-strict-ssl-false"],
+            benign_case_ids: &["skill-js-package-strict-ssl-true-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact `npm config set`, `pnpm config set`, or `yarn config set` token analysis with `strict-ssl false` or `strict-ssl=false` detection inside parsed markdown regions.",
+        },
+        check: check_markdown_js_package_strict_ssl_false,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the strict-ssl disable and keep normal certificate verification enabled for package manager config",
         ),
         suggestion_fix: None,
     },

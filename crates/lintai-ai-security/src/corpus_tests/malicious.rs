@@ -158,6 +158,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "skill-glob-unsafe-path-allowed-tools",
             "skill-hidden-directive",
             "skill-html-comment-download-exec",
+            "skill-js-package-strict-ssl-false",
             "skill-markdown-base64-exec",
             "skill-markdown-download-exec",
             "skill-markdown-path-traversal",

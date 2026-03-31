@@ -175,6 +175,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC454 / MD-NPM-HTTP-SOURCE` | AI-native markdown installs JavaScript packages from an insecure direct `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC455 / MD-PIP-HTTP-GIT-INSTALL` | AI-native markdown installs Python packages from an insecure `git+http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC456 / MD-PIP-HTTP-FIND-LINKS` | AI-native markdown installs Python packages with insecure `http://` find-links | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC457 / MD-JS-PACKAGE-STRICT-SSL-FALSE` | AI-native markdown disables strict SSL verification for JavaScript package manager config | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -3292,6 +3293,27 @@ Important behavior:
 - Deterministic Signal Basis: MarkdownSignals exact `pip install` token analysis with `--find-links http://`, `--find-links=http://`, or `-f http://` detection inside parsed markdown regions.
 - Malicious Corpus: `skill-pip-http-find-links`
 - Benign Corpus: `skill-pip-https-find-links-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC457 / MD-JS-PACKAGE-STRICT-SSL-FALSE` — AI-native markdown disables strict SSL verification for JavaScript package manager config
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-JS-PACKAGE-STRICT-SSL-FALSE`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown for JavaScript package-manager config commands that explicitly disable strict SSL verification.
+- Deterministic Signal Basis: MarkdownSignals exact `npm config set`, `pnpm config set`, or `yarn config set` token analysis with `strict-ssl false` or `strict-ssl=false` detection inside parsed markdown regions.
+- Malicious Corpus: `skill-js-package-strict-ssl-false`
+- Benign Corpus: `skill-js-package-strict-ssl-true-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

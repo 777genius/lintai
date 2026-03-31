@@ -275,6 +275,22 @@ pub(crate) fn check_markdown_npm_http_registry(
     )
 }
 
+pub(crate) fn check_markdown_js_package_strict_ssl_false(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.js_package_strict_ssl_false_spans.as_slice())
+            .unwrap_or(&[]),
+        "AI-native markdown disables strict SSL verification for JavaScript package manager config",
+    )
+}
+
 pub(crate) fn check_markdown_npm_http_source(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

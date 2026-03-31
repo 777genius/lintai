@@ -1231,6 +1231,62 @@ fn finds_markdown_npm_http_registry() {
 }
 
 #[test]
+fn finds_markdown_npm_strict_ssl_false() {
+    let content = "npm config set strict-ssl false\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC457")
+        .unwrap();
+    let start = content.find("strict-ssl false").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "strict-ssl false".len())
+    );
+}
+
+#[test]
+fn finds_markdown_pnpm_strict_ssl_false_equals_form() {
+    let content = "pnpm config set strict-ssl=false\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC457")
+    );
+}
+
+#[test]
+fn finds_markdown_yarn_strict_ssl_false() {
+    let content = "yarn config set strict-ssl false\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC457")
+    );
+}
+
+#[test]
+fn ignores_markdown_npm_strict_ssl_true() {
+    let content = "npm config set strict-ssl true\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC457")
+    );
+}
+
+#[test]
 fn finds_markdown_pnpm_http_registry() {
     let content = "pnpm add demo --registry http://registry.example.test/\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

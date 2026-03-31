@@ -196,6 +196,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-git-tag-allowed-tools-specific-safe",
             "skill-glob-unsafe-path-allowed-tools-specific-safe",
             "skill-html-comment-safe",
+            "skill-js-package-strict-ssl-true-safe",
             "skill-metadata-service-deny-list-safe",
             "skill-mutable-mcp-launcher-safety-guidance-safe",
             "skill-npm-https-registry-safe",

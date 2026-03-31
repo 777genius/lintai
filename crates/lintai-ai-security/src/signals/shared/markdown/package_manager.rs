@@ -18,6 +18,8 @@ const NPM_INSTALL_MARKERS: &[&str] = &[
     "yarn add",
     "bun add",
 ];
+const JS_PACKAGE_CONFIG_MARKERS: &[&str] =
+    &["npm config set", "pnpm config set", "yarn config set"];
 const CARGO_INSTALL_MARKERS: &[&str] = &["cargo install"];
 
 pub(crate) fn has_uv_instead_of_pip_preference(text: &str) -> bool {
@@ -174,6 +176,25 @@ pub(crate) fn find_npm_http_registry_relative_span(text: &str) -> Option<Span> {
 
     if !text.ends_with('\n') {
         return find_npm_http_registry_in_line(text);
+    }
+
+    None
+}
+
+pub(crate) fn find_js_package_strict_ssl_false_relative_span(text: &str) -> Option<Span> {
+    let mut offset = 0usize;
+    for line in text.split_inclusive('\n') {
+        if let Some(relative) = find_js_package_strict_ssl_false_in_line(line) {
+            return Some(Span::new(
+                offset + relative.start_byte,
+                offset + relative.end_byte,
+            ));
+        }
+        offset += line.len();
+    }
+
+    if !text.ends_with('\n') {
+        return find_js_package_strict_ssl_false_in_line(text);
     }
 
     None
@@ -469,6 +490,30 @@ fn find_npm_http_source_in_line(line: &str) -> Option<Span> {
     Some(Span::new(absolute_http, absolute_http + "http://".len()))
 }
 
+fn find_js_package_strict_ssl_false_in_line(line: &str) -> Option<Span> {
+    let lowered = line.to_ascii_lowercase();
+    let mut command_start = None;
+    for marker in JS_PACKAGE_CONFIG_MARKERS {
+        if let Some(relative) = lowered.find(marker) {
+            command_start = Some(relative + marker.len());
+            break;
+        }
+    }
+    let Some(search_start) = command_start else {
+        return None;
+    };
+
+    let search_slice = &lowered[search_start..];
+    for marker in ["strict-ssl false", "strict-ssl=false"] {
+        if let Some(relative_marker) = search_slice.find(marker) {
+            let start = search_start + relative_marker;
+            return Some(Span::new(start, start + marker.len()));
+        }
+    }
+
+    None
+}
+
 fn find_cargo_http_git_install_in_line(line: &str) -> Option<Span> {
     let lowered = line.to_ascii_lowercase();
     let mut install_start = None;
@@ -537,11 +582,12 @@ fn has_immutable_git_ref(url: &str) -> bool {
 mod tests {
     use super::{
         find_cargo_http_git_install_relative_span, find_cargo_http_index_relative_span,
-        find_claude_bare_pip_install_relative_span, find_npm_http_registry_relative_span,
-        find_npm_http_source_relative_span, find_pip_http_find_links_relative_span,
-        find_pip_http_git_install_relative_span, find_pip_http_index_relative_span,
-        find_pip_http_source_relative_span, find_pip_trusted_host_relative_span,
-        find_unpinned_pip_git_install_relative_span, has_uv_instead_of_pip_preference,
+        find_claude_bare_pip_install_relative_span, find_js_package_strict_ssl_false_relative_span,
+        find_npm_http_registry_relative_span, find_npm_http_source_relative_span,
+        find_pip_http_find_links_relative_span, find_pip_http_git_install_relative_span,
+        find_pip_http_index_relative_span, find_pip_http_source_relative_span,
+        find_pip_trusted_host_relative_span, find_unpinned_pip_git_install_relative_span,
+        has_uv_instead_of_pip_preference,
     };
 
     #[test]
@@ -730,6 +776,33 @@ mod tests {
     fn ignores_npm_http_registry_for_direct_source_rule() {
         let content = "npm install demo --registry http://registry.example.test/\n";
         assert_eq!(find_npm_http_source_relative_span(content), None);
+    }
+
+    #[test]
+    fn finds_npm_strict_ssl_false() {
+        let content = "npm config set strict-ssl false\n";
+        assert!(find_js_package_strict_ssl_false_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_pnpm_strict_ssl_false_equals_form() {
+        let content = "pnpm config set strict-ssl=false\n";
+        assert!(find_js_package_strict_ssl_false_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_yarn_strict_ssl_false() {
+        let content = "yarn config set strict-ssl false\n";
+        assert!(find_js_package_strict_ssl_false_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn ignores_npm_strict_ssl_true() {
+        let content = "npm config set strict-ssl true\n";
+        assert_eq!(
+            find_js_package_strict_ssl_false_relative_span(content),
+            None
+        );
     }
 
     #[test]

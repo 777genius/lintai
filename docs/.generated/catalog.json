@@ -176,7 +176,8 @@
         "lintai-ai-security:SEC453",
         "lintai-ai-security:SEC454",
         "lintai-ai-security:SEC455",
-        "lintai-ai-security:SEC456"
+        "lintai-ai-security:SEC456",
+        "lintai-ai-security:SEC457"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -262,7 +263,8 @@
         "lintai-ai-security:SEC453",
         "lintai-ai-security:SEC454",
         "lintai-ai-security:SEC455",
-        "lintai-ai-security:SEC456"
+        "lintai-ai-security:SEC456",
+        "lintai-ai-security:SEC457"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -6110,6 +6112,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `pip install` token analysis with `--find-links http://`, `--find-links=http://`, or `-f http://` detection inside parsed markdown regions."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC457",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC457",
+      "alias": "MD-JS-PACKAGE-STRICT-SSL-FALSE",
+      "displayLabel": "SEC457 / MD-JS-PACKAGE-STRICT-SSL-FALSE",
+      "docTitle": "AI markdown: js package strict-ssl false",
+      "slug": "sec457",
+      "canonicalPath": "/rules/lintai-ai-security/sec457",
+      "summary": "AI-native markdown disables strict SSL verification for JavaScript package manager config",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for JavaScript package-manager config commands that explicitly disable strict SSL verification.",
+        "maliciousCaseIds": [
+          "skill-js-package-strict-ssl-false"
+        ],
+        "benignCaseIds": [
+          "skill-js-package-strict-ssl-true-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `npm config set`, `pnpm config set`, or `yarn config set` token analysis with `strict-ssl false` or `strict-ssl=false` detection inside parsed markdown regions."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
