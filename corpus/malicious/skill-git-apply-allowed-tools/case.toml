@@ -1,0 +1,6 @@
+id = "skill-git-apply-allowed-tools"
+rule = "SEC444"
+description = "AI-native markdown frontmatter grants Bash(git apply:*) authority"
+severity = "warning"
+category = "security"
+expected = 1

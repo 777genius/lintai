@@ -651,6 +651,38 @@ pub(crate) fn check_git_cherry_pick_allowed_tools(
     )
 }
 
+pub(crate) fn check_git_apply_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.git_apply_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(git apply:*)` authority",
+    )
+}
+
+pub(crate) fn check_git_am_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.git_am_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(git am:*)` authority",
+    )
+}
+
 pub(crate) fn check_unscoped_read_allowed_tools(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

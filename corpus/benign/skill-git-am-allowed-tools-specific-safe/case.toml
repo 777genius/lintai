@@ -1,0 +1,4 @@
+id = "skill-git-am-allowed-tools-specific-safe"
+rule = "SEC445"
+description = "AI-native markdown frontmatter allows only a specific git am command"
+expected = 0

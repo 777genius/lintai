@@ -137,6 +137,8 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "skill-edit-unsafe-path-allowed-tools",
             "skill-fenced-pipe-shell",
             "skill-git-add-allowed-tools",
+            "skill-git-am-allowed-tools",
+            "skill-git-apply-allowed-tools",
             "skill-git-branch-allowed-tools",
             "skill-git-cherry-pick-allowed-tools",
             "skill-git-clean-allowed-tools",

@@ -8,7 +8,8 @@ use crate::markdown_rules::{
     check_curl_allowed_tools, check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
     check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
     check_cursor_rule_unknown_frontmatter_key, check_edit_unsafe_path_allowed_tools,
-    check_git_add_allowed_tools, check_git_branch_allowed_tools, check_git_checkout_allowed_tools,
+    check_git_add_allowed_tools, check_git_am_allowed_tools, check_git_apply_allowed_tools,
+    check_git_branch_allowed_tools, check_git_checkout_allowed_tools,
     check_git_cherry_pick_allowed_tools, check_git_clean_allowed_tools,
     check_git_clone_allowed_tools, check_git_commit_allowed_tools, check_git_config_allowed_tools,
     check_git_fetch_allowed_tools, check_git_merge_allowed_tools, check_git_push_allowed_tools,
@@ -524,6 +525,30 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct GitApplyAllowedToolsRule {
+        code: "SEC444",
+        summary: "AI-native markdown frontmatter grants `Bash(git apply:*)` authority",
+        doc_title: "AI markdown: `Bash(git apply:*)` tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct GitAmAllowedToolsRule {
+        code: "SEC445",
+        summary: "AI-native markdown frontmatter grants `Bash(git am:*)` authority",
+        doc_title: "AI markdown: `Bash(git am:*)` tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct UnscopedReadAllowedToolsRule {
         code: "SEC423",
         summary: "AI-native markdown frontmatter grants bare `Read` tool access",
@@ -751,7 +776,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 60] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 62] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1369,6 +1394,46 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 60] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(git cherry-pick:*)` authority is really needed, or replace it with a narrower reviewed cherry-pick workflow instead of a default team-wide grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GitApplyAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for wildcard git apply grants in shared allowed-tools policy.",
+            malicious_case_ids: &["skill-git-apply-allowed-tools"],
+            benign_case_ids: &["skill-git-apply-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Bash(git apply:*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_git_apply_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(git apply:*)` authority is really needed, or replace it with a narrower reviewed patch-application workflow instead of a default team-wide grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GitAmAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for wildcard git am grants in shared allowed-tools policy.",
+            malicious_case_ids: &["skill-git-am-allowed-tools"],
+            benign_case_ids: &["skill-git-am-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Bash(git am:*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_git_am_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(git am:*)` authority is really needed, or replace it with a narrower reviewed email-patch workflow instead of a default team-wide grant",
         ),
         suggestion_fix: None,
     },

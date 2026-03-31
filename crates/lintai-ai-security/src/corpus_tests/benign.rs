@@ -175,6 +175,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-fenced-pipe-shell-safe",
             "skill-generic-npx-safe",
             "skill-git-add-allowed-tools-specific-safe",
+            "skill-git-am-allowed-tools-specific-safe",
+            "skill-git-apply-allowed-tools-specific-safe",
             "skill-git-branch-allowed-tools-specific-safe",
             "skill-git-cherry-pick-allowed-tools-specific-safe",
             "skill-git-clean-allowed-tools-specific-safe",

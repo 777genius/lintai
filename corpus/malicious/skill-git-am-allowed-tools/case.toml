@@ -1,0 +1,6 @@
+id = "skill-git-am-allowed-tools"
+rule = "SEC445"
+description = "AI-native markdown frontmatter grants Bash(git am:*) authority"
+severity = "warning"
+category = "security"
+expected = 1

@@ -163,7 +163,9 @@
         "lintai-ai-security:SEC440",
         "lintai-ai-security:SEC441",
         "lintai-ai-security:SEC442",
-        "lintai-ai-security:SEC443"
+        "lintai-ai-security:SEC443",
+        "lintai-ai-security:SEC444",
+        "lintai-ai-security:SEC445"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -237,7 +239,9 @@
         "lintai-ai-security:SEC440",
         "lintai-ai-security:SEC441",
         "lintai-ai-security:SEC442",
-        "lintai-ai-security:SEC443"
+        "lintai-ai-security:SEC443",
+        "lintai-ai-security:SEC444",
+        "lintai-ai-security:SEC445"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -5575,6 +5579,84 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(git cherry-pick:*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC444",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC444",
+      "alias": "MD-GIT-APPLY-ALLOWED-TOOLS",
+      "displayLabel": "SEC444 / MD-GIT-APPLY-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(git apply:*)` tool grant",
+      "slug": "sec444",
+      "canonicalPath": "/rules/lintai-ai-security/sec444",
+      "summary": "AI-native markdown frontmatter grants `Bash(git apply:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for wildcard git apply grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-git-apply-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-git-apply-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(git apply:*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC445",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC445",
+      "alias": "MD-GIT-AM-ALLOWED-TOOLS",
+      "displayLabel": "SEC445 / MD-GIT-AM-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(git am:*)` tool grant",
+      "slug": "sec445",
+      "canonicalPath": "/rules/lintai-ai-security/sec445",
+      "summary": "AI-native markdown frontmatter grants `Bash(git am:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for wildcard git am grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-git-am-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-git-am-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(git am:*)` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

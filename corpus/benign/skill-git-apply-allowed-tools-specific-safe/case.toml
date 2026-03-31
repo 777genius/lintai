@@ -1,0 +1,4 @@
+id = "skill-git-apply-allowed-tools-specific-safe"
+rule = "SEC444"
+description = "AI-native markdown frontmatter allows only a specific git apply command"
+expected = 0

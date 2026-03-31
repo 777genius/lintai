@@ -1990,6 +1990,70 @@ fn ignores_git_cherry_pick_allowed_tools_when_command_is_more_specific() {
 }
 
 #[test]
+fn finds_git_apply_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(git apply:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC444")
+        .unwrap();
+    let start = content.find("Bash(git apply:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git apply:*)".len())
+    );
+}
+
+#[test]
+fn ignores_git_apply_allowed_tools_when_command_is_more_specific() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(git apply fix.patch), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC444")
+    );
+}
+
+#[test]
+fn finds_git_am_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(git am:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC445")
+        .unwrap();
+    let start = content.find("Bash(git am:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git am:*)".len())
+    );
+}
+
+#[test]
+fn ignores_git_am_allowed_tools_when_command_is_more_specific() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(git am 0001.patch), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC445")
+    );
+}
+
+#[test]
 fn finds_unscoped_read_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Read, Write(./artifacts/**)\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);
