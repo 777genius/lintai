@@ -1300,6 +1300,53 @@ fn ignores_unscoped_bash_allowed_tools_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_curl_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(curl:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC419")
+        .unwrap();
+    let start = content.find("Bash(curl:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(curl:*)".len())
+    );
+}
+
+#[test]
+fn ignores_curl_allowed_tools_when_command_is_more_specific() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(curl https://example.com/install.sh), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC419")
+    );
+}
+
+#[test]
+fn ignores_curl_allowed_tools_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/skill/SKILL.md",
+        "---\nallowed-tools: Bash(curl:*), Read\n---\n# Fixture skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC419")
+    );
+}
+
+#[test]
 fn finds_wildcard_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: \"*\"\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

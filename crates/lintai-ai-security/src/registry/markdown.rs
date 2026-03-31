@@ -5,6 +5,7 @@ use crate::markdown_rules::{
     check_approval_bypass_instruction, check_copilot_instruction_invalid_apply_to,
     check_copilot_instruction_invalid_apply_to_glob, check_copilot_instruction_missing_apply_to,
     check_copilot_instruction_too_long, check_copilot_instruction_wrong_suffix,
+    check_curl_allowed_tools,
     check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
     check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
     check_cursor_rule_unknown_frontmatter_key, check_html_comment_directive,
@@ -260,6 +261,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct CurlAllowedToolsRule {
+        code: "SEC419",
+        summary: "AI-native markdown frontmatter grants `Bash(curl:*)` authority",
+        doc_title: "AI markdown: `Bash(curl:*)` tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct PluginAgentPermissionModeRule {
         code: "SEC356",
         summary: "Plugin agent frontmatter sets `permissionMode`",
@@ -379,7 +392,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 30] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 31] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -597,6 +610,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 30] = [
         safe_fix: None,
         suggestion_message: Some(
             "scope Bash to explicit command patterns like `Bash(git:*)` instead of granting the full Bash tool",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: CurlAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `Bash(curl:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_curl_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(curl:*)` authority is really needed, or replace it with a narrower reviewed fetch workflow instead of a default team-wide grant",
         ),
         suggestion_fix: None,
     },

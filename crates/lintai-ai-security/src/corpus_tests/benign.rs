@@ -164,6 +164,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-clean-basic",
             "skill-command-snippet-bare-npx-safe",
             "skill-command-snippet-without-mcp-context-safe",
+            "skill-curl-allowed-tools-fixture-safe",
+            "skill-curl-allowed-tools-specific-safe",
             "skill-docker-digest-pinned-safe",
             "skill-docker-host-escape-safe-ordinary-run",
             "skill-docker-local-image-safe",

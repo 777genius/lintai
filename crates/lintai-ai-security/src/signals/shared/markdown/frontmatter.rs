@@ -9,6 +9,10 @@ fn is_wildcard_tool_token(token: &str) -> bool {
     token.trim() == "*"
 }
 
+fn is_exact_tool_token<'a>(permission: &'a str) -> impl Fn(&str) -> bool + Copy + 'a {
+    move |token| token.trim() == permission
+}
+
 fn tokenize_allowed_tools_string(value: &str) -> impl Iterator<Item = &str> {
     value
         .split(|ch: char| ch == ',' || ch.is_whitespace())
@@ -34,6 +38,17 @@ pub(crate) fn frontmatter_has_wildcard_tool_access(value: &Value) -> bool {
             .iter()
             .filter_map(Value::as_str)
             .any(is_wildcard_tool_token),
+        _ => false,
+    }
+}
+
+pub(crate) fn frontmatter_has_exact_allowed_tool(value: &Value, permission: &str) -> bool {
+    match value {
+        Value::String(raw) => tokenize_allowed_tools_string(raw).any(is_exact_tool_token(permission)),
+        Value::Array(items) => items
+            .iter()
+            .filter_map(Value::as_str)
+            .any(is_exact_tool_token(permission)),
         _ => false,
     }
 }
@@ -207,6 +222,53 @@ pub(crate) fn find_wildcard_tool_frontmatter_relative_span(text: &str) -> Option
                     return Some(Span::new(
                         nested_offset + found.start_byte,
                         nested_offset + found.end_byte,
+                    ));
+                }
+
+                nested_offset += next_line.len();
+                lines.next();
+            }
+        }
+        offset += line.len();
+    }
+
+    None
+}
+
+pub(crate) fn find_exact_allowed_tool_frontmatter_relative_span(
+    text: &str,
+    permission: &str,
+) -> Option<Span> {
+    let mut offset = 0usize;
+    let mut lines = text.split_inclusive('\n').peekable();
+
+    while let Some(line) = lines.next() {
+        let trimmed = line.trim_start();
+        let lowered = trimmed.to_ascii_lowercase();
+        let indent = line.len() - trimmed.len();
+        if lowered.starts_with("allowed-tools:") || lowered.starts_with("allowed_tools:") {
+            if let Some(found) = line.find(permission) {
+                return Some(Span::new(offset + found, offset + found + permission.len()));
+            }
+
+            let mut nested_offset = offset + line.len();
+            while let Some(next_line) = lines.peek().copied() {
+                let next_trimmed = next_line.trim_start();
+                if next_trimmed.is_empty() {
+                    nested_offset += next_line.len();
+                    lines.next();
+                    continue;
+                }
+
+                let next_indent = next_line.len() - next_trimmed.len();
+                if next_indent <= indent {
+                    break;
+                }
+
+                if let Some(found) = next_line.find(permission) {
+                    return Some(Span::new(
+                        nested_offset + found,
+                        nested_offset + found + permission.len(),
                     ));
                 }
 
