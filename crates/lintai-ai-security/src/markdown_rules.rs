@@ -211,6 +211,22 @@ pub(crate) fn check_markdown_pip_http_index(
     )
 }
 
+pub(crate) fn check_markdown_npm_http_registry(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.npm_http_registry_spans.as_slice())
+            .unwrap_or(&[]),
+        "AI-native markdown installs JavaScript packages from an insecure `http://` registry",
+    )
+}
+
 pub(crate) fn check_markdown_mutable_docker_image(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

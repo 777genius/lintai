@@ -296,6 +296,7 @@ mod tests {
         );
         assert_eq!(shipped_rule_alias("SEC448"), Some("MD-PIP-TRUSTED-HOST"));
         assert_eq!(shipped_rule_alias("SEC449"), Some("MD-PIP-HTTP-INDEX"));
+        assert_eq!(shipped_rule_alias("SEC450"), Some("MD-NPM-HTTP-REGISTRY"));
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

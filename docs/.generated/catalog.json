@@ -169,7 +169,8 @@
         "lintai-ai-security:SEC445",
         "lintai-ai-security:SEC447",
         "lintai-ai-security:SEC448",
-        "lintai-ai-security:SEC449"
+        "lintai-ai-security:SEC449",
+        "lintai-ai-security:SEC450"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -248,7 +249,8 @@
         "lintai-ai-security:SEC445",
         "lintai-ai-security:SEC447",
         "lintai-ai-security:SEC448",
-        "lintai-ai-security:SEC449"
+        "lintai-ai-security:SEC449",
+        "lintai-ai-security:SEC450"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -5823,6 +5825,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `pip install` token analysis with `--index-url http://` or `--extra-index-url http://` detection inside parsed markdown regions."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC450",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC450",
+      "alias": "MD-NPM-HTTP-REGISTRY",
+      "displayLabel": "SEC450 / MD-NPM-HTTP-REGISTRY",
+      "docTitle": "AI markdown: npm http registry",
+      "slug": "sec450",
+      "canonicalPath": "/rules/lintai-ai-security/sec450",
+      "summary": "AI-native markdown installs JavaScript packages from an insecure `http://` registry",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for `npm` and `pnpm` install examples that point dependency resolution at `http://` registries.",
+        "maliciousCaseIds": [
+          "skill-npm-http-registry"
+        ],
+        "benignCaseIds": [
+          "skill-npm-https-registry-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `npm install` or `pnpm add/install` token analysis with `--registry http://` detection inside parsed markdown regions."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
