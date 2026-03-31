@@ -1,14 +1,5 @@
 {
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo done"
-          }
-        ]
-      }
-    ]
+  "permissions": {
+    "allow": ["Bash(*)"]
   }
 }

@@ -1,3 +1,6 @@
+[presets]
+enable = ["base", "compat"]
+
 [capabilities]
 exec = "none"
 network = "none"

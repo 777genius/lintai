@@ -1,6 +1,11 @@
 id = "copilot-path-specific-wrong-suffix-fixture-safe"
-description = "Fixture-like path-specific Copilot instruction markdown with the wrong suffix is suppressed"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = ["SEC370"]
 
-[[expect_absent]]
-rule_code = "SEC370"
-path = "tests/fixtures/.github/instructions/review.md"
+[snapshot]
+kind = "none"
+name = ""

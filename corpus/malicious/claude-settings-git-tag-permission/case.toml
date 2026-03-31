@@ -1,27 +1,16 @@
-description = "Claude settings grant wildcard git tag permissions in a shared committed config"
+id = "claude-settings-git-tag-permission"
+kind = "malicious"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
 
-[input]
-path = "repo/.claude/settings.json"
-content = """
-{
-  "permissions": {
-    "allow": ["Bash(git tag:*)", "Read(*)"]
-  },
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo done"
-          }
-        ]
-      }
-    ]
-  }
-}
-"""
+[[expected_findings]]
+rule_code = "SEC414"
+tier = "stable"
+min_evidence_count = 1
 
-[[expect_findings]]
-rule = "SEC414"
-tier = "preview"
+[snapshot]
+kind = "none"
+name = "none"

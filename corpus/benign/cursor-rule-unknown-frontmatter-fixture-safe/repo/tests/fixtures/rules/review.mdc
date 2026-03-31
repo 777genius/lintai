@@ -1,8 +1,5 @@
 ---
-description: Fixture review guidance
-inclusion: always
+description: Fixture review rule
+unsupportedKey: true
 ---
-
-# Fixture Review Rule
-
-Apply review guidance globally.
+# Fixture Rule

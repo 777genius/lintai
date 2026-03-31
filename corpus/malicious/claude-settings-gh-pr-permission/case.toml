@@ -1,6 +1,16 @@
-name = "claude-settings-gh-pr-permission"
-path = ".claude/settings.json"
-expect_findings = ["SEC408"]
+id = "claude-settings-gh-pr-permission"
+kind = "malicious"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
 
-[metadata]
-description = "Shared Claude settings grant blanket gh pr permissions"
+[[expected_findings]]
+rule_code = "SEC408"
+tier = "preview"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = "none"

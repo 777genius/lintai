@@ -1,20 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git ls-remote:*)",
-      "Read(*)"
-    ]
-  },
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo done"
-          }
-        ]
-      }
+      "Bash(git ls-remote:*)"
     ]
   }
 }

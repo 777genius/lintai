@@ -1,3 +1,6 @@
+[presets]
+enable = ["base", "preview", "mcp"]
+
 [project]
 root = true
 

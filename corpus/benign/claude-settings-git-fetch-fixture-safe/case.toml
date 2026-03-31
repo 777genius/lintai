@@ -1,6 +1,12 @@
-name = "claude-settings-git-fetch-fixture-safe"
-path = "tests/fixtures/.claude/settings.json"
-expect_findings = []
+id = "claude-settings-git-fetch-fixture-safe"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC409"]
 
-[metadata]
-description = "Fixture-like Claude settings path is suppressed for git fetch permission checks"
+[snapshot]
+kind = "none"
+name = "none"

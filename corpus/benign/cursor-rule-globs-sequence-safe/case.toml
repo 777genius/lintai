@@ -1,6 +1,11 @@
-[case]
 id = "cursor-rule-globs-sequence-safe"
-summary = "Cursor rule frontmatter uses a sequence for globs"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = ["SEC360"]
 
-expected_findings = []
-
+[snapshot]
+kind = "none"
+name = ""

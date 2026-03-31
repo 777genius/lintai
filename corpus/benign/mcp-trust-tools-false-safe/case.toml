@@ -1,12 +1,11 @@
 id = "mcp-trust-tools-false-safe"
-mode = "benign"
-entry = "mcp.json"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = ["SEC396"]
 
-must_not_find = [
-  "lintai-ai-security:SEC396",
-]
-
-[metadata]
-title = "MCP config without blanket trustTools"
-description = "Does not flag exact false value for trustTools."
-
+[snapshot]
+kind = "none"
+name = ""

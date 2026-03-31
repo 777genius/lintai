@@ -1,6 +1,11 @@
 id = "copilot-path-specific-valid-applyto-safe"
-description = "Path-specific Copilot instruction markdown with valid applyTo stays clean"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = ["SEC371"]
 
-[[expect_absent]]
-rule_code = "SEC371"
-path = ".github/instructions/review.instructions.md"
+[snapshot]
+kind = "none"
+name = ""

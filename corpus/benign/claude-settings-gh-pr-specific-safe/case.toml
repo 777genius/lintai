@@ -1,6 +1,12 @@
-name = "claude-settings-gh-pr-specific-safe"
-path = ".claude/settings.json"
-expect_findings = []
+id = "claude-settings-gh-pr-specific-safe"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC408"]
 
-[metadata]
-description = "Specific gh pr subcommand stays clean"
+[snapshot]
+kind = "none"
+name = "none"

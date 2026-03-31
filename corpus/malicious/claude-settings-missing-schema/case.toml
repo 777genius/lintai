@@ -1,6 +1,16 @@
-[case]
 id = "claude-settings-missing-schema"
-summary = "Committed Claude settings file omits top-level $schema"
+kind = "malicious"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
 
-expected_findings = ["SEC361"]
+[[expected_findings]]
+rule_code = "SEC361"
+tier = "preview"
+min_evidence_count = 1
 
+[snapshot]
+kind = "none"
+name = ""

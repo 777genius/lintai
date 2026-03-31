@@ -1,20 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git fetch:*)",
-      "Read(*)"
-    ]
-  },
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo done"
-          }
-        ]
-      }
+      "Bash(git fetch:*)"
     ]
   }
 }

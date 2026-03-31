@@ -1,12 +1,16 @@
 id = "mcp-trust-tools-true"
-mode = "malicious"
-entry = "mcp.json"
+kind = "malicious"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
 
-expected_findings = [
-  "lintai-ai-security:SEC396",
-]
+[[expected_findings]]
+rule_code = "SEC396"
+tier = "stable"
+min_evidence_count = 1
 
-[metadata]
-title = "MCP config with blanket trustTools"
-description = "Flags exact trustTools: true in committed MCP client config."
-
+[snapshot]
+kind = "none"
+name = ""

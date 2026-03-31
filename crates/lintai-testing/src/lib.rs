@@ -16,6 +16,11 @@ use std::collections::BTreeMap;
 
 pub struct ProviderHarness;
 
+const PROVIDER_HARNESS_PRESETS_CONFIG: &str = r#"[presets]
+enable = ["base", "preview", "skills", "mcp", "claude", "guidance", "governance", "supply-chain"]
+"#;
+
+
 impl ProviderHarness {
     pub fn run(
         provider: Arc<dyn RuleProvider>,
@@ -73,7 +78,14 @@ impl ProviderHarnessBuilder {
 
         let mut config = self.config;
         if config.project_root.is_none() {
-            config.project_root = Some(temp_dir.clone());
+            std::fs::write(
+                temp_dir.join("lintai.toml"),
+                PROVIDER_HARNESS_PRESETS_CONFIG,
+            )
+            .expect("provider harness config write should succeed");
+            config = load_workspace_config(&temp_dir)
+                .expect("provider harness workspace config should load")
+                .engine_config;
         }
 
         let engine = EngineBuilder::default()
@@ -166,6 +178,28 @@ pub struct CaseManifest {
     pub snapshot: SnapshotExpectation,
 }
 
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
+struct LegacyExpectedAbsent {
+    rule: String,
+}
+
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
+struct LegacyCaseSection {
+    id: Option<String>,
+}
+
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
+struct LegacyCaseManifest {
+    case: Option<LegacyCaseSection>,
+    id: Option<String>,
+    name: Option<String>,
+    path: Option<PathBuf>,
+    entry: Option<PathBuf>,
+    entrypoint: Option<PathBuf>,
+    expect_findings: Option<Vec<String>>,
+    expect_absent: Option<Vec<LegacyExpectedAbsent>>,
+}
+
 impl CaseManifest {
     pub fn from_toml(input: &str) -> Result<Self, toml::de::Error> {
         toml::from_str(input)
@@ -178,14 +212,87 @@ impl CaseManifest {
                 path: manifest_path.clone(),
                 source,
             })?;
-        Self::from_toml(&contents).map_err(|source| ManifestLoadError::Parse {
-            path: manifest_path,
-            source,
-        })
+        match Self::from_toml(&contents) {
+            Ok(manifest) => Ok(manifest),
+            Err(source) => Self::from_legacy_toml(case_dir, &contents).ok_or(
+                ManifestLoadError::Parse {
+                    path: manifest_path,
+                    source,
+                },
+            ),
+        }
     }
 
     pub fn entry_root(&self, case_dir: &Path) -> PathBuf {
         case_dir.join(&self.entry_path)
+    }
+
+    fn from_legacy_toml(case_dir: &Path, input: &str) -> Option<Self> {
+        let legacy = toml::from_str::<LegacyCaseManifest>(input).ok()?;
+        let id = legacy.id.or(legacy.name).or_else(|| {
+            legacy
+                .case
+                .as_ref()
+                .and_then(|section| section.id.as_ref().cloned())
+        })?;
+        let raw_entry = legacy
+            .entry
+            .or(legacy.entrypoint)
+            .or(legacy.path)
+            .unwrap_or_else(|| PathBuf::from("repo"));
+        let entry_path = if case_dir.join("repo").is_dir() {
+            PathBuf::from("repo")
+        } else if raw_entry == Path::new("repo") {
+            PathBuf::from("repo")
+        } else {
+            PathBuf::from(".")
+        };
+        let kind = match case_dir.parent()?.file_name()?.to_str()? {
+            "benign" => CaseKind::Benign,
+            "malicious" => CaseKind::Malicious,
+            "edge" => CaseKind::Edge,
+            "compat" => CaseKind::Compat,
+            _ => return None,
+        };
+        let expected_findings = legacy
+            .expect_findings
+            .unwrap_or_default()
+            .into_iter()
+            .map(|rule_code| ExpectedFinding {
+                tier: known_rule_tier(&rule_code),
+                rule_code,
+                stable_key: None,
+                min_evidence_count: Some(1),
+            })
+            .collect();
+        let expected_absent_rules = legacy
+            .expect_absent
+            .unwrap_or_default()
+            .into_iter()
+            .map(|entry| entry.rule)
+            .collect();
+
+        Some(Self {
+            id,
+            kind,
+            entry_path,
+            expected_output: vec![
+                HarnessOutputFormat::Text,
+                HarnessOutputFormat::Json,
+                HarnessOutputFormat::Sarif,
+            ],
+            expected_runtime_errors: 0,
+            expected_runtime_error_kinds: Vec::new(),
+            expected_diagnostics: 0,
+            expected_scanned_files: None,
+            expected_skipped_files: None,
+            expected_findings,
+            expected_absent_rules,
+            snapshot: SnapshotExpectation {
+                kind: SnapshotKind::None,
+                name: "none".to_owned(),
+            },
+        })
     }
 }
 
@@ -629,7 +736,7 @@ fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
         | "SEC373" | "SEC374" | "SEC375" | "SEC376" | "SEC377" | "SEC378" | "SEC379" | "SEC380"
         | "SEC381" | "SEC382" | "SEC383" | "SEC384" | "SEC385" | "SEC386" | "SEC387" | "SEC388"
         | "SEC389" | "SEC390" | "SEC391" | "SEC392" | "SEC393" | "SEC399" | "SEC400" | "SEC404"
-        | "SEC405" | "SEC416" | "SEC401"
+        | "SEC405" | "SEC406" | "SEC407" | "SEC408" | "SEC409" | "SEC410" | "SEC416" | "SEC401"
         | "SEC402" | "SEC403" => Some(RuleTier::Preview),
         _ => None,
     }

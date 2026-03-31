@@ -1,10 +1,7 @@
 ---
-description: Fixture review guidance
+description: Fixture review rule
 globs:
   - "**/*.rs"
 alwaysApply: true
 ---
-
-# Fixture Review Rule
-
-Apply review guidance globally.
+# Fixture Rule

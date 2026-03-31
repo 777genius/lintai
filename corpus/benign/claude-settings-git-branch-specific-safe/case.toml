@@ -1,26 +1,12 @@
-description = "Specific git branch command in Claude settings stays clean"
+id = "claude-settings-git-branch-specific-safe"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC415"]
 
-[input]
-path = "repo/.claude/settings.json"
-content = """
-{
-  "permissions": {
-    "allow": ["Bash(git branch feature/test)", "Read(*)"]
-  },
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo done"
-          }
-        ]
-      }
-    ]
-  }
-}
-"""
-
-[[expect_absent]]
-rule = "SEC415"
+[snapshot]
+kind = "none"
+name = "none"

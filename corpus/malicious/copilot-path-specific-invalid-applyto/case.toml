@@ -1,6 +1,16 @@
 id = "copilot-path-specific-invalid-applyto"
-description = "Path-specific Copilot instruction markdown has an invalid applyTo shape"
+kind = "malicious"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
 
-[[expect_findings]]
+[[expected_findings]]
 rule_code = "SEC371"
-path = ".github/instructions/review.instructions.md"
+tier = "preview"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

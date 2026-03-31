@@ -1,6 +1,11 @@
 id = "copilot-path-specific-correct-suffix-safe"
-description = "Correctly suffixed path-specific Copilot instruction markdown stays clean"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = ["SEC370"]
 
-[[expect_absent]]
-rule_code = "SEC370"
-path = ".github/instructions/review.instructions.md"
+[snapshot]
+kind = "none"
+name = ""

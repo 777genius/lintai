@@ -1,14 +1,12 @@
-description = "AI-native markdown that models Claude using uv pip install stays clean"
+id = "claude-transcript-uv-pip-safe"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC416"]
 
-[input]
-path = "CLAUDE.md"
-content = """
-Use uv not pip for Python projects.
-
-```text
-Claude: uv pip install pytest
-```
-"""
-
-[[expect_absent]]
-rule = "SEC416"
+[snapshot]
+kind = "none"
+name = "none"

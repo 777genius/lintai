@@ -1,12 +1,12 @@
-description = "Bare pip install transcript without uv preference context stays clean"
+id = "claude-transcript-bare-pip-no-uv-preference-safe"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC416"]
 
-[input]
-path = "CLAUDE.md"
-content = """
-```text
-Claude: pip install pytest
-```
-"""
-
-[[expect_absent]]
-rule = "SEC416"
+[snapshot]
+kind = "none"
+name = "none"

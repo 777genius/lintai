@@ -1,6 +1,12 @@
-name = "claude-settings-git-fetch-specific-safe"
-path = ".claude/settings.json"
-expect_findings = []
+id = "claude-settings-git-fetch-specific-safe"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC409"]
 
-[metadata]
-description = "Specific git fetch command stays clean"
+[snapshot]
+kind = "none"
+name = "none"

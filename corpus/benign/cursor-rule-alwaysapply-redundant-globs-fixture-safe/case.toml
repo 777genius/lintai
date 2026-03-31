@@ -1,3 +1,12 @@
-description = "Fixture-like Cursor rule redundant globs case stays suppressed"
-entrypoint = "repo/tests/fixtures/rules/review.mdc"
+id = "cursor-rule-alwaysapply-redundant-globs-fixture-safe"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC378"]
 
+[snapshot]
+kind = "none"
+name = "none"

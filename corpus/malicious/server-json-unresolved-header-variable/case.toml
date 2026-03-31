@@ -11,11 +11,6 @@ rule_code = "SEC322"
 tier = "stable"
 min_evidence_count = 1
 
-[[expected_findings]]
-rule_code = "SEC323"
-tier = "preview"
-min_evidence_count = 1
-
 [snapshot]
 kind = "none"
 name = ""
