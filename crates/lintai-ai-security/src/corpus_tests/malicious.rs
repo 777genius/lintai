@@ -132,6 +132,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "server-json-unresolved-remote-variable",
             "skill-approval-bypass-directive",
             "skill-cargo-http-git-install",
+            "skill-cargo-http-index",
             "skill-curl-allowed-tools",
             "skill-docker-host-network",
             "skill-docker-multiline-mutable-image",

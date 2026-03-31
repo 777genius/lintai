@@ -171,7 +171,8 @@
         "lintai-ai-security:SEC448",
         "lintai-ai-security:SEC449",
         "lintai-ai-security:SEC450",
-        "lintai-ai-security:SEC451"
+        "lintai-ai-security:SEC451",
+        "lintai-ai-security:SEC452"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -252,7 +253,8 @@
         "lintai-ai-security:SEC448",
         "lintai-ai-security:SEC449",
         "lintai-ai-security:SEC450",
-        "lintai-ai-security:SEC451"
+        "lintai-ai-security:SEC451",
+        "lintai-ai-security:SEC452"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -5905,6 +5907,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `cargo install` token analysis with `--git http://` detection inside parsed markdown regions."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC452",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC452",
+      "alias": "MD-CARGO-HTTP-INDEX",
+      "displayLabel": "SEC452 / MD-CARGO-HTTP-INDEX",
+      "docTitle": "AI markdown: cargo http index",
+      "slug": "sec452",
+      "canonicalPath": "/rules/lintai-ai-security/sec452",
+      "summary": "AI-native markdown installs Rust packages from an insecure `http://` index",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for `cargo install` examples that resolve crates through an `http://` index.",
+        "maliciousCaseIds": [
+          "skill-cargo-http-index"
+        ],
+        "benignCaseIds": [
+          "skill-cargo-https-index-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `cargo install` token analysis with `--index http://` detection inside parsed markdown regions."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
