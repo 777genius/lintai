@@ -57,6 +57,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-settings-read-wildcard",
             "claude-settings-repo-external-absolute-hook-path",
             "claude-settings-unscoped-websearch",
+            "claude-settings-webfetch-raw-github-permission",
             "claude-settings-webfetch-wildcard",
             "claude-settings-websearch-wildcard",
             "claude-settings-wget-permission",

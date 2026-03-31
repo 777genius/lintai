@@ -1,0 +1,5 @@
+id = "claude-settings-webfetch-raw-github-fixture-safe"
+kind = "ClaudeSettings"
+format = "Json"
+path = "tests/fixtures/.claude/settings.json"
+expect_findings = []

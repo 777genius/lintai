@@ -3090,6 +3090,41 @@ fn finds_claude_settings_webfetch_wildcard() {
 }
 
 #[test]
+fn finds_claude_settings_webfetch_raw_githubusercontent_permission() {
+    let content = r#"{"permissions":{"allow":["WebFetch(domain:github.com)","WebFetch(domain:raw.githubusercontent.com)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC418")
+        .unwrap();
+    let start = content
+        .find("WebFetch(domain:raw.githubusercontent.com)")
+        .unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(
+            start,
+            start + "WebFetch(domain:raw.githubusercontent.com)".len()
+        )
+    );
+}
+
+#[test]
+fn ignores_claude_settings_webfetch_specific_safe_domain() {
+    let content = r#"{"permissions":{"allow":["WebFetch(domain:developers.openai.com)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC418")
+    );
+}
+
+#[test]
 fn finds_claude_settings_write_wildcard() {
     let content = r#"{"permissions":{"allow":["Write(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);

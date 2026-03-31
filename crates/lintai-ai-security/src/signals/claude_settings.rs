@@ -317,6 +317,11 @@ impl ClaudeSettingsSignals {
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(*)");
         signals.webfetch_wildcard_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "WebFetch(*)");
+        signals.webfetch_raw_githubusercontent_span = resolve_permissions_allow_exact_span(
+            value,
+            locator_ref.as_ref(),
+            "WebFetch(domain:raw.githubusercontent.com)",
+        );
         signals.write_wildcard_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Write(*)");
         signals.read_wildcard_span =

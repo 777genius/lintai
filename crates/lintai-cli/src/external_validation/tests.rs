@@ -281,6 +281,7 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(markdown.contains(
         "`SEC417` AI-native markdown unpinned `pip install git+https://...` examples: `"
     ));
+    assert!(markdown.contains("`SEC418` Claude settings raw GitHub content fetch permissions: `"));
     assert!(markdown.contains("`SEC408` Claude settings shared `gh pr` permissions: `"));
     assert!(markdown.contains("`SEC372` Claude settings wildcard `Read(*)` permissions: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings wildcard `Edit(*)` permissions: `0`"));
@@ -966,4 +967,5 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC415`"));
     assert!(markdown.contains("`SEC416`"));
     assert!(markdown.contains("`SEC417`"));
+    assert!(markdown.contains("`SEC418`"));
 }

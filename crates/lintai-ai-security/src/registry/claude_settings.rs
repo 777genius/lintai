@@ -6,22 +6,22 @@ use crate::claude_settings_rules::{
     check_claude_settings_curl_permission, check_claude_settings_dangerous_http_hook_host,
     check_claude_settings_edit_wildcard, check_claude_settings_enabled_mcpjson_servers,
     check_claude_settings_external_absolute_hook_command, check_claude_settings_gh_pr_permission,
-    check_claude_settings_git_add_permission, check_claude_settings_git_checkout_permission,
-    check_claude_settings_git_clone_permission, check_claude_settings_git_commit_permission,
-    check_claude_settings_git_branch_permission, check_claude_settings_git_config_permission,
+    check_claude_settings_git_add_permission, check_claude_settings_git_branch_permission,
+    check_claude_settings_git_checkout_permission, check_claude_settings_git_clone_permission,
+    check_claude_settings_git_commit_permission, check_claude_settings_git_config_permission,
     check_claude_settings_git_fetch_permission, check_claude_settings_git_ls_remote_permission,
     check_claude_settings_git_push_permission, check_claude_settings_git_stash_permission,
-    check_claude_settings_git_tag_permission,
-    check_claude_settings_glob_wildcard, check_claude_settings_grep_wildcard,
-    check_claude_settings_home_directory_hook_command, check_claude_settings_inline_download_exec,
-    check_claude_settings_insecure_http_hook_url, check_claude_settings_invalid_hook_matcher_event,
-    check_claude_settings_missing_hook_timeout,
+    check_claude_settings_git_tag_permission, check_claude_settings_glob_wildcard,
+    check_claude_settings_grep_wildcard, check_claude_settings_home_directory_hook_command,
+    check_claude_settings_inline_download_exec, check_claude_settings_insecure_http_hook_url,
+    check_claude_settings_invalid_hook_matcher_event, check_claude_settings_missing_hook_timeout,
     check_claude_settings_missing_required_hook_matcher, check_claude_settings_missing_schema,
     check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
     check_claude_settings_npx_permission, check_claude_settings_package_install_permission,
     check_claude_settings_read_wildcard, check_claude_settings_unscoped_websearch,
-    check_claude_settings_webfetch_wildcard, check_claude_settings_websearch_wildcard,
-    check_claude_settings_wget_permission, check_claude_settings_write_wildcard,
+    check_claude_settings_webfetch_raw_githubusercontent, check_claude_settings_webfetch_wildcard,
+    check_claude_settings_websearch_wildcard, check_claude_settings_wget_permission,
+    check_claude_settings_write_wildcard,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
 
@@ -114,6 +114,18 @@ declare_rule! {
         code: "SEC384",
         summary: "Claude settings permissions allow bare `WebSearch` in a shared committed config",
         doc_title: "Claude settings: bare WebSearch permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsWebFetchRawGithubusercontentRule {
+        code: "SEC418",
+        summary: "Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config",
+        doc_title: "Claude settings: shared raw.githubusercontent.com WebFetch permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -481,7 +493,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 38] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 39] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -607,6 +619,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 38] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace bare `WebSearch` with a narrower reviewed permission pattern or remove broad search access from the shared Claude settings file",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsWebFetchRawGithubusercontentRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `WebFetch(domain:raw.githubusercontent.com)` grants are useful review signals, but the first release stays Preview while broader external usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_webfetch_raw_githubusercontent,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the raw-content fetch grant or replace it with a narrower reviewed content source",
         ),
         suggestion_fix: None,
     },

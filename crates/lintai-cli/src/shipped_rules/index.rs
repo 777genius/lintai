@@ -258,6 +258,10 @@ mod tests {
         );
         assert_eq!(shipped_rule_alias("SEC416"), Some("MD-CLAUDE-PIP-INSTALL"));
         assert_eq!(shipped_rule_alias("SEC417"), Some("MD-PIP-GIT-UNPINNED"));
+        assert_eq!(
+            shipped_rule_alias("SEC418"),
+            Some("CLAUDE-WEBFETCH-RAW-GITHUB")
+        );
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

@@ -1,0 +1,5 @@
+id = "claude-settings-webfetch-raw-github-permission"
+kind = "ClaudeSettings"
+format = "Json"
+path = ".claude/settings.json"
+expect_findings = ["SEC418"]

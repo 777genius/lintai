@@ -176,6 +176,7 @@ pub(crate) struct ClaudeSettingsSignals {
     pub(crate) missing_required_hook_matcher_span: Option<Span>,
     pub(crate) bash_wildcard_span: Option<Span>,
     pub(crate) webfetch_wildcard_span: Option<Span>,
+    pub(crate) webfetch_raw_githubusercontent_span: Option<Span>,
     pub(crate) write_wildcard_span: Option<Span>,
     pub(crate) read_wildcard_span: Option<Span>,
     pub(crate) edit_wildcard_span: Option<Span>,
