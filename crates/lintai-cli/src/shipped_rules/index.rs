@@ -266,6 +266,9 @@ mod tests {
         assert_eq!(shipped_rule_alias("SEC420"), Some("MD-WGET-ALLOWED-TOOLS"));
         assert_eq!(shipped_rule_alias("SEC421"), Some("MD-GIT-CLONE-ALLOWED-TOOLS"));
         assert_eq!(shipped_rule_alias("SEC422"), Some("MCP-COMMAND-SUDO"));
+        assert_eq!(shipped_rule_alias("SEC423"), Some("MD-READ-UNSCOPED"));
+        assert_eq!(shipped_rule_alias("SEC424"), Some("MD-WRITE-UNSCOPED"));
+        assert_eq!(shipped_rule_alias("SEC425"), Some("MD-EDIT-UNSCOPED"));
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

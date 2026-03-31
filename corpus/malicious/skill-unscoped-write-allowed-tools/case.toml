@@ -1,0 +1,12 @@
+id = "skill-unscoped-write-allowed-tools"
+kind = "malicious"
+description = "AI-native markdown frontmatter grants bare Write authority"
+
+[[artifacts]]
+path = "SKILL.md"
+kind = "Skill"
+source_format = "markdown"
+
+[[expectations]]
+rule = "SEC424"
+path = "SKILL.md"

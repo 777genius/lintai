@@ -1,0 +1,8 @@
+id = "skill-unscoped-read-allowed-tools-specific-safe"
+kind = "benign"
+description = "AI-native markdown frontmatter keeps Read authority scoped"
+
+[[artifacts]]
+path = "SKILL.md"
+kind = "Skill"
+source_format = "markdown"

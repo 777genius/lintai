@@ -1441,6 +1441,147 @@ fn ignores_git_clone_allowed_tools_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_unscoped_read_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Read, Write(./artifacts/**)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC423")
+        .unwrap();
+    let start = content.find("Read").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Read".len())
+    );
+}
+
+#[test]
+fn ignores_scoped_read_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Read(./docs/**), Write(./artifacts/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC423")
+    );
+}
+
+#[test]
+fn ignores_unscoped_read_allowed_tools_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/skill/SKILL.md",
+        "---\nallowed-tools: Read, Write(./artifacts/**)\n---\n# Fixture skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC423")
+    );
+}
+
+#[test]
+fn finds_unscoped_write_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Write, Read(./docs/**)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC424")
+        .unwrap();
+    let start = content.find("Write").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Write".len())
+    );
+}
+
+#[test]
+fn ignores_scoped_write_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Write(./artifacts/**), Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC424")
+    );
+}
+
+#[test]
+fn ignores_unscoped_write_allowed_tools_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/skill/SKILL.md",
+        "---\nallowed-tools: Write, Read(./docs/**)\n---\n# Fixture skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC424")
+    );
+}
+
+#[test]
+fn finds_unscoped_edit_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Edit, Read(./docs/**)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC425")
+        .unwrap();
+    let start = content.find("Edit").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Edit".len())
+    );
+}
+
+#[test]
+fn ignores_scoped_edit_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Edit(./docs/**), Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC425")
+    );
+}
+
+#[test]
+fn ignores_unscoped_edit_allowed_tools_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/skill/SKILL.md",
+        "---\nallowed-tools: Edit, Read(./docs/**)\n---\n# Fixture skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC425")
+    );
+}
+
+#[test]
 fn finds_wildcard_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: \"*\"\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

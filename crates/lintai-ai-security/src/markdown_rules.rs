@@ -363,6 +363,54 @@ pub(crate) fn check_git_clone_allowed_tools(
     )
 }
 
+pub(crate) fn check_unscoped_read_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.unscoped_read_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants bare Read tool access",
+    )
+}
+
+pub(crate) fn check_unscoped_write_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.unscoped_write_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants bare Write tool access",
+    )
+}
+
+pub(crate) fn check_unscoped_edit_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.unscoped_edit_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants bare Edit tool access",
+    )
+}
+
 pub(crate) fn check_wildcard_tool_access(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

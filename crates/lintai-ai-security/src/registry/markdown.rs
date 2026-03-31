@@ -6,6 +6,7 @@ use crate::markdown_rules::{
     check_copilot_instruction_invalid_apply_to_glob, check_copilot_instruction_missing_apply_to,
     check_copilot_instruction_too_long, check_copilot_instruction_wrong_suffix,
     check_curl_allowed_tools, check_git_clone_allowed_tools,
+    check_unscoped_edit_allowed_tools, check_unscoped_read_allowed_tools,
     check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
     check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
     check_cursor_rule_unknown_frontmatter_key, check_html_comment_directive,
@@ -17,7 +18,8 @@ use crate::markdown_rules::{
     check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
     check_plugin_agent_hooks_frontmatter, check_plugin_agent_mcp_servers_frontmatter,
     check_plugin_agent_permission_mode, check_unscoped_bash_allowed_tools,
-    check_untrusted_instruction_promotion, check_wget_allowed_tools, check_wildcard_tool_access,
+    check_unscoped_write_allowed_tools, check_untrusted_instruction_promotion,
+    check_wget_allowed_tools, check_wildcard_tool_access,
 };
 
 declare_rule! {
@@ -297,6 +299,42 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct UnscopedReadAllowedToolsRule {
+        code: "SEC423",
+        summary: "AI-native markdown frontmatter grants bare `Read` tool access",
+        doc_title: "AI markdown: bare Read tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct UnscopedWriteAllowedToolsRule {
+        code: "SEC424",
+        summary: "AI-native markdown frontmatter grants bare `Write` tool access",
+        doc_title: "AI markdown: bare Write tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct UnscopedEditAllowedToolsRule {
+        code: "SEC425",
+        summary: "AI-native markdown frontmatter grants bare `Edit` tool access",
+        doc_title: "AI markdown: bare Edit tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct PluginAgentPermissionModeRule {
         code: "SEC356",
         summary: "Plugin agent frontmatter sets `permissionMode`",
@@ -416,7 +454,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 33] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 36] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -682,6 +720,54 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 33] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(git clone:*)` authority is really needed, or replace it with a narrower reviewed fetch workflow instead of a default team-wide grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: UnscopedReadAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Bare Read grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_unscoped_read_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace bare `Read` with a narrower reviewed read pattern or remove broad file-read authority from the shared frontmatter grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: UnscopedWriteAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Bare Write grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_unscoped_write_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace bare `Write` with a narrower reviewed write pattern or remove broad file-write authority from the shared frontmatter grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: UnscopedEditAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Bare Edit grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_unscoped_edit_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace bare `Edit` with a narrower reviewed edit pattern or remove broad file-edit authority from the shared frontmatter grant",
         ),
         suggestion_fix: None,
     },

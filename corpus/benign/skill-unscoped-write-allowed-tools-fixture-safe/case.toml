@@ -1,0 +1,8 @@
+id = "skill-unscoped-write-allowed-tools-fixture-safe"
+kind = "benign"
+description = "Fixture-like AI-native markdown path suppresses bare Write tool grant findings"
+
+[[artifacts]]
+path = "tests/fixtures/skill/SKILL.md"
+kind = "Skill"
+source_format = "markdown"
