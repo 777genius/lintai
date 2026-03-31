@@ -152,6 +152,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC445" => "MD-GIT-AM-ALLOWED-TOOLS",
         "SEC446" => "MCP-ARGS-SUDO",
         "SEC447" => "MD-PACKAGE-INSTALL-ALLOWED-TOOLS",
+        "SEC448" => "MD-PIP-TRUSTED-HOST",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

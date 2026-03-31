@@ -21,16 +21,16 @@ use crate::markdown_rules::{
     check_markdown_download_exec, check_markdown_fenced_pipe_shell,
     check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
     check_markdown_mutable_mcp_launcher, check_markdown_path_traversal,
-    check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
-    check_package_install_allowed_tools, check_plugin_agent_hooks_frontmatter,
-    check_plugin_agent_mcp_servers_frontmatter, check_plugin_agent_permission_mode,
-    check_read_unsafe_path_allowed_tools, check_unscoped_bash_allowed_tools,
-    check_unscoped_edit_allowed_tools, check_unscoped_glob_allowed_tools,
-    check_unscoped_grep_allowed_tools, check_unscoped_read_allowed_tools,
-    check_unscoped_webfetch_allowed_tools, check_unscoped_websearch_allowed_tools,
-    check_unscoped_write_allowed_tools, check_untrusted_instruction_promotion,
-    check_webfetch_raw_github_allowed_tools, check_wget_allowed_tools, check_wildcard_tool_access,
-    check_write_unsafe_path_allowed_tools,
+    check_markdown_pip_trusted_host, check_markdown_private_key_pem,
+    check_markdown_unpinned_pip_git_install, check_package_install_allowed_tools,
+    check_plugin_agent_hooks_frontmatter, check_plugin_agent_mcp_servers_frontmatter,
+    check_plugin_agent_permission_mode, check_read_unsafe_path_allowed_tools,
+    check_unscoped_bash_allowed_tools, check_unscoped_edit_allowed_tools,
+    check_unscoped_glob_allowed_tools, check_unscoped_grep_allowed_tools,
+    check_unscoped_read_allowed_tools, check_unscoped_webfetch_allowed_tools,
+    check_unscoped_websearch_allowed_tools, check_unscoped_write_allowed_tools,
+    check_untrusted_instruction_promotion, check_webfetch_raw_github_allowed_tools,
+    check_wget_allowed_tools, check_wildcard_tool_access, check_write_unsafe_path_allowed_tools,
 };
 
 declare_rule! {
@@ -134,6 +134,18 @@ declare_rule! {
         code: "SEC417",
         summary: "AI-native markdown installs Python packages from an unpinned `git+https://` source",
         doc_title: "AI markdown: unpinned pip git install",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownPipTrustedHostRule {
+        code: "SEC448",
+        summary: "AI-native markdown installs Python packages with `--trusted-host`",
+        doc_title: "AI markdown: pip trusted-host",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -789,7 +801,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 63] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 64] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -931,6 +943,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 63] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace the unpinned `git+https://` install with a commit-pinned reference or a published package release",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownPipTrustedHostRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown for `pip install` examples that disable host trust checks with `--trusted-host`.",
+            malicious_case_ids: &["skill-pip-trusted-host"],
+            benign_case_ids: &["skill-pip-index-url-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact `pip install` token analysis with `--trusted-host` detection inside parsed markdown regions.",
+        },
+        check: check_markdown_pip_trusted_host,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove `--trusted-host` and use a normal TLS-verified Python package source instead",
         ),
         suggestion_fix: None,
     },

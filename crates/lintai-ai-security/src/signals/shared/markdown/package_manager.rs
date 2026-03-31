@@ -56,6 +56,25 @@ pub(crate) fn find_unpinned_pip_git_install_relative_span(text: &str) -> Option<
     None
 }
 
+pub(crate) fn find_pip_trusted_host_relative_span(text: &str) -> Option<Span> {
+    let mut offset = 0usize;
+    for line in text.split_inclusive('\n') {
+        if let Some(relative) = find_pip_trusted_host_in_line(line) {
+            return Some(Span::new(
+                offset + relative.start_byte,
+                offset + relative.end_byte,
+            ));
+        }
+        offset += line.len();
+    }
+
+    if !text.ends_with('\n') {
+        return find_pip_trusted_host_in_line(text);
+    }
+
+    None
+}
+
 fn find_claude_bare_pip_install_in_line(line: &str) -> Option<Span> {
     let lowered = line.to_ascii_lowercase();
     let Some(claude_start) = lowered.find("claude:") else {
@@ -107,6 +126,25 @@ fn find_unpinned_pip_git_install_in_line(line: &str) -> Option<Span> {
     Some(Span::new(url_start, url_end))
 }
 
+fn find_pip_trusted_host_in_line(line: &str) -> Option<Span> {
+    let lowered = line.to_ascii_lowercase();
+    let mut install_start = None;
+    for marker in PIP_GIT_INSTALL_MARKERS {
+        if let Some(relative) = lowered.find(marker) {
+            install_start = Some(relative + marker.len());
+            break;
+        }
+    }
+    let Some(search_start) = install_start else {
+        return None;
+    };
+
+    let search_slice = &lowered[search_start..];
+    let relative_flag = search_slice.find("--trusted-host")?;
+    let start = search_start + relative_flag;
+    Some(Span::new(start, start + "--trusted-host".len()))
+}
+
 fn has_immutable_git_ref(url: &str) -> bool {
     let Some(scheme_start) = url.find("git+https://") else {
         return false;
@@ -126,8 +164,8 @@ fn has_immutable_git_ref(url: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::{
-        find_claude_bare_pip_install_relative_span, find_unpinned_pip_git_install_relative_span,
-        has_uv_instead_of_pip_preference,
+        find_claude_bare_pip_install_relative_span, find_pip_trusted_host_relative_span,
+        find_unpinned_pip_git_install_relative_span, has_uv_instead_of_pip_preference,
     };
 
     #[test]
@@ -166,5 +204,17 @@ mod tests {
         let content =
             "pip install git+https://github.com/facebookresearch/xformers.git@main#egg=xformers\n";
         assert!(find_unpinned_pip_git_install_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_pip_trusted_host() {
+        let content = "pip install --trusted-host pypi.example.test demo\n";
+        assert!(find_pip_trusted_host_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn ignores_non_pip_trusted_host() {
+        let content = "curl --trusted-host pypi.example.test https://example.test/install.sh\n";
+        assert_eq!(find_pip_trusted_host_relative_span(content), None);
     }
 }

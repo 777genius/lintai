@@ -167,7 +167,8 @@
         "lintai-ai-security:SEC443",
         "lintai-ai-security:SEC444",
         "lintai-ai-security:SEC445",
-        "lintai-ai-security:SEC447"
+        "lintai-ai-security:SEC447",
+        "lintai-ai-security:SEC448"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -244,7 +245,8 @@
         "lintai-ai-security:SEC443",
         "lintai-ai-security:SEC444",
         "lintai-ai-security:SEC445",
-        "lintai-ai-security:SEC447"
+        "lintai-ai-security:SEC447",
+        "lintai-ai-security:SEC448"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -5741,6 +5743,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for package-install permissions such as `Bash(pip install)` and `Bash(npm install)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC448",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC448",
+      "alias": "MD-PIP-TRUSTED-HOST",
+      "displayLabel": "SEC448 / MD-PIP-TRUSTED-HOST",
+      "docTitle": "AI markdown: pip trusted-host",
+      "slug": "sec448",
+      "canonicalPath": "/rules/lintai-ai-security/sec448",
+      "summary": "AI-native markdown installs Python packages with `--trusted-host`",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for `pip install` examples that disable host trust checks with `--trusted-host`.",
+        "maliciousCaseIds": [
+          "skill-pip-trusted-host"
+        ],
+        "benignCaseIds": [
+          "skill-pip-index-url-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `pip install` token analysis with `--trusted-host` detection inside parsed markdown regions."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
