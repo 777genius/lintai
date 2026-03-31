@@ -4281,7 +4281,7 @@
       "summary": "Claude settings permissions allow `Bash(curl:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4296,7 +4296,7 @@
         "blocker": "Shared `Bash(curl:*)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4312,7 +4312,7 @@
       "summary": "Claude settings permissions allow `Bash(wget:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4327,7 +4327,7 @@
         "blocker": "Shared `Bash(wget:*)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4343,7 +4343,7 @@
       "summary": "Claude settings permissions allow `Bash(git config:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4358,7 +4358,7 @@
         "blocker": "Shared `git config` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4374,7 +4374,7 @@
       "summary": "Claude settings permissions allow `Bash(git tag:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4389,7 +4389,7 @@
         "blocker": "Shared `git tag` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4405,7 +4405,7 @@
       "summary": "Claude settings permissions allow `Bash(git branch:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4420,7 +4420,7 @@
         "blocker": "Shared `git branch` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4467,7 +4467,7 @@
       "summary": "AI-native markdown installs Python packages from an unpinned `git+https://` source",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4482,7 +4482,7 @@
         "blocker": "Git-backed `pip install` examples in markdown can be legitimate setup guidance, so the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4498,7 +4498,7 @@
       "summary": "Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4513,7 +4513,7 @@
         "blocker": "Shared `WebFetch(domain:raw.githubusercontent.com)` grants are useful review signals, but the first release stays Preview while broader external usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4529,7 +4529,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(curl:*)` authority",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4544,7 +4544,7 @@
         "blocker": "Shared `Bash(curl:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4560,7 +4560,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(wget:*)` authority",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4575,7 +4575,7 @@
         "blocker": "Shared `Bash(wget:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4591,7 +4591,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(git clone:*)` authority",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4606,7 +4606,7 @@
         "blocker": "Shared `Bash(git clone:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4661,7 +4661,7 @@
       "summary": "AI-native markdown frontmatter grants bare `Read` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4676,7 +4676,7 @@
         "blocker": "Bare Read grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4692,7 +4692,7 @@
       "summary": "AI-native markdown frontmatter grants bare `Write` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4707,7 +4707,7 @@
         "blocker": "Bare Write grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4723,7 +4723,7 @@
       "summary": "AI-native markdown frontmatter grants bare `Edit` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4738,7 +4738,7 @@
         "blocker": "Bare Edit grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4754,7 +4754,7 @@
       "summary": "AI-native markdown frontmatter grants bare `Glob` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4769,7 +4769,7 @@
         "blocker": "Bare Glob grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4785,7 +4785,7 @@
       "summary": "AI-native markdown frontmatter grants bare `Grep` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4800,7 +4800,7 @@
         "blocker": "Bare Grep grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {

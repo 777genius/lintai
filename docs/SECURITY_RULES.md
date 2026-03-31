@@ -129,23 +129,23 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC408 / CLAUDE-GH-PR-PERMISSION` | Claude settings permissions allow `Bash(gh pr:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC409 / CLAUDE-GIT-FETCH-PERMISSION` | Claude settings permissions allow `Bash(git fetch:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC410 / CLAUDE-GIT-LS-REMOTE-PERMISSION` | Claude settings permissions allow `Bash(git ls-remote:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC411 / CLAUDE-CURL-PERMISSION` | Claude settings permissions allow `Bash(curl:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC412 / CLAUDE-WGET-PERMISSION` | Claude settings permissions allow `Bash(wget:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC413 / CLAUDE-GIT-CONFIG-PERMISSION` | Claude settings permissions allow `Bash(git config:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC414 / CLAUDE-GIT-TAG-PERMISSION` | Claude settings permissions allow `Bash(git tag:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC415 / CLAUDE-GIT-BRANCH-PERMISSION` | Claude settings permissions allow `Bash(git branch:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC411 / CLAUDE-CURL-PERMISSION` | Claude settings permissions allow `Bash(curl:*)` in a shared committed config | Stable | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC412 / CLAUDE-WGET-PERMISSION` | Claude settings permissions allow `Bash(wget:*)` in a shared committed config | Stable | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC413 / CLAUDE-GIT-CONFIG-PERMISSION` | Claude settings permissions allow `Bash(git config:*)` in a shared committed config | Stable | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC414 / CLAUDE-GIT-TAG-PERMISSION` | Claude settings permissions allow `Bash(git tag:*)` in a shared committed config | Stable | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC415 / CLAUDE-GIT-BRANCH-PERMISSION` | Claude settings permissions allow `Bash(git branch:*)` in a shared committed config | Stable | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC416 / MD-CLAUDE-PIP-INSTALL` | AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC417 / MD-PIP-GIT-UNPINNED` | AI-native markdown installs Python packages from an unpinned `git+https://` source | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC418 / CLAUDE-WEBFETCH-RAW-GITHUB` | Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC419 / MD-CURL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(curl:*)` authority | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC420 / MD-WGET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(wget:*)` authority | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC421 / MD-GIT-CLONE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git clone:*)` authority | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC417 / MD-PIP-GIT-UNPINNED` | AI-native markdown installs Python packages from an unpinned `git+https://` source | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC418 / CLAUDE-WEBFETCH-RAW-GITHUB` | Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config | Stable | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC419 / MD-CURL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(curl:*)` authority | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC420 / MD-WGET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(wget:*)` authority | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC421 / MD-GIT-CLONE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git clone:*)` authority | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC422 / MCP-COMMAND-SUDO` | MCP configuration launches the server through `sudo` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC423 / MD-READ-UNSCOPED` | AI-native markdown frontmatter grants bare `Read` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC424 / MD-WRITE-UNSCOPED` | AI-native markdown frontmatter grants bare `Write` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC425 / MD-EDIT-UNSCOPED` | AI-native markdown frontmatter grants bare `Edit` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC426 / MD-GLOB-UNSCOPED` | AI-native markdown frontmatter grants bare `Glob` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC427 / MD-GREP-UNSCOPED` | AI-native markdown frontmatter grants bare `Grep` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC423 / MD-READ-UNSCOPED` | AI-native markdown frontmatter grants bare `Read` tool access | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC424 / MD-WRITE-UNSCOPED` | AI-native markdown frontmatter grants bare `Write` tool access | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC425 / MD-EDIT-UNSCOPED` | AI-native markdown frontmatter grants bare `Edit` tool access | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC426 / MD-GLOB-UNSCOPED` | AI-native markdown frontmatter grants bare `Glob` tool access | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC427 / MD-GREP-UNSCOPED` | AI-native markdown frontmatter grants bare `Grep` tool access | Stable | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -2314,13 +2314,13 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Shared `Bash(curl:*)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC412 / CLAUDE-WGET-PERMISSION` — Claude settings permissions allow `Bash(wget:*)` in a shared committed config
 
@@ -2331,13 +2331,13 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Shared `Bash(wget:*)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC413 / CLAUDE-GIT-CONFIG-PERMISSION` — Claude settings permissions allow `Bash(git config:*)` in a shared committed config
 
@@ -2348,13 +2348,13 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Shared `git config` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC414 / CLAUDE-GIT-TAG-PERMISSION` — Claude settings permissions allow `Bash(git tag:*)` in a shared committed config
 
@@ -2365,13 +2365,13 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Shared `git tag` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC415 / CLAUDE-GIT-BRANCH-PERMISSION` — Claude settings permissions allow `Bash(git branch:*)` in a shared committed config
 
@@ -2382,13 +2382,13 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Shared `git branch` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC416 / MD-CLAUDE-PIP-INSTALL` — AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance
 
@@ -2416,13 +2416,13 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Git-backed `pip install` examples in markdown can be legitimate setup guidance, so the first release stays guidance-only while ecosystem usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC418 / CLAUDE-WEBFETCH-RAW-GITHUB` — Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config
 
@@ -2433,13 +2433,13 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Shared `WebFetch(domain:raw.githubusercontent.com)` grants are useful review signals, but the first release stays Preview while broader external usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC419 / MD-CURL-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(curl:*)` authority
 
@@ -2450,13 +2450,13 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Shared `Bash(curl:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC420 / MD-WGET-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(wget:*)` authority
 
@@ -2467,13 +2467,13 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Shared `Bash(wget:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC421 / MD-GIT-CLONE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(git clone:*)` authority
 
@@ -2484,13 +2484,13 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Shared `Bash(git clone:*)` grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while external usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC422 / MCP-COMMAND-SUDO` — MCP configuration launches the server through `sudo`
 
@@ -2522,13 +2522,13 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Bare Read grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC424 / MD-WRITE-UNSCOPED` — AI-native markdown frontmatter grants bare `Write` tool access
 
@@ -2539,13 +2539,13 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Bare Write grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC425 / MD-EDIT-UNSCOPED` — AI-native markdown frontmatter grants bare `Edit` tool access
 
@@ -2556,13 +2556,13 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Bare Edit grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC426 / MD-GLOB-UNSCOPED` — AI-native markdown frontmatter grants bare `Glob` tool access
 
@@ -2573,13 +2573,13 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Bare Glob grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC427 / MD-GREP-UNSCOPED` — AI-native markdown frontmatter grants bare `Grep` tool access
 
@@ -2590,13 +2590,13 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Bare Grep grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ## Provider: `lintai-policy-mismatch`
 

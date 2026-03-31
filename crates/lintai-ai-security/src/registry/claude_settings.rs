@@ -129,7 +129,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -213,7 +213,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -225,7 +225,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -237,7 +237,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -249,7 +249,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -261,7 +261,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
