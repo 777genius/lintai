@@ -23,8 +23,8 @@ use crate::markdown_rules::{
     check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
     check_markdown_mutable_mcp_launcher, check_markdown_npm_http_registry,
     check_markdown_npm_http_source, check_markdown_path_traversal,
-    check_markdown_pip_http_git_install, check_markdown_pip_http_index,
-    check_markdown_pip_http_source, check_markdown_pip_trusted_host,
+    check_markdown_pip_http_find_links, check_markdown_pip_http_git_install,
+    check_markdown_pip_http_index, check_markdown_pip_http_source, check_markdown_pip_trusted_host,
     check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
     check_package_install_allowed_tools, check_plugin_agent_hooks_frontmatter,
     check_plugin_agent_mcp_servers_frontmatter, check_plugin_agent_permission_mode,
@@ -174,6 +174,18 @@ declare_rule! {
         code: "SEC449",
         summary: "AI-native markdown installs Python packages from an insecure `http://` package index",
         doc_title: "AI markdown: pip http index",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownPipHttpFindLinksRule {
+        code: "SEC456",
+        summary: "AI-native markdown installs Python packages with insecure `http://` find-links",
+        doc_title: "AI markdown: pip http find-links",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -889,7 +901,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 71] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 72] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1091,6 +1103,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 71] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace the insecure `http://` package index with a normal TLS-verified `https://` source",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownPipHttpFindLinksRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown for `pip install` examples that point package discovery at `http://` find-links sources.",
+            malicious_case_ids: &["skill-pip-http-find-links"],
+            benign_case_ids: &["skill-pip-https-find-links-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact `pip install` token analysis with `--find-links http://`, `--find-links=http://`, or `-f http://` detection inside parsed markdown regions.",
+        },
+        check: check_markdown_pip_http_find_links,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace the insecure `http://` find-links source with a normal TLS-verified `https://` source",
         ),
         suggestion_fix: None,
     },

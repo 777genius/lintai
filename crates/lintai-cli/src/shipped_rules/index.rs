@@ -308,6 +308,7 @@ mod tests {
             shipped_rule_alias("SEC455"),
             Some("MD-PIP-HTTP-GIT-INSTALL")
         );
+        assert_eq!(shipped_rule_alias("SEC456"), Some("MD-PIP-HTTP-FIND-LINKS"));
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

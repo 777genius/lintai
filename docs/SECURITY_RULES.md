@@ -174,6 +174,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC453 / MD-PIP-HTTP-SOURCE` | AI-native markdown installs Python packages from an insecure direct `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC454 / MD-NPM-HTTP-SOURCE` | AI-native markdown installs JavaScript packages from an insecure direct `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC455 / MD-PIP-HTTP-GIT-INSTALL` | AI-native markdown installs Python packages from an insecure `git+http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC456 / MD-PIP-HTTP-FIND-LINKS` | AI-native markdown installs Python packages with insecure `http://` find-links | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -3270,6 +3271,27 @@ Important behavior:
 - Deterministic Signal Basis: MarkdownSignals exact `pip install` token analysis with `git+http://` detection inside parsed markdown regions.
 - Malicious Corpus: `skill-pip-http-git-install`
 - Benign Corpus: `skill-pip-https-git-install-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC456 / MD-PIP-HTTP-FIND-LINKS` — AI-native markdown installs Python packages with insecure `http://` find-links
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-PIP-HTTP-FIND-LINKS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown for `pip install` examples that point package discovery at `http://` find-links sources.
+- Deterministic Signal Basis: MarkdownSignals exact `pip install` token analysis with `--find-links http://`, `--find-links=http://`, or `-f http://` detection inside parsed markdown regions.
+- Malicious Corpus: `skill-pip-http-find-links`
+- Benign Corpus: `skill-pip-https-find-links-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

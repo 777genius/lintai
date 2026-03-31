@@ -99,6 +99,7 @@ pub(crate) struct MarkdownSignals {
     pub(crate) pip_http_git_install_spans: Vec<Span>,
     pub(crate) pip_trusted_host_spans: Vec<Span>,
     pub(crate) pip_http_index_spans: Vec<Span>,
+    pub(crate) pip_http_find_links_spans: Vec<Span>,
     pub(crate) pip_http_source_spans: Vec<Span>,
     pub(crate) npm_http_registry_spans: Vec<Span>,
     pub(crate) npm_http_source_spans: Vec<Span>,

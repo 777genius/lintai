@@ -175,7 +175,8 @@
         "lintai-ai-security:SEC452",
         "lintai-ai-security:SEC453",
         "lintai-ai-security:SEC454",
-        "lintai-ai-security:SEC455"
+        "lintai-ai-security:SEC455",
+        "lintai-ai-security:SEC456"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -260,7 +261,8 @@
         "lintai-ai-security:SEC452",
         "lintai-ai-security:SEC453",
         "lintai-ai-security:SEC454",
-        "lintai-ai-security:SEC455"
+        "lintai-ai-security:SEC455",
+        "lintai-ai-security:SEC456"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -6069,6 +6071,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `pip install` token analysis with `git+http://` detection inside parsed markdown regions."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC456",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC456",
+      "alias": "MD-PIP-HTTP-FIND-LINKS",
+      "displayLabel": "SEC456 / MD-PIP-HTTP-FIND-LINKS",
+      "docTitle": "AI markdown: pip http find-links",
+      "slug": "sec456",
+      "canonicalPath": "/rules/lintai-ai-security/sec456",
+      "summary": "AI-native markdown installs Python packages with insecure `http://` find-links",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for `pip install` examples that point package discovery at `http://` find-links sources.",
+        "maliciousCaseIds": [
+          "skill-pip-http-find-links"
+        ],
+        "benignCaseIds": [
+          "skill-pip-https-find-links-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `pip install` token analysis with `--find-links http://`, `--find-links=http://`, or `-f http://` detection inside parsed markdown regions."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

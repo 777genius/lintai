@@ -116,6 +116,12 @@ impl MarkdownSignals {
                             region.span.start_byte + relative.end_byte,
                         ));
                     }
+                    if let Some(relative) = find_pip_http_find_links_relative_span(snippet) {
+                        signals.pip_http_find_links_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
                     if let Some(relative) = find_pip_http_source_relative_span(snippet) {
                         signals.pip_http_source_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
@@ -239,6 +245,12 @@ impl MarkdownSignals {
                             region.span.start_byte + relative.end_byte,
                         ));
                     }
+                    if let Some(relative) = find_pip_http_find_links_relative_span(snippet) {
+                        signals.pip_http_find_links_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
                     if let Some(relative) = find_pip_http_source_relative_span(snippet) {
                         signals.pip_http_source_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
@@ -332,6 +344,12 @@ impl MarkdownSignals {
                     }
                     if let Some(relative) = find_pip_http_index_relative_span(snippet) {
                         signals.pip_http_index_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
+                    if let Some(relative) = find_pip_http_find_links_relative_span(snippet) {
+                        signals.pip_http_find_links_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
                             region.span.start_byte + relative.end_byte,
                         ));

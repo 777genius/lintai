@@ -167,6 +167,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "skill-npm-http-registry",
             "skill-npm-http-source",
             "skill-package-install-allowed-tools",
+            "skill-pip-http-find-links",
             "skill-pip-http-git-install",
             "skill-pip-http-index",
             "skill-pip-http-source",
