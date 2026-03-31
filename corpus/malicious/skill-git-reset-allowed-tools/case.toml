@@ -1,0 +1,6 @@
+id = "skill-git-reset-allowed-tools"
+rule = "SEC438"
+description = "AI-native markdown frontmatter grants Bash(git reset:*) authority"
+severity = "warning"
+category = "security"
+expected = 1

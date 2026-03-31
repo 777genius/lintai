@@ -9,10 +9,11 @@ use crate::markdown_rules::{
     check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
     check_cursor_rule_unknown_frontmatter_key, check_edit_unsafe_path_allowed_tools,
     check_git_add_allowed_tools, check_git_branch_allowed_tools, check_git_checkout_allowed_tools,
-    check_git_clone_allowed_tools, check_git_commit_allowed_tools, check_git_config_allowed_tools,
-    check_git_fetch_allowed_tools, check_git_push_allowed_tools, check_git_stash_allowed_tools,
-    check_git_tag_allowed_tools, check_glob_unsafe_path_allowed_tools,
-    check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
+    check_git_clean_allowed_tools, check_git_clone_allowed_tools, check_git_commit_allowed_tools,
+    check_git_config_allowed_tools, check_git_fetch_allowed_tools, check_git_push_allowed_tools,
+    check_git_reset_allowed_tools, check_git_stash_allowed_tools, check_git_tag_allowed_tools,
+    check_glob_unsafe_path_allowed_tools, check_html_comment_directive,
+    check_html_comment_download_exec, check_markdown_base64_exec,
     check_markdown_claude_bare_pip_install, check_markdown_docker_host_escape,
     check_markdown_download_exec, check_markdown_fenced_pipe_shell,
     check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
@@ -449,6 +450,30 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct GitResetAllowedToolsRule {
+        code: "SEC438",
+        summary: "AI-native markdown frontmatter grants `Bash(git reset:*)` authority",
+        doc_title: "AI markdown: `Bash(git reset:*)` tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct GitCleanAllowedToolsRule {
+        code: "SEC439",
+        summary: "AI-native markdown frontmatter grants `Bash(git clean:*)` authority",
+        doc_title: "AI markdown: `Bash(git clean:*)` tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct UnscopedReadAllowedToolsRule {
         code: "SEC423",
         summary: "AI-native markdown frontmatter grants bare `Read` tool access",
@@ -676,7 +701,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 54] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 56] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1174,6 +1199,46 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 54] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(git branch:*)` authority is really needed, or replace it with a narrower reviewed branch workflow instead of a default team-wide grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GitResetAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for wildcard git reset grants in shared allowed-tools policy.",
+            malicious_case_ids: &["skill-git-reset-allowed-tools"],
+            benign_case_ids: &["skill-git-reset-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Bash(git reset:*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_git_reset_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(git reset:*)` authority is really needed, or replace it with a narrower reviewed reset workflow instead of a default team-wide grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GitCleanAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for wildcard git clean grants in shared allowed-tools policy.",
+            malicious_case_ids: &["skill-git-clean-allowed-tools"],
+            benign_case_ids: &["skill-git-clean-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Bash(git clean:*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_git_clean_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(git clean:*)` authority is really needed, or replace it with a narrower reviewed cleanup workflow instead of a default team-wide grant",
         ),
         suggestion_fix: None,
     },

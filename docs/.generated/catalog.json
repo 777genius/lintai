@@ -157,7 +157,9 @@
         "lintai-ai-security:SEC434",
         "lintai-ai-security:SEC435",
         "lintai-ai-security:SEC436",
-        "lintai-ai-security:SEC437"
+        "lintai-ai-security:SEC437",
+        "lintai-ai-security:SEC438",
+        "lintai-ai-security:SEC439"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -225,7 +227,9 @@
         "lintai-ai-security:SEC434",
         "lintai-ai-security:SEC435",
         "lintai-ai-security:SEC436",
-        "lintai-ai-security:SEC437"
+        "lintai-ai-security:SEC437",
+        "lintai-ai-security:SEC438",
+        "lintai-ai-security:SEC439"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -5329,6 +5333,84 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(git branch:*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC438",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC438",
+      "alias": "MD-GIT-RESET-ALLOWED-TOOLS",
+      "displayLabel": "SEC438 / MD-GIT-RESET-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(git reset:*)` tool grant",
+      "slug": "sec438",
+      "canonicalPath": "/rules/lintai-ai-security/sec438",
+      "summary": "AI-native markdown frontmatter grants `Bash(git reset:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for wildcard git reset grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-git-reset-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-git-reset-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(git reset:*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC439",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC439",
+      "alias": "MD-GIT-CLEAN-ALLOWED-TOOLS",
+      "displayLabel": "SEC439 / MD-GIT-CLEAN-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(git clean:*)` tool grant",
+      "slug": "sec439",
+      "canonicalPath": "/rules/lintai-ai-security/sec439",
+      "summary": "AI-native markdown frontmatter grants `Bash(git clean:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for wildcard git clean grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-git-clean-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-git-clean-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(git clean:*)` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

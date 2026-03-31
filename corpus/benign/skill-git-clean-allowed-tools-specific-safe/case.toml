@@ -1,0 +1,4 @@
+id = "skill-git-clean-allowed-tools-specific-safe"
+rule = "SEC439"
+description = "AI-native markdown frontmatter allows only a specific git clean command"
+expected = 0

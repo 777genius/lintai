@@ -142,6 +142,8 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC435" => "MD-GIT-CONFIG-ALLOWED-TOOLS",
         "SEC436" => "MD-GIT-TAG-ALLOWED-TOOLS",
         "SEC437" => "MD-GIT-BRANCH-ALLOWED-TOOLS",
+        "SEC438" => "MD-GIT-RESET-ALLOWED-TOOLS",
+        "SEC439" => "MD-GIT-CLEAN-ALLOWED-TOOLS",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

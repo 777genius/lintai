@@ -1,0 +1,4 @@
+id = "skill-git-reset-allowed-tools-specific-safe"
+rule = "SEC438"
+description = "AI-native markdown frontmatter allows only a specific git reset command"
+expected = 0
