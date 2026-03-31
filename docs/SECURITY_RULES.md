@@ -164,6 +164,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC443 / MD-GIT-CHERRY-PICK-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git cherry-pick:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC444 / MD-GIT-APPLY-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git apply:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC445 / MD-GIT-AM-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git am:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC446 / MCP-ARGS-SUDO` | MCP configuration passes `sudo` as the first launch argument | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -3050,6 +3051,27 @@ Important behavior:
 - Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Bash(git am:*)` inside allowed-tools or allowed_tools.
 - Malicious Corpus: `skill-git-am-allowed-tools`
 - Benign Corpus: `skill-git-am-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC446 / MCP-ARGS-SUDO` — MCP configuration passes `sudo` as the first launch argument
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-ARGS-SUDO`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact MCP server launch paths that pass `sudo` as the first argv element.
+- Deterministic Signal Basis: JsonSignals exact string detection for `args[0] == "sudo"` on parsed MCP configuration objects.
+- Malicious Corpus: `mcp-args-sudo`
+- Benign Corpus: `mcp-args-non-sudo-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

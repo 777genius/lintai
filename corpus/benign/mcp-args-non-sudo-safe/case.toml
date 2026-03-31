@@ -1,0 +1,8 @@
+id = "mcp-args-non-sudo-safe"
+kind = "benign"
+description = "MCP config uses ordinary launch arguments"
+
+[[artifacts]]
+path = "mcp.json"
+kind = "McpConfig"
+source_format = "json"

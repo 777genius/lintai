@@ -3994,6 +3994,41 @@ fn ignores_mcp_non_sudo_command() {
 }
 
 #[test]
+fn finds_mcp_sudo_args0() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["sudo","server.js"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC446")
+        .unwrap();
+    let start = content.find("\"sudo\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "sudo".len())
+    );
+}
+
+#[test]
+fn ignores_mcp_non_sudo_args0() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js","sudo"]}}}"#,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC446"));
+}
+
+#[test]
 fn finds_claude_settings_missing_schema() {
     let content = r#"{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);

@@ -145,6 +145,15 @@ pub(super) fn apply_mcp_config_command_rules(
         ));
     }
 
+    if signals.sudo_args0_span.is_none()
+        && let Some(args) = args
+        && let Some(arg0) = args.first().and_then(Value::as_str)
+        && arg0.eq_ignore_ascii_case("sudo")
+    {
+        let arg_path = with_child_index(&with_child_key(path, "args"), 0);
+        signals.sudo_args0_span = Some(resolve_value_span(&arg_path, locator, fallback_len));
+    }
+
     if signals.mutable_mcp_launcher_span.is_none()
         && let Some(command) = command
         && is_mutable_mcp_launcher(command, args)

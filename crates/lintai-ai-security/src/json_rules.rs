@@ -168,6 +168,21 @@ pub(crate) fn check_mcp_sudo_command(
     )
 }
 
+pub(crate) fn check_mcp_sudo_args0(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.sudo_args0_span.clone()),
+        "MCP configuration passes `sudo` as the first argument in the launch path",
+    )
+}
+
 pub(crate) fn check_mcp_unpinned_docker_image(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

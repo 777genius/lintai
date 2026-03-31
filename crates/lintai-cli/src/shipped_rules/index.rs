@@ -289,6 +289,7 @@ mod tests {
         assert_eq!(shipped_rule_alias("SEC425"), Some("MD-EDIT-UNSCOPED"));
         assert_eq!(shipped_rule_alias("SEC426"), Some("MD-GLOB-UNSCOPED"));
         assert_eq!(shipped_rule_alias("SEC427"), Some("MD-GREP-UNSCOPED"));
+        assert_eq!(shipped_rule_alias("SEC446"), Some("MCP-ARGS-SUDO"));
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

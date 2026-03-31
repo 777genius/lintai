@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "demo": {
+      "command": "node",
+      "args": ["sudo", "server.js"]
+    }
+  }
+}

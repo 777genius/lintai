@@ -62,7 +62,8 @@
         "lintai-ai-security:SEC396",
         "lintai-ai-security:SEC397",
         "lintai-ai-security:SEC398",
-        "lintai-ai-security:SEC422"
+        "lintai-ai-security:SEC422",
+        "lintai-ai-security:SEC446"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -289,7 +290,8 @@
         "lintai-ai-security:SEC396",
         "lintai-ai-security:SEC397",
         "lintai-ai-security:SEC398",
-        "lintai-ai-security:SEC422"
+        "lintai-ai-security:SEC422",
+        "lintai-ai-security:SEC446"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -5657,6 +5659,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(git am:*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC446",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC446",
+      "alias": "MCP-ARGS-SUDO",
+      "displayLabel": "SEC446 / MCP-ARGS-SUDO",
+      "docTitle": "MCP config: sudo first argument",
+      "slug": "sec446",
+      "canonicalPath": "/rules/lintai-ai-security/sec446",
+      "summary": "MCP configuration passes `sudo` as the first launch argument",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact MCP server launch paths that pass `sudo` as the first argv element.",
+        "maliciousCaseIds": [
+          "mcp-args-sudo"
+        ],
+        "benignCaseIds": [
+          "mcp-args-non-sudo-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact string detection for `args[0] == \"sudo\"` on parsed MCP configuration objects."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

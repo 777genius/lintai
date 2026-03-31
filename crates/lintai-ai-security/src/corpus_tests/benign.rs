@@ -127,6 +127,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "github-workflow-third-party-action-read-only-safe",
             "hook-auth-dynamic-safe",
             "hook-base64-decode-safe",
+            "mcp-args-non-sudo-safe",
             "mcp-authorization-placeholder-safe",
             "mcp-autoapprove-specific-safe",
             "mcp-autoapprove-tools-false-safe",

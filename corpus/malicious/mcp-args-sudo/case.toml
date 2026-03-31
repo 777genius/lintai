@@ -1,0 +1,12 @@
+id = "mcp-args-sudo"
+kind = "malicious"
+description = "MCP config passes sudo as the first launch argument"
+
+[[artifacts]]
+path = "mcp.json"
+kind = "McpConfig"
+source_format = "json"
+
+[[expectations]]
+rule = "SEC446"
+path = "mcp.json"

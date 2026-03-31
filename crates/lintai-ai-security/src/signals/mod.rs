@@ -182,6 +182,7 @@ pub(crate) struct JsonSignals {
     pub(crate) sandbox_disabled_span: Option<Span>,
     pub(crate) capabilities_wildcard_span: Option<Span>,
     pub(crate) sudo_command_span: Option<Span>,
+    pub(crate) sudo_args0_span: Option<Span>,
     pub(crate) broad_env_file_span: Option<Span>,
     pub(crate) plain_http_endpoint_span: Option<Span>,
     pub(crate) credential_env_passthrough_span: Option<Span>,

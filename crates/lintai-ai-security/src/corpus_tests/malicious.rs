@@ -90,6 +90,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "hook-secret-exfil",
             "hook-static-auth-userinfo",
             "hook-tls-bypass",
+            "mcp-args-sudo",
             "mcp-autoapprove-tools-true",
             "mcp-autoapprove-wildcard",
             "mcp-capabilities-wildcard",
