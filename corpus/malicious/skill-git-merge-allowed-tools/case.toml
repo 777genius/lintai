@@ -1,0 +1,6 @@
+id = "skill-git-merge-allowed-tools"
+rule = "SEC442"
+description = "AI-native markdown frontmatter grants Bash(git merge:*) authority"
+severity = "warning"
+category = "security"
+expected = 1

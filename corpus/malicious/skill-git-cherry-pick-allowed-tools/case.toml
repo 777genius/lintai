@@ -1,0 +1,6 @@
+id = "skill-git-cherry-pick-allowed-tools"
+rule = "SEC443"
+description = "AI-native markdown frontmatter grants Bash(git cherry-pick:*) authority"
+severity = "warning"
+category = "security"
+expected = 1

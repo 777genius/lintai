@@ -1,0 +1,4 @@
+id = "skill-git-cherry-pick-allowed-tools-specific-safe"
+rule = "SEC443"
+description = "AI-native markdown frontmatter allows only a specific git cherry-pick command"
+expected = 0

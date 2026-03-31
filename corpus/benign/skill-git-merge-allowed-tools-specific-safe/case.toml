@@ -1,0 +1,4 @@
+id = "skill-git-merge-allowed-tools-specific-safe"
+rule = "SEC442"
+description = "AI-native markdown frontmatter allows only a specific git merge command"
+expected = 0

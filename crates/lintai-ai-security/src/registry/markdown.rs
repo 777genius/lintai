@@ -9,8 +9,9 @@ use crate::markdown_rules::{
     check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
     check_cursor_rule_unknown_frontmatter_key, check_edit_unsafe_path_allowed_tools,
     check_git_add_allowed_tools, check_git_branch_allowed_tools, check_git_checkout_allowed_tools,
-    check_git_clean_allowed_tools, check_git_clone_allowed_tools, check_git_commit_allowed_tools,
-    check_git_config_allowed_tools, check_git_fetch_allowed_tools, check_git_push_allowed_tools,
+    check_git_cherry_pick_allowed_tools, check_git_clean_allowed_tools,
+    check_git_clone_allowed_tools, check_git_commit_allowed_tools, check_git_config_allowed_tools,
+    check_git_fetch_allowed_tools, check_git_merge_allowed_tools, check_git_push_allowed_tools,
     check_git_rebase_allowed_tools, check_git_reset_allowed_tools, check_git_restore_allowed_tools,
     check_git_stash_allowed_tools, check_git_tag_allowed_tools,
     check_glob_unsafe_path_allowed_tools, check_html_comment_directive,
@@ -499,6 +500,30 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct GitMergeAllowedToolsRule {
+        code: "SEC442",
+        summary: "AI-native markdown frontmatter grants `Bash(git merge:*)` authority",
+        doc_title: "AI markdown: `Bash(git merge:*)` tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct GitCherryPickAllowedToolsRule {
+        code: "SEC443",
+        summary: "AI-native markdown frontmatter grants `Bash(git cherry-pick:*)` authority",
+        doc_title: "AI markdown: `Bash(git cherry-pick:*)` tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct UnscopedReadAllowedToolsRule {
         code: "SEC423",
         summary: "AI-native markdown frontmatter grants bare `Read` tool access",
@@ -726,7 +751,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 58] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 60] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1304,6 +1329,46 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 58] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(git rebase:*)` authority is really needed, or replace it with a narrower reviewed history-rewrite workflow instead of a default team-wide grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GitMergeAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for wildcard git merge grants in shared allowed-tools policy.",
+            malicious_case_ids: &["skill-git-merge-allowed-tools"],
+            benign_case_ids: &["skill-git-merge-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Bash(git merge:*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_git_merge_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(git merge:*)` authority is really needed, or replace it with a narrower reviewed merge workflow instead of a default team-wide grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GitCherryPickAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for wildcard git cherry-pick grants in shared allowed-tools policy.",
+            malicious_case_ids: &["skill-git-cherry-pick-allowed-tools"],
+            benign_case_ids: &["skill-git-cherry-pick-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Bash(git cherry-pick:*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_git_cherry_pick_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(git cherry-pick:*)` authority is really needed, or replace it with a narrower reviewed cherry-pick workflow instead of a default team-wide grant",
         ),
         suggestion_fix: None,
     },

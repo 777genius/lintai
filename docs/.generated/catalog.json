@@ -161,7 +161,9 @@
         "lintai-ai-security:SEC438",
         "lintai-ai-security:SEC439",
         "lintai-ai-security:SEC440",
-        "lintai-ai-security:SEC441"
+        "lintai-ai-security:SEC441",
+        "lintai-ai-security:SEC442",
+        "lintai-ai-security:SEC443"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -233,7 +235,9 @@
         "lintai-ai-security:SEC438",
         "lintai-ai-security:SEC439",
         "lintai-ai-security:SEC440",
-        "lintai-ai-security:SEC441"
+        "lintai-ai-security:SEC441",
+        "lintai-ai-security:SEC442",
+        "lintai-ai-security:SEC443"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -5493,6 +5497,84 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(git rebase:*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC442",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC442",
+      "alias": "MD-GIT-MERGE-ALLOWED-TOOLS",
+      "displayLabel": "SEC442 / MD-GIT-MERGE-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(git merge:*)` tool grant",
+      "slug": "sec442",
+      "canonicalPath": "/rules/lintai-ai-security/sec442",
+      "summary": "AI-native markdown frontmatter grants `Bash(git merge:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for wildcard git merge grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-git-merge-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-git-merge-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(git merge:*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC443",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC443",
+      "alias": "MD-GIT-CHERRY-PICK-ALLOWED-TOOLS",
+      "displayLabel": "SEC443 / MD-GIT-CHERRY-PICK-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(git cherry-pick:*)` tool grant",
+      "slug": "sec443",
+      "canonicalPath": "/rules/lintai-ai-security/sec443",
+      "summary": "AI-native markdown frontmatter grants `Bash(git cherry-pick:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for wildcard git cherry-pick grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-git-cherry-pick-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-git-cherry-pick-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(git cherry-pick:*)` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

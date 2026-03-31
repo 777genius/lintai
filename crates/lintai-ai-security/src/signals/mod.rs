@@ -120,6 +120,8 @@ pub(crate) struct MarkdownSignals {
     pub(crate) git_clean_allowed_tools_spans: Vec<Span>,
     pub(crate) git_restore_allowed_tools_spans: Vec<Span>,
     pub(crate) git_rebase_allowed_tools_spans: Vec<Span>,
+    pub(crate) git_merge_allowed_tools_spans: Vec<Span>,
+    pub(crate) git_cherry_pick_allowed_tools_spans: Vec<Span>,
     pub(crate) unscoped_read_allowed_tools_spans: Vec<Span>,
     pub(crate) unscoped_write_allowed_tools_spans: Vec<Span>,
     pub(crate) unscoped_edit_allowed_tools_spans: Vec<Span>,
