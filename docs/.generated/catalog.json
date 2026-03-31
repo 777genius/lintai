@@ -151,7 +151,10 @@
         "lintai-ai-security:SEC428",
         "lintai-ai-security:SEC429",
         "lintai-ai-security:SEC430",
-        "lintai-ai-security:SEC431"
+        "lintai-ai-security:SEC431",
+        "lintai-ai-security:SEC432",
+        "lintai-ai-security:SEC433",
+        "lintai-ai-security:SEC434"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -213,7 +216,10 @@
         "lintai-ai-security:SEC428",
         "lintai-ai-security:SEC429",
         "lintai-ai-security:SEC430",
-        "lintai-ai-security:SEC431"
+        "lintai-ai-security:SEC431",
+        "lintai-ai-security:SEC432",
+        "lintai-ai-security:SEC433",
+        "lintai-ai-security:SEC434"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -5083,6 +5089,123 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact frontmatter token analysis for `Glob(...)` scopes with absolute, home-relative, drive-letter, or parent-traversing path markers."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC432",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC432",
+      "alias": "MD-GIT-ADD-ALLOWED-TOOLS",
+      "displayLabel": "SEC432 / MD-GIT-ADD-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(git add:*)` tool grant",
+      "slug": "sec432",
+      "canonicalPath": "/rules/lintai-ai-security/sec432",
+      "summary": "AI-native markdown frontmatter grants `Bash(git add:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for wildcard git add grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-git-add-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-git-add-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(git add:*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC433",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC433",
+      "alias": "MD-GIT-FETCH-ALLOWED-TOOLS",
+      "displayLabel": "SEC433 / MD-GIT-FETCH-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(git fetch:*)` tool grant",
+      "slug": "sec433",
+      "canonicalPath": "/rules/lintai-ai-security/sec433",
+      "summary": "AI-native markdown frontmatter grants `Bash(git fetch:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for wildcard git fetch grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-git-fetch-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-git-fetch-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(git fetch:*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC434",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC434",
+      "alias": "MD-WEBFETCH-RAW-GITHUB",
+      "displayLabel": "SEC434 / MD-WEBFETCH-RAW-GITHUB",
+      "docTitle": "AI markdown: raw.githubusercontent.com WebFetch grant",
+      "slug": "sec434",
+      "canonicalPath": "/rules/lintai-ai-security/sec434",
+      "summary": "AI-native markdown frontmatter grants `WebFetch(domain:raw.githubusercontent.com)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for explicit raw GitHub content fetch grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-webfetch-raw-github-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-webfetch-raw-github-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `WebFetch(domain:raw.githubusercontent.com)` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

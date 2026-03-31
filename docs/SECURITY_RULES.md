@@ -150,6 +150,9 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC429 / MD-WRITE-UNSAFE-PATH` | AI-native markdown frontmatter grants `Write(...)` over an unsafe repo-external path | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC430 / MD-EDIT-UNSAFE-PATH` | AI-native markdown frontmatter grants `Edit(...)` over an unsafe repo-external path | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC431 / MD-GLOB-UNSAFE-PATH` | AI-native markdown frontmatter grants `Glob(...)` over an unsafe repo-external path | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC432 / MD-GIT-ADD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git add:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC433 / MD-GIT-FETCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git fetch:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC434 / MD-WEBFETCH-RAW-GITHUB` | AI-native markdown frontmatter grants `WebFetch(domain:raw.githubusercontent.com)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -2742,6 +2745,69 @@ Important behavior:
 - Deterministic Signal Basis: MarkdownSignals exact frontmatter token analysis for `Glob(...)` scopes with absolute, home-relative, drive-letter, or parent-traversing path markers.
 - Malicious Corpus: `skill-glob-unsafe-path-allowed-tools`
 - Benign Corpus: `skill-glob-unsafe-path-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC432 / MD-GIT-ADD-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(git add:*)` authority
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GIT-ADD-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for wildcard git add grants in shared allowed-tools policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Bash(git add:*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-git-add-allowed-tools`
+- Benign Corpus: `skill-git-add-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC433 / MD-GIT-FETCH-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(git fetch:*)` authority
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GIT-FETCH-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for wildcard git fetch grants in shared allowed-tools policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Bash(git fetch:*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-git-fetch-allowed-tools`
+- Benign Corpus: `skill-git-fetch-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC434 / MD-WEBFETCH-RAW-GITHUB` — AI-native markdown frontmatter grants `WebFetch(domain:raw.githubusercontent.com)` authority
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-WEBFETCH-RAW-GITHUB`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for explicit raw GitHub content fetch grants in shared allowed-tools policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `WebFetch(domain:raw.githubusercontent.com)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-webfetch-raw-github-allowed-tools`
+- Benign Corpus: `skill-webfetch-raw-github-allowed-tools-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

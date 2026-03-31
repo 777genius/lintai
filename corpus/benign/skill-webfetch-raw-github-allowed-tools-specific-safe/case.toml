@@ -1,0 +1,9 @@
+id = "skill-webfetch-raw-github-allowed-tools-specific-safe"
+kind = "Skill"
+entry_path = "repo"
+expected_output = ["text"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC434"]
+snapshot = { kind = "none", name = "" }

@@ -8,10 +8,10 @@ use crate::markdown_rules::{
     check_curl_allowed_tools, check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
     check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
     check_cursor_rule_unknown_frontmatter_key, check_edit_unsafe_path_allowed_tools,
-    check_git_checkout_allowed_tools, check_git_clone_allowed_tools,
-    check_git_commit_allowed_tools, check_git_push_allowed_tools, check_git_stash_allowed_tools,
-    check_glob_unsafe_path_allowed_tools, check_html_comment_directive,
-    check_html_comment_download_exec, check_markdown_base64_exec,
+    check_git_add_allowed_tools, check_git_checkout_allowed_tools, check_git_clone_allowed_tools,
+    check_git_commit_allowed_tools, check_git_fetch_allowed_tools, check_git_push_allowed_tools,
+    check_git_stash_allowed_tools, check_glob_unsafe_path_allowed_tools,
+    check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
     check_markdown_claude_bare_pip_install, check_markdown_docker_host_escape,
     check_markdown_download_exec, check_markdown_fenced_pipe_shell,
     check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
@@ -23,8 +23,8 @@ use crate::markdown_rules::{
     check_unscoped_glob_allowed_tools, check_unscoped_grep_allowed_tools,
     check_unscoped_read_allowed_tools, check_unscoped_webfetch_allowed_tools,
     check_unscoped_websearch_allowed_tools, check_unscoped_write_allowed_tools,
-    check_untrusted_instruction_promotion, check_wget_allowed_tools, check_wildcard_tool_access,
-    check_write_unsafe_path_allowed_tools,
+    check_untrusted_instruction_promotion, check_webfetch_raw_github_allowed_tools,
+    check_wget_allowed_tools, check_wildcard_tool_access, check_write_unsafe_path_allowed_tools,
 };
 
 declare_rule! {
@@ -376,6 +376,42 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct GitAddAllowedToolsRule {
+        code: "SEC432",
+        summary: "AI-native markdown frontmatter grants `Bash(git add:*)` authority",
+        doc_title: "AI markdown: `Bash(git add:*)` tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct GitFetchAllowedToolsRule {
+        code: "SEC433",
+        summary: "AI-native markdown frontmatter grants `Bash(git fetch:*)` authority",
+        doc_title: "AI markdown: `Bash(git fetch:*)` tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct WebFetchRawGithubAllowedToolsRule {
+        code: "SEC434",
+        summary: "AI-native markdown frontmatter grants `WebFetch(domain:raw.githubusercontent.com)` authority",
+        doc_title: "AI markdown: raw.githubusercontent.com WebFetch grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct UnscopedReadAllowedToolsRule {
         code: "SEC423",
         summary: "AI-native markdown frontmatter grants bare `Read` tool access",
@@ -603,7 +639,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 48] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 51] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -981,6 +1017,66 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 48] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(git clone:*)` authority is really needed, or replace it with a narrower reviewed fetch workflow instead of a default team-wide grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GitAddAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for wildcard git add grants in shared allowed-tools policy.",
+            malicious_case_ids: &["skill-git-add-allowed-tools"],
+            benign_case_ids: &["skill-git-add-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Bash(git add:*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_git_add_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(git add:*)` authority is really needed, or replace it with a narrower reviewed staging workflow instead of a default team-wide grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GitFetchAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for wildcard git fetch grants in shared allowed-tools policy.",
+            malicious_case_ids: &["skill-git-fetch-allowed-tools"],
+            benign_case_ids: &["skill-git-fetch-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Bash(git fetch:*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_git_fetch_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(git fetch:*)` authority is really needed, or replace it with a narrower reviewed fetch workflow instead of a default team-wide grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: WebFetchRawGithubAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for explicit raw GitHub content fetch grants in shared allowed-tools policy.",
+            malicious_case_ids: &["skill-webfetch-raw-github-allowed-tools"],
+            benign_case_ids: &["skill-webfetch-raw-github-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `WebFetch(domain:raw.githubusercontent.com)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_webfetch_raw_github_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `WebFetch(domain:raw.githubusercontent.com)` with a narrower reviewed documentation host or remove broad raw GitHub fetch authority from shared frontmatter",
         ),
         suggestion_fix: None,
     },

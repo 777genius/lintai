@@ -1600,6 +1600,108 @@ fn ignores_git_clone_allowed_tools_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_git_add_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(git add:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC432")
+        .unwrap();
+    let start = content.find("Bash(git add:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git add:*)".len())
+    );
+}
+
+#[test]
+fn ignores_git_add_allowed_tools_when_command_is_more_specific() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(git add src/lib.rs), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC432")
+    );
+}
+
+#[test]
+fn finds_git_fetch_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(git fetch:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC433")
+        .unwrap();
+    let start = content.find("Bash(git fetch:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git fetch:*)".len())
+    );
+}
+
+#[test]
+fn ignores_git_fetch_allowed_tools_when_command_is_more_specific() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(git fetch origin main), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC433")
+    );
+}
+
+#[test]
+fn finds_webfetch_raw_github_allowed_tools_in_frontmatter() {
+    let content =
+        "---\nallowed-tools: WebFetch(domain:raw.githubusercontent.com), Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC434")
+        .unwrap();
+    let start = content
+        .find("WebFetch(domain:raw.githubusercontent.com)")
+        .unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(
+            start,
+            start + "WebFetch(domain:raw.githubusercontent.com)".len()
+        )
+    );
+}
+
+#[test]
+fn ignores_webfetch_non_raw_github_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: WebFetch(domain:github.com), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC434")
+    );
+}
+
+#[test]
 fn finds_unscoped_read_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Read, Write(./artifacts/**)\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);
