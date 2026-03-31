@@ -22,7 +22,8 @@ use crate::markdown_rules::{
     check_markdown_download_exec, check_markdown_fenced_pipe_shell,
     check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
     check_markdown_mutable_mcp_launcher, check_markdown_npm_http_registry,
-    check_markdown_npm_http_source, check_markdown_path_traversal, check_markdown_pip_http_index,
+    check_markdown_npm_http_source, check_markdown_path_traversal,
+    check_markdown_pip_http_git_install, check_markdown_pip_http_index,
     check_markdown_pip_http_source, check_markdown_pip_trusted_host,
     check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
     check_package_install_allowed_tools, check_plugin_agent_hooks_frontmatter,
@@ -137,6 +138,18 @@ declare_rule! {
         code: "SEC417",
         summary: "AI-native markdown installs Python packages from an unpinned `git+https://` source",
         doc_title: "AI markdown: unpinned pip git install",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownPipHttpGitInstallRule {
+        code: "SEC455",
+        summary: "AI-native markdown installs Python packages from an insecure `git+http://` source",
+        doc_title: "AI markdown: pip http git install",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -876,7 +889,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 70] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 71] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1018,6 +1031,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 70] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace the unpinned `git+https://` install with a commit-pinned reference or a published package release",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownPipHttpGitInstallRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown for `pip install` examples that fetch Python packages from an insecure `git+http://` source.",
+            malicious_case_ids: &["skill-pip-http-git-install"],
+            benign_case_ids: &["skill-pip-https-git-install-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact `pip install` token analysis with `git+http://` detection inside parsed markdown regions.",
+        },
+        check: check_markdown_pip_http_git_install,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace the insecure `git+http://` source with a normal TLS-verified `git+https://` source",
         ),
         suggestion_fix: None,
     },

@@ -65,6 +65,25 @@ pub(crate) fn find_unpinned_pip_git_install_relative_span(text: &str) -> Option<
     None
 }
 
+pub(crate) fn find_pip_http_git_install_relative_span(text: &str) -> Option<Span> {
+    let mut offset = 0usize;
+    for line in text.split_inclusive('\n') {
+        if let Some(relative) = find_pip_http_git_install_in_line(line) {
+            return Some(Span::new(
+                offset + relative.start_byte,
+                offset + relative.end_byte,
+            ));
+        }
+        offset += line.len();
+    }
+
+    if !text.ends_with('\n') {
+        return find_pip_http_git_install_in_line(text);
+    }
+
+    None
+}
+
 pub(crate) fn find_pip_trusted_host_relative_span(text: &str) -> Option<Span> {
     let mut offset = 0usize;
     for line in text.split_inclusive('\n') {
@@ -249,6 +268,25 @@ fn find_unpinned_pip_git_install_in_line(line: &str) -> Option<Span> {
     Some(Span::new(url_start, url_end))
 }
 
+fn find_pip_http_git_install_in_line(line: &str) -> Option<Span> {
+    let lowered = line.to_ascii_lowercase();
+    let mut install_start = None;
+    for marker in PIP_GIT_INSTALL_MARKERS {
+        if let Some(relative) = lowered.find(marker) {
+            install_start = Some(relative + marker.len());
+            break;
+        }
+    }
+    let Some(search_start) = install_start else {
+        return None;
+    };
+
+    let search_slice = &lowered[search_start..];
+    let relative_http = search_slice.find("git+http://")?;
+    let start = search_start + relative_http + "git+".len();
+    Some(Span::new(start, start + "http://".len()))
+}
+
 fn find_pip_trusted_host_in_line(line: &str) -> Option<Span> {
     let lowered = line.to_ascii_lowercase();
     let mut install_start = None;
@@ -431,9 +469,10 @@ mod tests {
     use super::{
         find_cargo_http_git_install_relative_span, find_cargo_http_index_relative_span,
         find_claude_bare_pip_install_relative_span, find_npm_http_registry_relative_span,
-        find_npm_http_source_relative_span, find_pip_http_index_relative_span,
-        find_pip_http_source_relative_span, find_pip_trusted_host_relative_span,
-        find_unpinned_pip_git_install_relative_span, has_uv_instead_of_pip_preference,
+        find_npm_http_source_relative_span, find_pip_http_git_install_relative_span,
+        find_pip_http_index_relative_span, find_pip_http_source_relative_span,
+        find_pip_trusted_host_relative_span, find_unpinned_pip_git_install_relative_span,
+        has_uv_instead_of_pip_preference,
     };
 
     #[test]
@@ -472,6 +511,24 @@ mod tests {
         let content =
             "pip install git+https://github.com/facebookresearch/xformers.git@main#egg=xformers\n";
         assert!(find_unpinned_pip_git_install_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_pip_http_git_install() {
+        let content = "pip install git+http://git.example.test/demo.git\n";
+        assert!(find_pip_http_git_install_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_python_dash_m_pip_http_git_install() {
+        let content = "python -m pip install git+http://git.example.test/demo.git\n";
+        assert!(find_pip_http_git_install_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn ignores_pip_https_git_install_for_http_git_rule() {
+        let content = "pip install git+https://github.com/pytorch/ao.git\n";
+        assert_eq!(find_pip_http_git_install_relative_span(content), None);
     }
 
     #[test]

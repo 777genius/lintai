@@ -96,6 +96,7 @@ pub(crate) struct MarkdownSignals {
     pub(crate) mutable_mcp_launcher_spans: Vec<Span>,
     pub(crate) claude_bare_pip_install_spans: Vec<Span>,
     pub(crate) unpinned_pip_git_install_spans: Vec<Span>,
+    pub(crate) pip_http_git_install_spans: Vec<Span>,
     pub(crate) pip_trusted_host_spans: Vec<Span>,
     pub(crate) pip_http_index_spans: Vec<Span>,
     pub(crate) pip_http_source_spans: Vec<Span>,

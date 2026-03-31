@@ -174,7 +174,8 @@
         "lintai-ai-security:SEC451",
         "lintai-ai-security:SEC452",
         "lintai-ai-security:SEC453",
-        "lintai-ai-security:SEC454"
+        "lintai-ai-security:SEC454",
+        "lintai-ai-security:SEC455"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -258,7 +259,8 @@
         "lintai-ai-security:SEC451",
         "lintai-ai-security:SEC452",
         "lintai-ai-security:SEC453",
-        "lintai-ai-security:SEC454"
+        "lintai-ai-security:SEC454",
+        "lintai-ai-security:SEC455"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -6028,6 +6030,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `npm install`, `npm i`, `pnpm add/install`, `yarn add`, or `bun add` token analysis with direct `http://` source detection inside parsed markdown regions, excluding `--registry http://` forms already covered by SEC450."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC455",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC455",
+      "alias": "MD-PIP-HTTP-GIT-INSTALL",
+      "displayLabel": "SEC455 / MD-PIP-HTTP-GIT-INSTALL",
+      "docTitle": "AI markdown: pip http git install",
+      "slug": "sec455",
+      "canonicalPath": "/rules/lintai-ai-security/sec455",
+      "summary": "AI-native markdown installs Python packages from an insecure `git+http://` source",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for `pip install` examples that fetch Python packages from an insecure `git+http://` source.",
+        "maliciousCaseIds": [
+          "skill-pip-http-git-install"
+        ],
+        "benignCaseIds": [
+          "skill-pip-https-git-install-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `pip install` token analysis with `git+http://` detection inside parsed markdown regions."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

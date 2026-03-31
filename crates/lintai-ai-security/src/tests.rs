@@ -947,6 +947,49 @@ fn ignores_markdown_commit_pinned_pip_git_install() {
 }
 
 #[test]
+fn finds_markdown_pip_http_git_install() {
+    let content = "pip install git+http://git.example.test/demo.git\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC455")
+        .unwrap();
+    let start = content.find("http://").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "http://".len())
+    );
+}
+
+#[test]
+fn finds_markdown_python_dash_m_pip_http_git_install() {
+    let content = "python -m pip install git+http://git.example.test/demo.git\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC455")
+    );
+}
+
+#[test]
+fn ignores_markdown_pip_https_git_install_for_http_git_rule() {
+    let content = "pip install git+https://github.com/pytorch/ao.git\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC455")
+    );
+}
+
+#[test]
 fn finds_markdown_pip_trusted_host() {
     let content = "pip install --trusted-host pypi.example.test demo\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

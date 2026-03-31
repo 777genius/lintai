@@ -179,6 +179,22 @@ pub(crate) fn check_markdown_unpinned_pip_git_install(
     )
 }
 
+pub(crate) fn check_markdown_pip_http_git_install(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.pip_http_git_install_spans.as_slice())
+            .unwrap_or(&[]),
+        "AI-native markdown installs Python packages from an insecure `git+http://` source",
+    )
+}
+
 pub(crate) fn check_markdown_pip_trusted_host(
     ctx: &ScanContext,
     signals: &ArtifactSignals,
