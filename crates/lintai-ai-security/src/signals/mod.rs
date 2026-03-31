@@ -190,6 +190,7 @@ pub(crate) struct ClaudeSettingsSignals {
     pub(crate) git_ls_remote_permission_span: Option<Span>,
     pub(crate) curl_permission_span: Option<Span>,
     pub(crate) wget_permission_span: Option<Span>,
+    pub(crate) git_config_permission_span: Option<Span>,
     pub(crate) git_checkout_permission_span: Option<Span>,
     pub(crate) git_commit_permission_span: Option<Span>,
     pub(crate) git_stash_permission_span: Option<Span>,

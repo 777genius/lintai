@@ -244,6 +244,10 @@ mod tests {
         );
         assert_eq!(shipped_rule_alias("SEC411"), Some("CLAUDE-CURL-PERMISSION"));
         assert_eq!(shipped_rule_alias("SEC412"), Some("CLAUDE-WGET-PERMISSION"));
+        assert_eq!(
+            shipped_rule_alias("SEC413"),
+            Some("CLAUDE-GIT-CONFIG-PERMISSION")
+        );
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

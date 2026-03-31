@@ -35,6 +35,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-settings-git-checkout-permission",
             "claude-settings-git-clone-permission",
             "claude-settings-git-commit-permission",
+            "claude-settings-git-config-permission",
             "claude-settings-git-fetch-permission",
             "claude-settings-git-ls-remote-permission",
             "claude-settings-git-push-permission",

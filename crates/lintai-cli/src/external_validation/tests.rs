@@ -272,6 +272,7 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(markdown.contains("`SEC410` Claude settings shared `git ls-remote` permissions: `"));
     assert!(markdown.contains("`SEC411` Claude settings shared `curl` permissions: `"));
     assert!(markdown.contains("`SEC412` Claude settings shared `wget` permissions: `"));
+    assert!(markdown.contains("`SEC413` Claude settings shared `git config` permissions: `"));
     assert!(markdown.contains("`SEC408` Claude settings shared `gh pr` permissions: `"));
     assert!(markdown.contains("`SEC372` Claude settings wildcard `Read(*)` permissions: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings wildcard `Edit(*)` permissions: `0`"));
@@ -952,4 +953,5 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC410`"));
     assert!(markdown.contains("`SEC411`"));
     assert!(markdown.contains("`SEC412`"));
+    assert!(markdown.contains("`SEC413`"));
 }

@@ -1,0 +1,14 @@
+id = "claude-settings-git-config-permission"
+kind = "malicious"
+entry_path = "repo/.claude/settings.json"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = [
+  { rule_code = "SEC413", tier = "preview", min_evidence_count = 1 }
+]
+expected_absent_rules = []
+
+[snapshot]
+kind = "none"
+name = "none"
