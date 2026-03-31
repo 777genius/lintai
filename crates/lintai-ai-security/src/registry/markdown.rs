@@ -5,12 +5,10 @@ use crate::markdown_rules::{
     check_approval_bypass_instruction, check_copilot_instruction_invalid_apply_to,
     check_copilot_instruction_invalid_apply_to_glob, check_copilot_instruction_missing_apply_to,
     check_copilot_instruction_too_long, check_copilot_instruction_wrong_suffix,
-    check_curl_allowed_tools, check_git_clone_allowed_tools,
-    check_unscoped_edit_allowed_tools, check_unscoped_read_allowed_tools,
-    check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
+    check_curl_allowed_tools, check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
     check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
-    check_cursor_rule_unknown_frontmatter_key, check_html_comment_directive,
-    check_html_comment_download_exec, check_markdown_base64_exec,
+    check_cursor_rule_unknown_frontmatter_key, check_git_clone_allowed_tools,
+    check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
     check_markdown_claude_bare_pip_install, check_markdown_docker_host_escape,
     check_markdown_download_exec, check_markdown_fenced_pipe_shell,
     check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
@@ -18,6 +16,8 @@ use crate::markdown_rules::{
     check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
     check_plugin_agent_hooks_frontmatter, check_plugin_agent_mcp_servers_frontmatter,
     check_plugin_agent_permission_mode, check_unscoped_bash_allowed_tools,
+    check_unscoped_edit_allowed_tools, check_unscoped_glob_allowed_tools,
+    check_unscoped_grep_allowed_tools, check_unscoped_read_allowed_tools,
     check_unscoped_write_allowed_tools, check_untrusted_instruction_promotion,
     check_wget_allowed_tools, check_wildcard_tool_access,
 };
@@ -335,6 +335,30 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct UnscopedGlobAllowedToolsRule {
+        code: "SEC426",
+        summary: "AI-native markdown frontmatter grants bare `Glob` tool access",
+        doc_title: "AI markdown: bare Glob tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct UnscopedGrepAllowedToolsRule {
+        code: "SEC427",
+        summary: "AI-native markdown frontmatter grants bare `Grep` tool access",
+        doc_title: "AI markdown: bare Grep tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct PluginAgentPermissionModeRule {
         code: "SEC356",
         summary: "Plugin agent frontmatter sets `permissionMode`",
@@ -454,7 +478,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 36] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 38] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -848,6 +872,38 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 36] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace `applyTo` with valid glob patterns so Copilot can target files consistently",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: UnscopedGlobAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Bare Glob grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_unscoped_glob_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace bare `Glob` with narrower reviewed glob patterns or remove broad file-discovery authority from the shared frontmatter grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: UnscopedGrepAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Bare Grep grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_unscoped_grep_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace bare `Grep` with narrower reviewed grep patterns or remove broad content-search authority from the shared frontmatter grant",
         ),
         suggestion_fix: None,
     },

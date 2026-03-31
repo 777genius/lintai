@@ -124,6 +124,8 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC423" => "MD-READ-UNSCOPED",
         "SEC424" => "MD-WRITE-UNSCOPED",
         "SEC425" => "MD-EDIT-UNSCOPED",
+        "SEC426" => "MD-GLOB-UNSCOPED",
+        "SEC427" => "MD-GREP-UNSCOPED",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

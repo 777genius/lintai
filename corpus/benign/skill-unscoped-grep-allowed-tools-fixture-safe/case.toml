@@ -1,0 +1,10 @@
+id = "skill-unscoped-grep-allowed-tools-fixture-safe"
+rule = "SEC427"
+description = "Does not flag bare Grep authority under fixture-like paths."
+
+[source]
+path = "repo/tests/fixtures/SKILL.md"
+kind = "Skill"
+
+[expect]
+findings = []

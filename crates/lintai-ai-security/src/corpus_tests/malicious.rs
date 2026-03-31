@@ -148,6 +148,8 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "skill-tool-output-developer-instructions",
             "skill-unscoped-bash-allowed-tools",
             "skill-unscoped-edit-allowed-tools",
+            "skill-unscoped-glob-allowed-tools",
+            "skill-unscoped-grep-allowed-tools",
             "skill-unscoped-read-allowed-tools",
             "skill-unscoped-write-allowed-tools",
             "skill-wget-allowed-tools",

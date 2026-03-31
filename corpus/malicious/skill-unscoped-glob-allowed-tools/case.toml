@@ -1,0 +1,10 @@
+id = "skill-unscoped-glob-allowed-tools"
+rule = "SEC426"
+description = "Flags AI-native markdown frontmatter that grants bare Glob authority."
+
+[source]
+path = "repo/SKILL.md"
+kind = "Skill"
+
+[expect]
+findings = ["SEC426"]

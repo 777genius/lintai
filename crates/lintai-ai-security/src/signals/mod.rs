@@ -107,6 +107,8 @@ pub(crate) struct MarkdownSignals {
     pub(crate) unscoped_read_allowed_tools_spans: Vec<Span>,
     pub(crate) unscoped_write_allowed_tools_spans: Vec<Span>,
     pub(crate) unscoped_edit_allowed_tools_spans: Vec<Span>,
+    pub(crate) unscoped_glob_allowed_tools_spans: Vec<Span>,
+    pub(crate) unscoped_grep_allowed_tools_spans: Vec<Span>,
     pub(crate) wildcard_tool_access_spans: Vec<Span>,
     pub(crate) plugin_agent_permission_mode_spans: Vec<Span>,
     pub(crate) plugin_agent_hooks_spans: Vec<Span>,

@@ -378,10 +378,8 @@ impl MarkdownSignals {
                 .iter()
                 .find(|region| matches!(region.kind, RegionKind::Frontmatter))
             && let Some(snippet) = span_text(&ctx.content, &region.span)
-            && let Some(relative) = find_exact_allowed_tool_frontmatter_relative_span(
-                snippet,
-                "Bash(git clone:*)",
-            )
+            && let Some(relative) =
+                find_exact_allowed_tool_frontmatter_relative_span(snippet, "Bash(git clone:*)")
         {
             signals.git_clone_allowed_tools_spans.push(Span::new(
                 region.span.start_byte + relative.start_byte,
@@ -411,7 +409,8 @@ impl MarkdownSignals {
                 .iter()
                 .find(|region| matches!(region.kind, RegionKind::Frontmatter))
             && let Some(snippet) = span_text(&ctx.content, &region.span)
-            && let Some(relative) = find_exact_allowed_tool_frontmatter_relative_span(snippet, "Read")
+            && let Some(relative) =
+                find_exact_allowed_tool_frontmatter_relative_span(snippet, "Read")
         {
             signals.unscoped_read_allowed_tools_spans.push(Span::new(
                 region.span.start_byte + relative.start_byte,
@@ -476,6 +475,68 @@ impl MarkdownSignals {
                 find_exact_allowed_tool_frontmatter_relative_span(snippet, "Edit")
         {
             signals.unscoped_edit_allowed_tools_spans.push(Span::new(
+                region.span.start_byte + relative.start_byte,
+                region.span.start_byte + relative.end_byte,
+            ));
+        }
+
+        if matches!(
+            ctx.artifact.kind,
+            ArtifactKind::Skill
+                | ArtifactKind::Instructions
+                | ArtifactKind::CursorPluginCommand
+                | ArtifactKind::CursorPluginAgent
+        ) && !is_fixture_like_markdown_instruction_path(&ctx.artifact.normalized_path)
+            && let Some(frontmatter_value) = markdown_semantics(ctx)
+                .and_then(|markdown| markdown.frontmatter.as_ref())
+                .and_then(|frontmatter| {
+                    frontmatter
+                        .value
+                        .get("allowed-tools")
+                        .or_else(|| frontmatter.value.get("allowed_tools"))
+                })
+            && frontmatter_has_exact_allowed_tool(frontmatter_value, "Glob")
+            && let Some(region) = ctx
+                .document
+                .regions
+                .iter()
+                .find(|region| matches!(region.kind, RegionKind::Frontmatter))
+            && let Some(snippet) = span_text(&ctx.content, &region.span)
+            && let Some(relative) =
+                find_exact_allowed_tool_frontmatter_relative_span(snippet, "Glob")
+        {
+            signals.unscoped_glob_allowed_tools_spans.push(Span::new(
+                region.span.start_byte + relative.start_byte,
+                region.span.start_byte + relative.end_byte,
+            ));
+        }
+
+        if matches!(
+            ctx.artifact.kind,
+            ArtifactKind::Skill
+                | ArtifactKind::Instructions
+                | ArtifactKind::CursorPluginCommand
+                | ArtifactKind::CursorPluginAgent
+        ) && !is_fixture_like_markdown_instruction_path(&ctx.artifact.normalized_path)
+            && let Some(frontmatter_value) = markdown_semantics(ctx)
+                .and_then(|markdown| markdown.frontmatter.as_ref())
+                .and_then(|frontmatter| {
+                    frontmatter
+                        .value
+                        .get("allowed-tools")
+                        .or_else(|| frontmatter.value.get("allowed_tools"))
+                })
+            && frontmatter_has_exact_allowed_tool(frontmatter_value, "Grep")
+            && let Some(region) = ctx
+                .document
+                .regions
+                .iter()
+                .find(|region| matches!(region.kind, RegionKind::Frontmatter))
+            && let Some(snippet) = span_text(&ctx.content, &region.span)
+            && let Some(relative) =
+                find_exact_allowed_tool_frontmatter_relative_span(snippet, "Grep")
+        {
+            signals.unscoped_grep_allowed_tools_spans.push(Span::new(
                 region.span.start_byte + relative.start_byte,
                 region.span.start_byte + relative.end_byte,
             ));

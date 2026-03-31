@@ -1,0 +1,10 @@
+id = "skill-unscoped-grep-allowed-tools-specific-safe"
+rule = "SEC427"
+description = "Does not flag scoped Grep authority in AI-native markdown frontmatter."
+
+[source]
+path = "repo/SKILL.md"
+kind = "Skill"
+
+[expect]
+findings = []

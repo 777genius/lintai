@@ -1582,6 +1582,100 @@ fn ignores_unscoped_edit_allowed_tools_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_unscoped_glob_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Glob, Read(./docs/**)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC426")
+        .unwrap();
+    let start = content.find("Glob").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Glob".len())
+    );
+}
+
+#[test]
+fn ignores_scoped_glob_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Glob(./docs/**), Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC426")
+    );
+}
+
+#[test]
+fn ignores_unscoped_glob_allowed_tools_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/skill/SKILL.md",
+        "---\nallowed-tools: Glob, Read(./docs/**)\n---\n# Fixture skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC426")
+    );
+}
+
+#[test]
+fn finds_unscoped_grep_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Grep, Read(./docs/**)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC427")
+        .unwrap();
+    let start = content.find("Grep").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Grep".len())
+    );
+}
+
+#[test]
+fn ignores_scoped_grep_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Grep(todo:), Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC427")
+    );
+}
+
+#[test]
+fn ignores_unscoped_grep_allowed_tools_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/skill/SKILL.md",
+        "---\nallowed-tools: Grep, Read(./docs/**)\n---\n# Fixture skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC427")
+    );
+}
+
+#[test]
 fn finds_wildcard_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: \"*\"\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);
