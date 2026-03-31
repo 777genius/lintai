@@ -1063,6 +1063,32 @@ fn finds_markdown_pip_http_extra_index() {
 }
 
 #[test]
+fn finds_markdown_pip_http_short_index() {
+    let content = "pip install -i http://pypi.example.test/simple demo\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC449")
+    );
+}
+
+#[test]
+fn finds_markdown_pip_http_index_equals_form() {
+    let content = "pip install --index-url=http://pypi.example.test/simple demo\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC449")
+    );
+}
+
+#[test]
 fn ignores_markdown_pip_https_index() {
     let content = "pip install --index-url https://pypi.example.test/simple demo\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);
@@ -1151,6 +1177,19 @@ fn finds_markdown_npm_http_registry() {
 #[test]
 fn finds_markdown_pnpm_http_registry() {
     let content = "pnpm add demo --registry http://registry.example.test/\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC450")
+    );
+}
+
+#[test]
+fn finds_markdown_npm_http_registry_equals_form() {
+    let content = "yarn add demo --registry=http://registry.example.test/\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);
 
     assert!(
@@ -1300,6 +1339,19 @@ fn finds_markdown_cargo_http_git_install() {
 }
 
 #[test]
+fn finds_markdown_cargo_http_git_install_equals_form() {
+    let content = "cargo install --git=http://git.example.test/demo.git\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC451")
+    );
+}
+
+#[test]
 fn ignores_markdown_cargo_https_git_install() {
     let content = "cargo install --git https://git.example.test/demo.git\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);
@@ -1326,6 +1378,19 @@ fn finds_markdown_cargo_http_index() {
     assert_eq!(
         finding.location.span,
         lintai_api::Span::new(start, start + "http://".len())
+    );
+}
+
+#[test]
+fn finds_markdown_cargo_http_index_equals_form() {
+    let content = "cargo install ripgrep --index=http://index.example.test/\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC452")
     );
 }
 

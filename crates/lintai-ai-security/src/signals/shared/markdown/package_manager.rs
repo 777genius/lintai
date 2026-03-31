@@ -320,7 +320,13 @@ fn find_pip_http_index_in_line(line: &str) -> Option<Span> {
     };
 
     let search_slice = &lowered[search_start..];
-    for marker in ["--index-url http://", "--extra-index-url http://"] {
+    for marker in [
+        "--index-url http://",
+        "--extra-index-url http://",
+        "--index-url=http://",
+        "--extra-index-url=http://",
+        "-i http://",
+    ] {
         if let Some(relative_http) = search_slice.find(marker) {
             let start = search_start + relative_http + marker.len() - "http://".len();
             return Some(Span::new(start, start + "http://".len()));
@@ -347,7 +353,13 @@ fn find_pip_http_source_in_line(line: &str) -> Option<Span> {
     let relative_http = search_slice.find("http://")?;
     let absolute_http = search_start + relative_http;
 
-    for marker in ["--index-url ", "--extra-index-url "] {
+    for marker in [
+        "--index-url ",
+        "--extra-index-url ",
+        "--index-url=",
+        "--extra-index-url=",
+        "-i ",
+    ] {
         if let Some(relative_flag) = search_slice.find(marker) {
             let flag_start = search_start + relative_flag;
             let flag_end = flag_start + marker.len();
@@ -374,10 +386,14 @@ fn find_npm_http_registry_in_line(line: &str) -> Option<Span> {
     };
 
     let search_slice = &lowered[search_start..];
-    let marker = "--registry http://";
-    let relative_http = search_slice.find(marker)?;
-    let start = search_start + relative_http + marker.len() - "http://".len();
-    Some(Span::new(start, start + "http://".len()))
+    for marker in ["--registry http://", "--registry=http://"] {
+        if let Some(relative_http) = search_slice.find(marker) {
+            let start = search_start + relative_http + marker.len() - "http://".len();
+            return Some(Span::new(start, start + "http://".len()));
+        }
+    }
+
+    None
 }
 
 fn find_npm_http_source_in_line(line: &str) -> Option<Span> {
@@ -397,11 +413,13 @@ fn find_npm_http_source_in_line(line: &str) -> Option<Span> {
     let relative_http = search_slice.find("http://")?;
     let absolute_http = search_start + relative_http;
 
-    if let Some(relative_flag) = search_slice.find("--registry ") {
-        let flag_start = search_start + relative_flag;
-        let flag_end = flag_start + "--registry ".len();
-        if flag_end == absolute_http {
-            return None;
+    for marker in ["--registry ", "--registry="] {
+        if let Some(relative_flag) = search_slice.find(marker) {
+            let flag_start = search_start + relative_flag;
+            let flag_end = flag_start + marker.len();
+            if flag_end == absolute_http {
+                return None;
+            }
         }
     }
 
@@ -422,10 +440,14 @@ fn find_cargo_http_git_install_in_line(line: &str) -> Option<Span> {
     };
 
     let search_slice = &lowered[search_start..];
-    let marker = "--git http://";
-    let relative_http = search_slice.find(marker)?;
-    let start = search_start + relative_http + marker.len() - "http://".len();
-    Some(Span::new(start, start + "http://".len()))
+    for marker in ["--git http://", "--git=http://"] {
+        if let Some(relative_http) = search_slice.find(marker) {
+            let start = search_start + relative_http + marker.len() - "http://".len();
+            return Some(Span::new(start, start + "http://".len()));
+        }
+    }
+
+    None
 }
 
 fn find_cargo_http_index_in_line(line: &str) -> Option<Span> {
@@ -442,10 +464,14 @@ fn find_cargo_http_index_in_line(line: &str) -> Option<Span> {
     };
 
     let search_slice = &lowered[search_start..];
-    let marker = "--index http://";
-    let relative_http = search_slice.find(marker)?;
-    let start = search_start + relative_http + marker.len() - "http://".len();
-    Some(Span::new(start, start + "http://".len()))
+    for marker in ["--index http://", "--index=http://"] {
+        if let Some(relative_http) = search_slice.find(marker) {
+            let start = search_start + relative_http + marker.len() - "http://".len();
+            return Some(Span::new(start, start + "http://".len()));
+        }
+    }
+
+    None
 }
 
 fn has_immutable_git_ref(url: &str) -> bool {
@@ -550,6 +576,18 @@ mod tests {
     }
 
     #[test]
+    fn finds_pip_http_index_short_flag() {
+        let content = "pip install -i http://pypi.example.test/simple demo\n";
+        assert!(find_pip_http_index_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_pip_http_index_equals_form() {
+        let content = "pip install --index-url=http://pypi.example.test/simple demo\n";
+        assert!(find_pip_http_index_relative_span(content).is_some());
+    }
+
+    #[test]
     fn ignores_pip_https_index() {
         let content = "pip install --index-url https://pypi.example.test/simple demo\n";
         assert_eq!(find_pip_http_index_relative_span(content), None);
@@ -582,6 +620,12 @@ mod tests {
     #[test]
     fn finds_npm_http_registry() {
         let content = "npm install demo --registry http://registry.example.test/\n";
+        assert!(find_npm_http_registry_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_npm_http_registry_equals_form() {
+        let content = "yarn add demo --registry=http://registry.example.test/\n";
         assert!(find_npm_http_registry_relative_span(content).is_some());
     }
 
@@ -646,6 +690,12 @@ mod tests {
     }
 
     #[test]
+    fn finds_cargo_http_git_install_equals_form() {
+        let content = "cargo install --git=http://git.example.test/demo.git\n";
+        assert!(find_cargo_http_git_install_relative_span(content).is_some());
+    }
+
+    #[test]
     fn ignores_cargo_https_git_install() {
         let content = "cargo install --git https://git.example.test/demo.git\n";
         assert_eq!(find_cargo_http_git_install_relative_span(content), None);
@@ -654,6 +704,12 @@ mod tests {
     #[test]
     fn finds_cargo_http_index() {
         let content = "cargo install ripgrep --index http://index.example.test/\n";
+        assert!(find_cargo_http_index_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_cargo_http_index_equals_form() {
+        let content = "cargo install ripgrep --index=http://index.example.test/\n";
         assert!(find_cargo_http_index_relative_span(content).is_some());
     }
 
