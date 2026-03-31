@@ -5862,7 +5862,7 @@
       "lifecycleState": "stable_gated",
       "lifecycle": {
         "kind": "stable",
-        "rationale": "Checks AI-native markdown for `npm` and `pnpm` install examples that point dependency resolution at `http://` registries.",
+        "rationale": "Checks AI-native markdown for `npm`, `pnpm`, `yarn`, and `bun` install examples that point dependency resolution at `http://` registries.",
         "maliciousCaseIds": [
           "skill-npm-http-registry"
         ],
@@ -5871,7 +5871,7 @@
         ],
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
-        "deterministicSignalBasis": "MarkdownSignals exact `npm install` or `pnpm add/install` token analysis with `--registry http://` detection inside parsed markdown regions."
+        "deterministicSignalBasis": "MarkdownSignals exact `npm install`, `npm i`, `pnpm add/install`, `yarn add`, or `bun add` token analysis with `--registry http://` detection inside parsed markdown regions."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -6018,7 +6018,7 @@
       "lifecycleState": "stable_gated",
       "lifecycle": {
         "kind": "stable",
-        "rationale": "Checks AI-native markdown for `npm` and `pnpm` install examples that fetch a direct package source over `http://`.",
+        "rationale": "Checks AI-native markdown for `npm`, `pnpm`, `yarn`, and `bun` install examples that fetch a direct package source over `http://`.",
         "maliciousCaseIds": [
           "skill-npm-http-source"
         ],
@@ -6027,7 +6027,7 @@
         ],
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
-        "deterministicSignalBasis": "MarkdownSignals exact `npm install` or `pnpm add/install` token analysis with direct `http://` source detection inside parsed markdown regions, excluding `--registry http://` forms already covered by SEC450."
+        "deterministicSignalBasis": "MarkdownSignals exact `npm install`, `npm i`, `pnpm add/install`, `yarn add`, or `bun add` token analysis with direct `http://` source detection inside parsed markdown regions, excluding `--registry http://` forms already covered by SEC450."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

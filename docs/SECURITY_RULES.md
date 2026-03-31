@@ -3160,8 +3160,8 @@ Important behavior:
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
-- Graduation Rationale: Checks AI-native markdown for `npm` and `pnpm` install examples that point dependency resolution at `http://` registries.
-- Deterministic Signal Basis: MarkdownSignals exact `npm install` or `pnpm add/install` token analysis with `--registry http://` detection inside parsed markdown regions.
+- Graduation Rationale: Checks AI-native markdown for `npm`, `pnpm`, `yarn`, and `bun` install examples that point dependency resolution at `http://` registries.
+- Deterministic Signal Basis: MarkdownSignals exact `npm install`, `npm i`, `pnpm add/install`, `yarn add`, or `bun add` token analysis with `--registry http://` detection inside parsed markdown regions.
 - Malicious Corpus: `skill-npm-http-registry`
 - Benign Corpus: `skill-npm-https-registry-safe`
 - Structured Evidence Required: `true`
@@ -3244,8 +3244,8 @@ Important behavior:
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
-- Graduation Rationale: Checks AI-native markdown for `npm` and `pnpm` install examples that fetch a direct package source over `http://`.
-- Deterministic Signal Basis: MarkdownSignals exact `npm install` or `pnpm add/install` token analysis with direct `http://` source detection inside parsed markdown regions, excluding `--registry http://` forms already covered by SEC450.
+- Graduation Rationale: Checks AI-native markdown for `npm`, `pnpm`, `yarn`, and `bun` install examples that fetch a direct package source over `http://`.
+- Deterministic Signal Basis: MarkdownSignals exact `npm install`, `npm i`, `pnpm add/install`, `yarn add`, or `bun add` token analysis with direct `http://` source detection inside parsed markdown regions, excluding `--registry http://` forms already covered by SEC450.
 - Malicious Corpus: `skill-npm-http-source`
 - Benign Corpus: `skill-npm-https-source-safe`
 - Structured Evidence Required: `true`

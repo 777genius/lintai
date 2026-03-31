@@ -10,7 +10,14 @@ const UV_PREFERENCE_MARKERS: &[&str] = &[
 
 const CLAUDE_PIP_INSTALL_MARKERS: &[&str] = &["python -m pip install", "pip install"];
 const PIP_GIT_INSTALL_MARKERS: &[&str] = &["python -m pip install", "pip install", "pip3 install"];
-const NPM_INSTALL_MARKERS: &[&str] = &["npm install", "npm i", "pnpm install", "pnpm add"];
+const NPM_INSTALL_MARKERS: &[&str] = &[
+    "npm install",
+    "npm i",
+    "pnpm install",
+    "pnpm add",
+    "yarn add",
+    "bun add",
+];
 const CARGO_INSTALL_MARKERS: &[&str] = &["cargo install"];
 
 pub(crate) fn has_uv_instead_of_pip_preference(text: &str) -> bool {
@@ -540,6 +547,18 @@ mod tests {
     }
 
     #[test]
+    fn finds_yarn_http_source() {
+        let content = "yarn add http://registry.example.test/demo.tgz\n";
+        assert!(find_npm_http_source_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_bun_http_source() {
+        let content = "bun add http://registry.example.test/demo.tgz\n";
+        assert!(find_npm_http_source_relative_span(content).is_some());
+    }
+
+    #[test]
     fn ignores_npm_http_registry_for_direct_source_rule() {
         let content = "npm install demo --registry http://registry.example.test/\n";
         assert_eq!(find_npm_http_source_relative_span(content), None);
@@ -549,6 +568,18 @@ mod tests {
     fn ignores_npm_https_source() {
         let content = "npm install https://registry.example.test/demo.tgz\n";
         assert_eq!(find_npm_http_source_relative_span(content), None);
+    }
+
+    #[test]
+    fn finds_yarn_http_registry() {
+        let content = "yarn add demo --registry http://registry.example.test/\n";
+        assert!(find_npm_http_registry_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_bun_http_registry() {
+        let content = "bun add demo --registry http://registry.example.test/\n";
+        assert!(find_npm_http_registry_relative_span(content).is_some());
     }
 
     #[test]

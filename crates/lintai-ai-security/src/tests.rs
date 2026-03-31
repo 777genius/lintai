@@ -1119,6 +1119,32 @@ fn finds_markdown_pnpm_http_registry() {
 }
 
 #[test]
+fn finds_markdown_yarn_http_registry() {
+    let content = "yarn add demo --registry http://registry.example.test/\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC450")
+    );
+}
+
+#[test]
+fn finds_markdown_bun_http_registry() {
+    let content = "bun add demo --registry http://registry.example.test/\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC450")
+    );
+}
+
+#[test]
 fn ignores_markdown_npm_https_registry() {
     let content = "npm install demo --registry https://registry.example.test/\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);
@@ -1151,6 +1177,32 @@ fn finds_markdown_npm_http_source() {
 #[test]
 fn finds_markdown_pnpm_http_source() {
     let content = "pnpm add http://registry.example.test/demo.tgz\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC454")
+    );
+}
+
+#[test]
+fn finds_markdown_yarn_http_source() {
+    let content = "yarn add http://registry.example.test/demo.tgz\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC454")
+    );
+}
+
+#[test]
+fn finds_markdown_bun_http_source() {
+    let content = "bun add http://registry.example.test/demo.tgz\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);
 
     assert!(
