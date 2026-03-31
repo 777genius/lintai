@@ -172,7 +172,8 @@
         "lintai-ai-security:SEC449",
         "lintai-ai-security:SEC450",
         "lintai-ai-security:SEC451",
-        "lintai-ai-security:SEC452"
+        "lintai-ai-security:SEC452",
+        "lintai-ai-security:SEC453"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -254,7 +255,8 @@
         "lintai-ai-security:SEC449",
         "lintai-ai-security:SEC450",
         "lintai-ai-security:SEC451",
-        "lintai-ai-security:SEC452"
+        "lintai-ai-security:SEC452",
+        "lintai-ai-security:SEC453"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -5946,6 +5948,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `cargo install` token analysis with `--index http://` detection inside parsed markdown regions."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC453",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC453",
+      "alias": "MD-PIP-HTTP-SOURCE",
+      "displayLabel": "SEC453 / MD-PIP-HTTP-SOURCE",
+      "docTitle": "AI markdown: pip http source",
+      "slug": "sec453",
+      "canonicalPath": "/rules/lintai-ai-security/sec453",
+      "summary": "AI-native markdown installs Python packages from an insecure direct `http://` source",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for `pip install` examples that fetch a direct package source over `http://`.",
+        "maliciousCaseIds": [
+          "skill-pip-http-source"
+        ],
+        "benignCaseIds": [
+          "skill-pip-https-source-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `pip install` token analysis with direct `http://` source detection inside parsed markdown regions, excluding `--index-url` and `--extra-index-url` forms already covered by SEC449."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

@@ -211,6 +211,22 @@ pub(crate) fn check_markdown_pip_http_index(
     )
 }
 
+pub(crate) fn check_markdown_pip_http_source(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.pip_http_source_spans.as_slice())
+            .unwrap_or(&[]),
+        "AI-native markdown installs Python packages from an insecure direct `http://` source",
+    )
+}
+
 pub(crate) fn check_markdown_npm_http_registry(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

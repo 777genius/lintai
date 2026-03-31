@@ -1033,6 +1033,62 @@ fn ignores_markdown_pip_https_index() {
 }
 
 #[test]
+fn finds_markdown_pip_http_source() {
+    let content = "pip install http://packages.example.test/demo.whl\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC453")
+        .unwrap();
+    let start = content.find("http://").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "http://".len())
+    );
+}
+
+#[test]
+fn finds_markdown_python_dash_m_pip_http_source() {
+    let content = "python -m pip install http://packages.example.test/demo.whl\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC453")
+    );
+}
+
+#[test]
+fn ignores_markdown_pip_https_source() {
+    let content = "pip install https://packages.example.test/demo.whl\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC453")
+    );
+}
+
+#[test]
+fn ignores_markdown_pip_http_index_for_direct_source_rule() {
+    let content = "pip install --index-url http://pypi.example.test/simple demo\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC453")
+    );
+}
+
+#[test]
 fn finds_markdown_npm_http_registry() {
     let content = "npm install demo --registry http://registry.example.test/\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);
