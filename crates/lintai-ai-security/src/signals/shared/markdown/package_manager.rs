@@ -1,3 +1,4 @@
+use crate::signals::shared::common::find_command_tls_bypass_relative_span;
 use lintai_api::Span;
 
 const UV_PREFERENCE_MARKERS: &[&str] = &[
@@ -26,6 +27,13 @@ const NPM_INSTALL_MARKERS: &[&str] = &[
 const JS_PACKAGE_CONFIG_MARKERS: &[&str] =
     &["npm config set", "pnpm config set", "yarn config set"];
 const CARGO_INSTALL_MARKERS: &[&str] = &["cargo install"];
+const SAFETY_WARNING_MARKERS: &[&str] = &[
+    "do not use",
+    "don't use",
+    "avoid",
+    "replace with",
+    "instead of",
+];
 
 pub(crate) fn has_uv_instead_of_pip_preference(text: &str) -> bool {
     let lowered = text.to_ascii_lowercase();
@@ -200,6 +208,25 @@ pub(crate) fn find_pip_config_trusted_host_relative_span(text: &str) -> Option<S
 
     if !text.ends_with('\n') {
         return find_pip_config_trusted_host_in_line(text);
+    }
+
+    None
+}
+
+pub(crate) fn find_network_tls_bypass_relative_span(text: &str) -> Option<Span> {
+    let mut offset = 0usize;
+    for line in text.split_inclusive('\n') {
+        if let Some(relative) = find_network_tls_bypass_in_line(line) {
+            return Some(Span::new(
+                offset + relative.start_byte,
+                offset + relative.end_byte,
+            ));
+        }
+        offset += line.len();
+    }
+
+    if !text.ends_with('\n') {
+        return find_network_tls_bypass_in_line(text);
     }
 
     None
@@ -594,6 +621,33 @@ fn find_pip_config_trusted_host_in_line(line: &str) -> Option<Span> {
     None
 }
 
+fn find_network_tls_bypass_in_line(line: &str) -> Option<Span> {
+    let lowered = line.to_ascii_lowercase();
+    if SAFETY_WARNING_MARKERS
+        .iter()
+        .any(|marker| lowered.contains(marker))
+    {
+        return None;
+    }
+
+    if !(lowered.contains("curl ")
+        || lowered.contains("wget ")
+        || lowered.contains("invoke-webrequest")
+        || lowered.contains("http://")
+        || lowered.contains("https://")
+        || lowered.contains("fetch(")
+        || lowered.contains("axios"))
+    {
+        return None;
+    }
+
+    if let Some(start) = lowered.find("--no-check-certificate") {
+        return Some(Span::new(start, start + "--no-check-certificate".len()));
+    }
+
+    find_command_tls_bypass_relative_span(line)
+}
+
 fn find_npm_http_registry_in_line(line: &str) -> Option<Span> {
     let lowered = line.to_ascii_lowercase();
     let mut install_start = None;
@@ -766,13 +820,13 @@ mod tests {
         find_cargo_http_git_install_relative_span, find_cargo_http_index_relative_span,
         find_claude_bare_pip_install_relative_span,
         find_js_package_config_http_registry_relative_span,
-        find_js_package_strict_ssl_false_relative_span, find_npm_http_registry_relative_span,
-        find_npm_http_source_relative_span, find_pip_config_http_find_links_relative_span,
-        find_pip_config_http_index_relative_span, find_pip_config_trusted_host_relative_span,
-        find_pip_http_find_links_relative_span, find_pip_http_git_install_relative_span,
-        find_pip_http_index_relative_span, find_pip_http_source_relative_span,
-        find_pip_trusted_host_relative_span, find_unpinned_pip_git_install_relative_span,
-        has_uv_instead_of_pip_preference,
+        find_js_package_strict_ssl_false_relative_span, find_network_tls_bypass_relative_span,
+        find_npm_http_registry_relative_span, find_npm_http_source_relative_span,
+        find_pip_config_http_find_links_relative_span, find_pip_config_http_index_relative_span,
+        find_pip_config_trusted_host_relative_span, find_pip_http_find_links_relative_span,
+        find_pip_http_git_install_relative_span, find_pip_http_index_relative_span,
+        find_pip_http_source_relative_span, find_pip_trusted_host_relative_span,
+        find_unpinned_pip_git_install_relative_span, has_uv_instead_of_pip_preference,
     };
 
     #[test]
@@ -938,6 +992,37 @@ mod tests {
     fn ignores_pip_config_unrelated_key() {
         let content = "pip config set global.timeout 60\n";
         assert_eq!(find_pip_config_trusted_host_relative_span(content), None);
+    }
+
+    #[test]
+    fn finds_network_tls_bypass_with_curl_insecure() {
+        let content = "curl --insecure https://internal.test/bootstrap.sh -o bootstrap.sh\n";
+        assert!(find_network_tls_bypass_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_network_tls_bypass_with_wget_no_check_certificate() {
+        let content = "wget --no-check-certificate https://internal.test/bootstrap.tgz\n";
+        assert!(find_network_tls_bypass_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_network_tls_bypass_with_node_tls_reject_unauthorized() {
+        let content =
+            "NODE_TLS_REJECT_UNAUTHORIZED=0 node fetch.js https://internal.test/bootstrap.json\n";
+        assert!(find_network_tls_bypass_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn ignores_network_tls_bypass_in_safety_guidance() {
+        let content = "Do not use curl --insecure https://internal.test/bootstrap.sh\n";
+        assert_eq!(find_network_tls_bypass_relative_span(content), None);
+    }
+
+    #[test]
+    fn ignores_secure_network_command() {
+        let content = "curl https://internal.test/bootstrap.sh -o bootstrap.sh\n";
+        assert_eq!(find_network_tls_bypass_relative_span(content), None);
     }
 
     #[test]

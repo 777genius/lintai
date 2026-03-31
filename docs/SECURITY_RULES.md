@@ -180,6 +180,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC459 / MD-JS-PACKAGE-CONFIG-HTTP-REGISTRY` | AI-native markdown configures a JavaScript package manager with an insecure `http://` registry | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC460 / MD-PIP-CONFIG-HTTP-FIND-LINKS` | AI-native markdown configures Python package discovery with insecure `http://` find-links | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC461 / MD-PIP-CONFIG-TRUSTED-HOST` | AI-native markdown configures Python package resolution with `trusted-host` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC462 / MD-NETWORK-TLS-BYPASS` | AI-native markdown disables TLS verification for a network-capable command | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -3402,6 +3403,27 @@ Important behavior:
 - Deterministic Signal Basis: MarkdownSignals exact `pip config set`, `pip3 config set`, or `python -m pip config set` token analysis with `global.trusted-host` detection inside parsed markdown regions.
 - Malicious Corpus: `skill-pip-config-trusted-host`
 - Benign Corpus: `skill-pip-config-unrelated-key-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC462 / MD-NETWORK-TLS-BYPASS` — AI-native markdown disables TLS verification for a network-capable command
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-NETWORK-TLS-BYPASS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown for exact network-command examples that disable TLS verification.
+- Deterministic Signal Basis: MarkdownSignals exact command-token analysis with `--insecure`, `-k`, `--no-check-certificate`, or `NODE_TLS_REJECT_UNAUTHORIZED=0` detection inside parsed markdown regions, with safety-guidance suppression.
+- Malicious Corpus: `skill-markdown-network-tls-bypass`
+- Benign Corpus: `skill-markdown-network-tls-bypass-warning-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

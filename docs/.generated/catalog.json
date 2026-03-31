@@ -181,7 +181,8 @@
         "lintai-ai-security:SEC458",
         "lintai-ai-security:SEC459",
         "lintai-ai-security:SEC460",
-        "lintai-ai-security:SEC461"
+        "lintai-ai-security:SEC461",
+        "lintai-ai-security:SEC462"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -272,7 +273,8 @@
         "lintai-ai-security:SEC458",
         "lintai-ai-security:SEC459",
         "lintai-ai-security:SEC460",
-        "lintai-ai-security:SEC461"
+        "lintai-ai-security:SEC461",
+        "lintai-ai-security:SEC462"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -6315,6 +6317,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `pip config set`, `pip3 config set`, or `python -m pip config set` token analysis with `global.trusted-host` detection inside parsed markdown regions."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC462",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC462",
+      "alias": "MD-NETWORK-TLS-BYPASS",
+      "displayLabel": "SEC462 / MD-NETWORK-TLS-BYPASS",
+      "docTitle": "AI markdown: network TLS bypass",
+      "slug": "sec462",
+      "canonicalPath": "/rules/lintai-ai-security/sec462",
+      "summary": "AI-native markdown disables TLS verification for a network-capable command",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for exact network-command examples that disable TLS verification.",
+        "maliciousCaseIds": [
+          "skill-markdown-network-tls-bypass"
+        ],
+        "benignCaseIds": [
+          "skill-markdown-network-tls-bypass-warning-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact command-token analysis with `--insecure`, `-k`, `--no-check-certificate`, or `NODE_TLS_REJECT_UNAUTHORIZED=0` detection inside parsed markdown regions, with safety-guidance suppression."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

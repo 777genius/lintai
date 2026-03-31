@@ -291,6 +291,22 @@ pub(crate) fn check_markdown_pip_config_trusted_host(
     )
 }
 
+pub(crate) fn check_markdown_network_tls_bypass(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.network_tls_bypass_spans.as_slice())
+            .unwrap_or(&[]),
+        "AI-native markdown disables TLS verification for a network-capable command",
+    )
+}
+
 pub(crate) fn check_markdown_pip_http_source(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

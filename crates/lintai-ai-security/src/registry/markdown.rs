@@ -22,12 +22,12 @@ use crate::markdown_rules::{
     check_markdown_download_exec, check_markdown_fenced_pipe_shell,
     check_markdown_js_package_config_http_registry, check_markdown_js_package_strict_ssl_false,
     check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
-    check_markdown_mutable_mcp_launcher, check_markdown_npm_http_registry,
-    check_markdown_npm_http_source, check_markdown_path_traversal,
-    check_markdown_pip_config_http_find_links, check_markdown_pip_config_http_index,
-    check_markdown_pip_config_trusted_host, check_markdown_pip_http_find_links,
-    check_markdown_pip_http_git_install, check_markdown_pip_http_index,
-    check_markdown_pip_http_source, check_markdown_pip_trusted_host,
+    check_markdown_mutable_mcp_launcher, check_markdown_network_tls_bypass,
+    check_markdown_npm_http_registry, check_markdown_npm_http_source,
+    check_markdown_path_traversal, check_markdown_pip_config_http_find_links,
+    check_markdown_pip_config_http_index, check_markdown_pip_config_trusted_host,
+    check_markdown_pip_http_find_links, check_markdown_pip_http_git_install,
+    check_markdown_pip_http_index, check_markdown_pip_http_source, check_markdown_pip_trusted_host,
     check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
     check_package_install_allowed_tools, check_plugin_agent_hooks_frontmatter,
     check_plugin_agent_mcp_servers_frontmatter, check_plugin_agent_permission_mode,
@@ -237,6 +237,18 @@ declare_rule! {
         code: "SEC461",
         summary: "AI-native markdown configures Python package resolution with `trusted-host`",
         doc_title: "AI markdown: pip config trusted-host",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownNetworkTlsBypassRule {
+        code: "SEC462",
+        summary: "AI-native markdown disables TLS verification for a network-capable command",
+        doc_title: "AI markdown: network TLS bypass",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -964,7 +976,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 77] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 78] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1266,6 +1278,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 77] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove the trusted-host config and rely on normal TLS-verified Python package sources instead",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownNetworkTlsBypassRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown for exact network-command examples that disable TLS verification.",
+            malicious_case_ids: &["skill-markdown-network-tls-bypass"],
+            benign_case_ids: &["skill-markdown-network-tls-bypass-warning-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact command-token analysis with `--insecure`, `-k`, `--no-check-certificate`, or `NODE_TLS_REJECT_UNAUTHORIZED=0` detection inside parsed markdown regions, with safety-guidance suppression.",
+        },
+        check: check_markdown_network_tls_bypass,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the TLS-bypass flag or env override and keep normal certificate verification enabled for the network command",
         ),
         suggestion_fix: None,
     },

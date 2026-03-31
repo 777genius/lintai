@@ -140,6 +140,12 @@ impl MarkdownSignals {
                             region.span.start_byte + relative.end_byte,
                         ));
                     }
+                    if let Some(relative) = find_network_tls_bypass_relative_span(snippet) {
+                        signals.network_tls_bypass_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
                     if let Some(relative) = find_pip_http_source_relative_span(snippet) {
                         signals.pip_http_source_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
@@ -304,6 +310,12 @@ impl MarkdownSignals {
                             region.span.start_byte + relative.end_byte,
                         ));
                     }
+                    if let Some(relative) = find_network_tls_bypass_relative_span(snippet) {
+                        signals.network_tls_bypass_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
                     if let Some(relative) = find_pip_http_source_relative_span(snippet) {
                         signals.pip_http_source_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
@@ -438,6 +450,12 @@ impl MarkdownSignals {
                     }
                     if let Some(relative) = find_pip_config_trusted_host_relative_span(snippet) {
                         signals.pip_config_trusted_host_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
+                    if let Some(relative) = find_network_tls_bypass_relative_span(snippet) {
+                        signals.network_tls_bypass_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
                             region.span.start_byte + relative.end_byte,
                         ));

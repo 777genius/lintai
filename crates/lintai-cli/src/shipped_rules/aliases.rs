@@ -166,6 +166,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC459" => "MD-JS-PACKAGE-CONFIG-HTTP-REGISTRY",
         "SEC460" => "MD-PIP-CONFIG-HTTP-FIND-LINKS",
         "SEC461" => "MD-PIP-CONFIG-TRUSTED-HOST",
+        "SEC462" => "MD-NETWORK-TLS-BYPASS",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

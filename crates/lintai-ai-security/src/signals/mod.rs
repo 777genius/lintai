@@ -103,6 +103,7 @@ pub(crate) struct MarkdownSignals {
     pub(crate) pip_config_http_index_spans: Vec<Span>,
     pub(crate) pip_config_http_find_links_spans: Vec<Span>,
     pub(crate) pip_config_trusted_host_spans: Vec<Span>,
+    pub(crate) network_tls_bypass_spans: Vec<Span>,
     pub(crate) pip_http_source_spans: Vec<Span>,
     pub(crate) npm_http_registry_spans: Vec<Span>,
     pub(crate) js_package_config_http_registry_spans: Vec<Span>,
