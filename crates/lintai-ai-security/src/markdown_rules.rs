@@ -243,6 +243,22 @@ pub(crate) fn check_markdown_npm_http_registry(
     )
 }
 
+pub(crate) fn check_markdown_npm_http_source(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.npm_http_source_spans.as_slice())
+            .unwrap_or(&[]),
+        "AI-native markdown installs JavaScript packages from an insecure direct `http://` source",
+    )
+}
+
 pub(crate) fn check_markdown_cargo_http_git_install(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

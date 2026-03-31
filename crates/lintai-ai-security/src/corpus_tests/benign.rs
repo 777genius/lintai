@@ -199,6 +199,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-metadata-service-deny-list-safe",
             "skill-mutable-mcp-launcher-safety-guidance-safe",
             "skill-npm-https-registry-safe",
+            "skill-npm-https-source-safe",
             "skill-package-command-allowed-tools-safe",
             "skill-pip-https-index-safe",
             "skill-pip-https-source-safe",

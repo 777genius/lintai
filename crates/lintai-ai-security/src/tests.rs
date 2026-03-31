@@ -1132,6 +1132,62 @@ fn ignores_markdown_npm_https_registry() {
 }
 
 #[test]
+fn finds_markdown_npm_http_source() {
+    let content = "npm install http://registry.example.test/demo.tgz\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC454")
+        .unwrap();
+    let start = content.find("http://").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "http://".len())
+    );
+}
+
+#[test]
+fn finds_markdown_pnpm_http_source() {
+    let content = "pnpm add http://registry.example.test/demo.tgz\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC454")
+    );
+}
+
+#[test]
+fn ignores_markdown_npm_https_source() {
+    let content = "npm install https://registry.example.test/demo.tgz\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC454")
+    );
+}
+
+#[test]
+fn ignores_markdown_npm_http_registry_for_direct_source_rule() {
+    let content = "npm install demo --registry http://registry.example.test/\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC454")
+    );
+}
+
+#[test]
 fn finds_markdown_cargo_http_git_install() {
     let content = "cargo install --git http://git.example.test/demo.git\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

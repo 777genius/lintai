@@ -173,7 +173,8 @@
         "lintai-ai-security:SEC450",
         "lintai-ai-security:SEC451",
         "lintai-ai-security:SEC452",
-        "lintai-ai-security:SEC453"
+        "lintai-ai-security:SEC453",
+        "lintai-ai-security:SEC454"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -256,7 +257,8 @@
         "lintai-ai-security:SEC450",
         "lintai-ai-security:SEC451",
         "lintai-ai-security:SEC452",
-        "lintai-ai-security:SEC453"
+        "lintai-ai-security:SEC453",
+        "lintai-ai-security:SEC454"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -5987,6 +5989,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `pip install` token analysis with direct `http://` source detection inside parsed markdown regions, excluding `--index-url` and `--extra-index-url` forms already covered by SEC449."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC454",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC454",
+      "alias": "MD-NPM-HTTP-SOURCE",
+      "displayLabel": "SEC454 / MD-NPM-HTTP-SOURCE",
+      "docTitle": "AI markdown: npm http source",
+      "slug": "sec454",
+      "canonicalPath": "/rules/lintai-ai-security/sec454",
+      "summary": "AI-native markdown installs JavaScript packages from an insecure direct `http://` source",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for `npm` and `pnpm` install examples that fetch a direct package source over `http://`.",
+        "maliciousCaseIds": [
+          "skill-npm-http-source"
+        ],
+        "benignCaseIds": [
+          "skill-npm-https-source-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `npm install` or `pnpm add/install` token analysis with direct `http://` source detection inside parsed markdown regions, excluding `--registry http://` forms already covered by SEC450."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

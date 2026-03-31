@@ -134,6 +134,25 @@ pub(crate) fn find_npm_http_registry_relative_span(text: &str) -> Option<Span> {
     None
 }
 
+pub(crate) fn find_npm_http_source_relative_span(text: &str) -> Option<Span> {
+    let mut offset = 0usize;
+    for line in text.split_inclusive('\n') {
+        if let Some(relative) = find_npm_http_source_in_line(line) {
+            return Some(Span::new(
+                offset + relative.start_byte,
+                offset + relative.end_byte,
+            ));
+        }
+        offset += line.len();
+    }
+
+    if !text.ends_with('\n') {
+        return find_npm_http_source_in_line(text);
+    }
+
+    None
+}
+
 pub(crate) fn find_cargo_http_git_install_relative_span(text: &str) -> Option<Span> {
     let mut offset = 0usize;
     for line in text.split_inclusive('\n') {
@@ -316,6 +335,34 @@ fn find_npm_http_registry_in_line(line: &str) -> Option<Span> {
     Some(Span::new(start, start + "http://".len()))
 }
 
+fn find_npm_http_source_in_line(line: &str) -> Option<Span> {
+    let lowered = line.to_ascii_lowercase();
+    let mut install_start = None;
+    for marker in NPM_INSTALL_MARKERS {
+        if let Some(relative) = lowered.find(marker) {
+            install_start = Some(relative + marker.len());
+            break;
+        }
+    }
+    let Some(search_start) = install_start else {
+        return None;
+    };
+
+    let search_slice = &lowered[search_start..];
+    let relative_http = search_slice.find("http://")?;
+    let absolute_http = search_start + relative_http;
+
+    if let Some(relative_flag) = search_slice.find("--registry ") {
+        let flag_start = search_start + relative_flag;
+        let flag_end = flag_start + "--registry ".len();
+        if flag_end == absolute_http {
+            return None;
+        }
+    }
+
+    Some(Span::new(absolute_http, absolute_http + "http://".len()))
+}
+
 fn find_cargo_http_git_install_in_line(line: &str) -> Option<Span> {
     let lowered = line.to_ascii_lowercase();
     let mut install_start = None;
@@ -377,9 +424,9 @@ mod tests {
     use super::{
         find_cargo_http_git_install_relative_span, find_cargo_http_index_relative_span,
         find_claude_bare_pip_install_relative_span, find_npm_http_registry_relative_span,
-        find_pip_http_index_relative_span, find_pip_http_source_relative_span,
-        find_pip_trusted_host_relative_span, find_unpinned_pip_git_install_relative_span,
-        has_uv_instead_of_pip_preference,
+        find_npm_http_source_relative_span, find_pip_http_index_relative_span,
+        find_pip_http_source_relative_span, find_pip_trusted_host_relative_span,
+        find_unpinned_pip_git_install_relative_span, has_uv_instead_of_pip_preference,
     };
 
     #[test]
@@ -478,6 +525,30 @@ mod tests {
     fn ignores_npm_https_registry() {
         let content = "pnpm add demo --registry https://registry.example.test/\n";
         assert_eq!(find_npm_http_registry_relative_span(content), None);
+    }
+
+    #[test]
+    fn finds_npm_http_source() {
+        let content = "npm install http://registry.example.test/demo.tgz\n";
+        assert!(find_npm_http_source_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_pnpm_http_source() {
+        let content = "pnpm add http://registry.example.test/demo.tgz\n";
+        assert!(find_npm_http_source_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn ignores_npm_http_registry_for_direct_source_rule() {
+        let content = "npm install demo --registry http://registry.example.test/\n";
+        assert_eq!(find_npm_http_source_relative_span(content), None);
+    }
+
+    #[test]
+    fn ignores_npm_https_source() {
+        let content = "npm install https://registry.example.test/demo.tgz\n";
+        assert_eq!(find_npm_http_source_relative_span(content), None);
     }
 
     #[test]

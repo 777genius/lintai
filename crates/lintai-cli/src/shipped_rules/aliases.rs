@@ -158,6 +158,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC451" => "MD-CARGO-HTTP-GIT-INSTALL",
         "SEC452" => "MD-CARGO-HTTP-INDEX",
         "SEC453" => "MD-PIP-HTTP-SOURCE",
+        "SEC454" => "MD-NPM-HTTP-SOURCE",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

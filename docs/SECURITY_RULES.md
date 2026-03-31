@@ -172,6 +172,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC451 / MD-CARGO-HTTP-GIT-INSTALL` | AI-native markdown installs Rust packages from an insecure `http://` git source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC452 / MD-CARGO-HTTP-INDEX` | AI-native markdown installs Rust packages from an insecure `http://` index | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC453 / MD-PIP-HTTP-SOURCE` | AI-native markdown installs Python packages from an insecure direct `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC454 / MD-NPM-HTTP-SOURCE` | AI-native markdown installs JavaScript packages from an insecure direct `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -3226,6 +3227,27 @@ Important behavior:
 - Deterministic Signal Basis: MarkdownSignals exact `pip install` token analysis with direct `http://` source detection inside parsed markdown regions, excluding `--index-url` and `--extra-index-url` forms already covered by SEC449.
 - Malicious Corpus: `skill-pip-http-source`
 - Benign Corpus: `skill-pip-https-source-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC454 / MD-NPM-HTTP-SOURCE` — AI-native markdown installs JavaScript packages from an insecure direct `http://` source
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-NPM-HTTP-SOURCE`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown for `npm` and `pnpm` install examples that fetch a direct package source over `http://`.
+- Deterministic Signal Basis: MarkdownSignals exact `npm install` or `pnpm add/install` token analysis with direct `http://` source detection inside parsed markdown regions, excluding `--registry http://` forms already covered by SEC450.
+- Malicious Corpus: `skill-npm-http-source`
+- Benign Corpus: `skill-npm-https-source-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

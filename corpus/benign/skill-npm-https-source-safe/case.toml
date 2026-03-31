@@ -1,0 +1,9 @@
+id = "skill-npm-https-source-safe"
+kind = "Skill"
+entry_path = "repo"
+expected_output = ["text"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC454"]
+snapshot = { kind = "none", name = "" }
