@@ -35,6 +35,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "claude-settings-gh-pr-specific-safe",
             "claude-settings-git-add-fixture-safe",
             "claude-settings-git-add-specific-safe",
+            "claude-settings-git-branch-fixture-safe",
+            "claude-settings-git-branch-specific-safe",
             "claude-settings-git-checkout-fixture-safe",
             "claude-settings-git-checkout-specific-safe",
             "claude-settings-git-clone-fixture-safe",

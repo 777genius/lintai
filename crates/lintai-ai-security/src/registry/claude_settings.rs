@@ -8,9 +8,10 @@ use crate::claude_settings_rules::{
     check_claude_settings_external_absolute_hook_command, check_claude_settings_gh_pr_permission,
     check_claude_settings_git_add_permission, check_claude_settings_git_checkout_permission,
     check_claude_settings_git_clone_permission, check_claude_settings_git_commit_permission,
-    check_claude_settings_git_config_permission, check_claude_settings_git_fetch_permission,
-    check_claude_settings_git_ls_remote_permission, check_claude_settings_git_push_permission,
-    check_claude_settings_git_stash_permission, check_claude_settings_git_tag_permission,
+    check_claude_settings_git_branch_permission, check_claude_settings_git_config_permission,
+    check_claude_settings_git_fetch_permission, check_claude_settings_git_ls_remote_permission,
+    check_claude_settings_git_push_permission, check_claude_settings_git_stash_permission,
+    check_claude_settings_git_tag_permission,
     check_claude_settings_glob_wildcard, check_claude_settings_grep_wildcard,
     check_claude_settings_home_directory_hook_command, check_claude_settings_inline_download_exec,
     check_claude_settings_insecure_http_hook_url, check_claude_settings_invalid_hook_matcher_event,
@@ -233,6 +234,18 @@ declare_rule! {
         code: "SEC414",
         summary: "Claude settings permissions allow `Bash(git tag:*)` in a shared committed config",
         doc_title: "Claude settings: shared git tag permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGitBranchPermissionRule {
+        code: "SEC415",
+        summary: "Claude settings permissions allow `Bash(git branch:*)` in a shared committed config",
+        doc_title: "Claude settings: shared git branch permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -468,7 +481,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 37] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 38] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -754,6 +767,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 37] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `Bash(git tag:*)` permissions or replace them with a narrower reviewed workflow that keeps repository tag mutation under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGitBranchPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `git branch` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_git_branch_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `Bash(git branch:*)` permissions or replace them with a narrower reviewed workflow that keeps branch mutation under explicit user control",
         ),
         suggestion_fix: None,
     },

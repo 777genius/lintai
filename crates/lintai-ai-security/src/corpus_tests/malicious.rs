@@ -32,6 +32,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-settings-enabled-mcpjson-servers",
             "claude-settings-gh-pr-permission",
             "claude-settings-git-add-permission",
+            "claude-settings-git-branch-permission",
             "claude-settings-git-checkout-permission",
             "claude-settings-git-clone-permission",
             "claude-settings-git-commit-permission",

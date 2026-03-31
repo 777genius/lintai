@@ -393,6 +393,21 @@ pub(crate) fn check_claude_settings_git_tag_permission(
     )
 }
 
+pub(crate) fn check_claude_settings_git_branch_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.git_branch_permission_span.clone()),
+        "Claude settings permissions allow `Bash(git branch:*)` in a shared committed config",
+    )
+}
+
 pub(crate) fn check_claude_settings_enabled_mcpjson_servers(
     ctx: &ScanContext,
     signals: &ArtifactSignals,
