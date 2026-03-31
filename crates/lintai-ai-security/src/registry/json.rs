@@ -8,7 +8,7 @@ use crate::json_rules::{
     check_mcp_autoapprove_wildcard, check_mcp_broad_env_file, check_mcp_capabilities_wildcard,
     check_mcp_credential_env_passthrough, check_mcp_dangerous_docker_flag,
     check_mcp_inline_download_exec, check_mcp_mutable_docker_pull, check_mcp_mutable_launcher,
-    check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
+    check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled, check_mcp_sudo_command,
     check_mcp_sensitive_docker_mount, check_mcp_shell_wrapper, check_mcp_trust_tools_true,
     check_mcp_unpinned_docker_image, check_plain_http_config,
     check_plugin_hook_inline_download_exec, check_plugin_hook_mutable_launcher,
@@ -257,6 +257,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpSudoCommandRule {
+        code: "SEC422",
+        summary: "MCP configuration launches the server through `sudo`",
+        doc_title: "MCP config: sudo command",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpUnpinnedDockerImageRule {
         code: "SEC337",
         summary: "MCP configuration launches Docker with an image reference that is not digest-pinned",
@@ -340,7 +352,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 27] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 28] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -722,6 +734,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 27] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace wildcard capabilities with only the narrowly reviewed MCP capabilities that are actually required",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpSudoCommandRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact MCP server launch paths that run under `sudo`.",
+            malicious_case_ids: &["mcp-command-sudo"],
+            benign_case_ids: &["mcp-command-non-sudo-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact string detection for `command: \"sudo\"` on parsed MCP configuration objects.",
+        },
+        check: check_mcp_sudo_command,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove `sudo` from the MCP launch path and use a reviewed non-privileged server command instead",
         ),
         suggestion_fix: None,
     },

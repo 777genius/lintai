@@ -133,6 +133,18 @@ pub(super) fn apply_mcp_config_command_rules(
     args: Option<&Vec<Value>>,
     signals: &mut JsonSignals,
 ) {
+    if signals.sudo_command_span.is_none()
+        && let Some(command) = command
+        && command.eq_ignore_ascii_case("sudo")
+    {
+        signals.sudo_command_span = Some(resolve_child_value_span(
+            path,
+            "command",
+            locator,
+            fallback_len,
+        ));
+    }
+
     if signals.mutable_mcp_launcher_span.is_none()
         && let Some(command) = command
         && is_mutable_mcp_launcher(command, args)

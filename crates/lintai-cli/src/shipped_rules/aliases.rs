@@ -119,6 +119,8 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC418" => "CLAUDE-WEBFETCH-RAW-GITHUB",
         "SEC419" => "MD-CURL-ALLOWED-TOOLS",
         "SEC420" => "MD-WGET-ALLOWED-TOOLS",
+        "SEC421" => "MD-GIT-CLONE-ALLOWED-TOOLS",
+        "SEC422" => "MCP-COMMAND-SUDO",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

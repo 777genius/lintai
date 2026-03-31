@@ -153,6 +153,21 @@ pub(crate) fn check_mcp_capabilities_wildcard(
     )
 }
 
+pub(crate) fn check_mcp_sudo_command(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.sudo_command_span.clone()),
+        "MCP configuration launches the server through `sudo`",
+    )
+}
+
 pub(crate) fn check_mcp_unpinned_docker_image(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

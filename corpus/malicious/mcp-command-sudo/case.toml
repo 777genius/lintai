@@ -1,0 +1,12 @@
+id = "mcp-command-sudo"
+kind = "malicious"
+description = "MCP config launches a server through sudo"
+
+[[artifacts]]
+path = "mcp.json"
+kind = "McpConfig"
+source_format = "json"
+
+[[expectations]]
+rule = "SEC422"
+path = "mcp.json"

@@ -20,6 +20,10 @@ fn tokenize_allowed_tools_string(value: &str) -> impl Iterator<Item = &str> {
         .filter(|token| !token.is_empty())
 }
 
+fn tokenize_exact_allowed_tools_string(value: &str) -> impl Iterator<Item = &str> {
+    value.split(',').map(str::trim).filter(|token| !token.is_empty())
+}
+
 pub(crate) fn frontmatter_has_unscoped_bash_allowed_tools(value: &Value) -> bool {
     match value {
         Value::String(raw) => tokenize_allowed_tools_string(raw).any(is_unscoped_bash_token),
@@ -44,7 +48,7 @@ pub(crate) fn frontmatter_has_wildcard_tool_access(value: &Value) -> bool {
 
 pub(crate) fn frontmatter_has_exact_allowed_tool(value: &Value, permission: &str) -> bool {
     match value {
-        Value::String(raw) => tokenize_allowed_tools_string(raw).any(is_exact_tool_token(permission)),
+        Value::String(raw) => tokenize_exact_allowed_tools_string(raw).any(is_exact_tool_token(permission)),
         Value::Array(items) => items
             .iter()
             .filter_map(Value::as_str)

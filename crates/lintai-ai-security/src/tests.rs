@@ -1394,6 +1394,53 @@ fn ignores_wget_allowed_tools_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_git_clone_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(git clone:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC421")
+        .unwrap();
+    let start = content.find("Bash(git clone:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git clone:*)".len())
+    );
+}
+
+#[test]
+fn ignores_git_clone_allowed_tools_when_command_is_more_specific() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(git clone https://github.com/acme/demo.git), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC421")
+    );
+}
+
+#[test]
+fn ignores_git_clone_allowed_tools_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/skill/SKILL.md",
+        "---\nallowed-tools: Bash(git clone:*), Read\n---\n# Fixture skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC421")
+    );
+}
+
+#[test]
 fn finds_wildcard_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: \"*\"\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);
@@ -2919,6 +2966,41 @@ fn ignores_mcp_capabilities_scoped_values() {
     );
 
     assert!(!findings.iter().any(|finding| finding.rule_code == "SEC398"));
+}
+
+#[test]
+fn finds_mcp_sudo_command() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"sudo","args":["node","server.js"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC422")
+        .unwrap();
+    let start = content.find("\"sudo\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "sudo".len())
+    );
+}
+
+#[test]
+fn ignores_mcp_non_sudo_command() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"]}}}"#,
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC422"));
 }
 
 #[test]
