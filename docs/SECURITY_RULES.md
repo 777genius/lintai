@@ -153,6 +153,9 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC432 / MD-GIT-ADD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git add:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC433 / MD-GIT-FETCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git fetch:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC434 / MD-WEBFETCH-RAW-GITHUB` | AI-native markdown frontmatter grants `WebFetch(domain:raw.githubusercontent.com)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC435 / MD-GIT-CONFIG-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git config:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC436 / MD-GIT-TAG-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git tag:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC437 / MD-GIT-BRANCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git branch:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -2808,6 +2811,69 @@ Important behavior:
 - Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `WebFetch(domain:raw.githubusercontent.com)` inside allowed-tools or allowed_tools.
 - Malicious Corpus: `skill-webfetch-raw-github-allowed-tools`
 - Benign Corpus: `skill-webfetch-raw-github-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC435 / MD-GIT-CONFIG-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(git config:*)` authority
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GIT-CONFIG-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for wildcard git config grants in shared allowed-tools policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Bash(git config:*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-git-config-allowed-tools`
+- Benign Corpus: `skill-git-config-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC436 / MD-GIT-TAG-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(git tag:*)` authority
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GIT-TAG-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for wildcard git tag grants in shared allowed-tools policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Bash(git tag:*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-git-tag-allowed-tools`
+- Benign Corpus: `skill-git-tag-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC437 / MD-GIT-BRANCH-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(git branch:*)` authority
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GIT-BRANCH-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for wildcard git branch grants in shared allowed-tools policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Bash(git branch:*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-git-branch-allowed-tools`
+- Benign Corpus: `skill-git-branch-allowed-tools-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

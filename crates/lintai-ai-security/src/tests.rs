@@ -1702,6 +1702,102 @@ fn ignores_webfetch_non_raw_github_allowed_tools_in_frontmatter() {
 }
 
 #[test]
+fn finds_git_config_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(git config:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC435")
+        .unwrap();
+    let start = content.find("Bash(git config:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git config:*)".len())
+    );
+}
+
+#[test]
+fn ignores_git_config_allowed_tools_when_command_is_more_specific() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(git config user.name belief), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC435")
+    );
+}
+
+#[test]
+fn finds_git_tag_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(git tag:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC436")
+        .unwrap();
+    let start = content.find("Bash(git tag:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git tag:*)".len())
+    );
+}
+
+#[test]
+fn ignores_git_tag_allowed_tools_when_command_is_more_specific() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(git tag v1.2.3), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC436")
+    );
+}
+
+#[test]
+fn finds_git_branch_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(git branch:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC437")
+        .unwrap();
+    let start = content.find("Bash(git branch:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git branch:*)".len())
+    );
+}
+
+#[test]
+fn ignores_git_branch_allowed_tools_when_command_is_more_specific() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(git branch feature/test), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC437")
+    );
+}
+
+#[test]
 fn finds_unscoped_read_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Read, Write(./artifacts/**)\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);
