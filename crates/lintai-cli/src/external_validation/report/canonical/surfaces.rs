@@ -81,6 +81,7 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec411_hits = rule_count(current, &["SEC411"]);
     let sec412_hits = rule_count(current, &["SEC412"]);
     let sec413_hits = rule_count(current, &["SEC413"]);
+    let sec414_hits = rule_count(current, &["SEC414"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, current);
     let sec348_repos = repos_with_rule_hits(current, &["SEC348"], false);
     let sec349_repos = repos_with_rule_hits(current, &["SEC349"], false);
@@ -139,6 +140,7 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec411_repos = repos_with_rule_hits(current, &["SEC411"], false);
     let sec412_repos = repos_with_rule_hits(current, &["SEC412"], false);
     let sec413_repos = repos_with_rule_hits(current, &["SEC413"], false);
+    let sec414_repos = repos_with_rule_hits(current, &["SEC414"], false);
 
     output.push_str("## Hybrid Scope Expansion Results\n\n");
     output.push_str("Current wave inventory for the newly expanded JSON lanes:\n\n");
@@ -426,6 +428,10 @@ pub(super) fn append_hybrid_scope_expansion(
         sec413_hits
     ));
     output.push_str(&format!(
+        "  - `SEC414` Claude settings shared `git tag` permissions: `{}`\n",
+        sec414_hits
+    ));
+    output.push_str(&format!(
         "  - `SEC372` Claude settings wildcard `Read(*)` permissions: `{}`\n",
         sec372_hits
     ));
@@ -522,6 +528,7 @@ pub(super) fn append_hybrid_scope_expansion(
     append_rule_repo_hits(output, "SEC411", sec411_repos);
     append_rule_repo_hits(output, "SEC412", sec412_repos);
     append_rule_repo_hits(output, "SEC413", sec413_repos);
+    append_rule_repo_hits(output, "SEC414", sec414_repos);
     if sec394_repos.is_empty() {
         output.push_str(
             "- `SEC394` produced no repo-level stable hits yet on the canonical cohort\n",

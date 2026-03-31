@@ -1,0 +1,26 @@
+description = "Fixture-like Claude settings with wildcard git tag permissions stay suppressed"
+
+[input]
+path = "repo/tests/fixtures/.claude/settings.json"
+content = """
+{
+  "permissions": {
+    "allow": ["Bash(git tag:*)", "Read(*)"]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}
+"""
+
+[[expect_absent]]
+rule = "SEC414"

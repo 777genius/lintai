@@ -1,0 +1,26 @@
+description = "Specific git tag command in Claude settings stays clean"
+
+[input]
+path = "repo/.claude/settings.json"
+content = """
+{
+  "permissions": {
+    "allow": ["Bash(git tag v1.2.3)", "Read(*)"]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}
+"""
+
+[[expect_absent]]
+rule = "SEC414"

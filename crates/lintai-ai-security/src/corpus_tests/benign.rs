@@ -51,6 +51,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "claude-settings-git-push-specific-safe",
             "claude-settings-git-stash-fixture-safe",
             "claude-settings-git-stash-specific-safe",
+            "claude-settings-git-tag-fixture-safe",
+            "claude-settings-git-tag-specific-safe",
             "claude-settings-glob-specific-safe",
             "claude-settings-glob-wildcard-fixture-safe",
             "claude-settings-grep-specific-safe",

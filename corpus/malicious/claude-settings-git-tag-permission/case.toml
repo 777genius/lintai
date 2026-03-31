@@ -1,0 +1,27 @@
+description = "Claude settings grant wildcard git tag permissions in a shared committed config"
+
+[input]
+path = "repo/.claude/settings.json"
+content = """
+{
+  "permissions": {
+    "allow": ["Bash(git tag:*)", "Read(*)"]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}
+"""
+
+[[expect_findings]]
+rule = "SEC414"
+tier = "preview"

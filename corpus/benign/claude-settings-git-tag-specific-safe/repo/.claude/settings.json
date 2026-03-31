@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": ["Bash(git tag v1.2.3)", "Read(*)"]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}

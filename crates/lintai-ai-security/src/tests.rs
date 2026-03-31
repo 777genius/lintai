@@ -3210,6 +3210,23 @@ fn finds_claude_settings_git_config_permission() {
 }
 
 #[test]
+fn finds_claude_settings_git_tag_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(git tag:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC414")
+        .unwrap();
+    let start = content.find("Bash(git tag:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git tag:*)".len())
+    );
+}
+
+#[test]
 fn finds_claude_settings_enabled_mcpjson_servers() {
     let content = r#"{"enabledMcpjsonServers":["claude-flow","ruv-swarm"],"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -3651,6 +3668,21 @@ fn ignores_claude_settings_git_config_permission_when_command_is_more_specific()
 }
 
 #[test]
+fn ignores_claude_settings_git_tag_permission_when_command_is_more_specific() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(git tag v1.2.3)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC414")
+    );
+}
+
+#[test]
 fn ignores_claude_settings_enabled_mcpjson_servers_on_fixture_like_path() {
     let temp_dir = unique_temp_dir("lintai-claude-enabled-mcpjson-servers-fixture");
     std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
@@ -3822,6 +3854,41 @@ fn ignores_claude_settings_git_config_permission_on_fixture_like_path() {
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC413")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_git_tag_permission_on_fixture_like_path() {
+    let temp_dir = unique_temp_dir("lintai-claude-git-tag-permission-fixture");
+    std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("tests/fixtures/.claude/settings.json"),
+        br#"{"permissions":{"allow":["Bash(git tag:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    )
+    .unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
+    let summary = EngineBuilder::default()
+        .with_config(workspace.engine_config.clone())
+        .with_suppressions(Arc::new(suppressions))
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC414")
     );
 }
 

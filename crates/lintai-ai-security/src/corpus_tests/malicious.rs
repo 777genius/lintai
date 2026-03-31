@@ -40,6 +40,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-settings-git-ls-remote-permission",
             "claude-settings-git-push-permission",
             "claude-settings-git-stash-permission",
+            "claude-settings-git-tag-permission",
             "claude-settings-glob-wildcard",
             "claude-settings-grep-wildcard",
             "claude-settings-home-directory-hook-path",
