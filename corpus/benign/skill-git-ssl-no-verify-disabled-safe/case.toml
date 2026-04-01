@@ -1,0 +1,5 @@
+id = "skill-git-ssl-no-verify-disabled-safe"
+kind = "Skill"
+description = "AI-native markdown leaves Git TLS verification enabled"
+
+expected_absent_rules = ["SEC472"]

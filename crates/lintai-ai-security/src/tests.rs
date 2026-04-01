@@ -1853,6 +1853,49 @@ fn ignores_markdown_git_sslverify_true() {
 }
 
 #[test]
+fn finds_markdown_git_ssl_no_verify() {
+    let content = "GIT_SSL_NO_VERIFY=1 git clone https://github.com/acme/demo.git\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC472")
+        .unwrap();
+    let start = content.find("GIT_SSL_NO_VERIFY=1").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "GIT_SSL_NO_VERIFY=1".len())
+    );
+}
+
+#[test]
+fn finds_markdown_git_ssl_no_verify_true() {
+    let content = "GIT_SSL_NO_VERIFY=true git fetch origin\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC472")
+    );
+}
+
+#[test]
+fn ignores_markdown_git_ssl_no_verify_disabled() {
+    let content = "GIT_SSL_NO_VERIFY=0 git clone https://github.com/acme/demo.git\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC472")
+    );
+}
+
+#[test]
 fn finds_rm_allowed_tools() {
     let content = "---\nallowed-tools: Bash(rm:*)\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

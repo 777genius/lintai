@@ -191,7 +191,8 @@
         "lintai-ai-security:SEC468",
         "lintai-ai-security:SEC469",
         "lintai-ai-security:SEC470",
-        "lintai-ai-security:SEC471"
+        "lintai-ai-security:SEC471",
+        "lintai-ai-security:SEC472"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -292,7 +293,8 @@
         "lintai-ai-security:SEC468",
         "lintai-ai-security:SEC469",
         "lintai-ai-security:SEC470",
-        "lintai-ai-security:SEC471"
+        "lintai-ai-security:SEC471",
+        "lintai-ai-security:SEC472"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -6727,6 +6729,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `git config` token analysis with `http.sslVerify false` or `http.sslVerify=false` detection inside parsed markdown regions, excluding safety-warning phrasing."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC472",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC472",
+      "alias": "MD-GIT-SSL-NO-VERIFY",
+      "displayLabel": "SEC472 / MD-GIT-SSL-NO-VERIFY",
+      "docTitle": "AI markdown: GIT_SSL_NO_VERIFY",
+      "slug": "sec472",
+      "canonicalPath": "/rules/lintai-ai-security/sec472",
+      "summary": "AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY`",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for exact Git command examples that disable TLS verification through `GIT_SSL_NO_VERIFY`.",
+        "maliciousCaseIds": [
+          "skill-git-ssl-no-verify"
+        ],
+        "benignCaseIds": [
+          "skill-git-ssl-no-verify-disabled-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `GIT_SSL_NO_VERIFY=1` or `GIT_SSL_NO_VERIFY=true` token analysis when a Git command appears in the same parsed markdown region, excluding safety-warning phrasing."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

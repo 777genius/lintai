@@ -339,6 +339,7 @@ mod tests {
         assert_eq!(shipped_rule_alias("SEC469"), Some("MD-CHGRP-ALLOWED-TOOLS"));
         assert_eq!(shipped_rule_alias("SEC470"), Some("MD-SU-ALLOWED-TOOLS"));
         assert_eq!(shipped_rule_alias("SEC471"), Some("MD-GIT-SSLVERIFY-FALSE"));
+        assert_eq!(shipped_rule_alias("SEC472"), Some("MD-GIT-SSL-NO-VERIFY"));
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

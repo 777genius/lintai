@@ -424,6 +424,25 @@ pub(crate) fn find_git_sslverify_false_relative_span(text: &str) -> Option<Span>
     None
 }
 
+pub(crate) fn find_git_ssl_no_verify_relative_span(text: &str) -> Option<Span> {
+    let mut offset = 0usize;
+    for line in text.split_inclusive('\n') {
+        if let Some(relative) = find_git_ssl_no_verify_in_line(line) {
+            return Some(Span::new(
+                offset + relative.start_byte,
+                offset + relative.end_byte,
+            ));
+        }
+        offset += line.len();
+    }
+
+    if !text.ends_with('\n') {
+        return find_git_ssl_no_verify_in_line(text);
+    }
+
+    None
+}
+
 fn find_claude_bare_pip_install_in_line(line: &str) -> Option<Span> {
     let lowered = line.to_ascii_lowercase();
     let Some(claude_start) = lowered.find("claude:") else {
@@ -917,6 +936,27 @@ fn find_git_sslverify_false_in_line(line: &str) -> Option<Span> {
         if let Some(relative_marker) = search_slice.find(marker) {
             let start = command_start + "git config".len() + relative_marker;
             return Some(Span::new(start, start + marker.len()));
+        }
+    }
+
+    None
+}
+
+fn find_git_ssl_no_verify_in_line(line: &str) -> Option<Span> {
+    let lowered = line.to_ascii_lowercase();
+    if SAFETY_WARNING_MARKERS
+        .iter()
+        .any(|marker| lowered.contains(marker))
+    {
+        return None;
+    }
+
+    for marker in ["git_ssl_no_verify=1", "git_ssl_no_verify=true"] {
+        if let Some(relative_marker) = lowered.find(marker) {
+            let search_start = relative_marker + marker.len();
+            if lowered[search_start..].contains("git ") {
+                return Some(Span::new(relative_marker, relative_marker + marker.len()));
+            }
         }
     }
 

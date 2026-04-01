@@ -21,15 +21,16 @@ use crate::markdown_rules::{
     check_markdown_cargo_http_git_install, check_markdown_cargo_http_index,
     check_markdown_claude_bare_pip_install, check_markdown_docker_host_escape,
     check_markdown_download_exec, check_markdown_fenced_pipe_shell, check_markdown_git_http_clone,
-    check_markdown_git_http_remote, check_markdown_git_sslverify_false,
-    check_markdown_js_package_config_http_registry, check_markdown_js_package_strict_ssl_false,
-    check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
-    check_markdown_mutable_mcp_launcher, check_markdown_network_tls_bypass,
-    check_markdown_npm_http_registry, check_markdown_npm_http_source,
-    check_markdown_path_traversal, check_markdown_pip_config_http_find_links,
-    check_markdown_pip_config_http_index, check_markdown_pip_config_trusted_host,
-    check_markdown_pip_http_find_links, check_markdown_pip_http_git_install,
-    check_markdown_pip_http_index, check_markdown_pip_http_source, check_markdown_pip_trusted_host,
+    check_markdown_git_http_remote, check_markdown_git_ssl_no_verify,
+    check_markdown_git_sslverify_false, check_markdown_js_package_config_http_registry,
+    check_markdown_js_package_strict_ssl_false, check_markdown_metadata_service_access,
+    check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
+    check_markdown_network_tls_bypass, check_markdown_npm_http_registry,
+    check_markdown_npm_http_source, check_markdown_path_traversal,
+    check_markdown_pip_config_http_find_links, check_markdown_pip_config_http_index,
+    check_markdown_pip_config_trusted_host, check_markdown_pip_http_find_links,
+    check_markdown_pip_http_git_install, check_markdown_pip_http_index,
+    check_markdown_pip_http_source, check_markdown_pip_trusted_host,
     check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
     check_package_install_allowed_tools, check_plugin_agent_hooks_frontmatter,
     check_plugin_agent_mcp_servers_frontmatter, check_plugin_agent_permission_mode,
@@ -335,6 +336,18 @@ declare_rule! {
         code: "SEC471",
         summary: "AI-native markdown disables Git TLS verification with `http.sslVerify false`",
         doc_title: "AI markdown: git sslVerify false",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownGitSslNoVerifyRule {
+        code: "SEC472",
+        summary: "AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY`",
+        doc_title: "AI markdown: GIT_SSL_NO_VERIFY",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -1086,7 +1099,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 87] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 88] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1594,6 +1607,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 87] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove `http.sslVerify false` and keep Git transport verification enabled instead of teaching a shared TLS-bypass workflow",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownGitSslNoVerifyRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown for exact Git command examples that disable TLS verification through `GIT_SSL_NO_VERIFY`.",
+            malicious_case_ids: &["skill-git-ssl-no-verify"],
+            benign_case_ids: &["skill-git-ssl-no-verify-disabled-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact `GIT_SSL_NO_VERIFY=1` or `GIT_SSL_NO_VERIFY=true` token analysis when a Git command appears in the same parsed markdown region, excluding safety-warning phrasing.",
+        },
+        check: check_markdown_git_ssl_no_verify,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove `GIT_SSL_NO_VERIFY` and keep Git transport verification enabled instead of teaching a shared TLS-bypass workflow",
         ),
         suggestion_fix: None,
     },

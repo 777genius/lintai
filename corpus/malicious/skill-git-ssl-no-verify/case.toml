@@ -1,0 +1,7 @@
+id = "skill-git-ssl-no-verify"
+kind = "Skill"
+description = "AI-native markdown teaches Git TLS bypass through GIT_SSL_NO_VERIFY"
+
+expected_findings = [
+  { rule = "SEC472", tier = "stable", match = "GIT_SSL_NO_VERIFY=1" },
+]

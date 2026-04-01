@@ -176,6 +176,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC469" => "MD-CHGRP-ALLOWED-TOOLS",
         "SEC470" => "MD-SU-ALLOWED-TOOLS",
         "SEC471" => "MD-GIT-SSLVERIFY-FALSE",
+        "SEC472" => "MD-GIT-SSL-NO-VERIFY",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

@@ -190,6 +190,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC469 / MD-CHGRP-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chgrp:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC470 / MD-SU-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(su:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC471 / MD-GIT-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `http.sslVerify false` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC472 / MD-GIT-SSL-NO-VERIFY` | AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -3622,6 +3623,27 @@ Important behavior:
 - Deterministic Signal Basis: MarkdownSignals exact `git config` token analysis with `http.sslVerify false` or `http.sslVerify=false` detection inside parsed markdown regions, excluding safety-warning phrasing.
 - Malicious Corpus: `skill-git-sslverify-false`
 - Benign Corpus: `skill-git-sslverify-true-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC472 / MD-GIT-SSL-NO-VERIFY` — AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY`
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GIT-SSL-NO-VERIFY`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown for exact Git command examples that disable TLS verification through `GIT_SSL_NO_VERIFY`.
+- Deterministic Signal Basis: MarkdownSignals exact `GIT_SSL_NO_VERIFY=1` or `GIT_SSL_NO_VERIFY=true` token analysis when a Git command appears in the same parsed markdown region, excluding safety-warning phrasing.
+- Malicious Corpus: `skill-git-ssl-no-verify`
+- Benign Corpus: `skill-git-ssl-no-verify-disabled-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

@@ -211,6 +211,12 @@ impl MarkdownSignals {
                             region.span.start_byte + relative.end_byte,
                         ));
                     }
+                    if let Some(relative) = find_git_ssl_no_verify_relative_span(snippet) {
+                        signals.git_ssl_no_verify_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
                     if let Some(relative) =
                         find_markdown_mutable_docker_image_relative_span(snippet)
                     {
@@ -399,6 +405,12 @@ impl MarkdownSignals {
                             region.span.start_byte + relative.end_byte,
                         ));
                     }
+                    if let Some(relative) = find_git_ssl_no_verify_relative_span(snippet) {
+                        signals.git_ssl_no_verify_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
                     if let Some(relative) =
                         find_markdown_mutable_docker_image_relative_span(snippet)
                     {
@@ -557,6 +569,12 @@ impl MarkdownSignals {
                     }
                     if let Some(relative) = find_git_sslverify_false_relative_span(snippet) {
                         signals.git_sslverify_false_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
+                    if let Some(relative) = find_git_ssl_no_verify_relative_span(snippet) {
+                        signals.git_ssl_no_verify_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
                             region.span.start_byte + relative.end_byte,
                         ));
