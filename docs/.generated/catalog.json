@@ -4029,7 +4029,7 @@
       "summary": "Claude settings permissions allow `Bash(git push)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4038,13 +4038,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared git push permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for exact `Bash(git push)` authority.",
+        "maliciousCaseIds": [
+          "claude-settings-git-push-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-git-push-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(git push)` entries inside permissions.allow."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4069,11 +4077,19 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared git checkout permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for exact `Bash(git checkout:*)` authority.",
+        "maliciousCaseIds": [
+          "claude-settings-git-checkout-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-git-checkout-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(git checkout:*)` entries inside permissions.allow."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
@@ -4100,11 +4116,19 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared git commit permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for exact `Bash(git commit:*)` authority.",
+        "maliciousCaseIds": [
+          "claude-settings-git-commit-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-git-commit-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(git commit:*)` entries inside permissions.allow."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
@@ -4131,11 +4155,19 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared git stash permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for exact `Bash(git stash:*)` authority.",
+        "maliciousCaseIds": [
+          "claude-settings-git-stash-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-git-stash-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(git stash:*)` entries inside permissions.allow."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
@@ -4507,7 +4539,7 @@
       "summary": "Claude settings permissions allow `Bash(npx ...)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4530,7 +4562,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(npx ...)` entries inside permissions.allow."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4546,7 +4578,7 @@
       "summary": "Claude settings enable `enabledMcpjsonServers` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4555,13 +4587,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `enabledMcpjsonServers` in committed Claude settings is deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for exact `enabledMcpjsonServers` enablement.",
+        "maliciousCaseIds": [
+          "claude-settings-enabled-mcpjson-servers"
+        ],
+        "benignCaseIds": [
+          "claude-settings-empty-enabled-mcpjson-servers-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact non-empty `enabledMcpjsonServers` detection in parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4655,7 +4695,7 @@
       "summary": "Claude settings permissions allow `Bash(git add:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4664,13 +4704,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `git add` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for exact `Bash(git add:*)` authority.",
+        "maliciousCaseIds": [
+          "claude-settings-git-add-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-git-add-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(git add:*)` entries inside permissions.allow."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4686,7 +4734,7 @@
       "summary": "Claude settings permissions allow `Bash(git clone:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4695,13 +4743,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `git clone` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for exact `Bash(git clone:*)` authority.",
+        "maliciousCaseIds": [
+          "claude-settings-git-clone-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-git-clone-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(git clone:*)` entries inside permissions.allow."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4717,7 +4773,7 @@
       "summary": "Claude settings permissions allow `Bash(gh pr:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4726,13 +4782,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh pr` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for exact `Bash(gh pr:*)` authority.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-pr-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-pr-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(gh pr:*)` entries inside permissions.allow."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4748,7 +4812,7 @@
       "summary": "Claude settings permissions allow `Bash(git fetch:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4757,13 +4821,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `git fetch` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for exact `Bash(git fetch:*)` authority.",
+        "maliciousCaseIds": [
+          "claude-settings-git-fetch-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-git-fetch-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(git fetch:*)` entries inside permissions.allow."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7580,7 +7652,7 @@
       "summary": "Claude settings permissions allow `Bash(git merge:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7589,13 +7661,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared git merge permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for exact `Bash(git merge:*)` authority.",
+        "maliciousCaseIds": [
+          "claude-settings-destructive-git-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-destructive-git-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(git merge:*)` entries inside permissions.allow."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7611,7 +7691,7 @@
       "summary": "Claude settings permissions allow `Bash(git cherry-pick:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7620,13 +7700,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared git cherry-pick permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for exact `Bash(git cherry-pick:*)` authority.",
+        "maliciousCaseIds": [
+          "claude-settings-destructive-git-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-destructive-git-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(git cherry-pick:*)` entries inside permissions.allow."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7642,7 +7730,7 @@
       "summary": "Claude settings permissions allow `Bash(git apply:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7651,13 +7739,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared git apply permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for exact `Bash(git apply:*)` authority.",
+        "maliciousCaseIds": [
+          "claude-settings-destructive-git-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-destructive-git-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(git apply:*)` entries inside permissions.allow."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7673,7 +7769,7 @@
       "summary": "Claude settings permissions allow `Bash(git am:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7682,13 +7778,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared git am permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for exact `Bash(git am:*)` authority.",
+        "maliciousCaseIds": [
+          "claude-settings-destructive-git-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-destructive-git-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(git am:*)` entries inside permissions.allow."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7782,7 +7886,7 @@
       "summary": "Claude settings permissions allow `Bash(uvx ...)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7805,7 +7909,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(uvx ...)` entries inside permissions.allow."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {

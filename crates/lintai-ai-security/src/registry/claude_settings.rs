@@ -253,7 +253,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -265,7 +265,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -277,7 +277,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -289,7 +289,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -325,7 +325,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -337,7 +337,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -349,7 +349,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -361,7 +361,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -589,7 +589,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -673,7 +673,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -697,7 +697,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -709,7 +709,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -1335,9 +1335,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared git push permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(git push)` authority.",
+            malicious_case_ids: &["claude-settings-git-push-permission"],
+            benign_case_ids: &["claude-settings-git-push-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(git push)` entries inside permissions.allow.",
         },
         check: check_claude_settings_git_push_permission,
         safe_fix: None,
@@ -1351,9 +1355,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `git add` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(git add:*)` authority.",
+            malicious_case_ids: &["claude-settings-git-add-permission"],
+            benign_case_ids: &["claude-settings-git-add-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(git add:*)` entries inside permissions.allow.",
         },
         check: check_claude_settings_git_add_permission,
         safe_fix: None,
@@ -1367,9 +1375,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `git clone` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(git clone:*)` authority.",
+            malicious_case_ids: &["claude-settings-git-clone-permission"],
+            benign_case_ids: &["claude-settings-git-clone-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(git clone:*)` entries inside permissions.allow.",
         },
         check: check_claude_settings_git_clone_permission,
         safe_fix: None,
@@ -1383,9 +1395,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh pr` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(gh pr:*)` authority.",
+            malicious_case_ids: &["claude-settings-gh-pr-permission"],
+            benign_case_ids: &["claude-settings-gh-pr-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(gh pr:*)` entries inside permissions.allow.",
         },
         check: check_claude_settings_gh_pr_permission,
         safe_fix: None,
@@ -1759,9 +1775,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `git fetch` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(git fetch:*)` authority.",
+            malicious_case_ids: &["claude-settings-git-fetch-permission"],
+            benign_case_ids: &["claude-settings-git-fetch-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(git fetch:*)` entries inside permissions.allow.",
         },
         check: check_claude_settings_git_fetch_permission,
         safe_fix: None,
@@ -1895,9 +1915,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `enabledMcpjsonServers` in committed Claude settings is deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `enabledMcpjsonServers` enablement.",
+            malicious_case_ids: &["claude-settings-enabled-mcpjson-servers"],
+            benign_case_ids: &["claude-settings-empty-enabled-mcpjson-servers-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact non-empty `enabledMcpjsonServers` detection in parsed Claude settings JSON.",
         },
         check: check_claude_settings_enabled_mcpjson_servers,
         safe_fix: None,
@@ -2071,9 +2095,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared git checkout permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(git checkout:*)` authority.",
+            malicious_case_ids: &["claude-settings-git-checkout-permission"],
+            benign_case_ids: &["claude-settings-git-checkout-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(git checkout:*)` entries inside permissions.allow.",
         },
         check: check_claude_settings_git_checkout_permission,
         safe_fix: None,
@@ -2087,9 +2115,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared git commit permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(git commit:*)` authority.",
+            malicious_case_ids: &["claude-settings-git-commit-permission"],
+            benign_case_ids: &["claude-settings-git-commit-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(git commit:*)` entries inside permissions.allow.",
         },
         check: check_claude_settings_git_commit_permission,
         safe_fix: None,
@@ -2103,9 +2135,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared git stash permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(git stash:*)` authority.",
+            malicious_case_ids: &["claude-settings-git-stash-permission"],
+            benign_case_ids: &["claude-settings-git-stash-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(git stash:*)` entries inside permissions.allow.",
         },
         check: check_claude_settings_git_stash_permission,
         safe_fix: None,
@@ -2199,9 +2235,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared git merge permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(git merge:*)` authority.",
+            malicious_case_ids: &["claude-settings-destructive-git-permissions"],
+            benign_case_ids: &["claude-settings-destructive-git-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(git merge:*)` entries inside permissions.allow.",
         },
         check: check_claude_settings_git_merge_permission,
         safe_fix: None,
@@ -2215,9 +2255,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared git cherry-pick permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(git cherry-pick:*)` authority.",
+            malicious_case_ids: &["claude-settings-destructive-git-permissions"],
+            benign_case_ids: &["claude-settings-destructive-git-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(git cherry-pick:*)` entries inside permissions.allow.",
         },
         check: check_claude_settings_git_cherry_pick_permission,
         safe_fix: None,
@@ -2231,9 +2275,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared git apply permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(git apply:*)` authority.",
+            malicious_case_ids: &["claude-settings-destructive-git-permissions"],
+            benign_case_ids: &["claude-settings-destructive-git-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(git apply:*)` entries inside permissions.allow.",
         },
         check: check_claude_settings_git_apply_permission,
         safe_fix: None,
@@ -2247,9 +2295,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared git am permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(git am:*)` authority.",
+            malicious_case_ids: &["claude-settings-destructive-git-permissions"],
+            benign_case_ids: &["claude-settings-destructive-git-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(git am:*)` entries inside permissions.allow.",
         },
         check: check_claude_settings_git_am_permission,
         safe_fix: None,
