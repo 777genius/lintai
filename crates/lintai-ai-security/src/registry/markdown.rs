@@ -48,11 +48,12 @@ use crate::markdown_rules::{
     check_unscoped_webfetch_allowed_tools, check_unscoped_websearch_allowed_tools,
     check_unscoped_write_allowed_tools, check_untrusted_instruction_promotion,
     check_uvx_allowed_tools, check_webfetch_raw_github_allowed_tools, check_wget_allowed_tools,
-    check_wildcard_edit_allowed_tools, check_wildcard_glob_allowed_tools,
-    check_wildcard_grep_allowed_tools, check_wildcard_read_allowed_tools,
-    check_wildcard_tool_access, check_wildcard_webfetch_allowed_tools,
-    check_wildcard_websearch_allowed_tools, check_wildcard_write_allowed_tools,
-    check_write_unsafe_path_allowed_tools, check_yarn_dlx_allowed_tools,
+    check_wildcard_bash_allowed_tools, check_wildcard_edit_allowed_tools,
+    check_wildcard_glob_allowed_tools, check_wildcard_grep_allowed_tools,
+    check_wildcard_read_allowed_tools, check_wildcard_tool_access,
+    check_wildcard_webfetch_allowed_tools, check_wildcard_websearch_allowed_tools,
+    check_wildcard_write_allowed_tools, check_write_unsafe_path_allowed_tools,
+    check_yarn_dlx_allowed_tools,
 };
 
 declare_rule! {
@@ -752,6 +753,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct WildcardBashAllowedToolsRule {
+        code: "SEC527",
+        summary: "AI-native markdown frontmatter grants `Bash(*)` wildcard access",
+        doc_title: "AI markdown: `Bash(*)` wildcard tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct WildcardWriteAllowedToolsRule {
         code: "SEC521",
         summary: "AI-native markdown frontmatter grants `Write(*)` wildcard access",
@@ -1423,7 +1436,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 114] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 115] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -2311,6 +2324,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 114] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace `Read(*)` with narrower reviewed read patterns like `Read(./docs/**)` or remove blanket shared read authority",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: WildcardBashAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for exact `Bash(*)` grants that expose unconstrained shell execution as shared default policy.",
+            malicious_case_ids: &["skill-bash-wildcard-allowed-tools"],
+            benign_case_ids: &["skill-bash-wildcard-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Bash(*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_wildcard_bash_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `Bash(*)` with narrower reviewed command patterns like `Bash(git status:*)` or remove blanket shared shell authority",
         ),
         suggestion_fix: None,
     },

@@ -245,6 +245,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC524 / MD-GREP-WILDCARD` | AI-native markdown frontmatter grants `Grep(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC525 / MD-WEBFETCH-WILDCARD` | AI-native markdown frontmatter grants `WebFetch(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC526 / MD-WEBSEARCH-WILDCARD` | AI-native markdown frontmatter grants `WebSearch(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC527 / MD-BASH-WILDCARD` | AI-native markdown frontmatter grants `Bash(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -4648,6 +4649,27 @@ Important behavior:
 - Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `WebSearch(*)` inside allowed-tools or allowed_tools.
 - Malicious Corpus: `skill-core-wildcard-allowed-tools`
 - Benign Corpus: `skill-core-wildcard-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC527 / MD-BASH-WILDCARD` — AI-native markdown frontmatter grants `Bash(*)` wildcard access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-BASH-WILDCARD`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for exact `Bash(*)` grants that expose unconstrained shell execution as shared default policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Bash(*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-bash-wildcard-allowed-tools`
+- Benign Corpus: `skill-bash-wildcard-allowed-tools-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

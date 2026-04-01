@@ -1,0 +1,5 @@
+id = "skill-bash-wildcard-allowed-tools"
+description = "AI-native markdown frontmatter grants Bash wildcard shell authority"
+artifact_kind = "Skill"
+provider = "lintai-ai-security"
+expected_rules = ["SEC527"]

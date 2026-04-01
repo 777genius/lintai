@@ -635,6 +635,22 @@ pub(crate) fn check_unscoped_bash_allowed_tools(
     )
 }
 
+pub(crate) fn check_wildcard_bash_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.wildcard_bash_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(*)` wildcard access",
+    )
+}
+
 pub(crate) fn check_unscoped_websearch_allowed_tools(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

@@ -4196,6 +4196,53 @@ fn finds_wildcard_read_allowed_tools_in_frontmatter() {
 }
 
 #[test]
+fn finds_wildcard_bash_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(*), Read(./docs/**)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC527")
+        .unwrap();
+    let start = content.find("Bash(*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(*)".len())
+    );
+}
+
+#[test]
+fn ignores_scoped_bash_allowed_tools_wildcard_rule_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(git status:*), Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC527")
+    );
+}
+
+#[test]
+fn ignores_wildcard_bash_allowed_tools_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/skill/SKILL.md",
+        "---\nallowed-tools: Bash(*), Read(./docs/**)\n---\n# Fixture skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC527")
+    );
+}
+
+#[test]
 fn ignores_scoped_read_allowed_tools_wildcard_rule_in_frontmatter() {
     let summary = scan_preview_skill_fixture(
         "SKILL.md",

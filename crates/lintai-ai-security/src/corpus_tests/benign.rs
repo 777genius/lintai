@@ -173,6 +173,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "server-json-loopback-package-transport-safe",
             "server-json-remote-variable-defined",
             "skill-base64-fenced-safe",
+            "skill-bash-wildcard-allowed-tools-specific-safe",
             "skill-cargo-https-git-install-safe",
             "skill-cargo-https-index-safe",
             "skill-chgrp-allowed-tools-specific-safe",

@@ -228,7 +228,8 @@
         "lintai-ai-security:SEC523",
         "lintai-ai-security:SEC524",
         "lintai-ai-security:SEC525",
-        "lintai-ai-security:SEC526"
+        "lintai-ai-security:SEC526",
+        "lintai-ai-security:SEC527"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -338,7 +339,8 @@
         "lintai-ai-security:SEC523",
         "lintai-ai-security:SEC524",
         "lintai-ai-security:SEC525",
-        "lintai-ai-security:SEC526"
+        "lintai-ai-security:SEC526",
+        "lintai-ai-security:SEC527"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -8578,6 +8580,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `WebSearch(*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC527",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC527",
+      "alias": "MD-BASH-WILDCARD",
+      "displayLabel": "SEC527 / MD-BASH-WILDCARD",
+      "docTitle": "AI markdown: `Bash(*)` wildcard tool grant",
+      "slug": "sec527",
+      "canonicalPath": "/rules/lintai-ai-security/sec527",
+      "summary": "AI-native markdown frontmatter grants `Bash(*)` wildcard access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for exact `Bash(*)` grants that expose unconstrained shell execution as shared default policy.",
+        "maliciousCaseIds": [
+          "skill-bash-wildcard-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-bash-wildcard-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(*)` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

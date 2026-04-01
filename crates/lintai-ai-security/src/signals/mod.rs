@@ -121,6 +121,7 @@ pub(crate) struct MarkdownSignals {
     pub(crate) untrusted_instruction_promotion_spans: Vec<Span>,
     pub(crate) approval_bypass_instruction_spans: Vec<Span>,
     pub(crate) unscoped_bash_allowed_tools_spans: Vec<Span>,
+    pub(crate) wildcard_bash_allowed_tools_spans: Vec<Span>,
     pub(crate) unscoped_websearch_allowed_tools_spans: Vec<Span>,
     pub(crate) unscoped_webfetch_allowed_tools_spans: Vec<Span>,
     pub(crate) git_push_allowed_tools_spans: Vec<Span>,
