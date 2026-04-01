@@ -1,0 +1,12 @@
+id = "mcp-autoapprove-git-history-family"
+description = "MCP config auto-approves git history and patch mutation commands through autoApprove"
+
+expected_findings = [
+  "SEC602",
+  "SEC603",
+  "SEC604",
+  "SEC605",
+  "SEC606",
+  "SEC607",
+  "SEC608",
+]

@@ -320,6 +320,13 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC599 / MCP-AUTOAPPROVE-GIT-TAG` | MCP configuration auto-approves `Bash(git tag:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC600 / MCP-AUTOAPPROVE-GIT-BRANCH` | MCP configuration auto-approves `Bash(git branch:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC601 / MCP-AUTOAPPROVE-GH-PR` | MCP configuration auto-approves `Bash(gh pr:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC602 / MCP-AUTOAPPROVE-GIT-STASH` | MCP configuration auto-approves `Bash(git stash:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC603 / MCP-AUTOAPPROVE-GIT-RESTORE` | MCP configuration auto-approves `Bash(git restore:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC604 / MCP-AUTOAPPROVE-GIT-REBASE` | MCP configuration auto-approves `Bash(git rebase:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC605 / MCP-AUTOAPPROVE-GIT-MERGE` | MCP configuration auto-approves `Bash(git merge:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC606 / MCP-AUTOAPPROVE-GIT-CHERRY-PICK` | MCP configuration auto-approves `Bash(git cherry-pick:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC607 / MCP-AUTOAPPROVE-GIT-APPLY` | MCP configuration auto-approves `Bash(git apply:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC608 / MCP-AUTOAPPROVE-GIT-AM` | MCP configuration auto-approves `Bash(git am:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -6226,6 +6233,153 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh pr:*)"]` on parsed MCP configuration.
 - Malicious Corpus: `mcp-autoapprove-repo-management-family`
 - Benign Corpus: `mcp-autoapprove-repo-management-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC602 / MCP-AUTOAPPROVE-GIT-STASH` — MCP configuration auto-approves `Bash(git stash:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GIT-STASH`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(git stash:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(git stash:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-git-history-family`
+- Benign Corpus: `mcp-autoapprove-git-history-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC603 / MCP-AUTOAPPROVE-GIT-RESTORE` — MCP configuration auto-approves `Bash(git restore:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GIT-RESTORE`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(git restore:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(git restore:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-git-history-family`
+- Benign Corpus: `mcp-autoapprove-git-history-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC604 / MCP-AUTOAPPROVE-GIT-REBASE` — MCP configuration auto-approves `Bash(git rebase:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GIT-REBASE`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(git rebase:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(git rebase:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-git-history-family`
+- Benign Corpus: `mcp-autoapprove-git-history-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC605 / MCP-AUTOAPPROVE-GIT-MERGE` — MCP configuration auto-approves `Bash(git merge:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GIT-MERGE`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(git merge:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(git merge:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-git-history-family`
+- Benign Corpus: `mcp-autoapprove-git-history-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC606 / MCP-AUTOAPPROVE-GIT-CHERRY-PICK` — MCP configuration auto-approves `Bash(git cherry-pick:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GIT-CHERRY-PICK`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(git cherry-pick:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(git cherry-pick:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-git-history-family`
+- Benign Corpus: `mcp-autoapprove-git-history-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC607 / MCP-AUTOAPPROVE-GIT-APPLY` — MCP configuration auto-approves `Bash(git apply:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GIT-APPLY`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(git apply:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(git apply:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-git-history-family`
+- Benign Corpus: `mcp-autoapprove-git-history-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC608 / MCP-AUTOAPPROVE-GIT-AM` — MCP configuration auto-approves `Bash(git am:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GIT-AM`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(git am:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(git am:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-git-history-family`
+- Benign Corpus: `mcp-autoapprove-git-history-family-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

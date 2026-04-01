@@ -112,6 +112,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "mcp-autoapprove-gh-mutation-family",
             "mcp-autoapprove-gh-release-transfer-family",
             "mcp-autoapprove-git-destructive-family",
+            "mcp-autoapprove-git-history-family",
             "mcp-autoapprove-git-push-gh-api-post",
             "mcp-autoapprove-mutable-runner-family",
             "mcp-autoapprove-package-install-family",

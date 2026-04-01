@@ -738,6 +738,111 @@ pub(crate) fn check_mcp_autoapprove_git_branch(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_git_stash(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_stash_span.clone()),
+        "MCP configuration auto-approves `Bash(git stash:*)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_git_restore(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_restore_span.clone()),
+        "MCP configuration auto-approves `Bash(git restore:*)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_git_rebase(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_rebase_span.clone()),
+        "MCP configuration auto-approves `Bash(git rebase:*)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_git_merge(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_merge_span.clone()),
+        "MCP configuration auto-approves `Bash(git merge:*)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_git_cherry_pick(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_cherry_pick_span.clone()),
+        "MCP configuration auto-approves `Bash(git cherry-pick:*)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_git_apply(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_apply_span.clone()),
+        "MCP configuration auto-approves `Bash(git apply:*)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_git_am(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_am_span.clone()),
+        "MCP configuration auto-approves `Bash(git am:*)` through `autoApprove`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_gh_pr(
     ctx: &ScanContext,
     signals: &ArtifactSignals,
