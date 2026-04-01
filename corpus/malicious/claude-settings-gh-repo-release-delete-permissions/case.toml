@@ -1,0 +1,7 @@
+id = "claude-settings-gh-repo-release-delete-permissions"
+description = "Claude settings grant shared GitHub repository and release deletion permissions"
+
+expected_findings = [
+  "SEC534",
+  "SEC536",
+]

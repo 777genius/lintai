@@ -10,7 +10,9 @@ use crate::claude_settings_rules::{
     check_claude_settings_gh_api_delete_permission, check_claude_settings_gh_api_patch_permission,
     check_claude_settings_gh_api_post_permission, check_claude_settings_gh_api_put_permission,
     check_claude_settings_gh_issue_create_permission, check_claude_settings_gh_pr_permission,
+    check_claude_settings_gh_release_delete_permission,
     check_claude_settings_gh_repo_create_permission,
+    check_claude_settings_gh_repo_delete_permission,
     check_claude_settings_gh_secret_delete_permission,
     check_claude_settings_gh_secret_set_permission,
     check_claude_settings_gh_variable_delete_permission,
@@ -433,6 +435,30 @@ declare_rule! {
         code: "SEC508",
         summary: "Claude settings permissions allow `Bash(gh secret set:*)` in a shared committed config",
         doc_title: "Claude settings: shared gh secret set permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGhRepoDeletePermissionRule {
+        code: "SEC534",
+        summary: "Claude settings permissions allow `Bash(gh repo delete:*)` in a shared committed config",
+        doc_title: "Claude settings: shared gh repo delete permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGhReleaseDeletePermissionRule {
+        code: "SEC536",
+        summary: "Claude settings permissions allow `Bash(gh release delete:*)` in a shared committed config",
+        doc_title: "Claude settings: shared gh release delete permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -884,7 +910,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 70] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 72] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -1270,6 +1296,38 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 70] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `gh repo create` permissions or replace them with narrower reviewed subcommands that keep repository creation under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGhRepoDeletePermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh repo delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_gh_repo_delete_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh repo delete` permissions or replace them with a narrower reviewed workflow that keeps repository deletion under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGhReleaseDeletePermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh release delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_gh_release_delete_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh release delete` permissions or replace them with a narrower reviewed workflow that keeps release deletion under explicit user control",
         ),
         suggestion_fix: None,
     },

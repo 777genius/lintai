@@ -1,0 +1,7 @@
+id = "skill-gh-repo-release-delete-allowed-tools"
+description = "AI-native markdown frontmatter grants shared GitHub repository and release deletion authority"
+
+expected_findings = [
+  "SEC535",
+  "SEC537",
+]

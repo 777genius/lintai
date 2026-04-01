@@ -1,0 +1,12 @@
+id = "skill-gh-repo-release-delete-specific-safe"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC535", "SEC537"]
+
+[snapshot]
+kind = "none"
+name = ""

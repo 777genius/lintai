@@ -13,7 +13,8 @@ use crate::markdown_rules::{
     check_gh_api_delete_allowed_tools, check_gh_api_patch_allowed_tools,
     check_gh_api_post_allowed_tools, check_gh_api_put_allowed_tools,
     check_gh_issue_create_allowed_tools, check_gh_pr_allowed_tools,
-    check_gh_repo_create_allowed_tools, check_gh_secret_delete_allowed_tools,
+    check_gh_release_delete_allowed_tools, check_gh_repo_create_allowed_tools,
+    check_gh_repo_delete_allowed_tools, check_gh_secret_delete_allowed_tools,
     check_gh_secret_set_allowed_tools, check_gh_variable_delete_allowed_tools,
     check_gh_variable_set_allowed_tools, check_gh_workflow_disable_allowed_tools,
     check_gh_workflow_run_allowed_tools, check_git_add_allowed_tools, check_git_am_allowed_tools,
@@ -711,6 +712,30 @@ declare_rule! {
         code: "SEC511",
         summary: "AI-native markdown frontmatter grants `Bash(gh secret set:*)` tool access",
         doc_title: "AI markdown: shared gh secret set tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GhRepoDeleteAllowedToolsRule {
+        code: "SEC535",
+        summary: "AI-native markdown frontmatter grants `Bash(gh repo delete:*)` tool access",
+        doc_title: "AI markdown: shared gh repo delete tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GhReleaseDeleteAllowedToolsRule {
+        code: "SEC537",
+        summary: "AI-native markdown frontmatter grants `Bash(gh release delete:*)` tool access",
+        doc_title: "AI markdown: shared gh release delete tool grant",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -1474,7 +1499,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 118] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 120] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -2294,6 +2319,38 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 118] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(gh repo create:*)` access is really needed, or replace it with a narrower reviewed workflow-specific permission",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GhRepoDeleteAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh repo delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_gh_repo_delete_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(gh repo delete:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps repository deletion under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GhReleaseDeleteAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh release delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_gh_release_delete_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(gh release delete:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps release deletion under explicit user control",
         ),
         suggestion_fix: None,
     },
