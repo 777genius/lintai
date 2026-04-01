@@ -10,7 +10,8 @@ use crate::markdown_rules::{
     check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
     check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
     check_cursor_rule_unknown_frontmatter_key, check_edit_unsafe_path_allowed_tools,
-    check_gh_api_delete_allowed_tools, check_gh_api_post_allowed_tools,
+    check_gh_api_delete_allowed_tools, check_gh_api_patch_allowed_tools,
+    check_gh_api_post_allowed_tools, check_gh_api_put_allowed_tools,
     check_gh_issue_create_allowed_tools, check_gh_pr_allowed_tools,
     check_gh_repo_create_allowed_tools, check_gh_secret_delete_allowed_tools,
     check_gh_secret_set_allowed_tools, check_gh_variable_delete_allowed_tools,
@@ -650,6 +651,30 @@ declare_rule! {
         code: "SEC529",
         summary: "AI-native markdown frontmatter grants `Bash(gh api --method DELETE:*)` tool access",
         doc_title: "AI markdown: shared gh api DELETE tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GhApiPatchAllowedToolsRule {
+        code: "SEC532",
+        summary: "AI-native markdown frontmatter grants `Bash(gh api --method PATCH:*)` tool access",
+        doc_title: "AI markdown: shared gh api PATCH tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GhApiPutAllowedToolsRule {
+        code: "SEC533",
+        summary: "AI-native markdown frontmatter grants `Bash(gh api --method PUT:*)` tool access",
+        doc_title: "AI markdown: shared gh api PUT tool grant",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -1449,7 +1474,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 116] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 118] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -2205,6 +2230,38 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 116] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(gh api --method DELETE:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps destructive remote GitHub mutations under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GhApiPatchAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh api --method PATCH` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_gh_api_patch_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(gh api --method PATCH:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps remote GitHub mutations under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GhApiPutAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh api --method PUT` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_gh_api_put_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(gh api --method PUT:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps remote GitHub mutations under explicit user control",
         ),
         suggestion_fix: None,
     },

@@ -248,6 +248,10 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC527 / MD-BASH-WILDCARD` | AI-native markdown frontmatter grants `Bash(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC528 / CLAUDE-GH-API-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh api --method DELETE:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC529 / MD-GH-API-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method DELETE:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC530 / CLAUDE-GH-API-PATCH-PERMISSION` | Claude settings permissions allow `Bash(gh api --method PATCH:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC531 / CLAUDE-GH-API-PUT-PERMISSION` | Claude settings permissions allow `Bash(gh api --method PUT:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC532 / MD-GH-API-PATCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method PATCH:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC533 / MD-GH-API-PUT-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method PUT:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 
 ## Builtin preset activation model
 
@@ -4707,6 +4711,74 @@ Important behavior:
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Shared `gh api --method DELETE` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC530 / CLAUDE-GH-API-PATCH-PERMISSION` — Claude settings permissions allow `Bash(gh api --method PATCH:*)` in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-GH-API-PATCH-PERMISSION`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh api --method PATCH` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC531 / CLAUDE-GH-API-PUT-PERMISSION` — Claude settings permissions allow `Bash(gh api --method PUT:*)` in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-GH-API-PUT-PERMISSION`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh api --method PUT` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC532 / MD-GH-API-PATCH-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh api --method PATCH:*)` tool access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GH-API-PATCH-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `governance`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh api --method PATCH` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC533 / MD-GH-API-PUT-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh api --method PUT:*)` tool access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GH-API-PUT-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `governance`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh api --method PUT` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 

@@ -1,0 +1,5 @@
+id = "claude-settings-gh-api-patch-permission"
+description = "Shared Claude settings grant gh api PATCH mutation authority"
+artifact_kind = "ClaudeSettings"
+provider = "lintai-ai-security"
+expected_rules = ["SEC530"]

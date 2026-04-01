@@ -230,7 +230,9 @@
         "lintai-ai-security:SEC525",
         "lintai-ai-security:SEC526",
         "lintai-ai-security:SEC527",
-        "lintai-ai-security:SEC528"
+        "lintai-ai-security:SEC528",
+        "lintai-ai-security:SEC530",
+        "lintai-ai-security:SEC531"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -468,7 +470,9 @@
         "lintai-ai-security:SEC514",
         "lintai-ai-security:SEC515",
         "lintai-ai-security:SEC516",
-        "lintai-ai-security:SEC528"
+        "lintai-ai-security:SEC528",
+        "lintai-ai-security:SEC530",
+        "lintai-ai-security:SEC531"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -516,7 +520,9 @@
         "lintai-ai-security:SEC517",
         "lintai-ai-security:SEC518",
         "lintai-ai-security:SEC519",
-        "lintai-ai-security:SEC529"
+        "lintai-ai-security:SEC529",
+        "lintai-ai-security:SEC532",
+        "lintai-ai-security:SEC533"
       ],
       "canonicalPath": "/presets/governance"
     },
@@ -8682,6 +8688,128 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Shared `gh api --method DELETE` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC530",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC530",
+      "alias": "CLAUDE-GH-API-PATCH-PERMISSION",
+      "displayLabel": "SEC530 / CLAUDE-GH-API-PATCH-PERMISSION",
+      "docTitle": "Claude settings: shared gh api PATCH permissions",
+      "slug": "sec530",
+      "canonicalPath": "/rules/lintai-ai-security/sec530",
+      "summary": "Claude settings permissions allow `Bash(gh api --method PATCH:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `gh api --method PATCH` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC531",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC531",
+      "alias": "CLAUDE-GH-API-PUT-PERMISSION",
+      "displayLabel": "SEC531 / CLAUDE-GH-API-PUT-PERMISSION",
+      "docTitle": "Claude settings: shared gh api PUT permissions",
+      "slug": "sec531",
+      "canonicalPath": "/rules/lintai-ai-security/sec531",
+      "summary": "Claude settings permissions allow `Bash(gh api --method PUT:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `gh api --method PUT` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC532",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC532",
+      "alias": "MD-GH-API-PATCH-ALLOWED-TOOLS",
+      "displayLabel": "SEC532 / MD-GH-API-PATCH-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: shared gh api PATCH tool grant",
+      "slug": "sec532",
+      "canonicalPath": "/rules/lintai-ai-security/sec532",
+      "summary": "AI-native markdown frontmatter grants `Bash(gh api --method PATCH:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `gh api --method PATCH` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC533",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC533",
+      "alias": "MD-GH-API-PUT-ALLOWED-TOOLS",
+      "displayLabel": "SEC533 / MD-GH-API-PUT-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: shared gh api PUT tool grant",
+      "slug": "sec533",
+      "canonicalPath": "/rules/lintai-ai-security/sec533",
+      "summary": "AI-native markdown frontmatter grants `Bash(gh api --method PUT:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `gh api --method PUT` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

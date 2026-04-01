@@ -423,6 +423,36 @@ pub(crate) fn check_claude_settings_gh_api_delete_permission(
     )
 }
 
+pub(crate) fn check_claude_settings_gh_api_patch_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.gh_api_patch_permission_span.clone()),
+        "Claude settings permissions allow `Bash(gh api --method PATCH:*)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_gh_api_put_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.gh_api_put_permission_span.clone()),
+        "Claude settings permissions allow `Bash(gh api --method PUT:*)` in a shared committed config",
+    )
+}
+
 pub(crate) fn check_claude_settings_gh_repo_create_permission(
     ctx: &ScanContext,
     signals: &ArtifactSignals,
