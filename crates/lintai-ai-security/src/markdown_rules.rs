@@ -483,6 +483,22 @@ pub(crate) fn check_markdown_git_ssl_no_verify(
     )
 }
 
+pub(crate) fn check_markdown_git_inline_sslverify_false(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.git_inline_sslverify_false_spans.as_slice())
+            .unwrap_or(&[]),
+        "AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false`",
+    )
+}
+
 pub(crate) fn check_markdown_mutable_docker_image(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

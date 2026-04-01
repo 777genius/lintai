@@ -1,0 +1,5 @@
+id = "skill-git-inline-sslverify-true-safe"
+kind = "Skill"
+description = "AI-native markdown keeps inline Git TLS verification enabled"
+
+expected_absent_rules = ["SEC473"]

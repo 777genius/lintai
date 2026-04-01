@@ -443,6 +443,25 @@ pub(crate) fn find_git_ssl_no_verify_relative_span(text: &str) -> Option<Span> {
     None
 }
 
+pub(crate) fn find_git_inline_sslverify_false_relative_span(text: &str) -> Option<Span> {
+    let mut offset = 0usize;
+    for line in text.split_inclusive('\n') {
+        if let Some(relative) = find_git_inline_sslverify_false_in_line(line) {
+            return Some(Span::new(
+                offset + relative.start_byte,
+                offset + relative.end_byte,
+            ));
+        }
+        offset += line.len();
+    }
+
+    if !text.ends_with('\n') {
+        return find_git_inline_sslverify_false_in_line(text);
+    }
+
+    None
+}
+
 fn find_claude_bare_pip_install_in_line(line: &str) -> Option<Span> {
     let lowered = line.to_ascii_lowercase();
     let Some(claude_start) = lowered.find("claude:") else {
@@ -963,6 +982,30 @@ fn find_git_ssl_no_verify_in_line(line: &str) -> Option<Span> {
     None
 }
 
+fn find_git_inline_sslverify_false_in_line(line: &str) -> Option<Span> {
+    let lowered = line.to_ascii_lowercase();
+    if SAFETY_WARNING_MARKERS
+        .iter()
+        .any(|marker| lowered.contains(marker))
+    {
+        return None;
+    }
+
+    let Some(git_start) = lowered.find("git ") else {
+        return None;
+    };
+    let search_slice = &lowered[git_start + "git ".len()..];
+    let marker = "-c http.sslverify=false";
+    let relative_marker = search_slice.find(marker)?;
+    let after_marker = git_start + "git ".len() + relative_marker + marker.len();
+    if !lowered[after_marker..].contains(' ') {
+        return None;
+    }
+
+    let start = git_start + "git ".len() + relative_marker;
+    Some(Span::new(start, start + marker.len()))
+}
+
 fn has_immutable_git_ref(url: &str) -> bool {
     let Some(scheme_start) = url.find("git+https://") else {
         return false;
@@ -984,7 +1027,8 @@ mod tests {
     use super::{
         find_cargo_http_git_install_relative_span, find_cargo_http_index_relative_span,
         find_claude_bare_pip_install_relative_span, find_git_http_clone_relative_span,
-        find_git_http_remote_relative_span, find_git_sslverify_false_relative_span,
+        find_git_http_remote_relative_span, find_git_inline_sslverify_false_relative_span,
+        find_git_ssl_no_verify_relative_span, find_git_sslverify_false_relative_span,
         find_js_package_config_http_registry_relative_span,
         find_js_package_strict_ssl_false_relative_span, find_network_tls_bypass_relative_span,
         find_npm_http_registry_relative_span, find_npm_http_source_relative_span,
@@ -1443,5 +1487,54 @@ mod tests {
     fn ignores_git_sslverify_false_in_safety_guidance() {
         let content = "Do not use git config http.sslVerify false\n";
         assert_eq!(find_git_sslverify_false_relative_span(content), None);
+    }
+
+    #[test]
+    fn finds_git_ssl_no_verify_env() {
+        let content = "GIT_SSL_NO_VERIFY=1 git clone https://github.com/acme/demo.git\n";
+        assert!(find_git_ssl_no_verify_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_git_ssl_no_verify_env_true() {
+        let content = "GIT_SSL_NO_VERIFY=true git fetch origin\n";
+        assert!(find_git_ssl_no_verify_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn ignores_git_ssl_no_verify_disabled() {
+        let content = "GIT_SSL_NO_VERIFY=0 git clone https://github.com/acme/demo.git\n";
+        assert_eq!(find_git_ssl_no_verify_relative_span(content), None);
+    }
+
+    #[test]
+    fn ignores_git_ssl_no_verify_in_safety_guidance() {
+        let content = "Avoid GIT_SSL_NO_VERIFY=1 git clone https://github.com/acme/demo.git\n";
+        assert_eq!(find_git_ssl_no_verify_relative_span(content), None);
+    }
+
+    #[test]
+    fn finds_git_inline_sslverify_false() {
+        let content = "git -c http.sslVerify=false clone https://github.com/acme/demo.git\n";
+        assert!(find_git_inline_sslverify_false_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_git_inline_sslverify_false_fetch() {
+        let content = "git -c http.sslVerify=false fetch origin\n";
+        assert!(find_git_inline_sslverify_false_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn ignores_git_inline_sslverify_true() {
+        let content = "git -c http.sslVerify=true clone https://github.com/acme/demo.git\n";
+        assert_eq!(find_git_inline_sslverify_false_relative_span(content), None);
+    }
+
+    #[test]
+    fn ignores_git_inline_sslverify_false_in_safety_guidance() {
+        let content =
+            "Do not use git -c http.sslVerify=false clone https://github.com/acme/demo.git\n";
+        assert_eq!(find_git_inline_sslverify_false_relative_span(content), None);
     }
 }

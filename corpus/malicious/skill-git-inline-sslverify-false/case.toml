@@ -1,0 +1,7 @@
+id = "skill-git-inline-sslverify-false"
+kind = "Skill"
+description = "AI-native markdown teaches inline Git TLS bypass through http.sslVerify=false"
+
+expected_findings = [
+  { rule = "SEC473", tier = "stable", match = "-c http.sslVerify=false" },
+]

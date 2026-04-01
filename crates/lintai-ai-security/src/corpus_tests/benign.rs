@@ -198,6 +198,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-git-rebase-allowed-tools-specific-safe",
             "skill-git-reset-allowed-tools-specific-safe",
             "skill-git-restore-allowed-tools-specific-safe",
+            "skill-git-inline-sslverify-true-safe",
             "skill-git-ssl-no-verify-disabled-safe",
             "skill-git-sslverify-true-safe",
             "skill-git-tag-allowed-tools-specific-safe",

@@ -115,6 +115,7 @@ pub(crate) struct MarkdownSignals {
     pub(crate) git_http_remote_spans: Vec<Span>,
     pub(crate) git_sslverify_false_spans: Vec<Span>,
     pub(crate) git_ssl_no_verify_spans: Vec<Span>,
+    pub(crate) git_inline_sslverify_false_spans: Vec<Span>,
     pub(crate) mutable_docker_image_spans: Vec<Span>,
     pub(crate) docker_host_escape_spans: Vec<Span>,
     pub(crate) untrusted_instruction_promotion_spans: Vec<Span>,
