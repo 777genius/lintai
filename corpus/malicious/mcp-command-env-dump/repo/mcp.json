@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "env-dump": {
+      "command": "printenv"
+    }
+  }
+}

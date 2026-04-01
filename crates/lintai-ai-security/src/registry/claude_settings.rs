@@ -2,10 +2,16 @@ use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
 
 use super::*;
 use crate::claude_settings_rules::{
-    check_claude_settings_bash_wildcard, check_claude_settings_bunx_permission,
-    check_claude_settings_bypass_permissions, check_claude_settings_curl_permission,
-    check_claude_settings_dangerous_http_hook_host, check_claude_settings_edit_unsafe_path,
-    check_claude_settings_edit_wildcard, check_claude_settings_enabled_mcpjson_servers,
+    check_claude_settings_authorized_keys_write, check_claude_settings_bash_wildcard,
+    check_claude_settings_browser_secret_store_access,
+    check_claude_settings_browser_secret_store_exfil, check_claude_settings_bunx_permission,
+    check_claude_settings_bypass_permissions, check_claude_settings_camera_capture,
+    check_claude_settings_camera_capture_exfil, check_claude_settings_clipboard_exfil,
+    check_claude_settings_clipboard_read, check_claude_settings_cron_persistence,
+    check_claude_settings_curl_permission, check_claude_settings_dangerous_http_hook_host,
+    check_claude_settings_edit_unsafe_path, check_claude_settings_edit_wildcard,
+    check_claude_settings_enabled_mcpjson_servers, check_claude_settings_environment_dump,
+    check_claude_settings_environment_dump_exfil,
     check_claude_settings_external_absolute_hook_command,
     check_claude_settings_gh_api_delete_permission, check_claude_settings_gh_api_patch_permission,
     check_claude_settings_gh_api_post_permission, check_claude_settings_gh_api_put_permission,
@@ -34,22 +40,30 @@ use crate::claude_settings_rules::{
     check_claude_settings_glob_unsafe_path, check_claude_settings_glob_wildcard,
     check_claude_settings_grep_unsafe_path, check_claude_settings_grep_wildcard,
     check_claude_settings_home_directory_hook_command, check_claude_settings_inline_download_exec,
-    check_claude_settings_insecure_http_hook_url, check_claude_settings_invalid_hook_matcher_event,
-    check_claude_settings_missing_hook_timeout,
+    check_claude_settings_insecure_http_hook_url, check_claude_settings_insecure_permission_change,
+    check_claude_settings_invalid_hook_matcher_event, check_claude_settings_keylogging,
+    check_claude_settings_keylogging_exfil, check_claude_settings_launchd_registration,
+    check_claude_settings_linux_capability_manipulation, check_claude_settings_microphone_capture,
+    check_claude_settings_microphone_capture_exfil, check_claude_settings_missing_hook_timeout,
     check_claude_settings_missing_required_hook_matcher, check_claude_settings_missing_schema,
     check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
     check_claude_settings_npm_exec_permission, check_claude_settings_npx_permission,
-    check_claude_settings_package_install_permission, check_claude_settings_pipx_run_permission,
+    check_claude_settings_package_install_permission, check_claude_settings_password_file_access,
+    check_claude_settings_pipx_run_permission, check_claude_settings_plain_http_secret_exfil,
     check_claude_settings_pnpm_dlx_permission, check_claude_settings_read_unsafe_path,
-    check_claude_settings_read_wildcard, check_claude_settings_unscoped_bash,
+    check_claude_settings_read_wildcard, check_claude_settings_root_delete,
+    check_claude_settings_screen_capture, check_claude_settings_screen_capture_exfil,
+    check_claude_settings_secret_exfil, check_claude_settings_sensitive_file_exfil,
+    check_claude_settings_setuid_setgid, check_claude_settings_shell_profile_write,
+    check_claude_settings_systemd_service_registration, check_claude_settings_unscoped_bash,
     check_claude_settings_unscoped_edit, check_claude_settings_unscoped_glob,
     check_claude_settings_unscoped_grep, check_claude_settings_unscoped_read,
     check_claude_settings_unscoped_webfetch, check_claude_settings_unscoped_websearch,
     check_claude_settings_unscoped_write, check_claude_settings_uvx_permission,
     check_claude_settings_webfetch_raw_githubusercontent, check_claude_settings_webfetch_wildcard,
-    check_claude_settings_websearch_wildcard, check_claude_settings_wget_permission,
-    check_claude_settings_write_unsafe_path, check_claude_settings_write_wildcard,
-    check_claude_settings_yarn_dlx_permission,
+    check_claude_settings_webhook_secret_exfil, check_claude_settings_websearch_wildcard,
+    check_claude_settings_wget_permission, check_claude_settings_write_unsafe_path,
+    check_claude_settings_write_wildcard, check_claude_settings_yarn_dlx_permission,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
 
@@ -1049,7 +1063,343 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
+declare_rule! {
+    pub struct ClaudeSettingsRootDeleteRule {
+        code: "SEC641",
+        summary: "Claude settings command hook attempts destructive root deletion",
+        doc_title: "Claude settings: command hook root deletion",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsPasswordFileAccessRule {
+        code: "SEC642",
+        summary: "Claude settings command hook accesses a sensitive system password file",
+        doc_title: "Claude settings: command hook password file access",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsShellProfileWriteRule {
+        code: "SEC643",
+        summary: "Claude settings command hook writes to a shell profile startup file",
+        doc_title: "Claude settings: command hook shell profile write",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsAuthorizedKeysWriteRule {
+        code: "SEC644",
+        summary: "Claude settings command hook writes to SSH authorized_keys",
+        doc_title: "Claude settings: command hook authorized_keys write",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsCronPersistenceRule {
+        code: "SEC655",
+        summary: "Claude settings command hook manipulates cron persistence",
+        doc_title: "Claude settings: command hook cron persistence",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsSystemdServiceRegistrationRule {
+        code: "SEC656",
+        summary: "Claude settings command hook registers a systemd service or unit for persistence",
+        doc_title: "Claude settings: command hook systemd persistence",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsLaunchdRegistrationRule {
+        code: "SEC657",
+        summary: "Claude settings command hook registers a launchd plist for persistence",
+        doc_title: "Claude settings: command hook launchd persistence",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsInsecurePermissionChangeRule {
+        code: "SEC667",
+        summary: "Claude settings command hook performs an insecure permission change",
+        doc_title: "Claude settings: command hook insecure chmod",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsSetuidSetgidRule {
+        code: "SEC668",
+        summary: "Claude settings command hook manipulates setuid or setgid permissions",
+        doc_title: "Claude settings: command hook setuid or setgid manipulation",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsLinuxCapabilityManipulationRule {
+        code: "SEC669",
+        summary: "Claude settings command hook manipulates Linux capabilities",
+        doc_title: "Claude settings: command hook Linux capability manipulation",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsSecretExfilRule {
+        code: "SEC677",
+        summary: "Claude settings command hook appears to send secret material over the network",
+        doc_title: "Claude settings: secret exfiltration hook",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsPlainHttpSecretExfilRule {
+        code: "SEC678",
+        summary: "Claude settings command hook sends secret material to an insecure http:// endpoint",
+        doc_title: "Claude settings: insecure HTTP secret send",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsWebhookSecretExfilRule {
+        code: "SEC679",
+        summary: "Claude settings command hook posts secret material to a webhook endpoint",
+        doc_title: "Claude settings: webhook secret exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsSensitiveFileExfilRule {
+        code: "SEC685",
+        summary: "Claude settings command hook transfers a sensitive credential file to a remote destination",
+        doc_title: "Claude settings: sensitive file exfiltration hook",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsClipboardReadRule {
+        code: "SEC691",
+        summary: "Claude settings command hook reads local clipboard contents",
+        doc_title: "Claude settings: clipboard read hook",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsBrowserSecretStoreAccessRule {
+        code: "SEC692",
+        summary: "Claude settings command hook accesses browser credential or cookie stores",
+        doc_title: "Claude settings: browser credential store access hook",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsClipboardExfilRule {
+        code: "SEC699",
+        summary: "Claude settings command hook exfiltrates clipboard contents over the network",
+        doc_title: "Claude settings: clipboard exfiltration hook",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsBrowserSecretStoreExfilRule {
+        code: "SEC700",
+        summary: "Claude settings command hook exfiltrates browser credential or cookie store data",
+        doc_title: "Claude settings: browser credential store exfiltration hook",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsScreenCaptureRule {
+        code: "SEC707",
+        summary: "Claude settings command hook captures a screenshot or desktop image",
+        doc_title: "Claude settings: screen capture hook",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsScreenCaptureExfilRule {
+        code: "SEC708",
+        summary: "Claude settings command hook captures and exfiltrates a screenshot or desktop image",
+        doc_title: "Claude settings: screen capture exfiltration hook",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsCameraCaptureRule {
+        code: "SEC719",
+        summary: "Claude settings command hook captures a webcam or camera image",
+        doc_title: "Claude settings: camera capture hook",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsMicrophoneCaptureRule {
+        code: "SEC720",
+        summary: "Claude settings command hook captures microphone audio",
+        doc_title: "Claude settings: microphone capture hook",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsCameraCaptureExfilRule {
+        code: "SEC721",
+        summary: "Claude settings command hook captures and exfiltrates webcam or camera data",
+        doc_title: "Claude settings: camera capture exfiltration hook",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsMicrophoneCaptureExfilRule {
+        code: "SEC722",
+        summary: "Claude settings command hook captures and exfiltrates microphone audio",
+        doc_title: "Claude settings: microphone capture exfiltration hook",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsKeyloggingRule {
+        code: "SEC731",
+        summary: "Claude settings command hook captures keystrokes or keyboard input",
+        doc_title: "Claude settings: keylogger capture hook",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsKeyloggingExfilRule {
+        code: "SEC732",
+        summary: "Claude settings command hook captures and exfiltrates keystrokes or keyboard input",
+        doc_title: "Claude settings: keylogger exfiltration hook",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsEnvironmentDumpRule {
+        code: "SEC739",
+        summary: "Claude settings command hook dumps environment variables or shell state",
+        doc_title: "Claude settings: environment dump hook",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsEnvironmentDumpExfilRule {
+        code: "SEC740",
+        summary: "Claude settings command hook dumps and exfiltrates environment variables or shell state",
+        doc_title: "Claude settings: environment dump exfiltration hook",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -2707,6 +3057,579 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove TLS-bypass flags or NODE_TLS_REJECT_UNAUTHORIZED=0 from the network-capable Claude hook command",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsRootDeleteRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit `rm`-style destructive root deletion payloads.",
+            malicious_case_ids: &["claude-settings-hook-persistence-escalation"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `rm` with recursive+force flags targeting `/` or using `--no-preserve-root`.",
+        },
+        check: check_claude_settings_root_delete,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the destructive root deletion command from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsPasswordFileAccessRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for direct access to sensitive password and sudo policy files.",
+            malicious_case_ids: &["claude-settings-hook-persistence-escalation"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook path detection over committed hook entries with type == command for `/etc/shadow`, `/etc/passwd`, `/etc/sudoers`, `/etc/gshadow`, or `/etc/master.passwd`.",
+        },
+        check: check_claude_settings_password_file_access,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the sensitive password-file access from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsShellProfileWriteRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit writes to shell startup profile files.",
+            malicious_case_ids: &["claude-settings-hook-persistence-escalation"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook analysis over committed hook entries with type == command using redirection-or-tee targeting of `.bashrc`, `.bash_profile`, `.zshrc`, or `.profile`.",
+        },
+        check: check_claude_settings_shell_profile_write,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the shell profile write and keep startup-file persistence out of the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsAuthorizedKeysWriteRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit writes to SSH `authorized_keys`.",
+            malicious_case_ids: &["claude-settings-hook-persistence-escalation"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook analysis over committed hook entries with type == command using redirection-or-tee targeting of `authorized_keys`.",
+        },
+        check: check_claude_settings_authorized_keys_write,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the `authorized_keys` modification from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsCronPersistenceRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit cron persistence setup.",
+            malicious_case_ids: &["claude-settings-hook-service-persistence"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `crontab` mutation or writes to cron persistence paths.",
+        },
+        check: check_claude_settings_cron_persistence,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove cron persistence from the committed Claude hook and keep scheduled-task changes under explicit review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsSystemdServiceRegistrationRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit systemd service registration or unit-file writes.",
+            malicious_case_ids: &["claude-settings-hook-service-persistence"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `systemctl enable|link` or writes to systemd unit paths.",
+        },
+        check: check_claude_settings_systemd_service_registration,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove systemd persistence from the committed Claude hook and keep service registration out of shared hooks",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsLaunchdRegistrationRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.",
+            malicious_case_ids: &["claude-settings-hook-service-persistence"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `launchctl load|bootstrap` or writes to LaunchAgents/LaunchDaemons plist paths.",
+        },
+        check: check_claude_settings_launchd_registration,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove launchd persistence from the committed Claude hook and keep plist registration out of shared hooks",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsInsecurePermissionChangeRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit insecure chmod payloads.",
+            malicious_case_ids: &["claude-settings-hook-privilege-escalation-payloads"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `chmod 777`, `chmod 0777`, or symbolic world-writable modes such as `a+rwx`.",
+        },
+        check: check_claude_settings_insecure_permission_change,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the insecure chmod change from the committed Claude hook and use the minimum required permissions",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsSetuidSetgidRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit setuid or setgid chmod payloads.",
+            malicious_case_ids: &["claude-settings-hook-privilege-escalation-payloads"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for chmod octal modes with setuid/setgid bits or symbolic modes such as `u+s` and `g+s`.",
+        },
+        check: check_claude_settings_setuid_setgid,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove setuid or setgid manipulation from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsLinuxCapabilityManipulationRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit Linux capability manipulation payloads.",
+            malicious_case_ids: &["claude-settings-hook-privilege-escalation-payloads"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `setcap` or dangerous Linux capability tokens such as `cap_setuid` and `cap_sys_admin`.",
+        },
+        check: check_claude_settings_linux_capability_manipulation,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove Linux capability manipulation from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsSecretExfilRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit secret-bearing network exfil payloads.",
+            malicious_case_ids: &["claude-settings-hook-secret-exfil-payloads"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for secret markers combined with network-capable command context.",
+        },
+        check: check_claude_settings_secret_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the secret-bearing network send from the committed Claude hook and keep secret access local",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsPlainHttpSecretExfilRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for secret-bearing exfil over insecure HTTP.",
+            malicious_case_ids: &["claude-settings-hook-secret-exfil-payloads"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `http://` endpoints gated by concurrent secret markers in a network-capable command path.",
+        },
+        check: check_claude_settings_plain_http_secret_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the insecure secret-bearing HTTP send from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsWebhookSecretExfilRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for secret-bearing posts to webhook endpoints.",
+            malicious_case_ids: &["claude-settings-hook-secret-exfil-payloads"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for secret markers plus webhook endpoint markers such as `hooks.slack.com/services/` or `discord.com/api/webhooks/`.",
+        },
+        check: check_claude_settings_webhook_secret_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the secret-bearing webhook post from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsSensitiveFileExfilRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit transfer of sensitive credential files to remote destinations.",
+            malicious_case_ids: &["claude-settings-hook-sensitive-file-exfil"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`.",
+        },
+        check: check_claude_settings_sensitive_file_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the remote transfer of sensitive credential files from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsClipboardReadRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for clipboard-reading behavior that can extract local user data.",
+            malicious_case_ids: &["claude-settings-hook-local-data-theft"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard`.",
+        },
+        check: check_claude_settings_clipboard_read,
+        safe_fix: None,
+        suggestion_message: Some("remove clipboard reads from the committed Claude hook"),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsBrowserSecretStoreAccessRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for direct access to browser credential or cookie storage files.",
+            malicious_case_ids: &["claude-settings-hook-local-data-theft"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`.",
+        },
+        check: check_claude_settings_browser_secret_store_access,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove browser credential or cookie store access from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsClipboardExfilRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for clipboard-reading behavior that also transmits captured data to remote destinations.",
+            malicious_case_ids: &["claude-settings-hook-local-data-exfil"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard` combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_claude_settings_clipboard_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove network exfiltration of clipboard contents from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsBrowserSecretStoreExfilRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for direct access to browser credential or cookie storage files combined with remote transfer behavior.",
+            malicious_case_ids: &["claude-settings-hook-local-data-exfil"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_claude_settings_browser_secret_store_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove network exfiltration of browser credential or cookie store data from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsScreenCaptureRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit screen capture utilities.",
+            malicious_case_ids: &[
+                "claude-settings-hook-screen-capture",
+                "claude-settings-hook-screen-capture-exfil",
+            ],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`.",
+        },
+        check: check_claude_settings_screen_capture,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove screenshot capture behavior from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsScreenCaptureExfilRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit screen capture utilities combined with remote transfer behavior.",
+            malicious_case_ids: &["claude-settings-hook-screen-capture-exfil"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_claude_settings_screen_capture_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove screenshot capture and remote transfer behavior from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsCameraCaptureRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit webcam or camera capture utilities.",
+            malicious_case_ids: &[
+                "claude-settings-hook-device-capture",
+                "claude-settings-hook-device-capture-exfil",
+            ],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`.",
+        },
+        check: check_claude_settings_camera_capture,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove webcam or camera capture behavior from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsMicrophoneCaptureRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit microphone recording utilities.",
+            malicious_case_ids: &[
+                "claude-settings-hook-device-capture",
+                "claude-settings-hook-device-capture-exfil",
+            ],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`.",
+        },
+        check: check_claude_settings_microphone_capture,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove microphone capture behavior from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsCameraCaptureExfilRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit webcam or camera capture utilities combined with remote transfer behavior.",
+            malicious_case_ids: &["claude-settings-hook-device-capture-exfil"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_claude_settings_camera_capture_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove webcam or camera capture and remote transfer behavior from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsMicrophoneCaptureExfilRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit microphone recording utilities combined with remote transfer behavior.",
+            malicious_case_ids: &["claude-settings-hook-device-capture-exfil"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_claude_settings_microphone_capture_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove microphone capture and remote transfer behavior from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsKeyloggingRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit keystroke capture utilities or keylogger markers.",
+            malicious_case_ids: &[
+                "claude-settings-hook-keylogger",
+                "claude-settings-hook-keylogger-exfil",
+            ],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`.",
+        },
+        check: check_claude_settings_keylogging,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove keystroke capture or keylogger behavior from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsKeyloggingExfilRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.",
+            malicious_case_ids: &["claude-settings-hook-keylogger-exfil"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_claude_settings_keylogging_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove keystroke capture and remote transfer behavior from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsEnvironmentDumpRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit environment or shell-state enumeration commands.",
+            malicious_case_ids: &[
+                "claude-settings-hook-env-dump",
+                "claude-settings-hook-env-dump-exfil",
+            ],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`.",
+        },
+        check: check_claude_settings_environment_dump,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove environment dumping behavior from the committed Claude hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsEnvironmentDumpExfilRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: BASE_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed Claude settings command hooks for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
+            malicious_case_ids: &["claude-settings-hook-env-dump-exfil"],
+            benign_case_ids: &["claude-settings-network-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_claude_settings_environment_dump_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove environment dumping and remote transfer behavior from the committed Claude hook",
         ),
         suggestion_fix: None,
     },

@@ -1490,6 +1490,850 @@ pub(crate) fn check_plugin_hook_network_tls_bypass(
     )
 }
 
+pub(crate) fn check_mcp_root_delete(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.root_delete_command_span.clone()),
+        "MCP configuration command attempts destructive root deletion",
+    )
+}
+
+pub(crate) fn check_mcp_password_file_access(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.password_file_access_command_span.clone()),
+        "MCP configuration command accesses a sensitive system password file",
+    )
+}
+
+pub(crate) fn check_mcp_shell_profile_write(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.shell_profile_write_command_span.clone()),
+        "MCP configuration command writes to a shell profile startup file",
+    )
+}
+
+pub(crate) fn check_mcp_authorized_keys_write(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.authorized_keys_write_command_span.clone()),
+        "MCP configuration command writes to SSH authorized_keys",
+    )
+}
+
+pub(crate) fn check_plugin_hook_root_delete(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.root_delete_plugin_hook_span.clone()),
+        "plugin hook command attempts destructive root deletion",
+    )
+}
+
+pub(crate) fn check_plugin_hook_password_file_access(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.password_file_access_plugin_hook_span.clone()),
+        "plugin hook command accesses a sensitive system password file",
+    )
+}
+
+pub(crate) fn check_plugin_hook_shell_profile_write(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.shell_profile_write_plugin_hook_span.clone()),
+        "plugin hook command writes to a shell profile startup file",
+    )
+}
+
+pub(crate) fn check_plugin_hook_authorized_keys_write(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.authorized_keys_write_plugin_hook_span.clone()),
+        "plugin hook command writes to SSH authorized_keys",
+    )
+}
+
+pub(crate) fn check_mcp_sensitive_file_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.sensitive_file_exfil_command_span.clone()),
+        "MCP configuration command transfers a sensitive credential file to a remote destination",
+    )
+}
+
+pub(crate) fn check_plugin_hook_sensitive_file_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.sensitive_file_exfil_plugin_hook_span.clone()),
+        "plugin hook command transfers a sensitive credential file to a remote destination",
+    )
+}
+
+pub(crate) fn check_mcp_clipboard_read(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.clipboard_read_command_span.clone()),
+        "MCP configuration command reads clipboard contents",
+    )
+}
+
+pub(crate) fn check_mcp_browser_secret_store_access(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.browser_secret_store_access_command_span.clone()),
+        "MCP configuration command accesses browser credential or cookie store data",
+    )
+}
+
+pub(crate) fn check_plugin_hook_clipboard_read(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.clipboard_read_plugin_hook_span.clone()),
+        "plugin hook command reads clipboard contents",
+    )
+}
+
+pub(crate) fn check_plugin_hook_browser_secret_store_access(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.browser_secret_store_access_plugin_hook_span.clone()),
+        "plugin hook command accesses browser credential or cookie store data",
+    )
+}
+
+pub(crate) fn check_mcp_clipboard_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.clipboard_exfil_command_span.clone()),
+        "MCP configuration command exfiltrates clipboard contents over the network",
+    )
+}
+
+pub(crate) fn check_mcp_browser_secret_store_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.browser_secret_store_exfil_command_span.clone()),
+        "MCP configuration command exfiltrates browser credential or cookie store data",
+    )
+}
+
+pub(crate) fn check_plugin_hook_clipboard_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.clipboard_exfil_plugin_hook_span.clone()),
+        "plugin hook command exfiltrates clipboard contents over the network",
+    )
+}
+
+pub(crate) fn check_plugin_hook_browser_secret_store_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.browser_secret_store_exfil_plugin_hook_span.clone()),
+        "plugin hook command exfiltrates browser credential or cookie store data",
+    )
+}
+
+pub(crate) fn check_mcp_screen_capture(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.screen_capture_command_span.clone()),
+        "MCP configuration command captures a screenshot or desktop image",
+    )
+}
+
+pub(crate) fn check_mcp_screen_capture_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.screen_capture_exfil_command_span.clone()),
+        "MCP configuration command captures and exfiltrates a screenshot or desktop image",
+    )
+}
+
+pub(crate) fn check_plugin_hook_screen_capture(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.screen_capture_plugin_hook_span.clone()),
+        "plugin hook command captures a screenshot or desktop image",
+    )
+}
+
+pub(crate) fn check_plugin_hook_screen_capture_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.screen_capture_exfil_plugin_hook_span.clone()),
+        "plugin hook command captures and exfiltrates a screenshot or desktop image",
+    )
+}
+
+pub(crate) fn check_mcp_camera_capture(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.camera_capture_command_span.clone()),
+        "MCP configuration command captures a camera image or webcam stream",
+    )
+}
+
+pub(crate) fn check_mcp_microphone_capture(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.microphone_capture_command_span.clone()),
+        "MCP configuration command records microphone or audio input",
+    )
+}
+
+pub(crate) fn check_mcp_camera_capture_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.camera_capture_exfil_command_span.clone()),
+        "MCP configuration command captures and exfiltrates camera or webcam data",
+    )
+}
+
+pub(crate) fn check_mcp_microphone_capture_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.microphone_capture_exfil_command_span.clone()),
+        "MCP configuration command records and exfiltrates microphone or audio input",
+    )
+}
+
+pub(crate) fn check_plugin_hook_camera_capture(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.camera_capture_plugin_hook_span.clone()),
+        "plugin hook command captures a camera image or webcam stream",
+    )
+}
+
+pub(crate) fn check_plugin_hook_microphone_capture(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.microphone_capture_plugin_hook_span.clone()),
+        "plugin hook command records microphone or audio input",
+    )
+}
+
+pub(crate) fn check_plugin_hook_camera_capture_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.camera_capture_exfil_plugin_hook_span.clone()),
+        "plugin hook command captures and exfiltrates camera or webcam data",
+    )
+}
+
+pub(crate) fn check_plugin_hook_microphone_capture_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.microphone_capture_exfil_plugin_hook_span.clone()),
+        "plugin hook command records and exfiltrates microphone or audio input",
+    )
+}
+
+pub(crate) fn check_mcp_keylogging(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.keylogging_command_span.clone()),
+        "MCP configuration command captures keystrokes or keyboard input",
+    )
+}
+
+pub(crate) fn check_mcp_keylogging_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.keylogging_exfil_command_span.clone()),
+        "MCP configuration command captures and exfiltrates keystrokes or keyboard input",
+    )
+}
+
+pub(crate) fn check_plugin_hook_keylogging(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.keylogging_plugin_hook_span.clone()),
+        "plugin hook command captures keystrokes or keyboard input",
+    )
+}
+
+pub(crate) fn check_plugin_hook_keylogging_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.keylogging_exfil_plugin_hook_span.clone()),
+        "plugin hook command captures and exfiltrates keystrokes or keyboard input",
+    )
+}
+
+pub(crate) fn check_mcp_environment_dump(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.environment_dump_command_span.clone()),
+        "MCP configuration command dumps environment variables or shell state",
+    )
+}
+
+pub(crate) fn check_mcp_environment_dump_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.environment_dump_exfil_command_span.clone()),
+        "MCP configuration command dumps and exfiltrates environment variables or shell state",
+    )
+}
+
+pub(crate) fn check_plugin_hook_environment_dump(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.environment_dump_plugin_hook_span.clone()),
+        "plugin hook command dumps environment variables or shell state",
+    )
+}
+
+pub(crate) fn check_plugin_hook_environment_dump_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.environment_dump_exfil_plugin_hook_span.clone()),
+        "plugin hook command dumps and exfiltrates environment variables or shell state",
+    )
+}
+
+pub(crate) fn check_mcp_secret_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.secret_exfil_command_span.clone()),
+        "MCP configuration command appears to send secret material over the network",
+    )
+}
+
+pub(crate) fn check_mcp_plain_http_secret_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.plain_http_secret_exfil_command_span.clone()),
+        "MCP configuration command sends secret material to an insecure http:// endpoint",
+    )
+}
+
+pub(crate) fn check_mcp_webhook_secret_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.webhook_secret_exfil_command_span.clone()),
+        "MCP configuration command posts secret material to a webhook endpoint",
+    )
+}
+
+pub(crate) fn check_plugin_hook_secret_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.secret_exfil_plugin_hook_span.clone()),
+        "plugin hook command appears to send secret material over the network",
+    )
+}
+
+pub(crate) fn check_plugin_hook_plain_http_secret_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.plain_http_secret_exfil_plugin_hook_span.clone()),
+        "plugin hook command sends secret material to an insecure http:// endpoint",
+    )
+}
+
+pub(crate) fn check_plugin_hook_webhook_secret_exfil(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.webhook_secret_exfil_plugin_hook_span.clone()),
+        "plugin hook command posts secret material to a webhook endpoint",
+    )
+}
+
+pub(crate) fn check_mcp_cron_persistence(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.cron_persistence_command_span.clone()),
+        "MCP configuration command manipulates cron persistence",
+    )
+}
+
+pub(crate) fn check_mcp_systemd_service_registration(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.systemd_service_registration_command_span.clone()),
+        "MCP configuration command registers a systemd service or unit for persistence",
+    )
+}
+
+pub(crate) fn check_mcp_launchd_registration(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.launchd_registration_command_span.clone()),
+        "MCP configuration command registers a launchd plist for persistence",
+    )
+}
+
+pub(crate) fn check_plugin_hook_cron_persistence(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.cron_persistence_plugin_hook_span.clone()),
+        "plugin hook command manipulates cron persistence",
+    )
+}
+
+pub(crate) fn check_plugin_hook_systemd_service_registration(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals.json().and_then(|signals| {
+            signals
+                .systemd_service_registration_plugin_hook_span
+                .clone()
+        }),
+        "plugin hook command registers a systemd service or unit for persistence",
+    )
+}
+
+pub(crate) fn check_plugin_hook_launchd_registration(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.launchd_registration_plugin_hook_span.clone()),
+        "plugin hook command registers a launchd plist for persistence",
+    )
+}
+
+pub(crate) fn check_mcp_insecure_permission_change(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.insecure_permission_change_command_span.clone()),
+        "MCP configuration command performs an insecure permission change",
+    )
+}
+
+pub(crate) fn check_mcp_setuid_setgid(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.setuid_setgid_command_span.clone()),
+        "MCP configuration command manipulates setuid or setgid permissions",
+    )
+}
+
+pub(crate) fn check_mcp_linux_capability_manipulation(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.linux_capability_manipulation_command_span.clone()),
+        "MCP configuration command manipulates Linux capabilities",
+    )
+}
+
+pub(crate) fn check_plugin_hook_insecure_permission_change(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.insecure_permission_change_plugin_hook_span.clone()),
+        "plugin hook command performs an insecure permission change",
+    )
+}
+
+pub(crate) fn check_plugin_hook_setuid_setgid(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.setuid_setgid_plugin_hook_span.clone()),
+        "plugin hook command manipulates setuid or setgid permissions",
+    )
+}
+
+pub(crate) fn check_plugin_hook_linux_capability_manipulation(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals.json().and_then(|signals| {
+            signals
+                .linux_capability_manipulation_plugin_hook_span
+                .clone()
+        }),
+        "plugin hook command manipulates Linux capabilities",
+    )
+}
+
 pub(crate) fn check_plain_http_config(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

@@ -4,22 +4,22 @@ use super::*;
 use crate::json_rules::{
     check_json_dangerous_endpoint_host, check_json_hidden_instruction, check_json_literal_secret,
     check_json_sensitive_env_reference, check_json_suspicious_remote_endpoint,
-    check_json_unsafe_plugin_path, check_mcp_autoapprove_bash_unscoped,
-    check_mcp_autoapprove_bash_wildcard, check_mcp_autoapprove_bunx, check_mcp_autoapprove_chgrp,
-    check_mcp_autoapprove_chmod, check_mcp_autoapprove_chown, check_mcp_autoapprove_crontab,
-    check_mcp_autoapprove_curl, check_mcp_autoapprove_edit_unsafe_path,
-    check_mcp_autoapprove_edit_unscoped, check_mcp_autoapprove_edit_wildcard,
-    check_mcp_autoapprove_gh_api_delete, check_mcp_autoapprove_gh_api_patch,
-    check_mcp_autoapprove_gh_api_post, check_mcp_autoapprove_gh_api_put,
-    check_mcp_autoapprove_gh_issue_create, check_mcp_autoapprove_gh_pr,
-    check_mcp_autoapprove_gh_release_create, check_mcp_autoapprove_gh_release_delete,
-    check_mcp_autoapprove_gh_release_upload, check_mcp_autoapprove_gh_repo_create,
-    check_mcp_autoapprove_gh_repo_delete, check_mcp_autoapprove_gh_repo_edit,
-    check_mcp_autoapprove_gh_repo_transfer, check_mcp_autoapprove_gh_secret_delete,
-    check_mcp_autoapprove_gh_secret_set, check_mcp_autoapprove_gh_variable_delete,
-    check_mcp_autoapprove_gh_variable_set, check_mcp_autoapprove_gh_workflow_disable,
-    check_mcp_autoapprove_gh_workflow_run, check_mcp_autoapprove_git_add,
-    check_mcp_autoapprove_git_am, check_mcp_autoapprove_git_apply,
+    check_json_unsafe_plugin_path, check_mcp_authorized_keys_write,
+    check_mcp_autoapprove_bash_unscoped, check_mcp_autoapprove_bash_wildcard,
+    check_mcp_autoapprove_bunx, check_mcp_autoapprove_chgrp, check_mcp_autoapprove_chmod,
+    check_mcp_autoapprove_chown, check_mcp_autoapprove_crontab, check_mcp_autoapprove_curl,
+    check_mcp_autoapprove_edit_unsafe_path, check_mcp_autoapprove_edit_unscoped,
+    check_mcp_autoapprove_edit_wildcard, check_mcp_autoapprove_gh_api_delete,
+    check_mcp_autoapprove_gh_api_patch, check_mcp_autoapprove_gh_api_post,
+    check_mcp_autoapprove_gh_api_put, check_mcp_autoapprove_gh_issue_create,
+    check_mcp_autoapprove_gh_pr, check_mcp_autoapprove_gh_release_create,
+    check_mcp_autoapprove_gh_release_delete, check_mcp_autoapprove_gh_release_upload,
+    check_mcp_autoapprove_gh_repo_create, check_mcp_autoapprove_gh_repo_delete,
+    check_mcp_autoapprove_gh_repo_edit, check_mcp_autoapprove_gh_repo_transfer,
+    check_mcp_autoapprove_gh_secret_delete, check_mcp_autoapprove_gh_secret_set,
+    check_mcp_autoapprove_gh_variable_delete, check_mcp_autoapprove_gh_variable_set,
+    check_mcp_autoapprove_gh_workflow_disable, check_mcp_autoapprove_gh_workflow_run,
+    check_mcp_autoapprove_git_add, check_mcp_autoapprove_git_am, check_mcp_autoapprove_git_apply,
     check_mcp_autoapprove_git_branch, check_mcp_autoapprove_git_checkout,
     check_mcp_autoapprove_git_cherry_pick, check_mcp_autoapprove_git_clean,
     check_mcp_autoapprove_git_clone, check_mcp_autoapprove_git_commit,
@@ -44,14 +44,39 @@ use crate::json_rules::{
     check_mcp_autoapprove_wget, check_mcp_autoapprove_wildcard,
     check_mcp_autoapprove_write_unsafe_path, check_mcp_autoapprove_write_unscoped,
     check_mcp_autoapprove_write_wildcard, check_mcp_autoapprove_yarn_dlx, check_mcp_broad_env_file,
-    check_mcp_capabilities_wildcard, check_mcp_credential_env_passthrough,
-    check_mcp_dangerous_docker_flag, check_mcp_inline_download_exec, check_mcp_mutable_docker_pull,
-    check_mcp_mutable_launcher, check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
-    check_mcp_sensitive_docker_mount, check_mcp_shell_wrapper, check_mcp_sudo_args0,
-    check_mcp_sudo_command, check_mcp_trust_tools_true, check_mcp_unpinned_docker_image,
-    check_plain_http_config, check_plugin_hook_inline_download_exec,
+    check_mcp_browser_secret_store_access, check_mcp_browser_secret_store_exfil,
+    check_mcp_camera_capture, check_mcp_camera_capture_exfil, check_mcp_capabilities_wildcard,
+    check_mcp_clipboard_exfil, check_mcp_clipboard_read, check_mcp_credential_env_passthrough,
+    check_mcp_cron_persistence, check_mcp_dangerous_docker_flag, check_mcp_environment_dump,
+    check_mcp_environment_dump_exfil, check_mcp_inline_download_exec,
+    check_mcp_insecure_permission_change, check_mcp_keylogging, check_mcp_keylogging_exfil,
+    check_mcp_launchd_registration, check_mcp_linux_capability_manipulation,
+    check_mcp_microphone_capture, check_mcp_microphone_capture_exfil,
+    check_mcp_mutable_docker_pull, check_mcp_mutable_launcher,
+    check_mcp_network_tls_bypass_command, check_mcp_password_file_access,
+    check_mcp_plain_http_secret_exfil, check_mcp_root_delete, check_mcp_sandbox_disabled,
+    check_mcp_screen_capture, check_mcp_screen_capture_exfil, check_mcp_secret_exfil,
+    check_mcp_sensitive_docker_mount, check_mcp_sensitive_file_exfil, check_mcp_setuid_setgid,
+    check_mcp_shell_profile_write, check_mcp_shell_wrapper, check_mcp_sudo_args0,
+    check_mcp_sudo_command, check_mcp_systemd_service_registration, check_mcp_trust_tools_true,
+    check_mcp_unpinned_docker_image, check_mcp_webhook_secret_exfil, check_plain_http_config,
+    check_plugin_hook_authorized_keys_write, check_plugin_hook_browser_secret_store_access,
+    check_plugin_hook_browser_secret_store_exfil, check_plugin_hook_camera_capture,
+    check_plugin_hook_camera_capture_exfil, check_plugin_hook_clipboard_exfil,
+    check_plugin_hook_clipboard_read, check_plugin_hook_cron_persistence,
+    check_plugin_hook_environment_dump, check_plugin_hook_environment_dump_exfil,
+    check_plugin_hook_inline_download_exec, check_plugin_hook_insecure_permission_change,
+    check_plugin_hook_keylogging, check_plugin_hook_keylogging_exfil,
+    check_plugin_hook_launchd_registration, check_plugin_hook_linux_capability_manipulation,
+    check_plugin_hook_microphone_capture, check_plugin_hook_microphone_capture_exfil,
     check_plugin_hook_mutable_launcher, check_plugin_hook_network_tls_bypass,
-    check_static_auth_exposure_config, check_trust_verification_disabled_config,
+    check_plugin_hook_password_file_access, check_plugin_hook_plain_http_secret_exfil,
+    check_plugin_hook_root_delete, check_plugin_hook_screen_capture,
+    check_plugin_hook_screen_capture_exfil, check_plugin_hook_secret_exfil,
+    check_plugin_hook_sensitive_file_exfil, check_plugin_hook_setuid_setgid,
+    check_plugin_hook_shell_profile_write, check_plugin_hook_systemd_service_registration,
+    check_plugin_hook_webhook_secret_exfil, check_static_auth_exposure_config,
+    check_trust_verification_disabled_config,
 };
 
 declare_rule! {
@@ -1362,7 +1387,679 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 109] = [
+declare_rule! {
+    pub struct McpRootDeleteRule {
+        code: "SEC637",
+        summary: "MCP configuration command attempts destructive root deletion",
+        doc_title: "MCP config: destructive root deletion",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpPasswordFileAccessRule {
+        code: "SEC638",
+        summary: "MCP configuration command accesses a sensitive system password file",
+        doc_title: "MCP config: password file access",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpShellProfileWriteRule {
+        code: "SEC639",
+        summary: "MCP configuration command writes to a shell profile startup file",
+        doc_title: "MCP config: shell profile write",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAuthorizedKeysWriteRule {
+        code: "SEC640",
+        summary: "MCP configuration command writes to SSH authorized_keys",
+        doc_title: "MCP config: authorized_keys write",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookRootDeleteRule {
+        code: "SEC645",
+        summary: "Plugin hook command attempts destructive root deletion",
+        doc_title: "Plugin hook: destructive root deletion",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookPasswordFileAccessRule {
+        code: "SEC646",
+        summary: "Plugin hook command accesses a sensitive system password file",
+        doc_title: "Plugin hook: password file access",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookShellProfileWriteRule {
+        code: "SEC647",
+        summary: "Plugin hook command writes to a shell profile startup file",
+        doc_title: "Plugin hook: shell profile write",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookAuthorizedKeysWriteRule {
+        code: "SEC648",
+        summary: "Plugin hook command writes to SSH authorized_keys",
+        doc_title: "Plugin hook: authorized_keys write",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpCronPersistenceRule {
+        code: "SEC652",
+        summary: "MCP configuration command manipulates cron persistence",
+        doc_title: "MCP config: cron persistence",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpSystemdServiceRegistrationRule {
+        code: "SEC653",
+        summary: "MCP configuration command registers a systemd service or unit for persistence",
+        doc_title: "MCP config: systemd persistence",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpLaunchdRegistrationRule {
+        code: "SEC654",
+        summary: "MCP configuration command registers a launchd plist for persistence",
+        doc_title: "MCP config: launchd persistence",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookCronPersistenceRule {
+        code: "SEC658",
+        summary: "Plugin hook command manipulates cron persistence",
+        doc_title: "Plugin hook: cron persistence",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookSystemdServiceRegistrationRule {
+        code: "SEC659",
+        summary: "Plugin hook command registers a systemd service or unit for persistence",
+        doc_title: "Plugin hook: systemd persistence",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookLaunchdRegistrationRule {
+        code: "SEC660",
+        summary: "Plugin hook command registers a launchd plist for persistence",
+        doc_title: "Plugin hook: launchd persistence",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpInsecurePermissionChangeRule {
+        code: "SEC664",
+        summary: "MCP configuration command performs an insecure permission change",
+        doc_title: "MCP config: insecure chmod",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpSetuidSetgidRule {
+        code: "SEC665",
+        summary: "MCP configuration command manipulates setuid or setgid permissions",
+        doc_title: "MCP config: setuid or setgid manipulation",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpLinuxCapabilityManipulationRule {
+        code: "SEC666",
+        summary: "MCP configuration command manipulates Linux capabilities",
+        doc_title: "MCP config: Linux capability manipulation",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookInsecurePermissionChangeRule {
+        code: "SEC670",
+        summary: "Plugin hook command performs an insecure permission change",
+        doc_title: "Plugin hook: insecure chmod",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookSetuidSetgidRule {
+        code: "SEC671",
+        summary: "Plugin hook command manipulates setuid or setgid permissions",
+        doc_title: "Plugin hook: setuid or setgid manipulation",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookLinuxCapabilityManipulationRule {
+        code: "SEC672",
+        summary: "Plugin hook command manipulates Linux capabilities",
+        doc_title: "Plugin hook: Linux capability manipulation",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpSecretExfilRule {
+        code: "SEC674",
+        summary: "MCP configuration command appears to send secret material over the network",
+        doc_title: "MCP config: secret exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpPlainHttpSecretExfilRule {
+        code: "SEC675",
+        summary: "MCP configuration command sends secret material to an insecure http:// endpoint",
+        doc_title: "MCP config: insecure HTTP secret send",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpWebhookSecretExfilRule {
+        code: "SEC676",
+        summary: "MCP configuration command posts secret material to a webhook endpoint",
+        doc_title: "MCP config: webhook secret exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookSecretExfilRule {
+        code: "SEC680",
+        summary: "Plugin hook command appears to send secret material over the network",
+        doc_title: "Plugin hook: secret exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookPlainHttpSecretExfilRule {
+        code: "SEC681",
+        summary: "Plugin hook command sends secret material to an insecure http:// endpoint",
+        doc_title: "Plugin hook: insecure HTTP secret send",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookWebhookSecretExfilRule {
+        code: "SEC682",
+        summary: "Plugin hook command posts secret material to a webhook endpoint",
+        doc_title: "Plugin hook: webhook secret exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpSensitiveFileExfilRule {
+        code: "SEC684",
+        summary: "MCP configuration command transfers a sensitive credential file to a remote destination",
+        doc_title: "MCP config: sensitive file exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookSensitiveFileExfilRule {
+        code: "SEC686",
+        summary: "Plugin hook command transfers a sensitive credential file to a remote destination",
+        doc_title: "Plugin hook: sensitive file exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpClipboardReadRule {
+        code: "SEC689",
+        summary: "MCP configuration command reads local clipboard contents",
+        doc_title: "MCP config: clipboard read",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpBrowserSecretStoreAccessRule {
+        code: "SEC690",
+        summary: "MCP configuration command accesses browser credential or cookie stores",
+        doc_title: "MCP config: browser credential store access",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookClipboardReadRule {
+        code: "SEC693",
+        summary: "Plugin hook command reads local clipboard contents",
+        doc_title: "Plugin hook: clipboard read",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookBrowserSecretStoreAccessRule {
+        code: "SEC694",
+        summary: "Plugin hook command accesses browser credential or cookie stores",
+        doc_title: "Plugin hook: browser credential store access",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpClipboardExfilRule {
+        code: "SEC697",
+        summary: "MCP configuration command exfiltrates clipboard contents over the network",
+        doc_title: "MCP config: clipboard exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpBrowserSecretStoreExfilRule {
+        code: "SEC698",
+        summary: "MCP configuration command exfiltrates browser credential or cookie store data",
+        doc_title: "MCP config: browser credential store exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookClipboardExfilRule {
+        code: "SEC701",
+        summary: "Plugin hook command exfiltrates clipboard contents over the network",
+        doc_title: "Plugin hook: clipboard exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookBrowserSecretStoreExfilRule {
+        code: "SEC702",
+        summary: "Plugin hook command exfiltrates browser credential or cookie store data",
+        doc_title: "Plugin hook: browser credential store exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpScreenCaptureRule {
+        code: "SEC705",
+        summary: "MCP configuration command captures a screenshot or desktop image",
+        doc_title: "MCP config: screen capture",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpScreenCaptureExfilRule {
+        code: "SEC706",
+        summary: "MCP configuration command captures and exfiltrates a screenshot or desktop image",
+        doc_title: "MCP config: screen capture exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookScreenCaptureRule {
+        code: "SEC709",
+        summary: "Plugin hook command captures a screenshot or desktop image",
+        doc_title: "Plugin hook: screen capture",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookScreenCaptureExfilRule {
+        code: "SEC710",
+        summary: "Plugin hook command captures and exfiltrates a screenshot or desktop image",
+        doc_title: "Plugin hook: screen capture exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpCameraCaptureRule {
+        code: "SEC715",
+        summary: "MCP configuration command captures a webcam or camera image",
+        doc_title: "MCP config: camera capture",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpMicrophoneCaptureRule {
+        code: "SEC716",
+        summary: "MCP configuration command captures microphone audio",
+        doc_title: "MCP config: microphone capture",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpCameraCaptureExfilRule {
+        code: "SEC717",
+        summary: "MCP configuration command captures and exfiltrates webcam or camera data",
+        doc_title: "MCP config: camera capture exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpMicrophoneCaptureExfilRule {
+        code: "SEC718",
+        summary: "MCP configuration command captures and exfiltrates microphone audio",
+        doc_title: "MCP config: microphone capture exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookCameraCaptureRule {
+        code: "SEC723",
+        summary: "Plugin hook command captures a webcam or camera image",
+        doc_title: "Plugin hook: camera capture",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookMicrophoneCaptureRule {
+        code: "SEC724",
+        summary: "Plugin hook command captures microphone audio",
+        doc_title: "Plugin hook: microphone capture",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookCameraCaptureExfilRule {
+        code: "SEC725",
+        summary: "Plugin hook command captures and exfiltrates webcam or camera data",
+        doc_title: "Plugin hook: camera capture exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookMicrophoneCaptureExfilRule {
+        code: "SEC726",
+        summary: "Plugin hook command captures and exfiltrates microphone audio",
+        doc_title: "Plugin hook: microphone capture exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpKeyloggingRule {
+        code: "SEC729",
+        summary: "MCP configuration command captures keystrokes or keyboard input",
+        doc_title: "MCP config: keylogger capture",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpKeyloggingExfilRule {
+        code: "SEC730",
+        summary: "MCP configuration command captures and exfiltrates keystrokes or keyboard input",
+        doc_title: "MCP config: keylogger exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookKeyloggingRule {
+        code: "SEC733",
+        summary: "Plugin hook command captures keystrokes or keyboard input",
+        doc_title: "Plugin hook: keylogger capture",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookKeyloggingExfilRule {
+        code: "SEC734",
+        summary: "Plugin hook command captures and exfiltrates keystrokes or keyboard input",
+        doc_title: "Plugin hook: keylogger exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpEnvironmentDumpRule {
+        code: "SEC737",
+        summary: "MCP configuration command dumps environment variables or shell state",
+        doc_title: "MCP config: environment dump",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpEnvironmentDumpExfilRule {
+        code: "SEC738",
+        summary: "MCP configuration command dumps and exfiltrates environment variables or shell state",
+        doc_title: "MCP config: environment dump exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookEnvironmentDumpRule {
+        code: "SEC741",
+        summary: "Plugin hook command dumps environment variables or shell state",
+        doc_title: "Plugin hook: environment dump",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PluginHookEnvironmentDumpExfilRule {
+        code: "SEC742",
+        summary: "Plugin hook command dumps and exfiltrates environment variables or shell state",
+        doc_title: "Plugin hook: environment dump exfiltration",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 165] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -3524,6 +4221,1146 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 109] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove TLS-bypass flags or NODE_TLS_REJECT_UNAUTHORIZED=0 from the network-capable plugin hook command",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpRootDeleteRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit `rm`-style destructive root deletion payloads.",
+            malicious_case_ids: &["mcp-command-persistence-escalation"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `rm` with recursive+force flags targeting `/` or using `--no-preserve-root`.",
+        },
+        check: check_mcp_root_delete,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the destructive root deletion command from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpPasswordFileAccessRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for direct access to sensitive password and sudo policy files.",
+            malicious_case_ids: &["mcp-command-persistence-escalation"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args path detection over ArtifactKind::McpConfig for `/etc/shadow`, `/etc/passwd`, `/etc/sudoers`, `/etc/gshadow`, or `/etc/master.passwd`.",
+        },
+        check: check_mcp_password_file_access,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the sensitive password-file access from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpShellProfileWriteRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit writes to shell startup profile files.",
+            malicious_case_ids: &["mcp-command-persistence-escalation"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig using redirection-or-tee targeting of `.bashrc`, `.bash_profile`, `.zshrc`, or `.profile`.",
+        },
+        check: check_mcp_shell_profile_write,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the shell profile write and keep startup-file persistence out of the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAuthorizedKeysWriteRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit writes to SSH `authorized_keys`.",
+            malicious_case_ids: &["mcp-command-persistence-escalation"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig using redirection-or-tee targeting of `authorized_keys`.",
+        },
+        check: check_mcp_authorized_keys_write,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the `authorized_keys` modification from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookRootDeleteRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit `rm`-style destructive root deletion payloads.",
+            malicious_case_ids: &["plugin-hook-command-persistence-escalation"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `rm` with recursive+force flags targeting `/` or using `--no-preserve-root`.",
+        },
+        check: check_plugin_hook_root_delete,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the destructive root deletion command from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookPasswordFileAccessRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for direct access to sensitive password and sudo policy files.",
+            malicious_case_ids: &["plugin-hook-command-persistence-escalation"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string path detection over ArtifactKind::CursorPluginHooks for `/etc/shadow`, `/etc/passwd`, `/etc/sudoers`, `/etc/gshadow`, or `/etc/master.passwd`.",
+        },
+        check: check_plugin_hook_password_file_access,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the sensitive password-file access from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookShellProfileWriteRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit writes to shell startup profile files.",
+            malicious_case_ids: &["plugin-hook-command-persistence-escalation"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks using redirection-or-tee targeting of `.bashrc`, `.bash_profile`, `.zshrc`, or `.profile`.",
+        },
+        check: check_plugin_hook_shell_profile_write,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the shell profile write and keep startup-file persistence out of the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookAuthorizedKeysWriteRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit writes to SSH `authorized_keys`.",
+            malicious_case_ids: &["plugin-hook-command-persistence-escalation"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks using redirection-or-tee targeting of `authorized_keys`.",
+        },
+        check: check_plugin_hook_authorized_keys_write,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the `authorized_keys` modification from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpCronPersistenceRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit cron persistence setup.",
+            malicious_case_ids: &["mcp-command-service-persistence"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `crontab` mutation or writes to cron persistence paths.",
+        },
+        check: check_mcp_cron_persistence,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove cron persistence from the committed MCP launch path and keep scheduled-task changes under explicit review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpSystemdServiceRegistrationRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit systemd service registration or unit-file writes.",
+            malicious_case_ids: &["mcp-command-service-persistence"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `systemctl enable|link` or writes to systemd unit paths.",
+        },
+        check: check_mcp_systemd_service_registration,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove systemd persistence from the committed MCP launch path and keep service registration out of shared config",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpLaunchdRegistrationRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.",
+            malicious_case_ids: &["mcp-command-service-persistence"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `launchctl load|bootstrap` or writes to LaunchAgents/LaunchDaemons plist paths.",
+        },
+        check: check_mcp_launchd_registration,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove launchd persistence from the committed MCP launch path and keep plist registration out of shared config",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookCronPersistenceRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit cron persistence setup.",
+            malicious_case_ids: &["plugin-hook-command-service-persistence"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `crontab` mutation or writes to cron persistence paths.",
+        },
+        check: check_plugin_hook_cron_persistence,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove cron persistence from the committed plugin hook and keep scheduled-task changes under explicit review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookSystemdServiceRegistrationRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit systemd service registration or unit-file writes.",
+            malicious_case_ids: &["plugin-hook-command-service-persistence"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `systemctl enable|link` or writes to systemd unit paths.",
+        },
+        check: check_plugin_hook_systemd_service_registration,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove systemd persistence from the committed plugin hook and keep service registration out of shared hooks",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookLaunchdRegistrationRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.",
+            malicious_case_ids: &["plugin-hook-command-service-persistence"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `launchctl load|bootstrap` or writes to LaunchAgents/LaunchDaemons plist paths.",
+        },
+        check: check_plugin_hook_launchd_registration,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove launchd persistence from the committed plugin hook and keep plist registration out of shared hooks",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpInsecurePermissionChangeRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit insecure chmod payloads.",
+            malicious_case_ids: &["mcp-command-privilege-escalation-payloads"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `chmod 777`, `chmod 0777`, or symbolic world-writable modes such as `a+rwx`.",
+        },
+        check: check_mcp_insecure_permission_change,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the insecure chmod change from the committed MCP launch path and use the minimum required permissions",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpSetuidSetgidRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit setuid or setgid chmod payloads.",
+            malicious_case_ids: &["mcp-command-privilege-escalation-payloads"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for chmod octal modes with setuid/setgid bits or symbolic modes such as `u+s` and `g+s`.",
+        },
+        check: check_mcp_setuid_setgid,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove setuid or setgid manipulation from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpLinuxCapabilityManipulationRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit Linux capability manipulation payloads.",
+            malicious_case_ids: &["mcp-command-privilege-escalation-payloads"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `setcap` or dangerous Linux capability tokens such as `cap_setuid` and `cap_sys_admin`.",
+        },
+        check: check_mcp_linux_capability_manipulation,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove Linux capability manipulation from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookInsecurePermissionChangeRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit insecure chmod payloads.",
+            malicious_case_ids: &["plugin-hook-command-privilege-escalation-payloads"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `chmod 777`, `chmod 0777`, or symbolic world-writable modes such as `a+rwx`.",
+        },
+        check: check_plugin_hook_insecure_permission_change,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the insecure chmod change from the committed plugin hook and use the minimum required permissions",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookSetuidSetgidRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit setuid or setgid chmod payloads.",
+            malicious_case_ids: &["plugin-hook-command-privilege-escalation-payloads"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for chmod octal modes with setuid/setgid bits or symbolic modes such as `u+s` and `g+s`.",
+        },
+        check: check_plugin_hook_setuid_setgid,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove setuid or setgid manipulation from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookLinuxCapabilityManipulationRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit Linux capability manipulation payloads.",
+            malicious_case_ids: &["plugin-hook-command-privilege-escalation-payloads"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `setcap` or dangerous Linux capability tokens such as `cap_setuid` and `cap_sys_admin`.",
+        },
+        check: check_plugin_hook_linux_capability_manipulation,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove Linux capability manipulation from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpSecretExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit secret-bearing network exfil payloads.",
+            malicious_case_ids: &["mcp-command-secret-exfil-payloads"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for secret markers combined with network-capable command context.",
+        },
+        check: check_mcp_secret_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the secret-bearing network send from the committed MCP launch path and keep secret access local",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpPlainHttpSecretExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for secret-bearing exfil over insecure HTTP.",
+            malicious_case_ids: &["mcp-command-secret-exfil-payloads"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `http://` endpoints gated by concurrent secret markers in a network-capable command path.",
+        },
+        check: check_mcp_plain_http_secret_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the insecure secret-bearing HTTP send from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpWebhookSecretExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for secret-bearing posts to webhook endpoints.",
+            malicious_case_ids: &["mcp-command-secret-exfil-payloads"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for secret markers plus webhook endpoint markers such as `hooks.slack.com/services/` or `discord.com/api/webhooks/`.",
+        },
+        check: check_mcp_webhook_secret_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the secret-bearing webhook post from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookSecretExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit secret-bearing network exfil payloads.",
+            malicious_case_ids: &["plugin-hook-command-secret-exfil-payloads"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for secret markers combined with network-capable command context.",
+        },
+        check: check_plugin_hook_secret_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the secret-bearing network send from the committed plugin hook and keep secret access local",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookPlainHttpSecretExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for secret-bearing exfil over insecure HTTP.",
+            malicious_case_ids: &["plugin-hook-command-secret-exfil-payloads"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `http://` endpoints gated by concurrent secret markers in a network-capable command path.",
+        },
+        check: check_plugin_hook_plain_http_secret_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the insecure secret-bearing HTTP send from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookWebhookSecretExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for secret-bearing posts to webhook endpoints.",
+            malicious_case_ids: &["plugin-hook-command-secret-exfil-payloads"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for secret markers plus webhook endpoint markers such as `hooks.slack.com/services/` or `discord.com/api/webhooks/`.",
+        },
+        check: check_plugin_hook_webhook_secret_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the secret-bearing webhook post from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpSensitiveFileExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit transfer of sensitive credential files to remote destinations.",
+            malicious_case_ids: &["mcp-command-sensitive-file-exfil"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`.",
+        },
+        check: check_mcp_sensitive_file_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the remote transfer of sensitive credential files from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookSensitiveFileExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit transfer of sensitive credential files to remote destinations.",
+            malicious_case_ids: &["plugin-hook-command-sensitive-file-exfil"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`.",
+        },
+        check: check_plugin_hook_sensitive_file_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove the remote transfer of sensitive credential files from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpClipboardReadRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for clipboard-reading commands that can extract local user data.",
+            malicious_case_ids: &["mcp-command-local-data-theft"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard`.",
+        },
+        check: check_mcp_clipboard_read,
+        safe_fix: None,
+        suggestion_message: Some("remove clipboard reads from the committed MCP launch path"),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpBrowserSecretStoreAccessRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for direct access to browser credential or cookie storage files.",
+            malicious_case_ids: &["mcp-command-local-data-theft"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`.",
+        },
+        check: check_mcp_browser_secret_store_access,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove browser credential or cookie store access from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookClipboardReadRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for clipboard-reading behavior that can extract local user data.",
+            malicious_case_ids: &["plugin-hook-command-local-data-theft"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard`.",
+        },
+        check: check_plugin_hook_clipboard_read,
+        safe_fix: None,
+        suggestion_message: Some("remove clipboard reads from the committed plugin hook"),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookBrowserSecretStoreAccessRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for direct access to browser credential or cookie storage files.",
+            malicious_case_ids: &["plugin-hook-command-local-data-theft"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`.",
+        },
+        check: check_plugin_hook_browser_secret_store_access,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove browser credential or cookie store access from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpClipboardExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for clipboard-reading commands that also transmit captured data to remote destinations.",
+            malicious_case_ids: &["mcp-command-local-data-exfil"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard` combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_mcp_clipboard_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove network exfiltration of clipboard contents from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpBrowserSecretStoreExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for direct access to browser credential or cookie storage files combined with remote transfer behavior.",
+            malicious_case_ids: &["mcp-command-local-data-exfil"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_mcp_browser_secret_store_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove network exfiltration of browser credential or cookie store data from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookClipboardExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for clipboard reads that also transmit captured data to remote destinations.",
+            malicious_case_ids: &["plugin-hook-command-local-data-exfil"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard` combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_plugin_hook_clipboard_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove network exfiltration of clipboard contents from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookBrowserSecretStoreExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for direct access to browser credential or cookie storage files combined with remote transfer behavior.",
+            malicious_case_ids: &["plugin-hook-command-local-data-exfil"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_plugin_hook_browser_secret_store_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove network exfiltration of browser credential or cookie store data from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpScreenCaptureRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit screen capture utilities.",
+            malicious_case_ids: &[
+                "mcp-command-screen-capture",
+                "mcp-command-screen-capture-exfil",
+            ],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`.",
+        },
+        check: check_mcp_screen_capture,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove screenshot capture behavior from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpScreenCaptureExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit screen capture utilities combined with remote transfer behavior.",
+            malicious_case_ids: &["mcp-command-screen-capture-exfil"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_mcp_screen_capture_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove screenshot capture and remote transfer behavior from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookScreenCaptureRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit screen capture utilities.",
+            malicious_case_ids: &[
+                "plugin-hook-command-screen-capture",
+                "plugin-hook-command-screen-capture-exfil",
+            ],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`.",
+        },
+        check: check_plugin_hook_screen_capture,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove screenshot capture behavior from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookScreenCaptureExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit screen capture utilities combined with remote transfer behavior.",
+            malicious_case_ids: &["plugin-hook-command-screen-capture-exfil"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_plugin_hook_screen_capture_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove screenshot capture and remote transfer behavior from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpCameraCaptureRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit webcam or camera capture utilities.",
+            malicious_case_ids: &[
+                "mcp-command-device-capture",
+                "mcp-command-device-capture-exfil",
+            ],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`.",
+        },
+        check: check_mcp_camera_capture,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove webcam or camera capture behavior from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpMicrophoneCaptureRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit microphone recording utilities.",
+            malicious_case_ids: &[
+                "mcp-command-device-capture",
+                "mcp-command-device-capture-exfil",
+            ],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`.",
+        },
+        check: check_mcp_microphone_capture,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove microphone capture behavior from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpCameraCaptureExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit webcam or camera capture utilities combined with remote transfer behavior.",
+            malicious_case_ids: &["mcp-command-device-capture-exfil"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_mcp_camera_capture_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove webcam or camera capture and remote transfer behavior from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpMicrophoneCaptureExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit microphone recording utilities combined with remote transfer behavior.",
+            malicious_case_ids: &["mcp-command-device-capture-exfil"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_mcp_microphone_capture_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove microphone capture and remote transfer behavior from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookCameraCaptureRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit webcam or camera capture utilities.",
+            malicious_case_ids: &[
+                "plugin-hook-command-device-capture",
+                "plugin-hook-command-device-capture-exfil",
+            ],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`.",
+        },
+        check: check_plugin_hook_camera_capture,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove webcam or camera capture behavior from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookMicrophoneCaptureRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit microphone recording utilities.",
+            malicious_case_ids: &[
+                "plugin-hook-command-device-capture",
+                "plugin-hook-command-device-capture-exfil",
+            ],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`.",
+        },
+        check: check_plugin_hook_microphone_capture,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove microphone capture behavior from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookCameraCaptureExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit webcam or camera capture utilities combined with remote transfer behavior.",
+            malicious_case_ids: &["plugin-hook-command-device-capture-exfil"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_plugin_hook_camera_capture_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove webcam or camera capture and remote transfer behavior from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookMicrophoneCaptureExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit microphone recording utilities combined with remote transfer behavior.",
+            malicious_case_ids: &["plugin-hook-command-device-capture-exfil"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_plugin_hook_microphone_capture_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove microphone capture and remote transfer behavior from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpKeyloggingRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit keystroke capture utilities or keylogger markers.",
+            malicious_case_ids: &["mcp-command-keylogger", "mcp-command-keylogger-exfil"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`.",
+        },
+        check: check_mcp_keylogging,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove keystroke capture or keylogger behavior from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpKeyloggingExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.",
+            malicious_case_ids: &["mcp-command-keylogger-exfil"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_mcp_keylogging_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove keystroke capture and remote transfer behavior from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookKeyloggingRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit keystroke capture utilities or keylogger markers.",
+            malicious_case_ids: &[
+                "plugin-hook-command-keylogger",
+                "plugin-hook-command-keylogger-exfil",
+            ],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`.",
+        },
+        check: check_plugin_hook_keylogging,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove keystroke capture or keylogger behavior from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookKeyloggingExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.",
+            malicious_case_ids: &["plugin-hook-command-keylogger-exfil"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_plugin_hook_keylogging_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove keystroke capture and remote transfer behavior from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpEnvironmentDumpRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit environment or shell-state enumeration commands.",
+            malicious_case_ids: &["mcp-command-env-dump", "mcp-command-env-dump-exfil"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`.",
+        },
+        check: check_mcp_environment_dump,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove environment dumping behavior from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpEnvironmentDumpExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed MCP launch paths for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
+            malicious_case_ids: &["mcp-command-env-dump-exfil"],
+            benign_case_ids: &["mcp-safe-basic"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_mcp_environment_dump_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove environment dumping and remote transfer behavior from the committed MCP launch path",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookEnvironmentDumpRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit environment or shell-state enumeration commands.",
+            malicious_case_ids: &[
+                "plugin-hook-command-env-dump",
+                "plugin-hook-command-env-dump-exfil",
+            ],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`.",
+        },
+        check: check_plugin_hook_environment_dump,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove environment dumping behavior from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PluginHookEnvironmentDumpExfilRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed plugin hook command values for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
+            malicious_case_ids: &["plugin-hook-command-env-dump-exfil"],
+            benign_case_ids: &["plugin-hook-command-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+        },
+        check: check_plugin_hook_environment_dump_exfil,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove environment dumping and remote transfer behavior from the committed plugin hook",
         ),
         suggestion_fix: None,
     },

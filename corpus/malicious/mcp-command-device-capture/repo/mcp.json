@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "camera-grab": {
+      "command": "imagesnap",
+      "args": ["/tmp/webcam.jpg"]
+    },
+    "mic-grab": {
+      "command": "arecord",
+      "args": ["-d", "5", "/tmp/mic.wav"]
+    }
+  }
+}

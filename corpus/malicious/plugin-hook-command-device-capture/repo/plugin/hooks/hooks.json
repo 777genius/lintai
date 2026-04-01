@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "hooks": {
+    "stop": [
+      {
+        "command": "imagesnap /tmp/webcam.jpg"
+      },
+      {
+        "command": "arecord -d 5 /tmp/mic.wav"
+      }
+    ]
+  }
+}

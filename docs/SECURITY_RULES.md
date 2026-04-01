@@ -351,6 +351,116 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC630 / CLAUDE-GLOB` | Claude settings permissions allow bare `Glob` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC631 / CLAUDE-GREP` | Claude settings permissions allow bare `Grep` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC632 / CLAUDE-WEBFETCH` | Claude settings permissions allow bare `WebFetch` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC633` | Hook script attempts destructive root deletion | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC634` | Hook script accesses a sensitive system password file | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC635` | Hook script writes to a shell profile startup file | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC636` | Hook script writes to SSH authorized_keys | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC637` | MCP configuration command attempts destructive root deletion | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC638` | MCP configuration command accesses a sensitive system password file | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC639` | MCP configuration command writes to a shell profile startup file | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC640` | MCP configuration command writes to SSH authorized_keys | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC641` | Claude settings command hook attempts destructive root deletion | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC642` | Claude settings command hook accesses a sensitive system password file | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC643` | Claude settings command hook writes to a shell profile startup file | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC644` | Claude settings command hook writes to SSH authorized_keys | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC645` | Plugin hook command attempts destructive root deletion | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC646` | Plugin hook command accesses a sensitive system password file | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC647` | Plugin hook command writes to a shell profile startup file | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC648` | Plugin hook command writes to SSH authorized_keys | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC649` | Hook script manipulates cron persistence | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC650` | Hook script registers a systemd service or unit for persistence | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC651` | Hook script registers a launchd plist for persistence | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC652` | MCP configuration command manipulates cron persistence | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC653` | MCP configuration command registers a systemd service or unit for persistence | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC654` | MCP configuration command registers a launchd plist for persistence | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC655` | Claude settings command hook manipulates cron persistence | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC656` | Claude settings command hook registers a systemd service or unit for persistence | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC657` | Claude settings command hook registers a launchd plist for persistence | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC658` | Plugin hook command manipulates cron persistence | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC659` | Plugin hook command registers a systemd service or unit for persistence | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC660` | Plugin hook command registers a launchd plist for persistence | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC661` | Hook script performs an insecure permission change | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC662` | Hook script manipulates setuid or setgid permissions | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC663` | Hook script manipulates Linux capabilities | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC664` | MCP configuration command performs an insecure permission change | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC665` | MCP configuration command manipulates setuid or setgid permissions | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC666` | MCP configuration command manipulates Linux capabilities | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC667` | Claude settings command hook performs an insecure permission change | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC668` | Claude settings command hook manipulates setuid or setgid permissions | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC669` | Claude settings command hook manipulates Linux capabilities | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC670` | Plugin hook command performs an insecure permission change | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC671` | Plugin hook command manipulates setuid or setgid permissions | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC672` | Plugin hook command manipulates Linux capabilities | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC673` | Hook script posts secret material to a webhook endpoint | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC674` | MCP configuration command appears to send secret material over the network | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC675` | MCP configuration command sends secret material to an insecure http:// endpoint | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC676` | MCP configuration command posts secret material to a webhook endpoint | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC677` | Claude settings command hook appears to send secret material over the network | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC678` | Claude settings command hook sends secret material to an insecure http:// endpoint | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC679` | Claude settings command hook posts secret material to a webhook endpoint | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC680` | Plugin hook command appears to send secret material over the network | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC681` | Plugin hook command sends secret material to an insecure http:// endpoint | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC682` | Plugin hook command posts secret material to a webhook endpoint | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC683` | Hook script transfers a sensitive credential file to a remote destination | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC684` | MCP configuration command transfers a sensitive credential file to a remote destination | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC685` | Claude settings command hook transfers a sensitive credential file to a remote destination | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC686` | Plugin hook command transfers a sensitive credential file to a remote destination | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC687` | Hook script reads local clipboard contents | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC688` | Hook script accesses browser credential or cookie stores | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC689` | MCP configuration command reads local clipboard contents | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC690` | MCP configuration command accesses browser credential or cookie stores | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC691` | Claude settings command hook reads local clipboard contents | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC692` | Claude settings command hook accesses browser credential or cookie stores | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC693` | Plugin hook command reads local clipboard contents | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC694` | Plugin hook command accesses browser credential or cookie stores | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC695` | Hook script exfiltrates clipboard contents over the network | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC696` | Hook script exfiltrates browser credential or cookie store data | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC697` | MCP configuration command exfiltrates clipboard contents over the network | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC698` | MCP configuration command exfiltrates browser credential or cookie store data | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC699` | Claude settings command hook exfiltrates clipboard contents over the network | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC700` | Claude settings command hook exfiltrates browser credential or cookie store data | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC701` | Plugin hook command exfiltrates clipboard contents over the network | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC702` | Plugin hook command exfiltrates browser credential or cookie store data | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC703` | Hook script captures a screenshot or desktop image | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC704` | Hook script captures and exfiltrates a screenshot or desktop image | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC705` | MCP configuration command captures a screenshot or desktop image | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC706` | MCP configuration command captures and exfiltrates a screenshot or desktop image | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC707` | Claude settings command hook captures a screenshot or desktop image | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC708` | Claude settings command hook captures and exfiltrates a screenshot or desktop image | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC709` | Plugin hook command captures a screenshot or desktop image | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC710` | Plugin hook command captures and exfiltrates a screenshot or desktop image | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC711` | Hook script captures a camera image or webcam stream | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC712` | Hook script records microphone or audio input | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC713` | Hook script captures and exfiltrates camera or webcam data | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC714` | Hook script records and exfiltrates microphone or audio input | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC715` | MCP configuration command captures a webcam or camera image | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC716` | MCP configuration command captures microphone audio | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC717` | MCP configuration command captures and exfiltrates webcam or camera data | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC718` | MCP configuration command captures and exfiltrates microphone audio | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC719` | Claude settings command hook captures a webcam or camera image | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC720` | Claude settings command hook captures microphone audio | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC721` | Claude settings command hook captures and exfiltrates webcam or camera data | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC722` | Claude settings command hook captures and exfiltrates microphone audio | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC723` | Plugin hook command captures a webcam or camera image | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC724` | Plugin hook command captures microphone audio | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC725` | Plugin hook command captures and exfiltrates webcam or camera data | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC726` | Plugin hook command captures and exfiltrates microphone audio | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC727` | Hook script captures keystrokes or keyboard input | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC728` | Hook script captures and exfiltrates keystrokes or keyboard input | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC729` | MCP configuration command captures keystrokes or keyboard input | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC730` | MCP configuration command captures and exfiltrates keystrokes or keyboard input | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC731` | Claude settings command hook captures keystrokes or keyboard input | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC732` | Claude settings command hook captures and exfiltrates keystrokes or keyboard input | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC733` | Plugin hook command captures keystrokes or keyboard input | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC734` | Plugin hook command captures and exfiltrates keystrokes or keyboard input | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC735` | Hook script dumps environment variables or shell state | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC736` | Hook script dumps and exfiltrates environment variables or shell state | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC737` | MCP configuration command dumps environment variables or shell state | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC738` | MCP configuration command dumps and exfiltrates environment variables or shell state | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC739` | Claude settings command hook dumps environment variables or shell state | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC740` | Claude settings command hook dumps and exfiltrates environment variables or shell state | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC741` | Plugin hook command dumps environment variables or shell state | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC742` | Plugin hook command dumps and exfiltrates environment variables or shell state | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -7296,6 +7406,2316 @@ Important behavior:
 - Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for bare `WebFetch` inside permissions.allow on parsed Claude settings JSON.
 - Malicious Corpus: `claude-settings-unscoped-tool-family`
 - Benign Corpus: `claude-settings-unscoped-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC633` — Hook script attempts destructive root deletion
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit `rm`-style destructive root deletion payloads in executable hook lines.
+- Deterministic Signal Basis: HookSignals shell-token analysis over non-comment hook lines for `rm` with recursive+force flags targeting `/` or using `--no-preserve-root`.
+- Malicious Corpus: `hook-persistence-escalation`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC634` — Hook script accesses a sensitive system password file
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches direct access to sensitive password and sudo policy files in executable hook lines.
+- Deterministic Signal Basis: HookSignals path detection over non-comment hook lines for `/etc/shadow`, `/etc/passwd`, `/etc/sudoers`, `/etc/gshadow`, or `/etc/master.passwd`.
+- Malicious Corpus: `hook-persistence-escalation`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC635` — Hook script writes to a shell profile startup file
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit shell startup profile modification in executable hook lines.
+- Deterministic Signal Basis: HookSignals redirection-or-tee detection over `.bashrc`, `.bash_profile`, `.zshrc`, or `.profile` targets in non-comment hook lines.
+- Malicious Corpus: `hook-persistence-escalation`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC636` — Hook script writes to SSH authorized_keys
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit writes to SSH `authorized_keys` in executable hook lines.
+- Deterministic Signal Basis: HookSignals redirection-or-tee detection for `authorized_keys` targets in non-comment hook lines.
+- Malicious Corpus: `hook-persistence-escalation`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC637` — MCP configuration command attempts destructive root deletion
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit `rm`-style destructive root deletion payloads.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `rm` with recursive+force flags targeting `/` or using `--no-preserve-root`.
+- Malicious Corpus: `mcp-command-persistence-escalation`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC638` — MCP configuration command accesses a sensitive system password file
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for direct access to sensitive password and sudo policy files.
+- Deterministic Signal Basis: JsonSignals command-plus-args path detection over ArtifactKind::McpConfig for `/etc/shadow`, `/etc/passwd`, `/etc/sudoers`, `/etc/gshadow`, or `/etc/master.passwd`.
+- Malicious Corpus: `mcp-command-persistence-escalation`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC639` — MCP configuration command writes to a shell profile startup file
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit writes to shell startup profile files.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig using redirection-or-tee targeting of `.bashrc`, `.bash_profile`, `.zshrc`, or `.profile`.
+- Malicious Corpus: `mcp-command-persistence-escalation`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC640` — MCP configuration command writes to SSH authorized_keys
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit writes to SSH `authorized_keys`.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig using redirection-or-tee targeting of `authorized_keys`.
+- Malicious Corpus: `mcp-command-persistence-escalation`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC641` — Claude settings command hook attempts destructive root deletion
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit `rm`-style destructive root deletion payloads.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `rm` with recursive+force flags targeting `/` or using `--no-preserve-root`.
+- Malicious Corpus: `claude-settings-hook-persistence-escalation`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC642` — Claude settings command hook accesses a sensitive system password file
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for direct access to sensitive password and sudo policy files.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook path detection over committed hook entries with type == command for `/etc/shadow`, `/etc/passwd`, `/etc/sudoers`, `/etc/gshadow`, or `/etc/master.passwd`.
+- Malicious Corpus: `claude-settings-hook-persistence-escalation`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC643` — Claude settings command hook writes to a shell profile startup file
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit writes to shell startup profile files.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook analysis over committed hook entries with type == command using redirection-or-tee targeting of `.bashrc`, `.bash_profile`, `.zshrc`, or `.profile`.
+- Malicious Corpus: `claude-settings-hook-persistence-escalation`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC644` — Claude settings command hook writes to SSH authorized_keys
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit writes to SSH `authorized_keys`.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook analysis over committed hook entries with type == command using redirection-or-tee targeting of `authorized_keys`.
+- Malicious Corpus: `claude-settings-hook-persistence-escalation`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC645` — Plugin hook command attempts destructive root deletion
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit `rm`-style destructive root deletion payloads.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `rm` with recursive+force flags targeting `/` or using `--no-preserve-root`.
+- Malicious Corpus: `plugin-hook-command-persistence-escalation`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC646` — Plugin hook command accesses a sensitive system password file
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for direct access to sensitive password and sudo policy files.
+- Deterministic Signal Basis: JsonSignals command-string path detection over ArtifactKind::CursorPluginHooks for `/etc/shadow`, `/etc/passwd`, `/etc/sudoers`, `/etc/gshadow`, or `/etc/master.passwd`.
+- Malicious Corpus: `plugin-hook-command-persistence-escalation`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC647` — Plugin hook command writes to a shell profile startup file
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit writes to shell startup profile files.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks using redirection-or-tee targeting of `.bashrc`, `.bash_profile`, `.zshrc`, or `.profile`.
+- Malicious Corpus: `plugin-hook-command-persistence-escalation`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC648` — Plugin hook command writes to SSH authorized_keys
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit writes to SSH `authorized_keys`.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks using redirection-or-tee targeting of `authorized_keys`.
+- Malicious Corpus: `plugin-hook-command-persistence-escalation`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC649` — Hook script manipulates cron persistence
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit cron manipulation or cron file writes in executable hook lines.
+- Deterministic Signal Basis: HookSignals command-or-write-target detection over non-comment hook lines for `crontab` mutation or writes to `/etc/cron*` and `/var/spool/cron`.
+- Malicious Corpus: `hook-service-persistence`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC650` — Hook script registers a systemd service or unit for persistence
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit systemd service registration or unit-file writes in executable hook lines.
+- Deterministic Signal Basis: HookSignals command-or-write-target detection over non-comment hook lines for `systemctl enable|link` or writes to systemd unit paths.
+- Malicious Corpus: `hook-service-persistence`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC651` — Hook script registers a launchd plist for persistence
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit launchd registration or LaunchAgents/LaunchDaemons plist writes in executable hook lines.
+- Deterministic Signal Basis: HookSignals command-or-write-target detection over non-comment hook lines for `launchctl load|bootstrap` or writes to LaunchAgents/LaunchDaemons plist paths.
+- Malicious Corpus: `hook-service-persistence`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC652` — MCP configuration command manipulates cron persistence
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit cron persistence setup.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `crontab` mutation or writes to cron persistence paths.
+- Malicious Corpus: `mcp-command-service-persistence`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC653` — MCP configuration command registers a systemd service or unit for persistence
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit systemd service registration or unit-file writes.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `systemctl enable|link` or writes to systemd unit paths.
+- Malicious Corpus: `mcp-command-service-persistence`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC654` — MCP configuration command registers a launchd plist for persistence
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `launchctl load|bootstrap` or writes to LaunchAgents/LaunchDaemons plist paths.
+- Malicious Corpus: `mcp-command-service-persistence`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC655` — Claude settings command hook manipulates cron persistence
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit cron persistence setup.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `crontab` mutation or writes to cron persistence paths.
+- Malicious Corpus: `claude-settings-hook-service-persistence`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC656` — Claude settings command hook registers a systemd service or unit for persistence
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit systemd service registration or unit-file writes.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `systemctl enable|link` or writes to systemd unit paths.
+- Malicious Corpus: `claude-settings-hook-service-persistence`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC657` — Claude settings command hook registers a launchd plist for persistence
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `launchctl load|bootstrap` or writes to LaunchAgents/LaunchDaemons plist paths.
+- Malicious Corpus: `claude-settings-hook-service-persistence`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC658` — Plugin hook command manipulates cron persistence
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit cron persistence setup.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `crontab` mutation or writes to cron persistence paths.
+- Malicious Corpus: `plugin-hook-command-service-persistence`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC659` — Plugin hook command registers a systemd service or unit for persistence
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit systemd service registration or unit-file writes.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `systemctl enable|link` or writes to systemd unit paths.
+- Malicious Corpus: `plugin-hook-command-service-persistence`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC660` — Plugin hook command registers a launchd plist for persistence
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `launchctl load|bootstrap` or writes to LaunchAgents/LaunchDaemons plist paths.
+- Malicious Corpus: `plugin-hook-command-service-persistence`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC661` — Hook script performs an insecure permission change
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit insecure chmod payloads in executable hook lines.
+- Deterministic Signal Basis: HookSignals shell-token analysis over non-comment hook lines for `chmod 777`, `chmod 0777`, or symbolic world-writable modes such as `a+rwx`.
+- Malicious Corpus: `hook-privilege-escalation-payloads`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC662` — Hook script manipulates setuid or setgid permissions
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit setuid or setgid chmod payloads in executable hook lines.
+- Deterministic Signal Basis: HookSignals shell-token analysis over non-comment hook lines for chmod octal modes with setuid/setgid bits or symbolic modes such as `u+s` and `g+s`.
+- Malicious Corpus: `hook-privilege-escalation-payloads`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC663` — Hook script manipulates Linux capabilities
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit Linux capability manipulation payloads in executable hook lines.
+- Deterministic Signal Basis: HookSignals shell-token analysis over non-comment hook lines for `setcap` or dangerous Linux capability tokens such as `cap_setuid` and `cap_sys_admin`.
+- Malicious Corpus: `hook-privilege-escalation-payloads`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC664` — MCP configuration command performs an insecure permission change
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit insecure chmod payloads.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `chmod 777`, `chmod 0777`, or symbolic world-writable modes such as `a+rwx`.
+- Malicious Corpus: `mcp-command-privilege-escalation-payloads`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC665` — MCP configuration command manipulates setuid or setgid permissions
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit setuid or setgid chmod payloads.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for chmod octal modes with setuid/setgid bits or symbolic modes such as `u+s` and `g+s`.
+- Malicious Corpus: `mcp-command-privilege-escalation-payloads`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC666` — MCP configuration command manipulates Linux capabilities
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit Linux capability manipulation payloads.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `setcap` or dangerous Linux capability tokens such as `cap_setuid` and `cap_sys_admin`.
+- Malicious Corpus: `mcp-command-privilege-escalation-payloads`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC667` — Claude settings command hook performs an insecure permission change
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit insecure chmod payloads.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `chmod 777`, `chmod 0777`, or symbolic world-writable modes such as `a+rwx`.
+- Malicious Corpus: `claude-settings-hook-privilege-escalation-payloads`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC668` — Claude settings command hook manipulates setuid or setgid permissions
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit setuid or setgid chmod payloads.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for chmod octal modes with setuid/setgid bits or symbolic modes such as `u+s` and `g+s`.
+- Malicious Corpus: `claude-settings-hook-privilege-escalation-payloads`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC669` — Claude settings command hook manipulates Linux capabilities
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit Linux capability manipulation payloads.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `setcap` or dangerous Linux capability tokens such as `cap_setuid` and `cap_sys_admin`.
+- Malicious Corpus: `claude-settings-hook-privilege-escalation-payloads`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC670` — Plugin hook command performs an insecure permission change
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit insecure chmod payloads.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `chmod 777`, `chmod 0777`, or symbolic world-writable modes such as `a+rwx`.
+- Malicious Corpus: `plugin-hook-command-privilege-escalation-payloads`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC671` — Plugin hook command manipulates setuid or setgid permissions
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit setuid or setgid chmod payloads.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for chmod octal modes with setuid/setgid bits or symbolic modes such as `u+s` and `g+s`.
+- Malicious Corpus: `plugin-hook-command-privilege-escalation-payloads`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC672` — Plugin hook command manipulates Linux capabilities
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit Linux capability manipulation payloads.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `setcap` or dangerous Linux capability tokens such as `cap_setuid` and `cap_sys_admin`.
+- Malicious Corpus: `plugin-hook-command-privilege-escalation-payloads`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC673` — Hook script posts secret material to a webhook endpoint
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit secret-bearing posts to well-known webhook endpoints in executable hook lines.
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for secret markers plus webhook endpoint markers such as `hooks.slack.com/services/` or `discord.com/api/webhooks/`.
+- Malicious Corpus: `hook-webhook-secret-exfil`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC674` — MCP configuration command appears to send secret material over the network
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit secret-bearing network exfil payloads.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for secret markers combined with network-capable command context.
+- Malicious Corpus: `mcp-command-secret-exfil-payloads`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC675` — MCP configuration command sends secret material to an insecure http:// endpoint
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for secret-bearing exfil over insecure HTTP.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `http://` endpoints gated by concurrent secret markers in a network-capable command path.
+- Malicious Corpus: `mcp-command-secret-exfil-payloads`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC676` — MCP configuration command posts secret material to a webhook endpoint
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for secret-bearing posts to webhook endpoints.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for secret markers plus webhook endpoint markers such as `hooks.slack.com/services/` or `discord.com/api/webhooks/`.
+- Malicious Corpus: `mcp-command-secret-exfil-payloads`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC677` — Claude settings command hook appears to send secret material over the network
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit secret-bearing network exfil payloads.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for secret markers combined with network-capable command context.
+- Malicious Corpus: `claude-settings-hook-secret-exfil-payloads`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC678` — Claude settings command hook sends secret material to an insecure http:// endpoint
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for secret-bearing exfil over insecure HTTP.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `http://` endpoints gated by concurrent secret markers in a network-capable command path.
+- Malicious Corpus: `claude-settings-hook-secret-exfil-payloads`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC679` — Claude settings command hook posts secret material to a webhook endpoint
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for secret-bearing posts to webhook endpoints.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for secret markers plus webhook endpoint markers such as `hooks.slack.com/services/` or `discord.com/api/webhooks/`.
+- Malicious Corpus: `claude-settings-hook-secret-exfil-payloads`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC680` — Plugin hook command appears to send secret material over the network
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit secret-bearing network exfil payloads.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for secret markers combined with network-capable command context.
+- Malicious Corpus: `plugin-hook-command-secret-exfil-payloads`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC681` — Plugin hook command sends secret material to an insecure http:// endpoint
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for secret-bearing exfil over insecure HTTP.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `http://` endpoints gated by concurrent secret markers in a network-capable command path.
+- Malicious Corpus: `plugin-hook-command-secret-exfil-payloads`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC682` — Plugin hook command posts secret material to a webhook endpoint
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for secret-bearing posts to webhook endpoints.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for secret markers plus webhook endpoint markers such as `hooks.slack.com/services/` or `discord.com/api/webhooks/`.
+- Malicious Corpus: `plugin-hook-command-secret-exfil-payloads`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC683` — Hook script transfers a sensitive credential file to a remote destination
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit transfer of sensitive credential files to remote network or cloud-storage destinations in executable hook lines.
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`.
+- Malicious Corpus: `hook-sensitive-file-exfil`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC684` — MCP configuration command transfers a sensitive credential file to a remote destination
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit transfer of sensitive credential files to remote destinations.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`.
+- Malicious Corpus: `mcp-command-sensitive-file-exfil`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC685` — Claude settings command hook transfers a sensitive credential file to a remote destination
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit transfer of sensitive credential files to remote destinations.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`.
+- Malicious Corpus: `claude-settings-hook-sensitive-file-exfil`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC686` — Plugin hook command transfers a sensitive credential file to a remote destination
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit transfer of sensitive credential files to remote destinations.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`.
+- Malicious Corpus: `plugin-hook-command-sensitive-file-exfil`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC687` — Hook script reads local clipboard contents
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit clipboard-reading commands in executable hook lines.
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard`.
+- Malicious Corpus: `hook-local-data-theft`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC688` — Hook script accesses browser credential or cookie stores
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches direct access to browser credential or cookie storage files in executable hook lines.
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`.
+- Malicious Corpus: `hook-local-data-theft`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC689` — MCP configuration command reads local clipboard contents
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for clipboard-reading commands that can extract local user data.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard`.
+- Malicious Corpus: `mcp-command-local-data-theft`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC690` — MCP configuration command accesses browser credential or cookie stores
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for direct access to browser credential or cookie storage files.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`.
+- Malicious Corpus: `mcp-command-local-data-theft`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC691` — Claude settings command hook reads local clipboard contents
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for clipboard-reading behavior that can extract local user data.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard`.
+- Malicious Corpus: `claude-settings-hook-local-data-theft`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC692` — Claude settings command hook accesses browser credential or cookie stores
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for direct access to browser credential or cookie storage files.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`.
+- Malicious Corpus: `claude-settings-hook-local-data-theft`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC693` — Plugin hook command reads local clipboard contents
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for clipboard-reading behavior that can extract local user data.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard`.
+- Malicious Corpus: `plugin-hook-command-local-data-theft`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC694` — Plugin hook command accesses browser credential or cookie stores
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for direct access to browser credential or cookie storage files.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`.
+- Malicious Corpus: `plugin-hook-command-local-data-theft`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC695` — Hook script exfiltrates clipboard contents over the network
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches clipboard-reading commands that also transmit data to remote network endpoints in executable hook lines.
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard` combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `hook-local-data-exfil`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC696` — Hook script exfiltrates browser credential or cookie store data
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches direct access to browser credential or cookie storage files combined with remote transfer behavior in executable hook lines.
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `hook-local-data-exfil`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC697` — MCP configuration command exfiltrates clipboard contents over the network
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for clipboard-reading commands that also transmit captured data to remote destinations.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard` combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `mcp-command-local-data-exfil`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC698` — MCP configuration command exfiltrates browser credential or cookie store data
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for direct access to browser credential or cookie storage files combined with remote transfer behavior.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `mcp-command-local-data-exfil`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC699` — Claude settings command hook exfiltrates clipboard contents over the network
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for clipboard-reading behavior that also transmits captured data to remote destinations.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard` combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `claude-settings-hook-local-data-exfil`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC700` — Claude settings command hook exfiltrates browser credential or cookie store data
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for direct access to browser credential or cookie storage files combined with remote transfer behavior.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `claude-settings-hook-local-data-exfil`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC701` — Plugin hook command exfiltrates clipboard contents over the network
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for clipboard reads that also transmit captured data to remote destinations.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard` combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `plugin-hook-command-local-data-exfil`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC702` — Plugin hook command exfiltrates browser credential or cookie store data
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for direct access to browser credential or cookie storage files combined with remote transfer behavior.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `plugin-hook-command-local-data-exfil`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC703` — Hook script captures a screenshot or desktop image
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit screen capture utilities in executable hook lines.
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`.
+- Malicious Corpus: `hook-screen-capture`, `hook-screen-capture-exfil`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC704` — Hook script captures and exfiltrates a screenshot or desktop image
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit screen capture utilities combined with remote transfer behavior in executable hook lines.
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `hook-screen-capture-exfil`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC705` — MCP configuration command captures a screenshot or desktop image
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit screen capture utilities.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`.
+- Malicious Corpus: `mcp-command-screen-capture`, `mcp-command-screen-capture-exfil`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC706` — MCP configuration command captures and exfiltrates a screenshot or desktop image
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit screen capture utilities combined with remote transfer behavior.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `mcp-command-screen-capture-exfil`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC707` — Claude settings command hook captures a screenshot or desktop image
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit screen capture utilities.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`.
+- Malicious Corpus: `claude-settings-hook-screen-capture`, `claude-settings-hook-screen-capture-exfil`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC708` — Claude settings command hook captures and exfiltrates a screenshot or desktop image
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit screen capture utilities combined with remote transfer behavior.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `claude-settings-hook-screen-capture-exfil`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC709` — Plugin hook command captures a screenshot or desktop image
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit screen capture utilities.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`.
+- Malicious Corpus: `plugin-hook-command-screen-capture`, `plugin-hook-command-screen-capture-exfil`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC710` — Plugin hook command captures and exfiltrates a screenshot or desktop image
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit screen capture utilities combined with remote transfer behavior.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `plugin-hook-command-screen-capture-exfil`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC711` — Hook script captures a camera image or webcam stream
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit camera or webcam capture utilities in executable hook lines.
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera or video device selectors.
+- Malicious Corpus: `hook-device-capture`, `hook-device-capture-exfil`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC712` — Hook script records microphone or audio input
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit microphone or audio-recording utilities in executable hook lines.
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for explicit audio capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with microphone or audio device selectors.
+- Malicious Corpus: `hook-device-capture`, `hook-device-capture-exfil`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC713` — Hook script captures and exfiltrates camera or webcam data
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit camera or webcam capture utilities combined with remote transfer behavior in executable hook lines.
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera or video device selectors, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `hook-device-capture-exfil`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC714` — Hook script records and exfiltrates microphone or audio input
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit microphone or audio-recording utilities combined with remote transfer behavior in executable hook lines.
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for explicit audio capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with microphone or audio device selectors, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `hook-device-capture-exfil`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC715` — MCP configuration command captures a webcam or camera image
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit webcam or camera capture utilities.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`.
+- Malicious Corpus: `mcp-command-device-capture`, `mcp-command-device-capture-exfil`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC716` — MCP configuration command captures microphone audio
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit microphone recording utilities.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`.
+- Malicious Corpus: `mcp-command-device-capture`, `mcp-command-device-capture-exfil`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC717` — MCP configuration command captures and exfiltrates webcam or camera data
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit webcam or camera capture utilities combined with remote transfer behavior.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `mcp-command-device-capture-exfil`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC718` — MCP configuration command captures and exfiltrates microphone audio
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit microphone recording utilities combined with remote transfer behavior.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `mcp-command-device-capture-exfil`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC719` — Claude settings command hook captures a webcam or camera image
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit webcam or camera capture utilities.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`.
+- Malicious Corpus: `claude-settings-hook-device-capture`, `claude-settings-hook-device-capture-exfil`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC720` — Claude settings command hook captures microphone audio
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit microphone recording utilities.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`.
+- Malicious Corpus: `claude-settings-hook-device-capture`, `claude-settings-hook-device-capture-exfil`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC721` — Claude settings command hook captures and exfiltrates webcam or camera data
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit webcam or camera capture utilities combined with remote transfer behavior.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `claude-settings-hook-device-capture-exfil`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC722` — Claude settings command hook captures and exfiltrates microphone audio
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit microphone recording utilities combined with remote transfer behavior.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `claude-settings-hook-device-capture-exfil`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC723` — Plugin hook command captures a webcam or camera image
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit webcam or camera capture utilities.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`.
+- Malicious Corpus: `plugin-hook-command-device-capture`, `plugin-hook-command-device-capture-exfil`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC724` — Plugin hook command captures microphone audio
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit microphone recording utilities.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`.
+- Malicious Corpus: `plugin-hook-command-device-capture`, `plugin-hook-command-device-capture-exfil`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC725` — Plugin hook command captures and exfiltrates webcam or camera data
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit webcam or camera capture utilities combined with remote transfer behavior.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `plugin-hook-command-device-capture-exfil`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC726` — Plugin hook command captures and exfiltrates microphone audio
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit microphone recording utilities combined with remote transfer behavior.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `plugin-hook-command-device-capture-exfil`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC727` — Hook script captures keystrokes or keyboard input
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks hook shell lines for explicit keystroke capture utilities or keylogger markers.
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`.
+- Malicious Corpus: `hook-keylogger`, `hook-keylogger-exfil`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC728` — Hook script captures and exfiltrates keystrokes or keyboard input
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks hook shell lines for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `hook-keylogger-exfil`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC729` — MCP configuration command captures keystrokes or keyboard input
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit keystroke capture utilities or keylogger markers.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`.
+- Malicious Corpus: `mcp-command-keylogger`, `mcp-command-keylogger-exfil`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC730` — MCP configuration command captures and exfiltrates keystrokes or keyboard input
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `mcp-command-keylogger-exfil`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC731` — Claude settings command hook captures keystrokes or keyboard input
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit keystroke capture utilities or keylogger markers.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`.
+- Malicious Corpus: `claude-settings-hook-keylogger`, `claude-settings-hook-keylogger-exfil`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC732` — Claude settings command hook captures and exfiltrates keystrokes or keyboard input
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `claude-settings-hook-keylogger-exfil`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC733` — Plugin hook command captures keystrokes or keyboard input
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit keystroke capture utilities or keylogger markers.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`.
+- Malicious Corpus: `plugin-hook-command-keylogger`, `plugin-hook-command-keylogger-exfil`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC734` — Plugin hook command captures and exfiltrates keystrokes or keyboard input
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `plugin-hook-command-keylogger-exfil`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC735` — Hook script dumps environment variables or shell state
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks hook shell lines for explicit environment or shell-state enumeration commands.
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`.
+- Malicious Corpus: `hook-env-dump`, `hook-env-dump-exfil`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC736` — Hook script dumps and exfiltrates environment variables or shell state
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `hook`
+- Detection: `structural`
+- Default Severity: `Deny`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks hook shell lines for explicit environment or shell-state enumeration commands combined with remote transfer behavior.
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `hook-env-dump-exfil`
+- Benign Corpus: `cursor-plugin-clean-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC737` — MCP configuration command dumps environment variables or shell state
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit environment or shell-state enumeration commands.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`.
+- Malicious Corpus: `mcp-command-env-dump`, `mcp-command-env-dump-exfil`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC738` — MCP configuration command dumps and exfiltrates environment variables or shell state
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed MCP launch paths for explicit environment or shell-state enumeration commands combined with remote transfer behavior.
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `mcp-command-env-dump-exfil`
+- Benign Corpus: `mcp-safe-basic`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC739` — Claude settings command hook dumps environment variables or shell state
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit environment or shell-state enumeration commands.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`.
+- Malicious Corpus: `claude-settings-hook-env-dump`, `claude-settings-hook-env-dump-exfil`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC740` — Claude settings command hook dumps and exfiltrates environment variables or shell state
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Claude settings command hooks for explicit environment or shell-state enumeration commands combined with remote transfer behavior.
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `claude-settings-hook-env-dump-exfil`
+- Benign Corpus: `claude-settings-network-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC741` — Plugin hook command dumps environment variables or shell state
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit environment or shell-state enumeration commands.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`.
+- Malicious Corpus: `plugin-hook-command-env-dump`, `plugin-hook-command-env-dump-exfil`
+- Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC742` — Plugin hook command dumps and exfiltrates environment variables or shell state
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed plugin hook command values for explicit environment or shell-state enumeration commands combined with remote transfer behavior.
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
+- Malicious Corpus: `plugin-hook-command-env-dump-exfil`
+- Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

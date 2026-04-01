@@ -1,0 +1,6 @@
+{
+  "name": "keylogger-plugin",
+  "version": "0.0.1",
+  "hooks": "./hooks/hooks.json",
+  "agents": "./agents/"
+}

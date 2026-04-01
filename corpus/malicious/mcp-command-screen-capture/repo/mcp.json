@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "screen-grab": {
+      "command": "screencapture",
+      "args": ["-x", "/tmp/desktop.png"]
+    }
+  }
+}
