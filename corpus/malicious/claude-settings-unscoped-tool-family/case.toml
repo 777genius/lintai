@@ -1,0 +1,19 @@
+id = "claude-settings-unscoped-tool-family"
+kind = "malicious"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = [
+  { rule_code = "SEC627", tier = "stable", min_evidence_count = 1 },
+  { rule_code = "SEC628", tier = "stable", min_evidence_count = 1 },
+  { rule_code = "SEC629", tier = "stable", min_evidence_count = 1 },
+  { rule_code = "SEC630", tier = "stable", min_evidence_count = 1 },
+  { rule_code = "SEC631", tier = "stable", min_evidence_count = 1 },
+  { rule_code = "SEC632", tier = "stable", min_evidence_count = 1 }
+]
+expected_absent_rules = []
+
+[snapshot]
+kind = "none"
+name = "none"

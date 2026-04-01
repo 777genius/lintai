@@ -741,7 +741,8 @@ fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
         | "SEC512" | "SEC513" | "SEC514" | "SEC515" | "SEC516" | "SEC517" | "SEC518" | "SEC519"
         | "SEC528" | "SEC529" | "SEC530" | "SEC531" | "SEC532" | "SEC533" | "SEC534" | "SEC535"
         | "SEC536" | "SEC537" | "SEC538" | "SEC539" | "SEC540" | "SEC541" | "SEC542" | "SEC543"
-        | "SEC544" | "SEC545" | "SEC410" | "SEC626" => Some(RuleTier::Stable),
+        | "SEC544" | "SEC545" | "SEC410" | "SEC626" | "SEC627" | "SEC628" | "SEC629" | "SEC630"
+        | "SEC631" | "SEC632" => Some(RuleTier::Stable),
         "SEC618" | "SEC619" | "SEC620" | "SEC621" | "SEC622" | "SEC623" | "SEC624" | "SEC625" => {
             Some(RuleTier::Stable)
         }

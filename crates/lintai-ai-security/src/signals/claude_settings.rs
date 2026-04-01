@@ -361,6 +361,18 @@ impl ClaudeSettingsSignals {
         }
         signals.unscoped_bash_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash");
+        signals.unscoped_read_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Read");
+        signals.unscoped_write_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Write");
+        signals.unscoped_edit_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Edit");
+        signals.unscoped_glob_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Glob");
+        signals.unscoped_grep_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Grep");
+        signals.unscoped_webfetch_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "WebFetch");
         signals.bash_wildcard_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(*)");
         signals.webfetch_wildcard_span =

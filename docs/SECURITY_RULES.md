@@ -345,6 +345,12 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC624 / MCP-AUTOAPPROVE-WEBSEARCH` | MCP configuration auto-approves bare `WebSearch` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC625 / MCP-AUTOAPPROVE-BASH` | MCP configuration auto-approves bare `Bash` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC626 / CLAUDE-BASH` | Claude settings permissions allow bare `Bash` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC627 / CLAUDE-READ` | Claude settings permissions allow bare `Read` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC628 / CLAUDE-WRITE` | Claude settings permissions allow bare `Write` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC629 / CLAUDE-EDIT` | Claude settings permissions allow bare `Edit` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC630 / CLAUDE-GLOB` | Claude settings permissions allow bare `Glob` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC631 / CLAUDE-GREP` | Claude settings permissions allow bare `Grep` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC632 / CLAUDE-WEBFETCH` | Claude settings permissions allow bare `WebFetch` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 
 ## Builtin preset activation model
 
@@ -7032,6 +7038,132 @@ Important behavior:
 - Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for bare `Bash` inside permissions.allow on parsed Claude settings JSON.
 - Malicious Corpus: `claude-settings-bash-wildcard`
 - Benign Corpus: `claude-settings-bash-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC627 / CLAUDE-READ` — Claude settings permissions allow bare `Read` in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-READ`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for exact bare `Read` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for bare `Read` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-unscoped-tool-family`
+- Benign Corpus: `claude-settings-unscoped-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC628 / CLAUDE-WRITE` — Claude settings permissions allow bare `Write` in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-WRITE`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for exact bare `Write` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for bare `Write` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-unscoped-tool-family`
+- Benign Corpus: `claude-settings-unscoped-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC629 / CLAUDE-EDIT` — Claude settings permissions allow bare `Edit` in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-EDIT`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for exact bare `Edit` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for bare `Edit` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-unscoped-tool-family`
+- Benign Corpus: `claude-settings-unscoped-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC630 / CLAUDE-GLOB` — Claude settings permissions allow bare `Glob` in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-GLOB`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for exact bare `Glob` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for bare `Glob` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-unscoped-tool-family`
+- Benign Corpus: `claude-settings-unscoped-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC631 / CLAUDE-GREP` — Claude settings permissions allow bare `Grep` in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-GREP`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for exact bare `Grep` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for bare `Grep` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-unscoped-tool-family`
+- Benign Corpus: `claude-settings-unscoped-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC632 / CLAUDE-WEBFETCH` — Claude settings permissions allow bare `WebFetch` in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-WEBFETCH`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for exact bare `WebFetch` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for bare `WebFetch` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-unscoped-tool-family`
+- Benign Corpus: `claude-settings-unscoped-tool-family-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

@@ -153,6 +153,96 @@ pub(crate) fn check_claude_settings_unscoped_bash(
     )
 }
 
+pub(crate) fn check_claude_settings_unscoped_read(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.unscoped_read_span.clone()),
+        "Claude settings permissions allow bare `Read` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_unscoped_write(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.unscoped_write_span.clone()),
+        "Claude settings permissions allow bare `Write` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_unscoped_edit(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.unscoped_edit_span.clone()),
+        "Claude settings permissions allow bare `Edit` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_unscoped_glob(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.unscoped_glob_span.clone()),
+        "Claude settings permissions allow bare `Glob` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_unscoped_grep(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.unscoped_grep_span.clone()),
+        "Claude settings permissions allow bare `Grep` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_unscoped_webfetch(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.unscoped_webfetch_span.clone()),
+        "Claude settings permissions allow bare `WebFetch` in a shared committed config",
+    )
+}
+
 pub(crate) fn check_claude_settings_webfetch_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

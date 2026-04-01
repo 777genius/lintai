@@ -42,7 +42,10 @@ use crate::claude_settings_rules::{
     check_claude_settings_package_install_permission, check_claude_settings_pipx_run_permission,
     check_claude_settings_pnpm_dlx_permission, check_claude_settings_read_unsafe_path,
     check_claude_settings_read_wildcard, check_claude_settings_unscoped_bash,
-    check_claude_settings_unscoped_websearch, check_claude_settings_uvx_permission,
+    check_claude_settings_unscoped_edit, check_claude_settings_unscoped_glob,
+    check_claude_settings_unscoped_grep, check_claude_settings_unscoped_read,
+    check_claude_settings_unscoped_webfetch, check_claude_settings_unscoped_websearch,
+    check_claude_settings_unscoped_write, check_claude_settings_uvx_permission,
     check_claude_settings_webfetch_raw_githubusercontent, check_claude_settings_webfetch_wildcard,
     check_claude_settings_websearch_wildcard, check_claude_settings_wget_permission,
     check_claude_settings_write_unsafe_path, check_claude_settings_write_wildcard,
@@ -915,6 +918,78 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct ClaudeSettingsUnscopedReadRule {
+        code: "SEC627",
+        summary: "Claude settings permissions allow bare `Read` in a shared committed config",
+        doc_title: "Claude settings: bare Read permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsUnscopedWriteRule {
+        code: "SEC628",
+        summary: "Claude settings permissions allow bare `Write` in a shared committed config",
+        doc_title: "Claude settings: bare Write permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsUnscopedEditRule {
+        code: "SEC629",
+        summary: "Claude settings permissions allow bare `Edit` in a shared committed config",
+        doc_title: "Claude settings: bare Edit permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsUnscopedGlobRule {
+        code: "SEC630",
+        summary: "Claude settings permissions allow bare `Glob` in a shared committed config",
+        doc_title: "Claude settings: bare Glob permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsUnscopedGrepRule {
+        code: "SEC631",
+        summary: "Claude settings permissions allow bare `Grep` in a shared committed config",
+        doc_title: "Claude settings: bare Grep permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsUnscopedWebFetchRule {
+        code: "SEC632",
+        summary: "Claude settings permissions allow bare `WebFetch` in a shared committed config",
+        doc_title: "Claude settings: bare WebFetch permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct ClaudeSettingsBashWildcardRule {
         code: "SEC362",
         summary: "Claude settings permissions allow `Bash(*)` in a shared committed config",
@@ -974,7 +1049,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 77] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -2288,6 +2363,126 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 77] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace bare `Bash` with a narrower allowlist of reviewed command patterns in the committed Claude settings file",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsUnscopedReadRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for exact bare `Read` grants.",
+            malicious_case_ids: &["claude-settings-unscoped-tool-family"],
+            benign_case_ids: &["claude-settings-unscoped-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for bare `Read` inside permissions.allow on parsed Claude settings JSON.",
+        },
+        check: check_claude_settings_unscoped_read,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace bare `Read` with a narrower reviewed permission pattern or remove broad file-read access from the shared Claude settings file",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsUnscopedWriteRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for exact bare `Write` grants.",
+            malicious_case_ids: &["claude-settings-unscoped-tool-family"],
+            benign_case_ids: &["claude-settings-unscoped-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for bare `Write` inside permissions.allow on parsed Claude settings JSON.",
+        },
+        check: check_claude_settings_unscoped_write,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace bare `Write` with a narrower reviewed permission pattern or remove broad file-write access from the shared Claude settings file",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsUnscopedEditRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for exact bare `Edit` grants.",
+            malicious_case_ids: &["claude-settings-unscoped-tool-family"],
+            benign_case_ids: &["claude-settings-unscoped-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for bare `Edit` inside permissions.allow on parsed Claude settings JSON.",
+        },
+        check: check_claude_settings_unscoped_edit,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace bare `Edit` with a narrower reviewed permission pattern or remove broad edit access from the shared Claude settings file",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsUnscopedGlobRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for exact bare `Glob` grants.",
+            malicious_case_ids: &["claude-settings-unscoped-tool-family"],
+            benign_case_ids: &["claude-settings-unscoped-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for bare `Glob` inside permissions.allow on parsed Claude settings JSON.",
+        },
+        check: check_claude_settings_unscoped_glob,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace bare `Glob` with a narrower reviewed permission pattern or remove broad file-discovery access from the shared Claude settings file",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsUnscopedGrepRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for exact bare `Grep` grants.",
+            malicious_case_ids: &["claude-settings-unscoped-tool-family"],
+            benign_case_ids: &["claude-settings-unscoped-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for bare `Grep` inside permissions.allow on parsed Claude settings JSON.",
+        },
+        check: check_claude_settings_unscoped_grep,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace bare `Grep` with a narrower reviewed permission pattern or remove broad search access from the shared Claude settings file",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsUnscopedWebFetchRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for exact bare `WebFetch` grants.",
+            malicious_case_ids: &["claude-settings-unscoped-tool-family"],
+            benign_case_ids: &["claude-settings-unscoped-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for bare `WebFetch` inside permissions.allow on parsed Claude settings JSON.",
+        },
+        check: check_claude_settings_unscoped_webfetch,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace bare `WebFetch` with a narrower reviewed permission pattern or remove broad fetch access from the shared Claude settings file",
         ),
         suggestion_fix: None,
     },

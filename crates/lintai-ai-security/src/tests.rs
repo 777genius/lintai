@@ -8795,6 +8795,108 @@ fn finds_claude_settings_grep_unsafe_path() {
 }
 
 #[test]
+fn finds_claude_settings_unscoped_read() {
+    let content = r#"{"permissions":{"allow":["Read","Bash(git status)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC627")
+        .unwrap();
+    let start = content.find("Read").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Read".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_unscoped_write() {
+    let content = r#"{"permissions":{"allow":["Write","Bash(git status)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC628")
+        .unwrap();
+    let start = content.find("Write").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Write".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_unscoped_edit() {
+    let content = r#"{"permissions":{"allow":["Edit","Bash(git status)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC629")
+        .unwrap();
+    let start = content.find("Edit").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Edit".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_unscoped_glob() {
+    let content = r#"{"permissions":{"allow":["Glob","Bash(git status)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC630")
+        .unwrap();
+    let start = content.find("Glob").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Glob".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_unscoped_grep() {
+    let content = r#"{"permissions":{"allow":["Grep","Bash(git status)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC631")
+        .unwrap();
+    let start = content.find("Grep").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Grep".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_unscoped_webfetch() {
+    let content = r#"{"permissions":{"allow":["WebFetch","Bash(git status)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC632")
+        .unwrap();
+    let start = content.find("WebFetch").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "WebFetch".len())
+    );
+}
+
+#[test]
 fn finds_claude_settings_websearch_wildcard() {
     let content = r#"{"permissions":{"allow":["WebSearch(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -10864,6 +10966,41 @@ fn ignores_claude_settings_unscoped_websearch_on_fixture_like_path() {
             .iter()
             .any(|finding| finding.rule_code == "SEC384")
     );
+}
+
+#[test]
+fn ignores_claude_settings_unscoped_tool_family_on_fixture_like_path() {
+    let temp_dir = unique_temp_dir("lintai-claude-unscoped-tool-family-fixture");
+    std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("tests/fixtures/.claude/settings.json"),
+        br#"{"permissions":{"allow":["Read","Write","Edit","Glob","Grep","WebFetch"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    )
+    .unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
+    let summary = EngineBuilder::default()
+        .with_config(workspace.engine_config.clone())
+        .with_suppressions(Arc::new(suppressions))
+        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+            AiSecurityProvider::default(),
+        ))))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(!summary.findings.iter().any(|finding| {
+        matches!(
+            finding.rule_code.as_str(),
+            "SEC627" | "SEC628" | "SEC629" | "SEC630" | "SEC631" | "SEC632"
+        )
+    }));
 }
 
 #[test]

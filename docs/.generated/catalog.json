@@ -319,7 +319,13 @@
         "lintai-ai-security:SEC540",
         "lintai-ai-security:SEC542",
         "lintai-ai-security:SEC544",
-        "lintai-ai-security:SEC626"
+        "lintai-ai-security:SEC626",
+        "lintai-ai-security:SEC627",
+        "lintai-ai-security:SEC628",
+        "lintai-ai-security:SEC629",
+        "lintai-ai-security:SEC630",
+        "lintai-ai-security:SEC631",
+        "lintai-ai-security:SEC632"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -646,7 +652,13 @@
         "lintai-ai-security:SEC540",
         "lintai-ai-security:SEC542",
         "lintai-ai-security:SEC544",
-        "lintai-ai-security:SEC626"
+        "lintai-ai-security:SEC626",
+        "lintai-ai-security:SEC627",
+        "lintai-ai-security:SEC628",
+        "lintai-ai-security:SEC629",
+        "lintai-ai-security:SEC630",
+        "lintai-ai-security:SEC631",
+        "lintai-ai-security:SEC632"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -13028,6 +13040,240 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for bare `Bash` inside permissions.allow on parsed Claude settings JSON."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC627",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC627",
+      "alias": "CLAUDE-READ",
+      "displayLabel": "SEC627 / CLAUDE-READ",
+      "docTitle": "Claude settings: bare Read permissions",
+      "slug": "sec627",
+      "canonicalPath": "/rules/lintai-ai-security/sec627",
+      "summary": "Claude settings permissions allow bare `Read` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for exact bare `Read` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-unscoped-tool-family"
+        ],
+        "benignCaseIds": [
+          "claude-settings-unscoped-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for bare `Read` inside permissions.allow on parsed Claude settings JSON."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC628",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC628",
+      "alias": "CLAUDE-WRITE",
+      "displayLabel": "SEC628 / CLAUDE-WRITE",
+      "docTitle": "Claude settings: bare Write permissions",
+      "slug": "sec628",
+      "canonicalPath": "/rules/lintai-ai-security/sec628",
+      "summary": "Claude settings permissions allow bare `Write` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for exact bare `Write` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-unscoped-tool-family"
+        ],
+        "benignCaseIds": [
+          "claude-settings-unscoped-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for bare `Write` inside permissions.allow on parsed Claude settings JSON."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC629",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC629",
+      "alias": "CLAUDE-EDIT",
+      "displayLabel": "SEC629 / CLAUDE-EDIT",
+      "docTitle": "Claude settings: bare Edit permissions",
+      "slug": "sec629",
+      "canonicalPath": "/rules/lintai-ai-security/sec629",
+      "summary": "Claude settings permissions allow bare `Edit` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for exact bare `Edit` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-unscoped-tool-family"
+        ],
+        "benignCaseIds": [
+          "claude-settings-unscoped-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for bare `Edit` inside permissions.allow on parsed Claude settings JSON."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC630",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC630",
+      "alias": "CLAUDE-GLOB",
+      "displayLabel": "SEC630 / CLAUDE-GLOB",
+      "docTitle": "Claude settings: bare Glob permissions",
+      "slug": "sec630",
+      "canonicalPath": "/rules/lintai-ai-security/sec630",
+      "summary": "Claude settings permissions allow bare `Glob` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for exact bare `Glob` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-unscoped-tool-family"
+        ],
+        "benignCaseIds": [
+          "claude-settings-unscoped-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for bare `Glob` inside permissions.allow on parsed Claude settings JSON."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC631",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC631",
+      "alias": "CLAUDE-GREP",
+      "displayLabel": "SEC631 / CLAUDE-GREP",
+      "docTitle": "Claude settings: bare Grep permissions",
+      "slug": "sec631",
+      "canonicalPath": "/rules/lintai-ai-security/sec631",
+      "summary": "Claude settings permissions allow bare `Grep` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for exact bare `Grep` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-unscoped-tool-family"
+        ],
+        "benignCaseIds": [
+          "claude-settings-unscoped-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for bare `Grep` inside permissions.allow on parsed Claude settings JSON."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC632",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC632",
+      "alias": "CLAUDE-WEBFETCH",
+      "displayLabel": "SEC632 / CLAUDE-WEBFETCH",
+      "docTitle": "Claude settings: bare WebFetch permissions",
+      "slug": "sec632",
+      "canonicalPath": "/rules/lintai-ai-security/sec632",
+      "summary": "Claude settings permissions allow bare `WebFetch` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for exact bare `WebFetch` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-unscoped-tool-family"
+        ],
+        "benignCaseIds": [
+          "claude-settings-unscoped-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for bare `WebFetch` inside permissions.allow on parsed Claude settings JSON."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

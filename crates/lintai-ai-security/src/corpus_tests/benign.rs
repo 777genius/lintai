@@ -97,6 +97,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "claude-settings-scope-search-specific-safe",
             "claude-settings-unsafe-path-fixture-safe",
             "claude-settings-unsafe-path-specific-safe",
+            "claude-settings-unscoped-tool-family-specific-safe",
             "claude-settings-unscoped-websearch-fixture-safe",
             "claude-settings-webfetch-raw-github-fixture-safe",
             "claude-settings-webfetch-specific-safe",

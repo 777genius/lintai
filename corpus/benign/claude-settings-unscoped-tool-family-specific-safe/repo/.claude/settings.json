@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(./docs/**)",
+      "Write(./artifacts/**)",
+      "Edit(./docs/**)",
+      "Glob(./src/**)",
+      "Grep(todo:)",
+      "WebFetch(domain:docs.example.com)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}
