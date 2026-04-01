@@ -48,8 +48,11 @@ use crate::markdown_rules::{
     check_unscoped_webfetch_allowed_tools, check_unscoped_websearch_allowed_tools,
     check_unscoped_write_allowed_tools, check_untrusted_instruction_promotion,
     check_uvx_allowed_tools, check_webfetch_raw_github_allowed_tools, check_wget_allowed_tools,
-    check_wildcard_tool_access, check_write_unsafe_path_allowed_tools,
-    check_yarn_dlx_allowed_tools,
+    check_wildcard_edit_allowed_tools, check_wildcard_glob_allowed_tools,
+    check_wildcard_grep_allowed_tools, check_wildcard_read_allowed_tools,
+    check_wildcard_tool_access, check_wildcard_webfetch_allowed_tools,
+    check_wildcard_websearch_allowed_tools, check_wildcard_write_allowed_tools,
+    check_write_unsafe_path_allowed_tools, check_yarn_dlx_allowed_tools,
 };
 
 declare_rule! {
@@ -737,6 +740,90 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct WildcardReadAllowedToolsRule {
+        code: "SEC520",
+        summary: "AI-native markdown frontmatter grants `Read(*)` wildcard access",
+        doc_title: "AI markdown: `Read(*)` wildcard tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct WildcardWriteAllowedToolsRule {
+        code: "SEC521",
+        summary: "AI-native markdown frontmatter grants `Write(*)` wildcard access",
+        doc_title: "AI markdown: `Write(*)` wildcard tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct WildcardEditAllowedToolsRule {
+        code: "SEC522",
+        summary: "AI-native markdown frontmatter grants `Edit(*)` wildcard access",
+        doc_title: "AI markdown: `Edit(*)` wildcard tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct WildcardGlobAllowedToolsRule {
+        code: "SEC523",
+        summary: "AI-native markdown frontmatter grants `Glob(*)` wildcard access",
+        doc_title: "AI markdown: `Glob(*)` wildcard tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct WildcardGrepAllowedToolsRule {
+        code: "SEC524",
+        summary: "AI-native markdown frontmatter grants `Grep(*)` wildcard access",
+        doc_title: "AI markdown: `Grep(*)` wildcard tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct WildcardWebFetchAllowedToolsRule {
+        code: "SEC525",
+        summary: "AI-native markdown frontmatter grants `WebFetch(*)` wildcard access",
+        doc_title: "AI markdown: `WebFetch(*)` wildcard tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct WildcardWebSearchAllowedToolsRule {
+        code: "SEC526",
+        summary: "AI-native markdown frontmatter grants `WebSearch(*)` wildcard access",
+        doc_title: "AI markdown: `WebSearch(*)` wildcard tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct UnscopedWebFetchAllowedToolsRule {
         code: "SEC404",
         summary: "AI-native markdown frontmatter grants bare `WebFetch` tool access",
@@ -1336,7 +1423,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 107] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 114] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -2204,6 +2291,146 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 107] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(gh workflow disable:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps workflow disabling under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: WildcardReadAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for exact `Read(*)` grants that expose unconstrained reading as shared default policy.",
+            malicious_case_ids: &["skill-core-wildcard-allowed-tools"],
+            benign_case_ids: &["skill-core-wildcard-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Read(*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_wildcard_read_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `Read(*)` with narrower reviewed read patterns like `Read(./docs/**)` or remove blanket shared read authority",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: WildcardWriteAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for exact `Write(*)` grants that expose unconstrained mutation as shared default policy.",
+            malicious_case_ids: &["skill-core-wildcard-allowed-tools"],
+            benign_case_ids: &["skill-core-wildcard-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Write(*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_wildcard_write_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `Write(*)` with narrower reviewed write patterns like `Write(./artifacts/**)` or remove blanket shared write authority",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: WildcardEditAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for exact `Edit(*)` grants that expose unconstrained editing as shared default policy.",
+            malicious_case_ids: &["skill-core-wildcard-allowed-tools"],
+            benign_case_ids: &["skill-core-wildcard-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Edit(*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_wildcard_edit_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `Edit(*)` with narrower reviewed edit patterns like `Edit(./docs/**)` or remove blanket shared edit authority",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: WildcardGlobAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for exact `Glob(*)` grants that expose unconstrained file discovery as shared default policy.",
+            malicious_case_ids: &["skill-core-wildcard-allowed-tools"],
+            benign_case_ids: &["skill-core-wildcard-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Glob(*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_wildcard_glob_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `Glob(*)` with narrower reviewed discovery patterns like `Glob(./docs/**)` or remove blanket shared discovery authority",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: WildcardGrepAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for exact `Grep(*)` grants that expose unconstrained content search as shared default policy.",
+            malicious_case_ids: &["skill-core-wildcard-allowed-tools"],
+            benign_case_ids: &["skill-core-wildcard-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Grep(*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_wildcard_grep_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `Grep(*)` with narrower reviewed search patterns like `Grep(todo:)` or remove blanket shared search authority",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: WildcardWebFetchAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for exact `WebFetch(*)` grants that expose unconstrained remote fetch authority as shared default policy.",
+            malicious_case_ids: &["skill-core-wildcard-allowed-tools"],
+            benign_case_ids: &["skill-core-wildcard-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `WebFetch(*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_wildcard_webfetch_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `WebFetch(*)` with narrower reviewed fetch scopes like `WebFetch(domain:docs.example.com)` or remove blanket shared network fetch authority",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: WildcardWebSearchAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for exact `WebSearch(*)` grants that expose unconstrained search authority as shared default policy.",
+            malicious_case_ids: &["skill-core-wildcard-allowed-tools"],
+            benign_case_ids: &["skill-core-wildcard-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `WebSearch(*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_wildcard_websearch_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `WebSearch(*)` with narrower reviewed search scopes like `WebSearch(site:docs.example.com)` or remove blanket shared search authority",
         ),
         suggestion_fix: None,
     },

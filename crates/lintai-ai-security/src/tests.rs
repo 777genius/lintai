@@ -4179,6 +4179,230 @@ fn ignores_unscoped_grep_allowed_tools_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_wildcard_read_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Read(*), Write(./artifacts/**)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC520")
+        .unwrap();
+    let start = content.find("Read(*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Read(*)".len())
+    );
+}
+
+#[test]
+fn ignores_scoped_read_allowed_tools_wildcard_rule_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Read(./docs/**), Write(./artifacts/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC520")
+    );
+}
+
+#[test]
+fn finds_wildcard_write_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Write(*), Read(./docs/**)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC521")
+        .unwrap();
+    let start = content.find("Write(*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Write(*)".len())
+    );
+}
+
+#[test]
+fn ignores_scoped_write_allowed_tools_wildcard_rule_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Write(./artifacts/**), Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC521")
+    );
+}
+
+#[test]
+fn finds_wildcard_edit_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Edit(*), Read(./docs/**)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC522")
+        .unwrap();
+    let start = content.find("Edit(*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Edit(*)".len())
+    );
+}
+
+#[test]
+fn ignores_scoped_edit_allowed_tools_wildcard_rule_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Edit(./docs/**), Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC522")
+    );
+}
+
+#[test]
+fn finds_wildcard_glob_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Glob(*), Read(./docs/**)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC523")
+        .unwrap();
+    let start = content.find("Glob(*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Glob(*)".len())
+    );
+}
+
+#[test]
+fn ignores_scoped_glob_allowed_tools_wildcard_rule_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Glob(./docs/**), Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC523")
+    );
+}
+
+#[test]
+fn finds_wildcard_grep_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Grep(*), Read(./docs/**)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC524")
+        .unwrap();
+    let start = content.find("Grep(*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Grep(*)".len())
+    );
+}
+
+#[test]
+fn ignores_scoped_grep_allowed_tools_wildcard_rule_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Grep(todo:), Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC524")
+    );
+}
+
+#[test]
+fn finds_wildcard_webfetch_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: WebFetch(*), Read(./docs/**)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC525")
+        .unwrap();
+    let start = content.find("WebFetch(*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "WebFetch(*)".len())
+    );
+}
+
+#[test]
+fn ignores_scoped_webfetch_allowed_tools_wildcard_rule_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: WebFetch(domain:docs.example.com), Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC525")
+    );
+}
+
+#[test]
+fn finds_wildcard_websearch_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: WebSearch(*), Read(./docs/**)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC526")
+        .unwrap();
+    let start = content.find("WebSearch(*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "WebSearch(*)".len())
+    );
+}
+
+#[test]
+fn ignores_scoped_websearch_allowed_tools_wildcard_rule_in_frontmatter() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: WebSearch(site:docs.example.com), Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC526")
+    );
+}
+
+#[test]
 fn finds_read_unsafe_path_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Read(/etc/**), Write(./artifacts/**)\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

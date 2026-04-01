@@ -143,6 +143,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "skill-chgrp-allowed-tools",
             "skill-chmod-allowed-tools",
             "skill-chown-allowed-tools",
+            "skill-core-wildcard-allowed-tools",
             "skill-curl-allowed-tools",
             "skill-docker-host-network",
             "skill-docker-multiline-mutable-image",

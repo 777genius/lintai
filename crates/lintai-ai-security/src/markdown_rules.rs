@@ -1483,6 +1483,118 @@ pub(crate) fn check_unscoped_grep_allowed_tools(
     )
 }
 
+pub(crate) fn check_wildcard_read_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.wildcard_read_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Read(*)` wildcard access",
+    )
+}
+
+pub(crate) fn check_wildcard_write_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.wildcard_write_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Write(*)` wildcard access",
+    )
+}
+
+pub(crate) fn check_wildcard_edit_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.wildcard_edit_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Edit(*)` wildcard access",
+    )
+}
+
+pub(crate) fn check_wildcard_glob_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.wildcard_glob_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Glob(*)` wildcard access",
+    )
+}
+
+pub(crate) fn check_wildcard_grep_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.wildcard_grep_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Grep(*)` wildcard access",
+    )
+}
+
+pub(crate) fn check_wildcard_webfetch_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.wildcard_webfetch_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `WebFetch(*)` wildcard access",
+    )
+}
+
+pub(crate) fn check_wildcard_websearch_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.wildcard_websearch_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `WebSearch(*)` wildcard access",
+    )
+}
+
 pub(crate) fn check_read_unsafe_path_allowed_tools(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

@@ -238,6 +238,13 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC517 / MD-GH-SECRET-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh secret delete:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC518 / MD-GH-VARIABLE-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh variable delete:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC519 / MD-GH-WORKFLOW-DISABLE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh workflow disable:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC520 / MD-READ-WILDCARD` | AI-native markdown frontmatter grants `Read(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC521 / MD-WRITE-WILDCARD` | AI-native markdown frontmatter grants `Write(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC522 / MD-EDIT-WILDCARD` | AI-native markdown frontmatter grants `Edit(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC523 / MD-GLOB-WILDCARD` | AI-native markdown frontmatter grants `Glob(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC524 / MD-GREP-WILDCARD` | AI-native markdown frontmatter grants `Grep(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC525 / MD-WEBFETCH-WILDCARD` | AI-native markdown frontmatter grants `WebFetch(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC526 / MD-WEBSEARCH-WILDCARD` | AI-native markdown frontmatter grants `WebSearch(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -4497,6 +4504,153 @@ Important behavior:
 - Promotion Blocker: Shared `gh workflow disable` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC520 / MD-READ-WILDCARD` — AI-native markdown frontmatter grants `Read(*)` wildcard access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-READ-WILDCARD`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for exact `Read(*)` grants that expose unconstrained reading as shared default policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Read(*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-core-wildcard-allowed-tools`
+- Benign Corpus: `skill-core-wildcard-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC521 / MD-WRITE-WILDCARD` — AI-native markdown frontmatter grants `Write(*)` wildcard access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-WRITE-WILDCARD`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for exact `Write(*)` grants that expose unconstrained mutation as shared default policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Write(*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-core-wildcard-allowed-tools`
+- Benign Corpus: `skill-core-wildcard-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC522 / MD-EDIT-WILDCARD` — AI-native markdown frontmatter grants `Edit(*)` wildcard access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-EDIT-WILDCARD`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for exact `Edit(*)` grants that expose unconstrained editing as shared default policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Edit(*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-core-wildcard-allowed-tools`
+- Benign Corpus: `skill-core-wildcard-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC523 / MD-GLOB-WILDCARD` — AI-native markdown frontmatter grants `Glob(*)` wildcard access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GLOB-WILDCARD`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for exact `Glob(*)` grants that expose unconstrained file discovery as shared default policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Glob(*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-core-wildcard-allowed-tools`
+- Benign Corpus: `skill-core-wildcard-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC524 / MD-GREP-WILDCARD` — AI-native markdown frontmatter grants `Grep(*)` wildcard access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GREP-WILDCARD`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for exact `Grep(*)` grants that expose unconstrained content search as shared default policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Grep(*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-core-wildcard-allowed-tools`
+- Benign Corpus: `skill-core-wildcard-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC525 / MD-WEBFETCH-WILDCARD` — AI-native markdown frontmatter grants `WebFetch(*)` wildcard access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-WEBFETCH-WILDCARD`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for exact `WebFetch(*)` grants that expose unconstrained remote fetch authority as shared default policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `WebFetch(*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-core-wildcard-allowed-tools`
+- Benign Corpus: `skill-core-wildcard-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC526 / MD-WEBSEARCH-WILDCARD` — AI-native markdown frontmatter grants `WebSearch(*)` wildcard access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-WEBSEARCH-WILDCARD`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for exact `WebSearch(*)` grants that expose unconstrained search authority as shared default policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `WebSearch(*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-core-wildcard-allowed-tools`
+- Benign Corpus: `skill-core-wildcard-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ## Provider: `lintai-policy-mismatch`
 
