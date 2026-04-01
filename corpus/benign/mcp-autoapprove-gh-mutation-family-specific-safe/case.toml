@@ -1,0 +1,12 @@
+id = "mcp-autoapprove-gh-mutation-family-specific-safe"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC560", "SEC561", "SEC562", "SEC563", "SEC564", "SEC565", "SEC566"]
+
+[snapshot]
+kind = "none"
+name = ""

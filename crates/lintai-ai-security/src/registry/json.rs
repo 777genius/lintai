@@ -7,11 +7,14 @@ use crate::json_rules::{
     check_json_unsafe_plugin_path, check_mcp_autoapprove_bash_wildcard, check_mcp_autoapprove_curl,
     check_mcp_autoapprove_gh_api_delete, check_mcp_autoapprove_gh_api_patch,
     check_mcp_autoapprove_gh_api_post, check_mcp_autoapprove_gh_api_put,
-    check_mcp_autoapprove_git_checkout, check_mcp_autoapprove_git_clean,
-    check_mcp_autoapprove_git_commit, check_mcp_autoapprove_git_push,
-    check_mcp_autoapprove_git_reset, check_mcp_autoapprove_rm, check_mcp_autoapprove_sudo,
-    check_mcp_autoapprove_tools_true, check_mcp_autoapprove_wget, check_mcp_autoapprove_wildcard,
-    check_mcp_broad_env_file, check_mcp_capabilities_wildcard,
+    check_mcp_autoapprove_gh_issue_create, check_mcp_autoapprove_gh_repo_create,
+    check_mcp_autoapprove_gh_repo_delete, check_mcp_autoapprove_gh_repo_edit,
+    check_mcp_autoapprove_gh_secret_set, check_mcp_autoapprove_gh_variable_set,
+    check_mcp_autoapprove_gh_workflow_run, check_mcp_autoapprove_git_checkout,
+    check_mcp_autoapprove_git_clean, check_mcp_autoapprove_git_commit,
+    check_mcp_autoapprove_git_push, check_mcp_autoapprove_git_reset, check_mcp_autoapprove_rm,
+    check_mcp_autoapprove_sudo, check_mcp_autoapprove_tools_true, check_mcp_autoapprove_wget,
+    check_mcp_autoapprove_wildcard, check_mcp_broad_env_file, check_mcp_capabilities_wildcard,
     check_mcp_credential_env_passthrough, check_mcp_dangerous_docker_flag,
     check_mcp_inline_download_exec, check_mcp_mutable_docker_pull, check_mcp_mutable_launcher,
     check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
@@ -383,6 +386,90 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApproveGhIssueCreateRule {
+        code: "SEC560",
+        summary: "MCP configuration auto-approves `Bash(gh issue create:*)` through `autoApprove`",
+        doc_title: "MCP config: gh issue create auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGhRepoCreateRule {
+        code: "SEC561",
+        summary: "MCP configuration auto-approves `Bash(gh repo create:*)` through `autoApprove`",
+        doc_title: "MCP config: gh repo create auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGhRepoDeleteRule {
+        code: "SEC562",
+        summary: "MCP configuration auto-approves `Bash(gh repo delete:*)` through `autoApprove`",
+        doc_title: "MCP config: gh repo delete auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGhRepoEditRule {
+        code: "SEC563",
+        summary: "MCP configuration auto-approves `Bash(gh repo edit:*)` through `autoApprove`",
+        doc_title: "MCP config: gh repo edit auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGhSecretSetRule {
+        code: "SEC564",
+        summary: "MCP configuration auto-approves `Bash(gh secret set:*)` through `autoApprove`",
+        doc_title: "MCP config: gh secret set auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGhVariableSetRule {
+        code: "SEC565",
+        summary: "MCP configuration auto-approves `Bash(gh variable set:*)` through `autoApprove`",
+        doc_title: "MCP config: gh variable set auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGhWorkflowRunRule {
+        code: "SEC566",
+        summary: "MCP configuration auto-approves `Bash(gh workflow run:*)` through `autoApprove`",
+        doc_title: "MCP config: gh workflow run auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpAutoApproveToolsTrueRule {
         code: "SEC395",
         summary: "MCP configuration auto-approves all tools with `autoApproveTools: true`",
@@ -538,7 +625,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 43] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 50] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -1120,6 +1207,146 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 43] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `gh api --method PUT` auto-approval and keep GitHub API mutations under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhIssueCreateRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `gh issue create` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-gh-mutation-family"],
+            benign_case_ids: &["mcp-autoapprove-gh-mutation-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh issue create:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_issue_create,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh issue create` auto-approval and keep GitHub mutation under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhRepoCreateRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `gh repo create` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-gh-mutation-family"],
+            benign_case_ids: &["mcp-autoapprove-gh-mutation-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh repo create:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_repo_create,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh repo create` auto-approval and keep repository creation under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhRepoDeleteRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `gh repo delete` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-gh-mutation-family"],
+            benign_case_ids: &["mcp-autoapprove-gh-mutation-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh repo delete:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_repo_delete,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh repo delete` auto-approval and keep destructive repository deletion under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhRepoEditRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `gh repo edit` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-gh-mutation-family"],
+            benign_case_ids: &["mcp-autoapprove-gh-mutation-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh repo edit:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_repo_edit,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh repo edit` auto-approval and keep repository mutation under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhSecretSetRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `gh secret set` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-gh-mutation-family"],
+            benign_case_ids: &["mcp-autoapprove-gh-mutation-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh secret set:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_secret_set,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh secret set` auto-approval and keep secret mutation under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhVariableSetRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `gh variable set` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-gh-mutation-family"],
+            benign_case_ids: &["mcp-autoapprove-gh-mutation-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh variable set:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_variable_set,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh variable set` auto-approval and keep variable mutation under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhWorkflowRunRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `gh workflow run` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-gh-mutation-family"],
+            benign_case_ids: &["mcp-autoapprove-gh-mutation-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh workflow run:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_workflow_run,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh workflow run` auto-approval and keep workflow dispatch under explicit user review",
         ),
         suggestion_fix: None,
     },

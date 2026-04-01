@@ -303,6 +303,111 @@ pub(crate) fn check_mcp_autoapprove_gh_api_put(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_gh_issue_create(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_issue_create_span.clone()),
+        "MCP configuration auto-approves `gh issue create` with `autoApprove: [\"Bash(gh issue create:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_gh_repo_create(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_repo_create_span.clone()),
+        "MCP configuration auto-approves `gh repo create` with `autoApprove: [\"Bash(gh repo create:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_gh_repo_delete(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_repo_delete_span.clone()),
+        "MCP configuration auto-approves `gh repo delete` with `autoApprove: [\"Bash(gh repo delete:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_gh_repo_edit(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_repo_edit_span.clone()),
+        "MCP configuration auto-approves `gh repo edit` with `autoApprove: [\"Bash(gh repo edit:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_gh_secret_set(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_secret_set_span.clone()),
+        "MCP configuration auto-approves `gh secret set` with `autoApprove: [\"Bash(gh secret set:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_gh_variable_set(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_variable_set_span.clone()),
+        "MCP configuration auto-approves `gh variable set` with `autoApprove: [\"Bash(gh variable set:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_gh_workflow_run(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_workflow_run_span.clone()),
+        "MCP configuration auto-approves `gh workflow run` with `autoApprove: [\"Bash(gh workflow run:*)\"]`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_tools_true(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

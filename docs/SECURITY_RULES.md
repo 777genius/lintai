@@ -278,6 +278,13 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC557 / MCP-AUTOAPPROVE-GH-API-DELETE` | MCP configuration auto-approves `Bash(gh api --method DELETE:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC558 / MCP-AUTOAPPROVE-GH-API-PATCH` | MCP configuration auto-approves `Bash(gh api --method PATCH:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC559 / MCP-AUTOAPPROVE-GH-API-PUT` | MCP configuration auto-approves `Bash(gh api --method PUT:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC560 / MCP-AUTOAPPROVE-GH-ISSUE-CREATE` | MCP configuration auto-approves `Bash(gh issue create:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC561 / MCP-AUTOAPPROVE-GH-REPO-CREATE` | MCP configuration auto-approves `Bash(gh repo create:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC562 / MCP-AUTOAPPROVE-GH-REPO-DELETE` | MCP configuration auto-approves `Bash(gh repo delete:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC563 / MCP-AUTOAPPROVE-GH-REPO-EDIT` | MCP configuration auto-approves `Bash(gh repo edit:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC564 / MCP-AUTOAPPROVE-GH-SECRET-SET` | MCP configuration auto-approves `Bash(gh secret set:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC565 / MCP-AUTOAPPROVE-GH-VARIABLE-SET` | MCP configuration auto-approves `Bash(gh variable set:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC566 / MCP-AUTOAPPROVE-GH-WORKFLOW-RUN` | MCP configuration auto-approves `Bash(gh workflow run:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -5302,6 +5309,153 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh api --method PUT:*)"]` on parsed MCP configuration.
 - Malicious Corpus: `mcp-autoapprove-gh-api-mutation-family`
 - Benign Corpus: `mcp-autoapprove-gh-api-mutation-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC560 / MCP-AUTOAPPROVE-GH-ISSUE-CREATE` — MCP configuration auto-approves `Bash(gh issue create:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GH-ISSUE-CREATE`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `gh issue create` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh issue create:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-gh-mutation-family`
+- Benign Corpus: `mcp-autoapprove-gh-mutation-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC561 / MCP-AUTOAPPROVE-GH-REPO-CREATE` — MCP configuration auto-approves `Bash(gh repo create:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GH-REPO-CREATE`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `gh repo create` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh repo create:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-gh-mutation-family`
+- Benign Corpus: `mcp-autoapprove-gh-mutation-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC562 / MCP-AUTOAPPROVE-GH-REPO-DELETE` — MCP configuration auto-approves `Bash(gh repo delete:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GH-REPO-DELETE`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `gh repo delete` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh repo delete:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-gh-mutation-family`
+- Benign Corpus: `mcp-autoapprove-gh-mutation-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC563 / MCP-AUTOAPPROVE-GH-REPO-EDIT` — MCP configuration auto-approves `Bash(gh repo edit:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GH-REPO-EDIT`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `gh repo edit` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh repo edit:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-gh-mutation-family`
+- Benign Corpus: `mcp-autoapprove-gh-mutation-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC564 / MCP-AUTOAPPROVE-GH-SECRET-SET` — MCP configuration auto-approves `Bash(gh secret set:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GH-SECRET-SET`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `gh secret set` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh secret set:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-gh-mutation-family`
+- Benign Corpus: `mcp-autoapprove-gh-mutation-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC565 / MCP-AUTOAPPROVE-GH-VARIABLE-SET` — MCP configuration auto-approves `Bash(gh variable set:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GH-VARIABLE-SET`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `gh variable set` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh variable set:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-gh-mutation-family`
+- Benign Corpus: `mcp-autoapprove-gh-mutation-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC566 / MCP-AUTOAPPROVE-GH-WORKFLOW-RUN` — MCP configuration auto-approves `Bash(gh workflow run:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GH-WORKFLOW-RUN`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `gh workflow run` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh workflow run:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-gh-mutation-family`
+- Benign Corpus: `mcp-autoapprove-gh-mutation-family-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
