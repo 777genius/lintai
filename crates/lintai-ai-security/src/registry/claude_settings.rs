@@ -61,7 +61,7 @@ declare_rule! {
         category: Category::Quality,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -73,7 +73,7 @@ declare_rule! {
         category: Category::Quality,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -85,7 +85,7 @@ declare_rule! {
         category: Category::Quality,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -205,7 +205,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -217,7 +217,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -229,7 +229,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -241,7 +241,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -1055,9 +1055,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Unsupported hook-event matchers in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact use of `matcher` on unsupported hook events.",
+            malicious_case_ids: &["claude-settings-matcher-on-stop-event"],
+            benign_case_ids: &["claude-settings-matcher-pretooluse-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact hook-event and matcher presence detection in parsed Claude settings JSON.",
         },
         check: check_claude_settings_invalid_hook_matcher_event,
         safe_fix: None,
@@ -1071,9 +1075,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Missing matchers on matcher-capable Claude hook events are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact omission of `matcher` on matcher-capable hook events.",
+            malicious_case_ids: &["claude-settings-missing-required-matcher"],
+            benign_case_ids: &["claude-settings-required-matcher-present-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact hook-event and matcher absence detection in parsed Claude settings JSON.",
         },
         check: check_claude_settings_missing_required_hook_matcher,
         safe_fix: None,
@@ -1087,9 +1095,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Missing command-hook timeouts in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact omission of `timeout` on command hooks.",
+            malicious_case_ids: &["claude-settings-missing-hook-timeout"],
+            benign_case_ids: &["claude-settings-hook-timeout-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact command-hook timeout presence detection in parsed Claude settings JSON.",
         },
         check: check_claude_settings_missing_hook_timeout,
         safe_fix: None,
@@ -1919,9 +1931,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `Bash(npx ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(npx ...)` mutable package-runner authority.",
+            malicious_case_ids: &["claude-settings-mutable-runner-permissions"],
+            benign_case_ids: &["claude-settings-npx-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(npx ...)` entries inside permissions.allow.",
         },
         check: check_claude_settings_npx_permission,
         safe_fix: None,
@@ -1935,9 +1951,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `Bash(uvx ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(uvx ...)` mutable package-runner authority.",
+            malicious_case_ids: &["claude-settings-mutable-runner-permissions"],
+            benign_case_ids: &["claude-settings-package-runner-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(uvx ...)` entries inside permissions.allow.",
         },
         check: check_claude_settings_uvx_permission,
         safe_fix: None,
@@ -1951,9 +1971,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `Bash(npm exec ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(npm exec ...)` mutable package-runner authority.",
+            malicious_case_ids: &["claude-settings-npm-exec-bunx-permissions"],
+            benign_case_ids: &["claude-settings-npm-exec-bunx-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(npm exec ...)` entries inside permissions.allow.",
         },
         check: check_claude_settings_npm_exec_permission,
         safe_fix: None,
@@ -1967,9 +1991,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `Bash(bunx ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(bunx ...)` mutable package-runner authority.",
+            malicious_case_ids: &["claude-settings-npm-exec-bunx-permissions"],
+            benign_case_ids: &["claude-settings-npm-exec-bunx-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(bunx ...)` entries inside permissions.allow.",
         },
         check: check_claude_settings_bunx_permission,
         safe_fix: None,
@@ -1983,9 +2011,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `Bash(pnpm dlx ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(pnpm dlx ...)` mutable package-runner authority.",
+            malicious_case_ids: &["claude-settings-mutable-runner-permissions"],
+            benign_case_ids: &["claude-settings-package-runner-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(pnpm dlx ...)` entries inside permissions.allow.",
         },
         check: check_claude_settings_pnpm_dlx_permission,
         safe_fix: None,
@@ -1999,9 +2031,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `Bash(yarn dlx ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(yarn dlx ...)` mutable package-runner authority.",
+            malicious_case_ids: &["claude-settings-mutable-runner-permissions"],
+            benign_case_ids: &["claude-settings-package-runner-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(yarn dlx ...)` entries inside permissions.allow.",
         },
         check: check_claude_settings_yarn_dlx_permission,
         safe_fix: None,
@@ -2015,9 +2051,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `Bash(pipx run ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(pipx run ...)` mutable package-runner authority.",
+            malicious_case_ids: &["claude-settings-mutable-runner-permissions"],
+            benign_case_ids: &["claude-settings-package-runner-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(pipx run ...)` entries inside permissions.allow.",
         },
         check: check_claude_settings_pipx_run_permission,
         safe_fix: None,
@@ -2079,9 +2119,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared git reset permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(git reset:*)` authority.",
+            malicious_case_ids: &["claude-settings-destructive-git-permissions"],
+            benign_case_ids: &["claude-settings-destructive-git-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(git reset:*)` entries inside permissions.allow.",
         },
         check: check_claude_settings_git_reset_permission,
         safe_fix: None,
@@ -2095,9 +2139,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared git clean permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(git clean:*)` authority.",
+            malicious_case_ids: &["claude-settings-destructive-git-permissions"],
+            benign_case_ids: &["claude-settings-destructive-git-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(git clean:*)` entries inside permissions.allow.",
         },
         check: check_claude_settings_git_clean_permission,
         safe_fix: None,
@@ -2111,9 +2159,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared git restore permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(git restore:*)` authority.",
+            malicious_case_ids: &["claude-settings-destructive-git-permissions"],
+            benign_case_ids: &["claude-settings-destructive-git-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(git restore:*)` entries inside permissions.allow.",
         },
         check: check_claude_settings_git_restore_permission,
         safe_fix: None,
@@ -2127,9 +2179,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared git rebase permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for exact `Bash(git rebase:*)` authority.",
+            malicious_case_ids: &["claude-settings-destructive-git-permissions"],
+            benign_case_ids: &["claude-settings-destructive-git-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission detection for `Bash(git rebase:*)` entries inside permissions.allow.",
         },
         check: check_claude_settings_git_rebase_permission,
         safe_fix: None,
