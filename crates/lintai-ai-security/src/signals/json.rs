@@ -92,7 +92,10 @@ fn analyze_package_manifest(
     }
 
     for key in DEPENDENCY_SECTION_KEYS {
-        if signals.git_dependency_span.is_some() && signals.unbounded_dependency_span.is_some() {
+        if signals.git_dependency_span.is_some()
+            && signals.unbounded_dependency_span.is_some()
+            && signals.direct_url_dependency_span.is_some()
+        {
             break;
         }
         let Some(section) = root.get(*key).and_then(Value::as_object) else {
@@ -112,6 +115,13 @@ fn analyze_package_manifest(
             {
                 let path = with_child_key(&with_child_key(&[], key), name);
                 signals.unbounded_dependency_span =
+                    Some(resolve_value_span(&path, locator, fallback_len));
+            }
+            if signals.direct_url_dependency_span.is_none()
+                && looks_like_direct_url_dependency_spec(spec)
+            {
+                let path = with_child_key(&with_child_key(&[], key), name);
+                signals.direct_url_dependency_span =
                     Some(resolve_value_span(&path, locator, fallback_len));
             }
         }

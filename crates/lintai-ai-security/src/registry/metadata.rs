@@ -13,6 +13,7 @@ pub(crate) type SuggestionFixFn = fn(&ScanContext, &Finding) -> Option<Fix>;
 pub(crate) enum Surface {
     Markdown,
     Hook,
+    DockerCompose,
     Dockerfile,
     Json,
     ClaudeSettings,
@@ -34,6 +35,7 @@ impl Surface {
                     | ArtifactKind::CursorPluginAgent
             ),
             Self::Hook => artifact_kind == ArtifactKind::CursorHookScript,
+            Self::DockerCompose => artifact_kind == ArtifactKind::DockerCompose,
             Self::Dockerfile => artifact_kind == ArtifactKind::Dockerfile,
             Self::Json => matches!(
                 artifact_kind,

@@ -1,8 +1,8 @@
 use std::sync::OnceLock;
 
 use super::{
-    NativeRuleSpec, claude_settings, dockerfile, github_workflow, hooks, json, markdown,
-    server_json, tool_json,
+    NativeRuleSpec, claude_settings, docker_compose, dockerfile, github_workflow, hooks, json,
+    markdown, server_json, tool_json,
 };
 
 pub(crate) fn rule_specs() -> &'static [NativeRuleSpec] {
@@ -13,6 +13,7 @@ pub(crate) fn rule_specs() -> &'static [NativeRuleSpec] {
             let mut specs = Vec::with_capacity(
                 markdown::RULE_SPECS.len()
                     + hooks::RULE_SPECS.len()
+                    + docker_compose::RULE_SPECS.len()
                     + dockerfile::RULE_SPECS.len()
                     + json::RULE_SPECS.len()
                     + tool_json::RULE_SPECS.len()
@@ -22,6 +23,7 @@ pub(crate) fn rule_specs() -> &'static [NativeRuleSpec] {
             );
             specs.extend_from_slice(&markdown::RULE_SPECS);
             specs.extend_from_slice(&hooks::RULE_SPECS);
+            specs.extend_from_slice(&docker_compose::RULE_SPECS);
             specs.extend_from_slice(&dockerfile::RULE_SPECS);
             specs.extend_from_slice(&json::RULE_SPECS);
             specs.extend_from_slice(&tool_json::RULE_SPECS);

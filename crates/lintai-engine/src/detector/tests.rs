@@ -160,6 +160,16 @@ fn detects_v0_1_file_types() {
     assert_eq!(
         detector
             .detect(
+                Path::new("/tmp/project/docker-compose.yml"),
+                "docker-compose.yml"
+            )
+            .unwrap()
+            .kind,
+        ArtifactKind::DockerCompose
+    );
+    assert_eq!(
+        detector
+            .detect(
                 Path::new("/tmp/project/.claude/settings.json"),
                 ".claude/settings.json"
             )

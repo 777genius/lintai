@@ -24,6 +24,8 @@ pub(crate) const DEFAULT_INCLUDE_PATTERNS: &[&str] = &[
     "**/*.yaml",
     "*.sh",
     "**/*.sh",
+    "Dockerfile",
+    "**/Dockerfile",
 ];
 
 pub(crate) const DEFAULT_EXCLUDE_PATTERNS: &[&str] = &[];

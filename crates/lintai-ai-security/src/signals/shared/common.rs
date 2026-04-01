@@ -59,6 +59,68 @@ pub(crate) fn looks_like_unbounded_dependency_spec(spec: &str) -> bool {
     trimmed == "*" || trimmed.eq_ignore_ascii_case("latest")
 }
 
+pub(crate) fn looks_like_direct_url_dependency_spec(spec: &str) -> bool {
+    let lowered = spec.trim().to_ascii_lowercase();
+    if !(lowered.starts_with("http://") || lowered.starts_with("https://")) {
+        return false;
+    }
+
+    let without_fragment = lowered.split('#').next().unwrap_or(&lowered);
+    let without_query = without_fragment
+        .split('?')
+        .next()
+        .unwrap_or(without_fragment);
+    without_query.ends_with(".tgz")
+        || without_query.ends_with(".tar.gz")
+        || without_query.ends_with(".tar")
+        || without_query.ends_with(".zip")
+        || without_query.contains("/tarball/")
+}
+
+pub(crate) fn looks_like_registry_image_reference(text: &str) -> bool {
+    let normalized = text
+        .trim()
+        .trim_matches(|ch| matches!(ch, '"' | '\'' | '`'));
+    if normalized.is_empty() {
+        return false;
+    }
+
+    let without_digest = normalized.split('@').next().unwrap_or(normalized);
+    let last_slash = without_digest.rfind('/');
+    let repository = match without_digest.rfind(':') {
+        Some(colon) if last_slash.is_none_or(|slash| colon > slash) => &without_digest[..colon],
+        _ => without_digest,
+    };
+
+    repository.contains('/')
+        || repository
+            .split('/')
+            .next()
+            .is_some_and(|segment| segment.contains('.') || segment.contains(':'))
+}
+
+pub(crate) fn docker_image_uses_latest_or_implicit_tag(text: &str) -> bool {
+    let normalized = text
+        .trim()
+        .trim_matches(|ch| matches!(ch, '"' | '\'' | '`'));
+    if normalized.is_empty()
+        || normalized.contains('$')
+        || normalized.eq_ignore_ascii_case("scratch")
+        || normalized.to_ascii_lowercase().contains("@sha256:")
+    {
+        return false;
+    }
+
+    let without_digest = normalized.split('@').next().unwrap_or(normalized);
+    let last_slash = without_digest.rfind('/');
+    match without_digest.rfind(':') {
+        Some(colon) if last_slash.is_none_or(|slash| colon > slash) => without_digest
+            .get(colon + 1..)
+            .is_some_and(|tag| tag.eq_ignore_ascii_case("latest")),
+        _ => true,
+    }
+}
+
 pub(crate) fn is_mutable_mcp_launcher(command: &str, args: Option<&Vec<Value>>) -> bool {
     if command.eq_ignore_ascii_case("npx") || command.eq_ignore_ascii_case("uvx") {
         return true;

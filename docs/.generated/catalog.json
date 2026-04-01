@@ -926,7 +926,15 @@
         "lintai-ai-security:SEC328",
         "lintai-ai-security:SEC743",
         "lintai-ai-security:SEC744",
-        "lintai-ai-security:SEC745"
+        "lintai-ai-security:SEC745",
+        "lintai-ai-security:SEC746",
+        "lintai-ai-security:SEC747",
+        "lintai-ai-security:SEC748",
+        "lintai-ai-security:SEC749",
+        "lintai-ai-security:SEC750",
+        "lintai-ai-security:SEC751",
+        "lintai-ai-security:SEC752",
+        "lintai-ai-security:SEC753"
       ],
       "canonicalPath": "/presets/supply-chain"
     },
@@ -18145,6 +18153,310 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals package manifest analysis over dependency sections for exact specs equal to `*` or `latest`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC746",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC746",
+      "alias": null,
+      "displayLabel": "SEC746",
+      "docTitle": "Dockerfile: remote script execution in RUN",
+      "slug": "sec746",
+      "canonicalPath": "/rules/lintai-ai-security/sec746",
+      "summary": "Dockerfile RUN downloads remote code and executes it",
+      "scope": "per_file",
+      "surface": "dockerfile",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "supply-chain"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Dockerfiles for RUN instructions that fetch remote content and pipe it into a shell.",
+        "maliciousCaseIds": [
+          "dockerfile-run-download-exec"
+        ],
+        "benignCaseIds": [
+          "dockerfile-safe-run"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "DockerfileSignals line analysis over `RUN` instructions for download-exec patterns such as `curl` or `wget` piped to `sh` or `bash`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC747",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC747",
+      "alias": null,
+      "displayLabel": "SEC747",
+      "docTitle": "Dockerfile: final stage runs as root",
+      "slug": "sec747",
+      "canonicalPath": "/rules/lintai-ai-security/sec747",
+      "summary": "Dockerfile final stage explicitly runs as root",
+      "scope": "per_file",
+      "surface": "dockerfile",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "supply-chain"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks the final Dockerfile stage for an explicit root runtime user while ignoring earlier build stages that later drop privileges.",
+        "maliciousCaseIds": [
+          "dockerfile-final-stage-root-user"
+        ],
+        "benignCaseIds": [
+          "dockerfile-final-stage-nonroot-user"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "DockerfileSignals tracks `FROM` stage boundaries and the effective explicit `USER` in the final stage, flagging only `root`, `root:*`, `0`, or `0:*` in the last stage."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC748",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC748",
+      "alias": null,
+      "displayLabel": "SEC748",
+      "docTitle": "Docker Compose: privileged service runtime",
+      "slug": "sec748",
+      "canonicalPath": "/rules/lintai-ai-security/sec748",
+      "summary": "Docker Compose service enables privileged container runtime or host namespace access",
+      "scope": "per_file",
+      "surface": "docker-compose",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "supply-chain"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Docker Compose service definitions for privileged runtime, dangerous capability grants, or host namespace access.",
+        "maliciousCaseIds": [
+          "docker-compose-privileged-runtime"
+        ],
+        "benignCaseIds": [
+          "docker-compose-safe-runtime"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "DockerComposeSignals combines semantic confirmation of a Compose `services` map with indentation-aware line matching for `privileged: true`, `cap_add: [ALL|SYS_ADMIN]`, and `network_mode`/`pid`/`ipc: host` inside service blocks."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC749",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC749",
+      "alias": null,
+      "displayLabel": "SEC749",
+      "docTitle": "Dockerfile: mutable registry image in FROM",
+      "slug": "sec749",
+      "canonicalPath": "/rules/lintai-ai-security/sec749",
+      "summary": "Dockerfile FROM uses a mutable registry image without a digest pin",
+      "scope": "per_file",
+      "surface": "dockerfile",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "supply-chain"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Dockerfiles for registry-distributed base images that are not digest pinned.",
+        "maliciousCaseIds": [
+          "dockerfile-mutable-base-image"
+        ],
+        "benignCaseIds": [
+          "dockerfile-digest-pinned-base-image"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "DockerfileSignals exact `FROM` token analysis with conservative registry-image matching and digest-pin detection on the selected image token."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC750",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC750",
+      "alias": null,
+      "displayLabel": "SEC750",
+      "docTitle": "Docker Compose: mutable service image",
+      "slug": "sec750",
+      "canonicalPath": "/rules/lintai-ai-security/sec750",
+      "summary": "Docker Compose service image uses a mutable registry reference without a digest pin",
+      "scope": "per_file",
+      "surface": "docker-compose",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "supply-chain"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Docker Compose services for registry-distributed image references that are not digest pinned.",
+        "maliciousCaseIds": [
+          "docker-compose-mutable-image"
+        ],
+        "benignCaseIds": [
+          "docker-compose-digest-pinned-image"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "DockerComposeSignals combines semantic confirmation of `services.*.image` values with indentation-aware line matching and conservative registry-image plus digest-pin detection."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC751",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC751",
+      "alias": null,
+      "displayLabel": "SEC751",
+      "docTitle": "Dockerfile: latest or implicit-latest base image tag",
+      "slug": "sec751",
+      "canonicalPath": "/rules/lintai-ai-security/sec751",
+      "summary": "Dockerfile FROM uses a latest or implicit-latest image tag",
+      "scope": "per_file",
+      "surface": "dockerfile",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "supply-chain"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Dockerfiles for base images that rely on `latest` or the implicit default latest tag.",
+        "maliciousCaseIds": [
+          "dockerfile-latest-base-image"
+        ],
+        "benignCaseIds": [
+          "dockerfile-tagged-base-image-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "DockerfileSignals exact `FROM` token analysis with prior-stage alias tracking plus deterministic detection of explicit `:latest` tags or missing tags on non-digest image references."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC752",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC752",
+      "alias": null,
+      "displayLabel": "SEC752",
+      "docTitle": "Docker Compose: latest or implicit-latest service image tag",
+      "slug": "sec752",
+      "canonicalPath": "/rules/lintai-ai-security/sec752",
+      "summary": "Docker Compose service image uses a latest or implicit-latest tag",
+      "scope": "per_file",
+      "surface": "docker-compose",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "supply-chain"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed Docker Compose services for images that rely on `latest` or the implicit default latest tag.",
+        "maliciousCaseIds": [
+          "docker-compose-latest-image"
+        ],
+        "benignCaseIds": [
+          "docker-compose-tagged-image-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "DockerComposeSignals semantic `services.*.image` detection combined with indentation-aware line matching and deterministic detection of explicit `:latest` tags or missing tags on non-digest image references."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC753",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC753",
+      "alias": null,
+      "displayLabel": "SEC753",
+      "docTitle": "package.json: direct archive URL dependency source",
+      "slug": "sec753",
+      "canonicalPath": "/rules/lintai-ai-security/sec753",
+      "summary": "package.json installs a dependency from a direct archive URL source",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "supply-chain"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed package.json dependency sections for direct archive URL sources that bypass the normal registry release path.",
+        "maliciousCaseIds": [
+          "package-manifest-direct-url-dependency"
+        ],
+        "benignCaseIds": [
+          "package-manifest-registry-archive-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals package manifest analysis over dependency sections for direct `http://` or `https://` archive-like specs ending in `.tgz`, `.tar.gz`, `.tar`, `.zip`, or containing `/tarball/`."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

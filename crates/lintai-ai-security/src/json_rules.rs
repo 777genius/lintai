@@ -123,6 +123,21 @@ pub(crate) fn check_package_manifest_unbounded_dependency(
     )
 }
 
+pub(crate) fn check_package_manifest_direct_url_dependency(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.direct_url_dependency_span.clone()),
+        "package manifest installs a dependency from a direct archive URL instead of a published registry release",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

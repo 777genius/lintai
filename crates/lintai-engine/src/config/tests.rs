@@ -342,6 +342,14 @@ format = "markdown"
 }
 
 #[test]
+fn default_config_includes_dockerfile_paths() {
+    let config = super::EngineConfig::default();
+    let resolved = config.resolve_for("Dockerfile");
+
+    assert!(resolved.included);
+}
+
+#[test]
 fn add_detection_override_for_kind_uses_canonical_route() {
     let mut config = super::EngineConfig::default();
     let patterns = vec!["custom/**/*.md".to_owned()];

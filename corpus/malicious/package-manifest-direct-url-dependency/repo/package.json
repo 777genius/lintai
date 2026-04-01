@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "demo": "https://registry.example.test/demo/-/demo-1.2.3.tgz"
+  }
+}

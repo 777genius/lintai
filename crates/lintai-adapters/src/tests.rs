@@ -170,6 +170,21 @@ fn parses_yaml_semantics_for_github_workflow() {
 }
 
 #[test]
+fn parses_yaml_semantics_for_docker_compose() {
+    let parsed = parse_document(
+        &Artifact::new(
+            "docker-compose.yml",
+            ArtifactKind::DockerCompose,
+            SourceFormat::Yaml,
+        ),
+        "services:\n  app:\n    image: alpine:3.20\n",
+    )
+    .unwrap();
+
+    assert!(matches!(parsed.semantics, Some(DocumentSemantics::Yaml(_))));
+}
+
+#[test]
 fn parses_shell_semantics_for_dockerfile() {
     let parsed = parse_document(
         &Artifact::new("Dockerfile", ArtifactKind::Dockerfile, SourceFormat::Shell),
@@ -177,7 +192,10 @@ fn parses_shell_semantics_for_dockerfile() {
     )
     .unwrap();
 
-    assert!(matches!(parsed.semantics, Some(DocumentSemantics::Shell(_))));
+    assert!(matches!(
+        parsed.semantics,
+        Some(DocumentSemantics::Shell(_))
+    ));
 }
 
 #[test]
@@ -249,6 +267,7 @@ fn surface_specs_assemble_in_fixed_order() {
             "cursor_plugin_hooks_json",
             "tool_descriptor_json",
             "github_workflow_yaml",
+            "docker_compose_yaml",
             "dockerfile_shell",
             "cursor_hook_script_shell",
         ]
@@ -267,6 +286,7 @@ fn artifact_kind_routes_are_unique_for_shipped_surfaces() {
         (ArtifactKind::ServerRegistryConfig, SourceFormat::Json),
         (ArtifactKind::ToolDescriptorJson, SourceFormat::Json),
         (ArtifactKind::GitHubWorkflow, SourceFormat::Yaml),
+        (ArtifactKind::DockerCompose, SourceFormat::Yaml),
         (ArtifactKind::Dockerfile, SourceFormat::Shell),
         (ArtifactKind::CursorPluginManifest, SourceFormat::Json),
         (ArtifactKind::CursorPluginHooks, SourceFormat::Json),

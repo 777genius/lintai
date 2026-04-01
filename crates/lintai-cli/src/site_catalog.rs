@@ -346,6 +346,7 @@ fn surface_name(surface: CatalogSurface) -> &'static str {
     match surface {
         CatalogSurface::Markdown => "markdown",
         CatalogSurface::Hook => "hook",
+        CatalogSurface::DockerCompose => "docker-compose",
         CatalogSurface::Dockerfile => "dockerfile",
         CatalogSurface::Json => "json",
         CatalogSurface::ClaudeSettings => "claude_settings",

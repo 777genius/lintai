@@ -36,6 +36,7 @@ pub enum ArtifactKind {
     McpConfig,
     PackageManifest,
     Dockerfile,
+    DockerCompose,
     ClaudeSettings,
     ServerRegistryConfig,
     ToolDescriptorJson,

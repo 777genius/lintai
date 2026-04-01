@@ -1,4 +1,5 @@
 mod claude_settings_rules;
+mod docker_compose_rules;
 mod dockerfile_rules;
 mod github_workflow_rules;
 mod helpers;

@@ -135,6 +135,13 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "cursor-rule-missing-description-safe",
             "cursor-rule-unknown-frontmatter-fixture-safe",
             "cursor-rule-unknown-frontmatter-supported-keys-safe",
+            "docker-compose-digest-pinned-image",
+            "docker-compose-safe-runtime",
+            "docker-compose-tagged-image-safe",
+            "dockerfile-digest-pinned-base-image",
+            "dockerfile-final-stage-nonroot-user",
+            "dockerfile-safe-run",
+            "dockerfile-tagged-base-image-safe",
             "gemini-mcp-docker-digest-pinned-safe",
             "github-workflow-env-indirected-safe",
             "github-workflow-pinned-third-party-action",
@@ -189,6 +196,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "mcp-vscode-placeholder-envfile-safe",
             "mixed-clean-workspace",
             "package-manifest-pinned-dependency-safe",
+            "package-manifest-registry-archive-safe",
             "package-manifest-registry-dependency-safe",
             "package-manifest-safe-lifecycle-script",
             "plugin-agent-hooks-fixture-safe",
@@ -351,7 +359,15 @@ fn policy_truthful_workspace_stays_clean() {
 #[test]
 fn package_manifest_supply_chain_cases_stay_clean_when_safe() {
     for case_name in [
+        "docker-compose-digest-pinned-image",
+        "docker-compose-safe-runtime",
+        "docker-compose-tagged-image-safe",
+        "dockerfile-digest-pinned-base-image",
+        "dockerfile-final-stage-nonroot-user",
+        "dockerfile-safe-run",
+        "dockerfile-tagged-base-image-safe",
         "package-manifest-pinned-dependency-safe",
+        "package-manifest-registry-archive-safe",
         "package-manifest-registry-dependency-safe",
         "package-manifest-safe-lifecycle-script",
     ] {

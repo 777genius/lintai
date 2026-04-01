@@ -108,6 +108,13 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "cursor-rule-globs-scalar",
             "cursor-rule-missing-description",
             "cursor-rule-unknown-frontmatter-key",
+            "docker-compose-latest-image",
+            "docker-compose-mutable-image",
+            "docker-compose-privileged-runtime",
+            "dockerfile-final-stage-root-user",
+            "dockerfile-latest-base-image",
+            "dockerfile-mutable-base-image",
+            "dockerfile-run-download-exec",
             "gemini-mcp-docker-pull-always",
             "gemini-mcp-docker-unpinned-image",
             "gemini-mcp-fixture-suppressed",
@@ -203,6 +210,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "mcp-trust-tools-true",
             "mcp-trust-verification-disabled",
             "package-manifest-dangerous-lifecycle-script",
+            "package-manifest-direct-url-dependency",
             "package-manifest-git-url-dependency",
             "package-manifest-unbounded-dependency",
             "plugin-agent-hooks-frontmatter",
@@ -426,9 +434,17 @@ fn policy_frontmatter_conflict_emits_preview_evidence() {
 #[test]
 fn package_manifest_supply_chain_cases_trigger_expected_findings() {
     for case_name in [
+        "docker-compose-mutable-image",
+        "docker-compose-latest-image",
+        "docker-compose-privileged-runtime",
+        "dockerfile-final-stage-root-user",
+        "dockerfile-latest-base-image",
+        "dockerfile-mutable-base-image",
         "package-manifest-dangerous-lifecycle-script",
+        "package-manifest-direct-url-dependency",
         "package-manifest-git-url-dependency",
         "package-manifest-unbounded-dependency",
+        "dockerfile-run-download-exec",
     ] {
         let case_dir = case_dir("malicious", case_name);
         let manifest = load_case(&case_dir);

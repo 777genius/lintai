@@ -60,7 +60,8 @@ use crate::json_rules::{
     check_mcp_shell_profile_write, check_mcp_shell_wrapper, check_mcp_sudo_args0,
     check_mcp_sudo_command, check_mcp_systemd_service_registration, check_mcp_trust_tools_true,
     check_mcp_unpinned_docker_image, check_mcp_webhook_secret_exfil,
-    check_package_manifest_dangerous_lifecycle_script, check_package_manifest_git_dependency,
+    check_package_manifest_dangerous_lifecycle_script,
+    check_package_manifest_direct_url_dependency, check_package_manifest_git_dependency,
     check_package_manifest_unbounded_dependency, check_plain_http_config,
     check_plugin_hook_authorized_keys_write, check_plugin_hook_browser_secret_store_access,
     check_plugin_hook_browser_secret_store_exfil, check_plugin_hook_camera_capture,
@@ -2097,7 +2098,19 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 168] = [
+declare_rule! {
+    pub struct PackageManifestDirectUrlDependencyRule {
+        code: "SEC753",
+        summary: "package.json installs a dependency from a direct archive URL source",
+        doc_title: "package.json: direct archive URL dependency source",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -5476,6 +5489,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 168] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace `*` or `latest` with an explicit reviewed dependency version or constrained range",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PackageManifestDirectUrlDependencyRule::METADATA,
+        surface: Surface::Json,
+        default_presets: SUPPLY_CHAIN_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed package.json dependency sections for direct archive URL sources that bypass the normal registry release path.",
+            malicious_case_ids: &["package-manifest-direct-url-dependency"],
+            benign_case_ids: &["package-manifest-registry-archive-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals package manifest analysis over dependency sections for direct `http://` or `https://` archive-like specs ending in `.tgz`, `.tar.gz`, `.tar`, `.zip`, or containing `/tarball/`.",
+        },
+        check: check_package_manifest_direct_url_dependency,
+        safe_fix: None,
+        suggestion_message: Some(
+            "prefer a published registry release over a direct archive URL dependency source",
         ),
         suggestion_fix: None,
     },

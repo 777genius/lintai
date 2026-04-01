@@ -464,6 +464,14 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC743` | package.json defines a dangerous install-time lifecycle script | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC744` | package.json installs a dependency from a git or forge shortcut source | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC745` | package.json uses an unbounded dependency version like * or latest | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
+| `SEC746` | Dockerfile RUN downloads remote code and executes it | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
+| `SEC747` | Dockerfile final stage explicitly runs as root | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
+| `SEC748` | Docker Compose service enables privileged container runtime or host namespace access | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
+| `SEC749` | Dockerfile FROM uses a mutable registry image without a digest pin | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
+| `SEC750` | Docker Compose service image uses a mutable registry reference without a digest pin | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
+| `SEC751` | Dockerfile FROM uses a latest or implicit-latest image tag | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
+| `SEC752` | Docker Compose service image uses a latest or implicit-latest tag | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
+| `SEC753` | package.json installs a dependency from a direct archive URL source | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 
 ## Builtin preset activation model
 
@@ -9782,6 +9790,174 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals package manifest analysis over dependency sections for exact specs equal to `*` or `latest`.
 - Malicious Corpus: `package-manifest-unbounded-dependency`
 - Benign Corpus: `package-manifest-pinned-dependency-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC746` — Dockerfile RUN downloads remote code and executes it
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `dockerfile`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `supply-chain`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Dockerfiles for RUN instructions that fetch remote content and pipe it into a shell.
+- Deterministic Signal Basis: DockerfileSignals line analysis over `RUN` instructions for download-exec patterns such as `curl` or `wget` piped to `sh` or `bash`.
+- Malicious Corpus: `dockerfile-run-download-exec`
+- Benign Corpus: `dockerfile-safe-run`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC747` — Dockerfile final stage explicitly runs as root
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `dockerfile`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `supply-chain`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks the final Dockerfile stage for an explicit root runtime user while ignoring earlier build stages that later drop privileges.
+- Deterministic Signal Basis: DockerfileSignals tracks `FROM` stage boundaries and the effective explicit `USER` in the final stage, flagging only `root`, `root:*`, `0`, or `0:*` in the last stage.
+- Malicious Corpus: `dockerfile-final-stage-root-user`
+- Benign Corpus: `dockerfile-final-stage-nonroot-user`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC748` — Docker Compose service enables privileged container runtime or host namespace access
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `docker-compose`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `supply-chain`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Docker Compose service definitions for privileged runtime, dangerous capability grants, or host namespace access.
+- Deterministic Signal Basis: DockerComposeSignals combines semantic confirmation of a Compose `services` map with indentation-aware line matching for `privileged: true`, `cap_add: [ALL|SYS_ADMIN]`, and `network_mode`/`pid`/`ipc: host` inside service blocks.
+- Malicious Corpus: `docker-compose-privileged-runtime`
+- Benign Corpus: `docker-compose-safe-runtime`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC749` — Dockerfile FROM uses a mutable registry image without a digest pin
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `dockerfile`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `supply-chain`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Dockerfiles for registry-distributed base images that are not digest pinned.
+- Deterministic Signal Basis: DockerfileSignals exact `FROM` token analysis with conservative registry-image matching and digest-pin detection on the selected image token.
+- Malicious Corpus: `dockerfile-mutable-base-image`
+- Benign Corpus: `dockerfile-digest-pinned-base-image`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC750` — Docker Compose service image uses a mutable registry reference without a digest pin
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `docker-compose`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `supply-chain`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Docker Compose services for registry-distributed image references that are not digest pinned.
+- Deterministic Signal Basis: DockerComposeSignals combines semantic confirmation of `services.*.image` values with indentation-aware line matching and conservative registry-image plus digest-pin detection.
+- Malicious Corpus: `docker-compose-mutable-image`
+- Benign Corpus: `docker-compose-digest-pinned-image`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC751` — Dockerfile FROM uses a latest or implicit-latest image tag
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `dockerfile`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `supply-chain`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Dockerfiles for base images that rely on `latest` or the implicit default latest tag.
+- Deterministic Signal Basis: DockerfileSignals exact `FROM` token analysis with prior-stage alias tracking plus deterministic detection of explicit `:latest` tags or missing tags on non-digest image references.
+- Malicious Corpus: `dockerfile-latest-base-image`
+- Benign Corpus: `dockerfile-tagged-base-image-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC752` — Docker Compose service image uses a latest or implicit-latest tag
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `docker-compose`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `supply-chain`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed Docker Compose services for images that rely on `latest` or the implicit default latest tag.
+- Deterministic Signal Basis: DockerComposeSignals semantic `services.*.image` detection combined with indentation-aware line matching and deterministic detection of explicit `:latest` tags or missing tags on non-digest image references.
+- Malicious Corpus: `docker-compose-latest-image`
+- Benign Corpus: `docker-compose-tagged-image-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC753` — package.json installs a dependency from a direct archive URL source
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `supply-chain`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed package.json dependency sections for direct archive URL sources that bypass the normal registry release path.
+- Deterministic Signal Basis: JsonSignals package manifest analysis over dependency sections for direct `http://` or `https://` archive-like specs ending in `.tgz`, `.tar.gz`, `.tar`, `.zip`, or containing `/tarball/`.
+- Malicious Corpus: `package-manifest-direct-url-dependency`
+- Benign Corpus: `package-manifest-registry-archive-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
