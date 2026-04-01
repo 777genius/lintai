@@ -166,21 +166,21 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC445 / MD-GIT-AM-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git am:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC446 / MCP-ARGS-SUDO` | MCP configuration passes `sudo` as the first launch argument | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC447 / MD-PACKAGE-INSTALL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants package installation authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC448 / MD-PIP-TRUSTED-HOST` | AI-native markdown installs Python packages with `--trusted-host` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC449 / MD-PIP-HTTP-INDEX` | AI-native markdown installs Python packages from an insecure `http://` package index | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC450 / MD-NPM-HTTP-REGISTRY` | AI-native markdown installs JavaScript packages from an insecure `http://` registry | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC451 / MD-CARGO-HTTP-GIT-INSTALL` | AI-native markdown installs Rust packages from an insecure `http://` git source | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC452 / MD-CARGO-HTTP-INDEX` | AI-native markdown installs Rust packages from an insecure `http://` index | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC453 / MD-PIP-HTTP-SOURCE` | AI-native markdown installs Python packages from an insecure direct `http://` source | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC454 / MD-NPM-HTTP-SOURCE` | AI-native markdown installs JavaScript packages from an insecure direct `http://` source | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC455 / MD-PIP-HTTP-GIT-INSTALL` | AI-native markdown installs Python packages from an insecure `git+http://` source | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC456 / MD-PIP-HTTP-FIND-LINKS` | AI-native markdown installs Python packages with insecure `http://` find-links | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC457 / MD-JS-PACKAGE-STRICT-SSL-FALSE` | AI-native markdown disables strict SSL verification for JavaScript package manager config | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC458 / MD-PIP-CONFIG-HTTP-INDEX` | AI-native markdown configures Python package resolution with an insecure `http://` package index | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC459 / MD-JS-PACKAGE-CONFIG-HTTP-REGISTRY` | AI-native markdown configures a JavaScript package manager with an insecure `http://` registry | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC460 / MD-PIP-CONFIG-HTTP-FIND-LINKS` | AI-native markdown configures Python package discovery with insecure `http://` find-links | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC461 / MD-PIP-CONFIG-TRUSTED-HOST` | AI-native markdown configures Python package resolution with `trusted-host` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC462 / MD-NETWORK-TLS-BYPASS` | AI-native markdown disables TLS verification for a network-capable command | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC448 / MD-PIP-TRUSTED-HOST` | AI-native markdown installs Python packages with `--trusted-host` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC449 / MD-PIP-HTTP-INDEX` | AI-native markdown installs Python packages from an insecure `http://` package index | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC450 / MD-NPM-HTTP-REGISTRY` | AI-native markdown installs JavaScript packages from an insecure `http://` registry | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC451 / MD-CARGO-HTTP-GIT-INSTALL` | AI-native markdown installs Rust packages from an insecure `http://` git source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC452 / MD-CARGO-HTTP-INDEX` | AI-native markdown installs Rust packages from an insecure `http://` index | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC453 / MD-PIP-HTTP-SOURCE` | AI-native markdown installs Python packages from an insecure direct `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC454 / MD-NPM-HTTP-SOURCE` | AI-native markdown installs JavaScript packages from an insecure direct `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC455 / MD-PIP-HTTP-GIT-INSTALL` | AI-native markdown installs Python packages from an insecure `git+http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC456 / MD-PIP-HTTP-FIND-LINKS` | AI-native markdown installs Python packages with insecure `http://` find-links | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC457 / MD-JS-PACKAGE-STRICT-SSL-FALSE` | AI-native markdown disables strict SSL verification for JavaScript package manager config | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC458 / MD-PIP-CONFIG-HTTP-INDEX` | AI-native markdown configures Python package resolution with an insecure `http://` package index | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC459 / MD-JS-PACKAGE-CONFIG-HTTP-REGISTRY` | AI-native markdown configures a JavaScript package manager with an insecure `http://` registry | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC460 / MD-PIP-CONFIG-HTTP-FIND-LINKS` | AI-native markdown configures Python package discovery with insecure `http://` find-links | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC461 / MD-PIP-CONFIG-TRUSTED-HOST` | AI-native markdown configures Python package resolution with `trusted-host` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC462 / MD-NETWORK-TLS-BYPASS` | AI-native markdown disables TLS verification for a network-capable command | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC463 / MD-SUDO-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(sudo:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC464 / MD-GIT-HTTP-CLONE` | AI-native markdown clones a Git repository from an insecure `http://` source | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC465 / MD-GIT-HTTP-REMOTE` | AI-native markdown configures a Git remote with an insecure `http://` source | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
@@ -3325,7 +3325,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3335,7 +3335,7 @@ Important behavior:
 - Benign Corpus: `skill-pip-index-url-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC449 / MD-PIP-HTTP-INDEX` — AI-native markdown installs Python packages from an insecure `http://` package index
 
@@ -3346,7 +3346,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3356,7 +3356,7 @@ Important behavior:
 - Benign Corpus: `skill-pip-https-index-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC450 / MD-NPM-HTTP-REGISTRY` — AI-native markdown installs JavaScript packages from an insecure `http://` registry
 
@@ -3367,7 +3367,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3377,7 +3377,7 @@ Important behavior:
 - Benign Corpus: `skill-npm-https-registry-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC451 / MD-CARGO-HTTP-GIT-INSTALL` — AI-native markdown installs Rust packages from an insecure `http://` git source
 
@@ -3388,7 +3388,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3398,7 +3398,7 @@ Important behavior:
 - Benign Corpus: `skill-cargo-https-git-install-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC452 / MD-CARGO-HTTP-INDEX` — AI-native markdown installs Rust packages from an insecure `http://` index
 
@@ -3409,7 +3409,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3419,7 +3419,7 @@ Important behavior:
 - Benign Corpus: `skill-cargo-https-index-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC453 / MD-PIP-HTTP-SOURCE` — AI-native markdown installs Python packages from an insecure direct `http://` source
 
@@ -3430,7 +3430,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3440,7 +3440,7 @@ Important behavior:
 - Benign Corpus: `skill-pip-https-source-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC454 / MD-NPM-HTTP-SOURCE` — AI-native markdown installs JavaScript packages from an insecure direct `http://` source
 
@@ -3451,7 +3451,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3461,7 +3461,7 @@ Important behavior:
 - Benign Corpus: `skill-npm-https-source-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC455 / MD-PIP-HTTP-GIT-INSTALL` — AI-native markdown installs Python packages from an insecure `git+http://` source
 
@@ -3472,7 +3472,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3482,7 +3482,7 @@ Important behavior:
 - Benign Corpus: `skill-pip-https-git-install-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC456 / MD-PIP-HTTP-FIND-LINKS` — AI-native markdown installs Python packages with insecure `http://` find-links
 
@@ -3493,7 +3493,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3503,7 +3503,7 @@ Important behavior:
 - Benign Corpus: `skill-pip-https-find-links-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC457 / MD-JS-PACKAGE-STRICT-SSL-FALSE` — AI-native markdown disables strict SSL verification for JavaScript package manager config
 
@@ -3514,7 +3514,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3524,7 +3524,7 @@ Important behavior:
 - Benign Corpus: `skill-js-package-strict-ssl-true-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC458 / MD-PIP-CONFIG-HTTP-INDEX` — AI-native markdown configures Python package resolution with an insecure `http://` package index
 
@@ -3535,7 +3535,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3545,7 +3545,7 @@ Important behavior:
 - Benign Corpus: `skill-pip-config-https-index-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC459 / MD-JS-PACKAGE-CONFIG-HTTP-REGISTRY` — AI-native markdown configures a JavaScript package manager with an insecure `http://` registry
 
@@ -3556,7 +3556,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3566,7 +3566,7 @@ Important behavior:
 - Benign Corpus: `skill-js-package-config-https-registry-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC460 / MD-PIP-CONFIG-HTTP-FIND-LINKS` — AI-native markdown configures Python package discovery with insecure `http://` find-links
 
@@ -3577,7 +3577,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3587,7 +3587,7 @@ Important behavior:
 - Benign Corpus: `skill-pip-config-https-find-links-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC461 / MD-PIP-CONFIG-TRUSTED-HOST` — AI-native markdown configures Python package resolution with `trusted-host`
 
@@ -3598,7 +3598,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3608,7 +3608,7 @@ Important behavior:
 - Benign Corpus: `skill-pip-config-unrelated-key-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC462 / MD-NETWORK-TLS-BYPASS` — AI-native markdown disables TLS verification for a network-capable command
 
@@ -3619,7 +3619,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3629,7 +3629,7 @@ Important behavior:
 - Benign Corpus: `skill-markdown-network-tls-bypass-warning-safe`, `skill-markdown-network-tls-bypass-powershell-warning-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC463 / MD-SUDO-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(sudo:*)` authority
 
