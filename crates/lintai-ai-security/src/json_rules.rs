@@ -678,6 +678,81 @@ pub(crate) fn check_mcp_autoapprove_git_ls_remote(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_git_add(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_add_span.clone()),
+        "MCP configuration auto-approves `Bash(git add:*)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_git_config(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_config_span.clone()),
+        "MCP configuration auto-approves `Bash(git config:*)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_git_tag(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_tag_span.clone()),
+        "MCP configuration auto-approves `Bash(git tag:*)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_git_branch(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_branch_span.clone()),
+        "MCP configuration auto-approves `Bash(git branch:*)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_gh_pr(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_pr_span.clone()),
+        "MCP configuration auto-approves `Bash(gh pr:*)` through `autoApprove`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_read_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

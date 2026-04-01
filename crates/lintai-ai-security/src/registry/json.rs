@@ -9,19 +9,22 @@ use crate::json_rules::{
     check_mcp_autoapprove_edit_wildcard, check_mcp_autoapprove_gh_api_delete,
     check_mcp_autoapprove_gh_api_patch, check_mcp_autoapprove_gh_api_post,
     check_mcp_autoapprove_gh_api_put, check_mcp_autoapprove_gh_issue_create,
-    check_mcp_autoapprove_gh_release_create, check_mcp_autoapprove_gh_release_delete,
-    check_mcp_autoapprove_gh_release_upload, check_mcp_autoapprove_gh_repo_create,
-    check_mcp_autoapprove_gh_repo_delete, check_mcp_autoapprove_gh_repo_edit,
-    check_mcp_autoapprove_gh_repo_transfer, check_mcp_autoapprove_gh_secret_delete,
-    check_mcp_autoapprove_gh_secret_set, check_mcp_autoapprove_gh_variable_delete,
-    check_mcp_autoapprove_gh_variable_set, check_mcp_autoapprove_gh_workflow_disable,
-    check_mcp_autoapprove_gh_workflow_run, check_mcp_autoapprove_git_checkout,
-    check_mcp_autoapprove_git_clean, check_mcp_autoapprove_git_clone,
-    check_mcp_autoapprove_git_commit, check_mcp_autoapprove_git_fetch,
+    check_mcp_autoapprove_gh_pr, check_mcp_autoapprove_gh_release_create,
+    check_mcp_autoapprove_gh_release_delete, check_mcp_autoapprove_gh_release_upload,
+    check_mcp_autoapprove_gh_repo_create, check_mcp_autoapprove_gh_repo_delete,
+    check_mcp_autoapprove_gh_repo_edit, check_mcp_autoapprove_gh_repo_transfer,
+    check_mcp_autoapprove_gh_secret_delete, check_mcp_autoapprove_gh_secret_set,
+    check_mcp_autoapprove_gh_variable_delete, check_mcp_autoapprove_gh_variable_set,
+    check_mcp_autoapprove_gh_workflow_disable, check_mcp_autoapprove_gh_workflow_run,
+    check_mcp_autoapprove_git_add, check_mcp_autoapprove_git_branch,
+    check_mcp_autoapprove_git_checkout, check_mcp_autoapprove_git_clean,
+    check_mcp_autoapprove_git_clone, check_mcp_autoapprove_git_commit,
+    check_mcp_autoapprove_git_config, check_mcp_autoapprove_git_fetch,
     check_mcp_autoapprove_git_ls_remote, check_mcp_autoapprove_git_push,
-    check_mcp_autoapprove_git_reset, check_mcp_autoapprove_glob_unsafe_path,
-    check_mcp_autoapprove_glob_wildcard, check_mcp_autoapprove_grep_unsafe_path,
-    check_mcp_autoapprove_grep_wildcard, check_mcp_autoapprove_npm_exec, check_mcp_autoapprove_npx,
+    check_mcp_autoapprove_git_reset, check_mcp_autoapprove_git_tag,
+    check_mcp_autoapprove_glob_unsafe_path, check_mcp_autoapprove_glob_wildcard,
+    check_mcp_autoapprove_grep_unsafe_path, check_mcp_autoapprove_grep_wildcard,
+    check_mcp_autoapprove_npm_exec, check_mcp_autoapprove_npx,
     check_mcp_autoapprove_package_install, check_mcp_autoapprove_pipx_run,
     check_mcp_autoapprove_pnpm_dlx, check_mcp_autoapprove_read_unsafe_path,
     check_mcp_autoapprove_read_wildcard, check_mcp_autoapprove_rm, check_mcp_autoapprove_sudo,
@@ -701,6 +704,66 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApproveGitAddRule {
+        code: "SEC597",
+        summary: "MCP configuration auto-approves `Bash(git add:*)` through `autoApprove`",
+        doc_title: "MCP config: git add auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGitConfigRule {
+        code: "SEC598",
+        summary: "MCP configuration auto-approves `Bash(git config:*)` through `autoApprove`",
+        doc_title: "MCP config: git config auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGitTagRule {
+        code: "SEC599",
+        summary: "MCP configuration auto-approves `Bash(git tag:*)` through `autoApprove`",
+        doc_title: "MCP config: git tag auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGitBranchRule {
+        code: "SEC600",
+        summary: "MCP configuration auto-approves `Bash(git branch:*)` through `autoApprove`",
+        doc_title: "MCP config: git branch auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGhPrRule {
+        code: "SEC601",
+        summary: "MCP configuration auto-approves `Bash(gh pr:*)` through `autoApprove`",
+        doc_title: "MCP config: gh pr auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpAutoApproveReadWildcardRule {
         code: "SEC567",
         summary: "MCP configuration auto-approves `Read(*)` through `autoApprove`",
@@ -1000,7 +1063,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 80] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 85] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -2082,6 +2145,106 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 80] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `git ls-remote` auto-approval and keep remote repository inspection under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGitAddRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(git add:*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-repo-management-family"],
+            benign_case_ids: &["mcp-autoapprove-repo-management-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git add:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_git_add,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `git add` auto-approval and keep staging authority under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGitConfigRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(git config:*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-repo-management-family"],
+            benign_case_ids: &["mcp-autoapprove-repo-management-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git config:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_git_config,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `git config` auto-approval and keep repository configuration changes under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGitTagRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(git tag:*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-repo-management-family"],
+            benign_case_ids: &["mcp-autoapprove-repo-management-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git tag:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_git_tag,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `git tag` auto-approval and keep repository release markers under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGitBranchRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(git branch:*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-repo-management-family"],
+            benign_case_ids: &["mcp-autoapprove-repo-management-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git branch:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_git_branch,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `git branch` auto-approval and keep branch mutation under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhPrRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(gh pr:*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-repo-management-family"],
+            benign_case_ids: &["mcp-autoapprove-repo-management-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh pr:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_pr,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh pr` auto-approval and keep pull-request mutation authority under explicit user review",
         ),
         suggestion_fix: None,
     },

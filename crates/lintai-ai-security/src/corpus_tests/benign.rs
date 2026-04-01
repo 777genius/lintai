@@ -155,6 +155,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "mcp-autoapprove-mutable-runner-family-specific-safe",
             "mcp-autoapprove-package-install-family-specific-safe",
             "mcp-autoapprove-repo-fetch-family-specific-safe",
+            "mcp-autoapprove-repo-management-family-specific-safe",
             "mcp-autoapprove-specific-safe",
             "mcp-autoapprove-sudo-rm-specific-safe",
             "mcp-autoapprove-tools-false-safe",

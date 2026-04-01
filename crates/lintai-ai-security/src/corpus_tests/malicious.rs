@@ -116,6 +116,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "mcp-autoapprove-mutable-runner-family",
             "mcp-autoapprove-package-install-family",
             "mcp-autoapprove-repo-fetch-family",
+            "mcp-autoapprove-repo-management-family",
             "mcp-autoapprove-sudo-rm",
             "mcp-autoapprove-tools-true",
             "mcp-autoapprove-unsafe-path-family",
