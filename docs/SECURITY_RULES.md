@@ -297,6 +297,9 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC576 / MCP-AUTOAPPROVE-EDIT-UNSAFE-PATH` | MCP configuration auto-approves `Edit(...)` over an unsafe path through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC577 / MCP-AUTOAPPROVE-GLOB-UNSAFE-PATH` | MCP configuration auto-approves `Glob(...)` over an unsafe path through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC578 / MCP-AUTOAPPROVE-GREP-UNSAFE-PATH` | MCP configuration auto-approves `Grep(...)` over an unsafe path through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC579 / MCP-AUTOAPPROVE-GH-SECRET-DELETE` | MCP configuration auto-approves `Bash(gh secret delete:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC580 / MCP-AUTOAPPROVE-GH-VARIABLE-DELETE` | MCP configuration auto-approves `Bash(gh variable delete:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC581 / MCP-AUTOAPPROVE-GH-WORKFLOW-DISABLE` | MCP configuration auto-approves `Bash(gh workflow disable:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -5720,6 +5723,69 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals exact array-item predicate detection for `autoApprove` entries where `Grep(...)` targets an absolute, home-relative, parent-traversing, or drive-qualified path.
 - Malicious Corpus: `mcp-autoapprove-unsafe-path-family`
 - Benign Corpus: `mcp-autoapprove-unsafe-path-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC579 / MCP-AUTOAPPROVE-GH-SECRET-DELETE` — MCP configuration auto-approves `Bash(gh secret delete:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GH-SECRET-DELETE`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `gh secret delete` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh secret delete:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-gh-delete-family`
+- Benign Corpus: `mcp-autoapprove-gh-delete-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC580 / MCP-AUTOAPPROVE-GH-VARIABLE-DELETE` — MCP configuration auto-approves `Bash(gh variable delete:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GH-VARIABLE-DELETE`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `gh variable delete` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh variable delete:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-gh-delete-family`
+- Benign Corpus: `mcp-autoapprove-gh-delete-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC581 / MCP-AUTOAPPROVE-GH-WORKFLOW-DISABLE` — MCP configuration auto-approves `Bash(gh workflow disable:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GH-WORKFLOW-DISABLE`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `gh workflow disable` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh workflow disable:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-gh-delete-family`
+- Benign Corpus: `mcp-autoapprove-gh-delete-family-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

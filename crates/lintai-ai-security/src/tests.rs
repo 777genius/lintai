@@ -6932,6 +6932,72 @@ fn finds_mcp_autoapprove_grep_unsafe_path() {
 }
 
 #[test]
+fn finds_mcp_autoapprove_gh_secret_delete() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(gh secret delete:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC579")
+        .unwrap();
+    let start = content.find("\"Bash(gh secret delete:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(gh secret delete:*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_gh_variable_delete() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(gh variable delete:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC580")
+        .unwrap();
+    let start = content.find("\"Bash(gh variable delete:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(gh variable delete:*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_gh_workflow_disable() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(gh workflow disable:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC581")
+        .unwrap();
+    let start = content.find("\"Bash(gh workflow disable:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(gh workflow disable:*)".len())
+    );
+}
+
+#[test]
 fn ignores_mcp_autoapprove_nonmatching_tools() {
     let provider = AiSecurityProvider::default();
     let findings = ProviderHarness::run(
@@ -6977,6 +7043,9 @@ fn ignores_mcp_autoapprove_nonmatching_tools() {
                 | "SEC576"
                 | "SEC577"
                 | "SEC578"
+                | "SEC579"
+                | "SEC580"
+                | "SEC581"
         )
     }));
 }

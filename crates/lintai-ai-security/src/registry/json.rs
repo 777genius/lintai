@@ -10,21 +10,22 @@ use crate::json_rules::{
     check_mcp_autoapprove_gh_api_post, check_mcp_autoapprove_gh_api_put,
     check_mcp_autoapprove_gh_issue_create, check_mcp_autoapprove_gh_repo_create,
     check_mcp_autoapprove_gh_repo_delete, check_mcp_autoapprove_gh_repo_edit,
-    check_mcp_autoapprove_gh_secret_set, check_mcp_autoapprove_gh_variable_set,
-    check_mcp_autoapprove_gh_workflow_run, check_mcp_autoapprove_git_checkout,
-    check_mcp_autoapprove_git_clean, check_mcp_autoapprove_git_commit,
-    check_mcp_autoapprove_git_push, check_mcp_autoapprove_git_reset,
-    check_mcp_autoapprove_glob_unsafe_path, check_mcp_autoapprove_glob_wildcard,
-    check_mcp_autoapprove_grep_unsafe_path, check_mcp_autoapprove_grep_wildcard,
-    check_mcp_autoapprove_read_unsafe_path, check_mcp_autoapprove_read_wildcard,
-    check_mcp_autoapprove_rm, check_mcp_autoapprove_sudo, check_mcp_autoapprove_tools_true,
-    check_mcp_autoapprove_webfetch_wildcard, check_mcp_autoapprove_websearch_wildcard,
-    check_mcp_autoapprove_wget, check_mcp_autoapprove_wildcard,
-    check_mcp_autoapprove_write_unsafe_path, check_mcp_autoapprove_write_wildcard,
-    check_mcp_broad_env_file, check_mcp_capabilities_wildcard,
-    check_mcp_credential_env_passthrough, check_mcp_dangerous_docker_flag,
-    check_mcp_inline_download_exec, check_mcp_mutable_docker_pull, check_mcp_mutable_launcher,
-    check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
+    check_mcp_autoapprove_gh_secret_delete, check_mcp_autoapprove_gh_secret_set,
+    check_mcp_autoapprove_gh_variable_delete, check_mcp_autoapprove_gh_variable_set,
+    check_mcp_autoapprove_gh_workflow_disable, check_mcp_autoapprove_gh_workflow_run,
+    check_mcp_autoapprove_git_checkout, check_mcp_autoapprove_git_clean,
+    check_mcp_autoapprove_git_commit, check_mcp_autoapprove_git_push,
+    check_mcp_autoapprove_git_reset, check_mcp_autoapprove_glob_unsafe_path,
+    check_mcp_autoapprove_glob_wildcard, check_mcp_autoapprove_grep_unsafe_path,
+    check_mcp_autoapprove_grep_wildcard, check_mcp_autoapprove_read_unsafe_path,
+    check_mcp_autoapprove_read_wildcard, check_mcp_autoapprove_rm, check_mcp_autoapprove_sudo,
+    check_mcp_autoapprove_tools_true, check_mcp_autoapprove_webfetch_wildcard,
+    check_mcp_autoapprove_websearch_wildcard, check_mcp_autoapprove_wget,
+    check_mcp_autoapprove_wildcard, check_mcp_autoapprove_write_unsafe_path,
+    check_mcp_autoapprove_write_wildcard, check_mcp_broad_env_file,
+    check_mcp_capabilities_wildcard, check_mcp_credential_env_passthrough,
+    check_mcp_dangerous_docker_flag, check_mcp_inline_download_exec, check_mcp_mutable_docker_pull,
+    check_mcp_mutable_launcher, check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
     check_mcp_sensitive_docker_mount, check_mcp_shell_wrapper, check_mcp_sudo_args0,
     check_mcp_sudo_command, check_mcp_trust_tools_true, check_mcp_unpinned_docker_image,
     check_plain_http_config, check_plugin_hook_inline_download_exec,
@@ -477,6 +478,42 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApproveGhSecretDeleteRule {
+        code: "SEC579",
+        summary: "MCP configuration auto-approves `Bash(gh secret delete:*)` through `autoApprove`",
+        doc_title: "MCP config: gh secret delete auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGhVariableDeleteRule {
+        code: "SEC580",
+        summary: "MCP configuration auto-approves `Bash(gh variable delete:*)` through `autoApprove`",
+        doc_title: "MCP config: gh variable delete auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGhWorkflowDisableRule {
+        code: "SEC581",
+        summary: "MCP configuration auto-approves `Bash(gh workflow disable:*)` through `autoApprove`",
+        doc_title: "MCP config: gh workflow disable auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpAutoApproveReadWildcardRule {
         code: "SEC567",
         summary: "MCP configuration auto-approves `Read(*)` through `autoApprove`",
@@ -776,7 +813,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 62] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 65] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -1498,6 +1535,66 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 62] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `gh workflow run` auto-approval and keep workflow dispatch under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhSecretDeleteRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `gh secret delete` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-gh-delete-family"],
+            benign_case_ids: &["mcp-autoapprove-gh-delete-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh secret delete:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_secret_delete,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh secret delete` auto-approval and keep secret deletion under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhVariableDeleteRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `gh variable delete` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-gh-delete-family"],
+            benign_case_ids: &["mcp-autoapprove-gh-delete-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh variable delete:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_variable_delete,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh variable delete` auto-approval and keep variable deletion under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhWorkflowDisableRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `gh workflow disable` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-gh-delete-family"],
+            benign_case_ids: &["mcp-autoapprove-gh-delete-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh workflow disable:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_workflow_disable,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh workflow disable` auto-approval and keep workflow disabling under explicit user review",
         ),
         suggestion_fix: None,
     },

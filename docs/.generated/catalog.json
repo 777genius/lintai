@@ -96,7 +96,10 @@
         "lintai-ai-security:SEC575",
         "lintai-ai-security:SEC576",
         "lintai-ai-security:SEC577",
-        "lintai-ai-security:SEC578"
+        "lintai-ai-security:SEC578",
+        "lintai-ai-security:SEC579",
+        "lintai-ai-security:SEC580",
+        "lintai-ai-security:SEC581"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -464,7 +467,10 @@
         "lintai-ai-security:SEC575",
         "lintai-ai-security:SEC576",
         "lintai-ai-security:SEC577",
-        "lintai-ai-security:SEC578"
+        "lintai-ai-security:SEC578",
+        "lintai-ai-security:SEC579",
+        "lintai-ai-security:SEC580",
+        "lintai-ai-security:SEC581"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -10548,6 +10554,123 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact array-item predicate detection for `autoApprove` entries where `Grep(...)` targets an absolute, home-relative, parent-traversing, or drive-qualified path."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC579",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC579",
+      "alias": "MCP-AUTOAPPROVE-GH-SECRET-DELETE",
+      "displayLabel": "SEC579 / MCP-AUTOAPPROVE-GH-SECRET-DELETE",
+      "docTitle": "MCP config: gh secret delete auto-approve",
+      "slug": "sec579",
+      "canonicalPath": "/rules/lintai-ai-security/sec579",
+      "summary": "MCP configuration auto-approves `Bash(gh secret delete:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `gh secret delete` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-gh-delete-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-gh-delete-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh secret delete:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC580",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC580",
+      "alias": "MCP-AUTOAPPROVE-GH-VARIABLE-DELETE",
+      "displayLabel": "SEC580 / MCP-AUTOAPPROVE-GH-VARIABLE-DELETE",
+      "docTitle": "MCP config: gh variable delete auto-approve",
+      "slug": "sec580",
+      "canonicalPath": "/rules/lintai-ai-security/sec580",
+      "summary": "MCP configuration auto-approves `Bash(gh variable delete:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `gh variable delete` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-gh-delete-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-gh-delete-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh variable delete:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC581",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC581",
+      "alias": "MCP-AUTOAPPROVE-GH-WORKFLOW-DISABLE",
+      "displayLabel": "SEC581 / MCP-AUTOAPPROVE-GH-WORKFLOW-DISABLE",
+      "docTitle": "MCP config: gh workflow disable auto-approve",
+      "slug": "sec581",
+      "canonicalPath": "/rules/lintai-ai-security/sec581",
+      "summary": "MCP configuration auto-approves `Bash(gh workflow disable:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `gh workflow disable` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-gh-delete-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-gh-delete-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh workflow disable:*)\"]` on parsed MCP configuration."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

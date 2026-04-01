@@ -428,6 +428,39 @@ pub(super) fn analyze_json_object<'a>(
                 Some(resolve_value_span(&item_path, locator, fallback_len));
         }
 
+        if signals.autoapprove_gh_secret_delete_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_index(nested, "Bash(gh secret delete:*)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_gh_secret_delete_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_gh_variable_delete_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_index(nested, "Bash(gh variable delete:*)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_gh_variable_delete_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_gh_workflow_disable_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_index(nested, "Bash(gh workflow disable:*)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_gh_workflow_disable_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
         if signals.autoapprove_read_wildcard_span.is_none()
             && artifact_kind == ArtifactKind::McpConfig
             && key == "autoApprove"

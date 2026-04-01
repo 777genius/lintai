@@ -1,0 +1,8 @@
+id = "mcp-autoapprove-gh-delete-family"
+description = "MCP config auto-approves GitHub delete and disable commands through autoApprove"
+
+expected_findings = [
+  "SEC579",
+  "SEC580",
+  "SEC581",
+]

@@ -408,6 +408,51 @@ pub(crate) fn check_mcp_autoapprove_gh_workflow_run(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_gh_secret_delete(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_secret_delete_span.clone()),
+        "MCP configuration auto-approves `gh secret delete` with `autoApprove: [\"Bash(gh secret delete:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_gh_variable_delete(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_variable_delete_span.clone()),
+        "MCP configuration auto-approves `gh variable delete` with `autoApprove: [\"Bash(gh variable delete:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_gh_workflow_disable(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_workflow_disable_span.clone()),
+        "MCP configuration auto-approves `gh workflow disable` with `autoApprove: [\"Bash(gh workflow disable:*)\"]`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_read_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,
