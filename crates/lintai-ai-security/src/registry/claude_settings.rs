@@ -9,8 +9,11 @@ use crate::claude_settings_rules::{
     check_claude_settings_external_absolute_hook_command,
     check_claude_settings_gh_api_post_permission, check_claude_settings_gh_issue_create_permission,
     check_claude_settings_gh_pr_permission, check_claude_settings_gh_repo_create_permission,
+    check_claude_settings_gh_secret_delete_permission,
     check_claude_settings_gh_secret_set_permission,
+    check_claude_settings_gh_variable_delete_permission,
     check_claude_settings_gh_variable_set_permission,
+    check_claude_settings_gh_workflow_disable_permission,
     check_claude_settings_gh_workflow_run_permission, check_claude_settings_git_add_permission,
     check_claude_settings_git_am_permission, check_claude_settings_git_apply_permission,
     check_claude_settings_git_branch_permission, check_claude_settings_git_checkout_permission,
@@ -424,6 +427,42 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct ClaudeSettingsGhSecretDeletePermissionRule {
+        code: "SEC514",
+        summary: "Claude settings permissions allow `Bash(gh secret delete:*)` in a shared committed config",
+        doc_title: "Claude settings: shared gh secret delete permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGhVariableDeletePermissionRule {
+        code: "SEC515",
+        summary: "Claude settings permissions allow `Bash(gh variable delete:*)` in a shared committed config",
+        doc_title: "Claude settings: shared gh variable delete permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGhWorkflowDisablePermissionRule {
+        code: "SEC516",
+        summary: "Claude settings permissions allow `Bash(gh workflow disable:*)` in a shared committed config",
+        doc_title: "Claude settings: shared gh workflow disable permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct ClaudeSettingsGitFetchPermissionRule {
         code: "SEC409",
         summary: "Claude settings permissions allow `Bash(git fetch:*)` in a shared committed config",
@@ -807,7 +846,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 64] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 67] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -1193,6 +1232,54 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 64] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `gh workflow run` permissions or replace them with narrower reviewed subcommands that keep remote workflow dispatch under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGhSecretDeletePermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh secret delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_gh_secret_delete_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh secret delete` permissions or replace them with narrower reviewed subcommands that keep GitHub secret deletion under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGhVariableDeletePermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh variable delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_gh_variable_delete_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh variable delete` permissions or replace them with narrower reviewed subcommands that keep GitHub variable deletion under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGhWorkflowDisablePermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh workflow disable` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_gh_workflow_disable_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh workflow disable` permissions or replace them with narrower reviewed subcommands that keep workflow disabling under explicit user control",
         ),
         suggestion_fix: None,
     },

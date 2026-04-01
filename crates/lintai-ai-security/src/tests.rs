@@ -2836,6 +2836,105 @@ fn finds_gh_workflow_run_allowed_tools_in_frontmatter() {
 }
 
 #[test]
+fn finds_gh_secret_delete_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(gh secret delete:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC517")
+        .unwrap();
+
+    let start = content.find("Bash(gh secret delete:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(gh secret delete:*)".len())
+    );
+}
+
+#[test]
+fn ignores_specific_gh_secret_delete_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_governance_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(gh secret list:*), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC517")
+    );
+}
+
+#[test]
+fn finds_gh_variable_delete_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(gh variable delete:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC518")
+        .unwrap();
+
+    let start = content.find("Bash(gh variable delete:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(gh variable delete:*)".len())
+    );
+}
+
+#[test]
+fn ignores_specific_gh_variable_delete_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_governance_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(gh variable list:*), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC518")
+    );
+}
+
+#[test]
+fn finds_gh_workflow_disable_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(gh workflow disable:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC519")
+        .unwrap();
+
+    let start = content.find("Bash(gh workflow disable:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(gh workflow disable:*)".len())
+    );
+}
+
+#[test]
+fn ignores_specific_gh_workflow_disable_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_governance_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(gh workflow view:*), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC519")
+    );
+}
+
+#[test]
 fn ignores_specific_gh_workflow_run_allowed_tools_in_frontmatter() {
     let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
@@ -6496,6 +6595,60 @@ fn finds_claude_settings_gh_workflow_run_permission() {
 }
 
 #[test]
+fn finds_claude_settings_gh_secret_delete_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(gh secret delete:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC514")
+        .unwrap();
+
+    let start = content.find("Bash(gh secret delete:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(gh secret delete:*)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_gh_variable_delete_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(gh variable delete:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC515")
+        .unwrap();
+
+    let start = content.find("Bash(gh variable delete:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(gh variable delete:*)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_gh_workflow_disable_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(gh workflow disable:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC516")
+        .unwrap();
+
+    let start = content.find("Bash(gh workflow disable:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(gh workflow disable:*)".len())
+    );
+}
+
+#[test]
 fn ignores_specific_claude_settings_gh_secret_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh secret list:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -6505,6 +6658,45 @@ fn ignores_specific_claude_settings_gh_secret_permission() {
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC508")
+    );
+}
+
+#[test]
+fn ignores_specific_claude_settings_gh_secret_delete_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(gh secret list:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC514")
+    );
+}
+
+#[test]
+fn ignores_specific_claude_settings_gh_variable_delete_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(gh variable list:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC515")
+    );
+}
+
+#[test]
+fn ignores_specific_claude_settings_gh_workflow_disable_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(gh workflow view:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC516")
     );
 }
 
@@ -10872,12 +11064,18 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC508"
                         | "SEC509"
                         | "SEC510"
+                        | "SEC514"
+                        | "SEC515"
+                        | "SEC516"
                         | "SEC505"
                         | "SEC506"
                         | "SEC507"
                         | "SEC511"
                         | "SEC512"
                         | "SEC513"
+                        | "SEC517"
+                        | "SEC518"
+                        | "SEC519"
                         | "SEC475"
                         | "SEC476"
                         | "SEC477"

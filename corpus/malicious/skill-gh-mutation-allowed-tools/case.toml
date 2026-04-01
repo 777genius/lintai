@@ -5,4 +5,7 @@ expected_findings = [
   "SEC505",
   "SEC506",
   "SEC507",
+  "SEC517",
+  "SEC518",
+  "SEC519",
 ]

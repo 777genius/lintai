@@ -15,6 +15,7 @@ const AI_NATIVE_RULE_CODES: &[&str] = &[
     "SEC485", "SEC488", "SEC489", "SEC490", "SEC491", "SEC492", "SEC493", "SEC494", "SEC495",
     "SEC496", "SEC497", "SEC498", "SEC499", "SEC500", "SEC501", "SEC502", "SEC503", "SEC504",
     "SEC505", "SEC506", "SEC507", "SEC508", "SEC509", "SEC510", "SEC511", "SEC512", "SEC513",
+    "SEC514", "SEC515", "SEC516", "SEC517", "SEC518", "SEC519",
 ];
 
 pub(super) fn append_cohort_and_counts(
@@ -140,6 +141,9 @@ pub(super) fn append_hit_sections(
     let sec508_hits = rule_count(ledger, &["SEC508"]);
     let sec509_hits = rule_count(ledger, &["SEC509"]);
     let sec510_hits = rule_count(ledger, &["SEC510"]);
+    let sec514_hits = rule_count(ledger, &["SEC514"]);
+    let sec515_hits = rule_count(ledger, &["SEC515"]);
+    let sec516_hits = rule_count(ledger, &["SEC516"]);
     let sec409_hits = rule_count(ledger, &["SEC409"]);
     let sec410_hits = rule_count(ledger, &["SEC410"]);
     let sec411_hits = rule_count(ledger, &["SEC411"]);
@@ -184,6 +188,9 @@ pub(super) fn append_hit_sections(
     let sec511_hits = rule_count(ledger, &["SEC511"]);
     let sec512_hits = rule_count(ledger, &["SEC512"]);
     let sec513_hits = rule_count(ledger, &["SEC513"]);
+    let sec517_hits = rule_count(ledger, &["SEC517"]);
+    let sec518_hits = rule_count(ledger, &["SEC518"]);
+    let sec519_hits = rule_count(ledger, &["SEC519"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, ledger);
     let sec313_repos = repos_with_rule_hits(ledger, &["SEC313"], false);
     let sec335_repos = repos_with_rule_hits(ledger, &["SEC335"], false);
@@ -246,6 +253,9 @@ pub(super) fn append_hit_sections(
     let sec508_repos = repos_with_rule_hits(ledger, &["SEC508"], false);
     let sec509_repos = repos_with_rule_hits(ledger, &["SEC509"], false);
     let sec510_repos = repos_with_rule_hits(ledger, &["SEC510"], false);
+    let sec514_repos = repos_with_rule_hits(ledger, &["SEC514"], false);
+    let sec515_repos = repos_with_rule_hits(ledger, &["SEC515"], false);
+    let sec516_repos = repos_with_rule_hits(ledger, &["SEC516"], false);
     let sec409_repos = repos_with_rule_hits(ledger, &["SEC409"], false);
     let sec410_repos = repos_with_rule_hits(ledger, &["SEC410"], false);
     let sec411_repos = repos_with_rule_hits(ledger, &["SEC411"], false);
@@ -290,6 +300,9 @@ pub(super) fn append_hit_sections(
     let sec511_repos = repos_with_rule_hits(ledger, &["SEC511"], false);
     let sec512_repos = repos_with_rule_hits(ledger, &["SEC512"], false);
     let sec513_repos = repos_with_rule_hits(ledger, &["SEC513"], false);
+    let sec517_repos = repos_with_rule_hits(ledger, &["SEC517"], false);
+    let sec518_repos = repos_with_rule_hits(ledger, &["SEC518"], false);
+    let sec519_repos = repos_with_rule_hits(ledger, &["SEC519"], false);
 
     output.push_str("## Stable Hits\n\n");
     output.push_str(&format!("- current AI-native MCP rule families produced `{}` repo-level rule-code hits in this discovery wave\n", ai_native_rule_hits));
@@ -481,6 +494,18 @@ pub(super) fn append_hit_sections(
         sec510_hits
     ));
     output.push_str(&format!(
+        "- `SEC514` Claude settings shared `gh secret delete` permissions: `{}`\n",
+        sec514_hits
+    ));
+    output.push_str(&format!(
+        "- `SEC515` Claude settings shared `gh variable delete` permissions: `{}`\n",
+        sec515_hits
+    ));
+    output.push_str(&format!(
+        "- `SEC516` Claude settings shared `gh workflow disable` permissions: `{}`\n",
+        sec516_hits
+    ));
+    output.push_str(&format!(
         "- `SEC409` Claude settings shared `git fetch` permissions: `{}`\n",
         sec409_hits
     ));
@@ -656,6 +681,18 @@ pub(super) fn append_hit_sections(
         "- `SEC513` AI-native markdown shared `gh workflow run` tool grants: `{}`\n",
         sec513_hits
     ));
+    output.push_str(&format!(
+        "- `SEC517` AI-native markdown shared `gh secret delete` tool grants: `{}`\n",
+        sec517_hits
+    ));
+    output.push_str(&format!(
+        "- `SEC518` AI-native markdown shared `gh variable delete` tool grants: `{}`\n",
+        sec518_hits
+    ));
+    output.push_str(&format!(
+        "- `SEC519` AI-native markdown shared `gh workflow disable` tool grants: `{}`\n",
+        sec519_hits
+    ));
     output.push_str(&format!("- AI-native markdown preview hits by rule code: `SEC313`=`{}`, `SEC335`=`{}`, `SEC347`=`{}`, `SEC348`=`{}`, `SEC349`=`{}`, `SEC350`=`{}`, `SEC351`=`{}`, `SEC352`=`{}`, `SEC353`=`{}`, `SEC354`=`{}`, `SEC355`=`{}`, `SEC356`=`{}`, `SEC357`=`{}`, `SEC358`=`{}`, `SEC359`=`{}`, `SEC360`=`{}`, `SEC370`=`{}`, `SEC371`=`{}`, `SEC377`=`{}`, `SEC378`=`{}`, `SEC379`=`{}`, `SEC380`=`{}`, `SEC416`=`{}`, `SEC417`=`{}`\n", sec313_hits, sec335_hits, sec347_hits, sec348_hits, sec349_hits, sec350_hits, sec351_hits, sec352_hits, sec353_hits, sec354_hits, sec355_hits, sec356_hits, sec357_hits, sec358_hits, sec359_hits, sec360_hits, sec370_hits, sec371_hits, sec377_hits, sec378_hits, sec379_hits, sec380_hits, sec416_hits, sec417_hits));
     output.push_str(&format!(
         "- `SEC347` subtype repo hits: CLI-form=`{}`, config-snippet-form=`{}`\n",
@@ -735,6 +772,9 @@ pub(super) fn append_hit_sections(
         ("SEC508", sec508_repos),
         ("SEC509", sec509_repos),
         ("SEC510", sec510_repos),
+        ("SEC514", sec514_repos),
+        ("SEC515", sec515_repos),
+        ("SEC516", sec516_repos),
         ("SEC409", sec409_repos),
         ("SEC410", sec410_repos),
         ("SEC411", sec411_repos),
@@ -779,6 +819,9 @@ pub(super) fn append_hit_sections(
         ("SEC511", sec511_repos),
         ("SEC512", sec512_repos),
         ("SEC513", sec513_repos),
+        ("SEC517", sec517_repos),
+        ("SEC518", sec518_repos),
+        ("SEC519", sec519_repos),
     ] {
         let is_stable = matches!(label, "SEC394" | "SEC395" | "SEC396" | "SEC397" | "SEC398");
         if repos.is_empty() {

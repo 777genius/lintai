@@ -436,6 +436,21 @@ impl ClaudeSettingsSignals {
             locator_ref.as_ref(),
             "Bash(gh workflow run:*)",
         );
+        signals.gh_secret_delete_permission_span = resolve_permissions_allow_exact_span(
+            value,
+            locator_ref.as_ref(),
+            "Bash(gh secret delete:*)",
+        );
+        signals.gh_variable_delete_permission_span = resolve_permissions_allow_exact_span(
+            value,
+            locator_ref.as_ref(),
+            "Bash(gh variable delete:*)",
+        );
+        signals.gh_workflow_disable_permission_span = resolve_permissions_allow_exact_span(
+            value,
+            locator_ref.as_ref(),
+            "Bash(gh workflow disable:*)",
+        );
         signals.git_fetch_permission_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git fetch:*)");
         signals.git_ls_remote_permission_span = resolve_permissions_allow_exact_span(

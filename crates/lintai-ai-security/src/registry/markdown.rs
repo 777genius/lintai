@@ -12,17 +12,18 @@ use crate::markdown_rules::{
     check_cursor_rule_unknown_frontmatter_key, check_edit_unsafe_path_allowed_tools,
     check_gh_api_post_allowed_tools, check_gh_issue_create_allowed_tools,
     check_gh_pr_allowed_tools, check_gh_repo_create_allowed_tools,
-    check_gh_secret_set_allowed_tools, check_gh_variable_set_allowed_tools,
-    check_gh_workflow_run_allowed_tools, check_git_add_allowed_tools, check_git_am_allowed_tools,
-    check_git_apply_allowed_tools, check_git_branch_allowed_tools,
-    check_git_checkout_allowed_tools, check_git_cherry_pick_allowed_tools,
-    check_git_clean_allowed_tools, check_git_clone_allowed_tools, check_git_commit_allowed_tools,
-    check_git_config_allowed_tools, check_git_fetch_allowed_tools,
-    check_git_ls_remote_allowed_tools, check_git_merge_allowed_tools, check_git_push_allowed_tools,
-    check_git_rebase_allowed_tools, check_git_reset_allowed_tools, check_git_restore_allowed_tools,
-    check_git_stash_allowed_tools, check_git_tag_allowed_tools,
-    check_glob_unsafe_path_allowed_tools, check_html_comment_directive,
-    check_html_comment_download_exec, check_markdown_base64_exec,
+    check_gh_secret_delete_allowed_tools, check_gh_secret_set_allowed_tools,
+    check_gh_variable_delete_allowed_tools, check_gh_variable_set_allowed_tools,
+    check_gh_workflow_disable_allowed_tools, check_gh_workflow_run_allowed_tools,
+    check_git_add_allowed_tools, check_git_am_allowed_tools, check_git_apply_allowed_tools,
+    check_git_branch_allowed_tools, check_git_checkout_allowed_tools,
+    check_git_cherry_pick_allowed_tools, check_git_clean_allowed_tools,
+    check_git_clone_allowed_tools, check_git_commit_allowed_tools, check_git_config_allowed_tools,
+    check_git_fetch_allowed_tools, check_git_ls_remote_allowed_tools,
+    check_git_merge_allowed_tools, check_git_push_allowed_tools, check_git_rebase_allowed_tools,
+    check_git_reset_allowed_tools, check_git_restore_allowed_tools, check_git_stash_allowed_tools,
+    check_git_tag_allowed_tools, check_glob_unsafe_path_allowed_tools,
+    check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
     check_markdown_cargo_http_git_install, check_markdown_cargo_http_index,
     check_markdown_claude_bare_pip_install, check_markdown_docker_host_escape,
     check_markdown_download_exec, check_markdown_fenced_pipe_shell, check_markdown_git_http_clone,
@@ -700,6 +701,42 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct GhSecretDeleteAllowedToolsRule {
+        code: "SEC517",
+        summary: "AI-native markdown frontmatter grants `Bash(gh secret delete:*)` tool access",
+        doc_title: "AI markdown: shared gh secret delete tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GhVariableDeleteAllowedToolsRule {
+        code: "SEC518",
+        summary: "AI-native markdown frontmatter grants `Bash(gh variable delete:*)` tool access",
+        doc_title: "AI markdown: shared gh variable delete tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GhWorkflowDisableAllowedToolsRule {
+        code: "SEC519",
+        summary: "AI-native markdown frontmatter grants `Bash(gh workflow disable:*)` tool access",
+        doc_title: "AI markdown: shared gh workflow disable tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct UnscopedWebFetchAllowedToolsRule {
         code: "SEC404",
         summary: "AI-native markdown frontmatter grants bare `WebFetch` tool access",
@@ -1299,7 +1336,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 104] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 107] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -2119,6 +2156,54 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 104] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(gh workflow run:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps remote workflow dispatch under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GhSecretDeleteAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh secret delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_gh_secret_delete_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(gh secret delete:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps secret deletion under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GhVariableDeleteAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh variable delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_gh_variable_delete_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(gh variable delete:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps variable deletion under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GhWorkflowDisableAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh workflow disable` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_gh_workflow_disable_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(gh workflow disable:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps workflow disabling under explicit user control",
         ),
         suggestion_fix: None,
     },

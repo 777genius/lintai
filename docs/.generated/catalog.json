@@ -218,7 +218,10 @@
         "lintai-ai-security:SEC504",
         "lintai-ai-security:SEC508",
         "lintai-ai-security:SEC509",
-        "lintai-ai-security:SEC510"
+        "lintai-ai-security:SEC510",
+        "lintai-ai-security:SEC514",
+        "lintai-ai-security:SEC515",
+        "lintai-ai-security:SEC516"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -444,7 +447,10 @@
         "lintai-ai-security:SEC504",
         "lintai-ai-security:SEC508",
         "lintai-ai-security:SEC509",
-        "lintai-ai-security:SEC510"
+        "lintai-ai-security:SEC510",
+        "lintai-ai-security:SEC514",
+        "lintai-ai-security:SEC515",
+        "lintai-ai-security:SEC516"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -488,7 +494,10 @@
         "lintai-ai-security:SEC507",
         "lintai-ai-security:SEC511",
         "lintai-ai-security:SEC512",
-        "lintai-ai-security:SEC513"
+        "lintai-ai-security:SEC513",
+        "lintai-ai-security:SEC517",
+        "lintai-ai-security:SEC518",
+        "lintai-ai-security:SEC519"
       ],
       "canonicalPath": "/presets/governance"
     },
@@ -8098,6 +8107,189 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Shared `gh workflow run` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC514",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC514",
+      "alias": "CLAUDE-GH-SECRET-DELETE-PERMISSION",
+      "displayLabel": "SEC514 / CLAUDE-GH-SECRET-DELETE-PERMISSION",
+      "docTitle": "Claude settings: shared gh secret delete permissions",
+      "slug": "sec514",
+      "canonicalPath": "/rules/lintai-ai-security/sec514",
+      "summary": "Claude settings permissions allow `Bash(gh secret delete:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `gh secret delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC515",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC515",
+      "alias": "CLAUDE-GH-VARIABLE-DELETE-PERMISSION",
+      "displayLabel": "SEC515 / CLAUDE-GH-VARIABLE-DELETE-PERMISSION",
+      "docTitle": "Claude settings: shared gh variable delete permissions",
+      "slug": "sec515",
+      "canonicalPath": "/rules/lintai-ai-security/sec515",
+      "summary": "Claude settings permissions allow `Bash(gh variable delete:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `gh variable delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC516",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC516",
+      "alias": "CLAUDE-GH-WORKFLOW-DISABLE-PERMISSION",
+      "displayLabel": "SEC516 / CLAUDE-GH-WORKFLOW-DISABLE-PERMISSION",
+      "docTitle": "Claude settings: shared gh workflow disable permissions",
+      "slug": "sec516",
+      "canonicalPath": "/rules/lintai-ai-security/sec516",
+      "summary": "Claude settings permissions allow `Bash(gh workflow disable:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `gh workflow disable` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC517",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC517",
+      "alias": "MD-GH-SECRET-DELETE-ALLOWED-TOOLS",
+      "displayLabel": "SEC517 / MD-GH-SECRET-DELETE-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: shared gh secret delete tool grant",
+      "slug": "sec517",
+      "canonicalPath": "/rules/lintai-ai-security/sec517",
+      "summary": "AI-native markdown frontmatter grants `Bash(gh secret delete:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `gh secret delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC518",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC518",
+      "alias": "MD-GH-VARIABLE-DELETE-ALLOWED-TOOLS",
+      "displayLabel": "SEC518 / MD-GH-VARIABLE-DELETE-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: shared gh variable delete tool grant",
+      "slug": "sec518",
+      "canonicalPath": "/rules/lintai-ai-security/sec518",
+      "summary": "AI-native markdown frontmatter grants `Bash(gh variable delete:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `gh variable delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC519",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC519",
+      "alias": "MD-GH-WORKFLOW-DISABLE-ALLOWED-TOOLS",
+      "displayLabel": "SEC519 / MD-GH-WORKFLOW-DISABLE-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: shared gh workflow disable tool grant",
+      "slug": "sec519",
+      "canonicalPath": "/rules/lintai-ai-security/sec519",
+      "summary": "AI-native markdown frontmatter grants `Bash(gh workflow disable:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `gh workflow disable` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

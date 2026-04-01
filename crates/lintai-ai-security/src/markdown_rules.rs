@@ -843,6 +843,54 @@ pub(crate) fn check_gh_workflow_run_allowed_tools(
     )
 }
 
+pub(crate) fn check_gh_secret_delete_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.gh_secret_delete_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(gh secret delete:*)` tool access",
+    )
+}
+
+pub(crate) fn check_gh_variable_delete_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.gh_variable_delete_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(gh variable delete:*)` tool access",
+    )
+}
+
+pub(crate) fn check_gh_workflow_disable_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.gh_workflow_disable_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(gh workflow disable:*)` tool access",
+    )
+}
+
 pub(crate) fn check_npm_exec_allowed_tools(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

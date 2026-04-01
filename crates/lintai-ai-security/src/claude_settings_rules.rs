@@ -468,6 +468,51 @@ pub(crate) fn check_claude_settings_gh_workflow_run_permission(
     )
 }
 
+pub(crate) fn check_claude_settings_gh_secret_delete_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.gh_secret_delete_permission_span.clone()),
+        "Claude settings permissions allow `Bash(gh secret delete:*)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_gh_variable_delete_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.gh_variable_delete_permission_span.clone()),
+        "Claude settings permissions allow `Bash(gh variable delete:*)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_gh_workflow_disable_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.gh_workflow_disable_permission_span.clone()),
+        "Claude settings permissions allow `Bash(gh workflow disable:*)` in a shared committed config",
+    )
+}
+
 pub(crate) fn check_claude_settings_git_fetch_permission(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

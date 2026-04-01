@@ -232,6 +232,12 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC511 / MD-GH-SECRET-SET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh secret set:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC512 / MD-GH-VARIABLE-SET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh variable set:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC513 / MD-GH-WORKFLOW-RUN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh workflow run:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC514 / CLAUDE-GH-SECRET-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh secret delete:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC515 / CLAUDE-GH-VARIABLE-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh variable delete:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC516 / CLAUDE-GH-WORKFLOW-DISABLE-PERMISSION` | Claude settings permissions allow `Bash(gh workflow disable:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC517 / MD-GH-SECRET-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh secret delete:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC518 / MD-GH-VARIABLE-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh variable delete:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC519 / MD-GH-WORKFLOW-DISABLE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh workflow disable:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 
 ## Builtin preset activation model
 
@@ -4387,6 +4393,108 @@ Important behavior:
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Shared `gh workflow run` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC514 / CLAUDE-GH-SECRET-DELETE-PERMISSION` — Claude settings permissions allow `Bash(gh secret delete:*)` in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-GH-SECRET-DELETE-PERMISSION`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh secret delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC515 / CLAUDE-GH-VARIABLE-DELETE-PERMISSION` — Claude settings permissions allow `Bash(gh variable delete:*)` in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-GH-VARIABLE-DELETE-PERMISSION`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh variable delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC516 / CLAUDE-GH-WORKFLOW-DISABLE-PERMISSION` — Claude settings permissions allow `Bash(gh workflow disable:*)` in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-GH-WORKFLOW-DISABLE-PERMISSION`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh workflow disable` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC517 / MD-GH-SECRET-DELETE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh secret delete:*)` tool access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GH-SECRET-DELETE-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `governance`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh secret delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC518 / MD-GH-VARIABLE-DELETE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh variable delete:*)` tool access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GH-VARIABLE-DELETE-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `governance`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh variable delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC519 / MD-GH-WORKFLOW-DISABLE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh workflow disable:*)` tool access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GH-WORKFLOW-DISABLE-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `governance`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh workflow disable` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
