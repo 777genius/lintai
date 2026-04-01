@@ -183,6 +183,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC462 / MD-NETWORK-TLS-BYPASS` | AI-native markdown disables TLS verification for a network-capable command | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC463 / MD-SUDO-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(sudo:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC464 / MD-GIT-HTTP-CLONE` | AI-native markdown clones a Git repository from an insecure `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC465 / MD-GIT-HTTP-REMOTE` | AI-native markdown configures a Git remote with an insecure `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -3468,6 +3469,27 @@ Important behavior:
 - Deterministic Signal Basis: MarkdownSignals exact `git clone` token analysis with direct `http://` source detection inside parsed markdown regions.
 - Malicious Corpus: `skill-git-http-clone`
 - Benign Corpus: `skill-git-https-clone-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC465 / MD-GIT-HTTP-REMOTE` — AI-native markdown configures a Git remote with an insecure `http://` source
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GIT-HTTP-REMOTE`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown for `git remote add` examples that configure a repository remote through an insecure `http://` source.
+- Deterministic Signal Basis: MarkdownSignals exact `git remote add` token analysis with direct `http://` source detection inside parsed markdown regions.
+- Malicious Corpus: `skill-git-http-remote`
+- Benign Corpus: `skill-git-https-remote-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

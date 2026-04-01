@@ -1,0 +1,5 @@
+id = "skill-git-https-remote-safe"
+description = "AI-native markdown configures a Git remote with a TLS-verified https source"
+kind = "Skill"
+expected_absent_rules = ["SEC465"]
+

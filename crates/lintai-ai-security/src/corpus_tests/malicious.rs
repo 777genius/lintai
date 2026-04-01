@@ -151,6 +151,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "skill-git-config-allowed-tools",
             "skill-git-fetch-allowed-tools",
             "skill-git-http-clone",
+            "skill-git-http-remote",
             "skill-git-merge-allowed-tools",
             "skill-git-rebase-allowed-tools",
             "skill-git-reset-allowed-tools",

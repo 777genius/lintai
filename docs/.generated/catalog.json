@@ -184,7 +184,8 @@
         "lintai-ai-security:SEC461",
         "lintai-ai-security:SEC462",
         "lintai-ai-security:SEC463",
-        "lintai-ai-security:SEC464"
+        "lintai-ai-security:SEC464",
+        "lintai-ai-security:SEC465"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -278,7 +279,8 @@
         "lintai-ai-security:SEC461",
         "lintai-ai-security:SEC462",
         "lintai-ai-security:SEC463",
-        "lintai-ai-security:SEC464"
+        "lintai-ai-security:SEC464",
+        "lintai-ai-security:SEC465"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -6440,6 +6442,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `git clone` token analysis with direct `http://` source detection inside parsed markdown regions."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC465",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC465",
+      "alias": "MD-GIT-HTTP-REMOTE",
+      "displayLabel": "SEC465 / MD-GIT-HTTP-REMOTE",
+      "docTitle": "AI markdown: git http remote",
+      "slug": "sec465",
+      "canonicalPath": "/rules/lintai-ai-security/sec465",
+      "summary": "AI-native markdown configures a Git remote with an insecure `http://` source",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for `git remote add` examples that configure a repository remote through an insecure `http://` source.",
+        "maliciousCaseIds": [
+          "skill-git-http-remote"
+        ],
+        "benignCaseIds": [
+          "skill-git-https-remote-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `git remote add` token analysis with direct `http://` source detection inside parsed markdown regions."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

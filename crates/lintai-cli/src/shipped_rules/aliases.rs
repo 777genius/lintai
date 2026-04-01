@@ -169,6 +169,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC462" => "MD-NETWORK-TLS-BYPASS",
         "SEC463" => "MD-SUDO-ALLOWED-TOOLS",
         "SEC464" => "MD-GIT-HTTP-CLONE",
+        "SEC465" => "MD-GIT-HTTP-REMOTE",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

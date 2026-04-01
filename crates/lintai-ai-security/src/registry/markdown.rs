@@ -20,14 +20,15 @@ use crate::markdown_rules::{
     check_markdown_cargo_http_git_install, check_markdown_cargo_http_index,
     check_markdown_claude_bare_pip_install, check_markdown_docker_host_escape,
     check_markdown_download_exec, check_markdown_fenced_pipe_shell, check_markdown_git_http_clone,
-    check_markdown_js_package_config_http_registry, check_markdown_js_package_strict_ssl_false,
-    check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
-    check_markdown_mutable_mcp_launcher, check_markdown_network_tls_bypass,
-    check_markdown_npm_http_registry, check_markdown_npm_http_source,
-    check_markdown_path_traversal, check_markdown_pip_config_http_find_links,
-    check_markdown_pip_config_http_index, check_markdown_pip_config_trusted_host,
-    check_markdown_pip_http_find_links, check_markdown_pip_http_git_install,
-    check_markdown_pip_http_index, check_markdown_pip_http_source, check_markdown_pip_trusted_host,
+    check_markdown_git_http_remote, check_markdown_js_package_config_http_registry,
+    check_markdown_js_package_strict_ssl_false, check_markdown_metadata_service_access,
+    check_markdown_mutable_docker_image, check_markdown_mutable_mcp_launcher,
+    check_markdown_network_tls_bypass, check_markdown_npm_http_registry,
+    check_markdown_npm_http_source, check_markdown_path_traversal,
+    check_markdown_pip_config_http_find_links, check_markdown_pip_config_http_index,
+    check_markdown_pip_config_trusted_host, check_markdown_pip_http_find_links,
+    check_markdown_pip_http_git_install, check_markdown_pip_http_index,
+    check_markdown_pip_http_source, check_markdown_pip_trusted_host,
     check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
     check_package_install_allowed_tools, check_plugin_agent_hooks_frontmatter,
     check_plugin_agent_mcp_servers_frontmatter, check_plugin_agent_permission_mode,
@@ -309,6 +310,18 @@ declare_rule! {
         code: "SEC464",
         summary: "AI-native markdown clones a Git repository from an insecure `http://` source",
         doc_title: "AI markdown: git http clone",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownGitHttpRemoteRule {
+        code: "SEC465",
+        summary: "AI-native markdown configures a Git remote with an insecure `http://` source",
+        doc_title: "AI markdown: git http remote",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -1000,7 +1013,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 80] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 81] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1468,6 +1481,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 80] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace the insecure `http://` clone source with a normal TLS-verified `https://` repository URL",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownGitHttpRemoteRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown for `git remote add` examples that configure a repository remote through an insecure `http://` source.",
+            malicious_case_ids: &["skill-git-http-remote"],
+            benign_case_ids: &["skill-git-https-remote-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact `git remote add` token analysis with direct `http://` source detection inside parsed markdown regions.",
+        },
+        check: check_markdown_git_http_remote,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace the insecure `http://` remote source with a normal TLS-verified `https://` repository URL",
         ),
         suggestion_fix: None,
     },

@@ -1767,6 +1767,49 @@ fn ignores_markdown_git_https_clone() {
 }
 
 #[test]
+fn finds_markdown_git_http_remote() {
+    let content = "git remote add origin http://git.example.test/demo.git\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC465")
+        .unwrap();
+    let start = content.find("http://").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "http://".len())
+    );
+}
+
+#[test]
+fn finds_markdown_git_http_remote_with_fetch_flag() {
+    let content = "git remote add --fetch origin http://git.example.test/demo.git\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC465")
+    );
+}
+
+#[test]
+fn ignores_markdown_git_https_remote() {
+    let content = "git remote add origin https://github.com/acme/demo.git\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC465")
+    );
+}
+
+#[test]
 fn finds_markdown_cargo_http_index() {
     let content = "cargo install ripgrep --index http://index.example.test/\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

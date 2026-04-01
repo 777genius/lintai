@@ -1,0 +1,7 @@
+id = "skill-git-http-remote"
+description = "AI-native markdown configures a Git remote with an insecure http source"
+kind = "Skill"
+expected_findings = [
+  { rule = "SEC465", tier = "stable", match = "http://" },
+]
+
