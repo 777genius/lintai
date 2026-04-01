@@ -220,6 +220,12 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC499 / MD-PIPX-RUN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(pipx run:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC500 / MD-NPX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(npx:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC501 / MD-GIT-LS-REMOTE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git ls-remote:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC502 / CLAUDE-GH-API-POST-PERMISSION` | Claude settings permissions allow `Bash(gh api --method POST:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC503 / CLAUDE-GH-ISSUE-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh issue create:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC504 / CLAUDE-GH-REPO-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh repo create:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC505 / MD-GH-API-POST-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method POST:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC506 / MD-GH-ISSUE-CREATE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh issue create:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC507 / MD-GH-REPO-CREATE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo create:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 
 ## Builtin preset activation model
 
@@ -4171,6 +4177,108 @@ Important behavior:
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Shared `git ls-remote` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC502 / CLAUDE-GH-API-POST-PERMISSION` — Claude settings permissions allow `Bash(gh api --method POST:*)` in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-GH-API-POST-PERMISSION`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh api --method POST` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC503 / CLAUDE-GH-ISSUE-CREATE-PERMISSION` — Claude settings permissions allow `Bash(gh issue create:*)` in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-GH-ISSUE-CREATE-PERMISSION`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh issue create` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC504 / CLAUDE-GH-REPO-CREATE-PERMISSION` — Claude settings permissions allow `Bash(gh repo create:*)` in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-GH-REPO-CREATE-PERMISSION`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh repo create` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC505 / MD-GH-API-POST-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh api --method POST:*)` tool access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GH-API-POST-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `governance`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh api --method POST` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC506 / MD-GH-ISSUE-CREATE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh issue create:*)` tool access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GH-ISSUE-CREATE-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `governance`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh issue create` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC507 / MD-GH-REPO-CREATE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh repo create:*)` tool access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GH-REPO-CREATE-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `governance`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh repo create` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 

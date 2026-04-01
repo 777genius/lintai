@@ -438,6 +438,30 @@ mod tests {
             shipped_rule_alias("SEC501"),
             Some("MD-GIT-LS-REMOTE-ALLOWED-TOOLS")
         );
+        assert_eq!(
+            shipped_rule_alias("SEC502"),
+            Some("CLAUDE-GH-API-POST-PERMISSION")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC503"),
+            Some("CLAUDE-GH-ISSUE-CREATE-PERMISSION")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC504"),
+            Some("CLAUDE-GH-REPO-CREATE-PERMISSION")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC505"),
+            Some("MD-GH-API-POST-ALLOWED-TOOLS")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC506"),
+            Some("MD-GH-ISSUE-CREATE-ALLOWED-TOOLS")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC507"),
+            Some("MD-GH-REPO-CREATE-ALLOWED-TOOLS")
+        );
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

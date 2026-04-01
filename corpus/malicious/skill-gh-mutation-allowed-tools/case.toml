@@ -1,0 +1,8 @@
+id = "skill-gh-mutation-allowed-tools"
+description = "AI-native markdown frontmatter grants shared GitHub mutation tool authority"
+
+expected_findings = [
+  "SEC505",
+  "SEC506",
+  "SEC507",
+]

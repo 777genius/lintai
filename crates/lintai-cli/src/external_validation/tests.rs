@@ -268,6 +268,11 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(markdown.contains("`SEC406` Claude settings shared `git add` permissions: `"));
     assert!(markdown.contains("`SEC407` Claude settings shared `git clone` permissions: `"));
     assert!(markdown.contains("`SEC408` Claude settings shared `gh pr` permissions: `"));
+    assert!(
+        markdown.contains("`SEC502` Claude settings shared `gh api --method POST` permissions: `")
+    );
+    assert!(markdown.contains("`SEC503` Claude settings shared `gh issue create` permissions: `"));
+    assert!(markdown.contains("`SEC504` Claude settings shared `gh repo create` permissions: `"));
     assert!(markdown.contains("`SEC409` Claude settings shared `git fetch` permissions: `"));
     assert!(markdown.contains("`SEC410` Claude settings shared `git ls-remote` permissions: `"));
     assert!(markdown.contains("`SEC411` Claude settings shared `curl` permissions: `"));
@@ -320,6 +325,16 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(markdown.contains("`SEC499` AI-native markdown shared `pipx run` tool grants: `"));
     assert!(markdown.contains("`SEC500` AI-native markdown shared `npx` tool grants: `"));
     assert!(markdown.contains("`SEC501` AI-native markdown shared `git ls-remote` tool grants: `"));
+    assert!(
+        markdown
+            .contains("`SEC505` AI-native markdown shared `gh api --method POST` tool grants: `")
+    );
+    assert!(
+        markdown.contains("`SEC506` AI-native markdown shared `gh issue create` tool grants: `")
+    );
+    assert!(
+        markdown.contains("`SEC507` AI-native markdown shared `gh repo create` tool grants: `")
+    );
     assert!(markdown.contains("`SEC408` Claude settings shared `gh pr` permissions: `"));
     assert!(markdown.contains("`SEC372` Claude settings wildcard `Read(*)` permissions: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings wildcard `Edit(*)` permissions: `0`"));
@@ -994,6 +1009,16 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC499` AI-native markdown shared `pipx run` tool grants: `"));
     assert!(markdown.contains("`SEC500` AI-native markdown shared `npx` tool grants: `"));
     assert!(markdown.contains("`SEC501` AI-native markdown shared `git ls-remote` tool grants: `"));
+    assert!(
+        markdown
+            .contains("`SEC505` AI-native markdown shared `gh api --method POST` tool grants: `")
+    );
+    assert!(
+        markdown.contains("`SEC506` AI-native markdown shared `gh issue create` tool grants: `")
+    );
+    assert!(
+        markdown.contains("`SEC507` AI-native markdown shared `gh repo create` tool grants: `")
+    );
     assert!(markdown.contains("`SEC372` Claude settings files allowing `Read(*)`: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings files allowing `Edit(*)`: `0`"));
     assert!(markdown.contains("`SEC374` Claude settings files allowing `WebSearch(*)`: `0`"));
@@ -1028,6 +1053,9 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC406`"));
     assert!(markdown.contains("`SEC407`"));
     assert!(markdown.contains("`SEC408`"));
+    assert!(markdown.contains("`SEC502`"));
+    assert!(markdown.contains("`SEC503`"));
+    assert!(markdown.contains("`SEC504`"));
     assert!(markdown.contains("`SEC409`"));
     assert!(markdown.contains("`SEC410`"));
     assert!(markdown.contains("`SEC411`"));
@@ -1039,6 +1067,9 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC417`"));
     assert!(markdown.contains("`SEC418`"));
     assert!(markdown.contains("`SEC474`"));
+    assert!(markdown.contains("`SEC505`"));
+    assert!(markdown.contains("`SEC506`"));
+    assert!(markdown.contains("`SEC507`"));
     assert!(markdown.contains("`SEC475`"));
     assert!(markdown.contains("`SEC476`"));
     assert!(markdown.contains("`SEC477`"));
@@ -1066,4 +1097,7 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC499`"));
     assert!(markdown.contains("`SEC500`"));
     assert!(markdown.contains("`SEC501`"));
+    assert!(markdown.contains("`SEC505`"));
+    assert!(markdown.contains("`SEC506`"));
+    assert!(markdown.contains("`SEC507`"));
 }

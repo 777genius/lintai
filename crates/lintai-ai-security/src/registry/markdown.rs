@@ -10,8 +10,9 @@ use crate::markdown_rules::{
     check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
     check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
     check_cursor_rule_unknown_frontmatter_key, check_edit_unsafe_path_allowed_tools,
-    check_gh_pr_allowed_tools, check_git_add_allowed_tools, check_git_am_allowed_tools,
-    check_git_apply_allowed_tools, check_git_branch_allowed_tools,
+    check_gh_api_post_allowed_tools, check_gh_issue_create_allowed_tools,
+    check_gh_pr_allowed_tools, check_gh_repo_create_allowed_tools, check_git_add_allowed_tools,
+    check_git_am_allowed_tools, check_git_apply_allowed_tools, check_git_branch_allowed_tools,
     check_git_checkout_allowed_tools, check_git_cherry_pick_allowed_tools,
     check_git_clean_allowed_tools, check_git_clone_allowed_tools, check_git_commit_allowed_tools,
     check_git_config_allowed_tools, check_git_fetch_allowed_tools,
@@ -625,6 +626,42 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct GhApiPostAllowedToolsRule {
+        code: "SEC505",
+        summary: "AI-native markdown frontmatter grants `Bash(gh api --method POST:*)` tool access",
+        doc_title: "AI markdown: shared gh api POST tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GhIssueCreateAllowedToolsRule {
+        code: "SEC506",
+        summary: "AI-native markdown frontmatter grants `Bash(gh issue create:*)` tool access",
+        doc_title: "AI markdown: shared gh issue create tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GhRepoCreateAllowedToolsRule {
+        code: "SEC507",
+        summary: "AI-native markdown frontmatter grants `Bash(gh repo create:*)` tool access",
+        doc_title: "AI markdown: shared gh repo create tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct UnscopedWebFetchAllowedToolsRule {
         code: "SEC404",
         summary: "AI-native markdown frontmatter grants bare `WebFetch` tool access",
@@ -1224,7 +1261,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 98] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 101] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1948,6 +1985,54 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 98] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(gh pr:*)` access is really needed, or replace it with a narrower workflow-specific permission",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GhApiPostAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh api --method POST` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_gh_api_post_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(gh api --method POST:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps remote GitHub mutations under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GhIssueCreateAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh issue create` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_gh_issue_create_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(gh issue create:*)` access is really needed, or replace it with a narrower reviewed workflow-specific permission",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GhRepoCreateAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh repo create` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_gh_repo_create_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(gh repo create:*)` access is really needed, or replace it with a narrower reviewed workflow-specific permission",
         ),
         suggestion_fix: None,
     },

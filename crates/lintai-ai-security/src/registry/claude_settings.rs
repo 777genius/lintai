@@ -6,7 +6,9 @@ use crate::claude_settings_rules::{
     check_claude_settings_bypass_permissions, check_claude_settings_curl_permission,
     check_claude_settings_dangerous_http_hook_host, check_claude_settings_edit_unsafe_path,
     check_claude_settings_edit_wildcard, check_claude_settings_enabled_mcpjson_servers,
-    check_claude_settings_external_absolute_hook_command, check_claude_settings_gh_pr_permission,
+    check_claude_settings_external_absolute_hook_command,
+    check_claude_settings_gh_api_post_permission, check_claude_settings_gh_issue_create_permission,
+    check_claude_settings_gh_pr_permission, check_claude_settings_gh_repo_create_permission,
     check_claude_settings_git_add_permission, check_claude_settings_git_am_permission,
     check_claude_settings_git_apply_permission, check_claude_settings_git_branch_permission,
     check_claude_settings_git_checkout_permission,
@@ -340,6 +342,42 @@ declare_rule! {
         code: "SEC408",
         summary: "Claude settings permissions allow `Bash(gh pr:*)` in a shared committed config",
         doc_title: "Claude settings: shared gh pr permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGhApiPostPermissionRule {
+        code: "SEC502",
+        summary: "Claude settings permissions allow `Bash(gh api --method POST:*)` in a shared committed config",
+        doc_title: "Claude settings: shared gh api POST permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGhIssueCreatePermissionRule {
+        code: "SEC503",
+        summary: "Claude settings permissions allow `Bash(gh issue create:*)` in a shared committed config",
+        doc_title: "Claude settings: shared gh issue create permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGhRepoCreatePermissionRule {
+        code: "SEC504",
+        summary: "Claude settings permissions allow `Bash(gh repo create:*)` in a shared committed config",
+        doc_title: "Claude settings: shared gh repo create permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -731,7 +769,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 58] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 61] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -1021,6 +1059,54 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 58] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `gh pr` permissions or replace them with narrower reviewed subcommands that keep pull-request operations under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGhApiPostPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh api --method POST` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_gh_api_post_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh api --method POST` permissions or replace them with narrower reviewed subcommands that keep remote GitHub mutations under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGhIssueCreatePermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh issue create` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_gh_issue_create_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh issue create` permissions or replace them with narrower reviewed subcommands that keep GitHub issue creation under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGhRepoCreatePermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh repo create` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_gh_repo_create_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh repo create` permissions or replace them with narrower reviewed subcommands that keep repository creation under explicit user control",
         ),
         suggestion_fix: None,
     },

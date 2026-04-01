@@ -76,6 +76,9 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec406_hits = rule_count(current, &["SEC406"]);
     let sec407_hits = rule_count(current, &["SEC407"]);
     let sec408_hits = rule_count(current, &["SEC408"]);
+    let sec502_hits = rule_count(current, &["SEC502"]);
+    let sec503_hits = rule_count(current, &["SEC503"]);
+    let sec504_hits = rule_count(current, &["SEC504"]);
     let sec409_hits = rule_count(current, &["SEC409"]);
     let sec410_hits = rule_count(current, &["SEC410"]);
     let sec411_hits = rule_count(current, &["SEC411"]);
@@ -114,6 +117,9 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec499_hits = rule_count(current, &["SEC499"]);
     let sec500_hits = rule_count(current, &["SEC500"]);
     let sec501_hits = rule_count(current, &["SEC501"]);
+    let sec505_hits = rule_count(current, &["SEC505"]);
+    let sec506_hits = rule_count(current, &["SEC506"]);
+    let sec507_hits = rule_count(current, &["SEC507"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, current);
     let sec348_repos = repos_with_rule_hits(current, &["SEC348"], false);
     let sec349_repos = repos_with_rule_hits(current, &["SEC349"], false);
@@ -167,6 +173,9 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec406_repos = repos_with_rule_hits(current, &["SEC406"], false);
     let sec407_repos = repos_with_rule_hits(current, &["SEC407"], false);
     let sec408_repos = repos_with_rule_hits(current, &["SEC408"], false);
+    let sec502_repos = repos_with_rule_hits(current, &["SEC502"], false);
+    let sec503_repos = repos_with_rule_hits(current, &["SEC503"], false);
+    let sec504_repos = repos_with_rule_hits(current, &["SEC504"], false);
     let sec409_repos = repos_with_rule_hits(current, &["SEC409"], false);
     let sec410_repos = repos_with_rule_hits(current, &["SEC410"], false);
     let sec411_repos = repos_with_rule_hits(current, &["SEC411"], false);
@@ -205,6 +214,9 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec499_repos = repos_with_rule_hits(current, &["SEC499"], false);
     let sec500_repos = repos_with_rule_hits(current, &["SEC500"], false);
     let sec501_repos = repos_with_rule_hits(current, &["SEC501"], false);
+    let sec505_repos = repos_with_rule_hits(current, &["SEC505"], false);
+    let sec506_repos = repos_with_rule_hits(current, &["SEC506"], false);
+    let sec507_repos = repos_with_rule_hits(current, &["SEC507"], false);
 
     output.push_str("## Hybrid Scope Expansion Results\n\n");
     output.push_str("Current wave inventory for the newly expanded JSON lanes:\n\n");
@@ -472,6 +484,18 @@ pub(super) fn append_hybrid_scope_expansion(
         sec408_hits
     ));
     output.push_str(&format!(
+        "  - `SEC502` Claude settings shared `gh api --method POST` permissions: `{}`\n",
+        sec502_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC503` Claude settings shared `gh issue create` permissions: `{}`\n",
+        sec503_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC504` Claude settings shared `gh repo create` permissions: `{}`\n",
+        sec504_hits
+    ));
+    output.push_str(&format!(
         "  - `SEC409` Claude settings shared `git fetch` permissions: `{}`\n",
         sec409_hits
     ));
@@ -624,6 +648,18 @@ pub(super) fn append_hybrid_scope_expansion(
         sec501_hits
     ));
     output.push_str(&format!(
+        "  - `SEC505` AI-native markdown shared `gh api --method POST` tool grants: `{}`\n",
+        sec505_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC506` AI-native markdown shared `gh issue create` tool grants: `{}`\n",
+        sec506_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC507` AI-native markdown shared `gh repo create` tool grants: `{}`\n",
+        sec507_hits
+    ));
+    output.push_str(&format!(
         "  - `SEC372` Claude settings wildcard `Read(*)` permissions: `{}`\n",
         sec372_hits
     ));
@@ -715,6 +751,9 @@ pub(super) fn append_hybrid_scope_expansion(
     append_rule_repo_hits(output, "SEC406", sec406_repos);
     append_rule_repo_hits(output, "SEC407", sec407_repos);
     append_rule_repo_hits(output, "SEC408", sec408_repos);
+    append_rule_repo_hits(output, "SEC502", sec502_repos);
+    append_rule_repo_hits(output, "SEC503", sec503_repos);
+    append_rule_repo_hits(output, "SEC504", sec504_repos);
     append_rule_repo_hits(output, "SEC409", sec409_repos);
     append_rule_repo_hits(output, "SEC410", sec410_repos);
     append_rule_repo_hits(output, "SEC411", sec411_repos);
@@ -753,6 +792,9 @@ pub(super) fn append_hybrid_scope_expansion(
     append_rule_repo_hits(output, "SEC499", sec499_repos);
     append_rule_repo_hits(output, "SEC500", sec500_repos);
     append_rule_repo_hits(output, "SEC501", sec501_repos);
+    append_rule_repo_hits(output, "SEC505", sec505_repos);
+    append_rule_repo_hits(output, "SEC506", sec506_repos);
+    append_rule_repo_hits(output, "SEC507", sec507_repos);
     if sec394_repos.is_empty() {
         output.push_str(
             "- `SEC394` produced no repo-level stable hits yet on the canonical cohort\n",

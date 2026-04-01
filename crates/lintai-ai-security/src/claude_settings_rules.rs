@@ -378,6 +378,51 @@ pub(crate) fn check_claude_settings_gh_pr_permission(
     )
 }
 
+pub(crate) fn check_claude_settings_gh_api_post_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.gh_api_post_permission_span.clone()),
+        "Claude settings permissions allow `Bash(gh api --method POST:*)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_gh_issue_create_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.gh_issue_create_permission_span.clone()),
+        "Claude settings permissions allow `Bash(gh issue create:*)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_gh_repo_create_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.gh_repo_create_permission_span.clone()),
+        "Claude settings permissions allow `Bash(gh repo create:*)` in a shared committed config",
+    )
+}
+
 pub(crate) fn check_claude_settings_git_fetch_permission(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

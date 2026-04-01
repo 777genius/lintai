@@ -1,0 +1,8 @@
+id = "claude-settings-gh-mutation-permissions"
+description = "Claude settings grant shared GitHub mutation permissions"
+
+expected_findings = [
+  "SEC502",
+  "SEC503",
+  "SEC504",
+]

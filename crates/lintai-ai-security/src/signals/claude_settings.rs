@@ -406,6 +406,21 @@ impl ClaudeSettingsSignals {
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git clone:*)");
         signals.gh_pr_permission_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(gh pr:*)");
+        signals.gh_api_post_permission_span = resolve_permissions_allow_exact_span(
+            value,
+            locator_ref.as_ref(),
+            "Bash(gh api --method POST:*)",
+        );
+        signals.gh_issue_create_permission_span = resolve_permissions_allow_exact_span(
+            value,
+            locator_ref.as_ref(),
+            "Bash(gh issue create:*)",
+        );
+        signals.gh_repo_create_permission_span = resolve_permissions_allow_exact_span(
+            value,
+            locator_ref.as_ref(),
+            "Bash(gh repo create:*)",
+        );
         signals.git_fetch_permission_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git fetch:*)");
         signals.git_ls_remote_permission_span = resolve_permissions_allow_exact_span(
