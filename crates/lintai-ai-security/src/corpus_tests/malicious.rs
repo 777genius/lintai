@@ -113,6 +113,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "mcp-autoapprove-git-push-gh-api-post",
             "mcp-autoapprove-sudo-rm",
             "mcp-autoapprove-tools-true",
+            "mcp-autoapprove-unsafe-path-family",
             "mcp-autoapprove-wildcard",
             "mcp-autoapprove-wildcard-tool-family",
             "mcp-capabilities-wildcard",

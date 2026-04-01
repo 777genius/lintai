@@ -153,6 +153,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "mcp-autoapprove-specific-safe",
             "mcp-autoapprove-sudo-rm-specific-safe",
             "mcp-autoapprove-tools-false-safe",
+            "mcp-autoapprove-unsafe-path-family-specific-safe",
             "mcp-autoapprove-wildcard-tool-family-specific-safe",
             "mcp-capabilities-scoped-safe",
             "mcp-command-non-sudo-safe",

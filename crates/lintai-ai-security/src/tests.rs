@@ -6822,6 +6822,116 @@ fn finds_mcp_autoapprove_websearch_wildcard() {
 }
 
 #[test]
+fn finds_mcp_autoapprove_read_unsafe_path() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Read(/etc/**)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC574")
+        .unwrap();
+    let start = content.find("\"Read(/etc/**)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Read(/etc/**)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_write_unsafe_path() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Write(../shared/**)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC575")
+        .unwrap();
+    let start = content.find("\"Write(../shared/**)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Write(../shared/**)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_edit_unsafe_path() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Edit(C:\\repo\\outside)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC576")
+        .unwrap();
+    let start = content.find("\"Edit(C:\\\\repo\\\\outside)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Edit(C:\\\\repo\\\\outside)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_glob_unsafe_path() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Glob(/var/**)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC577")
+        .unwrap();
+    let start = content.find("\"Glob(/var/**)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Glob(/var/**)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_grep_unsafe_path() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Grep(~/notes/**)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC578")
+        .unwrap();
+    let start = content.find("\"Grep(~/notes/**)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Grep(~/notes/**)".len())
+    );
+}
+
+#[test]
 fn ignores_mcp_autoapprove_nonmatching_tools() {
     let provider = AiSecurityProvider::default();
     let findings = ProviderHarness::run(
@@ -6862,6 +6972,11 @@ fn ignores_mcp_autoapprove_nonmatching_tools() {
                 | "SEC571"
                 | "SEC572"
                 | "SEC573"
+                | "SEC574"
+                | "SEC575"
+                | "SEC576"
+                | "SEC577"
+                | "SEC578"
         )
     }));
 }

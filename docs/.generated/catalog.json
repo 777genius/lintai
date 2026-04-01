@@ -91,7 +91,12 @@
         "lintai-ai-security:SEC570",
         "lintai-ai-security:SEC571",
         "lintai-ai-security:SEC572",
-        "lintai-ai-security:SEC573"
+        "lintai-ai-security:SEC573",
+        "lintai-ai-security:SEC574",
+        "lintai-ai-security:SEC575",
+        "lintai-ai-security:SEC576",
+        "lintai-ai-security:SEC577",
+        "lintai-ai-security:SEC578"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -454,7 +459,12 @@
         "lintai-ai-security:SEC570",
         "lintai-ai-security:SEC571",
         "lintai-ai-security:SEC572",
-        "lintai-ai-security:SEC573"
+        "lintai-ai-security:SEC573",
+        "lintai-ai-security:SEC574",
+        "lintai-ai-security:SEC575",
+        "lintai-ai-security:SEC576",
+        "lintai-ai-security:SEC577",
+        "lintai-ai-security:SEC578"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -10343,6 +10353,201 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"WebSearch(*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC574",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC574",
+      "alias": "MCP-AUTOAPPROVE-READ-UNSAFE-PATH",
+      "displayLabel": "SEC574 / MCP-AUTOAPPROVE-READ-UNSAFE-PATH",
+      "docTitle": "MCP config: Read unsafe path auto-approve",
+      "slug": "sec574",
+      "canonicalPath": "/rules/lintai-ai-security/sec574",
+      "summary": "MCP configuration auto-approves `Read(...)` over an unsafe path through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact unsafe-path `Read(...)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-unsafe-path-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-unsafe-path-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item predicate detection for `autoApprove` entries where `Read(...)` targets an absolute, home-relative, parent-traversing, or drive-qualified path."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC575",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC575",
+      "alias": "MCP-AUTOAPPROVE-WRITE-UNSAFE-PATH",
+      "displayLabel": "SEC575 / MCP-AUTOAPPROVE-WRITE-UNSAFE-PATH",
+      "docTitle": "MCP config: Write unsafe path auto-approve",
+      "slug": "sec575",
+      "canonicalPath": "/rules/lintai-ai-security/sec575",
+      "summary": "MCP configuration auto-approves `Write(...)` over an unsafe path through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact unsafe-path `Write(...)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-unsafe-path-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-unsafe-path-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item predicate detection for `autoApprove` entries where `Write(...)` targets an absolute, home-relative, parent-traversing, or drive-qualified path."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC576",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC576",
+      "alias": "MCP-AUTOAPPROVE-EDIT-UNSAFE-PATH",
+      "displayLabel": "SEC576 / MCP-AUTOAPPROVE-EDIT-UNSAFE-PATH",
+      "docTitle": "MCP config: Edit unsafe path auto-approve",
+      "slug": "sec576",
+      "canonicalPath": "/rules/lintai-ai-security/sec576",
+      "summary": "MCP configuration auto-approves `Edit(...)` over an unsafe path through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact unsafe-path `Edit(...)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-unsafe-path-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-unsafe-path-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item predicate detection for `autoApprove` entries where `Edit(...)` targets an absolute, home-relative, parent-traversing, or drive-qualified path."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC577",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC577",
+      "alias": "MCP-AUTOAPPROVE-GLOB-UNSAFE-PATH",
+      "displayLabel": "SEC577 / MCP-AUTOAPPROVE-GLOB-UNSAFE-PATH",
+      "docTitle": "MCP config: Glob unsafe path auto-approve",
+      "slug": "sec577",
+      "canonicalPath": "/rules/lintai-ai-security/sec577",
+      "summary": "MCP configuration auto-approves `Glob(...)` over an unsafe path through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact unsafe-path `Glob(...)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-unsafe-path-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-unsafe-path-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item predicate detection for `autoApprove` entries where `Glob(...)` targets an absolute, home-relative, parent-traversing, or drive-qualified path."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC578",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC578",
+      "alias": "MCP-AUTOAPPROVE-GREP-UNSAFE-PATH",
+      "displayLabel": "SEC578 / MCP-AUTOAPPROVE-GREP-UNSAFE-PATH",
+      "docTitle": "MCP config: Grep unsafe path auto-approve",
+      "slug": "sec578",
+      "canonicalPath": "/rules/lintai-ai-security/sec578",
+      "summary": "MCP configuration auto-approves `Grep(...)` over an unsafe path through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact unsafe-path `Grep(...)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-unsafe-path-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-unsafe-path-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item predicate detection for `autoApprove` entries where `Grep(...)` targets an absolute, home-relative, parent-traversing, or drive-qualified path."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

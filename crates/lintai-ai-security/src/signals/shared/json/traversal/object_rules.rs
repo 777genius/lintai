@@ -505,6 +505,71 @@ pub(super) fn analyze_json_object<'a>(
                 Some(resolve_value_span(&item_path, locator, fallback_len));
         }
 
+        if signals.autoapprove_read_unsafe_path_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_matching_index(nested, |item| {
+                tool_has_unsafe_path_scope(item, "Read")
+            })
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_read_unsafe_path_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_write_unsafe_path_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_matching_index(nested, |item| {
+                tool_has_unsafe_path_scope(item, "Write")
+            })
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_write_unsafe_path_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_edit_unsafe_path_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_matching_index(nested, |item| {
+                tool_has_unsafe_path_scope(item, "Edit")
+            })
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_edit_unsafe_path_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_glob_unsafe_path_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_matching_index(nested, |item| {
+                tool_has_unsafe_path_scope(item, "Glob")
+            })
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_glob_unsafe_path_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_grep_unsafe_path_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_matching_index(nested, |item| {
+                tool_has_unsafe_path_scope(item, "Grep")
+            })
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_grep_unsafe_path_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
         if signals.autoapprove_tools_true_span.is_none()
             && artifact_kind == ArtifactKind::McpConfig
             && key == "autoApproveTools"
@@ -560,4 +625,41 @@ fn find_string_array_item_index(value: &Value, wanted: &str) -> Option<usize> {
     value
         .as_array()
         .and_then(|items| items.iter().position(|item| item.as_str() == Some(wanted)))
+}
+
+fn find_string_array_item_matching_index(
+    value: &Value,
+    matcher: impl Fn(&str) -> bool,
+) -> Option<usize> {
+    value.as_array().and_then(|items| {
+        items
+            .iter()
+            .position(|item| item.as_str().is_some_and(&matcher))
+    })
+}
+
+fn is_unsafe_tool_scope_path(value: &str) -> bool {
+    let normalized = value.trim();
+    normalized.starts_with('/')
+        || normalized.starts_with("~/")
+        || normalized.starts_with("~\\")
+        || normalized.contains("../")
+        || normalized.contains("..\\")
+        || normalized
+            .as_bytes()
+            .get(1)
+            .is_some_and(|byte| *byte == b':')
+}
+
+fn tool_has_unsafe_path_scope(token: &str, tool_name: &str) -> bool {
+    let trimmed = token.trim();
+    let Some(inner) = trimmed
+        .strip_prefix(tool_name)
+        .and_then(|remainder| remainder.strip_prefix('('))
+        .and_then(|remainder| remainder.strip_suffix(')'))
+    else {
+        return false;
+    };
+
+    is_unsafe_tool_scope_path(inner)
 }

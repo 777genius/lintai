@@ -513,6 +513,81 @@ pub(crate) fn check_mcp_autoapprove_websearch_wildcard(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_read_unsafe_path(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_read_unsafe_path_span.clone()),
+        "MCP configuration auto-approves `Read(...)` over an unsafe path through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_write_unsafe_path(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_write_unsafe_path_span.clone()),
+        "MCP configuration auto-approves `Write(...)` over an unsafe path through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_edit_unsafe_path(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_edit_unsafe_path_span.clone()),
+        "MCP configuration auto-approves `Edit(...)` over an unsafe path through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_glob_unsafe_path(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_glob_unsafe_path_span.clone()),
+        "MCP configuration auto-approves `Glob(...)` over an unsafe path through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_grep_unsafe_path(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_grep_unsafe_path_span.clone()),
+        "MCP configuration auto-approves `Grep(...)` over an unsafe path through `autoApprove`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_tools_true(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

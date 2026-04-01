@@ -292,6 +292,11 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC571 / MCP-AUTOAPPROVE-GREP-WILDCARD` | MCP configuration auto-approves `Grep(*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC572 / MCP-AUTOAPPROVE-WEBFETCH-WILDCARD` | MCP configuration auto-approves `WebFetch(*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC573 / MCP-AUTOAPPROVE-WEBSEARCH-WILDCARD` | MCP configuration auto-approves `WebSearch(*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC574 / MCP-AUTOAPPROVE-READ-UNSAFE-PATH` | MCP configuration auto-approves `Read(...)` over an unsafe path through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC575 / MCP-AUTOAPPROVE-WRITE-UNSAFE-PATH` | MCP configuration auto-approves `Write(...)` over an unsafe path through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC576 / MCP-AUTOAPPROVE-EDIT-UNSAFE-PATH` | MCP configuration auto-approves `Edit(...)` over an unsafe path through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC577 / MCP-AUTOAPPROVE-GLOB-UNSAFE-PATH` | MCP configuration auto-approves `Glob(...)` over an unsafe path through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC578 / MCP-AUTOAPPROVE-GREP-UNSAFE-PATH` | MCP configuration auto-approves `Grep(...)` over an unsafe path through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -5610,6 +5615,111 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["WebSearch(*)"]` on parsed MCP configuration.
 - Malicious Corpus: `mcp-autoapprove-wildcard-tool-family`
 - Benign Corpus: `mcp-autoapprove-wildcard-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC574 / MCP-AUTOAPPROVE-READ-UNSAFE-PATH` — MCP configuration auto-approves `Read(...)` over an unsafe path through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-READ-UNSAFE-PATH`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact unsafe-path `Read(...)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item predicate detection for `autoApprove` entries where `Read(...)` targets an absolute, home-relative, parent-traversing, or drive-qualified path.
+- Malicious Corpus: `mcp-autoapprove-unsafe-path-family`
+- Benign Corpus: `mcp-autoapprove-unsafe-path-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC575 / MCP-AUTOAPPROVE-WRITE-UNSAFE-PATH` — MCP configuration auto-approves `Write(...)` over an unsafe path through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-WRITE-UNSAFE-PATH`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact unsafe-path `Write(...)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item predicate detection for `autoApprove` entries where `Write(...)` targets an absolute, home-relative, parent-traversing, or drive-qualified path.
+- Malicious Corpus: `mcp-autoapprove-unsafe-path-family`
+- Benign Corpus: `mcp-autoapprove-unsafe-path-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC576 / MCP-AUTOAPPROVE-EDIT-UNSAFE-PATH` — MCP configuration auto-approves `Edit(...)` over an unsafe path through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-EDIT-UNSAFE-PATH`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact unsafe-path `Edit(...)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item predicate detection for `autoApprove` entries where `Edit(...)` targets an absolute, home-relative, parent-traversing, or drive-qualified path.
+- Malicious Corpus: `mcp-autoapprove-unsafe-path-family`
+- Benign Corpus: `mcp-autoapprove-unsafe-path-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC577 / MCP-AUTOAPPROVE-GLOB-UNSAFE-PATH` — MCP configuration auto-approves `Glob(...)` over an unsafe path through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GLOB-UNSAFE-PATH`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact unsafe-path `Glob(...)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item predicate detection for `autoApprove` entries where `Glob(...)` targets an absolute, home-relative, parent-traversing, or drive-qualified path.
+- Malicious Corpus: `mcp-autoapprove-unsafe-path-family`
+- Benign Corpus: `mcp-autoapprove-unsafe-path-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC578 / MCP-AUTOAPPROVE-GREP-UNSAFE-PATH` — MCP configuration auto-approves `Grep(...)` over an unsafe path through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GREP-UNSAFE-PATH`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact unsafe-path `Grep(...)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item predicate detection for `autoApprove` entries where `Grep(...)` targets an absolute, home-relative, parent-traversing, or drive-qualified path.
+- Malicious Corpus: `mcp-autoapprove-unsafe-path-family`
+- Benign Corpus: `mcp-autoapprove-unsafe-path-family-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

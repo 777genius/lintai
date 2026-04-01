@@ -1,0 +1,10 @@
+id = "mcp-autoapprove-unsafe-path-family"
+description = "MCP config auto-approves unsafe path scopes through autoApprove"
+
+expected_findings = [
+  "SEC574",
+  "SEC575",
+  "SEC576",
+  "SEC577",
+  "SEC578",
+]

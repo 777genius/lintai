@@ -5,23 +5,26 @@ use crate::json_rules::{
     check_json_dangerous_endpoint_host, check_json_hidden_instruction, check_json_literal_secret,
     check_json_sensitive_env_reference, check_json_suspicious_remote_endpoint,
     check_json_unsafe_plugin_path, check_mcp_autoapprove_bash_wildcard, check_mcp_autoapprove_curl,
-    check_mcp_autoapprove_edit_wildcard, check_mcp_autoapprove_gh_api_delete,
-    check_mcp_autoapprove_gh_api_patch, check_mcp_autoapprove_gh_api_post,
-    check_mcp_autoapprove_gh_api_put, check_mcp_autoapprove_gh_issue_create,
-    check_mcp_autoapprove_gh_repo_create, check_mcp_autoapprove_gh_repo_delete,
-    check_mcp_autoapprove_gh_repo_edit, check_mcp_autoapprove_gh_secret_set,
-    check_mcp_autoapprove_gh_variable_set, check_mcp_autoapprove_gh_workflow_run,
-    check_mcp_autoapprove_git_checkout, check_mcp_autoapprove_git_clean,
-    check_mcp_autoapprove_git_commit, check_mcp_autoapprove_git_push,
-    check_mcp_autoapprove_git_reset, check_mcp_autoapprove_glob_wildcard,
-    check_mcp_autoapprove_grep_wildcard, check_mcp_autoapprove_read_wildcard,
+    check_mcp_autoapprove_edit_unsafe_path, check_mcp_autoapprove_edit_wildcard,
+    check_mcp_autoapprove_gh_api_delete, check_mcp_autoapprove_gh_api_patch,
+    check_mcp_autoapprove_gh_api_post, check_mcp_autoapprove_gh_api_put,
+    check_mcp_autoapprove_gh_issue_create, check_mcp_autoapprove_gh_repo_create,
+    check_mcp_autoapprove_gh_repo_delete, check_mcp_autoapprove_gh_repo_edit,
+    check_mcp_autoapprove_gh_secret_set, check_mcp_autoapprove_gh_variable_set,
+    check_mcp_autoapprove_gh_workflow_run, check_mcp_autoapprove_git_checkout,
+    check_mcp_autoapprove_git_clean, check_mcp_autoapprove_git_commit,
+    check_mcp_autoapprove_git_push, check_mcp_autoapprove_git_reset,
+    check_mcp_autoapprove_glob_unsafe_path, check_mcp_autoapprove_glob_wildcard,
+    check_mcp_autoapprove_grep_unsafe_path, check_mcp_autoapprove_grep_wildcard,
+    check_mcp_autoapprove_read_unsafe_path, check_mcp_autoapprove_read_wildcard,
     check_mcp_autoapprove_rm, check_mcp_autoapprove_sudo, check_mcp_autoapprove_tools_true,
     check_mcp_autoapprove_webfetch_wildcard, check_mcp_autoapprove_websearch_wildcard,
     check_mcp_autoapprove_wget, check_mcp_autoapprove_wildcard,
-    check_mcp_autoapprove_write_wildcard, check_mcp_broad_env_file,
-    check_mcp_capabilities_wildcard, check_mcp_credential_env_passthrough,
-    check_mcp_dangerous_docker_flag, check_mcp_inline_download_exec, check_mcp_mutable_docker_pull,
-    check_mcp_mutable_launcher, check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
+    check_mcp_autoapprove_write_unsafe_path, check_mcp_autoapprove_write_wildcard,
+    check_mcp_broad_env_file, check_mcp_capabilities_wildcard,
+    check_mcp_credential_env_passthrough, check_mcp_dangerous_docker_flag,
+    check_mcp_inline_download_exec, check_mcp_mutable_docker_pull, check_mcp_mutable_launcher,
+    check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
     check_mcp_sensitive_docker_mount, check_mcp_shell_wrapper, check_mcp_sudo_args0,
     check_mcp_sudo_command, check_mcp_trust_tools_true, check_mcp_unpinned_docker_image,
     check_plain_http_config, check_plugin_hook_inline_download_exec,
@@ -558,6 +561,66 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApproveReadUnsafePathRule {
+        code: "SEC574",
+        summary: "MCP configuration auto-approves `Read(...)` over an unsafe path through `autoApprove`",
+        doc_title: "MCP config: Read unsafe path auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveWriteUnsafePathRule {
+        code: "SEC575",
+        summary: "MCP configuration auto-approves `Write(...)` over an unsafe path through `autoApprove`",
+        doc_title: "MCP config: Write unsafe path auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveEditUnsafePathRule {
+        code: "SEC576",
+        summary: "MCP configuration auto-approves `Edit(...)` over an unsafe path through `autoApprove`",
+        doc_title: "MCP config: Edit unsafe path auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGlobUnsafePathRule {
+        code: "SEC577",
+        summary: "MCP configuration auto-approves `Glob(...)` over an unsafe path through `autoApprove`",
+        doc_title: "MCP config: Glob unsafe path auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGrepUnsafePathRule {
+        code: "SEC578",
+        summary: "MCP configuration auto-approves `Grep(...)` over an unsafe path through `autoApprove`",
+        doc_title: "MCP config: Grep unsafe path auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpAutoApproveToolsTrueRule {
         code: "SEC395",
         summary: "MCP configuration auto-approves all tools with `autoApproveTools: true`",
@@ -713,7 +776,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 57] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 62] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -1575,6 +1638,106 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 57] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `WebSearch(*)` auto-approval and keep broad remote search under narrower reviewed scopes",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveReadUnsafePathRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact unsafe-path `Read(...)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-unsafe-path-family"],
+            benign_case_ids: &["mcp-autoapprove-unsafe-path-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item predicate detection for `autoApprove` entries where `Read(...)` targets an absolute, home-relative, parent-traversing, or drive-qualified path.",
+        },
+        check: check_mcp_autoapprove_read_unsafe_path,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace broad `Read(...)` auto-approval with repository-scoped allowlists or remove shared access to absolute, home-relative, or parent-traversing paths",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveWriteUnsafePathRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact unsafe-path `Write(...)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-unsafe-path-family"],
+            benign_case_ids: &["mcp-autoapprove-unsafe-path-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item predicate detection for `autoApprove` entries where `Write(...)` targets an absolute, home-relative, parent-traversing, or drive-qualified path.",
+        },
+        check: check_mcp_autoapprove_write_unsafe_path,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace broad `Write(...)` auto-approval with repository-scoped allowlists or remove shared access to absolute, home-relative, or parent-traversing paths",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveEditUnsafePathRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact unsafe-path `Edit(...)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-unsafe-path-family"],
+            benign_case_ids: &["mcp-autoapprove-unsafe-path-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item predicate detection for `autoApprove` entries where `Edit(...)` targets an absolute, home-relative, parent-traversing, or drive-qualified path.",
+        },
+        check: check_mcp_autoapprove_edit_unsafe_path,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace broad `Edit(...)` auto-approval with repository-scoped allowlists or remove shared access to absolute, home-relative, or parent-traversing paths",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGlobUnsafePathRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact unsafe-path `Glob(...)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-unsafe-path-family"],
+            benign_case_ids: &["mcp-autoapprove-unsafe-path-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item predicate detection for `autoApprove` entries where `Glob(...)` targets an absolute, home-relative, parent-traversing, or drive-qualified path.",
+        },
+        check: check_mcp_autoapprove_glob_unsafe_path,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace broad `Glob(...)` auto-approval with repository-scoped allowlists or remove shared access to absolute, home-relative, or parent-traversing paths",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGrepUnsafePathRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact unsafe-path `Grep(...)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-unsafe-path-family"],
+            benign_case_ids: &["mcp-autoapprove-unsafe-path-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item predicate detection for `autoApprove` entries where `Grep(...)` targets an absolute, home-relative, parent-traversing, or drive-qualified path.",
+        },
+        check: check_mcp_autoapprove_grep_unsafe_path,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace broad `Grep(...)` auto-approval with repository-scoped allowlists or remove shared access to absolute, home-relative, or parent-traversing paths",
         ),
         suggestion_fix: None,
     },
