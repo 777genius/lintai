@@ -438,6 +438,36 @@ pub(crate) fn check_claude_settings_uvx_permission(
     )
 }
 
+pub(crate) fn check_claude_settings_npm_exec_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.npm_exec_permission_span.clone()),
+        "Claude settings permissions allow `Bash(npm exec ...)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_bunx_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.bunx_permission_span.clone()),
+        "Claude settings permissions allow `Bash(bunx ...)` in a shared committed config",
+    )
+}
+
 pub(crate) fn check_claude_settings_pnpm_dlx_permission(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

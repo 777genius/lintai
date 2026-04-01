@@ -410,6 +410,11 @@ mod tests {
             shipped_rule_alias("SEC491"),
             Some("CLAUDE-PIPX-RUN-PERMISSION")
         );
+        assert_eq!(
+            shipped_rule_alias("SEC492"),
+            Some("CLAUDE-NPM-EXEC-PERMISSION")
+        );
+        assert_eq!(shipped_rule_alias("SEC493"), Some("CLAUDE-BUNX-PERMISSION"));
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

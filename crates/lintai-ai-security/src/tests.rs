@@ -6077,6 +6077,40 @@ fn finds_claude_settings_uvx_permission() {
 }
 
 #[test]
+fn finds_claude_settings_npm_exec_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(npm exec eslint:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC492")
+        .unwrap();
+    let start = content.find("Bash(npm exec eslint:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(npm exec eslint:*)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_bunx_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(bunx prettier:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC493")
+        .unwrap();
+    let start = content.find("Bash(bunx prettier:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(bunx prettier:*)".len())
+    );
+}
+
+#[test]
 fn finds_claude_settings_pnpm_dlx_permission() {
     let content = r#"{"permissions":{"allow":["Bash(pnpm dlx cowsay:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -6881,6 +6915,36 @@ fn ignores_claude_settings_uvx_permission_when_command_is_more_specific() {
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC488")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_npm_exec_permission_when_command_is_more_specific() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(npm run lint)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC492")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_bunx_permission_when_command_is_more_specific() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(bun run lint)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC493")
     );
 }
 

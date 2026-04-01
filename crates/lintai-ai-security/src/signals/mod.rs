@@ -252,6 +252,8 @@ pub(crate) struct ClaudeSettingsSignals {
     pub(crate) git_push_permission_span: Option<Span>,
     pub(crate) npx_permission_span: Option<Span>,
     pub(crate) uvx_permission_span: Option<Span>,
+    pub(crate) npm_exec_permission_span: Option<Span>,
+    pub(crate) bunx_permission_span: Option<Span>,
     pub(crate) pnpm_dlx_permission_span: Option<Span>,
     pub(crate) yarn_dlx_permission_span: Option<Span>,
     pub(crate) pipx_run_permission_span: Option<Span>,

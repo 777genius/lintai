@@ -73,6 +73,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "claude-settings-missing-required-matcher-fixture-safe",
             "claude-settings-network-command-safe",
             "claude-settings-network-tls-verified-safe",
+            "claude-settings-npm-exec-bunx-specific-safe",
             "claude-settings-npx-specific-safe",
             "claude-settings-package-command-safe",
             "claude-settings-package-runner-specific-safe",

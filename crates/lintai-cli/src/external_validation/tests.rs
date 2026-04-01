@@ -308,6 +308,10 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(
         markdown.contains("`SEC491` Claude settings shared `Bash(pipx run ...)` permissions: `")
     );
+    assert!(
+        markdown.contains("`SEC492` Claude settings shared `Bash(npm exec ...)` permissions: `")
+    );
+    assert!(markdown.contains("`SEC493` Claude settings shared `Bash(bunx ...)` permissions: `"));
     assert!(markdown.contains("`SEC408` Claude settings shared `gh pr` permissions: `"));
     assert!(markdown.contains("`SEC372` Claude settings wildcard `Read(*)` permissions: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings wildcard `Edit(*)` permissions: `0`"));
@@ -970,6 +974,10 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(
         markdown.contains("`SEC491` Claude settings shared `Bash(pipx run ...)` permissions: `")
     );
+    assert!(
+        markdown.contains("`SEC492` Claude settings shared `Bash(npm exec ...)` permissions: `")
+    );
+    assert!(markdown.contains("`SEC493` Claude settings shared `Bash(bunx ...)` permissions: `"));
     assert!(markdown.contains("`SEC372` Claude settings files allowing `Read(*)`: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings files allowing `Edit(*)`: `0`"));
     assert!(markdown.contains("`SEC374` Claude settings files allowing `WebSearch(*)`: `0`"));
@@ -1032,4 +1040,6 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC489`"));
     assert!(markdown.contains("`SEC490`"));
     assert!(markdown.contains("`SEC491`"));
+    assert!(markdown.contains("`SEC492`"));
+    assert!(markdown.contains("`SEC493`"));
 }

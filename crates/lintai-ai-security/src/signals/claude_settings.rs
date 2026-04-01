@@ -427,6 +427,10 @@ impl ClaudeSettingsSignals {
             resolve_permissions_allow_prefix_span(value, locator_ref.as_ref(), "Bash(npx ");
         signals.uvx_permission_span =
             resolve_permissions_allow_prefix_span(value, locator_ref.as_ref(), "Bash(uvx ");
+        signals.npm_exec_permission_span =
+            resolve_permissions_allow_prefix_span(value, locator_ref.as_ref(), "Bash(npm exec ");
+        signals.bunx_permission_span =
+            resolve_permissions_allow_prefix_span(value, locator_ref.as_ref(), "Bash(bunx ");
         signals.pnpm_dlx_permission_span =
             resolve_permissions_allow_prefix_span(value, locator_ref.as_ref(), "Bash(pnpm dlx ");
         signals.yarn_dlx_permission_span =

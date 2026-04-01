@@ -210,7 +210,9 @@
         "lintai-ai-security:SEC488",
         "lintai-ai-security:SEC489",
         "lintai-ai-security:SEC490",
-        "lintai-ai-security:SEC491"
+        "lintai-ai-security:SEC491",
+        "lintai-ai-security:SEC492",
+        "lintai-ai-security:SEC493"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -428,7 +430,9 @@
         "lintai-ai-security:SEC488",
         "lintai-ai-security:SEC489",
         "lintai-ai-security:SEC490",
-        "lintai-ai-security:SEC491"
+        "lintai-ai-security:SEC491",
+        "lintai-ai-security:SEC492",
+        "lintai-ai-security:SEC493"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -7400,6 +7404,68 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Shared `Bash(pipx run ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC492",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC492",
+      "alias": "CLAUDE-NPM-EXEC-PERMISSION",
+      "displayLabel": "SEC492 / CLAUDE-NPM-EXEC-PERMISSION",
+      "docTitle": "Claude settings: shared npm exec Bash permissions",
+      "slug": "sec492",
+      "canonicalPath": "/rules/lintai-ai-security/sec492",
+      "summary": "Claude settings permissions allow `Bash(npm exec ...)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `Bash(npm exec ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC493",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC493",
+      "alias": "CLAUDE-BUNX-PERMISSION",
+      "displayLabel": "SEC493 / CLAUDE-BUNX-PERMISSION",
+      "docTitle": "Claude settings: shared bunx Bash permissions",
+      "slug": "sec493",
+      "canonicalPath": "/rules/lintai-ai-security/sec493",
+      "summary": "Claude settings permissions allow `Bash(bunx ...)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `Bash(bunx ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

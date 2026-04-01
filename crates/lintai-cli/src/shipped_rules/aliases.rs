@@ -196,6 +196,8 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC489" => "CLAUDE-PNPM-DLX-PERMISSION",
         "SEC490" => "CLAUDE-YARN-DLX-PERMISSION",
         "SEC491" => "CLAUDE-PIPX-RUN-PERMISSION",
+        "SEC492" => "CLAUDE-NPM-EXEC-PERMISSION",
+        "SEC493" => "CLAUDE-BUNX-PERMISSION",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

@@ -2,10 +2,10 @@ use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
 
 use super::*;
 use crate::claude_settings_rules::{
-    check_claude_settings_bash_wildcard, check_claude_settings_bypass_permissions,
-    check_claude_settings_curl_permission, check_claude_settings_dangerous_http_hook_host,
-    check_claude_settings_edit_unsafe_path, check_claude_settings_edit_wildcard,
-    check_claude_settings_enabled_mcpjson_servers,
+    check_claude_settings_bash_wildcard, check_claude_settings_bunx_permission,
+    check_claude_settings_bypass_permissions, check_claude_settings_curl_permission,
+    check_claude_settings_dangerous_http_hook_host, check_claude_settings_edit_unsafe_path,
+    check_claude_settings_edit_wildcard, check_claude_settings_enabled_mcpjson_servers,
     check_claude_settings_external_absolute_hook_command, check_claude_settings_gh_pr_permission,
     check_claude_settings_git_add_permission, check_claude_settings_git_am_permission,
     check_claude_settings_git_apply_permission, check_claude_settings_git_branch_permission,
@@ -24,14 +24,14 @@ use crate::claude_settings_rules::{
     check_claude_settings_missing_hook_timeout,
     check_claude_settings_missing_required_hook_matcher, check_claude_settings_missing_schema,
     check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
-    check_claude_settings_npx_permission, check_claude_settings_package_install_permission,
-    check_claude_settings_pipx_run_permission, check_claude_settings_pnpm_dlx_permission,
-    check_claude_settings_read_unsafe_path, check_claude_settings_read_wildcard,
-    check_claude_settings_unscoped_websearch, check_claude_settings_uvx_permission,
-    check_claude_settings_webfetch_raw_githubusercontent, check_claude_settings_webfetch_wildcard,
-    check_claude_settings_websearch_wildcard, check_claude_settings_wget_permission,
-    check_claude_settings_write_unsafe_path, check_claude_settings_write_wildcard,
-    check_claude_settings_yarn_dlx_permission,
+    check_claude_settings_npm_exec_permission, check_claude_settings_npx_permission,
+    check_claude_settings_package_install_permission, check_claude_settings_pipx_run_permission,
+    check_claude_settings_pnpm_dlx_permission, check_claude_settings_read_unsafe_path,
+    check_claude_settings_read_wildcard, check_claude_settings_unscoped_websearch,
+    check_claude_settings_uvx_permission, check_claude_settings_webfetch_raw_githubusercontent,
+    check_claude_settings_webfetch_wildcard, check_claude_settings_websearch_wildcard,
+    check_claude_settings_wget_permission, check_claude_settings_write_unsafe_path,
+    check_claude_settings_write_wildcard, check_claude_settings_yarn_dlx_permission,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
 
@@ -480,6 +480,30 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct ClaudeSettingsNpmExecPermissionRule {
+        code: "SEC492",
+        summary: "Claude settings permissions allow `Bash(npm exec ...)` in a shared committed config",
+        doc_title: "Claude settings: shared npm exec Bash permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsBunxPermissionRule {
+        code: "SEC493",
+        summary: "Claude settings permissions allow `Bash(bunx ...)` in a shared committed config",
+        doc_title: "Claude settings: shared bunx Bash permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct ClaudeSettingsPnpmDlxPermissionRule {
         code: "SEC489",
         summary: "Claude settings permissions allow `Bash(pnpm dlx ...)` in a shared committed config",
@@ -707,7 +731,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 56] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 58] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -1193,6 +1217,38 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 56] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace shared `Bash(uvx ...)` permissions with a pinned wrapper or a narrower reviewed command permission that does not grant mutable package execution by default",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsNpmExecPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `Bash(npm exec ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_npm_exec_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace shared `Bash(npm exec ...)` permissions with a pinned wrapper or a narrower reviewed command permission that does not grant mutable package execution by default",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsBunxPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `Bash(bunx ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_bunx_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace shared `Bash(bunx ...)` permissions with a pinned wrapper or a narrower reviewed command permission that does not grant mutable package execution by default",
         ),
         suggestion_fix: None,
     },
