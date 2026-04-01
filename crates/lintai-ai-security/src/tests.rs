@@ -2373,6 +2373,53 @@ fn ignores_wget_allowed_tools_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_sudo_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(sudo:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC463")
+        .unwrap();
+    let start = content.find("Bash(sudo:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(sudo:*)".len())
+    );
+}
+
+#[test]
+fn ignores_sudo_allowed_tools_when_command_is_more_specific() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(sudo apt-get update), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC463")
+    );
+}
+
+#[test]
+fn ignores_sudo_allowed_tools_on_fixture_like_path() {
+    let summary = scan_preview_skill_fixture(
+        "tests/fixtures/skill/SKILL.md",
+        "---\nallowed-tools: Bash(sudo:*), Read\n---\n# Fixture skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC463")
+    );
+}
+
+#[test]
 fn finds_git_clone_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git clone:*), Read\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

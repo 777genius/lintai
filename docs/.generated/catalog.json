@@ -182,7 +182,8 @@
         "lintai-ai-security:SEC459",
         "lintai-ai-security:SEC460",
         "lintai-ai-security:SEC461",
-        "lintai-ai-security:SEC462"
+        "lintai-ai-security:SEC462",
+        "lintai-ai-security:SEC463"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -274,7 +275,8 @@
         "lintai-ai-security:SEC459",
         "lintai-ai-security:SEC460",
         "lintai-ai-security:SEC461",
-        "lintai-ai-security:SEC462"
+        "lintai-ai-security:SEC462",
+        "lintai-ai-security:SEC463"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -6358,6 +6360,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact command-token analysis with `--insecure`, `-k`, `--no-check-certificate`, `-SkipCertificateCheck`, or `NODE_TLS_REJECT_UNAUTHORIZED=0` detection inside parsed markdown regions, with safety-guidance suppression."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC463",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC463",
+      "alias": "MD-SUDO-ALLOWED-TOOLS",
+      "displayLabel": "SEC463 / MD-SUDO-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(sudo:*)` tool grant",
+      "slug": "sec463",
+      "canonicalPath": "/rules/lintai-ai-security/sec463",
+      "summary": "AI-native markdown frontmatter grants `Bash(sudo:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for explicit wildcard sudo grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-sudo-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-sudo-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(sudo:*)` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

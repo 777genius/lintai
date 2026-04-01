@@ -181,6 +181,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC460 / MD-PIP-CONFIG-HTTP-FIND-LINKS` | AI-native markdown configures Python package discovery with insecure `http://` find-links | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC461 / MD-PIP-CONFIG-TRUSTED-HOST` | AI-native markdown configures Python package resolution with `trusted-host` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC462 / MD-NETWORK-TLS-BYPASS` | AI-native markdown disables TLS verification for a network-capable command | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC463 / MD-SUDO-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(sudo:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -3424,6 +3425,27 @@ Important behavior:
 - Deterministic Signal Basis: MarkdownSignals exact command-token analysis with `--insecure`, `-k`, `--no-check-certificate`, `-SkipCertificateCheck`, or `NODE_TLS_REJECT_UNAUTHORIZED=0` detection inside parsed markdown regions, with safety-guidance suppression.
 - Malicious Corpus: `skill-markdown-network-tls-bypass`, `skill-markdown-network-tls-bypass-powershell`
 - Benign Corpus: `skill-markdown-network-tls-bypass-warning-safe`, `skill-markdown-network-tls-bypass-powershell-warning-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC463 / MD-SUDO-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(sudo:*)` authority
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-SUDO-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for explicit wildcard sudo grants in shared allowed-tools policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Bash(sudo:*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-sudo-allowed-tools`
+- Benign Corpus: `skill-sudo-allowed-tools-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

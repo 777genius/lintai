@@ -124,6 +124,7 @@ pub(crate) struct MarkdownSignals {
     pub(crate) git_stash_allowed_tools_spans: Vec<Span>,
     pub(crate) curl_allowed_tools_spans: Vec<Span>,
     pub(crate) wget_allowed_tools_spans: Vec<Span>,
+    pub(crate) sudo_allowed_tools_spans: Vec<Span>,
     pub(crate) git_clone_allowed_tools_spans: Vec<Span>,
     pub(crate) git_add_allowed_tools_spans: Vec<Span>,
     pub(crate) git_fetch_allowed_tools_spans: Vec<Span>,

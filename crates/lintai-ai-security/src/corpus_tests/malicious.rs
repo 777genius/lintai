@@ -182,6 +182,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "skill-private-key-pem",
             "skill-read-unsafe-path-allowed-tools",
             "skill-risky-frontmatter-tool-grants",
+            "skill-sudo-allowed-tools",
             "skill-tool-output-developer-instructions",
             "skill-unscoped-bash-allowed-tools",
             "skill-unscoped-edit-allowed-tools",
