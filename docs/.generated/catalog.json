@@ -4988,7 +4988,7 @@
       "summary": "AI-native markdown installs Python packages from an unpinned `git+https://` source",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -5011,7 +5011,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `pip install` plus `git+https://` token analysis with commit-pin detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {

@@ -135,7 +135,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC414 / CLAUDE-GIT-TAG-PERMISSION` | Claude settings permissions allow `Bash(git tag:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC415 / CLAUDE-GIT-BRANCH-PERMISSION` | Claude settings permissions allow `Bash(git branch:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC416 / MD-CLAUDE-PIP-INSTALL` | AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC417 / MD-PIP-GIT-UNPINNED` | AI-native markdown installs Python packages from an unpinned `git+https://` source | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC417 / MD-PIP-GIT-UNPINNED` | AI-native markdown installs Python packages from an unpinned `git+https://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC418 / CLAUDE-WEBFETCH-RAW-GITHUB` | Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC419 / MD-CURL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(curl:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC420 / MD-WGET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(wget:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
@@ -2689,7 +2689,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -2699,7 +2699,7 @@ Important behavior:
 - Benign Corpus: `claude-unpinned-pip-git-install-commit-pinned-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC418 / CLAUDE-WEBFETCH-RAW-GITHUB` — Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config
 
