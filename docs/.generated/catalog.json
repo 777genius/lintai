@@ -130,7 +130,11 @@
         "lintai-ai-security:SEC609",
         "lintai-ai-security:SEC610",
         "lintai-ai-security:SEC611",
-        "lintai-ai-security:SEC612"
+        "lintai-ai-security:SEC612",
+        "lintai-ai-security:SEC613",
+        "lintai-ai-security:SEC614",
+        "lintai-ai-security:SEC615",
+        "lintai-ai-security:SEC616"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -532,7 +536,11 @@
         "lintai-ai-security:SEC609",
         "lintai-ai-security:SEC610",
         "lintai-ai-security:SEC611",
-        "lintai-ai-security:SEC612"
+        "lintai-ai-security:SEC612",
+        "lintai-ai-security:SEC613",
+        "lintai-ai-security:SEC614",
+        "lintai-ai-security:SEC615",
+        "lintai-ai-security:SEC616"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -11942,6 +11950,162 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(launchctl bootstrap:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC613",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC613",
+      "alias": "MCP-AUTOAPPROVE-CHMOD",
+      "displayLabel": "SEC613 / MCP-AUTOAPPROVE-CHMOD",
+      "docTitle": "MCP config: chmod auto-approve",
+      "slug": "sec613",
+      "canonicalPath": "/rules/lintai-ai-security/sec613",
+      "summary": "MCP configuration auto-approves `Bash(chmod:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `Bash(chmod:*)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-privileged-shell-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-privileged-shell-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(chmod:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC614",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC614",
+      "alias": "MCP-AUTOAPPROVE-CHOWN",
+      "displayLabel": "SEC614 / MCP-AUTOAPPROVE-CHOWN",
+      "docTitle": "MCP config: chown auto-approve",
+      "slug": "sec614",
+      "canonicalPath": "/rules/lintai-ai-security/sec614",
+      "summary": "MCP configuration auto-approves `Bash(chown:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `Bash(chown:*)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-privileged-shell-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-privileged-shell-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(chown:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC615",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC615",
+      "alias": "MCP-AUTOAPPROVE-CHGRP",
+      "displayLabel": "SEC615 / MCP-AUTOAPPROVE-CHGRP",
+      "docTitle": "MCP config: chgrp auto-approve",
+      "slug": "sec615",
+      "canonicalPath": "/rules/lintai-ai-security/sec615",
+      "summary": "MCP configuration auto-approves `Bash(chgrp:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `Bash(chgrp:*)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-privileged-shell-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-privileged-shell-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(chgrp:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC616",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC616",
+      "alias": "MCP-AUTOAPPROVE-SU",
+      "displayLabel": "SEC616 / MCP-AUTOAPPROVE-SU",
+      "docTitle": "MCP config: su auto-approve",
+      "slug": "sec616",
+      "canonicalPath": "/rules/lintai-ai-security/sec616",
+      "summary": "MCP configuration auto-approves `Bash(su:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `Bash(su:*)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-privileged-shell-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-privileged-shell-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(su:*)\"]` on parsed MCP configuration."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

@@ -813,6 +813,50 @@ pub(super) fn analyze_json_object<'a>(
                 Some(resolve_value_span(&item_path, locator, fallback_len));
         }
 
+        if signals.autoapprove_chmod_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_index(nested, "Bash(chmod:*)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_chmod_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_chown_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_index(nested, "Bash(chown:*)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_chown_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_chgrp_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_index(nested, "Bash(chgrp:*)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_chgrp_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_su_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_index(nested, "Bash(su:*)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_su_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
         if signals.autoapprove_read_wildcard_span.is_none()
             && artifact_kind == ArtifactKind::McpConfig
             && key == "autoApprove"

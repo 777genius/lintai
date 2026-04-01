@@ -1,0 +1,9 @@
+id = "mcp-autoapprove-privileged-shell-family"
+description = "MCP config auto-approves privileged shell and ownership mutation commands through autoApprove"
+
+expected_findings = [
+  "SEC613",
+  "SEC614",
+  "SEC615",
+  "SEC616",
+]

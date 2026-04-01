@@ -5,6 +5,7 @@ use crate::json_rules::{
     check_json_dangerous_endpoint_host, check_json_hidden_instruction, check_json_literal_secret,
     check_json_sensitive_env_reference, check_json_suspicious_remote_endpoint,
     check_json_unsafe_plugin_path, check_mcp_autoapprove_bash_wildcard, check_mcp_autoapprove_bunx,
+    check_mcp_autoapprove_chgrp, check_mcp_autoapprove_chmod, check_mcp_autoapprove_chown,
     check_mcp_autoapprove_crontab, check_mcp_autoapprove_curl,
     check_mcp_autoapprove_edit_unsafe_path, check_mcp_autoapprove_edit_wildcard,
     check_mcp_autoapprove_gh_api_delete, check_mcp_autoapprove_gh_api_patch,
@@ -32,15 +33,16 @@ use crate::json_rules::{
     check_mcp_autoapprove_npm_exec, check_mcp_autoapprove_npx,
     check_mcp_autoapprove_package_install, check_mcp_autoapprove_pipx_run,
     check_mcp_autoapprove_pnpm_dlx, check_mcp_autoapprove_read_unsafe_path,
-    check_mcp_autoapprove_read_wildcard, check_mcp_autoapprove_rm, check_mcp_autoapprove_sudo,
-    check_mcp_autoapprove_systemctl_enable, check_mcp_autoapprove_tools_true,
-    check_mcp_autoapprove_uvx, check_mcp_autoapprove_webfetch_wildcard,
-    check_mcp_autoapprove_websearch_wildcard, check_mcp_autoapprove_wget,
-    check_mcp_autoapprove_wildcard, check_mcp_autoapprove_write_unsafe_path,
-    check_mcp_autoapprove_write_wildcard, check_mcp_autoapprove_yarn_dlx, check_mcp_broad_env_file,
-    check_mcp_capabilities_wildcard, check_mcp_credential_env_passthrough,
-    check_mcp_dangerous_docker_flag, check_mcp_inline_download_exec, check_mcp_mutable_docker_pull,
-    check_mcp_mutable_launcher, check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
+    check_mcp_autoapprove_read_wildcard, check_mcp_autoapprove_rm, check_mcp_autoapprove_su,
+    check_mcp_autoapprove_sudo, check_mcp_autoapprove_systemctl_enable,
+    check_mcp_autoapprove_tools_true, check_mcp_autoapprove_uvx,
+    check_mcp_autoapprove_webfetch_wildcard, check_mcp_autoapprove_websearch_wildcard,
+    check_mcp_autoapprove_wget, check_mcp_autoapprove_wildcard,
+    check_mcp_autoapprove_write_unsafe_path, check_mcp_autoapprove_write_wildcard,
+    check_mcp_autoapprove_yarn_dlx, check_mcp_broad_env_file, check_mcp_capabilities_wildcard,
+    check_mcp_credential_env_passthrough, check_mcp_dangerous_docker_flag,
+    check_mcp_inline_download_exec, check_mcp_mutable_docker_pull, check_mcp_mutable_launcher,
+    check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
     check_mcp_sensitive_docker_mount, check_mcp_shell_wrapper, check_mcp_sudo_args0,
     check_mcp_sudo_command, check_mcp_trust_tools_true, check_mcp_unpinned_docker_image,
     check_plain_http_config, check_plugin_hook_inline_download_exec,
@@ -901,6 +903,54 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApproveChmodRule {
+        code: "SEC613",
+        summary: "MCP configuration auto-approves `Bash(chmod:*)` through `autoApprove`",
+        doc_title: "MCP config: chmod auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveChownRule {
+        code: "SEC614",
+        summary: "MCP configuration auto-approves `Bash(chown:*)` through `autoApprove`",
+        doc_title: "MCP config: chown auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveChgrpRule {
+        code: "SEC615",
+        summary: "MCP configuration auto-approves `Bash(chgrp:*)` through `autoApprove`",
+        doc_title: "MCP config: chgrp auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveSuRule {
+        code: "SEC616",
+        summary: "MCP configuration auto-approves `Bash(su:*)` through `autoApprove`",
+        doc_title: "MCP config: su auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpAutoApproveReadWildcardRule {
         code: "SEC567",
         summary: "MCP configuration auto-approves `Read(*)` through `autoApprove`",
@@ -1200,7 +1250,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 96] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 100] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -2602,6 +2652,86 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 96] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `launchctl bootstrap` auto-approval and keep launchd bootstrap authority under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveChmodRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(chmod:*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-privileged-shell-family"],
+            benign_case_ids: &["mcp-autoapprove-privileged-shell-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(chmod:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_chmod,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `chmod` auto-approval and keep permission mutation under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveChownRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(chown:*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-privileged-shell-family"],
+            benign_case_ids: &["mcp-autoapprove-privileged-shell-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(chown:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_chown,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `chown` auto-approval and keep ownership mutation under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveChgrpRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(chgrp:*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-privileged-shell-family"],
+            benign_case_ids: &["mcp-autoapprove-privileged-shell-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(chgrp:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_chgrp,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `chgrp` auto-approval and keep group-ownership mutation under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveSuRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(su:*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-privileged-shell-family"],
+            benign_case_ids: &["mcp-autoapprove-privileged-shell-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(su:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_su,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `su` auto-approval and keep user-switching authority under explicit user review",
         ),
         suggestion_fix: None,
     },

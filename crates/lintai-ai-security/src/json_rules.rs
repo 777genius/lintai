@@ -918,6 +918,66 @@ pub(crate) fn check_mcp_autoapprove_launchctl_bootstrap(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_chmod(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_chmod_span.clone()),
+        "MCP configuration auto-approves `Bash(chmod:*)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_chown(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_chown_span.clone()),
+        "MCP configuration auto-approves `Bash(chown:*)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_chgrp(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_chgrp_span.clone()),
+        "MCP configuration auto-approves `Bash(chgrp:*)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_su(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_su_span.clone()),
+        "MCP configuration auto-approves `Bash(su:*)` through `autoApprove`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_read_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

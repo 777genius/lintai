@@ -331,6 +331,10 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC610 / MCP-AUTOAPPROVE-SYSTEMCTL-ENABLE` | MCP configuration auto-approves `Bash(systemctl enable:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC611 / MCP-AUTOAPPROVE-LAUNCHCTL-LOAD` | MCP configuration auto-approves `Bash(launchctl load:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC612 / MCP-AUTOAPPROVE-LAUNCHCTL-BOOTSTRAP` | MCP configuration auto-approves `Bash(launchctl bootstrap:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC613 / MCP-AUTOAPPROVE-CHMOD` | MCP configuration auto-approves `Bash(chmod:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC614 / MCP-AUTOAPPROVE-CHOWN` | MCP configuration auto-approves `Bash(chown:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC615 / MCP-AUTOAPPROVE-CHGRP` | MCP configuration auto-approves `Bash(chgrp:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC616 / MCP-AUTOAPPROVE-SU` | MCP configuration auto-approves `Bash(su:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -6468,6 +6472,90 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(launchctl bootstrap:*)"]` on parsed MCP configuration.
 - Malicious Corpus: `mcp-autoapprove-persistence-family`
 - Benign Corpus: `mcp-autoapprove-persistence-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC613 / MCP-AUTOAPPROVE-CHMOD` — MCP configuration auto-approves `Bash(chmod:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-CHMOD`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(chmod:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(chmod:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-privileged-shell-family`
+- Benign Corpus: `mcp-autoapprove-privileged-shell-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC614 / MCP-AUTOAPPROVE-CHOWN` — MCP configuration auto-approves `Bash(chown:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-CHOWN`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(chown:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(chown:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-privileged-shell-family`
+- Benign Corpus: `mcp-autoapprove-privileged-shell-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC615 / MCP-AUTOAPPROVE-CHGRP` — MCP configuration auto-approves `Bash(chgrp:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-CHGRP`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(chgrp:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(chgrp:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-privileged-shell-family`
+- Benign Corpus: `mcp-autoapprove-privileged-shell-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC616 / MCP-AUTOAPPROVE-SU` — MCP configuration auto-approves `Bash(su:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-SU`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(su:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(su:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-privileged-shell-family`
+- Benign Corpus: `mcp-autoapprove-privileged-shell-family-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
