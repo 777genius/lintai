@@ -182,16 +182,16 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC461 / MD-PIP-CONFIG-TRUSTED-HOST` | AI-native markdown configures Python package resolution with `trusted-host` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC462 / MD-NETWORK-TLS-BYPASS` | AI-native markdown disables TLS verification for a network-capable command | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC463 / MD-SUDO-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(sudo:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC464 / MD-GIT-HTTP-CLONE` | AI-native markdown clones a Git repository from an insecure `http://` source | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC465 / MD-GIT-HTTP-REMOTE` | AI-native markdown configures a Git remote with an insecure `http://` source | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC464 / MD-GIT-HTTP-CLONE` | AI-native markdown clones a Git repository from an insecure `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC465 / MD-GIT-HTTP-REMOTE` | AI-native markdown configures a Git remote with an insecure `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC466 / MD-RM-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(rm:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC467 / MD-CHMOD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chmod:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC468 / MD-CHOWN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chown:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC469 / MD-CHGRP-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chgrp:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC470 / MD-SU-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(su:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC471 / MD-GIT-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `http.sslVerify false` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC472 / MD-GIT-SSL-NO-VERIFY` | AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC473 / MD-GIT-INLINE-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC471 / MD-GIT-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `http.sslVerify false` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC472 / MD-GIT-SSL-NO-VERIFY` | AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC473 / MD-GIT-INLINE-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC474 / MD-GH-PR-PERMISSION` | AI-native markdown frontmatter grants `Bash(gh pr:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC475 / CLAUDE-READ-UNSAFE-PATH` | Claude settings permissions allow `Read(...)` over an unsafe path in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC476 / CLAUDE-WRITE-UNSAFE-PATH` | Claude settings permissions allow `Write(...)` over an unsafe path in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
@@ -3676,7 +3676,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3686,7 +3686,7 @@ Important behavior:
 - Benign Corpus: `skill-git-https-clone-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC465 / MD-GIT-HTTP-REMOTE` — AI-native markdown configures a Git remote with an insecure `http://` source
 
@@ -3697,7 +3697,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3707,7 +3707,7 @@ Important behavior:
 - Benign Corpus: `skill-git-https-remote-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC466 / MD-RM-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(rm:*)` authority
 
@@ -3823,7 +3823,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3833,7 +3833,7 @@ Important behavior:
 - Benign Corpus: `skill-git-sslverify-true-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC472 / MD-GIT-SSL-NO-VERIFY` — AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY`
 
@@ -3844,7 +3844,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3854,7 +3854,7 @@ Important behavior:
 - Benign Corpus: `skill-git-ssl-no-verify-disabled-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC473 / MD-GIT-INLINE-SSLVERIFY-FALSE` — AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false`
 
@@ -3865,7 +3865,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3875,7 +3875,7 @@ Important behavior:
 - Benign Corpus: `skill-git-inline-sslverify-true-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC474 / MD-GH-PR-PERMISSION` — AI-native markdown frontmatter grants `Bash(gh pr:*)` tool access
 

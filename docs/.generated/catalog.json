@@ -6823,7 +6823,7 @@
       "summary": "AI-native markdown clones a Git repository from an insecure `http://` source",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6846,7 +6846,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `git clone` token analysis with direct `http://` source detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -6862,7 +6862,7 @@
       "summary": "AI-native markdown configures a Git remote with an insecure `http://` source",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6885,7 +6885,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `git remote add` token analysis with direct `http://` source detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7096,7 +7096,7 @@
       "summary": "AI-native markdown disables Git TLS verification with `http.sslVerify false`",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7119,7 +7119,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `git config` token analysis with `http.sslVerify false` or `http.sslVerify=false` detection inside parsed markdown regions, excluding safety-warning phrasing."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7135,7 +7135,7 @@
       "summary": "AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY`",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7158,7 +7158,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `GIT_SSL_NO_VERIFY=1` or `GIT_SSL_NO_VERIFY=true` token analysis when a Git command appears in the same parsed markdown region, excluding safety-warning phrasing."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7174,7 +7174,7 @@
       "summary": "AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false`",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7197,7 +7197,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `git -c http.sslVerify=false` token analysis inside parsed markdown regions, excluding safety-warning phrasing."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
