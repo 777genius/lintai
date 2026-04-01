@@ -10,6 +10,7 @@ pub(crate) enum RuleScope {
 pub(crate) enum CatalogSurface {
     Markdown,
     Hook,
+    Devcontainer,
     DockerCompose,
     Dockerfile,
     Json,

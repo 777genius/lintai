@@ -125,6 +125,21 @@ fn parses_json_semantics_for_package_manifest() {
 }
 
 #[test]
+fn parses_json_semantics_for_devcontainer_config() {
+    let parsed = parse_document(
+        &Artifact::new(
+            ".devcontainer/devcontainer.json",
+            ArtifactKind::DevcontainerConfig,
+            SourceFormat::Json,
+        ),
+        r#"{"initializeCommand":"./scripts/bootstrap-host.sh"}"#,
+    )
+    .unwrap();
+
+    assert!(matches!(parsed.semantics, Some(DocumentSemantics::Json(_))));
+}
+
+#[test]
 fn parses_json_semantics_for_claude_settings() {
     let parsed = parse_document(
         &Artifact::new(
@@ -261,6 +276,7 @@ fn surface_specs_assemble_in_fixed_order() {
             "cursor_plugin_agent_markdown",
             "mcp_config_json",
             "package_manifest_json",
+            "devcontainer_config_json",
             "server_registry_json",
             "claude_settings_json",
             "cursor_plugin_manifest_json",
@@ -282,6 +298,7 @@ fn artifact_kind_routes_are_unique_for_shipped_surfaces() {
         (ArtifactKind::CursorRules, SourceFormat::Markdown),
         (ArtifactKind::McpConfig, SourceFormat::Json),
         (ArtifactKind::PackageManifest, SourceFormat::Json),
+        (ArtifactKind::DevcontainerConfig, SourceFormat::Json),
         (ArtifactKind::ClaudeSettings, SourceFormat::Json),
         (ArtifactKind::ServerRegistryConfig, SourceFormat::Json),
         (ArtifactKind::ToolDescriptorJson, SourceFormat::Json),

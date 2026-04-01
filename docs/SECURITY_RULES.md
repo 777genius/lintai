@@ -472,6 +472,8 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC751` | Dockerfile FROM uses a latest or implicit-latest image tag | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
 | `SEC752` | Docker Compose service image uses a latest or implicit-latest tag | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
 | `SEC753` | package.json installs a dependency from a direct archive URL source | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
+| `SEC754` | Devcontainer config defines a host-side initializeCommand | Stable | `stable_gated` | Warn | `per_file` | `devcontainer` | `structural` | `message_only` | `supply-chain` |
+| `SEC755` | Devcontainer config bind-mounts sensitive local host material | Stable | `stable_gated` | Warn | `per_file` | `devcontainer` | `structural` | `message_only` | `supply-chain` |
 
 ## Builtin preset activation model
 
@@ -9958,6 +9960,48 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals package manifest analysis over dependency sections for direct `http://` or `https://` archive-like specs ending in `.tgz`, `.tar.gz`, `.tar`, `.zip`, or containing `/tarball/`.
 - Malicious Corpus: `package-manifest-direct-url-dependency`
 - Benign Corpus: `package-manifest-registry-archive-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC754` — Devcontainer config defines a host-side initializeCommand
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `devcontainer`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `supply-chain`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed devcontainer configs for non-empty `initializeCommand`, which executes on the local host before container startup.
+- Deterministic Signal Basis: DevcontainerSignals semantic JSON parsing plus exact value-span resolution for a non-empty top-level `initializeCommand` in `.devcontainer.json` or `.devcontainer/devcontainer.json`.
+- Malicious Corpus: `devcontainer-initialize-command-host`
+- Benign Corpus: `devcontainer-no-initialize-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC755` — Devcontainer config bind-mounts sensitive local host material
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `devcontainer`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `supply-chain`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed devcontainer configs for bind mounts of sensitive local material such as SSH keys, cloud credentials, kubeconfig, or docker.sock.
+- Deterministic Signal Basis: DevcontainerSignals semantic JSON parsing plus exact value-span resolution for sensitive bind mounts in `workspaceMount`, `mounts`, or Docker-style `runArgs` mount flags.
+- Malicious Corpus: `devcontainer-sensitive-bind-mount`
+- Benign Corpus: `devcontainer-safe-workspace-mount`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

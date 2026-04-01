@@ -108,6 +108,8 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "cursor-rule-globs-scalar",
             "cursor-rule-missing-description",
             "cursor-rule-unknown-frontmatter-key",
+            "devcontainer-initialize-command-host",
+            "devcontainer-sensitive-bind-mount",
             "docker-compose-latest-image",
             "docker-compose-mutable-image",
             "docker-compose-privileged-runtime",
@@ -434,6 +436,8 @@ fn policy_frontmatter_conflict_emits_preview_evidence() {
 #[test]
 fn package_manifest_supply_chain_cases_trigger_expected_findings() {
     for case_name in [
+        "devcontainer-initialize-command-host",
+        "devcontainer-sensitive-bind-mount",
         "docker-compose-mutable-image",
         "docker-compose-latest-image",
         "docker-compose-privileged-runtime",

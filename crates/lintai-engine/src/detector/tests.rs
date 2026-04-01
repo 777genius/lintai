@@ -152,6 +152,26 @@ fn detects_v0_1_file_types() {
     );
     assert_eq!(
         detector
+            .detect(
+                Path::new("/tmp/project/.devcontainer/devcontainer.json"),
+                ".devcontainer/devcontainer.json"
+            )
+            .unwrap()
+            .kind,
+        ArtifactKind::DevcontainerConfig
+    );
+    assert_eq!(
+        detector
+            .detect(
+                Path::new("/tmp/project/.devcontainer.json"),
+                ".devcontainer.json"
+            )
+            .unwrap()
+            .kind,
+        ArtifactKind::DevcontainerConfig
+    );
+    assert_eq!(
+        detector
             .detect(Path::new("/tmp/project/Dockerfile"), "Dockerfile")
             .unwrap()
             .kind,

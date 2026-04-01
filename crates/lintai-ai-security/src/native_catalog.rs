@@ -8,6 +8,7 @@ use crate::registry::{
 pub enum NativeCatalogSurface {
     Markdown,
     Hook,
+    Devcontainer,
     DockerCompose,
     Dockerfile,
     Json,
@@ -77,6 +78,7 @@ fn map_surface(surface: Surface) -> NativeCatalogSurface {
     match surface {
         Surface::Markdown => NativeCatalogSurface::Markdown,
         Surface::Hook => NativeCatalogSurface::Hook,
+        Surface::Devcontainer => NativeCatalogSurface::Devcontainer,
         Surface::DockerCompose => NativeCatalogSurface::DockerCompose,
         Surface::Dockerfile => NativeCatalogSurface::Dockerfile,
         Surface::Json => NativeCatalogSurface::Json,

@@ -1,0 +1,7 @@
+{
+  "name": "demo",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/host-ssh,type=bind,consistency=cached"
+  ]
+}

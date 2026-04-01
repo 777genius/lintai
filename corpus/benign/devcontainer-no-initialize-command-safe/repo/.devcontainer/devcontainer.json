@@ -1,0 +1,5 @@
+{
+  "name": "demo",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "postCreateCommand": "npm ci"
+}

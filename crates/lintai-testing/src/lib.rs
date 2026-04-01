@@ -743,7 +743,9 @@ fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
         | "SEC536" | "SEC537" | "SEC538" | "SEC539" | "SEC540" | "SEC541" | "SEC542" | "SEC543"
         | "SEC544" | "SEC545" | "SEC410" | "SEC626" | "SEC627" | "SEC628" | "SEC629" | "SEC630"
         | "SEC631" | "SEC632" | "SEC743" | "SEC744" | "SEC745" | "SEC746" | "SEC747" | "SEC748"
-        | "SEC749" | "SEC750" | "SEC751" | "SEC752" | "SEC753" => Some(RuleTier::Stable),
+        | "SEC749" | "SEC750" | "SEC751" | "SEC752" | "SEC753" | "SEC754" | "SEC755" => {
+            Some(RuleTier::Stable)
+        }
         "SEC618" | "SEC619" | "SEC620" | "SEC621" | "SEC622" | "SEC623" | "SEC624" | "SEC625" => {
             Some(RuleTier::Stable)
         }
@@ -781,6 +783,9 @@ fn fixture_path_for(artifact_kind: ArtifactKind, format: SourceFormat) -> &'stat
         (ArtifactKind::CursorRules, SourceFormat::Markdown) => Path::new("rules.mdc"),
         (ArtifactKind::McpConfig, SourceFormat::Json) => Path::new("mcp.json"),
         (ArtifactKind::PackageManifest, SourceFormat::Json) => Path::new("package.json"),
+        (ArtifactKind::DevcontainerConfig, SourceFormat::Json) => {
+            Path::new(".devcontainer/devcontainer.json")
+        }
         (ArtifactKind::ClaudeSettings, SourceFormat::Json) => Path::new(".claude/settings.json"),
         (ArtifactKind::ServerRegistryConfig, SourceFormat::Json) => Path::new("server.json"),
         (ArtifactKind::ToolDescriptorJson, SourceFormat::Json) => {

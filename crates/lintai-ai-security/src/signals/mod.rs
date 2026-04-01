@@ -3,6 +3,7 @@ use lintai_api::{ScanContext, Span};
 use crate::json_locator::JsonLocationMap;
 
 mod claude_settings;
+mod devcontainer;
 mod docker_compose;
 mod dockerfile;
 mod github_workflow;
@@ -19,6 +20,7 @@ mod tool_json;
 pub(crate) struct ArtifactSignals {
     markdown: Option<MarkdownSignals>,
     hook: Option<HookSignals>,
+    devcontainer: Option<DevcontainerSignals>,
     dockerfile: Option<DockerfileSignals>,
     docker_compose: Option<DockerComposeSignals>,
     json: Option<JsonSignals>,
@@ -45,6 +47,7 @@ impl ArtifactSignals {
         Self {
             markdown: MarkdownSignals::from_context(ctx, &mut metrics),
             hook: HookSignals::from_context(ctx, &mut metrics),
+            devcontainer: DevcontainerSignals::from_context(ctx, &mut metrics),
             dockerfile: DockerfileSignals::from_context(ctx, &mut metrics),
             docker_compose: DockerComposeSignals::from_context(ctx, &mut metrics),
             json: JsonSignals::from_context(ctx, &mut metrics),
@@ -62,6 +65,10 @@ impl ArtifactSignals {
 
     pub(crate) fn hook(&self) -> Option<&HookSignals> {
         self.hook.as_ref()
+    }
+
+    pub(crate) fn devcontainer(&self) -> Option<&DevcontainerSignals> {
+        self.devcontainer.as_ref()
     }
 
     pub(crate) fn json(&self) -> Option<&JsonSignals> {
@@ -268,6 +275,12 @@ pub(crate) struct DockerfileSignals {
     pub(crate) final_stage_root_user_span: Option<Span>,
     pub(crate) mutable_image_span: Option<Span>,
     pub(crate) latest_image_span: Option<Span>,
+}
+
+#[derive(Clone, Debug, Default)]
+pub(crate) struct DevcontainerSignals {
+    pub(crate) initialize_command_span: Option<Span>,
+    pub(crate) sensitive_mount_span: Option<Span>,
 }
 
 #[derive(Clone, Debug, Default)]

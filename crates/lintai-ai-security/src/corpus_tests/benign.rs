@@ -135,6 +135,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "cursor-rule-missing-description-safe",
             "cursor-rule-unknown-frontmatter-fixture-safe",
             "cursor-rule-unknown-frontmatter-supported-keys-safe",
+            "devcontainer-no-initialize-command-safe",
+            "devcontainer-safe-workspace-mount",
             "docker-compose-digest-pinned-image",
             "docker-compose-safe-runtime",
             "docker-compose-tagged-image-safe",
@@ -359,6 +361,8 @@ fn policy_truthful_workspace_stays_clean() {
 #[test]
 fn package_manifest_supply_chain_cases_stay_clean_when_safe() {
     for case_name in [
+        "devcontainer-no-initialize-command-safe",
+        "devcontainer-safe-workspace-mount",
         "docker-compose-digest-pinned-image",
         "docker-compose-safe-runtime",
         "docker-compose-tagged-image-safe",

@@ -177,6 +177,32 @@ fn finds_package_manifest_direct_url_dependency() {
 }
 
 #[test]
+fn finds_devcontainer_initialize_command() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::DevcontainerConfig,
+        SourceFormat::Json,
+        r#"{"initializeCommand":"./scripts/bootstrap-host.sh"}"#,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC754"));
+}
+
+#[test]
+fn finds_devcontainer_sensitive_bind_mount() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::DevcontainerConfig,
+        SourceFormat::Json,
+        r#"{"mounts":["source=${localEnv:HOME}/.ssh,target=/host-ssh,type=bind"]}"#,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC755"));
+}
+
+#[test]
 fn finds_dockerfile_run_download_exec() {
     let provider = AiSecurityProvider::default();
     let findings = ProviderHarness::run(

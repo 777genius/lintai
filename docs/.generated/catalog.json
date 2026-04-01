@@ -934,7 +934,9 @@
         "lintai-ai-security:SEC750",
         "lintai-ai-security:SEC751",
         "lintai-ai-security:SEC752",
-        "lintai-ai-security:SEC753"
+        "lintai-ai-security:SEC753",
+        "lintai-ai-security:SEC754",
+        "lintai-ai-security:SEC755"
       ],
       "canonicalPath": "/presets/supply-chain"
     },
@@ -18457,6 +18459,82 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals package manifest analysis over dependency sections for direct `http://` or `https://` archive-like specs ending in `.tgz`, `.tar.gz`, `.tar`, `.zip`, or containing `/tarball/`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC754",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC754",
+      "alias": null,
+      "displayLabel": "SEC754",
+      "docTitle": "Devcontainer: host-side initializeCommand",
+      "slug": "sec754",
+      "canonicalPath": "/rules/lintai-ai-security/sec754",
+      "summary": "Devcontainer config defines a host-side initializeCommand",
+      "scope": "per_file",
+      "surface": "devcontainer",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "supply-chain"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed devcontainer configs for non-empty `initializeCommand`, which executes on the local host before container startup.",
+        "maliciousCaseIds": [
+          "devcontainer-initialize-command-host"
+        ],
+        "benignCaseIds": [
+          "devcontainer-no-initialize-command-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "DevcontainerSignals semantic JSON parsing plus exact value-span resolution for a non-empty top-level `initializeCommand` in `.devcontainer.json` or `.devcontainer/devcontainer.json`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC755",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC755",
+      "alias": null,
+      "displayLabel": "SEC755",
+      "docTitle": "Devcontainer: sensitive local bind mount",
+      "slug": "sec755",
+      "canonicalPath": "/rules/lintai-ai-security/sec755",
+      "summary": "Devcontainer config bind-mounts sensitive local host material",
+      "scope": "per_file",
+      "surface": "devcontainer",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "supply-chain"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed devcontainer configs for bind mounts of sensitive local material such as SSH keys, cloud credentials, kubeconfig, or docker.sock.",
+        "maliciousCaseIds": [
+          "devcontainer-sensitive-bind-mount"
+        ],
+        "benignCaseIds": [
+          "devcontainer-safe-workspace-mount"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "DevcontainerSignals semantic JSON parsing plus exact value-span resolution for sensitive bind mounts in `workspaceMount`, `mounts`, or Docker-style `runArgs` mount flags."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

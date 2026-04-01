@@ -35,6 +35,7 @@ pub enum ArtifactKind {
     CursorRules,
     McpConfig,
     PackageManifest,
+    DevcontainerConfig,
     Dockerfile,
     DockerCompose,
     ClaudeSettings,
