@@ -18,10 +18,10 @@ use crate::json_rules::{
     check_mcp_autoapprove_gh_workflow_run, check_mcp_autoapprove_git_checkout,
     check_mcp_autoapprove_git_clean, check_mcp_autoapprove_git_clone,
     check_mcp_autoapprove_git_commit, check_mcp_autoapprove_git_fetch,
-    check_mcp_autoapprove_git_push, check_mcp_autoapprove_git_reset,
-    check_mcp_autoapprove_glob_unsafe_path, check_mcp_autoapprove_glob_wildcard,
-    check_mcp_autoapprove_grep_unsafe_path, check_mcp_autoapprove_grep_wildcard,
-    check_mcp_autoapprove_npm_exec, check_mcp_autoapprove_npx,
+    check_mcp_autoapprove_git_ls_remote, check_mcp_autoapprove_git_push,
+    check_mcp_autoapprove_git_reset, check_mcp_autoapprove_glob_unsafe_path,
+    check_mcp_autoapprove_glob_wildcard, check_mcp_autoapprove_grep_unsafe_path,
+    check_mcp_autoapprove_grep_wildcard, check_mcp_autoapprove_npm_exec, check_mcp_autoapprove_npx,
     check_mcp_autoapprove_package_install, check_mcp_autoapprove_pipx_run,
     check_mcp_autoapprove_pnpm_dlx, check_mcp_autoapprove_read_unsafe_path,
     check_mcp_autoapprove_read_wildcard, check_mcp_autoapprove_rm, check_mcp_autoapprove_sudo,
@@ -689,6 +689,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApproveGitLsRemoteRule {
+        code: "SEC596",
+        summary: "MCP configuration auto-approves `Bash(git ls-remote:*)` through `autoApprove`",
+        doc_title: "MCP config: git ls-remote auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpAutoApproveReadWildcardRule {
         code: "SEC567",
         summary: "MCP configuration auto-approves `Read(*)` through `autoApprove`",
@@ -988,7 +1000,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 79] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 80] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -2050,6 +2062,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 79] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `git fetch` auto-approval and keep repository synchronization under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGitLsRemoteRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(git ls-remote:*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-repo-fetch-family"],
+            benign_case_ids: &["mcp-autoapprove-repo-fetch-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git ls-remote:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_git_ls_remote,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `git ls-remote` auto-approval and keep remote repository inspection under explicit user review",
         ),
         suggestion_fix: None,
     },

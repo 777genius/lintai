@@ -663,6 +663,21 @@ pub(crate) fn check_mcp_autoapprove_git_fetch(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_git_ls_remote(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_ls_remote_span.clone()),
+        "MCP configuration auto-approves `Bash(git ls-remote:*)` through `autoApprove`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_read_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

@@ -113,7 +113,8 @@
         "lintai-ai-security:SEC592",
         "lintai-ai-security:SEC593",
         "lintai-ai-security:SEC594",
-        "lintai-ai-security:SEC595"
+        "lintai-ai-security:SEC595",
+        "lintai-ai-security:SEC596"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -498,7 +499,8 @@
         "lintai-ai-security:SEC592",
         "lintai-ai-security:SEC593",
         "lintai-ai-security:SEC594",
-        "lintai-ai-security:SEC595"
+        "lintai-ai-security:SEC595",
+        "lintai-ai-security:SEC596"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -11245,6 +11247,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git fetch:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC596",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC596",
+      "alias": "MCP-AUTOAPPROVE-GIT-LS-REMOTE",
+      "displayLabel": "SEC596 / MCP-AUTOAPPROVE-GIT-LS-REMOTE",
+      "docTitle": "MCP config: git ls-remote auto-approve",
+      "slug": "sec596",
+      "canonicalPath": "/rules/lintai-ai-security/sec596",
+      "summary": "MCP configuration auto-approves `Bash(git ls-remote:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `Bash(git ls-remote:*)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-repo-fetch-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-repo-fetch-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git ls-remote:*)\"]` on parsed MCP configuration."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

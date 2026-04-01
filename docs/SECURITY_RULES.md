@@ -314,6 +314,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC593 / MCP-AUTOAPPROVE-PACKAGE-INSTALL` | MCP configuration auto-approves package installation commands through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC594 / MCP-AUTOAPPROVE-GIT-CLONE` | MCP configuration auto-approves `Bash(git clone:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC595 / MCP-AUTOAPPROVE-GIT-FETCH` | MCP configuration auto-approves `Bash(git fetch:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC596 / MCP-AUTOAPPROVE-GIT-LS-REMOTE` | MCP configuration auto-approves `Bash(git ls-remote:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -6092,6 +6093,27 @@ Important behavior:
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(git fetch:*)` auto-approval in MCP client config.
 - Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(git fetch:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-repo-fetch-family`
+- Benign Corpus: `mcp-autoapprove-repo-fetch-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC596 / MCP-AUTOAPPROVE-GIT-LS-REMOTE` — MCP configuration auto-approves `Bash(git ls-remote:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GIT-LS-REMOTE`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(git ls-remote:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(git ls-remote:*)"]` on parsed MCP configuration.
 - Malicious Corpus: `mcp-autoapprove-repo-fetch-family`
 - Benign Corpus: `mcp-autoapprove-repo-fetch-family-specific-safe`
 - Structured Evidence Required: `true`

@@ -7306,6 +7306,28 @@ fn finds_mcp_autoapprove_git_fetch() {
 }
 
 #[test]
+fn finds_mcp_autoapprove_git_ls_remote() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(git ls-remote:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC596")
+        .unwrap();
+    let start = content.find("\"Bash(git ls-remote:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git ls-remote:*)".len())
+    );
+}
+
+#[test]
 fn ignores_mcp_autoapprove_nonmatching_tools() {
     let provider = AiSecurityProvider::default();
     let findings = ProviderHarness::run(
@@ -7368,6 +7390,7 @@ fn ignores_mcp_autoapprove_nonmatching_tools() {
                 | "SEC593"
                 | "SEC594"
                 | "SEC595"
+                | "SEC596"
         )
     }));
 }

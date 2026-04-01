@@ -277,6 +277,7 @@ pub(crate) struct JsonSignals {
     pub(crate) autoapprove_package_install_span: Option<Span>,
     pub(crate) autoapprove_git_clone_span: Option<Span>,
     pub(crate) autoapprove_git_fetch_span: Option<Span>,
+    pub(crate) autoapprove_git_ls_remote_span: Option<Span>,
     pub(crate) autoapprove_read_wildcard_span: Option<Span>,
     pub(crate) autoapprove_write_wildcard_span: Option<Span>,
     pub(crate) autoapprove_edit_wildcard_span: Option<Span>,

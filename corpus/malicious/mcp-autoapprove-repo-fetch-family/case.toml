@@ -4,4 +4,5 @@ description = "MCP config auto-approves repository fetch commands through autoAp
 expected_findings = [
   "SEC594",
   "SEC595",
+  "SEC596",
 ]

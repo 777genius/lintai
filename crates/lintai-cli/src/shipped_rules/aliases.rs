@@ -300,6 +300,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC593" => "MCP-AUTOAPPROVE-PACKAGE-INSTALL",
         "SEC594" => "MCP-AUTOAPPROVE-GIT-CLONE",
         "SEC595" => "MCP-AUTOAPPROVE-GIT-FETCH",
+        "SEC596" => "MCP-AUTOAPPROVE-GIT-LS-REMOTE",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",
