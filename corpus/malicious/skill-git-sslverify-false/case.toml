@@ -1,0 +1,7 @@
+id = "skill-git-sslverify-false"
+kind = "Skill"
+description = "AI-native markdown teaches git config http.sslVerify false"
+
+expected_findings = [
+  { rule = "SEC471", tier = "stable", match = "http.sslVerify false" },
+]

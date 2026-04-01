@@ -190,7 +190,8 @@
         "lintai-ai-security:SEC467",
         "lintai-ai-security:SEC468",
         "lintai-ai-security:SEC469",
-        "lintai-ai-security:SEC470"
+        "lintai-ai-security:SEC470",
+        "lintai-ai-security:SEC471"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -290,7 +291,8 @@
         "lintai-ai-security:SEC467",
         "lintai-ai-security:SEC468",
         "lintai-ai-security:SEC469",
-        "lintai-ai-security:SEC470"
+        "lintai-ai-security:SEC470",
+        "lintai-ai-security:SEC471"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -6686,6 +6688,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(su:*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC471",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC471",
+      "alias": "MD-GIT-SSLVERIFY-FALSE",
+      "displayLabel": "SEC471 / MD-GIT-SSLVERIFY-FALSE",
+      "docTitle": "AI markdown: git sslVerify false",
+      "slug": "sec471",
+      "canonicalPath": "/rules/lintai-ai-security/sec471",
+      "summary": "AI-native markdown disables Git TLS verification with `http.sslVerify false`",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for exact `git config` examples that disable Git TLS verification through `http.sslVerify false`.",
+        "maliciousCaseIds": [
+          "skill-git-sslverify-false"
+        ],
+        "benignCaseIds": [
+          "skill-git-sslverify-true-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `git config` token analysis with `http.sslVerify false` or `http.sslVerify=false` detection inside parsed markdown regions, excluding safety-warning phrasing."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

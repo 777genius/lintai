@@ -159,6 +159,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "skill-git-rebase-allowed-tools",
             "skill-git-reset-allowed-tools",
             "skill-git-restore-allowed-tools",
+            "skill-git-sslverify-false",
             "skill-git-tag-allowed-tools",
             "skill-glob-unsafe-path-allowed-tools",
             "skill-hidden-directive",

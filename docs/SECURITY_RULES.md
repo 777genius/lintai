@@ -189,6 +189,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC468 / MD-CHOWN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chown:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC469 / MD-CHGRP-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chgrp:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC470 / MD-SU-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(su:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC471 / MD-GIT-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `http.sslVerify false` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -3600,6 +3601,27 @@ Important behavior:
 - Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Bash(su:*)` inside allowed-tools or allowed_tools.
 - Malicious Corpus: `skill-su-allowed-tools`
 - Benign Corpus: `skill-su-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC471 / MD-GIT-SSLVERIFY-FALSE` — AI-native markdown disables Git TLS verification with `http.sslVerify false`
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GIT-SSLVERIFY-FALSE`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown for exact `git config` examples that disable Git TLS verification through `http.sslVerify false`.
+- Deterministic Signal Basis: MarkdownSignals exact `git config` token analysis with `http.sslVerify false` or `http.sslVerify=false` detection inside parsed markdown regions, excluding safety-warning phrasing.
+- Malicious Corpus: `skill-git-sslverify-false`
+- Benign Corpus: `skill-git-sslverify-true-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

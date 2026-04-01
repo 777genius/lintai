@@ -1810,6 +1810,49 @@ fn ignores_markdown_git_https_remote() {
 }
 
 #[test]
+fn finds_markdown_git_sslverify_false() {
+    let content = "git config http.sslVerify false\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC471")
+        .unwrap();
+    let start = content.find("http.sslVerify false").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "http.sslVerify false".len())
+    );
+}
+
+#[test]
+fn finds_markdown_git_sslverify_false_equals_form() {
+    let content = "git config --global http.sslVerify=false\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC471")
+    );
+}
+
+#[test]
+fn ignores_markdown_git_sslverify_true() {
+    let content = "git config http.sslVerify true\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC471")
+    );
+}
+
+#[test]
 fn finds_rm_allowed_tools() {
     let content = "---\nallowed-tools: Bash(rm:*)\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

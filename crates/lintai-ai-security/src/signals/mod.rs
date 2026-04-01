@@ -113,6 +113,7 @@ pub(crate) struct MarkdownSignals {
     pub(crate) cargo_http_index_spans: Vec<Span>,
     pub(crate) git_http_clone_spans: Vec<Span>,
     pub(crate) git_http_remote_spans: Vec<Span>,
+    pub(crate) git_sslverify_false_spans: Vec<Span>,
     pub(crate) mutable_docker_image_spans: Vec<Span>,
     pub(crate) docker_host_escape_spans: Vec<Span>,
     pub(crate) untrusted_instruction_promotion_spans: Vec<Span>,
