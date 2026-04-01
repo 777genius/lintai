@@ -1,0 +1,4 @@
+id = "mcp-autoapprove-webfetch-raw-github"
+description = "MCP config auto-approves WebFetch access to raw.githubusercontent.com"
+
+expected_findings = ["SEC617"]

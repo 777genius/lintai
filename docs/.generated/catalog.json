@@ -134,7 +134,8 @@
         "lintai-ai-security:SEC613",
         "lintai-ai-security:SEC614",
         "lintai-ai-security:SEC615",
-        "lintai-ai-security:SEC616"
+        "lintai-ai-security:SEC616",
+        "lintai-ai-security:SEC617"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -540,7 +541,8 @@
         "lintai-ai-security:SEC613",
         "lintai-ai-security:SEC614",
         "lintai-ai-security:SEC615",
-        "lintai-ai-security:SEC616"
+        "lintai-ai-security:SEC616",
+        "lintai-ai-security:SEC617"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -12106,6 +12108,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(su:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC617",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC617",
+      "alias": "MCP-AUTOAPPROVE-WEBFETCH-RAW-GITHUB",
+      "displayLabel": "SEC617 / MCP-AUTOAPPROVE-WEBFETCH-RAW-GITHUB",
+      "docTitle": "MCP config: raw.githubusercontent.com WebFetch auto-approve",
+      "slug": "sec617",
+      "canonicalPath": "/rules/lintai-ai-security/sec617",
+      "summary": "MCP configuration auto-approves `WebFetch(domain:raw.githubusercontent.com)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact raw GitHub WebFetch auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-webfetch-raw-github"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-webfetch-raw-github-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"WebFetch(domain:raw.githubusercontent.com)\"]` on parsed MCP configuration."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

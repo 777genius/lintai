@@ -36,13 +36,13 @@ use crate::json_rules::{
     check_mcp_autoapprove_read_wildcard, check_mcp_autoapprove_rm, check_mcp_autoapprove_su,
     check_mcp_autoapprove_sudo, check_mcp_autoapprove_systemctl_enable,
     check_mcp_autoapprove_tools_true, check_mcp_autoapprove_uvx,
-    check_mcp_autoapprove_webfetch_wildcard, check_mcp_autoapprove_websearch_wildcard,
-    check_mcp_autoapprove_wget, check_mcp_autoapprove_wildcard,
-    check_mcp_autoapprove_write_unsafe_path, check_mcp_autoapprove_write_wildcard,
-    check_mcp_autoapprove_yarn_dlx, check_mcp_broad_env_file, check_mcp_capabilities_wildcard,
-    check_mcp_credential_env_passthrough, check_mcp_dangerous_docker_flag,
-    check_mcp_inline_download_exec, check_mcp_mutable_docker_pull, check_mcp_mutable_launcher,
-    check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
+    check_mcp_autoapprove_webfetch_raw_githubusercontent, check_mcp_autoapprove_webfetch_wildcard,
+    check_mcp_autoapprove_websearch_wildcard, check_mcp_autoapprove_wget,
+    check_mcp_autoapprove_wildcard, check_mcp_autoapprove_write_unsafe_path,
+    check_mcp_autoapprove_write_wildcard, check_mcp_autoapprove_yarn_dlx, check_mcp_broad_env_file,
+    check_mcp_capabilities_wildcard, check_mcp_credential_env_passthrough,
+    check_mcp_dangerous_docker_flag, check_mcp_inline_download_exec, check_mcp_mutable_docker_pull,
+    check_mcp_mutable_launcher, check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
     check_mcp_sensitive_docker_mount, check_mcp_shell_wrapper, check_mcp_sudo_args0,
     check_mcp_sudo_command, check_mcp_trust_tools_true, check_mcp_unpinned_docker_image,
     check_plain_http_config, check_plugin_hook_inline_download_exec,
@@ -951,6 +951,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApproveWebFetchRawGithubusercontentRule {
+        code: "SEC617",
+        summary: "MCP configuration auto-approves `WebFetch(domain:raw.githubusercontent.com)` through `autoApprove`",
+        doc_title: "MCP config: raw.githubusercontent.com WebFetch auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpAutoApproveReadWildcardRule {
         code: "SEC567",
         summary: "MCP configuration auto-approves `Read(*)` through `autoApprove`",
@@ -1250,7 +1262,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 100] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 101] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -2732,6 +2744,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 100] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `su` auto-approval and keep user-switching authority under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveWebFetchRawGithubusercontentRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact raw GitHub WebFetch auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-webfetch-raw-github"],
+            benign_case_ids: &["mcp-autoapprove-webfetch-raw-github-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"WebFetch(domain:raw.githubusercontent.com)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_webfetch_raw_githubusercontent,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared raw GitHub WebFetch auto-approval and keep mutable remote raw-content fetch under explicit user review",
         ),
         suggestion_fix: None,
     },

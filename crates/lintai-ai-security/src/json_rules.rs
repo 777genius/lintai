@@ -1068,6 +1068,23 @@ pub(crate) fn check_mcp_autoapprove_webfetch_wildcard(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_webfetch_raw_githubusercontent(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals.json().and_then(|signals| {
+            signals
+                .autoapprove_webfetch_raw_githubusercontent_span
+                .clone()
+        }),
+        "MCP configuration auto-approves `WebFetch(domain:raw.githubusercontent.com)` through `autoApprove`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_websearch_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

@@ -7328,6 +7328,34 @@ fn finds_mcp_autoapprove_git_ls_remote() {
 }
 
 #[test]
+fn finds_mcp_autoapprove_webfetch_raw_githubusercontent() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["WebFetch(domain:raw.githubusercontent.com)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC617")
+        .unwrap();
+    let start = content
+        .find("\"WebFetch(domain:raw.githubusercontent.com)\"")
+        .unwrap()
+        + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(
+            start,
+            start + "WebFetch(domain:raw.githubusercontent.com)".len()
+        )
+    );
+}
+
+#[test]
 fn finds_mcp_autoapprove_git_add() {
     let provider = AiSecurityProvider::default();
     let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(git add:*)"]}}}"#;
@@ -7831,6 +7859,7 @@ fn ignores_mcp_autoapprove_nonmatching_tools() {
                 | "SEC614"
                 | "SEC615"
                 | "SEC616"
+                | "SEC617"
         )
     }));
 }

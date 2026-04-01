@@ -304,6 +304,7 @@ pub(crate) struct JsonSignals {
     pub(crate) autoapprove_glob_wildcard_span: Option<Span>,
     pub(crate) autoapprove_grep_wildcard_span: Option<Span>,
     pub(crate) autoapprove_webfetch_wildcard_span: Option<Span>,
+    pub(crate) autoapprove_webfetch_raw_githubusercontent_span: Option<Span>,
     pub(crate) autoapprove_websearch_wildcard_span: Option<Span>,
     pub(crate) autoapprove_read_unsafe_path_span: Option<Span>,
     pub(crate) autoapprove_write_unsafe_path_span: Option<Span>,

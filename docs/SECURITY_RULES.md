@@ -335,6 +335,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC614 / MCP-AUTOAPPROVE-CHOWN` | MCP configuration auto-approves `Bash(chown:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC615 / MCP-AUTOAPPROVE-CHGRP` | MCP configuration auto-approves `Bash(chgrp:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC616 / MCP-AUTOAPPROVE-SU` | MCP configuration auto-approves `Bash(su:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC617 / MCP-AUTOAPPROVE-WEBFETCH-RAW-GITHUB` | MCP configuration auto-approves `WebFetch(domain:raw.githubusercontent.com)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -6556,6 +6557,27 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(su:*)"]` on parsed MCP configuration.
 - Malicious Corpus: `mcp-autoapprove-privileged-shell-family`
 - Benign Corpus: `mcp-autoapprove-privileged-shell-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC617 / MCP-AUTOAPPROVE-WEBFETCH-RAW-GITHUB` — MCP configuration auto-approves `WebFetch(domain:raw.githubusercontent.com)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-WEBFETCH-RAW-GITHUB`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact raw GitHub WebFetch auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["WebFetch(domain:raw.githubusercontent.com)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-webfetch-raw-github`
+- Benign Corpus: `mcp-autoapprove-webfetch-raw-github-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
