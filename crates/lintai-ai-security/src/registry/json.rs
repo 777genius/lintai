@@ -4,21 +4,22 @@ use super::*;
 use crate::json_rules::{
     check_json_dangerous_endpoint_host, check_json_hidden_instruction, check_json_literal_secret,
     check_json_sensitive_env_reference, check_json_suspicious_remote_endpoint,
-    check_json_unsafe_plugin_path, check_mcp_autoapprove_bash_wildcard, check_mcp_autoapprove_bunx,
-    check_mcp_autoapprove_chgrp, check_mcp_autoapprove_chmod, check_mcp_autoapprove_chown,
-    check_mcp_autoapprove_crontab, check_mcp_autoapprove_curl,
-    check_mcp_autoapprove_edit_unsafe_path, check_mcp_autoapprove_edit_unscoped,
-    check_mcp_autoapprove_edit_wildcard, check_mcp_autoapprove_gh_api_delete,
-    check_mcp_autoapprove_gh_api_patch, check_mcp_autoapprove_gh_api_post,
-    check_mcp_autoapprove_gh_api_put, check_mcp_autoapprove_gh_issue_create,
-    check_mcp_autoapprove_gh_pr, check_mcp_autoapprove_gh_release_create,
-    check_mcp_autoapprove_gh_release_delete, check_mcp_autoapprove_gh_release_upload,
-    check_mcp_autoapprove_gh_repo_create, check_mcp_autoapprove_gh_repo_delete,
-    check_mcp_autoapprove_gh_repo_edit, check_mcp_autoapprove_gh_repo_transfer,
-    check_mcp_autoapprove_gh_secret_delete, check_mcp_autoapprove_gh_secret_set,
-    check_mcp_autoapprove_gh_variable_delete, check_mcp_autoapprove_gh_variable_set,
-    check_mcp_autoapprove_gh_workflow_disable, check_mcp_autoapprove_gh_workflow_run,
-    check_mcp_autoapprove_git_add, check_mcp_autoapprove_git_am, check_mcp_autoapprove_git_apply,
+    check_json_unsafe_plugin_path, check_mcp_autoapprove_bash_unscoped,
+    check_mcp_autoapprove_bash_wildcard, check_mcp_autoapprove_bunx, check_mcp_autoapprove_chgrp,
+    check_mcp_autoapprove_chmod, check_mcp_autoapprove_chown, check_mcp_autoapprove_crontab,
+    check_mcp_autoapprove_curl, check_mcp_autoapprove_edit_unsafe_path,
+    check_mcp_autoapprove_edit_unscoped, check_mcp_autoapprove_edit_wildcard,
+    check_mcp_autoapprove_gh_api_delete, check_mcp_autoapprove_gh_api_patch,
+    check_mcp_autoapprove_gh_api_post, check_mcp_autoapprove_gh_api_put,
+    check_mcp_autoapprove_gh_issue_create, check_mcp_autoapprove_gh_pr,
+    check_mcp_autoapprove_gh_release_create, check_mcp_autoapprove_gh_release_delete,
+    check_mcp_autoapprove_gh_release_upload, check_mcp_autoapprove_gh_repo_create,
+    check_mcp_autoapprove_gh_repo_delete, check_mcp_autoapprove_gh_repo_edit,
+    check_mcp_autoapprove_gh_repo_transfer, check_mcp_autoapprove_gh_secret_delete,
+    check_mcp_autoapprove_gh_secret_set, check_mcp_autoapprove_gh_variable_delete,
+    check_mcp_autoapprove_gh_variable_set, check_mcp_autoapprove_gh_workflow_disable,
+    check_mcp_autoapprove_gh_workflow_run, check_mcp_autoapprove_git_add,
+    check_mcp_autoapprove_git_am, check_mcp_autoapprove_git_apply,
     check_mcp_autoapprove_git_branch, check_mcp_autoapprove_git_checkout,
     check_mcp_autoapprove_git_cherry_pick, check_mcp_autoapprove_git_clean,
     check_mcp_autoapprove_git_clone, check_mcp_autoapprove_git_commit,
@@ -966,6 +967,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApproveBashRule {
+        code: "SEC625",
+        summary: "MCP configuration auto-approves bare `Bash` through `autoApprove`",
+        doc_title: "MCP config: bare Bash auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpAutoApproveReadRule {
         code: "SEC618",
         summary: "MCP configuration auto-approves bare `Read` through `autoApprove`",
@@ -1349,7 +1362,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 108] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 109] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -2991,6 +3004,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 108] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `WebSearch(*)` auto-approval and keep broad remote search under narrower reviewed scopes",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveBashRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact bare `Bash` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-unscoped-tool-family"],
+            benign_case_ids: &["mcp-autoapprove-unscoped-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_bash_unscoped,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared bare `Bash` auto-approval and keep shell execution under narrower reviewed command scopes",
         ),
         suggestion_fix: None,
     },

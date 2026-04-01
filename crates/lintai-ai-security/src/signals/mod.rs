@@ -298,6 +298,7 @@ pub(crate) struct JsonSignals {
     pub(crate) autoapprove_chown_span: Option<Span>,
     pub(crate) autoapprove_chgrp_span: Option<Span>,
     pub(crate) autoapprove_su_span: Option<Span>,
+    pub(crate) autoapprove_bash_unscoped_span: Option<Span>,
     pub(crate) autoapprove_read_unscoped_span: Option<Span>,
     pub(crate) autoapprove_write_unscoped_span: Option<Span>,
     pub(crate) autoapprove_edit_unscoped_span: Option<Span>,

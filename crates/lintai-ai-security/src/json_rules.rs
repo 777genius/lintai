@@ -108,6 +108,21 @@ pub(crate) fn check_mcp_autoapprove_bash_wildcard(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_bash_unscoped(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_bash_unscoped_span.clone()),
+        "MCP configuration auto-approves bare `Bash` through `autoApprove`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_curl(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

@@ -6822,6 +6822,29 @@ fn finds_mcp_autoapprove_websearch_wildcard() {
 }
 
 #[test]
+fn finds_mcp_autoapprove_bash_unscoped() {
+    let provider = AiSecurityProvider::default();
+    let content =
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC625")
+        .unwrap();
+    let start = content.find("\"Bash\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash".len())
+    );
+}
+
+#[test]
 fn finds_mcp_autoapprove_read_unscoped() {
     let provider = AiSecurityProvider::default();
     let content =
@@ -7037,7 +7060,7 @@ fn does_not_flag_mcp_autoapprove_unscoped_tool_family_when_entries_are_scoped() 
     assert!(!findings.iter().any(|finding| {
         matches!(
             finding.rule_code.as_str(),
-            "SEC618" | "SEC619" | "SEC620" | "SEC621" | "SEC622" | "SEC623" | "SEC624"
+            "SEC618" | "SEC619" | "SEC620" | "SEC621" | "SEC622" | "SEC623" | "SEC624" | "SEC625"
         )
     }));
 }
@@ -8044,6 +8067,7 @@ fn ignores_mcp_autoapprove_nonmatching_tools() {
                 | "SEC622"
                 | "SEC623"
                 | "SEC624"
+                | "SEC625"
         )
     }));
 }

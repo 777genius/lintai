@@ -322,6 +322,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC615" => "MCP-AUTOAPPROVE-CHGRP",
         "SEC616" => "MCP-AUTOAPPROVE-SU",
         "SEC617" => "MCP-AUTOAPPROVE-WEBFETCH-RAW-GITHUB",
+        "SEC625" => "MCP-AUTOAPPROVE-BASH",
         "SEC618" => "MCP-AUTOAPPROVE-READ",
         "SEC619" => "MCP-AUTOAPPROVE-WRITE",
         "SEC620" => "MCP-AUTOAPPROVE-EDIT",

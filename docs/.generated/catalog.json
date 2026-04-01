@@ -142,7 +142,8 @@
         "lintai-ai-security:SEC621",
         "lintai-ai-security:SEC622",
         "lintai-ai-security:SEC623",
-        "lintai-ai-security:SEC624"
+        "lintai-ai-security:SEC624",
+        "lintai-ai-security:SEC625"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -556,7 +557,8 @@
         "lintai-ai-security:SEC621",
         "lintai-ai-security:SEC622",
         "lintai-ai-security:SEC623",
-        "lintai-ai-security:SEC624"
+        "lintai-ai-security:SEC624",
+        "lintai-ai-security:SEC625"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -12946,6 +12948,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact array-item detection for bare `WebSearch` in parsed `autoApprove` entries."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC625",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC625",
+      "alias": "MCP-AUTOAPPROVE-BASH",
+      "displayLabel": "SEC625 / MCP-AUTOAPPROVE-BASH",
+      "docTitle": "MCP config: bare Bash auto-approve",
+      "slug": "sec625",
+      "canonicalPath": "/rules/lintai-ai-security/sec625",
+      "summary": "MCP configuration auto-approves bare `Bash` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact bare `Bash` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-unscoped-tool-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-unscoped-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash\"]` on parsed MCP configuration."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

@@ -343,6 +343,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC622 / MCP-AUTOAPPROVE-GREP` | MCP configuration auto-approves bare `Grep` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC623 / MCP-AUTOAPPROVE-WEBFETCH` | MCP configuration auto-approves bare `WebFetch` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC624 / MCP-AUTOAPPROVE-WEBSEARCH` | MCP configuration auto-approves bare `WebSearch` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC625 / MCP-AUTOAPPROVE-BASH` | MCP configuration auto-approves bare `Bash` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -6986,6 +6987,27 @@ Important behavior:
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact bare `WebSearch` auto-approval in MCP client config.
 - Deterministic Signal Basis: JsonSignals exact array-item detection for bare `WebSearch` in parsed `autoApprove` entries.
+- Malicious Corpus: `mcp-autoapprove-unscoped-tool-family`
+- Benign Corpus: `mcp-autoapprove-unscoped-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC625 / MCP-AUTOAPPROVE-BASH` — MCP configuration auto-approves bare `Bash` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-BASH`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact bare `Bash` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash"]` on parsed MCP configuration.
 - Malicious Corpus: `mcp-autoapprove-unscoped-tool-family`
 - Benign Corpus: `mcp-autoapprove-unscoped-tool-family-specific-safe`
 - Structured Evidence Required: `true`
