@@ -112,6 +112,8 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec497_hits = rule_count(current, &["SEC497"]);
     let sec498_hits = rule_count(current, &["SEC498"]);
     let sec499_hits = rule_count(current, &["SEC499"]);
+    let sec500_hits = rule_count(current, &["SEC500"]);
+    let sec501_hits = rule_count(current, &["SEC501"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, current);
     let sec348_repos = repos_with_rule_hits(current, &["SEC348"], false);
     let sec349_repos = repos_with_rule_hits(current, &["SEC349"], false);
@@ -201,6 +203,8 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec497_repos = repos_with_rule_hits(current, &["SEC497"], false);
     let sec498_repos = repos_with_rule_hits(current, &["SEC498"], false);
     let sec499_repos = repos_with_rule_hits(current, &["SEC499"], false);
+    let sec500_repos = repos_with_rule_hits(current, &["SEC500"], false);
+    let sec501_repos = repos_with_rule_hits(current, &["SEC501"], false);
 
     output.push_str("## Hybrid Scope Expansion Results\n\n");
     output.push_str("Current wave inventory for the newly expanded JSON lanes:\n\n");
@@ -612,6 +616,14 @@ pub(super) fn append_hybrid_scope_expansion(
         sec499_hits
     ));
     output.push_str(&format!(
+        "  - `SEC500` AI-native markdown shared `npx` tool grants: `{}`\n",
+        sec500_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC501` AI-native markdown shared `git ls-remote` tool grants: `{}`\n",
+        sec501_hits
+    ));
+    output.push_str(&format!(
         "  - `SEC372` Claude settings wildcard `Read(*)` permissions: `{}`\n",
         sec372_hits
     ));
@@ -739,6 +751,8 @@ pub(super) fn append_hybrid_scope_expansion(
     append_rule_repo_hits(output, "SEC497", sec497_repos);
     append_rule_repo_hits(output, "SEC498", sec498_repos);
     append_rule_repo_hits(output, "SEC499", sec499_repos);
+    append_rule_repo_hits(output, "SEC500", sec500_repos);
+    append_rule_repo_hits(output, "SEC501", sec501_repos);
     if sec394_repos.is_empty() {
         output.push_str(
             "- `SEC394` produced no repo-level stable hits yet on the canonical cohort\n",

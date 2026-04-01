@@ -318,6 +318,8 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(markdown.contains("`SEC497` AI-native markdown shared `pnpm dlx` tool grants: `"));
     assert!(markdown.contains("`SEC498` AI-native markdown shared `yarn dlx` tool grants: `"));
     assert!(markdown.contains("`SEC499` AI-native markdown shared `pipx run` tool grants: `"));
+    assert!(markdown.contains("`SEC500` AI-native markdown shared `npx` tool grants: `"));
+    assert!(markdown.contains("`SEC501` AI-native markdown shared `git ls-remote` tool grants: `"));
     assert!(markdown.contains("`SEC408` Claude settings shared `gh pr` permissions: `"));
     assert!(markdown.contains("`SEC372` Claude settings wildcard `Read(*)` permissions: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings wildcard `Edit(*)` permissions: `0`"));
@@ -990,6 +992,8 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC497` AI-native markdown shared `pnpm dlx` tool grants: `"));
     assert!(markdown.contains("`SEC498` AI-native markdown shared `yarn dlx` tool grants: `"));
     assert!(markdown.contains("`SEC499` AI-native markdown shared `pipx run` tool grants: `"));
+    assert!(markdown.contains("`SEC500` AI-native markdown shared `npx` tool grants: `"));
+    assert!(markdown.contains("`SEC501` AI-native markdown shared `git ls-remote` tool grants: `"));
     assert!(markdown.contains("`SEC372` Claude settings files allowing `Read(*)`: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings files allowing `Edit(*)`: `0`"));
     assert!(markdown.contains("`SEC374` Claude settings files allowing `WebSearch(*)`: `0`"));
@@ -1060,4 +1064,6 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC497`"));
     assert!(markdown.contains("`SEC498`"));
     assert!(markdown.contains("`SEC499`"));
+    assert!(markdown.contains("`SEC500`"));
+    assert!(markdown.contains("`SEC501`"));
 }

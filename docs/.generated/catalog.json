@@ -468,7 +468,9 @@
         "lintai-ai-security:SEC496",
         "lintai-ai-security:SEC497",
         "lintai-ai-security:SEC498",
-        "lintai-ai-security:SEC499"
+        "lintai-ai-security:SEC499",
+        "lintai-ai-security:SEC500",
+        "lintai-ai-security:SEC501"
       ],
       "canonicalPath": "/presets/governance"
     },
@@ -7652,6 +7654,66 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Shared pipx run grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC500",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC500",
+      "alias": "MD-NPX-ALLOWED-TOOLS",
+      "displayLabel": "SEC500 / MD-NPX-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: shared npx tool grant",
+      "slug": "sec500",
+      "canonicalPath": "/rules/lintai-ai-security/sec500",
+      "summary": "AI-native markdown frontmatter grants `Bash(npx:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared npx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC501",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC501",
+      "alias": "MD-GIT-LS-REMOTE-ALLOWED-TOOLS",
+      "displayLabel": "SEC501 / MD-GIT-LS-REMOTE-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: shared git ls-remote tool grant",
+      "slug": "sec501",
+      "canonicalPath": "/rules/lintai-ai-security/sec501",
+      "summary": "AI-native markdown frontmatter grants `Bash(git ls-remote:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `git ls-remote` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

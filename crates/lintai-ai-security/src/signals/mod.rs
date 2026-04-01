@@ -134,6 +134,8 @@ pub(crate) struct MarkdownSignals {
     pub(crate) pnpm_dlx_allowed_tools_spans: Vec<Span>,
     pub(crate) yarn_dlx_allowed_tools_spans: Vec<Span>,
     pub(crate) pipx_run_allowed_tools_spans: Vec<Span>,
+    pub(crate) npx_allowed_tools_spans: Vec<Span>,
+    pub(crate) git_ls_remote_allowed_tools_spans: Vec<Span>,
     pub(crate) curl_allowed_tools_spans: Vec<Span>,
     pub(crate) wget_allowed_tools_spans: Vec<Span>,
     pub(crate) sudo_allowed_tools_spans: Vec<Span>,

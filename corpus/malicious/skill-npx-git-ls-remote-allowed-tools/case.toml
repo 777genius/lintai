@@ -1,0 +1,7 @@
+id = "skill-npx-git-ls-remote-allowed-tools"
+description = "AI-native markdown frontmatter grants npx and git ls-remote tool authority"
+
+expected_findings = [
+  "SEC500",
+  "SEC501",
+]

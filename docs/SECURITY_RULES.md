@@ -218,6 +218,8 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC497 / MD-PNPM-DLX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(pnpm dlx:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC498 / MD-YARN-DLX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(yarn dlx:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC499 / MD-PIPX-RUN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(pipx run:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC500 / MD-NPX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(npx:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC501 / MD-GIT-LS-REMOTE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git ls-remote:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 
 ## Builtin preset activation model
 
@@ -4135,6 +4137,40 @@ Important behavior:
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Shared pipx run grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC500 / MD-NPX-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(npx:*)` tool access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-NPX-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `governance`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared npx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC501 / MD-GIT-LS-REMOTE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(git ls-remote:*)` tool access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GIT-LS-REMOTE-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `governance`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `git ls-remote` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 

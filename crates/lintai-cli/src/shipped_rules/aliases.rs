@@ -204,6 +204,8 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC497" => "MD-PNPM-DLX-ALLOWED-TOOLS",
         "SEC498" => "MD-YARN-DLX-ALLOWED-TOOLS",
         "SEC499" => "MD-PIPX-RUN-ALLOWED-TOOLS",
+        "SEC500" => "MD-NPX-ALLOWED-TOOLS",
+        "SEC501" => "MD-GIT-LS-REMOTE-ALLOWED-TOOLS",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

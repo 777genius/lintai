@@ -2851,6 +2851,70 @@ fn ignores_specific_pipx_run_allowed_tools_in_frontmatter() {
 }
 
 #[test]
+fn finds_npx_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(npx:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC500")
+        .unwrap();
+    let start = content.find("Bash(npx:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(npx:*)".len())
+    );
+}
+
+#[test]
+fn ignores_specific_npx_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_governance_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(npm run lint), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC500")
+    );
+}
+
+#[test]
+fn finds_git_ls_remote_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(git ls-remote:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC501")
+        .unwrap();
+    let start = content.find("Bash(git ls-remote:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git ls-remote:*)".len())
+    );
+}
+
+#[test]
+fn ignores_specific_git_ls_remote_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_governance_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(git ls-remote origin), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC501")
+    );
+}
+
+#[test]
 fn finds_unscoped_webfetch_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: WebFetch, Read\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

@@ -13,7 +13,7 @@ const AI_NATIVE_RULE_CODES: &[&str] = &[
     "SEC412", "SEC413", "SEC414", "SEC415", "SEC416", "SEC417", "SEC418", "SEC474", "SEC475",
     "SEC476", "SEC477", "SEC478", "SEC479", "SEC480", "SEC481", "SEC482", "SEC483", "SEC484",
     "SEC485", "SEC488", "SEC489", "SEC490", "SEC491", "SEC492", "SEC493", "SEC494", "SEC495",
-    "SEC496", "SEC497", "SEC498", "SEC499",
+    "SEC496", "SEC497", "SEC498", "SEC499", "SEC500", "SEC501",
 ];
 
 pub(super) fn append_cohort_and_counts(
@@ -169,6 +169,8 @@ pub(super) fn append_hit_sections(
     let sec497_hits = rule_count(ledger, &["SEC497"]);
     let sec498_hits = rule_count(ledger, &["SEC498"]);
     let sec499_hits = rule_count(ledger, &["SEC499"]);
+    let sec500_hits = rule_count(ledger, &["SEC500"]);
+    let sec501_hits = rule_count(ledger, &["SEC501"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, ledger);
     let sec313_repos = repos_with_rule_hits(ledger, &["SEC313"], false);
     let sec335_repos = repos_with_rule_hits(ledger, &["SEC335"], false);
@@ -261,6 +263,8 @@ pub(super) fn append_hit_sections(
     let sec497_repos = repos_with_rule_hits(ledger, &["SEC497"], false);
     let sec498_repos = repos_with_rule_hits(ledger, &["SEC498"], false);
     let sec499_repos = repos_with_rule_hits(ledger, &["SEC499"], false);
+    let sec500_repos = repos_with_rule_hits(ledger, &["SEC500"], false);
+    let sec501_repos = repos_with_rule_hits(ledger, &["SEC501"], false);
 
     output.push_str("## Stable Hits\n\n");
     output.push_str(&format!("- current AI-native MCP rule families produced `{}` repo-level rule-code hits in this discovery wave\n", ai_native_rule_hits));
@@ -571,6 +575,14 @@ pub(super) fn append_hit_sections(
         "- `SEC499` AI-native markdown shared `pipx run` tool grants: `{}`\n",
         sec499_hits
     ));
+    output.push_str(&format!(
+        "- `SEC500` AI-native markdown shared `npx` tool grants: `{}`\n",
+        sec500_hits
+    ));
+    output.push_str(&format!(
+        "- `SEC501` AI-native markdown shared `git ls-remote` tool grants: `{}`\n",
+        sec501_hits
+    ));
     output.push_str(&format!("- AI-native markdown preview hits by rule code: `SEC313`=`{}`, `SEC335`=`{}`, `SEC347`=`{}`, `SEC348`=`{}`, `SEC349`=`{}`, `SEC350`=`{}`, `SEC351`=`{}`, `SEC352`=`{}`, `SEC353`=`{}`, `SEC354`=`{}`, `SEC355`=`{}`, `SEC356`=`{}`, `SEC357`=`{}`, `SEC358`=`{}`, `SEC359`=`{}`, `SEC360`=`{}`, `SEC370`=`{}`, `SEC371`=`{}`, `SEC377`=`{}`, `SEC378`=`{}`, `SEC379`=`{}`, `SEC380`=`{}`, `SEC416`=`{}`, `SEC417`=`{}`\n", sec313_hits, sec335_hits, sec347_hits, sec348_hits, sec349_hits, sec350_hits, sec351_hits, sec352_hits, sec353_hits, sec354_hits, sec355_hits, sec356_hits, sec357_hits, sec358_hits, sec359_hits, sec360_hits, sec370_hits, sec371_hits, sec377_hits, sec378_hits, sec379_hits, sec380_hits, sec416_hits, sec417_hits));
     output.push_str(&format!(
         "- `SEC347` subtype repo hits: CLI-form=`{}`, config-snippet-form=`{}`\n",
@@ -680,6 +692,8 @@ pub(super) fn append_hit_sections(
         ("SEC497", sec497_repos),
         ("SEC498", sec498_repos),
         ("SEC499", sec499_repos),
+        ("SEC500", sec500_repos),
+        ("SEC501", sec501_repos),
     ] {
         let is_stable = matches!(label, "SEC394" | "SEC395" | "SEC396" | "SEC397" | "SEC398");
         if repos.is_empty() {

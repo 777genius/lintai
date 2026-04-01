@@ -433,6 +433,11 @@ mod tests {
             shipped_rule_alias("SEC499"),
             Some("MD-PIPX-RUN-ALLOWED-TOOLS")
         );
+        assert_eq!(shipped_rule_alias("SEC500"), Some("MD-NPX-ALLOWED-TOOLS"));
+        assert_eq!(
+            shipped_rule_alias("SEC501"),
+            Some("MD-GIT-LS-REMOTE-ALLOWED-TOOLS")
+        );
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

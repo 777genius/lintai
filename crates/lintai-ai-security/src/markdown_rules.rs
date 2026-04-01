@@ -843,6 +843,38 @@ pub(crate) fn check_pipx_run_allowed_tools(
     )
 }
 
+pub(crate) fn check_npx_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.npx_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(npx:*)` tool access",
+    )
+}
+
+pub(crate) fn check_git_ls_remote_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.git_ls_remote_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(git ls-remote:*)` tool access",
+    )
+}
+
 pub(crate) fn check_curl_allowed_tools(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

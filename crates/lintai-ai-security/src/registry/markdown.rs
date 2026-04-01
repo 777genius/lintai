@@ -14,9 +14,10 @@ use crate::markdown_rules::{
     check_git_apply_allowed_tools, check_git_branch_allowed_tools,
     check_git_checkout_allowed_tools, check_git_cherry_pick_allowed_tools,
     check_git_clean_allowed_tools, check_git_clone_allowed_tools, check_git_commit_allowed_tools,
-    check_git_config_allowed_tools, check_git_fetch_allowed_tools, check_git_merge_allowed_tools,
-    check_git_push_allowed_tools, check_git_rebase_allowed_tools, check_git_reset_allowed_tools,
-    check_git_restore_allowed_tools, check_git_stash_allowed_tools, check_git_tag_allowed_tools,
+    check_git_config_allowed_tools, check_git_fetch_allowed_tools,
+    check_git_ls_remote_allowed_tools, check_git_merge_allowed_tools, check_git_push_allowed_tools,
+    check_git_rebase_allowed_tools, check_git_reset_allowed_tools, check_git_restore_allowed_tools,
+    check_git_stash_allowed_tools, check_git_tag_allowed_tools,
     check_glob_unsafe_path_allowed_tools, check_html_comment_directive,
     check_html_comment_download_exec, check_markdown_base64_exec,
     check_markdown_cargo_http_git_install, check_markdown_cargo_http_index,
@@ -33,7 +34,7 @@ use crate::markdown_rules::{
     check_markdown_pip_http_find_links, check_markdown_pip_http_git_install,
     check_markdown_pip_http_index, check_markdown_pip_http_source, check_markdown_pip_trusted_host,
     check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
-    check_npm_exec_allowed_tools, check_package_install_allowed_tools,
+    check_npm_exec_allowed_tools, check_npx_allowed_tools, check_package_install_allowed_tools,
     check_pipx_run_allowed_tools, check_plugin_agent_hooks_frontmatter,
     check_plugin_agent_mcp_servers_frontmatter, check_plugin_agent_permission_mode,
     check_pnpm_dlx_allowed_tools, check_read_unsafe_path_allowed_tools, check_rm_allowed_tools,
@@ -592,6 +593,30 @@ declare_rule! {
         code: "SEC499",
         summary: "AI-native markdown frontmatter grants `Bash(pipx run:*)` tool access",
         doc_title: "AI markdown: shared pipx run tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct NpxAllowedToolsRule {
+        code: "SEC500",
+        summary: "AI-native markdown frontmatter grants `Bash(npx:*)` tool access",
+        doc_title: "AI markdown: shared npx tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GitLsRemoteAllowedToolsRule {
+        code: "SEC501",
+        summary: "AI-native markdown frontmatter grants `Bash(git ls-remote:*)` tool access",
+        doc_title: "AI markdown: shared git ls-remote tool grant",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -1199,7 +1224,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 96] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 98] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -2019,6 +2044,38 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 96] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(pipx run:*)` access is really needed, or replace it with a narrower workflow-specific permission",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: NpxAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared npx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_npx_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(npx:*)` access is really needed, or replace it with a narrower workflow-specific permission",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GitLsRemoteAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `git ls-remote` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_git_ls_remote_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(git ls-remote:*)` access is really needed, or replace it with a narrower workflow-specific permission",
         ),
         suggestion_fix: None,
     },

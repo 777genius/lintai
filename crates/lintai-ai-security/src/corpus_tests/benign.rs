@@ -221,6 +221,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-npm-exec-bunx-specific-safe",
             "skill-npm-https-registry-safe",
             "skill-npm-https-source-safe",
+            "skill-npx-git-ls-remote-specific-safe",
             "skill-package-command-allowed-tools-safe",
             "skill-pip-config-https-find-links-safe",
             "skill-pip-config-https-index-safe",
