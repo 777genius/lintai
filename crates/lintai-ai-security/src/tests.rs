@@ -6668,13 +6668,167 @@ fn finds_mcp_autoapprove_gh_workflow_run() {
 }
 
 #[test]
+fn finds_mcp_autoapprove_read_wildcard() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Read(*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC567")
+        .unwrap();
+    let start = content.find("\"Read(*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Read(*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_write_wildcard() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Write(*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC568")
+        .unwrap();
+    let start = content.find("\"Write(*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Write(*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_edit_wildcard() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Edit(*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC569")
+        .unwrap();
+    let start = content.find("\"Edit(*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Edit(*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_glob_wildcard() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Glob(*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC570")
+        .unwrap();
+    let start = content.find("\"Glob(*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Glob(*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_grep_wildcard() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Grep(*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC571")
+        .unwrap();
+    let start = content.find("\"Grep(*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Grep(*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_webfetch_wildcard() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["WebFetch(*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC572")
+        .unwrap();
+    let start = content.find("\"WebFetch(*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "WebFetch(*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_websearch_wildcard() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["WebSearch(*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC573")
+        .unwrap();
+    let start = content.find("\"WebSearch(*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "WebSearch(*)".len())
+    );
+}
+
+#[test]
 fn ignores_mcp_autoapprove_nonmatching_tools() {
     let provider = AiSecurityProvider::default();
     let findings = ProviderHarness::run(
         Arc::new(provider),
         ArtifactKind::McpConfig,
         SourceFormat::Json,
-        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(git status:*)","Read(*)"]}}}"#,
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(git status:*)","Read(./docs/**)","Write(./artifacts/**)","Edit(./docs/**)","Glob(./src/**)","Grep(todo:)","WebFetch(domain:docs.example.com)","WebSearch(site:docs.example.com)"]}}}"#,
     );
 
     assert!(!findings.iter().any(|finding| {
@@ -6701,6 +6855,13 @@ fn ignores_mcp_autoapprove_nonmatching_tools() {
                 | "SEC564"
                 | "SEC565"
                 | "SEC566"
+                | "SEC567"
+                | "SEC568"
+                | "SEC569"
+                | "SEC570"
+                | "SEC571"
+                | "SEC572"
+                | "SEC573"
         )
     }));
 }

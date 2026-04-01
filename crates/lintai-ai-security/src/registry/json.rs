@@ -5,19 +5,23 @@ use crate::json_rules::{
     check_json_dangerous_endpoint_host, check_json_hidden_instruction, check_json_literal_secret,
     check_json_sensitive_env_reference, check_json_suspicious_remote_endpoint,
     check_json_unsafe_plugin_path, check_mcp_autoapprove_bash_wildcard, check_mcp_autoapprove_curl,
-    check_mcp_autoapprove_gh_api_delete, check_mcp_autoapprove_gh_api_patch,
-    check_mcp_autoapprove_gh_api_post, check_mcp_autoapprove_gh_api_put,
-    check_mcp_autoapprove_gh_issue_create, check_mcp_autoapprove_gh_repo_create,
-    check_mcp_autoapprove_gh_repo_delete, check_mcp_autoapprove_gh_repo_edit,
-    check_mcp_autoapprove_gh_secret_set, check_mcp_autoapprove_gh_variable_set,
-    check_mcp_autoapprove_gh_workflow_run, check_mcp_autoapprove_git_checkout,
-    check_mcp_autoapprove_git_clean, check_mcp_autoapprove_git_commit,
-    check_mcp_autoapprove_git_push, check_mcp_autoapprove_git_reset, check_mcp_autoapprove_rm,
-    check_mcp_autoapprove_sudo, check_mcp_autoapprove_tools_true, check_mcp_autoapprove_wget,
-    check_mcp_autoapprove_wildcard, check_mcp_broad_env_file, check_mcp_capabilities_wildcard,
-    check_mcp_credential_env_passthrough, check_mcp_dangerous_docker_flag,
-    check_mcp_inline_download_exec, check_mcp_mutable_docker_pull, check_mcp_mutable_launcher,
-    check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
+    check_mcp_autoapprove_edit_wildcard, check_mcp_autoapprove_gh_api_delete,
+    check_mcp_autoapprove_gh_api_patch, check_mcp_autoapprove_gh_api_post,
+    check_mcp_autoapprove_gh_api_put, check_mcp_autoapprove_gh_issue_create,
+    check_mcp_autoapprove_gh_repo_create, check_mcp_autoapprove_gh_repo_delete,
+    check_mcp_autoapprove_gh_repo_edit, check_mcp_autoapprove_gh_secret_set,
+    check_mcp_autoapprove_gh_variable_set, check_mcp_autoapprove_gh_workflow_run,
+    check_mcp_autoapprove_git_checkout, check_mcp_autoapprove_git_clean,
+    check_mcp_autoapprove_git_commit, check_mcp_autoapprove_git_push,
+    check_mcp_autoapprove_git_reset, check_mcp_autoapprove_glob_wildcard,
+    check_mcp_autoapprove_grep_wildcard, check_mcp_autoapprove_read_wildcard,
+    check_mcp_autoapprove_rm, check_mcp_autoapprove_sudo, check_mcp_autoapprove_tools_true,
+    check_mcp_autoapprove_webfetch_wildcard, check_mcp_autoapprove_websearch_wildcard,
+    check_mcp_autoapprove_wget, check_mcp_autoapprove_wildcard,
+    check_mcp_autoapprove_write_wildcard, check_mcp_broad_env_file,
+    check_mcp_capabilities_wildcard, check_mcp_credential_env_passthrough,
+    check_mcp_dangerous_docker_flag, check_mcp_inline_download_exec, check_mcp_mutable_docker_pull,
+    check_mcp_mutable_launcher, check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
     check_mcp_sensitive_docker_mount, check_mcp_shell_wrapper, check_mcp_sudo_args0,
     check_mcp_sudo_command, check_mcp_trust_tools_true, check_mcp_unpinned_docker_image,
     check_plain_http_config, check_plugin_hook_inline_download_exec,
@@ -470,6 +474,90 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApproveReadWildcardRule {
+        code: "SEC567",
+        summary: "MCP configuration auto-approves `Read(*)` through `autoApprove`",
+        doc_title: "MCP config: Read wildcard auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveWriteWildcardRule {
+        code: "SEC568",
+        summary: "MCP configuration auto-approves `Write(*)` through `autoApprove`",
+        doc_title: "MCP config: Write wildcard auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveEditWildcardRule {
+        code: "SEC569",
+        summary: "MCP configuration auto-approves `Edit(*)` through `autoApprove`",
+        doc_title: "MCP config: Edit wildcard auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGlobWildcardRule {
+        code: "SEC570",
+        summary: "MCP configuration auto-approves `Glob(*)` through `autoApprove`",
+        doc_title: "MCP config: Glob wildcard auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGrepWildcardRule {
+        code: "SEC571",
+        summary: "MCP configuration auto-approves `Grep(*)` through `autoApprove`",
+        doc_title: "MCP config: Grep wildcard auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveWebFetchWildcardRule {
+        code: "SEC572",
+        summary: "MCP configuration auto-approves `WebFetch(*)` through `autoApprove`",
+        doc_title: "MCP config: WebFetch wildcard auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveWebSearchWildcardRule {
+        code: "SEC573",
+        summary: "MCP configuration auto-approves `WebSearch(*)` through `autoApprove`",
+        doc_title: "MCP config: WebSearch wildcard auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpAutoApproveToolsTrueRule {
         code: "SEC395",
         summary: "MCP configuration auto-approves all tools with `autoApproveTools: true`",
@@ -625,7 +713,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 50] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 57] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -1347,6 +1435,146 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 50] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `gh workflow run` auto-approval and keep workflow dispatch under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveReadWildcardRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit `Read(*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-wildcard-tool-family"],
+            benign_case_ids: &["mcp-autoapprove-wildcard-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Read(*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_read_wildcard,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `Read(*)` auto-approval and keep broad file reading under narrower reviewed scopes",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveWriteWildcardRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit `Write(*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-wildcard-tool-family"],
+            benign_case_ids: &["mcp-autoapprove-wildcard-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Write(*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_write_wildcard,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `Write(*)` auto-approval and keep broad file mutation under narrower reviewed scopes",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveEditWildcardRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit `Edit(*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-wildcard-tool-family"],
+            benign_case_ids: &["mcp-autoapprove-wildcard-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Edit(*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_edit_wildcard,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `Edit(*)` auto-approval and keep broad editing under narrower reviewed scopes",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGlobWildcardRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit `Glob(*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-wildcard-tool-family"],
+            benign_case_ids: &["mcp-autoapprove-wildcard-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Glob(*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_glob_wildcard,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `Glob(*)` auto-approval and keep broad file discovery under narrower reviewed scopes",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGrepWildcardRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit `Grep(*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-wildcard-tool-family"],
+            benign_case_ids: &["mcp-autoapprove-wildcard-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Grep(*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_grep_wildcard,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `Grep(*)` auto-approval and keep broad content search under narrower reviewed scopes",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveWebFetchWildcardRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit `WebFetch(*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-wildcard-tool-family"],
+            benign_case_ids: &["mcp-autoapprove-wildcard-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"WebFetch(*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_webfetch_wildcard,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `WebFetch(*)` auto-approval and keep broad network fetch under narrower reviewed scopes",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveWebSearchWildcardRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit `WebSearch(*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-wildcard-tool-family"],
+            benign_case_ids: &["mcp-autoapprove-wildcard-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"WebSearch(*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_websearch_wildcard,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `WebSearch(*)` auto-approval and keep broad remote search under narrower reviewed scopes",
         ),
         suggestion_fix: None,
     },

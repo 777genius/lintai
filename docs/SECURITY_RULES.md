@@ -285,6 +285,13 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC564 / MCP-AUTOAPPROVE-GH-SECRET-SET` | MCP configuration auto-approves `Bash(gh secret set:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC565 / MCP-AUTOAPPROVE-GH-VARIABLE-SET` | MCP configuration auto-approves `Bash(gh variable set:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC566 / MCP-AUTOAPPROVE-GH-WORKFLOW-RUN` | MCP configuration auto-approves `Bash(gh workflow run:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC567 / MCP-AUTOAPPROVE-READ-WILDCARD` | MCP configuration auto-approves `Read(*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC568 / MCP-AUTOAPPROVE-WRITE-WILDCARD` | MCP configuration auto-approves `Write(*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC569 / MCP-AUTOAPPROVE-EDIT-WILDCARD` | MCP configuration auto-approves `Edit(*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC570 / MCP-AUTOAPPROVE-GLOB-WILDCARD` | MCP configuration auto-approves `Glob(*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC571 / MCP-AUTOAPPROVE-GREP-WILDCARD` | MCP configuration auto-approves `Grep(*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC572 / MCP-AUTOAPPROVE-WEBFETCH-WILDCARD` | MCP configuration auto-approves `WebFetch(*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC573 / MCP-AUTOAPPROVE-WEBSEARCH-WILDCARD` | MCP configuration auto-approves `WebSearch(*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -5456,6 +5463,153 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh workflow run:*)"]` on parsed MCP configuration.
 - Malicious Corpus: `mcp-autoapprove-gh-mutation-family`
 - Benign Corpus: `mcp-autoapprove-gh-mutation-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC567 / MCP-AUTOAPPROVE-READ-WILDCARD` — MCP configuration auto-approves `Read(*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-READ-WILDCARD`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit `Read(*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Read(*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-wildcard-tool-family`
+- Benign Corpus: `mcp-autoapprove-wildcard-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC568 / MCP-AUTOAPPROVE-WRITE-WILDCARD` — MCP configuration auto-approves `Write(*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-WRITE-WILDCARD`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit `Write(*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Write(*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-wildcard-tool-family`
+- Benign Corpus: `mcp-autoapprove-wildcard-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC569 / MCP-AUTOAPPROVE-EDIT-WILDCARD` — MCP configuration auto-approves `Edit(*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-EDIT-WILDCARD`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit `Edit(*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Edit(*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-wildcard-tool-family`
+- Benign Corpus: `mcp-autoapprove-wildcard-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC570 / MCP-AUTOAPPROVE-GLOB-WILDCARD` — MCP configuration auto-approves `Glob(*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GLOB-WILDCARD`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit `Glob(*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Glob(*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-wildcard-tool-family`
+- Benign Corpus: `mcp-autoapprove-wildcard-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC571 / MCP-AUTOAPPROVE-GREP-WILDCARD` — MCP configuration auto-approves `Grep(*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GREP-WILDCARD`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit `Grep(*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Grep(*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-wildcard-tool-family`
+- Benign Corpus: `mcp-autoapprove-wildcard-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC572 / MCP-AUTOAPPROVE-WEBFETCH-WILDCARD` — MCP configuration auto-approves `WebFetch(*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-WEBFETCH-WILDCARD`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit `WebFetch(*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["WebFetch(*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-wildcard-tool-family`
+- Benign Corpus: `mcp-autoapprove-wildcard-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC573 / MCP-AUTOAPPROVE-WEBSEARCH-WILDCARD` — MCP configuration auto-approves `WebSearch(*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-WEBSEARCH-WILDCARD`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit `WebSearch(*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["WebSearch(*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-wildcard-tool-family`
+- Benign Corpus: `mcp-autoapprove-wildcard-tool-family-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

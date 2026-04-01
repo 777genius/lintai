@@ -1,0 +1,12 @@
+id = "mcp-autoapprove-wildcard-tool-family"
+description = "MCP config auto-approves wildcard filesystem and network tools through autoApprove"
+
+expected_findings = [
+  "SEC567",
+  "SEC568",
+  "SEC569",
+  "SEC570",
+  "SEC571",
+  "SEC572",
+  "SEC573",
+]

@@ -408,6 +408,111 @@ pub(crate) fn check_mcp_autoapprove_gh_workflow_run(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_read_wildcard(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_read_wildcard_span.clone()),
+        "MCP configuration auto-approves blanket read access with `autoApprove: [\"Read(*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_write_wildcard(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_write_wildcard_span.clone()),
+        "MCP configuration auto-approves blanket write access with `autoApprove: [\"Write(*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_edit_wildcard(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_edit_wildcard_span.clone()),
+        "MCP configuration auto-approves blanket edit access with `autoApprove: [\"Edit(*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_glob_wildcard(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_glob_wildcard_span.clone()),
+        "MCP configuration auto-approves blanket file discovery with `autoApprove: [\"Glob(*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_grep_wildcard(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_grep_wildcard_span.clone()),
+        "MCP configuration auto-approves blanket content search with `autoApprove: [\"Grep(*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_webfetch_wildcard(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_webfetch_wildcard_span.clone()),
+        "MCP configuration auto-approves blanket remote fetch with `autoApprove: [\"WebFetch(*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_websearch_wildcard(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_websearch_wildcard_span.clone()),
+        "MCP configuration auto-approves blanket remote search with `autoApprove: [\"WebSearch(*)\"]`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_tools_true(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

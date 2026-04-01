@@ -84,7 +84,14 @@
         "lintai-ai-security:SEC563",
         "lintai-ai-security:SEC564",
         "lintai-ai-security:SEC565",
-        "lintai-ai-security:SEC566"
+        "lintai-ai-security:SEC566",
+        "lintai-ai-security:SEC567",
+        "lintai-ai-security:SEC568",
+        "lintai-ai-security:SEC569",
+        "lintai-ai-security:SEC570",
+        "lintai-ai-security:SEC571",
+        "lintai-ai-security:SEC572",
+        "lintai-ai-security:SEC573"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -440,7 +447,14 @@
         "lintai-ai-security:SEC563",
         "lintai-ai-security:SEC564",
         "lintai-ai-security:SEC565",
-        "lintai-ai-security:SEC566"
+        "lintai-ai-security:SEC566",
+        "lintai-ai-security:SEC567",
+        "lintai-ai-security:SEC568",
+        "lintai-ai-security:SEC569",
+        "lintai-ai-security:SEC570",
+        "lintai-ai-security:SEC571",
+        "lintai-ai-security:SEC572",
+        "lintai-ai-security:SEC573"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -10056,6 +10070,279 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh workflow run:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC567",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC567",
+      "alias": "MCP-AUTOAPPROVE-READ-WILDCARD",
+      "displayLabel": "SEC567 / MCP-AUTOAPPROVE-READ-WILDCARD",
+      "docTitle": "MCP config: Read wildcard auto-approve",
+      "slug": "sec567",
+      "canonicalPath": "/rules/lintai-ai-security/sec567",
+      "summary": "MCP configuration auto-approves `Read(*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit `Read(*)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-wildcard-tool-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-wildcard-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Read(*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC568",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC568",
+      "alias": "MCP-AUTOAPPROVE-WRITE-WILDCARD",
+      "displayLabel": "SEC568 / MCP-AUTOAPPROVE-WRITE-WILDCARD",
+      "docTitle": "MCP config: Write wildcard auto-approve",
+      "slug": "sec568",
+      "canonicalPath": "/rules/lintai-ai-security/sec568",
+      "summary": "MCP configuration auto-approves `Write(*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit `Write(*)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-wildcard-tool-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-wildcard-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Write(*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC569",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC569",
+      "alias": "MCP-AUTOAPPROVE-EDIT-WILDCARD",
+      "displayLabel": "SEC569 / MCP-AUTOAPPROVE-EDIT-WILDCARD",
+      "docTitle": "MCP config: Edit wildcard auto-approve",
+      "slug": "sec569",
+      "canonicalPath": "/rules/lintai-ai-security/sec569",
+      "summary": "MCP configuration auto-approves `Edit(*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit `Edit(*)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-wildcard-tool-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-wildcard-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Edit(*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC570",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC570",
+      "alias": "MCP-AUTOAPPROVE-GLOB-WILDCARD",
+      "displayLabel": "SEC570 / MCP-AUTOAPPROVE-GLOB-WILDCARD",
+      "docTitle": "MCP config: Glob wildcard auto-approve",
+      "slug": "sec570",
+      "canonicalPath": "/rules/lintai-ai-security/sec570",
+      "summary": "MCP configuration auto-approves `Glob(*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit `Glob(*)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-wildcard-tool-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-wildcard-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Glob(*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC571",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC571",
+      "alias": "MCP-AUTOAPPROVE-GREP-WILDCARD",
+      "displayLabel": "SEC571 / MCP-AUTOAPPROVE-GREP-WILDCARD",
+      "docTitle": "MCP config: Grep wildcard auto-approve",
+      "slug": "sec571",
+      "canonicalPath": "/rules/lintai-ai-security/sec571",
+      "summary": "MCP configuration auto-approves `Grep(*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit `Grep(*)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-wildcard-tool-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-wildcard-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Grep(*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC572",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC572",
+      "alias": "MCP-AUTOAPPROVE-WEBFETCH-WILDCARD",
+      "displayLabel": "SEC572 / MCP-AUTOAPPROVE-WEBFETCH-WILDCARD",
+      "docTitle": "MCP config: WebFetch wildcard auto-approve",
+      "slug": "sec572",
+      "canonicalPath": "/rules/lintai-ai-security/sec572",
+      "summary": "MCP configuration auto-approves `WebFetch(*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit `WebFetch(*)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-wildcard-tool-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-wildcard-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"WebFetch(*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC573",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC573",
+      "alias": "MCP-AUTOAPPROVE-WEBSEARCH-WILDCARD",
+      "displayLabel": "SEC573 / MCP-AUTOAPPROVE-WEBSEARCH-WILDCARD",
+      "docTitle": "MCP config: WebSearch wildcard auto-approve",
+      "slug": "sec573",
+      "canonicalPath": "/rules/lintai-ai-security/sec573",
+      "summary": "MCP configuration auto-approves `WebSearch(*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit `WebSearch(*)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-wildcard-tool-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-wildcard-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"WebSearch(*)\"]` on parsed MCP configuration."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
