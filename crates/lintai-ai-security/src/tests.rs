@@ -6822,6 +6822,164 @@ fn finds_mcp_autoapprove_websearch_wildcard() {
 }
 
 #[test]
+fn finds_mcp_autoapprove_read_unscoped() {
+    let provider = AiSecurityProvider::default();
+    let content =
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Read"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC618")
+        .unwrap();
+    let start = content.find("\"Read\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Read".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_write_unscoped() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Write"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC619")
+        .unwrap();
+    let start = content.find("\"Write\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Write".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_edit_unscoped() {
+    let provider = AiSecurityProvider::default();
+    let content =
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Edit"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC620")
+        .unwrap();
+    let start = content.find("\"Edit\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Edit".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_glob_unscoped() {
+    let provider = AiSecurityProvider::default();
+    let content =
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Glob"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC621")
+        .unwrap();
+    let start = content.find("\"Glob\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Glob".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_grep_unscoped() {
+    let provider = AiSecurityProvider::default();
+    let content =
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Grep"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC622")
+        .unwrap();
+    let start = content.find("\"Grep\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Grep".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_webfetch_unscoped() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["WebFetch"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC623")
+        .unwrap();
+    let start = content.find("\"WebFetch\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "WebFetch".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_websearch_unscoped() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["WebSearch"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC624")
+        .unwrap();
+    let start = content.find("\"WebSearch\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "WebSearch".len())
+    );
+}
+
+#[test]
 fn finds_mcp_autoapprove_read_unsafe_path() {
     let provider = AiSecurityProvider::default();
     let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Read(/etc/**)"]}}}"#;
@@ -6863,6 +7021,25 @@ fn finds_mcp_autoapprove_write_unsafe_path() {
         finding.location.span,
         lintai_api::Span::new(start, start + "Write(../shared/**)".len())
     );
+}
+
+#[test]
+fn does_not_flag_mcp_autoapprove_unscoped_tool_family_when_entries_are_scoped() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Read(./docs/**)","Write(./artifacts/**)","Edit(./docs/**)","Glob(./src/**)","Grep(todo:)","WebFetch(domain:docs.example.com)","WebSearch(site:docs.example.com)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    assert!(!findings.iter().any(|finding| {
+        matches!(
+            finding.rule_code.as_str(),
+            "SEC618" | "SEC619" | "SEC620" | "SEC621" | "SEC622" | "SEC623" | "SEC624"
+        )
+    }));
 }
 
 #[test]
@@ -7860,6 +8037,13 @@ fn ignores_mcp_autoapprove_nonmatching_tools() {
                 | "SEC615"
                 | "SEC616"
                 | "SEC617"
+                | "SEC618"
+                | "SEC619"
+                | "SEC620"
+                | "SEC621"
+                | "SEC622"
+                | "SEC623"
+                | "SEC624"
         )
     }));
 }

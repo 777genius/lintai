@@ -1,0 +1,12 @@
+id = "mcp-autoapprove-unscoped-tool-family"
+description = "MCP config auto-approves bare unscoped filesystem and network tools through autoApprove"
+
+expected_findings = [
+  "SEC618",
+  "SEC619",
+  "SEC620",
+  "SEC621",
+  "SEC622",
+  "SEC623",
+  "SEC624",
+]

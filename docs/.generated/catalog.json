@@ -135,7 +135,14 @@
         "lintai-ai-security:SEC614",
         "lintai-ai-security:SEC615",
         "lintai-ai-security:SEC616",
-        "lintai-ai-security:SEC617"
+        "lintai-ai-security:SEC617",
+        "lintai-ai-security:SEC618",
+        "lintai-ai-security:SEC619",
+        "lintai-ai-security:SEC620",
+        "lintai-ai-security:SEC621",
+        "lintai-ai-security:SEC622",
+        "lintai-ai-security:SEC623",
+        "lintai-ai-security:SEC624"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -542,7 +549,14 @@
         "lintai-ai-security:SEC614",
         "lintai-ai-security:SEC615",
         "lintai-ai-security:SEC616",
-        "lintai-ai-security:SEC617"
+        "lintai-ai-security:SEC617",
+        "lintai-ai-security:SEC618",
+        "lintai-ai-security:SEC619",
+        "lintai-ai-security:SEC620",
+        "lintai-ai-security:SEC621",
+        "lintai-ai-security:SEC622",
+        "lintai-ai-security:SEC623",
+        "lintai-ai-security:SEC624"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -12571,6 +12585,279 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"WebFetch(domain:raw.githubusercontent.com)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC618",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC618",
+      "alias": "MCP-AUTOAPPROVE-READ",
+      "displayLabel": "SEC618 / MCP-AUTOAPPROVE-READ",
+      "docTitle": "MCP config: bare Read auto-approve",
+      "slug": "sec618",
+      "canonicalPath": "/rules/lintai-ai-security/sec618",
+      "summary": "MCP configuration auto-approves bare `Read` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact bare `Read` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-unscoped-tool-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-unscoped-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for bare `Read` in parsed `autoApprove` entries."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC619",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC619",
+      "alias": "MCP-AUTOAPPROVE-WRITE",
+      "displayLabel": "SEC619 / MCP-AUTOAPPROVE-WRITE",
+      "docTitle": "MCP config: bare Write auto-approve",
+      "slug": "sec619",
+      "canonicalPath": "/rules/lintai-ai-security/sec619",
+      "summary": "MCP configuration auto-approves bare `Write` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact bare `Write` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-unscoped-tool-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-unscoped-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for bare `Write` in parsed `autoApprove` entries."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC620",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC620",
+      "alias": "MCP-AUTOAPPROVE-EDIT",
+      "displayLabel": "SEC620 / MCP-AUTOAPPROVE-EDIT",
+      "docTitle": "MCP config: bare Edit auto-approve",
+      "slug": "sec620",
+      "canonicalPath": "/rules/lintai-ai-security/sec620",
+      "summary": "MCP configuration auto-approves bare `Edit` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact bare `Edit` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-unscoped-tool-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-unscoped-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for bare `Edit` in parsed `autoApprove` entries."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC621",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC621",
+      "alias": "MCP-AUTOAPPROVE-GLOB",
+      "displayLabel": "SEC621 / MCP-AUTOAPPROVE-GLOB",
+      "docTitle": "MCP config: bare Glob auto-approve",
+      "slug": "sec621",
+      "canonicalPath": "/rules/lintai-ai-security/sec621",
+      "summary": "MCP configuration auto-approves bare `Glob` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact bare `Glob` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-unscoped-tool-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-unscoped-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for bare `Glob` in parsed `autoApprove` entries."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC622",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC622",
+      "alias": "MCP-AUTOAPPROVE-GREP",
+      "displayLabel": "SEC622 / MCP-AUTOAPPROVE-GREP",
+      "docTitle": "MCP config: bare Grep auto-approve",
+      "slug": "sec622",
+      "canonicalPath": "/rules/lintai-ai-security/sec622",
+      "summary": "MCP configuration auto-approves bare `Grep` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact bare `Grep` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-unscoped-tool-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-unscoped-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for bare `Grep` in parsed `autoApprove` entries."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC623",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC623",
+      "alias": "MCP-AUTOAPPROVE-WEBFETCH",
+      "displayLabel": "SEC623 / MCP-AUTOAPPROVE-WEBFETCH",
+      "docTitle": "MCP config: bare WebFetch auto-approve",
+      "slug": "sec623",
+      "canonicalPath": "/rules/lintai-ai-security/sec623",
+      "summary": "MCP configuration auto-approves bare `WebFetch` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact bare `WebFetch` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-unscoped-tool-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-unscoped-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for bare `WebFetch` in parsed `autoApprove` entries."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC624",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC624",
+      "alias": "MCP-AUTOAPPROVE-WEBSEARCH",
+      "displayLabel": "SEC624 / MCP-AUTOAPPROVE-WEBSEARCH",
+      "docTitle": "MCP config: bare WebSearch auto-approve",
+      "slug": "sec624",
+      "canonicalPath": "/rules/lintai-ai-security/sec624",
+      "summary": "MCP configuration auto-approves bare `WebSearch` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact bare `WebSearch` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-unscoped-tool-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-unscoped-tool-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for bare `WebSearch` in parsed `autoApprove` entries."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

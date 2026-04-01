@@ -7,18 +7,18 @@ use crate::json_rules::{
     check_json_unsafe_plugin_path, check_mcp_autoapprove_bash_wildcard, check_mcp_autoapprove_bunx,
     check_mcp_autoapprove_chgrp, check_mcp_autoapprove_chmod, check_mcp_autoapprove_chown,
     check_mcp_autoapprove_crontab, check_mcp_autoapprove_curl,
-    check_mcp_autoapprove_edit_unsafe_path, check_mcp_autoapprove_edit_wildcard,
-    check_mcp_autoapprove_gh_api_delete, check_mcp_autoapprove_gh_api_patch,
-    check_mcp_autoapprove_gh_api_post, check_mcp_autoapprove_gh_api_put,
-    check_mcp_autoapprove_gh_issue_create, check_mcp_autoapprove_gh_pr,
-    check_mcp_autoapprove_gh_release_create, check_mcp_autoapprove_gh_release_delete,
-    check_mcp_autoapprove_gh_release_upload, check_mcp_autoapprove_gh_repo_create,
-    check_mcp_autoapprove_gh_repo_delete, check_mcp_autoapprove_gh_repo_edit,
-    check_mcp_autoapprove_gh_repo_transfer, check_mcp_autoapprove_gh_secret_delete,
-    check_mcp_autoapprove_gh_secret_set, check_mcp_autoapprove_gh_variable_delete,
-    check_mcp_autoapprove_gh_variable_set, check_mcp_autoapprove_gh_workflow_disable,
-    check_mcp_autoapprove_gh_workflow_run, check_mcp_autoapprove_git_add,
-    check_mcp_autoapprove_git_am, check_mcp_autoapprove_git_apply,
+    check_mcp_autoapprove_edit_unsafe_path, check_mcp_autoapprove_edit_unscoped,
+    check_mcp_autoapprove_edit_wildcard, check_mcp_autoapprove_gh_api_delete,
+    check_mcp_autoapprove_gh_api_patch, check_mcp_autoapprove_gh_api_post,
+    check_mcp_autoapprove_gh_api_put, check_mcp_autoapprove_gh_issue_create,
+    check_mcp_autoapprove_gh_pr, check_mcp_autoapprove_gh_release_create,
+    check_mcp_autoapprove_gh_release_delete, check_mcp_autoapprove_gh_release_upload,
+    check_mcp_autoapprove_gh_repo_create, check_mcp_autoapprove_gh_repo_delete,
+    check_mcp_autoapprove_gh_repo_edit, check_mcp_autoapprove_gh_repo_transfer,
+    check_mcp_autoapprove_gh_secret_delete, check_mcp_autoapprove_gh_secret_set,
+    check_mcp_autoapprove_gh_variable_delete, check_mcp_autoapprove_gh_variable_set,
+    check_mcp_autoapprove_gh_workflow_disable, check_mcp_autoapprove_gh_workflow_run,
+    check_mcp_autoapprove_git_add, check_mcp_autoapprove_git_am, check_mcp_autoapprove_git_apply,
     check_mcp_autoapprove_git_branch, check_mcp_autoapprove_git_checkout,
     check_mcp_autoapprove_git_cherry_pick, check_mcp_autoapprove_git_clean,
     check_mcp_autoapprove_git_clone, check_mcp_autoapprove_git_commit,
@@ -27,18 +27,21 @@ use crate::json_rules::{
     check_mcp_autoapprove_git_push, check_mcp_autoapprove_git_rebase,
     check_mcp_autoapprove_git_reset, check_mcp_autoapprove_git_restore,
     check_mcp_autoapprove_git_stash, check_mcp_autoapprove_git_tag,
-    check_mcp_autoapprove_glob_unsafe_path, check_mcp_autoapprove_glob_wildcard,
-    check_mcp_autoapprove_grep_unsafe_path, check_mcp_autoapprove_grep_wildcard,
+    check_mcp_autoapprove_glob_unsafe_path, check_mcp_autoapprove_glob_unscoped,
+    check_mcp_autoapprove_glob_wildcard, check_mcp_autoapprove_grep_unsafe_path,
+    check_mcp_autoapprove_grep_unscoped, check_mcp_autoapprove_grep_wildcard,
     check_mcp_autoapprove_launchctl_bootstrap, check_mcp_autoapprove_launchctl_load,
     check_mcp_autoapprove_npm_exec, check_mcp_autoapprove_npx,
     check_mcp_autoapprove_package_install, check_mcp_autoapprove_pipx_run,
     check_mcp_autoapprove_pnpm_dlx, check_mcp_autoapprove_read_unsafe_path,
-    check_mcp_autoapprove_read_wildcard, check_mcp_autoapprove_rm, check_mcp_autoapprove_su,
-    check_mcp_autoapprove_sudo, check_mcp_autoapprove_systemctl_enable,
-    check_mcp_autoapprove_tools_true, check_mcp_autoapprove_uvx,
-    check_mcp_autoapprove_webfetch_raw_githubusercontent, check_mcp_autoapprove_webfetch_wildcard,
-    check_mcp_autoapprove_websearch_wildcard, check_mcp_autoapprove_wget,
-    check_mcp_autoapprove_wildcard, check_mcp_autoapprove_write_unsafe_path,
+    check_mcp_autoapprove_read_unscoped, check_mcp_autoapprove_read_wildcard,
+    check_mcp_autoapprove_rm, check_mcp_autoapprove_su, check_mcp_autoapprove_sudo,
+    check_mcp_autoapprove_systemctl_enable, check_mcp_autoapprove_tools_true,
+    check_mcp_autoapprove_uvx, check_mcp_autoapprove_webfetch_raw_githubusercontent,
+    check_mcp_autoapprove_webfetch_unscoped, check_mcp_autoapprove_webfetch_wildcard,
+    check_mcp_autoapprove_websearch_unscoped, check_mcp_autoapprove_websearch_wildcard,
+    check_mcp_autoapprove_wget, check_mcp_autoapprove_wildcard,
+    check_mcp_autoapprove_write_unsafe_path, check_mcp_autoapprove_write_unscoped,
     check_mcp_autoapprove_write_wildcard, check_mcp_autoapprove_yarn_dlx, check_mcp_broad_env_file,
     check_mcp_capabilities_wildcard, check_mcp_credential_env_passthrough,
     check_mcp_dangerous_docker_flag, check_mcp_inline_download_exec, check_mcp_mutable_docker_pull,
@@ -963,6 +966,90 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApproveReadRule {
+        code: "SEC618",
+        summary: "MCP configuration auto-approves bare `Read` through `autoApprove`",
+        doc_title: "MCP config: bare Read auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveWriteRule {
+        code: "SEC619",
+        summary: "MCP configuration auto-approves bare `Write` through `autoApprove`",
+        doc_title: "MCP config: bare Write auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveEditRule {
+        code: "SEC620",
+        summary: "MCP configuration auto-approves bare `Edit` through `autoApprove`",
+        doc_title: "MCP config: bare Edit auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGlobRule {
+        code: "SEC621",
+        summary: "MCP configuration auto-approves bare `Glob` through `autoApprove`",
+        doc_title: "MCP config: bare Glob auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGrepRule {
+        code: "SEC622",
+        summary: "MCP configuration auto-approves bare `Grep` through `autoApprove`",
+        doc_title: "MCP config: bare Grep auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveWebFetchRule {
+        code: "SEC623",
+        summary: "MCP configuration auto-approves bare `WebFetch` through `autoApprove`",
+        doc_title: "MCP config: bare WebFetch auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveWebSearchRule {
+        code: "SEC624",
+        summary: "MCP configuration auto-approves bare `WebSearch` through `autoApprove`",
+        doc_title: "MCP config: bare WebSearch auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpAutoApproveReadWildcardRule {
         code: "SEC567",
         summary: "MCP configuration auto-approves `Read(*)` through `autoApprove`",
@@ -1262,7 +1349,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 101] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 108] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -2904,6 +2991,146 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 101] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `WebSearch(*)` auto-approval and keep broad remote search under narrower reviewed scopes",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveReadRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact bare `Read` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-unscoped-tool-family"],
+            benign_case_ids: &["mcp-autoapprove-unscoped-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for bare `Read` in parsed `autoApprove` entries.",
+        },
+        check: check_mcp_autoapprove_read_unscoped,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace shared bare `Read` auto-approval with narrower reviewed scopes like `Read(./docs/**)`",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveWriteRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact bare `Write` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-unscoped-tool-family"],
+            benign_case_ids: &["mcp-autoapprove-unscoped-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for bare `Write` in parsed `autoApprove` entries.",
+        },
+        check: check_mcp_autoapprove_write_unscoped,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace shared bare `Write` auto-approval with narrower reviewed scopes like `Write(./artifacts/**)`",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveEditRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact bare `Edit` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-unscoped-tool-family"],
+            benign_case_ids: &["mcp-autoapprove-unscoped-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for bare `Edit` in parsed `autoApprove` entries.",
+        },
+        check: check_mcp_autoapprove_edit_unscoped,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace shared bare `Edit` auto-approval with narrower reviewed scopes like `Edit(./docs/**)`",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGlobRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact bare `Glob` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-unscoped-tool-family"],
+            benign_case_ids: &["mcp-autoapprove-unscoped-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for bare `Glob` in parsed `autoApprove` entries.",
+        },
+        check: check_mcp_autoapprove_glob_unscoped,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace shared bare `Glob` auto-approval with narrower reviewed scopes like `Glob(./src/**)`",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGrepRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact bare `Grep` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-unscoped-tool-family"],
+            benign_case_ids: &["mcp-autoapprove-unscoped-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for bare `Grep` in parsed `autoApprove` entries.",
+        },
+        check: check_mcp_autoapprove_grep_unscoped,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace shared bare `Grep` auto-approval with narrower reviewed scopes like `Grep(todo:)`",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveWebFetchRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact bare `WebFetch` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-unscoped-tool-family"],
+            benign_case_ids: &["mcp-autoapprove-unscoped-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for bare `WebFetch` in parsed `autoApprove` entries.",
+        },
+        check: check_mcp_autoapprove_webfetch_unscoped,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace shared bare `WebFetch` auto-approval with narrower reviewed scopes like `WebFetch(domain:docs.example.com)`",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveWebSearchRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact bare `WebSearch` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-unscoped-tool-family"],
+            benign_case_ids: &["mcp-autoapprove-unscoped-tool-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for bare `WebSearch` in parsed `autoApprove` entries.",
+        },
+        check: check_mcp_autoapprove_websearch_unscoped,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace shared bare `WebSearch` auto-approval with narrower reviewed scopes like `WebSearch(site:docs.example.com)`",
         ),
         suggestion_fix: None,
     },

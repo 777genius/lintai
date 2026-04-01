@@ -1100,6 +1100,111 @@ pub(crate) fn check_mcp_autoapprove_websearch_wildcard(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_read_unscoped(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_read_unscoped_span.clone()),
+        "MCP configuration auto-approves bare `Read` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_write_unscoped(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_write_unscoped_span.clone()),
+        "MCP configuration auto-approves bare `Write` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_edit_unscoped(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_edit_unscoped_span.clone()),
+        "MCP configuration auto-approves bare `Edit` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_glob_unscoped(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_glob_unscoped_span.clone()),
+        "MCP configuration auto-approves bare `Glob` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_grep_unscoped(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_grep_unscoped_span.clone()),
+        "MCP configuration auto-approves bare `Grep` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_webfetch_unscoped(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_webfetch_unscoped_span.clone()),
+        "MCP configuration auto-approves bare `WebFetch` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_websearch_unscoped(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_websearch_unscoped_span.clone()),
+        "MCP configuration auto-approves bare `WebSearch` through `autoApprove`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_read_unsafe_path(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

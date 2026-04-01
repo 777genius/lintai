@@ -336,6 +336,13 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC615 / MCP-AUTOAPPROVE-CHGRP` | MCP configuration auto-approves `Bash(chgrp:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC616 / MCP-AUTOAPPROVE-SU` | MCP configuration auto-approves `Bash(su:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC617 / MCP-AUTOAPPROVE-WEBFETCH-RAW-GITHUB` | MCP configuration auto-approves `WebFetch(domain:raw.githubusercontent.com)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC618 / MCP-AUTOAPPROVE-READ` | MCP configuration auto-approves bare `Read` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC619 / MCP-AUTOAPPROVE-WRITE` | MCP configuration auto-approves bare `Write` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC620 / MCP-AUTOAPPROVE-EDIT` | MCP configuration auto-approves bare `Edit` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC621 / MCP-AUTOAPPROVE-GLOB` | MCP configuration auto-approves bare `Glob` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC622 / MCP-AUTOAPPROVE-GREP` | MCP configuration auto-approves bare `Grep` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC623 / MCP-AUTOAPPROVE-WEBFETCH` | MCP configuration auto-approves bare `WebFetch` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC624 / MCP-AUTOAPPROVE-WEBSEARCH` | MCP configuration auto-approves bare `WebSearch` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -6790,6 +6797,153 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["WebFetch(domain:raw.githubusercontent.com)"]` on parsed MCP configuration.
 - Malicious Corpus: `mcp-autoapprove-webfetch-raw-github`
 - Benign Corpus: `mcp-autoapprove-webfetch-raw-github-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC618 / MCP-AUTOAPPROVE-READ` — MCP configuration auto-approves bare `Read` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-READ`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact bare `Read` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for bare `Read` in parsed `autoApprove` entries.
+- Malicious Corpus: `mcp-autoapprove-unscoped-tool-family`
+- Benign Corpus: `mcp-autoapprove-unscoped-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC619 / MCP-AUTOAPPROVE-WRITE` — MCP configuration auto-approves bare `Write` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-WRITE`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact bare `Write` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for bare `Write` in parsed `autoApprove` entries.
+- Malicious Corpus: `mcp-autoapprove-unscoped-tool-family`
+- Benign Corpus: `mcp-autoapprove-unscoped-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC620 / MCP-AUTOAPPROVE-EDIT` — MCP configuration auto-approves bare `Edit` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-EDIT`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact bare `Edit` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for bare `Edit` in parsed `autoApprove` entries.
+- Malicious Corpus: `mcp-autoapprove-unscoped-tool-family`
+- Benign Corpus: `mcp-autoapprove-unscoped-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC621 / MCP-AUTOAPPROVE-GLOB` — MCP configuration auto-approves bare `Glob` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GLOB`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact bare `Glob` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for bare `Glob` in parsed `autoApprove` entries.
+- Malicious Corpus: `mcp-autoapprove-unscoped-tool-family`
+- Benign Corpus: `mcp-autoapprove-unscoped-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC622 / MCP-AUTOAPPROVE-GREP` — MCP configuration auto-approves bare `Grep` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GREP`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact bare `Grep` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for bare `Grep` in parsed `autoApprove` entries.
+- Malicious Corpus: `mcp-autoapprove-unscoped-tool-family`
+- Benign Corpus: `mcp-autoapprove-unscoped-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC623 / MCP-AUTOAPPROVE-WEBFETCH` — MCP configuration auto-approves bare `WebFetch` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-WEBFETCH`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact bare `WebFetch` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for bare `WebFetch` in parsed `autoApprove` entries.
+- Malicious Corpus: `mcp-autoapprove-unscoped-tool-family`
+- Benign Corpus: `mcp-autoapprove-unscoped-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC624 / MCP-AUTOAPPROVE-WEBSEARCH` — MCP configuration auto-approves bare `WebSearch` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-WEBSEARCH`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact bare `WebSearch` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for bare `WebSearch` in parsed `autoApprove` entries.
+- Malicious Corpus: `mcp-autoapprove-unscoped-tool-family`
+- Benign Corpus: `mcp-autoapprove-unscoped-tool-family-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
