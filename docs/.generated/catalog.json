@@ -2883,7 +2883,7 @@
       "summary": "AI-native markdown frontmatter grants unscoped Bash tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -2892,13 +2892,21 @@
         "preview",
         "skills"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "External validation now shows strong usefulness, but promotion still requires the completed stable checklist and one broader cross-cohort precision pass.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for exact bare `Bash` grants that expose unconstrained shell authority as shared default policy.",
+        "maliciousCaseIds": [
+          "skill-unscoped-bash-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-scoped-bash-allowed-tools-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for bare `Bash` inside allowed-tools or allowed_tools."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4513,7 +4521,7 @@
       "summary": "AI-native markdown frontmatter grants bare `WebFetch` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4522,13 +4530,21 @@
         "preview",
         "skills"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Bare WebFetch grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for exact bare `WebFetch` grants that expose unconstrained remote fetch authority as shared default policy.",
+        "maliciousCaseIds": [
+          "skill-unscoped-webfetch-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-scoped-webfetch-allowed-tools-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for bare `WebFetch` inside allowed-tools or allowed_tools."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7197,7 +7213,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh pr:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7205,13 +7221,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared gh pr grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub pull-request authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-pr-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-pr-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh pr:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7856,7 +7880,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(npm exec:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7864,13 +7888,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared npm exec grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact mutable `npm exec` authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-npm-exec-bunx-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-npm-exec-bunx-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(npm exec:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7886,7 +7918,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(bunx:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7894,13 +7926,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared bunx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact mutable `bunx` authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-npm-exec-bunx-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-npm-exec-bunx-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(bunx:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7916,7 +7956,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(uvx:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7924,13 +7964,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared uvx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact mutable `uvx` authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-uvx-dlx-pipx-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-uvx-dlx-pipx-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(uvx:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7946,7 +7994,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(pnpm dlx:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7954,13 +8002,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared pnpm dlx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact mutable `pnpm dlx` authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-uvx-dlx-pipx-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-uvx-dlx-pipx-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(pnpm dlx:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7976,7 +8032,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(yarn dlx:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7984,13 +8040,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared yarn dlx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact mutable `yarn dlx` authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-uvx-dlx-pipx-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-uvx-dlx-pipx-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(yarn dlx:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8006,7 +8070,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(pipx run:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8014,13 +8078,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared pipx run grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact mutable `pipx run` authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-uvx-dlx-pipx-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-uvx-dlx-pipx-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(pipx run:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8036,7 +8108,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(npx:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8044,13 +8116,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared npx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact mutable `npx` authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-npx-git-ls-remote-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-npx-git-ls-remote-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(npx:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8066,7 +8146,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(git ls-remote:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8074,13 +8154,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `git ls-remote` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact remote repository inspection authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-npx-git-ls-remote-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-npx-git-ls-remote-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(git ls-remote:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {

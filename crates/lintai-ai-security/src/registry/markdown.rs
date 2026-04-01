@@ -465,7 +465,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -537,7 +537,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -549,7 +549,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -561,7 +561,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -573,7 +573,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -585,7 +585,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -597,7 +597,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -609,7 +609,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -621,7 +621,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -633,7 +633,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -957,7 +957,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -2169,9 +2169,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "External validation now shows strong usefulness, but promotion still requires the completed stable checklist and one broader cross-cohort precision pass.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for exact bare `Bash` grants that expose unconstrained shell authority as shared default policy.",
+            malicious_case_ids: &["skill-unscoped-bash-allowed-tools"],
+            benign_case_ids: &["skill-scoped-bash-allowed-tools-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for bare `Bash` inside allowed-tools or allowed_tools.",
         },
         check: check_unscoped_bash_allowed_tools,
         safe_fix: None,
@@ -2265,9 +2269,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared gh pr grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub pull-request authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-pr-allowed-tools"],
+            benign_case_ids: &["skill-gh-pr-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh pr:*)` in allowed-tools entries.",
         },
         check: check_gh_pr_allowed_tools,
         safe_fix: None,
@@ -2801,9 +2809,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared npm exec grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact mutable `npm exec` authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-npm-exec-bunx-allowed-tools"],
+            benign_case_ids: &["skill-npm-exec-bunx-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(npm exec:*)` in allowed-tools entries.",
         },
         check: check_npm_exec_allowed_tools,
         safe_fix: None,
@@ -2817,9 +2829,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared bunx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact mutable `bunx` authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-npm-exec-bunx-allowed-tools"],
+            benign_case_ids: &["skill-npm-exec-bunx-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(bunx:*)` in allowed-tools entries.",
         },
         check: check_bunx_allowed_tools,
         safe_fix: None,
@@ -2833,9 +2849,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared uvx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact mutable `uvx` authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-uvx-dlx-pipx-allowed-tools"],
+            benign_case_ids: &["skill-uvx-dlx-pipx-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(uvx:*)` in allowed-tools entries.",
         },
         check: check_uvx_allowed_tools,
         safe_fix: None,
@@ -2849,9 +2869,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared pnpm dlx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact mutable `pnpm dlx` authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-uvx-dlx-pipx-allowed-tools"],
+            benign_case_ids: &["skill-uvx-dlx-pipx-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(pnpm dlx:*)` in allowed-tools entries.",
         },
         check: check_pnpm_dlx_allowed_tools,
         safe_fix: None,
@@ -2865,9 +2889,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared yarn dlx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact mutable `yarn dlx` authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-uvx-dlx-pipx-allowed-tools"],
+            benign_case_ids: &["skill-uvx-dlx-pipx-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(yarn dlx:*)` in allowed-tools entries.",
         },
         check: check_yarn_dlx_allowed_tools,
         safe_fix: None,
@@ -2881,9 +2909,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared pipx run grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact mutable `pipx run` authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-uvx-dlx-pipx-allowed-tools"],
+            benign_case_ids: &["skill-uvx-dlx-pipx-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(pipx run:*)` in allowed-tools entries.",
         },
         check: check_pipx_run_allowed_tools,
         safe_fix: None,
@@ -2897,9 +2929,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared npx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact mutable `npx` authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-npx-git-ls-remote-allowed-tools"],
+            benign_case_ids: &["skill-npx-git-ls-remote-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(npx:*)` in allowed-tools entries.",
         },
         check: check_npx_allowed_tools,
         safe_fix: None,
@@ -2913,9 +2949,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `git ls-remote` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact remote repository inspection authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-npx-git-ls-remote-allowed-tools"],
+            benign_case_ids: &["skill-npx-git-ls-remote-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(git ls-remote:*)` in allowed-tools entries.",
         },
         check: check_git_ls_remote_allowed_tools,
         safe_fix: None,
@@ -2929,9 +2969,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Bare WebFetch grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for exact bare `WebFetch` grants that expose unconstrained remote fetch authority as shared default policy.",
+            malicious_case_ids: &["skill-unscoped-webfetch-allowed-tools"],
+            benign_case_ids: &["skill-scoped-webfetch-allowed-tools-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for bare `WebFetch` inside allowed-tools or allowed_tools.",
         },
         check: check_unscoped_webfetch_allowed_tools,
         safe_fix: None,

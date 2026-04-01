@@ -70,7 +70,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC349 / MD-DOCKER-HOST-ESCAPE` | AI-native markdown Docker example uses a host-escape or privileged runtime pattern | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC350 / MD-UNTRUSTED-INSTRUCTION-PROMOTION` | Instruction markdown promotes untrusted external content to developer/system-level instructions | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
 | `SEC351 / MD-APPROVAL-BYPASS` | AI-native instruction explicitly disables user approval or confirmation | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC352 / MD-UNSCOPED-BASH` | AI-native markdown frontmatter grants unscoped Bash tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC352 / MD-UNSCOPED-BASH` | AI-native markdown frontmatter grants unscoped Bash tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC353 / COPILOT-4K` | GitHub Copilot instruction markdown exceeds the 4000-character guidance limit | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC354 / COPILOT-PATH-APPLYTO` | Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC355 / MD-WILDCARD-TOOLS` | AI-native markdown frontmatter grants wildcard tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
@@ -122,7 +122,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC401 / POLICY-EXEC-MISMATCH` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC402 / POLICY-NETWORK-MISMATCH` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC403 / POLICY-SKILL-CAPABILITIES-MISMATCH` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
-| `SEC404 / MD-WEBFETCH-UNSCOPED` | AI-native markdown frontmatter grants bare `WebFetch` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC404 / MD-WEBFETCH-UNSCOPED` | AI-native markdown frontmatter grants bare `WebFetch` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC405 / CLAUDE-PACKAGE-INSTALL-PERMISSION` | Claude settings permissions allow package installation commands in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC406 / CLAUDE-GIT-ADD-PERMISSION` | Claude settings permissions allow `Bash(git add:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC407 / CLAUDE-GIT-CLONE-PERMISSION` | Claude settings permissions allow `Bash(git clone:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
@@ -192,7 +192,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC471 / MD-GIT-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `http.sslVerify false` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC472 / MD-GIT-SSL-NO-VERIFY` | AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC473 / MD-GIT-INLINE-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC474 / MD-GH-PR-PERMISSION` | AI-native markdown frontmatter grants `Bash(gh pr:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC474 / MD-GH-PR-PERMISSION` | AI-native markdown frontmatter grants `Bash(gh pr:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC475 / CLAUDE-READ-UNSAFE-PATH` | Claude settings permissions allow `Read(...)` over an unsafe path in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC476 / CLAUDE-WRITE-UNSAFE-PATH` | Claude settings permissions allow `Write(...)` over an unsafe path in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC477 / CLAUDE-EDIT-UNSAFE-PATH` | Claude settings permissions allow `Edit(...)` over an unsafe path in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
@@ -212,14 +212,14 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC491 / CLAUDE-PIPX-RUN-PERMISSION` | Claude settings permissions allow `Bash(pipx run ...)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC492 / CLAUDE-NPM-EXEC-PERMISSION` | Claude settings permissions allow `Bash(npm exec ...)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC493 / CLAUDE-BUNX-PERMISSION` | Claude settings permissions allow `Bash(bunx ...)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC494 / MD-NPM-EXEC-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(npm exec:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC495 / MD-BUNX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(bunx:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC496 / MD-UVX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(uvx:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC497 / MD-PNPM-DLX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(pnpm dlx:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC498 / MD-YARN-DLX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(yarn dlx:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC499 / MD-PIPX-RUN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(pipx run:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC500 / MD-NPX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(npx:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC501 / MD-GIT-LS-REMOTE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git ls-remote:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC494 / MD-NPM-EXEC-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(npm exec:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC495 / MD-BUNX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(bunx:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC496 / MD-UVX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(uvx:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC497 / MD-PNPM-DLX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(pnpm dlx:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC498 / MD-YARN-DLX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(yarn dlx:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC499 / MD-PIPX-RUN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(pipx run:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC500 / MD-NPX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(npx:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC501 / MD-GIT-LS-REMOTE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git ls-remote:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC502 / CLAUDE-GH-API-POST-PERMISSION` | Claude settings permissions allow `Bash(gh api --method POST:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC503 / CLAUDE-GH-ISSUE-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh issue create:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC504 / CLAUDE-GH-REPO-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh repo create:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
@@ -1539,13 +1539,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: External validation now shows strong usefulness, but promotion still requires the completed stable checklist and one broader cross-cohort precision pass.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for exact bare `Bash` grants that expose unconstrained shell authority as shared default policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for bare `Bash` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-unscoped-bash-allowed-tools`
+- Benign Corpus: `skill-scoped-bash-allowed-tools-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC353 / COPILOT-4K` — GitHub Copilot instruction markdown exceeds the 4000-character guidance limit
 
@@ -2432,13 +2436,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Bare WebFetch grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for exact bare `WebFetch` grants that expose unconstrained remote fetch authority as shared default policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for bare `WebFetch` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-unscoped-webfetch-allowed-tools`
+- Benign Corpus: `skill-scoped-webfetch-allowed-tools-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC405 / CLAUDE-PACKAGE-INSTALL-PERMISSION` — Claude settings permissions allow package installation commands in a shared committed config
 
@@ -3878,13 +3886,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared gh pr grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub pull-request authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh pr:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-pr-allowed-tools`
+- Benign Corpus: `skill-gh-pr-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC475 / CLAUDE-READ-UNSAFE-PATH` — Claude settings permissions allow `Read(...)` over an unsafe path in a shared committed config
 
@@ -4238,13 +4250,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared npm exec grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact mutable `npm exec` authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(npm exec:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-npm-exec-bunx-allowed-tools`
+- Benign Corpus: `skill-npm-exec-bunx-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC495 / MD-BUNX-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(bunx:*)` tool access
 
@@ -4255,13 +4271,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared bunx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact mutable `bunx` authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(bunx:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-npm-exec-bunx-allowed-tools`
+- Benign Corpus: `skill-npm-exec-bunx-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC496 / MD-UVX-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(uvx:*)` tool access
 
@@ -4272,13 +4292,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared uvx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact mutable `uvx` authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(uvx:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-uvx-dlx-pipx-allowed-tools`
+- Benign Corpus: `skill-uvx-dlx-pipx-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC497 / MD-PNPM-DLX-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(pnpm dlx:*)` tool access
 
@@ -4289,13 +4313,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared pnpm dlx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact mutable `pnpm dlx` authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(pnpm dlx:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-uvx-dlx-pipx-allowed-tools`
+- Benign Corpus: `skill-uvx-dlx-pipx-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC498 / MD-YARN-DLX-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(yarn dlx:*)` tool access
 
@@ -4306,13 +4334,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared yarn dlx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact mutable `yarn dlx` authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(yarn dlx:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-uvx-dlx-pipx-allowed-tools`
+- Benign Corpus: `skill-uvx-dlx-pipx-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC499 / MD-PIPX-RUN-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(pipx run:*)` tool access
 
@@ -4323,13 +4355,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared pipx run grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact mutable `pipx run` authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(pipx run:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-uvx-dlx-pipx-allowed-tools`
+- Benign Corpus: `skill-uvx-dlx-pipx-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC500 / MD-NPX-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(npx:*)` tool access
 
@@ -4340,13 +4376,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared npx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact mutable `npx` authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(npx:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-npx-git-ls-remote-allowed-tools`
+- Benign Corpus: `skill-npx-git-ls-remote-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC501 / MD-GIT-LS-REMOTE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(git ls-remote:*)` tool access
 
@@ -4357,13 +4397,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `git ls-remote` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact remote repository inspection authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(git ls-remote:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-npx-git-ls-remote-allowed-tools`
+- Benign Corpus: `skill-npx-git-ls-remote-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC502 / CLAUDE-GH-API-POST-PERMISSION` — Claude settings permissions allow `Bash(gh api --method POST:*)` in a shared committed config
 
