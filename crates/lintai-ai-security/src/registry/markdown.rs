@@ -1287,12 +1287,18 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 78] = [
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
-            rationale: "Checks AI-native markdown for exact network-command examples that disable TLS verification.",
-            malicious_case_ids: &["skill-markdown-network-tls-bypass"],
-            benign_case_ids: &["skill-markdown-network-tls-bypass-warning-safe"],
+            rationale: "Checks AI-native markdown for exact network-command examples that disable TLS verification, including PowerShell certificate-bypass forms.",
+            malicious_case_ids: &[
+                "skill-markdown-network-tls-bypass",
+                "skill-markdown-network-tls-bypass-powershell",
+            ],
+            benign_case_ids: &[
+                "skill-markdown-network-tls-bypass-warning-safe",
+                "skill-markdown-network-tls-bypass-powershell-warning-safe",
+            ],
             requires_structured_evidence: true,
             remediation_reviewed: true,
-            deterministic_signal_basis: "MarkdownSignals exact command-token analysis with `--insecure`, `-k`, `--no-check-certificate`, or `NODE_TLS_REJECT_UNAUTHORIZED=0` detection inside parsed markdown regions, with safety-guidance suppression.",
+            deterministic_signal_basis: "MarkdownSignals exact command-token analysis with `--insecure`, `-k`, `--no-check-certificate`, `-SkipCertificateCheck`, or `NODE_TLS_REJECT_UNAUTHORIZED=0` detection inside parsed markdown regions, with safety-guidance suppression.",
         },
         check: check_markdown_network_tls_bypass,
         safe_fix: None,

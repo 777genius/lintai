@@ -3420,10 +3420,10 @@ Important behavior:
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
-- Graduation Rationale: Checks AI-native markdown for exact network-command examples that disable TLS verification.
-- Deterministic Signal Basis: MarkdownSignals exact command-token analysis with `--insecure`, `-k`, `--no-check-certificate`, or `NODE_TLS_REJECT_UNAUTHORIZED=0` detection inside parsed markdown regions, with safety-guidance suppression.
-- Malicious Corpus: `skill-markdown-network-tls-bypass`
-- Benign Corpus: `skill-markdown-network-tls-bypass-warning-safe`
+- Graduation Rationale: Checks AI-native markdown for exact network-command examples that disable TLS verification, including PowerShell certificate-bypass forms.
+- Deterministic Signal Basis: MarkdownSignals exact command-token analysis with `--insecure`, `-k`, `--no-check-certificate`, `-SkipCertificateCheck`, or `NODE_TLS_REJECT_UNAUTHORIZED=0` detection inside parsed markdown regions, with safety-guidance suppression.
+- Malicious Corpus: `skill-markdown-network-tls-bypass`, `skill-markdown-network-tls-bypass-powershell`
+- Benign Corpus: `skill-markdown-network-tls-bypass-warning-safe`, `skill-markdown-network-tls-bypass-powershell-warning-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

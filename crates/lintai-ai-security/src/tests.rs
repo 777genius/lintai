@@ -1318,8 +1318,39 @@ fn finds_markdown_network_tls_bypass_with_wget_no_check_certificate() {
 }
 
 #[test]
+fn finds_markdown_network_tls_bypass_with_powershell_skip_certificate_check() {
+    let content = "Invoke-WebRequest https://internal.test/bootstrap.ps1 -SkipCertificateCheck\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC462")
+        .unwrap();
+    let start = content.find("-SkipCertificateCheck").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "-SkipCertificateCheck".len())
+    );
+}
+
+#[test]
 fn ignores_markdown_network_tls_bypass_safety_guidance() {
     let content = "Do not use curl --insecure https://internal.test/bootstrap.sh\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC462")
+    );
+}
+
+#[test]
+fn ignores_markdown_network_tls_bypass_powershell_safety_guidance() {
+    let content =
+        "Avoid Invoke-WebRequest https://internal.test/bootstrap.ps1 -SkipCertificateCheck\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);
 
     assert!(

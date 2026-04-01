@@ -645,6 +645,10 @@ fn find_network_tls_bypass_in_line(line: &str) -> Option<Span> {
         return Some(Span::new(start, start + "--no-check-certificate".len()));
     }
 
+    if let Some(start) = lowered.find("-skipcertificatecheck") {
+        return Some(Span::new(start, start + "-skipcertificatecheck".len()));
+    }
+
     find_command_tls_bypass_relative_span(line)
 }
 
@@ -1007,6 +1011,13 @@ mod tests {
     }
 
     #[test]
+    fn finds_network_tls_bypass_with_invoke_webrequest_skip_certificate_check() {
+        let content =
+            "Invoke-WebRequest https://internal.test/bootstrap.ps1 -SkipCertificateCheck\n";
+        assert!(find_network_tls_bypass_relative_span(content).is_some());
+    }
+
+    #[test]
     fn finds_network_tls_bypass_with_node_tls_reject_unauthorized() {
         let content =
             "NODE_TLS_REJECT_UNAUTHORIZED=0 node fetch.js https://internal.test/bootstrap.json\n";
@@ -1016,6 +1027,13 @@ mod tests {
     #[test]
     fn ignores_network_tls_bypass_in_safety_guidance() {
         let content = "Do not use curl --insecure https://internal.test/bootstrap.sh\n";
+        assert_eq!(find_network_tls_bypass_relative_span(content), None);
+    }
+
+    #[test]
+    fn ignores_powershell_network_tls_bypass_in_safety_guidance() {
+        let content =
+            "Avoid Invoke-WebRequest https://internal.test/bootstrap.ps1 -SkipCertificateCheck\n";
         assert_eq!(find_network_tls_bypass_relative_span(content), None);
     }
 

@@ -163,6 +163,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "skill-markdown-base64-exec",
             "skill-markdown-download-exec",
             "skill-markdown-network-tls-bypass",
+            "skill-markdown-network-tls-bypass-powershell",
             "skill-markdown-path-traversal",
             "skill-mcp-config-mutable-launcher",
             "skill-mcp-config-pipx-run-launcher",

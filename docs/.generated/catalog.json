@@ -6346,16 +6346,18 @@
       "lifecycleState": "stable_gated",
       "lifecycle": {
         "kind": "stable",
-        "rationale": "Checks AI-native markdown for exact network-command examples that disable TLS verification.",
+        "rationale": "Checks AI-native markdown for exact network-command examples that disable TLS verification, including PowerShell certificate-bypass forms.",
         "maliciousCaseIds": [
-          "skill-markdown-network-tls-bypass"
+          "skill-markdown-network-tls-bypass",
+          "skill-markdown-network-tls-bypass-powershell"
         ],
         "benignCaseIds": [
-          "skill-markdown-network-tls-bypass-warning-safe"
+          "skill-markdown-network-tls-bypass-warning-safe",
+          "skill-markdown-network-tls-bypass-powershell-warning-safe"
         ],
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
-        "deterministicSignalBasis": "MarkdownSignals exact command-token analysis with `--insecure`, `-k`, `--no-check-certificate`, or `NODE_TLS_REJECT_UNAUTHORIZED=0` detection inside parsed markdown regions, with safety-guidance suppression."
+        "deterministicSignalBasis": "MarkdownSignals exact command-token analysis with `--insecure`, `-k`, `--no-check-certificate`, `-SkipCertificateCheck`, or `NODE_TLS_REJECT_UNAUTHORIZED=0` detection inside parsed markdown regions, with safety-guidance suppression."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
