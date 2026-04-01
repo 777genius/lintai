@@ -419,6 +419,22 @@ pub(crate) fn check_markdown_cargo_http_index(
     )
 }
 
+pub(crate) fn check_markdown_git_http_clone(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.git_http_clone_spans.as_slice())
+            .unwrap_or(&[]),
+        "AI-native markdown clones a Git repository from an insecure `http://` source",
+    )
+}
+
 pub(crate) fn check_markdown_mutable_docker_image(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

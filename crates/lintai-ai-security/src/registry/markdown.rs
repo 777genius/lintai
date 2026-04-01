@@ -19,7 +19,7 @@ use crate::markdown_rules::{
     check_html_comment_download_exec, check_markdown_base64_exec,
     check_markdown_cargo_http_git_install, check_markdown_cargo_http_index,
     check_markdown_claude_bare_pip_install, check_markdown_docker_host_escape,
-    check_markdown_download_exec, check_markdown_fenced_pipe_shell,
+    check_markdown_download_exec, check_markdown_fenced_pipe_shell, check_markdown_git_http_clone,
     check_markdown_js_package_config_http_registry, check_markdown_js_package_strict_ssl_false,
     check_markdown_metadata_service_access, check_markdown_mutable_docker_image,
     check_markdown_mutable_mcp_launcher, check_markdown_network_tls_bypass,
@@ -297,6 +297,18 @@ declare_rule! {
         code: "SEC452",
         summary: "AI-native markdown installs Rust packages from an insecure `http://` index",
         doc_title: "AI markdown: cargo http index",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct MarkdownGitHttpCloneRule {
+        code: "SEC464",
+        summary: "AI-native markdown clones a Git repository from an insecure `http://` source",
+        doc_title: "AI markdown: git http clone",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -988,7 +1000,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 79] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 80] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1436,6 +1448,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 79] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace the insecure `http://` index with a normal TLS-verified `https://` source",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: MarkdownGitHttpCloneRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown for `git clone` examples that fetch repositories directly from an insecure `http://` source.",
+            malicious_case_ids: &["skill-git-http-clone"],
+            benign_case_ids: &["skill-git-https-clone-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact `git clone` token analysis with direct `http://` source detection inside parsed markdown regions.",
+        },
+        check: check_markdown_git_http_clone,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace the insecure `http://` clone source with a normal TLS-verified `https://` repository URL",
         ),
         suggestion_fix: None,
     },

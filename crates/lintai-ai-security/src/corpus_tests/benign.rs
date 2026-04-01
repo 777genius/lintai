@@ -189,6 +189,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-git-clone-allowed-tools-specific-safe",
             "skill-git-config-allowed-tools-specific-safe",
             "skill-git-fetch-allowed-tools-specific-safe",
+            "skill-git-https-clone-safe",
             "skill-git-merge-allowed-tools-specific-safe",
             "skill-git-rebase-allowed-tools-specific-safe",
             "skill-git-reset-allowed-tools-specific-safe",

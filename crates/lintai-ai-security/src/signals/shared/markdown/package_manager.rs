@@ -27,6 +27,7 @@ const NPM_INSTALL_MARKERS: &[&str] = &[
 const JS_PACKAGE_CONFIG_MARKERS: &[&str] =
     &["npm config set", "pnpm config set", "yarn config set"];
 const CARGO_INSTALL_MARKERS: &[&str] = &["cargo install"];
+const GIT_CLONE_MARKERS: &[&str] = &["git clone"];
 const SAFETY_WARNING_MARKERS: &[&str] = &[
     "do not use",
     "don't use",
@@ -360,6 +361,25 @@ pub(crate) fn find_cargo_http_index_relative_span(text: &str) -> Option<Span> {
 
     if !text.ends_with('\n') {
         return find_cargo_http_index_in_line(text);
+    }
+
+    None
+}
+
+pub(crate) fn find_git_http_clone_relative_span(text: &str) -> Option<Span> {
+    let mut offset = 0usize;
+    for line in text.split_inclusive('\n') {
+        if let Some(relative) = find_git_http_clone_in_line(line) {
+            return Some(Span::new(
+                offset + relative.start_byte,
+                offset + relative.end_byte,
+            ));
+        }
+        offset += line.len();
+    }
+
+    if !text.ends_with('\n') {
+        return find_git_http_clone_in_line(text);
     }
 
     None
@@ -802,6 +822,25 @@ fn find_cargo_http_index_in_line(line: &str) -> Option<Span> {
     None
 }
 
+fn find_git_http_clone_in_line(line: &str) -> Option<Span> {
+    let lowered = line.to_ascii_lowercase();
+    let mut clone_start = None;
+    for marker in GIT_CLONE_MARKERS {
+        if let Some(relative) = lowered.find(marker) {
+            clone_start = Some(relative + marker.len());
+            break;
+        }
+    }
+    let Some(search_start) = clone_start else {
+        return None;
+    };
+
+    let search_slice = &lowered[search_start..];
+    let relative_http = search_slice.find("http://")?;
+    let start = search_start + relative_http;
+    Some(Span::new(start, start + "http://".len()))
+}
+
 fn has_immutable_git_ref(url: &str) -> bool {
     let Some(scheme_start) = url.find("git+https://") else {
         return false;
@@ -822,7 +861,7 @@ fn has_immutable_git_ref(url: &str) -> bool {
 mod tests {
     use super::{
         find_cargo_http_git_install_relative_span, find_cargo_http_index_relative_span,
-        find_claude_bare_pip_install_relative_span,
+        find_claude_bare_pip_install_relative_span, find_git_http_clone_relative_span,
         find_js_package_config_http_registry_relative_span,
         find_js_package_strict_ssl_false_relative_span, find_network_tls_bypass_relative_span,
         find_npm_http_registry_relative_span, find_npm_http_source_relative_span,
@@ -1221,5 +1260,23 @@ mod tests {
     fn ignores_cargo_https_index() {
         let content = "cargo install ripgrep --index https://index.example.test/\n";
         assert_eq!(find_cargo_http_index_relative_span(content), None);
+    }
+
+    #[test]
+    fn finds_git_http_clone() {
+        let content = "git clone http://git.example.test/demo.git\n";
+        assert!(find_git_http_clone_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn finds_git_http_clone_with_depth_flag() {
+        let content = "git clone --depth 1 http://git.example.test/demo.git\n";
+        assert!(find_git_http_clone_relative_span(content).is_some());
+    }
+
+    #[test]
+    fn ignores_git_https_clone() {
+        let content = "git clone https://github.com/acme/demo.git\n";
+        assert_eq!(find_git_http_clone_relative_span(content), None);
     }
 }

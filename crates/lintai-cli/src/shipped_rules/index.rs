@@ -331,6 +331,7 @@ mod tests {
         );
         assert_eq!(shipped_rule_alias("SEC462"), Some("MD-NETWORK-TLS-BYPASS"));
         assert_eq!(shipped_rule_alias("SEC463"), Some("MD-SUDO-ALLOWED-TOOLS"));
+        assert_eq!(shipped_rule_alias("SEC464"), Some("MD-GIT-HTTP-CLONE"));
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

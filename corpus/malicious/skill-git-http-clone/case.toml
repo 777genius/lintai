@@ -1,0 +1,11 @@
+id = "skill-git-http-clone"
+kind = "Skill"
+entry_path = "repo"
+expected_output = ["text"]
+expected_runtime_errors = 0
+expected_diagnostics = 1
+expected_findings = [
+  { rule_code = "SEC464", min_evidence_count = 1, tier = "stable" },
+]
+expected_absent_rules = []
+snapshot = { kind = "none", name = "" }

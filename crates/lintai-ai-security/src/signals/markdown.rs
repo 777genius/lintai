@@ -193,6 +193,12 @@ impl MarkdownSignals {
                             region.span.start_byte + relative.end_byte,
                         ));
                     }
+                    if let Some(relative) = find_git_http_clone_relative_span(snippet) {
+                        signals.git_http_clone_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
                     if let Some(relative) =
                         find_markdown_mutable_docker_image_relative_span(snippet)
                     {
@@ -363,6 +369,12 @@ impl MarkdownSignals {
                             region.span.start_byte + relative.end_byte,
                         ));
                     }
+                    if let Some(relative) = find_git_http_clone_relative_span(snippet) {
+                        signals.git_http_clone_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
                     if let Some(relative) =
                         find_markdown_mutable_docker_image_relative_span(snippet)
                     {
@@ -503,6 +515,12 @@ impl MarkdownSignals {
                     }
                     if let Some(relative) = find_cargo_http_index_relative_span(snippet) {
                         signals.cargo_http_index_spans.push(Span::new(
+                            region.span.start_byte + relative.start_byte,
+                            region.span.start_byte + relative.end_byte,
+                        ));
+                    }
+                    if let Some(relative) = find_git_http_clone_relative_span(snippet) {
+                        signals.git_http_clone_spans.push(Span::new(
                             region.span.start_byte + relative.start_byte,
                             region.span.start_byte + relative.end_byte,
                         ));

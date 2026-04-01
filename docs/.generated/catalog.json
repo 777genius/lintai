@@ -183,7 +183,8 @@
         "lintai-ai-security:SEC460",
         "lintai-ai-security:SEC461",
         "lintai-ai-security:SEC462",
-        "lintai-ai-security:SEC463"
+        "lintai-ai-security:SEC463",
+        "lintai-ai-security:SEC464"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -276,7 +277,8 @@
         "lintai-ai-security:SEC460",
         "lintai-ai-security:SEC461",
         "lintai-ai-security:SEC462",
-        "lintai-ai-security:SEC463"
+        "lintai-ai-security:SEC463",
+        "lintai-ai-security:SEC464"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -6399,6 +6401,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(sudo:*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC464",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC464",
+      "alias": "MD-GIT-HTTP-CLONE",
+      "displayLabel": "SEC464 / MD-GIT-HTTP-CLONE",
+      "docTitle": "AI markdown: git http clone",
+      "slug": "sec464",
+      "canonicalPath": "/rules/lintai-ai-security/sec464",
+      "summary": "AI-native markdown clones a Git repository from an insecure `http://` source",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for `git clone` examples that fetch repositories directly from an insecure `http://` source.",
+        "maliciousCaseIds": [
+          "skill-git-http-clone"
+        ],
+        "benignCaseIds": [
+          "skill-git-https-clone-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `git clone` token analysis with direct `http://` source detection inside parsed markdown regions."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
