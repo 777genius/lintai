@@ -1,0 +1,7 @@
+id = "skill-chgrp-allowed-tools"
+description = "AI-native markdown frontmatter grants Bash(chgrp:*) authority"
+kind = "Skill"
+expected_findings = [
+  { rule = "SEC469", tier = "stable", match = "Bash(chgrp:*)" },
+]
+

@@ -187,6 +187,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC466 / MD-RM-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(rm:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC467 / MD-CHMOD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chmod:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC468 / MD-CHOWN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chown:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC469 / MD-CHGRP-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chgrp:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 
 ## Builtin preset activation model
 
@@ -3556,6 +3557,27 @@ Important behavior:
 - Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Bash(chown:*)` inside allowed-tools or allowed_tools.
 - Malicious Corpus: `skill-chown-allowed-tools`
 - Benign Corpus: `skill-chown-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC469 / MD-CHGRP-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(chgrp:*)` authority
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-CHGRP-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for explicit wildcard chgrp grants in shared allowed-tools policy.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for `Bash(chgrp:*)` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-chgrp-allowed-tools`
+- Benign Corpus: `skill-chgrp-allowed-tools-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

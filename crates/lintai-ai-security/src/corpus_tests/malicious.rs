@@ -133,6 +133,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "skill-approval-bypass-directive",
             "skill-cargo-http-git-install",
             "skill-cargo-http-index",
+            "skill-chgrp-allowed-tools",
             "skill-chmod-allowed-tools",
             "skill-chown-allowed-tools",
             "skill-curl-allowed-tools",

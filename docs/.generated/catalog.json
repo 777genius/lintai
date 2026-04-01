@@ -188,7 +188,8 @@
         "lintai-ai-security:SEC465",
         "lintai-ai-security:SEC466",
         "lintai-ai-security:SEC467",
-        "lintai-ai-security:SEC468"
+        "lintai-ai-security:SEC468",
+        "lintai-ai-security:SEC469"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -286,7 +287,8 @@
         "lintai-ai-security:SEC465",
         "lintai-ai-security:SEC466",
         "lintai-ai-security:SEC467",
-        "lintai-ai-security:SEC468"
+        "lintai-ai-security:SEC468",
+        "lintai-ai-security:SEC469"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -6604,6 +6606,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(chown:*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC469",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC469",
+      "alias": "MD-CHGRP-ALLOWED-TOOLS",
+      "displayLabel": "SEC469 / MD-CHGRP-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(chgrp:*)` tool grant",
+      "slug": "sec469",
+      "canonicalPath": "/rules/lintai-ai-security/sec469",
+      "summary": "AI-native markdown frontmatter grants `Bash(chgrp:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for explicit wildcard chgrp grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-chgrp-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-chgrp-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(chgrp:*)` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
