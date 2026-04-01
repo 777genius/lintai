@@ -9,9 +9,11 @@ use crate::claude_settings_rules::{
     check_claude_settings_external_absolute_hook_command,
     check_claude_settings_gh_api_post_permission, check_claude_settings_gh_issue_create_permission,
     check_claude_settings_gh_pr_permission, check_claude_settings_gh_repo_create_permission,
-    check_claude_settings_git_add_permission, check_claude_settings_git_am_permission,
-    check_claude_settings_git_apply_permission, check_claude_settings_git_branch_permission,
-    check_claude_settings_git_checkout_permission,
+    check_claude_settings_gh_secret_set_permission,
+    check_claude_settings_gh_variable_set_permission,
+    check_claude_settings_gh_workflow_run_permission, check_claude_settings_git_add_permission,
+    check_claude_settings_git_am_permission, check_claude_settings_git_apply_permission,
+    check_claude_settings_git_branch_permission, check_claude_settings_git_checkout_permission,
     check_claude_settings_git_cherry_pick_permission, check_claude_settings_git_clean_permission,
     check_claude_settings_git_clone_permission, check_claude_settings_git_commit_permission,
     check_claude_settings_git_config_permission, check_claude_settings_git_fetch_permission,
@@ -378,6 +380,42 @@ declare_rule! {
         code: "SEC504",
         summary: "Claude settings permissions allow `Bash(gh repo create:*)` in a shared committed config",
         doc_title: "Claude settings: shared gh repo create permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGhSecretSetPermissionRule {
+        code: "SEC508",
+        summary: "Claude settings permissions allow `Bash(gh secret set:*)` in a shared committed config",
+        doc_title: "Claude settings: shared gh secret set permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGhVariableSetPermissionRule {
+        code: "SEC509",
+        summary: "Claude settings permissions allow `Bash(gh variable set:*)` in a shared committed config",
+        doc_title: "Claude settings: shared gh variable set permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGhWorkflowRunPermissionRule {
+        code: "SEC510",
+        summary: "Claude settings permissions allow `Bash(gh workflow run:*)` in a shared committed config",
+        doc_title: "Claude settings: shared gh workflow run permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -769,7 +807,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 61] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 64] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -1107,6 +1145,54 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 61] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `gh repo create` permissions or replace them with narrower reviewed subcommands that keep repository creation under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGhSecretSetPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh secret set` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_gh_secret_set_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh secret set` permissions or replace them with narrower reviewed subcommands that keep GitHub secret mutation under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGhVariableSetPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh variable set` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_gh_variable_set_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh variable set` permissions or replace them with narrower reviewed subcommands that keep GitHub variable mutation under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGhWorkflowRunPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh workflow run` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_gh_workflow_run_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh workflow run` permissions or replace them with narrower reviewed subcommands that keep remote workflow dispatch under explicit user control",
         ),
         suggestion_fix: None,
     },

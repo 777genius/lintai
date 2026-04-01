@@ -421,6 +421,21 @@ impl ClaudeSettingsSignals {
             locator_ref.as_ref(),
             "Bash(gh repo create:*)",
         );
+        signals.gh_secret_set_permission_span = resolve_permissions_allow_exact_span(
+            value,
+            locator_ref.as_ref(),
+            "Bash(gh secret set:*)",
+        );
+        signals.gh_variable_set_permission_span = resolve_permissions_allow_exact_span(
+            value,
+            locator_ref.as_ref(),
+            "Bash(gh variable set:*)",
+        );
+        signals.gh_workflow_run_permission_span = resolve_permissions_allow_exact_span(
+            value,
+            locator_ref.as_ref(),
+            "Bash(gh workflow run:*)",
+        );
         signals.git_fetch_permission_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git fetch:*)");
         signals.git_ls_remote_permission_span = resolve_permissions_allow_exact_span(

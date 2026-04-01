@@ -1,0 +1,8 @@
+id = "claude-settings-gh-secret-variable-workflow-permissions"
+description = "Claude settings grant shared GitHub secret, variable, and workflow mutation permissions"
+
+expected_findings = [
+  "SEC508",
+  "SEC509",
+  "SEC510",
+]
