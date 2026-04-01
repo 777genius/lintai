@@ -246,6 +246,8 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC525 / MD-WEBFETCH-WILDCARD` | AI-native markdown frontmatter grants `WebFetch(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC526 / MD-WEBSEARCH-WILDCARD` | AI-native markdown frontmatter grants `WebSearch(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC527 / MD-BASH-WILDCARD` | AI-native markdown frontmatter grants `Bash(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC528 / CLAUDE-GH-API-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh api --method DELETE:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC529 / MD-GH-API-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method DELETE:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 
 ## Builtin preset activation model
 
@@ -4673,6 +4675,40 @@ Important behavior:
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC528 / CLAUDE-GH-API-DELETE-PERMISSION` — Claude settings permissions allow `Bash(gh api --method DELETE:*)` in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-GH-API-DELETE-PERMISSION`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh api --method DELETE` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC529 / MD-GH-API-DELETE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh api --method DELETE:*)` tool access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GH-API-DELETE-ALLOWED-TOOLS`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `governance`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared `gh api --method DELETE` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ## Provider: `lintai-policy-mismatch`
 

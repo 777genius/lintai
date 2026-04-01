@@ -1,0 +1,5 @@
+id = "skill-gh-api-delete-allowed-tools"
+description = "AI-native markdown frontmatter grants gh api DELETE mutation authority"
+artifact_kind = "Skill"
+provider = "lintai-ai-security"
+expected_rules = ["SEC529"]

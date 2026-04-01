@@ -2691,6 +2691,38 @@ fn ignores_specific_gh_api_post_allowed_tools_in_frontmatter() {
 }
 
 #[test]
+fn finds_gh_api_delete_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(gh api --method DELETE:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC529")
+        .unwrap();
+    let start = content.find("Bash(gh api --method DELETE:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(gh api --method DELETE:*)".len())
+    );
+}
+
+#[test]
+fn ignores_specific_gh_api_delete_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_governance_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(gh api --method GET:*), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC529")
+    );
+}
+
+#[test]
 fn finds_gh_issue_create_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(gh issue create:*), Read\n---\n# Skill\n";
     let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
@@ -6742,6 +6774,23 @@ fn finds_claude_settings_gh_api_post_permission() {
 }
 
 #[test]
+fn finds_claude_settings_gh_api_delete_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(gh api --method DELETE:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC528")
+        .unwrap();
+    let start = content.find("Bash(gh api --method DELETE:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(gh api --method DELETE:*)".len())
+    );
+}
+
+#[test]
 fn finds_claude_settings_gh_issue_create_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh issue create:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -6785,6 +6834,19 @@ fn ignores_specific_claude_settings_gh_api_permission() {
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC502")
+    );
+}
+
+#[test]
+fn ignores_specific_claude_settings_gh_api_delete_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(gh api --method GET:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC528")
     );
 }
 
@@ -11330,6 +11392,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC409"
                         | "SEC410"
                         | "SEC502"
+                        | "SEC528"
                         | "SEC503"
                         | "SEC504"
                         | "SEC508"
@@ -11339,6 +11402,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC515"
                         | "SEC516"
                         | "SEC505"
+                        | "SEC529"
                         | "SEC506"
                         | "SEC507"
                         | "SEC511"

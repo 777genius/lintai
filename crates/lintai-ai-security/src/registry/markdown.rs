@@ -10,20 +10,21 @@ use crate::markdown_rules::{
     check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
     check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
     check_cursor_rule_unknown_frontmatter_key, check_edit_unsafe_path_allowed_tools,
-    check_gh_api_post_allowed_tools, check_gh_issue_create_allowed_tools,
-    check_gh_pr_allowed_tools, check_gh_repo_create_allowed_tools,
-    check_gh_secret_delete_allowed_tools, check_gh_secret_set_allowed_tools,
-    check_gh_variable_delete_allowed_tools, check_gh_variable_set_allowed_tools,
-    check_gh_workflow_disable_allowed_tools, check_gh_workflow_run_allowed_tools,
-    check_git_add_allowed_tools, check_git_am_allowed_tools, check_git_apply_allowed_tools,
-    check_git_branch_allowed_tools, check_git_checkout_allowed_tools,
-    check_git_cherry_pick_allowed_tools, check_git_clean_allowed_tools,
-    check_git_clone_allowed_tools, check_git_commit_allowed_tools, check_git_config_allowed_tools,
-    check_git_fetch_allowed_tools, check_git_ls_remote_allowed_tools,
-    check_git_merge_allowed_tools, check_git_push_allowed_tools, check_git_rebase_allowed_tools,
-    check_git_reset_allowed_tools, check_git_restore_allowed_tools, check_git_stash_allowed_tools,
-    check_git_tag_allowed_tools, check_glob_unsafe_path_allowed_tools,
-    check_html_comment_directive, check_html_comment_download_exec, check_markdown_base64_exec,
+    check_gh_api_delete_allowed_tools, check_gh_api_post_allowed_tools,
+    check_gh_issue_create_allowed_tools, check_gh_pr_allowed_tools,
+    check_gh_repo_create_allowed_tools, check_gh_secret_delete_allowed_tools,
+    check_gh_secret_set_allowed_tools, check_gh_variable_delete_allowed_tools,
+    check_gh_variable_set_allowed_tools, check_gh_workflow_disable_allowed_tools,
+    check_gh_workflow_run_allowed_tools, check_git_add_allowed_tools, check_git_am_allowed_tools,
+    check_git_apply_allowed_tools, check_git_branch_allowed_tools,
+    check_git_checkout_allowed_tools, check_git_cherry_pick_allowed_tools,
+    check_git_clean_allowed_tools, check_git_clone_allowed_tools, check_git_commit_allowed_tools,
+    check_git_config_allowed_tools, check_git_fetch_allowed_tools,
+    check_git_ls_remote_allowed_tools, check_git_merge_allowed_tools, check_git_push_allowed_tools,
+    check_git_rebase_allowed_tools, check_git_reset_allowed_tools, check_git_restore_allowed_tools,
+    check_git_stash_allowed_tools, check_git_tag_allowed_tools,
+    check_glob_unsafe_path_allowed_tools, check_html_comment_directive,
+    check_html_comment_download_exec, check_markdown_base64_exec,
     check_markdown_cargo_http_git_install, check_markdown_cargo_http_index,
     check_markdown_claude_bare_pip_install, check_markdown_docker_host_escape,
     check_markdown_download_exec, check_markdown_fenced_pipe_shell, check_markdown_git_http_clone,
@@ -637,6 +638,18 @@ declare_rule! {
         code: "SEC505",
         summary: "AI-native markdown frontmatter grants `Bash(gh api --method POST:*)` tool access",
         doc_title: "AI markdown: shared gh api POST tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GhApiDeleteAllowedToolsRule {
+        code: "SEC529",
+        summary: "AI-native markdown frontmatter grants `Bash(gh api --method DELETE:*)` tool access",
+        doc_title: "AI markdown: shared gh api DELETE tool grant",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -1436,7 +1449,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 115] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 116] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -2176,6 +2189,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 115] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(gh api --method POST:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps remote GitHub mutations under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GhApiDeleteAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh api --method DELETE` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_gh_api_delete_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(gh api --method DELETE:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps destructive remote GitHub mutations under explicit user control",
         ),
         suggestion_fix: None,
     },

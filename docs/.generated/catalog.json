@@ -229,7 +229,8 @@
         "lintai-ai-security:SEC524",
         "lintai-ai-security:SEC525",
         "lintai-ai-security:SEC526",
-        "lintai-ai-security:SEC527"
+        "lintai-ai-security:SEC527",
+        "lintai-ai-security:SEC528"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -466,7 +467,8 @@
         "lintai-ai-security:SEC510",
         "lintai-ai-security:SEC514",
         "lintai-ai-security:SEC515",
-        "lintai-ai-security:SEC516"
+        "lintai-ai-security:SEC516",
+        "lintai-ai-security:SEC528"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -513,7 +515,8 @@
         "lintai-ai-security:SEC513",
         "lintai-ai-security:SEC517",
         "lintai-ai-security:SEC518",
-        "lintai-ai-security:SEC519"
+        "lintai-ai-security:SEC519",
+        "lintai-ai-security:SEC529"
       ],
       "canonicalPath": "/presets/governance"
     },
@@ -8621,6 +8624,67 @@
         "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(*)` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC528",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC528",
+      "alias": "CLAUDE-GH-API-DELETE-PERMISSION",
+      "displayLabel": "SEC528 / CLAUDE-GH-API-DELETE-PERMISSION",
+      "docTitle": "Claude settings: shared gh api DELETE permissions",
+      "slug": "sec528",
+      "canonicalPath": "/rules/lintai-ai-security/sec528",
+      "summary": "Claude settings permissions allow `Bash(gh api --method DELETE:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `gh api --method DELETE` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC529",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC529",
+      "alias": "MD-GH-API-DELETE-ALLOWED-TOOLS",
+      "displayLabel": "SEC529 / MD-GH-API-DELETE-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: shared gh api DELETE tool grant",
+      "slug": "sec529",
+      "canonicalPath": "/rules/lintai-ai-security/sec529",
+      "summary": "AI-native markdown frontmatter grants `Bash(gh api --method DELETE:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `gh api --method DELETE` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {

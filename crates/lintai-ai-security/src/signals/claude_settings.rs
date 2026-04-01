@@ -411,6 +411,11 @@ impl ClaudeSettingsSignals {
             locator_ref.as_ref(),
             "Bash(gh api --method POST:*)",
         );
+        signals.gh_api_delete_permission_span = resolve_permissions_allow_exact_span(
+            value,
+            locator_ref.as_ref(),
+            "Bash(gh api --method DELETE:*)",
+        );
         signals.gh_issue_create_permission_span = resolve_permissions_allow_exact_span(
             value,
             locator_ref.as_ref(),

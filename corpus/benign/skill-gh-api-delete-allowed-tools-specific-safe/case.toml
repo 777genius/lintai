@@ -1,0 +1,5 @@
+id = "skill-gh-api-delete-allowed-tools-specific-safe"
+description = "AI-native markdown frontmatter keeps gh api authority read-only"
+artifact_kind = "Skill"
+provider = "lintai-ai-security"
+expected_absent_rules = ["SEC529"]
