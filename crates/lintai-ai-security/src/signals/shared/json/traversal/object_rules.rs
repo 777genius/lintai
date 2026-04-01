@@ -227,6 +227,51 @@ pub(super) fn analyze_json_object<'a>(
                 Some(resolve_value_span(&item_path, locator, fallback_len));
         }
 
+        if signals.autoapprove_sudo_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_index(nested, "Bash(sudo:*)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_sudo_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_rm_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_index(nested, "Bash(rm:*)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_rm_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_git_push_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_index(nested, "Bash(git push)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_git_push_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_gh_api_post_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) =
+                find_string_array_item_index(nested, "Bash(gh api --method POST:*)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_gh_api_post_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
         if signals.autoapprove_tools_true_span.is_none()
             && artifact_kind == ArtifactKind::McpConfig
             && key == "autoApproveTools"

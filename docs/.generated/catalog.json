@@ -66,7 +66,11 @@
         "lintai-ai-security:SEC446",
         "lintai-ai-security:SEC546",
         "lintai-ai-security:SEC547",
-        "lintai-ai-security:SEC548"
+        "lintai-ai-security:SEC548",
+        "lintai-ai-security:SEC549",
+        "lintai-ai-security:SEC550",
+        "lintai-ai-security:SEC551",
+        "lintai-ai-security:SEC552"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -404,7 +408,11 @@
         "lintai-ai-security:SEC446",
         "lintai-ai-security:SEC546",
         "lintai-ai-security:SEC547",
-        "lintai-ai-security:SEC548"
+        "lintai-ai-security:SEC548",
+        "lintai-ai-security:SEC549",
+        "lintai-ai-security:SEC550",
+        "lintai-ai-security:SEC551",
+        "lintai-ai-security:SEC552"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -9318,6 +9326,162 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(wget:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC549",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC549",
+      "alias": "MCP-AUTOAPPROVE-SUDO",
+      "displayLabel": "SEC549 / MCP-AUTOAPPROVE-SUDO",
+      "docTitle": "MCP config: sudo auto-approve",
+      "slug": "sec549",
+      "canonicalPath": "/rules/lintai-ai-security/sec549",
+      "summary": "MCP configuration auto-approves `Bash(sudo:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `sudo` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-sudo-rm"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-sudo-rm-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(sudo:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC550",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC550",
+      "alias": "MCP-AUTOAPPROVE-RM",
+      "displayLabel": "SEC550 / MCP-AUTOAPPROVE-RM",
+      "docTitle": "MCP config: rm auto-approve",
+      "slug": "sec550",
+      "canonicalPath": "/rules/lintai-ai-security/sec550",
+      "summary": "MCP configuration auto-approves `Bash(rm:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact destructive `rm` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-sudo-rm"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-sudo-rm-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(rm:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC551",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC551",
+      "alias": "MCP-AUTOAPPROVE-GIT-PUSH",
+      "displayLabel": "SEC551 / MCP-AUTOAPPROVE-GIT-PUSH",
+      "docTitle": "MCP config: git push auto-approve",
+      "slug": "sec551",
+      "canonicalPath": "/rules/lintai-ai-security/sec551",
+      "summary": "MCP configuration auto-approves `Bash(git push)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `git push` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-git-push-gh-api-post"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-git-push-gh-api-post-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git push)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC552",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC552",
+      "alias": "MCP-AUTOAPPROVE-GH-API-POST",
+      "displayLabel": "SEC552 / MCP-AUTOAPPROVE-GH-API-POST",
+      "docTitle": "MCP config: gh api POST auto-approve",
+      "slug": "sec552",
+      "canonicalPath": "/rules/lintai-ai-security/sec552",
+      "summary": "MCP configuration auto-approves `Bash(gh api --method POST:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact GitHub API POST auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-git-push-gh-api-post"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-git-push-gh-api-post-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh api --method POST:*)\"]` on parsed MCP configuration."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

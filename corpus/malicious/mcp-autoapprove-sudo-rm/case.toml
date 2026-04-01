@@ -1,0 +1,7 @@
+id = "mcp-autoapprove-sudo-rm"
+description = "MCP config auto-approves sudo and rm shell execution through autoApprove"
+
+expected_findings = [
+  "SEC549",
+  "SEC550",
+]

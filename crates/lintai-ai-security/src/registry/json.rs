@@ -5,8 +5,9 @@ use crate::json_rules::{
     check_json_dangerous_endpoint_host, check_json_hidden_instruction, check_json_literal_secret,
     check_json_sensitive_env_reference, check_json_suspicious_remote_endpoint,
     check_json_unsafe_plugin_path, check_mcp_autoapprove_bash_wildcard, check_mcp_autoapprove_curl,
-    check_mcp_autoapprove_tools_true, check_mcp_autoapprove_wget, check_mcp_autoapprove_wildcard,
-    check_mcp_broad_env_file, check_mcp_capabilities_wildcard,
+    check_mcp_autoapprove_gh_api_post, check_mcp_autoapprove_git_push, check_mcp_autoapprove_rm,
+    check_mcp_autoapprove_sudo, check_mcp_autoapprove_tools_true, check_mcp_autoapprove_wget,
+    check_mcp_autoapprove_wildcard, check_mcp_broad_env_file, check_mcp_capabilities_wildcard,
     check_mcp_credential_env_passthrough, check_mcp_dangerous_docker_flag,
     check_mcp_inline_download_exec, check_mcp_mutable_docker_pull, check_mcp_mutable_launcher,
     check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
@@ -246,6 +247,54 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApproveSudoRule {
+        code: "SEC549",
+        summary: "MCP configuration auto-approves `Bash(sudo:*)` through `autoApprove`",
+        doc_title: "MCP config: sudo auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveRmRule {
+        code: "SEC550",
+        summary: "MCP configuration auto-approves `Bash(rm:*)` through `autoApprove`",
+        doc_title: "MCP config: rm auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGitPushRule {
+        code: "SEC551",
+        summary: "MCP configuration auto-approves `Bash(git push)` through `autoApprove`",
+        doc_title: "MCP config: git push auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGhApiPostRule {
+        code: "SEC552",
+        summary: "MCP configuration auto-approves `Bash(gh api --method POST:*)` through `autoApprove`",
+        doc_title: "MCP config: gh api POST auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpAutoApproveToolsTrueRule {
         code: "SEC395",
         summary: "MCP configuration auto-approves all tools with `autoApproveTools: true`",
@@ -401,7 +450,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 36] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -763,6 +812,86 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `wget` auto-approval and keep network download execution under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveSudoRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `sudo` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-sudo-rm"],
+            benign_case_ids: &["mcp-autoapprove-sudo-rm-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(sudo:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_sudo,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `sudo` auto-approval and keep privilege escalation under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveRmRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact destructive `rm` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-sudo-rm"],
+            benign_case_ids: &["mcp-autoapprove-sudo-rm-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(rm:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_rm,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `rm` auto-approval and keep destructive file deletion under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGitPushRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `git push` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-git-push-gh-api-post"],
+            benign_case_ids: &["mcp-autoapprove-git-push-gh-api-post-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git push)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_git_push,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `git push` auto-approval and keep remote git mutation under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhApiPostRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact GitHub API POST auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-git-push-gh-api-post"],
+            benign_case_ids: &["mcp-autoapprove-git-push-gh-api-post-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh api --method POST:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_api_post,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh api --method POST` auto-approval and keep GitHub API mutation under explicit user review",
         ),
         suggestion_fix: None,
     },

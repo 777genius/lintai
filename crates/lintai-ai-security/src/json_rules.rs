@@ -138,6 +138,66 @@ pub(crate) fn check_mcp_autoapprove_wget(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_sudo(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_sudo_span.clone()),
+        "MCP configuration auto-approves `sudo` shell execution with `autoApprove: [\"Bash(sudo:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_rm(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_rm_span.clone()),
+        "MCP configuration auto-approves `rm` shell execution with `autoApprove: [\"Bash(rm:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_git_push(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_push_span.clone()),
+        "MCP configuration auto-approves `git push` with `autoApprove: [\"Bash(git push)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_gh_api_post(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_api_post_span.clone()),
+        "MCP configuration auto-approves GitHub API mutation calls with `autoApprove: [\"Bash(gh api --method POST:*)\"]`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_tools_true(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

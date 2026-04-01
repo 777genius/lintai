@@ -6272,6 +6272,94 @@ fn finds_mcp_autoapprove_wget() {
 }
 
 #[test]
+fn finds_mcp_autoapprove_sudo() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(sudo:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC549")
+        .unwrap();
+    let start = content.find("\"Bash(sudo:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(sudo:*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_rm() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(rm:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC550")
+        .unwrap();
+    let start = content.find("\"Bash(rm:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(rm:*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_git_push() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(git push)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC551")
+        .unwrap();
+    let start = content.find("\"Bash(git push)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git push)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_gh_api_post() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(gh api --method POST:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC552")
+        .unwrap();
+    let start = content.find("\"Bash(gh api --method POST:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(gh api --method POST:*)".len())
+    );
+}
+
+#[test]
 fn ignores_mcp_autoapprove_nonmatching_tools() {
     let provider = AiSecurityProvider::default();
     let findings = ProviderHarness::run(
@@ -6281,11 +6369,12 @@ fn ignores_mcp_autoapprove_nonmatching_tools() {
         r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(git status:*)","Read(*)"]}}}"#,
     );
 
-    assert!(
-        !findings.iter().any(|finding| {
-            matches!(finding.rule_code.as_str(), "SEC546" | "SEC547" | "SEC548")
-        })
-    );
+    assert!(!findings.iter().any(|finding| {
+        matches!(
+            finding.rule_code.as_str(),
+            "SEC546" | "SEC547" | "SEC548" | "SEC549" | "SEC550" | "SEC551" | "SEC552"
+        )
+    }));
 }
 
 #[test]

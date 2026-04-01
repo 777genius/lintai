@@ -1,0 +1,7 @@
+id = "mcp-autoapprove-git-push-gh-api-post"
+description = "MCP config auto-approves git push and GitHub API mutation shell execution through autoApprove"
+
+expected_findings = [
+  "SEC551",
+  "SEC552",
+]

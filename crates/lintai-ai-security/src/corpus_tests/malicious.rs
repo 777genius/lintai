@@ -107,6 +107,8 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "mcp-args-sudo",
             "mcp-autoapprove-bash-wildcard",
             "mcp-autoapprove-curl-wget",
+            "mcp-autoapprove-git-push-gh-api-post",
+            "mcp-autoapprove-sudo-rm",
             "mcp-autoapprove-tools-true",
             "mcp-autoapprove-wildcard",
             "mcp-capabilities-wildcard",
