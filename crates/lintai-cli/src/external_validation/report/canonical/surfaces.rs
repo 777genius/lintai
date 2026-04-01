@@ -90,6 +90,14 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec475_hits = rule_count(current, &["SEC475"]);
     let sec476_hits = rule_count(current, &["SEC476"]);
     let sec477_hits = rule_count(current, &["SEC477"]);
+    let sec478_hits = rule_count(current, &["SEC478"]);
+    let sec479_hits = rule_count(current, &["SEC479"]);
+    let sec480_hits = rule_count(current, &["SEC480"]);
+    let sec481_hits = rule_count(current, &["SEC481"]);
+    let sec482_hits = rule_count(current, &["SEC482"]);
+    let sec483_hits = rule_count(current, &["SEC483"]);
+    let sec484_hits = rule_count(current, &["SEC484"]);
+    let sec485_hits = rule_count(current, &["SEC485"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, current);
     let sec348_repos = repos_with_rule_hits(current, &["SEC348"], false);
     let sec349_repos = repos_with_rule_hits(current, &["SEC349"], false);
@@ -157,6 +165,14 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec475_repos = repos_with_rule_hits(current, &["SEC475"], false);
     let sec476_repos = repos_with_rule_hits(current, &["SEC476"], false);
     let sec477_repos = repos_with_rule_hits(current, &["SEC477"], false);
+    let sec478_repos = repos_with_rule_hits(current, &["SEC478"], false);
+    let sec479_repos = repos_with_rule_hits(current, &["SEC479"], false);
+    let sec480_repos = repos_with_rule_hits(current, &["SEC480"], false);
+    let sec481_repos = repos_with_rule_hits(current, &["SEC481"], false);
+    let sec482_repos = repos_with_rule_hits(current, &["SEC482"], false);
+    let sec483_repos = repos_with_rule_hits(current, &["SEC483"], false);
+    let sec484_repos = repos_with_rule_hits(current, &["SEC484"], false);
+    let sec485_repos = repos_with_rule_hits(current, &["SEC485"], false);
 
     output.push_str("## Hybrid Scope Expansion Results\n\n");
     output.push_str("Current wave inventory for the newly expanded JSON lanes:\n\n");
@@ -480,6 +496,38 @@ pub(super) fn append_hybrid_scope_expansion(
         sec477_hits
     ));
     output.push_str(&format!(
+        "  - `SEC478` Claude settings shared `git reset:*` permissions: `{}`\n",
+        sec478_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC479` Claude settings shared `git clean:*` permissions: `{}`\n",
+        sec479_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC480` Claude settings shared `git restore:*` permissions: `{}`\n",
+        sec480_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC481` Claude settings shared `git rebase:*` permissions: `{}`\n",
+        sec481_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC482` Claude settings shared `git merge:*` permissions: `{}`\n",
+        sec482_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC483` Claude settings shared `git cherry-pick:*` permissions: `{}`\n",
+        sec483_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC484` Claude settings shared `git apply:*` permissions: `{}`\n",
+        sec484_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC485` Claude settings shared `git am:*` permissions: `{}`\n",
+        sec485_hits
+    ));
+    output.push_str(&format!(
         "  - `SEC372` Claude settings wildcard `Read(*)` permissions: `{}`\n",
         sec372_hits
     ));
@@ -585,6 +633,14 @@ pub(super) fn append_hybrid_scope_expansion(
     append_rule_repo_hits(output, "SEC475", sec475_repos);
     append_rule_repo_hits(output, "SEC476", sec476_repos);
     append_rule_repo_hits(output, "SEC477", sec477_repos);
+    append_rule_repo_hits(output, "SEC478", sec478_repos);
+    append_rule_repo_hits(output, "SEC479", sec479_repos);
+    append_rule_repo_hits(output, "SEC480", sec480_repos);
+    append_rule_repo_hits(output, "SEC481", sec481_repos);
+    append_rule_repo_hits(output, "SEC482", sec482_repos);
+    append_rule_repo_hits(output, "SEC483", sec483_repos);
+    append_rule_repo_hits(output, "SEC484", sec484_repos);
+    append_rule_repo_hits(output, "SEC485", sec485_repos);
     if sec394_repos.is_empty() {
         output.push_str(
             "- `SEC394` produced no repo-level stable hits yet on the canonical cohort\n",

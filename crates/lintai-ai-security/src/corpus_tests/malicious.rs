@@ -28,6 +28,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-settings-command-tls-bypass",
             "claude-settings-curl-permission",
             "claude-settings-dangerous-http-hook-host",
+            "claude-settings-destructive-git-permissions",
             "claude-settings-edit-wildcard",
             "claude-settings-enabled-mcpjson-servers",
             "claude-settings-gh-pr-permission",

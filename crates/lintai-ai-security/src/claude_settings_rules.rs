@@ -543,6 +543,126 @@ pub(crate) fn check_claude_settings_git_stash_permission(
     )
 }
 
+pub(crate) fn check_claude_settings_git_reset_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.git_reset_permission_span.clone()),
+        "Claude settings permissions allow `Bash(git reset:*)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_git_clean_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.git_clean_permission_span.clone()),
+        "Claude settings permissions allow `Bash(git clean:*)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_git_restore_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.git_restore_permission_span.clone()),
+        "Claude settings permissions allow `Bash(git restore:*)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_git_rebase_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.git_rebase_permission_span.clone()),
+        "Claude settings permissions allow `Bash(git rebase:*)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_git_merge_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.git_merge_permission_span.clone()),
+        "Claude settings permissions allow `Bash(git merge:*)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_git_cherry_pick_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.git_cherry_pick_permission_span.clone()),
+        "Claude settings permissions allow `Bash(git cherry-pick:*)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_git_apply_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.git_apply_permission_span.clone()),
+        "Claude settings permissions allow `Bash(git apply:*)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_git_am_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.git_am_permission_span.clone()),
+        "Claude settings permissions allow `Bash(git am:*)` in a shared committed config",
+    )
+}
+
 pub(crate) fn check_claude_settings_glob_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

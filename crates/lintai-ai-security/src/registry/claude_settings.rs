@@ -7,15 +7,20 @@ use crate::claude_settings_rules::{
     check_claude_settings_edit_unsafe_path, check_claude_settings_edit_wildcard,
     check_claude_settings_enabled_mcpjson_servers,
     check_claude_settings_external_absolute_hook_command, check_claude_settings_gh_pr_permission,
-    check_claude_settings_git_add_permission, check_claude_settings_git_branch_permission,
-    check_claude_settings_git_checkout_permission, check_claude_settings_git_clone_permission,
-    check_claude_settings_git_commit_permission, check_claude_settings_git_config_permission,
-    check_claude_settings_git_fetch_permission, check_claude_settings_git_ls_remote_permission,
-    check_claude_settings_git_push_permission, check_claude_settings_git_stash_permission,
-    check_claude_settings_git_tag_permission, check_claude_settings_glob_wildcard,
-    check_claude_settings_grep_wildcard, check_claude_settings_home_directory_hook_command,
-    check_claude_settings_inline_download_exec, check_claude_settings_insecure_http_hook_url,
-    check_claude_settings_invalid_hook_matcher_event, check_claude_settings_missing_hook_timeout,
+    check_claude_settings_git_add_permission, check_claude_settings_git_am_permission,
+    check_claude_settings_git_apply_permission, check_claude_settings_git_branch_permission,
+    check_claude_settings_git_checkout_permission,
+    check_claude_settings_git_cherry_pick_permission, check_claude_settings_git_clean_permission,
+    check_claude_settings_git_clone_permission, check_claude_settings_git_commit_permission,
+    check_claude_settings_git_config_permission, check_claude_settings_git_fetch_permission,
+    check_claude_settings_git_ls_remote_permission, check_claude_settings_git_merge_permission,
+    check_claude_settings_git_push_permission, check_claude_settings_git_rebase_permission,
+    check_claude_settings_git_reset_permission, check_claude_settings_git_restore_permission,
+    check_claude_settings_git_stash_permission, check_claude_settings_git_tag_permission,
+    check_claude_settings_glob_wildcard, check_claude_settings_grep_wildcard,
+    check_claude_settings_home_directory_hook_command, check_claude_settings_inline_download_exec,
+    check_claude_settings_insecure_http_hook_url, check_claude_settings_invalid_hook_matcher_event,
+    check_claude_settings_missing_hook_timeout,
     check_claude_settings_missing_required_hook_matcher, check_claude_settings_missing_schema,
     check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
     check_claude_settings_npx_permission, check_claude_settings_package_install_permission,
@@ -140,6 +145,102 @@ declare_rule! {
         code: "SEC374",
         summary: "Claude settings permissions allow `WebSearch(*)` in a shared committed config",
         doc_title: "Claude settings: wildcard WebSearch permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGitResetPermissionRule {
+        code: "SEC478",
+        summary: "Claude settings permissions allow `Bash(git reset:*)` in a shared committed config",
+        doc_title: "Claude settings: shared git reset permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGitCleanPermissionRule {
+        code: "SEC479",
+        summary: "Claude settings permissions allow `Bash(git clean:*)` in a shared committed config",
+        doc_title: "Claude settings: shared git clean permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGitRestorePermissionRule {
+        code: "SEC480",
+        summary: "Claude settings permissions allow `Bash(git restore:*)` in a shared committed config",
+        doc_title: "Claude settings: shared git restore permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGitRebasePermissionRule {
+        code: "SEC481",
+        summary: "Claude settings permissions allow `Bash(git rebase:*)` in a shared committed config",
+        doc_title: "Claude settings: shared git rebase permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGitMergePermissionRule {
+        code: "SEC482",
+        summary: "Claude settings permissions allow `Bash(git merge:*)` in a shared committed config",
+        doc_title: "Claude settings: shared git merge permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGitCherryPickPermissionRule {
+        code: "SEC483",
+        summary: "Claude settings permissions allow `Bash(git cherry-pick:*)` in a shared committed config",
+        doc_title: "Claude settings: shared git cherry-pick permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGitApplyPermissionRule {
+        code: "SEC484",
+        summary: "Claude settings permissions allow `Bash(git apply:*)` in a shared committed config",
+        doc_title: "Claude settings: shared git apply permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGitAmPermissionRule {
+        code: "SEC485",
+        summary: "Claude settings permissions allow `Bash(git am:*)` in a shared committed config",
+        doc_title: "Claude settings: shared git am permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -531,7 +632,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 42] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 50] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -1017,6 +1118,134 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 42] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `Bash(git stash:*)` permissions, or replace them with a narrower reviewed workflow that does not grant broad stash authority by default",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGitResetPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared git reset permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_git_reset_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `Bash(git reset:*)` permissions, or replace them with a narrower reviewed workflow that does not grant broad reset authority by default",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGitCleanPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared git clean permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_git_clean_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `Bash(git clean:*)` permissions, or replace them with a narrower reviewed workflow that does not grant broad cleanup authority by default",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGitRestorePermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared git restore permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_git_restore_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `Bash(git restore:*)` permissions, or replace them with a narrower reviewed workflow that does not grant broad restore authority by default",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGitRebasePermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared git rebase permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_git_rebase_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `Bash(git rebase:*)` permissions, or replace them with a narrower reviewed workflow that does not grant broad history-rewrite authority by default",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGitMergePermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared git merge permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_git_merge_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `Bash(git merge:*)` permissions, or replace them with a narrower reviewed workflow that does not grant broad merge authority by default",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGitCherryPickPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared git cherry-pick permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_git_cherry_pick_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `Bash(git cherry-pick:*)` permissions, or replace them with a narrower reviewed workflow that does not grant broad cherry-pick authority by default",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGitApplyPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared git apply permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_git_apply_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `Bash(git apply:*)` permissions, or replace them with a narrower reviewed workflow that does not grant broad patch-application authority by default",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGitAmPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared git am permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_git_am_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `Bash(git am:*)` permissions, or replace them with a narrower reviewed workflow that does not grant broad mail-patch application authority by default",
         ),
         suggestion_fix: None,
     },

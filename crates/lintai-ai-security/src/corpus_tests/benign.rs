@@ -28,6 +28,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "claude-settings-curl-specific-safe",
             "claude-settings-dangerous-http-hook-fixture-safe",
             "claude-settings-dangerous-http-hook-safe",
+            "claude-settings-destructive-git-specific-safe",
             "claude-settings-edit-specific-safe",
             "claude-settings-edit-wildcard-fixture-safe",
             "claude-settings-empty-enabled-mcpjson-servers-safe",

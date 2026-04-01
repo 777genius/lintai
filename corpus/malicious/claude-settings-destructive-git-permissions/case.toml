@@ -1,0 +1,21 @@
+id = "claude-settings-destructive-git-permissions"
+kind = "malicious"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = [
+  { rule_code = "SEC478", tier = "preview", min_evidence_count = 1 },
+  { rule_code = "SEC479", tier = "preview", min_evidence_count = 1 },
+  { rule_code = "SEC480", tier = "preview", min_evidence_count = 1 },
+  { rule_code = "SEC481", tier = "preview", min_evidence_count = 1 },
+  { rule_code = "SEC482", tier = "preview", min_evidence_count = 1 },
+  { rule_code = "SEC483", tier = "preview", min_evidence_count = 1 },
+  { rule_code = "SEC484", tier = "preview", min_evidence_count = 1 },
+  { rule_code = "SEC485", tier = "preview", min_evidence_count = 1 }
+]
+expected_absent_rules = []
+
+[snapshot]
+kind = "none"
+name = "none"

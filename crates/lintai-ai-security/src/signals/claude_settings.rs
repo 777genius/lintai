@@ -439,6 +439,28 @@ impl ClaudeSettingsSignals {
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git commit:*)");
         signals.git_stash_permission_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git stash:*)");
+        signals.git_reset_permission_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git reset:*)");
+        signals.git_clean_permission_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git clean:*)");
+        signals.git_restore_permission_span = resolve_permissions_allow_exact_span(
+            value,
+            locator_ref.as_ref(),
+            "Bash(git restore:*)",
+        );
+        signals.git_rebase_permission_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git rebase:*)");
+        signals.git_merge_permission_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git merge:*)");
+        signals.git_cherry_pick_permission_span = resolve_permissions_allow_exact_span(
+            value,
+            locator_ref.as_ref(),
+            "Bash(git cherry-pick:*)",
+        );
+        signals.git_apply_permission_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git apply:*)");
+        signals.git_am_permission_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git am:*)");
         signals.glob_wildcard_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Glob(*)");
         signals.grep_wildcard_span =

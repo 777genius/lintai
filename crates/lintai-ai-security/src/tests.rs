@@ -6128,6 +6128,142 @@ fn finds_claude_settings_git_stash_permission() {
 }
 
 #[test]
+fn finds_claude_settings_git_reset_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(git reset:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC478")
+        .unwrap();
+    let start = content.find("Bash(git reset:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git reset:*)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_git_clean_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(git clean:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC479")
+        .unwrap();
+    let start = content.find("Bash(git clean:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git clean:*)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_git_restore_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(git restore:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC480")
+        .unwrap();
+    let start = content.find("Bash(git restore:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git restore:*)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_git_rebase_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(git rebase:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC481")
+        .unwrap();
+    let start = content.find("Bash(git rebase:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git rebase:*)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_git_merge_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(git merge:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC482")
+        .unwrap();
+    let start = content.find("Bash(git merge:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git merge:*)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_git_cherry_pick_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(git cherry-pick:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC483")
+        .unwrap();
+    let start = content.find("Bash(git cherry-pick:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git cherry-pick:*)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_git_apply_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(git apply:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC484")
+        .unwrap();
+    let start = content.find("Bash(git apply:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git apply:*)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_git_am_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(git am:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC485")
+        .unwrap();
+    let start = content.find("Bash(git am:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(git am:*)".len())
+    );
+}
+
+#[test]
 fn finds_claude_settings_glob_wildcard() {
     let content = r#"{"permissions":{"allow":["Glob(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -6403,6 +6539,126 @@ fn ignores_claude_settings_git_fetch_permission_when_command_is_more_specific() 
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC409")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_git_reset_permission_when_command_is_more_specific() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(git reset --hard HEAD~1)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC478")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_git_clean_permission_when_command_is_more_specific() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(git clean -fd)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC479")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_git_restore_permission_when_command_is_more_specific() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(git restore src/lib.rs)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC480")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_git_rebase_permission_when_command_is_more_specific() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(git rebase origin/main)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC481")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_git_merge_permission_when_command_is_more_specific() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(git merge feature/branch)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC482")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_git_cherry_pick_permission_when_command_is_more_specific() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(git cherry-pick abc1234)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC483")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_git_apply_permission_when_command_is_more_specific() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(git apply patch.diff)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC484")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_git_am_permission_when_command_is_more_specific() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(git am series.patch)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC485")
     );
 }
 

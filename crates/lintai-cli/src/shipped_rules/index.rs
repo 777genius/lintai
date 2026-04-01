@@ -230,6 +230,38 @@ mod tests {
             Some("CLAUDE-EDIT-UNSAFE-PATH")
         );
         assert_eq!(
+            shipped_rule_alias("SEC478"),
+            Some("CLAUDE-GIT-RESET-PERMISSION")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC479"),
+            Some("CLAUDE-GIT-CLEAN-PERMISSION")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC480"),
+            Some("CLAUDE-GIT-RESTORE-PERMISSION")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC481"),
+            Some("CLAUDE-GIT-REBASE-PERMISSION")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC482"),
+            Some("CLAUDE-GIT-MERGE-PERMISSION")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC483"),
+            Some("CLAUDE-GIT-CHERRY-PICK-PERMISSION")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC484"),
+            Some("CLAUDE-GIT-APPLY-PERMISSION")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC485"),
+            Some("CLAUDE-GIT-AM-PERMISSION")
+        );
+        assert_eq!(
             shipped_rule_alias("SEC394"),
             Some("MCP-AUTOAPPROVE-WILDCARD")
         );
