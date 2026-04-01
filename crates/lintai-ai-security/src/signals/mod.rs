@@ -350,6 +350,7 @@ pub(crate) struct ClaudeSettingsSignals {
     pub(crate) missing_hook_timeout_span: Option<Span>,
     pub(crate) invalid_hook_matcher_event_span: Option<Span>,
     pub(crate) missing_required_hook_matcher_span: Option<Span>,
+    pub(crate) unscoped_bash_span: Option<Span>,
     pub(crate) bash_wildcard_span: Option<Span>,
     pub(crate) webfetch_wildcard_span: Option<Span>,
     pub(crate) webfetch_raw_githubusercontent_span: Option<Span>,

@@ -8573,6 +8573,23 @@ fn ignores_claude_settings_bypass_permissions_on_fixture_like_path() {
 }
 
 #[test]
+fn finds_claude_settings_unscoped_bash() {
+    let content = r#"{"permissions":{"allow":["Bash","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC626")
+        .unwrap();
+    let start = content.find("Bash").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash".len())
+    );
+}
+
+#[test]
 fn finds_claude_settings_bash_wildcard() {
     let content = r#"{"permissions":{"allow":["Bash(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);

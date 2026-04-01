@@ -318,7 +318,8 @@
         "lintai-ai-security:SEC538",
         "lintai-ai-security:SEC540",
         "lintai-ai-security:SEC542",
-        "lintai-ai-security:SEC544"
+        "lintai-ai-security:SEC544",
+        "lintai-ai-security:SEC626"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -644,7 +645,8 @@
         "lintai-ai-security:SEC538",
         "lintai-ai-security:SEC540",
         "lintai-ai-security:SEC542",
-        "lintai-ai-security:SEC544"
+        "lintai-ai-security:SEC544",
+        "lintai-ai-security:SEC626"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -12987,6 +12989,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC626",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC626",
+      "alias": "CLAUDE-BASH",
+      "displayLabel": "SEC626 / CLAUDE-BASH",
+      "docTitle": "Claude settings: bare Bash permissions",
+      "slug": "sec626",
+      "canonicalPath": "/rules/lintai-ai-security/sec626",
+      "summary": "Claude settings permissions allow bare `Bash` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for exact bare `Bash` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-bash-wildcard"
+        ],
+        "benignCaseIds": [
+          "claude-settings-bash-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for bare `Bash` inside permissions.allow on parsed Claude settings JSON."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

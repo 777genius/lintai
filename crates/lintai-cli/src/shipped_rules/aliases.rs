@@ -70,6 +70,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC360" => "CURSOR-RULE-GLOBS",
         "SEC361" => "CLAUDE-SETTINGS-SCHEMA",
         "SEC362" => "CLAUDE-BASH-WILDCARD",
+        "SEC626" => "CLAUDE-BASH",
         "SEC363" => "CLAUDE-HOME-HOOK-PATH",
         "SEC364" => "CLAUDE-BYPASS-PERMISSIONS",
         "SEC365" => "CLAUDE-HTTP-HOOK-URL",

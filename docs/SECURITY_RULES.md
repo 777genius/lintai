@@ -344,6 +344,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC623 / MCP-AUTOAPPROVE-WEBFETCH` | MCP configuration auto-approves bare `WebFetch` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC624 / MCP-AUTOAPPROVE-WEBSEARCH` | MCP configuration auto-approves bare `WebSearch` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC625 / MCP-AUTOAPPROVE-BASH` | MCP configuration auto-approves bare `Bash` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC626 / CLAUDE-BASH` | Claude settings permissions allow bare `Bash` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 
 ## Builtin preset activation model
 
@@ -7010,6 +7011,27 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash"]` on parsed MCP configuration.
 - Malicious Corpus: `mcp-autoapprove-unscoped-tool-family`
 - Benign Corpus: `mcp-autoapprove-unscoped-tool-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC626 / CLAUDE-BASH` — Claude settings permissions allow bare `Bash` in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-BASH`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for exact bare `Bash` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for bare `Bash` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-bash-wildcard`
+- Benign Corpus: `claude-settings-bash-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

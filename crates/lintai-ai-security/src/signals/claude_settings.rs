@@ -359,6 +359,8 @@ impl ClaudeSettingsSignals {
         if value.is_object() && !value.get("$schema").is_some() {
             signals.missing_schema_span = leading_json_file_relative_span(&ctx.content);
         }
+        signals.unscoped_bash_span =
+            resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash");
         signals.bash_wildcard_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(*)");
         signals.webfetch_wildcard_span =

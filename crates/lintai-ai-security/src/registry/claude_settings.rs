@@ -41,11 +41,12 @@ use crate::claude_settings_rules::{
     check_claude_settings_npm_exec_permission, check_claude_settings_npx_permission,
     check_claude_settings_package_install_permission, check_claude_settings_pipx_run_permission,
     check_claude_settings_pnpm_dlx_permission, check_claude_settings_read_unsafe_path,
-    check_claude_settings_read_wildcard, check_claude_settings_unscoped_websearch,
-    check_claude_settings_uvx_permission, check_claude_settings_webfetch_raw_githubusercontent,
-    check_claude_settings_webfetch_wildcard, check_claude_settings_websearch_wildcard,
-    check_claude_settings_wget_permission, check_claude_settings_write_unsafe_path,
-    check_claude_settings_write_wildcard, check_claude_settings_yarn_dlx_permission,
+    check_claude_settings_read_wildcard, check_claude_settings_unscoped_bash,
+    check_claude_settings_unscoped_websearch, check_claude_settings_uvx_permission,
+    check_claude_settings_webfetch_raw_githubusercontent, check_claude_settings_webfetch_wildcard,
+    check_claude_settings_websearch_wildcard, check_claude_settings_wget_permission,
+    check_claude_settings_write_unsafe_path, check_claude_settings_write_wildcard,
+    check_claude_settings_yarn_dlx_permission,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
 
@@ -902,6 +903,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct ClaudeSettingsUnscopedBashRule {
+        code: "SEC626",
+        summary: "Claude settings permissions allow bare `Bash` in a shared committed config",
+        doc_title: "Claude settings: bare Bash permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct ClaudeSettingsBashWildcardRule {
         code: "SEC362",
         summary: "Claude settings permissions allow `Bash(*)` in a shared committed config",
@@ -961,7 +974,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 77] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -2255,6 +2268,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace the home-directory hook path with a project-scoped wrapper or a repo-relative path rooted in `$CLAUDE_PROJECT_DIR`",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsUnscopedBashRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for exact bare `Bash` grants.",
+            malicious_case_ids: &["claude-settings-bash-wildcard"],
+            benign_case_ids: &["claude-settings-bash-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for bare `Bash` inside permissions.allow on parsed Claude settings JSON.",
+        },
+        check: check_claude_settings_unscoped_bash,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace bare `Bash` with a narrower allowlist of reviewed command patterns in the committed Claude settings file",
         ),
         suggestion_fix: None,
     },
