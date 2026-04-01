@@ -172,6 +172,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC465" => "MD-GIT-HTTP-REMOTE",
         "SEC466" => "MD-RM-ALLOWED-TOOLS",
         "SEC467" => "MD-CHMOD-ALLOWED-TOOLS",
+        "SEC468" => "MD-CHOWN-ALLOWED-TOOLS",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

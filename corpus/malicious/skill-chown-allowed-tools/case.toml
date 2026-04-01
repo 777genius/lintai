@@ -1,0 +1,7 @@
+id = "skill-chown-allowed-tools"
+description = "AI-native markdown frontmatter grants Bash(chown:*) authority"
+kind = "Skill"
+expected_findings = [
+  { rule = "SEC468", tier = "stable", match = "Bash(chown:*)" },
+]
+

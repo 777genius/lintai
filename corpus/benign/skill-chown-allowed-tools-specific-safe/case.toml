@@ -1,0 +1,5 @@
+id = "skill-chown-allowed-tools-specific-safe"
+description = "AI-native markdown frontmatter scopes chown authority to a reviewed command"
+kind = "Skill"
+expected_absent_rules = ["SEC468"]
+

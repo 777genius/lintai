@@ -1870,6 +1870,36 @@ fn ignores_chmod_specific_allowed_tools() {
 }
 
 #[test]
+fn finds_chown_allowed_tools() {
+    let content = "---\nallowed-tools: Bash(chown:*)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC468")
+        .unwrap();
+    let start = content.find("Bash(chown:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(chown:*)".len())
+    );
+}
+
+#[test]
+fn ignores_chown_specific_allowed_tools() {
+    let content = "---\nallowed-tools: Bash(chown root:staff ./bin/tool)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC468")
+    );
+}
+
+#[test]
 fn finds_markdown_cargo_http_index() {
     let content = "cargo install ripgrep --index http://index.example.test/\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

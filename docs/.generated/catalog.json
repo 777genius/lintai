@@ -187,7 +187,8 @@
         "lintai-ai-security:SEC464",
         "lintai-ai-security:SEC465",
         "lintai-ai-security:SEC466",
-        "lintai-ai-security:SEC467"
+        "lintai-ai-security:SEC467",
+        "lintai-ai-security:SEC468"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -284,7 +285,8 @@
         "lintai-ai-security:SEC464",
         "lintai-ai-security:SEC465",
         "lintai-ai-security:SEC466",
-        "lintai-ai-security:SEC467"
+        "lintai-ai-security:SEC467",
+        "lintai-ai-security:SEC468"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -6563,6 +6565,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(chmod:*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC468",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC468",
+      "alias": "MD-CHOWN-ALLOWED-TOOLS",
+      "displayLabel": "SEC468 / MD-CHOWN-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(chown:*)` tool grant",
+      "slug": "sec468",
+      "canonicalPath": "/rules/lintai-ai-security/sec468",
+      "summary": "AI-native markdown frontmatter grants `Bash(chown:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for explicit wildcard chown grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-chown-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-chown-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(chown:*)` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
