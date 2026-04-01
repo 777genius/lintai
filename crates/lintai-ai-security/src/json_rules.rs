@@ -513,6 +513,111 @@ pub(crate) fn check_mcp_autoapprove_gh_release_upload(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_npx(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_npx_span.clone()),
+        "MCP configuration auto-approves `Bash(npx ...)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_uvx(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_uvx_span.clone()),
+        "MCP configuration auto-approves `Bash(uvx ...)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_npm_exec(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_npm_exec_span.clone()),
+        "MCP configuration auto-approves `Bash(npm exec ...)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_bunx(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_bunx_span.clone()),
+        "MCP configuration auto-approves `Bash(bunx ...)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_pnpm_dlx(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_pnpm_dlx_span.clone()),
+        "MCP configuration auto-approves `Bash(pnpm dlx ...)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_yarn_dlx(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_yarn_dlx_span.clone()),
+        "MCP configuration auto-approves `Bash(yarn dlx ...)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_pipx_run(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_pipx_run_span.clone()),
+        "MCP configuration auto-approves `Bash(pipx run ...)` through `autoApprove`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_read_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

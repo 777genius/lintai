@@ -505,6 +505,83 @@ pub(super) fn analyze_json_object<'a>(
                 Some(resolve_value_span(&item_path, locator, fallback_len));
         }
 
+        if signals.autoapprove_npx_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_prefixed_string_array_item_index(nested, "Bash(npx ")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_npx_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_uvx_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_prefixed_string_array_item_index(nested, "Bash(uvx ")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_uvx_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_npm_exec_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_prefixed_string_array_item_index(nested, "Bash(npm exec ")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_npm_exec_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_bunx_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_prefixed_string_array_item_index(nested, "Bash(bunx ")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_bunx_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_pnpm_dlx_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_prefixed_string_array_item_index(nested, "Bash(pnpm dlx ")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_pnpm_dlx_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_yarn_dlx_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_prefixed_string_array_item_index(nested, "Bash(yarn dlx ")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_yarn_dlx_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_pipx_run_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_prefixed_string_array_item_index(nested, "Bash(pipx run ")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_pipx_run_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
         if signals.autoapprove_read_wildcard_span.is_none()
             && artifact_kind == ArtifactKind::McpConfig
             && key == "autoApprove"
@@ -702,6 +779,14 @@ fn find_string_array_item_index(value: &Value, wanted: &str) -> Option<usize> {
     value
         .as_array()
         .and_then(|items| items.iter().position(|item| item.as_str() == Some(wanted)))
+}
+
+fn find_prefixed_string_array_item_index(value: &Value, prefix: &str) -> Option<usize> {
+    value.as_array().and_then(|items| {
+        items
+            .iter()
+            .position(|item| item.as_str().is_some_and(|text| text.starts_with(prefix)))
+    })
 }
 
 fn find_string_array_item_matching_index(

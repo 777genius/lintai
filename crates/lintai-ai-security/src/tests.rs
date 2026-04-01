@@ -7086,6 +7086,160 @@ fn finds_mcp_autoapprove_gh_release_upload() {
 }
 
 #[test]
+fn finds_mcp_autoapprove_npx() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(npx claude-flow:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC586")
+        .unwrap();
+    let start = content.find("\"Bash(npx claude-flow:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(npx claude-flow:*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_uvx() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(uvx ruff:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC587")
+        .unwrap();
+    let start = content.find("\"Bash(uvx ruff:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(uvx ruff:*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_npm_exec() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(npm exec eslint:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC588")
+        .unwrap();
+    let start = content.find("\"Bash(npm exec eslint:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(npm exec eslint:*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_bunx() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(bunx prettier:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC589")
+        .unwrap();
+    let start = content.find("\"Bash(bunx prettier:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(bunx prettier:*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_pnpm_dlx() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(pnpm dlx cowsay:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC590")
+        .unwrap();
+    let start = content.find("\"Bash(pnpm dlx cowsay:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(pnpm dlx cowsay:*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_yarn_dlx() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(yarn dlx create-vite:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC591")
+        .unwrap();
+    let start = content.find("\"Bash(yarn dlx create-vite:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(yarn dlx create-vite:*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_pipx_run() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(pipx run black:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC592")
+        .unwrap();
+    let start = content.find("\"Bash(pipx run black:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(pipx run black:*)".len())
+    );
+}
+
+#[test]
 fn ignores_mcp_autoapprove_nonmatching_tools() {
     let provider = AiSecurityProvider::default();
     let findings = ProviderHarness::run(
@@ -7138,6 +7292,13 @@ fn ignores_mcp_autoapprove_nonmatching_tools() {
                 | "SEC583"
                 | "SEC584"
                 | "SEC585"
+                | "SEC586"
+                | "SEC587"
+                | "SEC588"
+                | "SEC589"
+                | "SEC590"
+                | "SEC591"
+                | "SEC592"
         )
     }));
 }

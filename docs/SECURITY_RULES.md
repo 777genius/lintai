@@ -304,6 +304,13 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC583 / MCP-AUTOAPPROVE-GH-RELEASE-CREATE` | MCP configuration auto-approves `Bash(gh release create:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC584 / MCP-AUTOAPPROVE-GH-RELEASE-DELETE` | MCP configuration auto-approves `Bash(gh release delete:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC585 / MCP-AUTOAPPROVE-GH-RELEASE-UPLOAD` | MCP configuration auto-approves `Bash(gh release upload:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC586 / MCP-AUTOAPPROVE-NPX` | MCP configuration auto-approves `Bash(npx ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC587 / MCP-AUTOAPPROVE-UVX` | MCP configuration auto-approves `Bash(uvx ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC588 / MCP-AUTOAPPROVE-NPM-EXEC` | MCP configuration auto-approves `Bash(npm exec ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC589 / MCP-AUTOAPPROVE-BUNX` | MCP configuration auto-approves `Bash(bunx ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC590 / MCP-AUTOAPPROVE-PNPM-DLX` | MCP configuration auto-approves `Bash(pnpm dlx ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC591 / MCP-AUTOAPPROVE-YARN-DLX` | MCP configuration auto-approves `Bash(yarn dlx ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC592 / MCP-AUTOAPPROVE-PIPX-RUN` | MCP configuration auto-approves `Bash(pipx run ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -5874,6 +5881,153 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh release upload:*)"]` on parsed MCP configuration.
 - Malicious Corpus: `mcp-autoapprove-gh-release-transfer-family`
 - Benign Corpus: `mcp-autoapprove-gh-release-transfer-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC586 / MCP-AUTOAPPROVE-NPX` — MCP configuration auto-approves `Bash(npx ...)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-NPX`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(npx ...)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(npx ` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-mutable-runner-family`
+- Benign Corpus: `mcp-autoapprove-mutable-runner-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC587 / MCP-AUTOAPPROVE-UVX` — MCP configuration auto-approves `Bash(uvx ...)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-UVX`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(uvx ...)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(uvx ` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-mutable-runner-family`
+- Benign Corpus: `mcp-autoapprove-mutable-runner-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC588 / MCP-AUTOAPPROVE-NPM-EXEC` — MCP configuration auto-approves `Bash(npm exec ...)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-NPM-EXEC`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(npm exec ...)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(npm exec ` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-mutable-runner-family`
+- Benign Corpus: `mcp-autoapprove-mutable-runner-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC589 / MCP-AUTOAPPROVE-BUNX` — MCP configuration auto-approves `Bash(bunx ...)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-BUNX`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(bunx ...)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(bunx ` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-mutable-runner-family`
+- Benign Corpus: `mcp-autoapprove-mutable-runner-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC590 / MCP-AUTOAPPROVE-PNPM-DLX` — MCP configuration auto-approves `Bash(pnpm dlx ...)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-PNPM-DLX`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(pnpm dlx ...)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(pnpm dlx ` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-mutable-runner-family`
+- Benign Corpus: `mcp-autoapprove-mutable-runner-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC591 / MCP-AUTOAPPROVE-YARN-DLX` — MCP configuration auto-approves `Bash(yarn dlx ...)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-YARN-DLX`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(yarn dlx ...)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(yarn dlx ` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-mutable-runner-family`
+- Benign Corpus: `mcp-autoapprove-mutable-runner-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC592 / MCP-AUTOAPPROVE-PIPX-RUN` — MCP configuration auto-approves `Bash(pipx run ...)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-PIPX-RUN`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(pipx run ...)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(pipx run ` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-mutable-runner-family`
+- Benign Corpus: `mcp-autoapprove-mutable-runner-family-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

@@ -103,7 +103,14 @@
         "lintai-ai-security:SEC582",
         "lintai-ai-security:SEC583",
         "lintai-ai-security:SEC584",
-        "lintai-ai-security:SEC585"
+        "lintai-ai-security:SEC585",
+        "lintai-ai-security:SEC586",
+        "lintai-ai-security:SEC587",
+        "lintai-ai-security:SEC588",
+        "lintai-ai-security:SEC589",
+        "lintai-ai-security:SEC590",
+        "lintai-ai-security:SEC591",
+        "lintai-ai-security:SEC592"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -478,7 +485,14 @@
         "lintai-ai-security:SEC582",
         "lintai-ai-security:SEC583",
         "lintai-ai-security:SEC584",
-        "lintai-ai-security:SEC585"
+        "lintai-ai-security:SEC585",
+        "lintai-ai-security:SEC586",
+        "lintai-ai-security:SEC587",
+        "lintai-ai-security:SEC588",
+        "lintai-ai-security:SEC589",
+        "lintai-ai-security:SEC590",
+        "lintai-ai-security:SEC591",
+        "lintai-ai-security:SEC592"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -10835,6 +10849,279 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh release upload:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC586",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC586",
+      "alias": "MCP-AUTOAPPROVE-NPX",
+      "displayLabel": "SEC586 / MCP-AUTOAPPROVE-NPX",
+      "docTitle": "MCP config: npx auto-approve",
+      "slug": "sec586",
+      "canonicalPath": "/rules/lintai-ai-security/sec586",
+      "summary": "MCP configuration auto-approves `Bash(npx ...)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `Bash(npx ...)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-mutable-runner-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-mutable-runner-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(npx ` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC587",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC587",
+      "alias": "MCP-AUTOAPPROVE-UVX",
+      "displayLabel": "SEC587 / MCP-AUTOAPPROVE-UVX",
+      "docTitle": "MCP config: uvx auto-approve",
+      "slug": "sec587",
+      "canonicalPath": "/rules/lintai-ai-security/sec587",
+      "summary": "MCP configuration auto-approves `Bash(uvx ...)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `Bash(uvx ...)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-mutable-runner-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-mutable-runner-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(uvx ` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC588",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC588",
+      "alias": "MCP-AUTOAPPROVE-NPM-EXEC",
+      "displayLabel": "SEC588 / MCP-AUTOAPPROVE-NPM-EXEC",
+      "docTitle": "MCP config: npm exec auto-approve",
+      "slug": "sec588",
+      "canonicalPath": "/rules/lintai-ai-security/sec588",
+      "summary": "MCP configuration auto-approves `Bash(npm exec ...)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `Bash(npm exec ...)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-mutable-runner-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-mutable-runner-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(npm exec ` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC589",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC589",
+      "alias": "MCP-AUTOAPPROVE-BUNX",
+      "displayLabel": "SEC589 / MCP-AUTOAPPROVE-BUNX",
+      "docTitle": "MCP config: bunx auto-approve",
+      "slug": "sec589",
+      "canonicalPath": "/rules/lintai-ai-security/sec589",
+      "summary": "MCP configuration auto-approves `Bash(bunx ...)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `Bash(bunx ...)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-mutable-runner-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-mutable-runner-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(bunx ` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC590",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC590",
+      "alias": "MCP-AUTOAPPROVE-PNPM-DLX",
+      "displayLabel": "SEC590 / MCP-AUTOAPPROVE-PNPM-DLX",
+      "docTitle": "MCP config: pnpm dlx auto-approve",
+      "slug": "sec590",
+      "canonicalPath": "/rules/lintai-ai-security/sec590",
+      "summary": "MCP configuration auto-approves `Bash(pnpm dlx ...)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `Bash(pnpm dlx ...)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-mutable-runner-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-mutable-runner-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(pnpm dlx ` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC591",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC591",
+      "alias": "MCP-AUTOAPPROVE-YARN-DLX",
+      "displayLabel": "SEC591 / MCP-AUTOAPPROVE-YARN-DLX",
+      "docTitle": "MCP config: yarn dlx auto-approve",
+      "slug": "sec591",
+      "canonicalPath": "/rules/lintai-ai-security/sec591",
+      "summary": "MCP configuration auto-approves `Bash(yarn dlx ...)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `Bash(yarn dlx ...)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-mutable-runner-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-mutable-runner-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(yarn dlx ` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC592",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC592",
+      "alias": "MCP-AUTOAPPROVE-PIPX-RUN",
+      "displayLabel": "SEC592 / MCP-AUTOAPPROVE-PIPX-RUN",
+      "docTitle": "MCP config: pipx run auto-approve",
+      "slug": "sec592",
+      "canonicalPath": "/rules/lintai-ai-security/sec592",
+      "summary": "MCP configuration auto-approves `Bash(pipx run ...)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `Bash(pipx run ...)` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-mutable-runner-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-mutable-runner-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(pipx run ` on parsed MCP configuration."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

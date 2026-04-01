@@ -4,30 +4,33 @@ use super::*;
 use crate::json_rules::{
     check_json_dangerous_endpoint_host, check_json_hidden_instruction, check_json_literal_secret,
     check_json_sensitive_env_reference, check_json_suspicious_remote_endpoint,
-    check_json_unsafe_plugin_path, check_mcp_autoapprove_bash_wildcard, check_mcp_autoapprove_curl,
-    check_mcp_autoapprove_edit_unsafe_path, check_mcp_autoapprove_edit_wildcard,
-    check_mcp_autoapprove_gh_api_delete, check_mcp_autoapprove_gh_api_patch,
-    check_mcp_autoapprove_gh_api_post, check_mcp_autoapprove_gh_api_put,
-    check_mcp_autoapprove_gh_issue_create, check_mcp_autoapprove_gh_release_create,
-    check_mcp_autoapprove_gh_release_delete, check_mcp_autoapprove_gh_release_upload,
-    check_mcp_autoapprove_gh_repo_create, check_mcp_autoapprove_gh_repo_delete,
-    check_mcp_autoapprove_gh_repo_edit, check_mcp_autoapprove_gh_repo_transfer,
-    check_mcp_autoapprove_gh_secret_delete, check_mcp_autoapprove_gh_secret_set,
-    check_mcp_autoapprove_gh_variable_delete, check_mcp_autoapprove_gh_variable_set,
-    check_mcp_autoapprove_gh_workflow_disable, check_mcp_autoapprove_gh_workflow_run,
-    check_mcp_autoapprove_git_checkout, check_mcp_autoapprove_git_clean,
-    check_mcp_autoapprove_git_commit, check_mcp_autoapprove_git_push,
-    check_mcp_autoapprove_git_reset, check_mcp_autoapprove_glob_unsafe_path,
-    check_mcp_autoapprove_glob_wildcard, check_mcp_autoapprove_grep_unsafe_path,
-    check_mcp_autoapprove_grep_wildcard, check_mcp_autoapprove_read_unsafe_path,
+    check_json_unsafe_plugin_path, check_mcp_autoapprove_bash_wildcard, check_mcp_autoapprove_bunx,
+    check_mcp_autoapprove_curl, check_mcp_autoapprove_edit_unsafe_path,
+    check_mcp_autoapprove_edit_wildcard, check_mcp_autoapprove_gh_api_delete,
+    check_mcp_autoapprove_gh_api_patch, check_mcp_autoapprove_gh_api_post,
+    check_mcp_autoapprove_gh_api_put, check_mcp_autoapprove_gh_issue_create,
+    check_mcp_autoapprove_gh_release_create, check_mcp_autoapprove_gh_release_delete,
+    check_mcp_autoapprove_gh_release_upload, check_mcp_autoapprove_gh_repo_create,
+    check_mcp_autoapprove_gh_repo_delete, check_mcp_autoapprove_gh_repo_edit,
+    check_mcp_autoapprove_gh_repo_transfer, check_mcp_autoapprove_gh_secret_delete,
+    check_mcp_autoapprove_gh_secret_set, check_mcp_autoapprove_gh_variable_delete,
+    check_mcp_autoapprove_gh_variable_set, check_mcp_autoapprove_gh_workflow_disable,
+    check_mcp_autoapprove_gh_workflow_run, check_mcp_autoapprove_git_checkout,
+    check_mcp_autoapprove_git_clean, check_mcp_autoapprove_git_commit,
+    check_mcp_autoapprove_git_push, check_mcp_autoapprove_git_reset,
+    check_mcp_autoapprove_glob_unsafe_path, check_mcp_autoapprove_glob_wildcard,
+    check_mcp_autoapprove_grep_unsafe_path, check_mcp_autoapprove_grep_wildcard,
+    check_mcp_autoapprove_npm_exec, check_mcp_autoapprove_npx, check_mcp_autoapprove_pipx_run,
+    check_mcp_autoapprove_pnpm_dlx, check_mcp_autoapprove_read_unsafe_path,
     check_mcp_autoapprove_read_wildcard, check_mcp_autoapprove_rm, check_mcp_autoapprove_sudo,
-    check_mcp_autoapprove_tools_true, check_mcp_autoapprove_webfetch_wildcard,
-    check_mcp_autoapprove_websearch_wildcard, check_mcp_autoapprove_wget,
-    check_mcp_autoapprove_wildcard, check_mcp_autoapprove_write_unsafe_path,
-    check_mcp_autoapprove_write_wildcard, check_mcp_broad_env_file,
-    check_mcp_capabilities_wildcard, check_mcp_credential_env_passthrough,
-    check_mcp_dangerous_docker_flag, check_mcp_inline_download_exec, check_mcp_mutable_docker_pull,
-    check_mcp_mutable_launcher, check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
+    check_mcp_autoapprove_tools_true, check_mcp_autoapprove_uvx,
+    check_mcp_autoapprove_webfetch_wildcard, check_mcp_autoapprove_websearch_wildcard,
+    check_mcp_autoapprove_wget, check_mcp_autoapprove_wildcard,
+    check_mcp_autoapprove_write_unsafe_path, check_mcp_autoapprove_write_wildcard,
+    check_mcp_autoapprove_yarn_dlx, check_mcp_broad_env_file, check_mcp_capabilities_wildcard,
+    check_mcp_credential_env_passthrough, check_mcp_dangerous_docker_flag,
+    check_mcp_inline_download_exec, check_mcp_mutable_docker_pull, check_mcp_mutable_launcher,
+    check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
     check_mcp_sensitive_docker_mount, check_mcp_shell_wrapper, check_mcp_sudo_args0,
     check_mcp_sudo_command, check_mcp_trust_tools_true, check_mcp_unpinned_docker_image,
     check_plain_http_config, check_plugin_hook_inline_download_exec,
@@ -564,6 +567,90 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApproveNpxRule {
+        code: "SEC586",
+        summary: "MCP configuration auto-approves `Bash(npx ...)` through `autoApprove`",
+        doc_title: "MCP config: npx auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveUvxRule {
+        code: "SEC587",
+        summary: "MCP configuration auto-approves `Bash(uvx ...)` through `autoApprove`",
+        doc_title: "MCP config: uvx auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveNpmExecRule {
+        code: "SEC588",
+        summary: "MCP configuration auto-approves `Bash(npm exec ...)` through `autoApprove`",
+        doc_title: "MCP config: npm exec auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveBunxRule {
+        code: "SEC589",
+        summary: "MCP configuration auto-approves `Bash(bunx ...)` through `autoApprove`",
+        doc_title: "MCP config: bunx auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApprovePnpmDlxRule {
+        code: "SEC590",
+        summary: "MCP configuration auto-approves `Bash(pnpm dlx ...)` through `autoApprove`",
+        doc_title: "MCP config: pnpm dlx auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveYarnDlxRule {
+        code: "SEC591",
+        summary: "MCP configuration auto-approves `Bash(yarn dlx ...)` through `autoApprove`",
+        doc_title: "MCP config: yarn dlx auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApprovePipxRunRule {
+        code: "SEC592",
+        summary: "MCP configuration auto-approves `Bash(pipx run ...)` through `autoApprove`",
+        doc_title: "MCP config: pipx run auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpAutoApproveReadWildcardRule {
         code: "SEC567",
         summary: "MCP configuration auto-approves `Read(*)` through `autoApprove`",
@@ -863,7 +950,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 69] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -1725,6 +1812,146 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 69] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `gh release upload` auto-approval and keep release asset mutation under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveNpxRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(npx ...)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-mutable-runner-family"],
+            benign_case_ids: &["mcp-autoapprove-mutable-runner-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(npx ` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_npx,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `npx` auto-approval and keep mutable package execution under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveUvxRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(uvx ...)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-mutable-runner-family"],
+            benign_case_ids: &["mcp-autoapprove-mutable-runner-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(uvx ` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_uvx,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `uvx` auto-approval and keep mutable package execution under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveNpmExecRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(npm exec ...)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-mutable-runner-family"],
+            benign_case_ids: &["mcp-autoapprove-mutable-runner-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(npm exec ` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_npm_exec,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `npm exec` auto-approval and keep mutable package execution under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveBunxRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(bunx ...)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-mutable-runner-family"],
+            benign_case_ids: &["mcp-autoapprove-mutable-runner-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(bunx ` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_bunx,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `bunx` auto-approval and keep mutable package execution under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApprovePnpmDlxRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(pnpm dlx ...)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-mutable-runner-family"],
+            benign_case_ids: &["mcp-autoapprove-mutable-runner-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(pnpm dlx ` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_pnpm_dlx,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `pnpm dlx` auto-approval and keep mutable package execution under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveYarnDlxRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(yarn dlx ...)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-mutable-runner-family"],
+            benign_case_ids: &["mcp-autoapprove-mutable-runner-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(yarn dlx ` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_yarn_dlx,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `yarn dlx` auto-approval and keep mutable package execution under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApprovePipxRunRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(pipx run ...)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-mutable-runner-family"],
+            benign_case_ids: &["mcp-autoapprove-mutable-runner-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(pipx run ` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_pipx_run,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `pipx run` auto-approval and keep mutable package execution under explicit user review",
         ),
         suggestion_fix: None,
     },

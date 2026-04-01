@@ -1,0 +1,12 @@
+id = "mcp-autoapprove-mutable-runner-family-specific-safe"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC586", "SEC587", "SEC588", "SEC589", "SEC590", "SEC591", "SEC592"]
+
+[snapshot]
+kind = "none"
+name = ""
