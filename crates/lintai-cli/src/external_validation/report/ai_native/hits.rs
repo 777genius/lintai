@@ -10,7 +10,8 @@ const AI_NATIVE_RULE_CODES: &[&str] = &[
     "SEC331", "SEC335", "SEC336", "SEC337", "SEC338", "SEC339", "SEC340", "SEC341", "SEC342",
     "SEC343", "SEC344", "SEC345", "SEC346", "SEC394", "SEC395", "SEC396", "SEC397", "SEC398",
     "SEC399", "SEC400", "SEC405", "SEC406", "SEC407", "SEC408", "SEC409", "SEC410", "SEC411",
-    "SEC412", "SEC413", "SEC414", "SEC415", "SEC416", "SEC417", "SEC418", "SEC474",
+    "SEC412", "SEC413", "SEC414", "SEC415", "SEC416", "SEC417", "SEC418", "SEC474", "SEC475",
+    "SEC476", "SEC477",
 ];
 
 pub(super) fn append_cohort_and_counts(
@@ -141,6 +142,9 @@ pub(super) fn append_hit_sections(
     let sec417_hits = rule_count(ledger, &["SEC417"]);
     let sec418_hits = rule_count(ledger, &["SEC418"]);
     let sec474_hits = rule_count(ledger, &["SEC474"]);
+    let sec475_hits = rule_count(ledger, &["SEC475"]);
+    let sec476_hits = rule_count(ledger, &["SEC476"]);
+    let sec477_hits = rule_count(ledger, &["SEC477"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, ledger);
     let sec313_repos = repos_with_rule_hits(ledger, &["SEC313"], false);
     let sec335_repos = repos_with_rule_hits(ledger, &["SEC335"], false);
@@ -208,6 +212,9 @@ pub(super) fn append_hit_sections(
     let sec417_repos = repos_with_rule_hits(ledger, &["SEC417"], false);
     let sec418_repos = repos_with_rule_hits(ledger, &["SEC418"], false);
     let sec474_repos = repos_with_rule_hits(ledger, &["SEC474"], false);
+    let sec475_repos = repos_with_rule_hits(ledger, &["SEC475"], false);
+    let sec476_repos = repos_with_rule_hits(ledger, &["SEC476"], false);
+    let sec477_repos = repos_with_rule_hits(ledger, &["SEC477"], false);
 
     output.push_str("## Stable Hits\n\n");
     output.push_str(&format!("- current AI-native MCP rule families produced `{}` repo-level rule-code hits in this discovery wave\n", ai_native_rule_hits));
@@ -418,6 +425,18 @@ pub(super) fn append_hit_sections(
         "- `SEC474` AI-native markdown shared `gh pr` tool grants: `{}`\n",
         sec474_hits
     ));
+    output.push_str(&format!(
+        "- `SEC475` Claude settings files allowing unsafe `Read(...)` paths: `{}`\n",
+        sec475_hits
+    ));
+    output.push_str(&format!(
+        "- `SEC476` Claude settings files allowing unsafe `Write(...)` paths: `{}`\n",
+        sec476_hits
+    ));
+    output.push_str(&format!(
+        "- `SEC477` Claude settings files allowing unsafe `Edit(...)` paths: `{}`\n",
+        sec477_hits
+    ));
     output.push_str(&format!("- AI-native markdown preview hits by rule code: `SEC313`=`{}`, `SEC335`=`{}`, `SEC347`=`{}`, `SEC348`=`{}`, `SEC349`=`{}`, `SEC350`=`{}`, `SEC351`=`{}`, `SEC352`=`{}`, `SEC353`=`{}`, `SEC354`=`{}`, `SEC355`=`{}`, `SEC356`=`{}`, `SEC357`=`{}`, `SEC358`=`{}`, `SEC359`=`{}`, `SEC360`=`{}`, `SEC370`=`{}`, `SEC371`=`{}`, `SEC377`=`{}`, `SEC378`=`{}`, `SEC379`=`{}`, `SEC380`=`{}`, `SEC416`=`{}`, `SEC417`=`{}`\n", sec313_hits, sec335_hits, sec347_hits, sec348_hits, sec349_hits, sec350_hits, sec351_hits, sec352_hits, sec353_hits, sec354_hits, sec355_hits, sec356_hits, sec357_hits, sec358_hits, sec359_hits, sec360_hits, sec370_hits, sec371_hits, sec377_hits, sec378_hits, sec379_hits, sec380_hits, sec416_hits, sec417_hits));
     output.push_str(&format!(
         "- `SEC347` subtype repo hits: CLI-form=`{}`, config-snippet-form=`{}`\n",
@@ -502,6 +521,9 @@ pub(super) fn append_hit_sections(
         ("SEC417", sec417_repos),
         ("SEC418", sec418_repos),
         ("SEC474", sec474_repos),
+        ("SEC475", sec475_repos),
+        ("SEC476", sec476_repos),
+        ("SEC477", sec477_repos),
     ] {
         let is_stable = matches!(label, "SEC394" | "SEC395" | "SEC396" | "SEC397" | "SEC398");
         if repos.is_empty() {

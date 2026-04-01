@@ -218,6 +218,18 @@ mod tests {
         );
         assert_eq!(shipped_rule_alias("SEC474"), Some("MD-GH-PR-PERMISSION"));
         assert_eq!(
+            shipped_rule_alias("SEC475"),
+            Some("CLAUDE-READ-UNSAFE-PATH")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC476"),
+            Some("CLAUDE-WRITE-UNSAFE-PATH")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC477"),
+            Some("CLAUDE-EDIT-UNSAFE-PATH")
+        );
+        assert_eq!(
             shipped_rule_alias("SEC394"),
             Some("MCP-AUTOAPPROVE-WILDCARD")
         );

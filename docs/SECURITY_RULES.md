@@ -193,6 +193,9 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC472 / MD-GIT-SSL-NO-VERIFY` | AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC473 / MD-GIT-INLINE-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC474 / MD-GH-PR-PERMISSION` | AI-native markdown frontmatter grants `Bash(gh pr:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC475 / CLAUDE-READ-UNSAFE-PATH` | Claude settings permissions allow `Read(...)` over an unsafe path in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC476 / CLAUDE-WRITE-UNSAFE-PATH` | Claude settings permissions allow `Write(...)` over an unsafe path in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC477 / CLAUDE-EDIT-UNSAFE-PATH` | Claude settings permissions allow `Edit(...)` over an unsafe path in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 
 ## Builtin preset activation model
 
@@ -3685,6 +3688,57 @@ Important behavior:
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Shared gh pr grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC475 / CLAUDE-READ-UNSAFE-PATH` — Claude settings permissions allow `Read(...)` over an unsafe path in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-READ-UNSAFE-PATH`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Unsafe Read path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC476 / CLAUDE-WRITE-UNSAFE-PATH` — Claude settings permissions allow `Write(...)` over an unsafe path in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-WRITE-UNSAFE-PATH`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Unsafe Write path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC477 / CLAUDE-EDIT-UNSAFE-PATH` — Claude settings permissions allow `Edit(...)` over an unsafe path in a shared committed config
+
+- Provider: `lintai-ai-security`
+- Alias: `CLAUDE-EDIT-UNSAFE-PATH`
+- Scope: `per_file`
+- Surface: `claude_settings`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `preview`, `claude`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Unsafe Edit path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 

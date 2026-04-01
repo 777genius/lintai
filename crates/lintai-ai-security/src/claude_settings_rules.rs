@@ -213,6 +213,51 @@ pub(crate) fn check_claude_settings_edit_wildcard(
     )
 }
 
+pub(crate) fn check_claude_settings_read_unsafe_path(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.read_unsafe_path_span.clone()),
+        "Claude settings permissions allow `Read(...)` over an unsafe path in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_write_unsafe_path(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.write_unsafe_path_span.clone()),
+        "Claude settings permissions allow `Write(...)` over an unsafe path in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_edit_unsafe_path(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.edit_unsafe_path_span.clone()),
+        "Claude settings permissions allow `Edit(...)` over an unsafe path in a shared committed config",
+    )
+}
+
 pub(crate) fn check_claude_settings_websearch_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

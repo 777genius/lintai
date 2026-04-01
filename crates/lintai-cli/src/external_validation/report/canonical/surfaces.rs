@@ -87,6 +87,9 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec417_hits = rule_count(current, &["SEC417"]);
     let sec418_hits = rule_count(current, &["SEC418"]);
     let sec474_hits = rule_count(current, &["SEC474"]);
+    let sec475_hits = rule_count(current, &["SEC475"]);
+    let sec476_hits = rule_count(current, &["SEC476"]);
+    let sec477_hits = rule_count(current, &["SEC477"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, current);
     let sec348_repos = repos_with_rule_hits(current, &["SEC348"], false);
     let sec349_repos = repos_with_rule_hits(current, &["SEC349"], false);
@@ -151,6 +154,9 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec417_repos = repos_with_rule_hits(current, &["SEC417"], false);
     let sec418_repos = repos_with_rule_hits(current, &["SEC418"], false);
     let sec474_repos = repos_with_rule_hits(current, &["SEC474"], false);
+    let sec475_repos = repos_with_rule_hits(current, &["SEC475"], false);
+    let sec476_repos = repos_with_rule_hits(current, &["SEC476"], false);
+    let sec477_repos = repos_with_rule_hits(current, &["SEC477"], false);
 
     output.push_str("## Hybrid Scope Expansion Results\n\n");
     output.push_str("Current wave inventory for the newly expanded JSON lanes:\n\n");
@@ -462,6 +468,18 @@ pub(super) fn append_hybrid_scope_expansion(
         sec474_hits
     ));
     output.push_str(&format!(
+        "  - `SEC475` Claude settings unsafe `Read(...)` path permissions: `{}`\n",
+        sec475_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC476` Claude settings unsafe `Write(...)` path permissions: `{}`\n",
+        sec476_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC477` Claude settings unsafe `Edit(...)` path permissions: `{}`\n",
+        sec477_hits
+    ));
+    output.push_str(&format!(
         "  - `SEC372` Claude settings wildcard `Read(*)` permissions: `{}`\n",
         sec372_hits
     ));
@@ -564,6 +582,9 @@ pub(super) fn append_hybrid_scope_expansion(
     append_rule_repo_hits(output, "SEC417", sec417_repos);
     append_rule_repo_hits(output, "SEC418", sec418_repos);
     append_rule_repo_hits(output, "SEC474", sec474_repos);
+    append_rule_repo_hits(output, "SEC475", sec475_repos);
+    append_rule_repo_hits(output, "SEC476", sec476_repos);
+    append_rule_repo_hits(output, "SEC477", sec477_repos);
     if sec394_repos.is_empty() {
         output.push_str(
             "- `SEC394` produced no repo-level stable hits yet on the canonical cohort\n",

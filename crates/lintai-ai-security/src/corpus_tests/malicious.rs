@@ -57,6 +57,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-settings-pip-install-permission",
             "claude-settings-read-wildcard",
             "claude-settings-repo-external-absolute-hook-path",
+            "claude-settings-unsafe-path-permissions",
             "claude-settings-unscoped-websearch",
             "claude-settings-webfetch-raw-github-permission",
             "claude-settings-webfetch-wildcard",

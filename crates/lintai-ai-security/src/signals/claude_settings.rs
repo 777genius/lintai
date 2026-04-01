@@ -84,6 +84,52 @@ fn resolve_permissions_allow_any_exact_span(
     locator.and_then(|locator| locator.value_span(&path).cloned())
 }
 
+fn is_unsafe_permission_scope_path(value: &str) -> bool {
+    let normalized = value.trim();
+    normalized.starts_with('/')
+        || normalized.starts_with("~/")
+        || normalized.starts_with("~\\")
+        || normalized.contains("../")
+        || normalized.contains("..\\")
+        || normalized
+            .as_bytes()
+            .get(1)
+            .is_some_and(|byte| *byte == b':')
+}
+
+fn permission_has_unsafe_path_scope(permission: &str, tool_name: &str) -> bool {
+    let trimmed = permission.trim();
+    let Some(inner) = trimmed
+        .strip_prefix(tool_name)
+        .and_then(|remainder| remainder.strip_prefix('('))
+        .and_then(|remainder| remainder.strip_suffix(')'))
+    else {
+        return false;
+    };
+
+    is_unsafe_permission_scope_path(inner)
+}
+
+fn resolve_permissions_allow_matching_span(
+    value: &serde_json::Value,
+    locator: Option<&JsonLocationMap>,
+    matcher: impl Fn(&str) -> bool,
+) -> Option<Span> {
+    let allow = value
+        .get("permissions")
+        .and_then(|permissions| permissions.get("allow"))
+        .and_then(serde_json::Value::as_array)?;
+    let index = allow
+        .iter()
+        .position(|entry| entry.as_str().is_some_and(&matcher))?;
+    let path = vec![
+        JsonPathSegment::Key("permissions".to_owned()),
+        JsonPathSegment::Key("allow".to_owned()),
+        JsonPathSegment::Index(index),
+    ];
+    locator.and_then(|locator| locator.value_span(&path).cloned())
+}
+
 fn resolve_bypass_permissions_span(
     value: &serde_json::Value,
     locator: Option<&JsonLocationMap>,
@@ -328,6 +374,18 @@ impl ClaudeSettingsSignals {
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Read(*)");
         signals.edit_wildcard_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Edit(*)");
+        signals.read_unsafe_path_span =
+            resolve_permissions_allow_matching_span(value, locator_ref.as_ref(), |permission| {
+                permission_has_unsafe_path_scope(permission, "Read")
+            });
+        signals.write_unsafe_path_span =
+            resolve_permissions_allow_matching_span(value, locator_ref.as_ref(), |permission| {
+                permission_has_unsafe_path_scope(permission, "Write")
+            });
+        signals.edit_unsafe_path_span =
+            resolve_permissions_allow_matching_span(value, locator_ref.as_ref(), |permission| {
+                permission_has_unsafe_path_scope(permission, "Edit")
+            });
         signals.websearch_wildcard_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "WebSearch(*)");
         signals.unscoped_websearch_span =

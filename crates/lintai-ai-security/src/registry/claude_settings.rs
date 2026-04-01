@@ -4,7 +4,8 @@ use super::*;
 use crate::claude_settings_rules::{
     check_claude_settings_bash_wildcard, check_claude_settings_bypass_permissions,
     check_claude_settings_curl_permission, check_claude_settings_dangerous_http_hook_host,
-    check_claude_settings_edit_wildcard, check_claude_settings_enabled_mcpjson_servers,
+    check_claude_settings_edit_unsafe_path, check_claude_settings_edit_wildcard,
+    check_claude_settings_enabled_mcpjson_servers,
     check_claude_settings_external_absolute_hook_command, check_claude_settings_gh_pr_permission,
     check_claude_settings_git_add_permission, check_claude_settings_git_branch_permission,
     check_claude_settings_git_checkout_permission, check_claude_settings_git_clone_permission,
@@ -18,9 +19,10 @@ use crate::claude_settings_rules::{
     check_claude_settings_missing_required_hook_matcher, check_claude_settings_missing_schema,
     check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
     check_claude_settings_npx_permission, check_claude_settings_package_install_permission,
-    check_claude_settings_read_wildcard, check_claude_settings_unscoped_websearch,
-    check_claude_settings_webfetch_raw_githubusercontent, check_claude_settings_webfetch_wildcard,
-    check_claude_settings_websearch_wildcard, check_claude_settings_wget_permission,
+    check_claude_settings_read_unsafe_path, check_claude_settings_read_wildcard,
+    check_claude_settings_unscoped_websearch, check_claude_settings_webfetch_raw_githubusercontent,
+    check_claude_settings_webfetch_wildcard, check_claude_settings_websearch_wildcard,
+    check_claude_settings_wget_permission, check_claude_settings_write_unsafe_path,
     check_claude_settings_write_wildcard,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
@@ -90,6 +92,42 @@ declare_rule! {
         code: "SEC373",
         summary: "Claude settings permissions allow `Edit(*)` in a shared committed config",
         doc_title: "Claude settings: wildcard Edit permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsReadUnsafePathRule {
+        code: "SEC475",
+        summary: "Claude settings permissions allow `Read(...)` over an unsafe path in a shared committed config",
+        doc_title: "Claude settings: unsafe Read path permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsWriteUnsafePathRule {
+        code: "SEC476",
+        summary: "Claude settings permissions allow `Write(...)` over an unsafe path in a shared committed config",
+        doc_title: "Claude settings: unsafe Write path permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsEditUnsafePathRule {
+        code: "SEC477",
+        summary: "Claude settings permissions allow `Edit(...)` over an unsafe path in a shared committed config",
+        doc_title: "Claude settings: unsafe Edit path permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -493,7 +531,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 39] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 42] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -587,6 +625,54 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 39] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace `Edit(*)` with a narrower allowlist of reviewed edit patterns or remove broad edit access from the shared Claude settings file",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsReadUnsafePathRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Unsafe Read path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_read_unsafe_path,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace broad `Read(...)` path grants with repository-scoped allowlists or remove shared access to absolute, home-relative, or parent-traversing paths",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsWriteUnsafePathRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Unsafe Write path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_write_unsafe_path,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace broad `Write(...)` path grants with repository-scoped allowlists or remove shared access to absolute, home-relative, or parent-traversing paths",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsEditUnsafePathRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Unsafe Edit path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_edit_unsafe_path,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace broad `Edit(...)` path grants with repository-scoped allowlists or remove shared access to absolute, home-relative, or parent-traversing paths",
         ),
         suggestion_fix: None,
     },

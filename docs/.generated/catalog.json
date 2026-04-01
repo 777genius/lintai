@@ -193,7 +193,10 @@
         "lintai-ai-security:SEC470",
         "lintai-ai-security:SEC471",
         "lintai-ai-security:SEC472",
-        "lintai-ai-security:SEC473"
+        "lintai-ai-security:SEC473",
+        "lintai-ai-security:SEC475",
+        "lintai-ai-security:SEC476",
+        "lintai-ai-security:SEC477"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -394,7 +397,10 @@
         "lintai-ai-security:SEC413",
         "lintai-ai-security:SEC414",
         "lintai-ai-security:SEC415",
-        "lintai-ai-security:SEC418"
+        "lintai-ai-security:SEC418",
+        "lintai-ai-security:SEC475",
+        "lintai-ai-security:SEC476",
+        "lintai-ai-security:SEC477"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -6839,6 +6845,99 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Shared gh pr grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC475",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC475",
+      "alias": "CLAUDE-READ-UNSAFE-PATH",
+      "displayLabel": "SEC475 / CLAUDE-READ-UNSAFE-PATH",
+      "docTitle": "Claude settings: unsafe Read path permissions",
+      "slug": "sec475",
+      "canonicalPath": "/rules/lintai-ai-security/sec475",
+      "summary": "Claude settings permissions allow `Read(...)` over an unsafe path in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Unsafe Read path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC476",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC476",
+      "alias": "CLAUDE-WRITE-UNSAFE-PATH",
+      "displayLabel": "SEC476 / CLAUDE-WRITE-UNSAFE-PATH",
+      "docTitle": "Claude settings: unsafe Write path permissions",
+      "slug": "sec476",
+      "canonicalPath": "/rules/lintai-ai-security/sec476",
+      "summary": "Claude settings permissions allow `Write(...)` over an unsafe path in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Unsafe Write path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC477",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC477",
+      "alias": "CLAUDE-EDIT-UNSAFE-PATH",
+      "displayLabel": "SEC477 / CLAUDE-EDIT-UNSAFE-PATH",
+      "docTitle": "Claude settings: unsafe Edit path permissions",
+      "slug": "sec477",
+      "canonicalPath": "/rules/lintai-ai-security/sec477",
+      "summary": "Claude settings permissions allow `Edit(...)` over an unsafe path in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Unsafe Edit path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

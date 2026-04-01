@@ -5720,6 +5720,57 @@ fn finds_claude_settings_edit_wildcard() {
 }
 
 #[test]
+fn finds_claude_settings_read_unsafe_path() {
+    let content = r#"{"permissions":{"allow":["Read(/etc/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC475")
+        .unwrap();
+    let start = content.find("Read(/etc/**)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Read(/etc/**)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_write_unsafe_path() {
+    let content = r#"{"permissions":{"allow":["Write(../shared/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC476")
+        .unwrap();
+    let start = content.find("Write(../shared/**)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Write(../shared/**)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_edit_unsafe_path() {
+    let content = r#"{"permissions":{"allow":["Edit(~/workspace/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC477")
+        .unwrap();
+    let start = content.find("Edit(~/workspace/**)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Edit(~/workspace/**)".len())
+    );
+}
+
+#[test]
 fn finds_claude_settings_websearch_wildcard() {
     let content = r#"{"permissions":{"allow":["WebSearch(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -6292,6 +6343,51 @@ fn ignores_claude_settings_gh_pr_permission_when_command_is_more_specific() {
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC408")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_repo_local_read_scope() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Read(./docs/**)","Write(./artifacts/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC475")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_repo_local_write_scope() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Write(./artifacts/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC476")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_repo_local_edit_scope() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Edit(./docs/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC477")
     );
 }
 
@@ -9630,6 +9726,9 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC408"
                         | "SEC409"
                         | "SEC410"
+                        | "SEC475"
+                        | "SEC476"
+                        | "SEC477"
                         | "SEC323"
                         | "SEC325"
                         | "SEC328"
