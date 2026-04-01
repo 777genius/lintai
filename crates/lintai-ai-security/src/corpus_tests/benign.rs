@@ -153,6 +153,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "mcp-autoapprove-git-destructive-family-specific-safe",
             "mcp-autoapprove-git-push-gh-api-post-specific-safe",
             "mcp-autoapprove-mutable-runner-family-specific-safe",
+            "mcp-autoapprove-package-install-family-specific-safe",
             "mcp-autoapprove-specific-safe",
             "mcp-autoapprove-sudo-rm-specific-safe",
             "mcp-autoapprove-tools-false-safe",

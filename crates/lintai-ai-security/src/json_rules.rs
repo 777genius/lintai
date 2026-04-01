@@ -618,6 +618,21 @@ pub(crate) fn check_mcp_autoapprove_pipx_run(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_package_install(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_package_install_span.clone()),
+        "MCP configuration auto-approves package installation commands through `autoApprove`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_read_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

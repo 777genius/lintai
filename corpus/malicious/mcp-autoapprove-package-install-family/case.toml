@@ -1,0 +1,6 @@
+id = "mcp-autoapprove-package-install-family"
+description = "MCP config auto-approves package installation commands through autoApprove"
+
+expected_findings = [
+  "SEC593",
+]

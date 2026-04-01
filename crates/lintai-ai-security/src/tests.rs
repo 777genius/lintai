@@ -7240,6 +7240,28 @@ fn finds_mcp_autoapprove_pipx_run() {
 }
 
 #[test]
+fn finds_mcp_autoapprove_package_install() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(pip install)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC593")
+        .unwrap();
+    let start = content.find("\"Bash(pip install)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(pip install)".len())
+    );
+}
+
+#[test]
 fn ignores_mcp_autoapprove_nonmatching_tools() {
     let provider = AiSecurityProvider::default();
     let findings = ProviderHarness::run(
@@ -7299,6 +7321,7 @@ fn ignores_mcp_autoapprove_nonmatching_tools() {
                 | "SEC590"
                 | "SEC591"
                 | "SEC592"
+                | "SEC593"
         )
     }));
 }

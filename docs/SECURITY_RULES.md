@@ -311,6 +311,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC590 / MCP-AUTOAPPROVE-PNPM-DLX` | MCP configuration auto-approves `Bash(pnpm dlx ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC591 / MCP-AUTOAPPROVE-YARN-DLX` | MCP configuration auto-approves `Bash(yarn dlx ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC592 / MCP-AUTOAPPROVE-PIPX-RUN` | MCP configuration auto-approves `Bash(pipx run ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC593 / MCP-AUTOAPPROVE-PACKAGE-INSTALL` | MCP configuration auto-approves package installation commands through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -6028,6 +6029,27 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(pipx run ` on parsed MCP configuration.
 - Malicious Corpus: `mcp-autoapprove-mutable-runner-family`
 - Benign Corpus: `mcp-autoapprove-mutable-runner-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC593 / MCP-AUTOAPPROVE-PACKAGE-INSTALL` — MCP configuration auto-approves package installation commands through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-PACKAGE-INSTALL`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact package installation auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for package installation entries such as `Bash(pip install)` and `Bash(npm install)` inside `autoApprove` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-package-install-family`
+- Benign Corpus: `mcp-autoapprove-package-install-family-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

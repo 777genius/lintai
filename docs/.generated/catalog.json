@@ -110,7 +110,8 @@
         "lintai-ai-security:SEC589",
         "lintai-ai-security:SEC590",
         "lintai-ai-security:SEC591",
-        "lintai-ai-security:SEC592"
+        "lintai-ai-security:SEC592",
+        "lintai-ai-security:SEC593"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -492,7 +493,8 @@
         "lintai-ai-security:SEC589",
         "lintai-ai-security:SEC590",
         "lintai-ai-security:SEC591",
-        "lintai-ai-security:SEC592"
+        "lintai-ai-security:SEC592",
+        "lintai-ai-security:SEC593"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -11122,6 +11124,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact array-item prefix detection for `autoApprove` entries starting with `Bash(pipx run ` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC593",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC593",
+      "alias": "MCP-AUTOAPPROVE-PACKAGE-INSTALL",
+      "displayLabel": "SEC593 / MCP-AUTOAPPROVE-PACKAGE-INSTALL",
+      "docTitle": "MCP config: package install auto-approve",
+      "slug": "sec593",
+      "canonicalPath": "/rules/lintai-ai-security/sec593",
+      "summary": "MCP configuration auto-approves package installation commands through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact package installation auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-package-install-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-package-install-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for package installation entries such as `Bash(pip install)` and `Bash(npm install)` inside `autoApprove` on parsed MCP configuration."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

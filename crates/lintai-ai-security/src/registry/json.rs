@@ -20,7 +20,8 @@ use crate::json_rules::{
     check_mcp_autoapprove_git_push, check_mcp_autoapprove_git_reset,
     check_mcp_autoapprove_glob_unsafe_path, check_mcp_autoapprove_glob_wildcard,
     check_mcp_autoapprove_grep_unsafe_path, check_mcp_autoapprove_grep_wildcard,
-    check_mcp_autoapprove_npm_exec, check_mcp_autoapprove_npx, check_mcp_autoapprove_pipx_run,
+    check_mcp_autoapprove_npm_exec, check_mcp_autoapprove_npx,
+    check_mcp_autoapprove_package_install, check_mcp_autoapprove_pipx_run,
     check_mcp_autoapprove_pnpm_dlx, check_mcp_autoapprove_read_unsafe_path,
     check_mcp_autoapprove_read_wildcard, check_mcp_autoapprove_rm, check_mcp_autoapprove_sudo,
     check_mcp_autoapprove_tools_true, check_mcp_autoapprove_uvx,
@@ -651,6 +652,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApprovePackageInstallRule {
+        code: "SEC593",
+        summary: "MCP configuration auto-approves package installation commands through `autoApprove`",
+        doc_title: "MCP config: package install auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpAutoApproveReadWildcardRule {
         code: "SEC567",
         summary: "MCP configuration auto-approves `Read(*)` through `autoApprove`",
@@ -950,7 +963,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 77] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -1952,6 +1965,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `pipx run` auto-approval and keep mutable package execution under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApprovePackageInstallRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact package installation auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-package-install-family"],
+            benign_case_ids: &["mcp-autoapprove-package-install-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for package installation entries such as `Bash(pip install)` and `Bash(npm install)` inside `autoApprove` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_package_install,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared package installation auto-approval and keep dependency installation under explicit user review",
         ),
         suggestion_fix: None,
     },

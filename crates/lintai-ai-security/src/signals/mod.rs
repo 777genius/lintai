@@ -274,6 +274,7 @@ pub(crate) struct JsonSignals {
     pub(crate) autoapprove_pnpm_dlx_span: Option<Span>,
     pub(crate) autoapprove_yarn_dlx_span: Option<Span>,
     pub(crate) autoapprove_pipx_run_span: Option<Span>,
+    pub(crate) autoapprove_package_install_span: Option<Span>,
     pub(crate) autoapprove_read_wildcard_span: Option<Span>,
     pub(crate) autoapprove_write_wildcard_span: Option<Span>,
     pub(crate) autoapprove_edit_wildcard_span: Option<Span>,
