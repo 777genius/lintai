@@ -423,6 +423,66 @@ pub(crate) fn check_claude_settings_npx_permission(
     )
 }
 
+pub(crate) fn check_claude_settings_uvx_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.uvx_permission_span.clone()),
+        "Claude settings permissions allow `Bash(uvx ...)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_pnpm_dlx_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.pnpm_dlx_permission_span.clone()),
+        "Claude settings permissions allow `Bash(pnpm dlx ...)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_yarn_dlx_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.yarn_dlx_permission_span.clone()),
+        "Claude settings permissions allow `Bash(yarn dlx ...)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_pipx_run_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.pipx_run_permission_span.clone()),
+        "Claude settings permissions allow `Bash(pipx run ...)` in a shared committed config",
+    )
+}
+
 pub(crate) fn check_claude_settings_curl_permission(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

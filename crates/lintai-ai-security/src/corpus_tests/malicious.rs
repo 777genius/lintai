@@ -54,6 +54,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-settings-missing-required-matcher",
             "claude-settings-missing-schema",
             "claude-settings-mutable-launcher",
+            "claude-settings-mutable-runner-permissions",
             "claude-settings-npx-permission",
             "claude-settings-package-install-permission",
             "claude-settings-pip-install-permission",

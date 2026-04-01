@@ -6060,6 +6060,74 @@ fn finds_claude_settings_npx_permission() {
 }
 
 #[test]
+fn finds_claude_settings_uvx_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(uvx ruff:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC488")
+        .unwrap();
+    let start = content.find("Bash(uvx ruff:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(uvx ruff:*)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_pnpm_dlx_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(pnpm dlx cowsay:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC489")
+        .unwrap();
+    let start = content.find("Bash(pnpm dlx cowsay:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(pnpm dlx cowsay:*)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_yarn_dlx_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(yarn dlx create-vite:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC490")
+        .unwrap();
+    let start = content.find("Bash(yarn dlx create-vite:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(yarn dlx create-vite:*)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_pipx_run_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(pipx run black:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC491")
+        .unwrap();
+    let start = content.find("Bash(pipx run black:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(pipx run black:*)".len())
+    );
+}
+
+#[test]
 fn finds_claude_settings_package_install_permission() {
     let content = r#"{"permissions":{"allow":["Bash(yarn install)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -6798,6 +6866,66 @@ fn ignores_claude_settings_curl_permission_when_command_is_more_specific() {
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC411")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_uvx_permission_when_command_is_more_specific() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(uv run ruff check .)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC488")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_pnpm_dlx_permission_when_command_is_more_specific() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(pnpm install)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC489")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_yarn_dlx_permission_when_command_is_more_specific() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(yarn install)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC490")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_pipx_run_permission_when_command_is_more_specific() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Bash(python -m black src)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC491")
     );
 }
 

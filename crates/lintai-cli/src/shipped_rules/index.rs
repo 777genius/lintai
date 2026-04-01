@@ -397,6 +397,19 @@ mod tests {
             shipped_rule_alias("SEC473"),
             Some("MD-GIT-INLINE-SSLVERIFY-FALSE")
         );
+        assert_eq!(shipped_rule_alias("SEC488"), Some("CLAUDE-UVX-PERMISSION"));
+        assert_eq!(
+            shipped_rule_alias("SEC489"),
+            Some("CLAUDE-PNPM-DLX-PERMISSION")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC490"),
+            Some("CLAUDE-YARN-DLX-PERMISSION")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC491"),
+            Some("CLAUDE-PIPX-RUN-PERMISSION")
+        );
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");

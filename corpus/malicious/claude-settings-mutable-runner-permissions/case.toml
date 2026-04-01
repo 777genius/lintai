@@ -1,0 +1,17 @@
+id = "claude-settings-mutable-runner-permissions"
+kind = "malicious"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = [
+  { rule_code = "SEC488", tier = "preview", min_evidence_count = 1 },
+  { rule_code = "SEC489", tier = "preview", min_evidence_count = 1 },
+  { rule_code = "SEC490", tier = "preview", min_evidence_count = 1 },
+  { rule_code = "SEC491", tier = "preview", min_evidence_count = 1 }
+]
+expected_absent_rules = []
+
+[snapshot]
+kind = "none"
+name = "none"

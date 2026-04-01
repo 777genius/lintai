@@ -206,7 +206,11 @@
         "lintai-ai-security:SEC484",
         "lintai-ai-security:SEC485",
         "lintai-ai-security:SEC486",
-        "lintai-ai-security:SEC487"
+        "lintai-ai-security:SEC487",
+        "lintai-ai-security:SEC488",
+        "lintai-ai-security:SEC489",
+        "lintai-ai-security:SEC490",
+        "lintai-ai-security:SEC491"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -420,7 +424,11 @@
         "lintai-ai-security:SEC484",
         "lintai-ai-security:SEC485",
         "lintai-ai-security:SEC486",
-        "lintai-ai-security:SEC487"
+        "lintai-ai-security:SEC487",
+        "lintai-ai-security:SEC488",
+        "lintai-ai-security:SEC489",
+        "lintai-ai-security:SEC490",
+        "lintai-ai-security:SEC491"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -7268,6 +7276,130 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Unsafe Grep path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC488",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC488",
+      "alias": "CLAUDE-UVX-PERMISSION",
+      "displayLabel": "SEC488 / CLAUDE-UVX-PERMISSION",
+      "docTitle": "Claude settings: shared uvx Bash permissions",
+      "slug": "sec488",
+      "canonicalPath": "/rules/lintai-ai-security/sec488",
+      "summary": "Claude settings permissions allow `Bash(uvx ...)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `Bash(uvx ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC489",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC489",
+      "alias": "CLAUDE-PNPM-DLX-PERMISSION",
+      "displayLabel": "SEC489 / CLAUDE-PNPM-DLX-PERMISSION",
+      "docTitle": "Claude settings: shared pnpm dlx Bash permissions",
+      "slug": "sec489",
+      "canonicalPath": "/rules/lintai-ai-security/sec489",
+      "summary": "Claude settings permissions allow `Bash(pnpm dlx ...)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `Bash(pnpm dlx ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC490",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC490",
+      "alias": "CLAUDE-YARN-DLX-PERMISSION",
+      "displayLabel": "SEC490 / CLAUDE-YARN-DLX-PERMISSION",
+      "docTitle": "Claude settings: shared yarn dlx Bash permissions",
+      "slug": "sec490",
+      "canonicalPath": "/rules/lintai-ai-security/sec490",
+      "summary": "Claude settings permissions allow `Bash(yarn dlx ...)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `Bash(yarn dlx ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC491",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC491",
+      "alias": "CLAUDE-PIPX-RUN-PERMISSION",
+      "displayLabel": "SEC491 / CLAUDE-PIPX-RUN-PERMISSION",
+      "docTitle": "Claude settings: shared pipx run Bash permissions",
+      "slug": "sec491",
+      "canonicalPath": "/rules/lintai-ai-security/sec491",
+      "summary": "Claude settings permissions allow `Bash(pipx run ...)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `Bash(pipx run ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

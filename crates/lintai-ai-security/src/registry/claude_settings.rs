@@ -25,11 +25,13 @@ use crate::claude_settings_rules::{
     check_claude_settings_missing_required_hook_matcher, check_claude_settings_missing_schema,
     check_claude_settings_mutable_launcher, check_claude_settings_network_tls_bypass,
     check_claude_settings_npx_permission, check_claude_settings_package_install_permission,
+    check_claude_settings_pipx_run_permission, check_claude_settings_pnpm_dlx_permission,
     check_claude_settings_read_unsafe_path, check_claude_settings_read_wildcard,
-    check_claude_settings_unscoped_websearch, check_claude_settings_webfetch_raw_githubusercontent,
-    check_claude_settings_webfetch_wildcard, check_claude_settings_websearch_wildcard,
-    check_claude_settings_wget_permission, check_claude_settings_write_unsafe_path,
-    check_claude_settings_write_wildcard,
+    check_claude_settings_unscoped_websearch, check_claude_settings_uvx_permission,
+    check_claude_settings_webfetch_raw_githubusercontent, check_claude_settings_webfetch_wildcard,
+    check_claude_settings_websearch_wildcard, check_claude_settings_wget_permission,
+    check_claude_settings_write_unsafe_path, check_claude_settings_write_wildcard,
+    check_claude_settings_yarn_dlx_permission,
 };
 use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
 
@@ -466,6 +468,54 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct ClaudeSettingsUvxPermissionRule {
+        code: "SEC488",
+        summary: "Claude settings permissions allow `Bash(uvx ...)` in a shared committed config",
+        doc_title: "Claude settings: shared uvx Bash permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsPnpmDlxPermissionRule {
+        code: "SEC489",
+        summary: "Claude settings permissions allow `Bash(pnpm dlx ...)` in a shared committed config",
+        doc_title: "Claude settings: shared pnpm dlx Bash permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsYarnDlxPermissionRule {
+        code: "SEC490",
+        summary: "Claude settings permissions allow `Bash(yarn dlx ...)` in a shared committed config",
+        doc_title: "Claude settings: shared yarn dlx Bash permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsPipxRunPermissionRule {
+        code: "SEC491",
+        summary: "Claude settings permissions allow `Bash(pipx run ...)` in a shared committed config",
+        doc_title: "Claude settings: shared pipx run Bash permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct ClaudeSettingsGitCheckoutPermissionRule {
         code: "SEC386",
         summary: "Claude settings permissions allow `Bash(git checkout:*)` in a shared committed config",
@@ -657,7 +707,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 52] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 56] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -1127,6 +1177,70 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 52] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace shared `Bash(npx ...)` permissions with a pinned wrapper or a narrower reviewed command permission that does not grant mutable package execution by default",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsUvxPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `Bash(uvx ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_uvx_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace shared `Bash(uvx ...)` permissions with a pinned wrapper or a narrower reviewed command permission that does not grant mutable package execution by default",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsPnpmDlxPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `Bash(pnpm dlx ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_pnpm_dlx_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace shared `Bash(pnpm dlx ...)` permissions with a pinned wrapper or a narrower reviewed command permission that does not grant mutable package execution by default",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsYarnDlxPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `Bash(yarn dlx ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_yarn_dlx_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace shared `Bash(yarn dlx ...)` permissions with a pinned wrapper or a narrower reviewed command permission that does not grant mutable package execution by default",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsPipxRunPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `Bash(pipx run ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_pipx_run_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace shared `Bash(pipx run ...)` permissions with a pinned wrapper or a narrower reviewed command permission that does not grant mutable package execution by default",
         ),
         suggestion_fix: None,
     },

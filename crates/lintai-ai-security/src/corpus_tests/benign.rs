@@ -75,6 +75,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "claude-settings-network-tls-verified-safe",
             "claude-settings-npx-specific-safe",
             "claude-settings-package-command-safe",
+            "claude-settings-package-runner-specific-safe",
             "claude-settings-pinned-launcher-safe",
             "claude-settings-pip-command-safe",
             "claude-settings-read-specific-safe",

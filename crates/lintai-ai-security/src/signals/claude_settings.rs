@@ -425,6 +425,14 @@ impl ClaudeSettingsSignals {
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "Bash(git branch:*)");
         signals.npx_permission_span =
             resolve_permissions_allow_prefix_span(value, locator_ref.as_ref(), "Bash(npx ");
+        signals.uvx_permission_span =
+            resolve_permissions_allow_prefix_span(value, locator_ref.as_ref(), "Bash(uvx ");
+        signals.pnpm_dlx_permission_span =
+            resolve_permissions_allow_prefix_span(value, locator_ref.as_ref(), "Bash(pnpm dlx ");
+        signals.yarn_dlx_permission_span =
+            resolve_permissions_allow_prefix_span(value, locator_ref.as_ref(), "Bash(yarn dlx ");
+        signals.pipx_run_permission_span =
+            resolve_permissions_allow_prefix_span(value, locator_ref.as_ref(), "Bash(pipx run ");
         signals.package_install_permission_span = resolve_permissions_allow_any_exact_span(
             value,
             locator_ref.as_ref(),
