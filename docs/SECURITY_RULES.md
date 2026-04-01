@@ -271,6 +271,13 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC550 / MCP-AUTOAPPROVE-RM` | MCP configuration auto-approves `Bash(rm:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC551 / MCP-AUTOAPPROVE-GIT-PUSH` | MCP configuration auto-approves `Bash(git push)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC552 / MCP-AUTOAPPROVE-GH-API-POST` | MCP configuration auto-approves `Bash(gh api --method POST:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC553 / MCP-AUTOAPPROVE-GIT-CHECKOUT` | MCP configuration auto-approves `Bash(git checkout:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC554 / MCP-AUTOAPPROVE-GIT-COMMIT` | MCP configuration auto-approves `Bash(git commit:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC555 / MCP-AUTOAPPROVE-GIT-RESET` | MCP configuration auto-approves `Bash(git reset:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC556 / MCP-AUTOAPPROVE-GIT-CLEAN` | MCP configuration auto-approves `Bash(git clean:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC557 / MCP-AUTOAPPROVE-GH-API-DELETE` | MCP configuration auto-approves `Bash(gh api --method DELETE:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC558 / MCP-AUTOAPPROVE-GH-API-PATCH` | MCP configuration auto-approves `Bash(gh api --method PATCH:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC559 / MCP-AUTOAPPROVE-GH-API-PUT` | MCP configuration auto-approves `Bash(gh api --method PUT:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -5148,6 +5155,153 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh api --method POST:*)"]` on parsed MCP configuration.
 - Malicious Corpus: `mcp-autoapprove-git-push-gh-api-post`
 - Benign Corpus: `mcp-autoapprove-git-push-gh-api-post-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC553 / MCP-AUTOAPPROVE-GIT-CHECKOUT` — MCP configuration auto-approves `Bash(git checkout:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GIT-CHECKOUT`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `git checkout` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(git checkout:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-git-destructive-family`
+- Benign Corpus: `mcp-autoapprove-git-destructive-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC554 / MCP-AUTOAPPROVE-GIT-COMMIT` — MCP configuration auto-approves `Bash(git commit:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GIT-COMMIT`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `git commit` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(git commit:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-git-destructive-family`
+- Benign Corpus: `mcp-autoapprove-git-destructive-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC555 / MCP-AUTOAPPROVE-GIT-RESET` — MCP configuration auto-approves `Bash(git reset:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GIT-RESET`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `git reset` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(git reset:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-git-destructive-family`
+- Benign Corpus: `mcp-autoapprove-git-destructive-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC556 / MCP-AUTOAPPROVE-GIT-CLEAN` — MCP configuration auto-approves `Bash(git clean:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GIT-CLEAN`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `git clean` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(git clean:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-git-destructive-family`
+- Benign Corpus: `mcp-autoapprove-git-destructive-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC557 / MCP-AUTOAPPROVE-GH-API-DELETE` — MCP configuration auto-approves `Bash(gh api --method DELETE:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GH-API-DELETE`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact GitHub API DELETE auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh api --method DELETE:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-gh-api-mutation-family`
+- Benign Corpus: `mcp-autoapprove-gh-api-mutation-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC558 / MCP-AUTOAPPROVE-GH-API-PATCH` — MCP configuration auto-approves `Bash(gh api --method PATCH:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GH-API-PATCH`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact GitHub API PATCH auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh api --method PATCH:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-gh-api-mutation-family`
+- Benign Corpus: `mcp-autoapprove-gh-api-mutation-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC559 / MCP-AUTOAPPROVE-GH-API-PUT` — MCP configuration auto-approves `Bash(gh api --method PUT:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GH-API-PUT`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact GitHub API PUT auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh api --method PUT:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-gh-api-mutation-family`
+- Benign Corpus: `mcp-autoapprove-gh-api-mutation-family-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

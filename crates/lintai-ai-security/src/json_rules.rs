@@ -198,6 +198,111 @@ pub(crate) fn check_mcp_autoapprove_gh_api_post(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_git_checkout(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_checkout_span.clone()),
+        "MCP configuration auto-approves `git checkout` with `autoApprove: [\"Bash(git checkout:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_git_commit(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_commit_span.clone()),
+        "MCP configuration auto-approves `git commit` with `autoApprove: [\"Bash(git commit:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_git_reset(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_reset_span.clone()),
+        "MCP configuration auto-approves `git reset` with `autoApprove: [\"Bash(git reset:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_git_clean(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_clean_span.clone()),
+        "MCP configuration auto-approves `git clean` with `autoApprove: [\"Bash(git clean:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_gh_api_delete(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_api_delete_span.clone()),
+        "MCP configuration auto-approves GitHub API DELETE mutation calls with `autoApprove: [\"Bash(gh api --method DELETE:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_gh_api_patch(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_api_patch_span.clone()),
+        "MCP configuration auto-approves GitHub API PATCH mutation calls with `autoApprove: [\"Bash(gh api --method PATCH:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_gh_api_put(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_api_put_span.clone()),
+        "MCP configuration auto-approves GitHub API PUT mutation calls with `autoApprove: [\"Bash(gh api --method PUT:*)\"]`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_tools_true(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

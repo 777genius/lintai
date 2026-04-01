@@ -5,9 +5,13 @@ use crate::json_rules::{
     check_json_dangerous_endpoint_host, check_json_hidden_instruction, check_json_literal_secret,
     check_json_sensitive_env_reference, check_json_suspicious_remote_endpoint,
     check_json_unsafe_plugin_path, check_mcp_autoapprove_bash_wildcard, check_mcp_autoapprove_curl,
-    check_mcp_autoapprove_gh_api_post, check_mcp_autoapprove_git_push, check_mcp_autoapprove_rm,
-    check_mcp_autoapprove_sudo, check_mcp_autoapprove_tools_true, check_mcp_autoapprove_wget,
-    check_mcp_autoapprove_wildcard, check_mcp_broad_env_file, check_mcp_capabilities_wildcard,
+    check_mcp_autoapprove_gh_api_delete, check_mcp_autoapprove_gh_api_patch,
+    check_mcp_autoapprove_gh_api_post, check_mcp_autoapprove_gh_api_put,
+    check_mcp_autoapprove_git_checkout, check_mcp_autoapprove_git_clean,
+    check_mcp_autoapprove_git_commit, check_mcp_autoapprove_git_push,
+    check_mcp_autoapprove_git_reset, check_mcp_autoapprove_rm, check_mcp_autoapprove_sudo,
+    check_mcp_autoapprove_tools_true, check_mcp_autoapprove_wget, check_mcp_autoapprove_wildcard,
+    check_mcp_broad_env_file, check_mcp_capabilities_wildcard,
     check_mcp_credential_env_passthrough, check_mcp_dangerous_docker_flag,
     check_mcp_inline_download_exec, check_mcp_mutable_docker_pull, check_mcp_mutable_launcher,
     check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
@@ -295,6 +299,90 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApproveGitCheckoutRule {
+        code: "SEC553",
+        summary: "MCP configuration auto-approves `Bash(git checkout:*)` through `autoApprove`",
+        doc_title: "MCP config: git checkout auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGitCommitRule {
+        code: "SEC554",
+        summary: "MCP configuration auto-approves `Bash(git commit:*)` through `autoApprove`",
+        doc_title: "MCP config: git commit auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGitResetRule {
+        code: "SEC555",
+        summary: "MCP configuration auto-approves `Bash(git reset:*)` through `autoApprove`",
+        doc_title: "MCP config: git reset auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGitCleanRule {
+        code: "SEC556",
+        summary: "MCP configuration auto-approves `Bash(git clean:*)` through `autoApprove`",
+        doc_title: "MCP config: git clean auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGhApiDeleteRule {
+        code: "SEC557",
+        summary: "MCP configuration auto-approves `Bash(gh api --method DELETE:*)` through `autoApprove`",
+        doc_title: "MCP config: gh api DELETE auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGhApiPatchRule {
+        code: "SEC558",
+        summary: "MCP configuration auto-approves `Bash(gh api --method PATCH:*)` through `autoApprove`",
+        doc_title: "MCP config: gh api PATCH auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGhApiPutRule {
+        code: "SEC559",
+        summary: "MCP configuration auto-approves `Bash(gh api --method PUT:*)` through `autoApprove`",
+        doc_title: "MCP config: gh api PUT auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpAutoApproveToolsTrueRule {
         code: "SEC395",
         summary: "MCP configuration auto-approves all tools with `autoApproveTools: true`",
@@ -450,7 +538,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 36] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 43] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -892,6 +980,146 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 36] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `gh api --method POST` auto-approval and keep GitHub API mutation under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGitCheckoutRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `git checkout` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-git-destructive-family"],
+            benign_case_ids: &["mcp-autoapprove-git-destructive-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git checkout:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_git_checkout,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `git checkout` auto-approval and keep repo state changes under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGitCommitRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `git commit` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-git-destructive-family"],
+            benign_case_ids: &["mcp-autoapprove-git-destructive-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git commit:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_git_commit,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `git commit` auto-approval and keep local history mutation under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGitResetRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `git reset` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-git-destructive-family"],
+            benign_case_ids: &["mcp-autoapprove-git-destructive-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git reset:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_git_reset,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `git reset` auto-approval and keep destructive history rewrites under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGitCleanRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `git clean` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-git-destructive-family"],
+            benign_case_ids: &["mcp-autoapprove-git-destructive-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git clean:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_git_clean,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `git clean` auto-approval and keep destructive workspace cleanup under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhApiDeleteRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact GitHub API DELETE auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-gh-api-mutation-family"],
+            benign_case_ids: &["mcp-autoapprove-gh-api-mutation-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh api --method DELETE:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_api_delete,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh api --method DELETE` auto-approval and keep destructive GitHub API mutations under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhApiPatchRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact GitHub API PATCH auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-gh-api-mutation-family"],
+            benign_case_ids: &["mcp-autoapprove-gh-api-mutation-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh api --method PATCH:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_api_patch,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh api --method PATCH` auto-approval and keep GitHub API mutations under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhApiPutRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact GitHub API PUT auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-gh-api-mutation-family"],
+            benign_case_ids: &["mcp-autoapprove-gh-api-mutation-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh api --method PUT:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_api_put,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh api --method PUT` auto-approval and keep GitHub API mutations under explicit user review",
         ),
         suggestion_fix: None,
     },

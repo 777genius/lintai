@@ -146,6 +146,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "mcp-authorization-placeholder-safe",
             "mcp-autoapprove-bash-specific-safe",
             "mcp-autoapprove-curl-wget-specific-safe",
+            "mcp-autoapprove-gh-api-mutation-family-specific-safe",
+            "mcp-autoapprove-git-destructive-family-specific-safe",
             "mcp-autoapprove-git-push-gh-api-post-specific-safe",
             "mcp-autoapprove-specific-safe",
             "mcp-autoapprove-sudo-rm-specific-safe",

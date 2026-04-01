@@ -70,7 +70,14 @@
         "lintai-ai-security:SEC549",
         "lintai-ai-security:SEC550",
         "lintai-ai-security:SEC551",
-        "lintai-ai-security:SEC552"
+        "lintai-ai-security:SEC552",
+        "lintai-ai-security:SEC553",
+        "lintai-ai-security:SEC554",
+        "lintai-ai-security:SEC555",
+        "lintai-ai-security:SEC556",
+        "lintai-ai-security:SEC557",
+        "lintai-ai-security:SEC558",
+        "lintai-ai-security:SEC559"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -412,7 +419,14 @@
         "lintai-ai-security:SEC549",
         "lintai-ai-security:SEC550",
         "lintai-ai-security:SEC551",
-        "lintai-ai-security:SEC552"
+        "lintai-ai-security:SEC552",
+        "lintai-ai-security:SEC553",
+        "lintai-ai-security:SEC554",
+        "lintai-ai-security:SEC555",
+        "lintai-ai-security:SEC556",
+        "lintai-ai-security:SEC557",
+        "lintai-ai-security:SEC558",
+        "lintai-ai-security:SEC559"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -9482,6 +9496,279 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh api --method POST:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC553",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC553",
+      "alias": "MCP-AUTOAPPROVE-GIT-CHECKOUT",
+      "displayLabel": "SEC553 / MCP-AUTOAPPROVE-GIT-CHECKOUT",
+      "docTitle": "MCP config: git checkout auto-approve",
+      "slug": "sec553",
+      "canonicalPath": "/rules/lintai-ai-security/sec553",
+      "summary": "MCP configuration auto-approves `Bash(git checkout:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `git checkout` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-git-destructive-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-git-destructive-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git checkout:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC554",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC554",
+      "alias": "MCP-AUTOAPPROVE-GIT-COMMIT",
+      "displayLabel": "SEC554 / MCP-AUTOAPPROVE-GIT-COMMIT",
+      "docTitle": "MCP config: git commit auto-approve",
+      "slug": "sec554",
+      "canonicalPath": "/rules/lintai-ai-security/sec554",
+      "summary": "MCP configuration auto-approves `Bash(git commit:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `git commit` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-git-destructive-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-git-destructive-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git commit:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC555",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC555",
+      "alias": "MCP-AUTOAPPROVE-GIT-RESET",
+      "displayLabel": "SEC555 / MCP-AUTOAPPROVE-GIT-RESET",
+      "docTitle": "MCP config: git reset auto-approve",
+      "slug": "sec555",
+      "canonicalPath": "/rules/lintai-ai-security/sec555",
+      "summary": "MCP configuration auto-approves `Bash(git reset:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `git reset` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-git-destructive-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-git-destructive-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git reset:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC556",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC556",
+      "alias": "MCP-AUTOAPPROVE-GIT-CLEAN",
+      "displayLabel": "SEC556 / MCP-AUTOAPPROVE-GIT-CLEAN",
+      "docTitle": "MCP config: git clean auto-approve",
+      "slug": "sec556",
+      "canonicalPath": "/rules/lintai-ai-security/sec556",
+      "summary": "MCP configuration auto-approves `Bash(git clean:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `git clean` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-git-destructive-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-git-destructive-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git clean:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC557",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC557",
+      "alias": "MCP-AUTOAPPROVE-GH-API-DELETE",
+      "displayLabel": "SEC557 / MCP-AUTOAPPROVE-GH-API-DELETE",
+      "docTitle": "MCP config: gh api DELETE auto-approve",
+      "slug": "sec557",
+      "canonicalPath": "/rules/lintai-ai-security/sec557",
+      "summary": "MCP configuration auto-approves `Bash(gh api --method DELETE:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact GitHub API DELETE auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-gh-api-mutation-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-gh-api-mutation-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh api --method DELETE:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC558",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC558",
+      "alias": "MCP-AUTOAPPROVE-GH-API-PATCH",
+      "displayLabel": "SEC558 / MCP-AUTOAPPROVE-GH-API-PATCH",
+      "docTitle": "MCP config: gh api PATCH auto-approve",
+      "slug": "sec558",
+      "canonicalPath": "/rules/lintai-ai-security/sec558",
+      "summary": "MCP configuration auto-approves `Bash(gh api --method PATCH:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact GitHub API PATCH auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-gh-api-mutation-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-gh-api-mutation-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh api --method PATCH:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC559",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC559",
+      "alias": "MCP-AUTOAPPROVE-GH-API-PUT",
+      "displayLabel": "SEC559 / MCP-AUTOAPPROVE-GH-API-PUT",
+      "docTitle": "MCP config: gh api PUT auto-approve",
+      "slug": "sec559",
+      "canonicalPath": "/rules/lintai-ai-security/sec559",
+      "summary": "MCP configuration auto-approves `Bash(gh api --method PUT:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact GitHub API PUT auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-gh-api-mutation-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-gh-api-mutation-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh api --method PUT:*)\"]` on parsed MCP configuration."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

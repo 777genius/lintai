@@ -1,0 +1,8 @@
+id = "mcp-autoapprove-gh-api-mutation-family"
+description = "MCP config auto-approves GitHub API mutation methods through autoApprove"
+
+expected_findings = [
+  "SEC557",
+  "SEC558",
+  "SEC559",
+]

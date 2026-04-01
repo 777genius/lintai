@@ -272,6 +272,85 @@ pub(super) fn analyze_json_object<'a>(
                 Some(resolve_value_span(&item_path, locator, fallback_len));
         }
 
+        if signals.autoapprove_git_checkout_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_index(nested, "Bash(git checkout:*)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_git_checkout_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_git_commit_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_index(nested, "Bash(git commit:*)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_git_commit_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_git_reset_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_index(nested, "Bash(git reset:*)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_git_reset_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_git_clean_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_index(nested, "Bash(git clean:*)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_git_clean_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_gh_api_delete_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) =
+                find_string_array_item_index(nested, "Bash(gh api --method DELETE:*)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_gh_api_delete_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_gh_api_patch_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) =
+                find_string_array_item_index(nested, "Bash(gh api --method PATCH:*)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_gh_api_patch_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
+        if signals.autoapprove_gh_api_put_span.is_none()
+            && artifact_kind == ArtifactKind::McpConfig
+            && key == "autoApprove"
+            && let Some(index) = find_string_array_item_index(nested, "Bash(gh api --method PUT:*)")
+        {
+            let key_path = with_child_key(path, key);
+            let item_path = with_child_index(&key_path, index);
+            signals.autoapprove_gh_api_put_span =
+                Some(resolve_value_span(&item_path, locator, fallback_len));
+        }
+
         if signals.autoapprove_tools_true_span.is_none()
             && artifact_kind == ArtifactKind::McpConfig
             && key == "autoApproveTools"

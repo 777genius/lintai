@@ -1,0 +1,9 @@
+id = "mcp-autoapprove-git-destructive-family"
+description = "MCP config auto-approves destructive git state mutation through autoApprove"
+
+expected_findings = [
+  "SEC553",
+  "SEC554",
+  "SEC555",
+  "SEC556",
+]
