@@ -5771,6 +5771,40 @@ fn finds_claude_settings_edit_unsafe_path() {
 }
 
 #[test]
+fn finds_claude_settings_glob_unsafe_path() {
+    let content = r#"{"permissions":{"allow":["Glob(/etc/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC486")
+        .unwrap();
+    let start = content.find("Glob(/etc/**)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Glob(/etc/**)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_grep_unsafe_path() {
+    let content = r#"{"permissions":{"allow":["Grep(../shared/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC487")
+        .unwrap();
+    let start = content.find("Grep(../shared/**)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Grep(../shared/**)".len())
+    );
+}
+
+#[test]
 fn finds_claude_settings_websearch_wildcard() {
     let content = r#"{"permissions":{"allow":["WebSearch(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -6524,6 +6558,36 @@ fn ignores_claude_settings_repo_local_edit_scope() {
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC477")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_repo_local_glob_scope() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Glob(./docs/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC486")
+    );
+}
+
+#[test]
+fn ignores_claude_settings_repo_local_grep_scope() {
+    let summary = scan_preview_claude_settings_fixture(
+        ".claude/settings.json",
+        r#"{"permissions":{"allow":["Grep(./docs/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC487")
     );
 }
 

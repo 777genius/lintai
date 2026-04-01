@@ -386,6 +386,14 @@ impl ClaudeSettingsSignals {
             resolve_permissions_allow_matching_span(value, locator_ref.as_ref(), |permission| {
                 permission_has_unsafe_path_scope(permission, "Edit")
             });
+        signals.glob_unsafe_path_span =
+            resolve_permissions_allow_matching_span(value, locator_ref.as_ref(), |permission| {
+                permission_has_unsafe_path_scope(permission, "Glob")
+            });
+        signals.grep_unsafe_path_span =
+            resolve_permissions_allow_matching_span(value, locator_ref.as_ref(), |permission| {
+                permission_has_unsafe_path_scope(permission, "Grep")
+            });
         signals.websearch_wildcard_span =
             resolve_permissions_allow_exact_span(value, locator_ref.as_ref(), "WebSearch(*)");
         signals.unscoped_websearch_span =

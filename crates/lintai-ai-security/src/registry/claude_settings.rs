@@ -17,7 +17,8 @@ use crate::claude_settings_rules::{
     check_claude_settings_git_push_permission, check_claude_settings_git_rebase_permission,
     check_claude_settings_git_reset_permission, check_claude_settings_git_restore_permission,
     check_claude_settings_git_stash_permission, check_claude_settings_git_tag_permission,
-    check_claude_settings_glob_wildcard, check_claude_settings_grep_wildcard,
+    check_claude_settings_glob_unsafe_path, check_claude_settings_glob_wildcard,
+    check_claude_settings_grep_unsafe_path, check_claude_settings_grep_wildcard,
     check_claude_settings_home_directory_hook_command, check_claude_settings_inline_download_exec,
     check_claude_settings_insecure_http_hook_url, check_claude_settings_invalid_hook_matcher_event,
     check_claude_settings_missing_hook_timeout,
@@ -133,6 +134,30 @@ declare_rule! {
         code: "SEC477",
         summary: "Claude settings permissions allow `Edit(...)` over an unsafe path in a shared committed config",
         doc_title: "Claude settings: unsafe Edit path permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGlobUnsafePathRule {
+        code: "SEC486",
+        summary: "Claude settings permissions allow `Glob(...)` over an unsafe path in a shared committed config",
+        doc_title: "Claude settings: unsafe Glob path permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGrepUnsafePathRule {
+        code: "SEC487",
+        summary: "Claude settings permissions allow `Grep(...)` over an unsafe path in a shared committed config",
+        doc_title: "Claude settings: unsafe Grep path permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -632,7 +657,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 50] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 52] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -774,6 +799,38 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 50] = [
         safe_fix: None,
         suggestion_message: Some(
             "replace broad `Edit(...)` path grants with repository-scoped allowlists or remove shared access to absolute, home-relative, or parent-traversing paths",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGlobUnsafePathRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Unsafe Glob path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_glob_unsafe_path,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace broad `Glob(...)` path grants with repository-scoped allowlists, or remove shared access to absolute, home-relative, or parent-traversing glob scopes",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGrepUnsafePathRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Unsafe Grep path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_grep_unsafe_path,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace broad `Grep(...)` path grants with repository-scoped allowlists, or remove shared access to absolute, home-relative, or parent-traversing grep scopes",
         ),
         suggestion_fix: None,
     },

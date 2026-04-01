@@ -204,7 +204,9 @@
         "lintai-ai-security:SEC482",
         "lintai-ai-security:SEC483",
         "lintai-ai-security:SEC484",
-        "lintai-ai-security:SEC485"
+        "lintai-ai-security:SEC485",
+        "lintai-ai-security:SEC486",
+        "lintai-ai-security:SEC487"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -416,7 +418,9 @@
         "lintai-ai-security:SEC482",
         "lintai-ai-security:SEC483",
         "lintai-ai-security:SEC484",
-        "lintai-ai-security:SEC485"
+        "lintai-ai-security:SEC485",
+        "lintai-ai-security:SEC486",
+        "lintai-ai-security:SEC487"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -7202,6 +7206,68 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Shared git am permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC486",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC486",
+      "alias": "CLAUDE-GLOB-UNSAFE-PATH",
+      "displayLabel": "SEC486 / CLAUDE-GLOB-UNSAFE-PATH",
+      "docTitle": "Claude settings: unsafe Glob path permissions",
+      "slug": "sec486",
+      "canonicalPath": "/rules/lintai-ai-security/sec486",
+      "summary": "Claude settings permissions allow `Glob(...)` over an unsafe path in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Unsafe Glob path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC487",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC487",
+      "alias": "CLAUDE-GREP-UNSAFE-PATH",
+      "displayLabel": "SEC487 / CLAUDE-GREP-UNSAFE-PATH",
+      "docTitle": "Claude settings: unsafe Grep path permissions",
+      "slug": "sec487",
+      "canonicalPath": "/rules/lintai-ai-security/sec487",
+      "summary": "Claude settings permissions allow `Grep(...)` over an unsafe path in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Unsafe Grep path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

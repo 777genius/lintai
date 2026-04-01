@@ -258,6 +258,36 @@ pub(crate) fn check_claude_settings_edit_unsafe_path(
     )
 }
 
+pub(crate) fn check_claude_settings_glob_unsafe_path(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.glob_unsafe_path_span.clone()),
+        "Claude settings permissions allow `Glob(...)` over an unsafe path in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_grep_unsafe_path(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.grep_unsafe_path_span.clone()),
+        "Claude settings permissions allow `Grep(...)` over an unsafe path in a shared committed config",
+    )
+}
+
 pub(crate) fn check_claude_settings_websearch_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

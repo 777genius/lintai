@@ -190,6 +190,8 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC483" => "CLAUDE-GIT-CHERRY-PICK-PERMISSION",
         "SEC484" => "CLAUDE-GIT-APPLY-PERMISSION",
         "SEC485" => "CLAUDE-GIT-AM-PERMISSION",
+        "SEC486" => "CLAUDE-GLOB-UNSAFE-PATH",
+        "SEC487" => "CLAUDE-GREP-UNSAFE-PATH",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

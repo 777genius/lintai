@@ -98,6 +98,8 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec483_hits = rule_count(current, &["SEC483"]);
     let sec484_hits = rule_count(current, &["SEC484"]);
     let sec485_hits = rule_count(current, &["SEC485"]);
+    let sec486_hits = rule_count(current, &["SEC486"]);
+    let sec487_hits = rule_count(current, &["SEC487"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, current);
     let sec348_repos = repos_with_rule_hits(current, &["SEC348"], false);
     let sec349_repos = repos_with_rule_hits(current, &["SEC349"], false);
@@ -173,6 +175,8 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec483_repos = repos_with_rule_hits(current, &["SEC483"], false);
     let sec484_repos = repos_with_rule_hits(current, &["SEC484"], false);
     let sec485_repos = repos_with_rule_hits(current, &["SEC485"], false);
+    let sec486_repos = repos_with_rule_hits(current, &["SEC486"], false);
+    let sec487_repos = repos_with_rule_hits(current, &["SEC487"], false);
 
     output.push_str("## Hybrid Scope Expansion Results\n\n");
     output.push_str("Current wave inventory for the newly expanded JSON lanes:\n\n");
@@ -528,6 +532,14 @@ pub(super) fn append_hybrid_scope_expansion(
         sec485_hits
     ));
     output.push_str(&format!(
+        "  - `SEC486` Claude settings unsafe `Glob(...)` path permissions: `{}`\n",
+        sec486_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC487` Claude settings unsafe `Grep(...)` path permissions: `{}`\n",
+        sec487_hits
+    ));
+    output.push_str(&format!(
         "  - `SEC372` Claude settings wildcard `Read(*)` permissions: `{}`\n",
         sec372_hits
     ));
@@ -641,6 +653,8 @@ pub(super) fn append_hybrid_scope_expansion(
     append_rule_repo_hits(output, "SEC483", sec483_repos);
     append_rule_repo_hits(output, "SEC484", sec484_repos);
     append_rule_repo_hits(output, "SEC485", sec485_repos);
+    append_rule_repo_hits(output, "SEC486", sec486_repos);
+    append_rule_repo_hits(output, "SEC487", sec487_repos);
     if sec394_repos.is_empty() {
         output.push_str(
             "- `SEC394` produced no repo-level stable hits yet on the canonical cohort\n",

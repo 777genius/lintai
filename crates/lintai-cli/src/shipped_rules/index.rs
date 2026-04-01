@@ -262,6 +262,14 @@ mod tests {
             Some("CLAUDE-GIT-AM-PERMISSION")
         );
         assert_eq!(
+            shipped_rule_alias("SEC486"),
+            Some("CLAUDE-GLOB-UNSAFE-PATH")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC487"),
+            Some("CLAUDE-GREP-UNSAFE-PATH")
+        );
+        assert_eq!(
             shipped_rule_alias("SEC394"),
             Some("MCP-AUTOAPPROVE-WILDCARD")
         );

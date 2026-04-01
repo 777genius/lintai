@@ -245,6 +245,8 @@ pub(crate) struct ClaudeSettingsSignals {
     pub(crate) read_unsafe_path_span: Option<Span>,
     pub(crate) write_unsafe_path_span: Option<Span>,
     pub(crate) edit_unsafe_path_span: Option<Span>,
+    pub(crate) glob_unsafe_path_span: Option<Span>,
+    pub(crate) grep_unsafe_path_span: Option<Span>,
     pub(crate) websearch_wildcard_span: Option<Span>,
     pub(crate) unscoped_websearch_span: Option<Span>,
     pub(crate) git_push_permission_span: Option<Span>,

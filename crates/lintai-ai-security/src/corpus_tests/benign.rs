@@ -84,6 +84,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "claude-settings-required-matcher-present-safe",
             "claude-settings-schema-fixture-safe",
             "claude-settings-schema-present-safe",
+            "claude-settings-scope-search-specific-safe",
             "claude-settings-unsafe-path-fixture-safe",
             "claude-settings-unsafe-path-specific-safe",
             "claude-settings-unscoped-websearch-fixture-safe",
