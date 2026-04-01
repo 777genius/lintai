@@ -2723,6 +2723,134 @@ fn ignores_specific_bunx_allowed_tools_in_frontmatter() {
 }
 
 #[test]
+fn finds_uvx_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(uvx:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC496")
+        .unwrap();
+    let start = content.find("Bash(uvx:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(uvx:*)".len())
+    );
+}
+
+#[test]
+fn ignores_specific_uvx_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_governance_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(uv run black), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC496")
+    );
+}
+
+#[test]
+fn finds_pnpm_dlx_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(pnpm dlx:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC497")
+        .unwrap();
+    let start = content.find("Bash(pnpm dlx:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(pnpm dlx:*)".len())
+    );
+}
+
+#[test]
+fn ignores_specific_pnpm_dlx_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_governance_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(pnpm install), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC497")
+    );
+}
+
+#[test]
+fn finds_yarn_dlx_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(yarn dlx:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC498")
+        .unwrap();
+    let start = content.find("Bash(yarn dlx:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(yarn dlx:*)".len())
+    );
+}
+
+#[test]
+fn ignores_specific_yarn_dlx_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_governance_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(yarn install), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC498")
+    );
+}
+
+#[test]
+fn finds_pipx_run_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(pipx run:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC499")
+        .unwrap();
+    let start = content.find("Bash(pipx run:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(pipx run:*)".len())
+    );
+}
+
+#[test]
+fn ignores_specific_pipx_run_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_governance_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(python -m black), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC499")
+    );
+}
+
+#[test]
 fn finds_unscoped_webfetch_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: WebFetch, Read\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

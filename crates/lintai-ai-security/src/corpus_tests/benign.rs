@@ -251,6 +251,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-unscoped-write-allowed-tools-fixture-safe",
             "skill-unscoped-write-allowed-tools-specific-safe",
             "skill-untrusted-input-negated-safe",
+            "skill-uvx-dlx-pipx-specific-safe",
             "skill-webfetch-raw-github-allowed-tools-specific-safe",
             "skill-wget-allowed-tools-fixture-safe",
             "skill-wget-allowed-tools-specific-safe",

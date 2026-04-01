@@ -208,6 +208,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "skill-unscoped-read-allowed-tools",
             "skill-unscoped-webfetch-allowed-tools",
             "skill-unscoped-write-allowed-tools",
+            "skill-uvx-dlx-pipx-allowed-tools",
             "skill-webfetch-raw-github-allowed-tools",
             "skill-wget-allowed-tools",
             "skill-wildcard-tools-frontmatter",

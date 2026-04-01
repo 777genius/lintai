@@ -1,0 +1,9 @@
+id = "skill-uvx-dlx-pipx-allowed-tools"
+description = "AI-native markdown frontmatter grants mutable runner tool authority"
+
+expected_findings = [
+  "SEC496",
+  "SEC497",
+  "SEC498",
+  "SEC499",
+]

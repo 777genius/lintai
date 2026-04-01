@@ -464,7 +464,11 @@
         "lintai-ai-security:SEC393",
         "lintai-ai-security:SEC474",
         "lintai-ai-security:SEC494",
-        "lintai-ai-security:SEC495"
+        "lintai-ai-security:SEC495",
+        "lintai-ai-security:SEC496",
+        "lintai-ai-security:SEC497",
+        "lintai-ai-security:SEC498",
+        "lintai-ai-security:SEC499"
       ],
       "canonicalPath": "/presets/governance"
     },
@@ -7528,6 +7532,126 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Shared bunx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC496",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC496",
+      "alias": "MD-UVX-ALLOWED-TOOLS",
+      "displayLabel": "SEC496 / MD-UVX-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: shared uvx tool grant",
+      "slug": "sec496",
+      "canonicalPath": "/rules/lintai-ai-security/sec496",
+      "summary": "AI-native markdown frontmatter grants `Bash(uvx:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared uvx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC497",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC497",
+      "alias": "MD-PNPM-DLX-ALLOWED-TOOLS",
+      "displayLabel": "SEC497 / MD-PNPM-DLX-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: shared pnpm dlx tool grant",
+      "slug": "sec497",
+      "canonicalPath": "/rules/lintai-ai-security/sec497",
+      "summary": "AI-native markdown frontmatter grants `Bash(pnpm dlx:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared pnpm dlx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC498",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC498",
+      "alias": "MD-YARN-DLX-ALLOWED-TOOLS",
+      "displayLabel": "SEC498 / MD-YARN-DLX-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: shared yarn dlx tool grant",
+      "slug": "sec498",
+      "canonicalPath": "/rules/lintai-ai-security/sec498",
+      "summary": "AI-native markdown frontmatter grants `Bash(yarn dlx:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared yarn dlx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC499",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC499",
+      "alias": "MD-PIPX-RUN-ALLOWED-TOOLS",
+      "displayLabel": "SEC499 / MD-PIPX-RUN-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: shared pipx run tool grant",
+      "slug": "sec499",
+      "canonicalPath": "/rules/lintai-ai-security/sec499",
+      "summary": "AI-native markdown frontmatter grants `Bash(pipx run:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared pipx run grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

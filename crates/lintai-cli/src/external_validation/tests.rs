@@ -314,6 +314,10 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(markdown.contains("`SEC493` Claude settings shared `Bash(bunx ...)` permissions: `"));
     assert!(markdown.contains("`SEC494` AI-native markdown shared `npm exec` tool grants: `"));
     assert!(markdown.contains("`SEC495` AI-native markdown shared `bunx` tool grants: `"));
+    assert!(markdown.contains("`SEC496` AI-native markdown shared `uvx` tool grants: `"));
+    assert!(markdown.contains("`SEC497` AI-native markdown shared `pnpm dlx` tool grants: `"));
+    assert!(markdown.contains("`SEC498` AI-native markdown shared `yarn dlx` tool grants: `"));
+    assert!(markdown.contains("`SEC499` AI-native markdown shared `pipx run` tool grants: `"));
     assert!(markdown.contains("`SEC408` Claude settings shared `gh pr` permissions: `"));
     assert!(markdown.contains("`SEC372` Claude settings wildcard `Read(*)` permissions: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings wildcard `Edit(*)` permissions: `0`"));
@@ -982,6 +986,10 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC493` Claude settings shared `Bash(bunx ...)` permissions: `"));
     assert!(markdown.contains("`SEC494` AI-native markdown shared `npm exec` tool grants: `"));
     assert!(markdown.contains("`SEC495` AI-native markdown shared `bunx` tool grants: `"));
+    assert!(markdown.contains("`SEC496` AI-native markdown shared `uvx` tool grants: `"));
+    assert!(markdown.contains("`SEC497` AI-native markdown shared `pnpm dlx` tool grants: `"));
+    assert!(markdown.contains("`SEC498` AI-native markdown shared `yarn dlx` tool grants: `"));
+    assert!(markdown.contains("`SEC499` AI-native markdown shared `pipx run` tool grants: `"));
     assert!(markdown.contains("`SEC372` Claude settings files allowing `Read(*)`: `0`"));
     assert!(markdown.contains("`SEC373` Claude settings files allowing `Edit(*)`: `0`"));
     assert!(markdown.contains("`SEC374` Claude settings files allowing `WebSearch(*)`: `0`"));
@@ -1048,4 +1056,8 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC493`"));
     assert!(markdown.contains("`SEC494`"));
     assert!(markdown.contains("`SEC495`"));
+    assert!(markdown.contains("`SEC496`"));
+    assert!(markdown.contains("`SEC497`"));
+    assert!(markdown.contains("`SEC498`"));
+    assert!(markdown.contains("`SEC499`"));
 }

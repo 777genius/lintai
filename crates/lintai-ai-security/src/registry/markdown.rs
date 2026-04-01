@@ -34,15 +34,17 @@ use crate::markdown_rules::{
     check_markdown_pip_http_index, check_markdown_pip_http_source, check_markdown_pip_trusted_host,
     check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
     check_npm_exec_allowed_tools, check_package_install_allowed_tools,
-    check_plugin_agent_hooks_frontmatter, check_plugin_agent_mcp_servers_frontmatter,
-    check_plugin_agent_permission_mode, check_read_unsafe_path_allowed_tools,
-    check_rm_allowed_tools, check_su_allowed_tools, check_sudo_allowed_tools,
-    check_unscoped_bash_allowed_tools, check_unscoped_edit_allowed_tools,
-    check_unscoped_glob_allowed_tools, check_unscoped_grep_allowed_tools,
-    check_unscoped_read_allowed_tools, check_unscoped_webfetch_allowed_tools,
-    check_unscoped_websearch_allowed_tools, check_unscoped_write_allowed_tools,
-    check_untrusted_instruction_promotion, check_webfetch_raw_github_allowed_tools,
-    check_wget_allowed_tools, check_wildcard_tool_access, check_write_unsafe_path_allowed_tools,
+    check_pipx_run_allowed_tools, check_plugin_agent_hooks_frontmatter,
+    check_plugin_agent_mcp_servers_frontmatter, check_plugin_agent_permission_mode,
+    check_pnpm_dlx_allowed_tools, check_read_unsafe_path_allowed_tools, check_rm_allowed_tools,
+    check_su_allowed_tools, check_sudo_allowed_tools, check_unscoped_bash_allowed_tools,
+    check_unscoped_edit_allowed_tools, check_unscoped_glob_allowed_tools,
+    check_unscoped_grep_allowed_tools, check_unscoped_read_allowed_tools,
+    check_unscoped_webfetch_allowed_tools, check_unscoped_websearch_allowed_tools,
+    check_unscoped_write_allowed_tools, check_untrusted_instruction_promotion,
+    check_uvx_allowed_tools, check_webfetch_raw_github_allowed_tools, check_wget_allowed_tools,
+    check_wildcard_tool_access, check_write_unsafe_path_allowed_tools,
+    check_yarn_dlx_allowed_tools,
 };
 
 declare_rule! {
@@ -542,6 +544,54 @@ declare_rule! {
         code: "SEC495",
         summary: "AI-native markdown frontmatter grants `Bash(bunx:*)` tool access",
         doc_title: "AI markdown: shared bunx tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct UvxAllowedToolsRule {
+        code: "SEC496",
+        summary: "AI-native markdown frontmatter grants `Bash(uvx:*)` tool access",
+        doc_title: "AI markdown: shared uvx tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct PnpmDlxAllowedToolsRule {
+        code: "SEC497",
+        summary: "AI-native markdown frontmatter grants `Bash(pnpm dlx:*)` tool access",
+        doc_title: "AI markdown: shared pnpm dlx tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct YarnDlxAllowedToolsRule {
+        code: "SEC498",
+        summary: "AI-native markdown frontmatter grants `Bash(yarn dlx:*)` tool access",
+        doc_title: "AI markdown: shared yarn dlx tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct PipxRunAllowedToolsRule {
+        code: "SEC499",
+        summary: "AI-native markdown frontmatter grants `Bash(pipx run:*)` tool access",
+        doc_title: "AI markdown: shared pipx run tool grant",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -1149,7 +1199,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 92] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 96] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1905,6 +1955,70 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 92] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(bunx:*)` access is really needed, or replace it with a narrower workflow-specific permission",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: UvxAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared uvx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_uvx_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(uvx:*)` access is really needed, or replace it with a narrower workflow-specific permission",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PnpmDlxAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared pnpm dlx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_pnpm_dlx_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(pnpm dlx:*)` access is really needed, or replace it with a narrower workflow-specific permission",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: YarnDlxAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared yarn dlx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_yarn_dlx_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(yarn dlx:*)` access is really needed, or replace it with a narrower workflow-specific permission",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PipxRunAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared pipx run grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_pipx_run_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(pipx run:*)` access is really needed, or replace it with a narrower workflow-specific permission",
         ),
         suggestion_fix: None,
     },

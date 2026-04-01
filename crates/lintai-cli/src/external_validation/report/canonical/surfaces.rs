@@ -108,6 +108,10 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec493_hits = rule_count(current, &["SEC493"]);
     let sec494_hits = rule_count(current, &["SEC494"]);
     let sec495_hits = rule_count(current, &["SEC495"]);
+    let sec496_hits = rule_count(current, &["SEC496"]);
+    let sec497_hits = rule_count(current, &["SEC497"]);
+    let sec498_hits = rule_count(current, &["SEC498"]);
+    let sec499_hits = rule_count(current, &["SEC499"]);
     let sec347_subtypes = sec347_subtype_counts(workspace_root, current);
     let sec348_repos = repos_with_rule_hits(current, &["SEC348"], false);
     let sec349_repos = repos_with_rule_hits(current, &["SEC349"], false);
@@ -193,6 +197,10 @@ pub(super) fn append_hybrid_scope_expansion(
     let sec493_repos = repos_with_rule_hits(current, &["SEC493"], false);
     let sec494_repos = repos_with_rule_hits(current, &["SEC494"], false);
     let sec495_repos = repos_with_rule_hits(current, &["SEC495"], false);
+    let sec496_repos = repos_with_rule_hits(current, &["SEC496"], false);
+    let sec497_repos = repos_with_rule_hits(current, &["SEC497"], false);
+    let sec498_repos = repos_with_rule_hits(current, &["SEC498"], false);
+    let sec499_repos = repos_with_rule_hits(current, &["SEC499"], false);
 
     output.push_str("## Hybrid Scope Expansion Results\n\n");
     output.push_str("Current wave inventory for the newly expanded JSON lanes:\n\n");
@@ -588,6 +596,22 @@ pub(super) fn append_hybrid_scope_expansion(
         sec495_hits
     ));
     output.push_str(&format!(
+        "  - `SEC496` AI-native markdown shared `uvx` tool grants: `{}`\n",
+        sec496_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC497` AI-native markdown shared `pnpm dlx` tool grants: `{}`\n",
+        sec497_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC498` AI-native markdown shared `yarn dlx` tool grants: `{}`\n",
+        sec498_hits
+    ));
+    output.push_str(&format!(
+        "  - `SEC499` AI-native markdown shared `pipx run` tool grants: `{}`\n",
+        sec499_hits
+    ));
+    output.push_str(&format!(
         "  - `SEC372` Claude settings wildcard `Read(*)` permissions: `{}`\n",
         sec372_hits
     ));
@@ -711,6 +735,10 @@ pub(super) fn append_hybrid_scope_expansion(
     append_rule_repo_hits(output, "SEC493", sec493_repos);
     append_rule_repo_hits(output, "SEC494", sec494_repos);
     append_rule_repo_hits(output, "SEC495", sec495_repos);
+    append_rule_repo_hits(output, "SEC496", sec496_repos);
+    append_rule_repo_hits(output, "SEC497", sec497_repos);
+    append_rule_repo_hits(output, "SEC498", sec498_repos);
+    append_rule_repo_hits(output, "SEC499", sec499_repos);
     if sec394_repos.is_empty() {
         output.push_str(
             "- `SEC394` produced no repo-level stable hits yet on the canonical cohort\n",

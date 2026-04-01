@@ -967,6 +967,130 @@ impl MarkdownSignals {
                         .get("allowed-tools")
                         .or_else(|| frontmatter.value.get("allowed_tools"))
                 })
+            && frontmatter_has_exact_allowed_tool(frontmatter_value, "Bash(uvx:*)")
+            && let Some(region) = ctx
+                .document
+                .regions
+                .iter()
+                .find(|region| matches!(region.kind, RegionKind::Frontmatter))
+            && let Some(snippet) = span_text(&ctx.content, &region.span)
+            && let Some(relative) =
+                find_exact_allowed_tool_frontmatter_relative_span(snippet, "Bash(uvx:*)")
+        {
+            signals.uvx_allowed_tools_spans.push(Span::new(
+                region.span.start_byte + relative.start_byte,
+                region.span.start_byte + relative.end_byte,
+            ));
+        }
+
+        if matches!(
+            ctx.artifact.kind,
+            ArtifactKind::Skill
+                | ArtifactKind::Instructions
+                | ArtifactKind::CursorPluginCommand
+                | ArtifactKind::CursorPluginAgent
+        ) && !is_fixture_like_markdown_instruction_path(&ctx.artifact.normalized_path)
+            && let Some(frontmatter_value) = markdown_semantics(ctx)
+                .and_then(|markdown| markdown.frontmatter.as_ref())
+                .and_then(|frontmatter| {
+                    frontmatter
+                        .value
+                        .get("allowed-tools")
+                        .or_else(|| frontmatter.value.get("allowed_tools"))
+                })
+            && frontmatter_has_exact_allowed_tool(frontmatter_value, "Bash(pnpm dlx:*)")
+            && let Some(region) = ctx
+                .document
+                .regions
+                .iter()
+                .find(|region| matches!(region.kind, RegionKind::Frontmatter))
+            && let Some(snippet) = span_text(&ctx.content, &region.span)
+            && let Some(relative) =
+                find_exact_allowed_tool_frontmatter_relative_span(snippet, "Bash(pnpm dlx:*)")
+        {
+            signals.pnpm_dlx_allowed_tools_spans.push(Span::new(
+                region.span.start_byte + relative.start_byte,
+                region.span.start_byte + relative.end_byte,
+            ));
+        }
+
+        if matches!(
+            ctx.artifact.kind,
+            ArtifactKind::Skill
+                | ArtifactKind::Instructions
+                | ArtifactKind::CursorPluginCommand
+                | ArtifactKind::CursorPluginAgent
+        ) && !is_fixture_like_markdown_instruction_path(&ctx.artifact.normalized_path)
+            && let Some(frontmatter_value) = markdown_semantics(ctx)
+                .and_then(|markdown| markdown.frontmatter.as_ref())
+                .and_then(|frontmatter| {
+                    frontmatter
+                        .value
+                        .get("allowed-tools")
+                        .or_else(|| frontmatter.value.get("allowed_tools"))
+                })
+            && frontmatter_has_exact_allowed_tool(frontmatter_value, "Bash(yarn dlx:*)")
+            && let Some(region) = ctx
+                .document
+                .regions
+                .iter()
+                .find(|region| matches!(region.kind, RegionKind::Frontmatter))
+            && let Some(snippet) = span_text(&ctx.content, &region.span)
+            && let Some(relative) =
+                find_exact_allowed_tool_frontmatter_relative_span(snippet, "Bash(yarn dlx:*)")
+        {
+            signals.yarn_dlx_allowed_tools_spans.push(Span::new(
+                region.span.start_byte + relative.start_byte,
+                region.span.start_byte + relative.end_byte,
+            ));
+        }
+
+        if matches!(
+            ctx.artifact.kind,
+            ArtifactKind::Skill
+                | ArtifactKind::Instructions
+                | ArtifactKind::CursorPluginCommand
+                | ArtifactKind::CursorPluginAgent
+        ) && !is_fixture_like_markdown_instruction_path(&ctx.artifact.normalized_path)
+            && let Some(frontmatter_value) = markdown_semantics(ctx)
+                .and_then(|markdown| markdown.frontmatter.as_ref())
+                .and_then(|frontmatter| {
+                    frontmatter
+                        .value
+                        .get("allowed-tools")
+                        .or_else(|| frontmatter.value.get("allowed_tools"))
+                })
+            && frontmatter_has_exact_allowed_tool(frontmatter_value, "Bash(pipx run:*)")
+            && let Some(region) = ctx
+                .document
+                .regions
+                .iter()
+                .find(|region| matches!(region.kind, RegionKind::Frontmatter))
+            && let Some(snippet) = span_text(&ctx.content, &region.span)
+            && let Some(relative) =
+                find_exact_allowed_tool_frontmatter_relative_span(snippet, "Bash(pipx run:*)")
+        {
+            signals.pipx_run_allowed_tools_spans.push(Span::new(
+                region.span.start_byte + relative.start_byte,
+                region.span.start_byte + relative.end_byte,
+            ));
+        }
+
+        if matches!(
+            ctx.artifact.kind,
+            ArtifactKind::Skill
+                | ArtifactKind::Instructions
+                | ArtifactKind::CursorPluginCommand
+                | ArtifactKind::CursorPluginAgent
+        ) && !is_fixture_like_markdown_instruction_path(&ctx.artifact.normalized_path)
+            && let Some(frontmatter_value) = markdown_semantics(ctx)
+                .and_then(|markdown| markdown.frontmatter.as_ref())
+                .and_then(|frontmatter| {
+                    frontmatter
+                        .value
+                        .get("allowed-tools")
+                        .or_else(|| frontmatter.value.get("allowed_tools"))
+                })
             && frontmatter_has_exact_allowed_tool(frontmatter_value, "Bash(curl:*)")
             && let Some(region) = ctx
                 .document

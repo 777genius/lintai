@@ -420,6 +420,19 @@ mod tests {
             Some("MD-NPM-EXEC-ALLOWED-TOOLS")
         );
         assert_eq!(shipped_rule_alias("SEC495"), Some("MD-BUNX-ALLOWED-TOOLS"));
+        assert_eq!(shipped_rule_alias("SEC496"), Some("MD-UVX-ALLOWED-TOOLS"));
+        assert_eq!(
+            shipped_rule_alias("SEC497"),
+            Some("MD-PNPM-DLX-ALLOWED-TOOLS")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC498"),
+            Some("MD-YARN-DLX-ALLOWED-TOOLS")
+        );
+        assert_eq!(
+            shipped_rule_alias("SEC499"),
+            Some("MD-PIPX-RUN-ALLOWED-TOOLS")
+        );
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");
