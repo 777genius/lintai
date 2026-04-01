@@ -13,8 +13,9 @@ use crate::markdown_rules::{
     check_gh_api_delete_allowed_tools, check_gh_api_patch_allowed_tools,
     check_gh_api_post_allowed_tools, check_gh_api_put_allowed_tools,
     check_gh_issue_create_allowed_tools, check_gh_pr_allowed_tools,
-    check_gh_release_delete_allowed_tools, check_gh_repo_create_allowed_tools,
-    check_gh_repo_delete_allowed_tools, check_gh_secret_delete_allowed_tools,
+    check_gh_release_create_allowed_tools, check_gh_release_delete_allowed_tools,
+    check_gh_repo_create_allowed_tools, check_gh_repo_delete_allowed_tools,
+    check_gh_repo_edit_allowed_tools, check_gh_secret_delete_allowed_tools,
     check_gh_secret_set_allowed_tools, check_gh_variable_delete_allowed_tools,
     check_gh_variable_set_allowed_tools, check_gh_workflow_disable_allowed_tools,
     check_gh_workflow_run_allowed_tools, check_git_add_allowed_tools, check_git_am_allowed_tools,
@@ -724,6 +725,30 @@ declare_rule! {
         code: "SEC535",
         summary: "AI-native markdown frontmatter grants `Bash(gh repo delete:*)` tool access",
         doc_title: "AI markdown: shared gh repo delete tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GhRepoEditAllowedToolsRule {
+        code: "SEC539",
+        summary: "AI-native markdown frontmatter grants `Bash(gh repo edit:*)` tool access",
+        doc_title: "AI markdown: shared gh repo edit tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GhReleaseCreateAllowedToolsRule {
+        code: "SEC541",
+        summary: "AI-native markdown frontmatter grants `Bash(gh release create:*)` tool access",
+        doc_title: "AI markdown: shared gh release create tool grant",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -1499,7 +1524,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 120] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 122] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -2335,6 +2360,38 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 120] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(gh repo delete:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps repository deletion under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GhRepoEditAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh repo edit` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_gh_repo_edit_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(gh repo edit:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps repository settings mutation under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GhReleaseCreateAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh release create` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_gh_release_create_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(gh release create:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps release publishing under explicit user control",
         ),
         suggestion_fix: None,
     },

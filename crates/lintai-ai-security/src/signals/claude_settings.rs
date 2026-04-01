@@ -441,6 +441,16 @@ impl ClaudeSettingsSignals {
             locator_ref.as_ref(),
             "Bash(gh repo delete:*)",
         );
+        signals.gh_repo_edit_permission_span = resolve_permissions_allow_exact_span(
+            value,
+            locator_ref.as_ref(),
+            "Bash(gh repo edit:*)",
+        );
+        signals.gh_release_create_permission_span = resolve_permissions_allow_exact_span(
+            value,
+            locator_ref.as_ref(),
+            "Bash(gh release create:*)",
+        );
         signals.gh_release_delete_permission_span = resolve_permissions_allow_exact_span(
             value,
             locator_ref.as_ref(),

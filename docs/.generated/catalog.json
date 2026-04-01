@@ -234,7 +234,9 @@
         "lintai-ai-security:SEC530",
         "lintai-ai-security:SEC531",
         "lintai-ai-security:SEC534",
-        "lintai-ai-security:SEC536"
+        "lintai-ai-security:SEC536",
+        "lintai-ai-security:SEC538",
+        "lintai-ai-security:SEC540"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -476,7 +478,9 @@
         "lintai-ai-security:SEC530",
         "lintai-ai-security:SEC531",
         "lintai-ai-security:SEC534",
-        "lintai-ai-security:SEC536"
+        "lintai-ai-security:SEC536",
+        "lintai-ai-security:SEC538",
+        "lintai-ai-security:SEC540"
       ],
       "canonicalPath": "/presets/claude"
     },
@@ -528,7 +532,9 @@
         "lintai-ai-security:SEC532",
         "lintai-ai-security:SEC533",
         "lintai-ai-security:SEC535",
-        "lintai-ai-security:SEC537"
+        "lintai-ai-security:SEC537",
+        "lintai-ai-security:SEC539",
+        "lintai-ai-security:SEC541"
       ],
       "canonicalPath": "/presets/governance"
     },
@@ -8938,6 +8944,128 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Shared `gh release delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC538",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC538",
+      "alias": "CLAUDE-GH-REPO-EDIT-PERMISSION",
+      "displayLabel": "SEC538 / CLAUDE-GH-REPO-EDIT-PERMISSION",
+      "docTitle": "Claude settings: shared gh repo edit permissions",
+      "slug": "sec538",
+      "canonicalPath": "/rules/lintai-ai-security/sec538",
+      "summary": "Claude settings permissions allow `Bash(gh repo edit:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `gh repo edit` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC539",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC539",
+      "alias": "MD-GH-REPO-EDIT-ALLOWED-TOOLS",
+      "displayLabel": "SEC539 / MD-GH-REPO-EDIT-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: shared gh repo edit tool grant",
+      "slug": "sec539",
+      "canonicalPath": "/rules/lintai-ai-security/sec539",
+      "summary": "AI-native markdown frontmatter grants `Bash(gh repo edit:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `gh repo edit` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC540",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC540",
+      "alias": "CLAUDE-GH-RELEASE-CREATE-PERMISSION",
+      "displayLabel": "SEC540 / CLAUDE-GH-RELEASE-CREATE-PERMISSION",
+      "docTitle": "Claude settings: shared gh release create permissions",
+      "slug": "sec540",
+      "canonicalPath": "/rules/lintai-ai-security/sec540",
+      "summary": "Claude settings permissions allow `Bash(gh release create:*)` in a shared committed config",
+      "scope": "per_file",
+      "surface": "claude_settings",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "claude"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `gh release create` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC541",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC541",
+      "alias": "MD-GH-RELEASE-CREATE-ALLOWED-TOOLS",
+      "displayLabel": "SEC541 / MD-GH-RELEASE-CREATE-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: shared gh release create tool grant",
+      "slug": "sec541",
+      "canonicalPath": "/rules/lintai-ai-security/sec541",
+      "summary": "AI-native markdown frontmatter grants `Bash(gh release create:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared `gh release create` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

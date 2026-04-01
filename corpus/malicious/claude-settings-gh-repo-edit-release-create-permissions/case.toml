@@ -1,0 +1,7 @@
+id = "claude-settings-gh-repo-edit-release-create-permissions"
+description = "Claude settings grant shared GitHub repository edit and release create permissions"
+
+expected_findings = [
+  "SEC538",
+  "SEC540",
+]

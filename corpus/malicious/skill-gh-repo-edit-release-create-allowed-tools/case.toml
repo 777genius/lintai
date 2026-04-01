@@ -1,0 +1,7 @@
+id = "skill-gh-repo-edit-release-create-allowed-tools"
+description = "AI-native markdown frontmatter grants shared GitHub repository edit and release create authority"
+
+expected_findings = [
+  "SEC539",
+  "SEC541",
+]

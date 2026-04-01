@@ -483,6 +483,36 @@ pub(crate) fn check_claude_settings_gh_repo_delete_permission(
     )
 }
 
+pub(crate) fn check_claude_settings_gh_repo_edit_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.gh_repo_edit_permission_span.clone()),
+        "Claude settings permissions allow `Bash(gh repo edit:*)` in a shared committed config",
+    )
+}
+
+pub(crate) fn check_claude_settings_gh_release_create_permission(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .claude_settings()
+            .and_then(|signals| signals.gh_release_create_permission_span.clone()),
+        "Claude settings permissions allow `Bash(gh release create:*)` in a shared committed config",
+    )
+}
+
 pub(crate) fn check_claude_settings_gh_release_delete_permission(
     ctx: &ScanContext,
     signals: &ArtifactSignals,
