@@ -107,7 +107,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC386 / CLAUDE-GIT-CHECKOUT-PERMISSION` | Claude settings permissions allow `Bash(git checkout:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC387 / CLAUDE-GIT-COMMIT-PERMISSION` | Claude settings permissions allow `Bash(git commit:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC388 / CLAUDE-GIT-STASH-PERMISSION` | Claude settings permissions allow `Bash(git stash:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC389 / MD-WEBSEARCH-UNSCOPED` | AI-native markdown frontmatter grants bare `WebSearch` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC389 / MD-WEBSEARCH-UNSCOPED` | AI-native markdown frontmatter grants bare `WebSearch` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC390 / MD-GIT-PUSH-PERMISSION` | AI-native markdown frontmatter grants `Bash(git push)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC391 / MD-GIT-CHECKOUT-PERMISSION` | AI-native markdown frontmatter grants `Bash(git checkout:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC392 / MD-GIT-COMMIT-PERMISSION` | AI-native markdown frontmatter grants `Bash(git commit:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
@@ -2220,13 +2220,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Bare WebSearch grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native frontmatter for bare WebSearch grants that omit a reviewed search scope.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter token detection for bare `WebSearch` inside allowed-tools or allowed_tools.
+- Malicious Corpus: `skill-risky-frontmatter-tool-grants`
+- Benign Corpus: `skill-reviewed-frontmatter-tool-grants-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC390 / MD-GIT-PUSH-PERMISSION` — AI-native markdown frontmatter grants `Bash(git push)` tool access
 

@@ -4129,7 +4129,7 @@
       "summary": "AI-native markdown frontmatter grants bare `WebSearch` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4138,13 +4138,21 @@
         "preview",
         "skills"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Bare WebSearch grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for bare WebSearch grants that omit a reviewed search scope.",
+        "maliciousCaseIds": [
+          "skill-risky-frontmatter-tool-grants"
+        ],
+        "benignCaseIds": [
+          "skill-reviewed-frontmatter-tool-grants-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for bare `WebSearch` inside allowed-tools or allowed_tools."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {

@@ -477,7 +477,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -2189,9 +2189,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Bare WebSearch grants in AI-native frontmatter are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for bare WebSearch grants that omit a reviewed search scope.",
+            malicious_case_ids: &["skill-risky-frontmatter-tool-grants"],
+            benign_case_ids: &["skill-reviewed-frontmatter-tool-grants-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for bare `WebSearch` inside allowed-tools or allowed_tools.",
         },
         check: check_unscoped_websearch_allowed_tools,
         safe_fix: None,
