@@ -735,7 +735,13 @@ fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
         | "SEC471" | "SEC472" | "SEC473" | "SEC520" | "SEC521" | "SEC522" | "SEC523" | "SEC524"
         | "SEC525" | "SEC526" | "SEC527" | "SEC362" | "SEC364" | "SEC367" | "SEC369" | "SEC372"
         | "SEC373" | "SEC374" | "SEC375" | "SEC376" | "SEC384" | "SEC405" | "SEC475" | "SEC476"
-        | "SEC477" | "SEC486" | "SEC487" => Some(RuleTier::Stable),
+        | "SEC477" | "SEC486" | "SEC487" | "SEC502" | "SEC503" | "SEC504" | "SEC505" | "SEC506"
+        | "SEC507" | "SEC508" | "SEC509" | "SEC510" | "SEC511" | "SEC512" | "SEC513" | "SEC514"
+        | "SEC515" | "SEC516" | "SEC517" | "SEC518" | "SEC519" | "SEC528" | "SEC529" | "SEC530"
+        | "SEC531" | "SEC532" | "SEC533" | "SEC534" | "SEC535" | "SEC536" | "SEC537" | "SEC538"
+        | "SEC539" | "SEC540" | "SEC541" | "SEC542" | "SEC543" | "SEC544" | "SEC545" | "SEC410" => {
+            Some(RuleTier::Stable)
+        }
         "SEC101" | "SEC102" | "SEC103" | "SEC104" | "SEC105" | "SEC306" | "SEC307" | "SEC308"
         | "SEC313" | "SEC323" | "SEC325" | "SEC328" | "SEC335" | "SEC336" | "SEC347" | "SEC348"
         | "SEC349" | "SEC350" | "SEC351" | "SEC352" | "SEC353" | "SEC354" | "SEC355" | "SEC356"
@@ -743,15 +749,10 @@ fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
         | "SEC368" | "SEC370" | "SEC371" | "SEC377" | "SEC378" | "SEC379" | "SEC380" | "SEC381"
         | "SEC382" | "SEC383" | "SEC385" | "SEC386" | "SEC387" | "SEC388" | "SEC389" | "SEC390"
         | "SEC391" | "SEC392" | "SEC393" | "SEC399" | "SEC400" | "SEC404" | "SEC406" | "SEC407"
-        | "SEC408" | "SEC409" | "SEC410" | "SEC416" | "SEC401" | "SEC402" | "SEC403" | "SEC474"
-        | "SEC478" | "SEC479" | "SEC480" | "SEC481" | "SEC482" | "SEC483" | "SEC484" | "SEC485"
-        | "SEC488" | "SEC489" | "SEC490" | "SEC491" | "SEC492" | "SEC493" | "SEC494" | "SEC495"
-        | "SEC496" | "SEC497" | "SEC498" | "SEC499" | "SEC500" | "SEC501" | "SEC502" | "SEC503"
-        | "SEC504" | "SEC505" | "SEC506" | "SEC507" | "SEC508" | "SEC509" | "SEC510" | "SEC511"
-        | "SEC512" | "SEC513" | "SEC514" | "SEC515" | "SEC516" | "SEC517" | "SEC518" | "SEC519"
-        | "SEC528" | "SEC529" | "SEC530" | "SEC531" | "SEC532" | "SEC533" | "SEC534" | "SEC535"
-        | "SEC536" | "SEC537" | "SEC538" | "SEC539" | "SEC540" | "SEC541" | "SEC542" | "SEC543"
-        | "SEC544" | "SEC545" => Some(RuleTier::Preview),
+        | "SEC408" | "SEC409" | "SEC416" | "SEC401" | "SEC402" | "SEC403" | "SEC474" | "SEC478"
+        | "SEC479" | "SEC480" | "SEC481" | "SEC482" | "SEC483" | "SEC484" | "SEC485" | "SEC488"
+        | "SEC489" | "SEC490" | "SEC491" | "SEC492" | "SEC493" | "SEC494" | "SEC495" | "SEC496"
+        | "SEC497" | "SEC498" | "SEC499" | "SEC500" | "SEC501" => Some(RuleTier::Preview),
         _ => None,
     }
 }

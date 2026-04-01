@@ -165,7 +165,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -177,7 +177,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -189,7 +189,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -201,7 +201,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -213,7 +213,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -225,7 +225,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -237,7 +237,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -249,7 +249,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -261,7 +261,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -273,7 +273,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -285,7 +285,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -297,7 +297,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -309,7 +309,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -321,7 +321,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -333,7 +333,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -345,7 +345,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -357,7 +357,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -369,7 +369,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -381,7 +381,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -393,7 +393,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -405,7 +405,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Stable,
+        tier: RuleTier::Preview,
     }
 }
 
@@ -645,7 +645,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -657,7 +657,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -669,7 +669,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -681,7 +681,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -693,7 +693,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -705,7 +705,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -717,7 +717,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -729,7 +729,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -741,7 +741,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -753,7 +753,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -765,7 +765,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -777,7 +777,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -789,7 +789,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -801,7 +801,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -813,7 +813,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -825,7 +825,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -837,7 +837,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -849,7 +849,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -2281,9 +2281,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh api --method POST` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub API POST mutation authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-mutation-allowed-tools"],
+            benign_case_ids: &["skill-gh-mutation-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh api --method POST:*)` in allowed-tools entries.",
         },
         check: check_gh_api_post_allowed_tools,
         safe_fix: None,
@@ -2297,9 +2301,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh api --method DELETE` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub API DELETE mutation authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-api-delete-allowed-tools"],
+            benign_case_ids: &["skill-gh-api-delete-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh api --method DELETE:*)` in allowed-tools entries.",
         },
         check: check_gh_api_delete_allowed_tools,
         safe_fix: None,
@@ -2313,9 +2321,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh api --method PATCH` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub API PATCH mutation authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-api-patch-allowed-tools"],
+            benign_case_ids: &["skill-gh-api-patch-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh api --method PATCH:*)` in allowed-tools entries.",
         },
         check: check_gh_api_patch_allowed_tools,
         safe_fix: None,
@@ -2329,9 +2341,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh api --method PUT` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub API PUT mutation authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-api-put-allowed-tools"],
+            benign_case_ids: &["skill-gh-api-put-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh api --method PUT:*)` in allowed-tools entries.",
         },
         check: check_gh_api_put_allowed_tools,
         safe_fix: None,
@@ -2345,9 +2361,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh issue create` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub issue creation authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-mutation-allowed-tools"],
+            benign_case_ids: &["skill-gh-mutation-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh issue create:*)` in allowed-tools entries.",
         },
         check: check_gh_issue_create_allowed_tools,
         safe_fix: None,
@@ -2361,9 +2381,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh repo create` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub repository creation authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-mutation-allowed-tools"],
+            benign_case_ids: &["skill-gh-mutation-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh repo create:*)` in allowed-tools entries.",
         },
         check: check_gh_repo_create_allowed_tools,
         safe_fix: None,
@@ -2377,9 +2401,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh repo delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub repository deletion authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-repo-release-delete-allowed-tools"],
+            benign_case_ids: &["skill-gh-repo-release-delete-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh repo delete:*)` in allowed-tools entries.",
         },
         check: check_gh_repo_delete_allowed_tools,
         safe_fix: None,
@@ -2393,9 +2421,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh repo edit` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub repository settings mutation authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-repo-edit-release-create-allowed-tools"],
+            benign_case_ids: &["skill-gh-repo-edit-release-create-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh repo edit:*)` in allowed-tools entries.",
         },
         check: check_gh_repo_edit_allowed_tools,
         safe_fix: None,
@@ -2409,9 +2441,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh repo transfer` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub repository transfer authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-repo-transfer-release-upload-allowed-tools"],
+            benign_case_ids: &["skill-gh-repo-transfer-release-upload-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh repo transfer:*)` in allowed-tools entries.",
         },
         check: check_gh_repo_transfer_allowed_tools,
         safe_fix: None,
@@ -2425,9 +2461,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh release create` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub release creation authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-repo-edit-release-create-allowed-tools"],
+            benign_case_ids: &["skill-gh-repo-edit-release-create-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh release create:*)` in allowed-tools entries.",
         },
         check: check_gh_release_create_allowed_tools,
         safe_fix: None,
@@ -2441,9 +2481,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh release upload` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub release asset upload authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-repo-transfer-release-upload-allowed-tools"],
+            benign_case_ids: &["skill-gh-repo-transfer-release-upload-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh release upload:*)` in allowed-tools entries.",
         },
         check: check_gh_release_upload_allowed_tools,
         safe_fix: None,
@@ -2457,9 +2501,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh release delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub release deletion authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-repo-release-delete-allowed-tools"],
+            benign_case_ids: &["skill-gh-repo-release-delete-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh release delete:*)` in allowed-tools entries.",
         },
         check: check_gh_release_delete_allowed_tools,
         safe_fix: None,
@@ -2473,9 +2521,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh secret set` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub secret mutation authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-secret-variable-workflow-allowed-tools"],
+            benign_case_ids: &["skill-gh-secret-variable-workflow-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh secret set:*)` in allowed-tools entries.",
         },
         check: check_gh_secret_set_allowed_tools,
         safe_fix: None,
@@ -2489,9 +2541,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh variable set` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub variable mutation authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-secret-variable-workflow-allowed-tools"],
+            benign_case_ids: &["skill-gh-secret-variable-workflow-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh variable set:*)` in allowed-tools entries.",
         },
         check: check_gh_variable_set_allowed_tools,
         safe_fix: None,
@@ -2505,9 +2561,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh workflow run` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub workflow dispatch authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-secret-variable-workflow-allowed-tools"],
+            benign_case_ids: &["skill-gh-secret-variable-workflow-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh workflow run:*)` in allowed-tools entries.",
         },
         check: check_gh_workflow_run_allowed_tools,
         safe_fix: None,
@@ -2521,9 +2581,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh secret delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub secret deletion authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-mutation-allowed-tools"],
+            benign_case_ids: &["skill-gh-mutation-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh secret delete:*)` in allowed-tools entries.",
         },
         check: check_gh_secret_delete_allowed_tools,
         safe_fix: None,
@@ -2537,9 +2601,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh variable delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub variable deletion authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-mutation-allowed-tools"],
+            benign_case_ids: &["skill-gh-mutation-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh variable delete:*)` in allowed-tools entries.",
         },
         check: check_gh_variable_delete_allowed_tools,
         safe_fix: None,
@@ -2553,9 +2621,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh workflow disable` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native markdown frontmatter for exact GitHub workflow disable authority through `allowed-tools`.",
+            malicious_case_ids: &["skill-gh-mutation-allowed-tools"],
+            benign_case_ids: &["skill-gh-mutation-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter string detection for `Bash(gh workflow disable:*)` in allowed-tools entries.",
         },
         check: check_gh_workflow_disable_allowed_tools,
         safe_fix: None,

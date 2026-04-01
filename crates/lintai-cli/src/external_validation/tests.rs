@@ -51,7 +51,7 @@ fn fill_auto_fields_separates_stable_preview_diagnostics_and_runtime_errors() {
                 rule_code: "SEC201".to_owned(),
             },
             JsonFinding {
-                rule_code: "SEC105".to_owned(),
+                rule_code: "SEC101".to_owned(),
             },
         ],
         diagnostics: vec![JsonDiagnostic {
@@ -79,7 +79,7 @@ fn fill_auto_fields_separates_stable_preview_diagnostics_and_runtime_errors() {
     assert_eq!(entry.stable_findings, 1);
     assert_eq!(entry.preview_findings, 1);
     assert_eq!(entry.stable_rule_codes, vec!["SEC201"]);
-    assert_eq!(entry.preview_rule_codes, vec!["SEC105"]);
+    assert_eq!(entry.preview_rule_codes, vec!["SEC101"]);
     assert_eq!(entry.diagnostics.len(), 1);
     assert_eq!(entry.runtime_errors.len(), 1);
 }

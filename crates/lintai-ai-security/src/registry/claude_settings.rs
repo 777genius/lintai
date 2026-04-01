@@ -369,7 +369,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -381,7 +381,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -393,7 +393,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -405,7 +405,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -417,7 +417,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -429,7 +429,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -441,7 +441,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -453,7 +453,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -465,7 +465,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -477,7 +477,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -489,7 +489,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -501,7 +501,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -513,7 +513,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -525,7 +525,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -537,7 +537,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -549,7 +549,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -561,7 +561,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -573,7 +573,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -597,7 +597,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -1299,9 +1299,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh api --method POST` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub API POST mutation authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-mutation-permissions"],
+            benign_case_ids: &["claude-settings-gh-mutation-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh api --method POST:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_api_post_permission,
         safe_fix: None,
@@ -1315,9 +1319,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh api --method DELETE` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub API DELETE mutation authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-api-delete-permission"],
+            benign_case_ids: &["claude-settings-gh-api-delete-permission-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh api --method DELETE:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_api_delete_permission,
         safe_fix: None,
@@ -1331,9 +1339,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh api --method PATCH` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub API PATCH mutation authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-api-patch-permission"],
+            benign_case_ids: &["claude-settings-gh-api-patch-permission-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh api --method PATCH:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_api_patch_permission,
         safe_fix: None,
@@ -1347,9 +1359,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh api --method PUT` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub API PUT mutation authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-api-put-permission"],
+            benign_case_ids: &["claude-settings-gh-api-put-permission-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh api --method PUT:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_api_put_permission,
         safe_fix: None,
@@ -1363,9 +1379,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh issue create` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub issue creation authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-mutation-permissions"],
+            benign_case_ids: &["claude-settings-gh-mutation-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh issue create:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_issue_create_permission,
         safe_fix: None,
@@ -1379,9 +1399,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh repo create` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub repository creation authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-mutation-permissions"],
+            benign_case_ids: &["claude-settings-gh-mutation-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh repo create:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_repo_create_permission,
         safe_fix: None,
@@ -1395,9 +1419,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh repo delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub repository deletion authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-repo-release-delete-permissions"],
+            benign_case_ids: &["claude-settings-gh-repo-release-delete-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh repo delete:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_repo_delete_permission,
         safe_fix: None,
@@ -1411,9 +1439,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh repo edit` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub repository settings mutation authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-repo-edit-release-create-permissions"],
+            benign_case_ids: &["claude-settings-gh-repo-edit-release-create-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh repo edit:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_repo_edit_permission,
         safe_fix: None,
@@ -1427,9 +1459,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh repo transfer` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub repository transfer authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-repo-transfer-release-upload-permissions"],
+            benign_case_ids: &["claude-settings-gh-repo-transfer-release-upload-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh repo transfer:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_repo_transfer_permission,
         safe_fix: None,
@@ -1443,9 +1479,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh release create` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub release creation authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-repo-edit-release-create-permissions"],
+            benign_case_ids: &["claude-settings-gh-repo-edit-release-create-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh release create:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_release_create_permission,
         safe_fix: None,
@@ -1459,9 +1499,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh release upload` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub release asset upload authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-repo-transfer-release-upload-permissions"],
+            benign_case_ids: &["claude-settings-gh-repo-transfer-release-upload-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh release upload:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_release_upload_permission,
         safe_fix: None,
@@ -1475,9 +1519,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh release delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub release deletion authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-repo-release-delete-permissions"],
+            benign_case_ids: &["claude-settings-gh-repo-release-delete-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh release delete:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_release_delete_permission,
         safe_fix: None,
@@ -1491,9 +1539,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh secret set` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub secret mutation authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-secret-variable-workflow-permissions"],
+            benign_case_ids: &["claude-settings-gh-secret-variable-workflow-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh secret set:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_secret_set_permission,
         safe_fix: None,
@@ -1507,9 +1559,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh variable set` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub variable mutation authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-secret-variable-workflow-permissions"],
+            benign_case_ids: &["claude-settings-gh-secret-variable-workflow-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh variable set:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_variable_set_permission,
         safe_fix: None,
@@ -1523,9 +1579,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh workflow run` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub workflow dispatch authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-secret-variable-workflow-permissions"],
+            benign_case_ids: &["claude-settings-gh-secret-variable-workflow-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh workflow run:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_workflow_run_permission,
         safe_fix: None,
@@ -1539,9 +1599,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh secret delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub secret deletion authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-mutation-permissions"],
+            benign_case_ids: &["claude-settings-gh-mutation-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh secret delete:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_secret_delete_permission,
         safe_fix: None,
@@ -1555,9 +1619,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh variable delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub variable deletion authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-mutation-permissions"],
+            benign_case_ids: &["claude-settings-gh-mutation-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh variable delete:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_variable_delete_permission,
         safe_fix: None,
@@ -1571,9 +1639,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `gh workflow disable` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for exact GitHub workflow disable authority through `permissions.allow`.",
+            malicious_case_ids: &["claude-settings-gh-mutation-permissions"],
+            benign_case_ids: &["claude-settings-gh-mutation-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(gh workflow disable:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_gh_workflow_disable_permission,
         safe_fix: None,
@@ -1603,9 +1675,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared `git ls-remote` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for wildcard remote repository inspection grants.",
+            malicious_case_ids: &["claude-settings-git-ls-remote-permission"],
+            benign_case_ids: &["claude-settings-git-ls-remote-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(git ls-remote:*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_git_ls_remote_permission,
         safe_fix: None,

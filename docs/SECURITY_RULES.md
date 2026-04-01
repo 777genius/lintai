@@ -128,14 +128,14 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC407 / CLAUDE-GIT-CLONE-PERMISSION` | Claude settings permissions allow `Bash(git clone:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC408 / CLAUDE-GH-PR-PERMISSION` | Claude settings permissions allow `Bash(gh pr:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC409 / CLAUDE-GIT-FETCH-PERMISSION` | Claude settings permissions allow `Bash(git fetch:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC410 / CLAUDE-GIT-LS-REMOTE-PERMISSION` | Claude settings permissions allow `Bash(git ls-remote:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC410 / CLAUDE-GIT-LS-REMOTE-PERMISSION` | Claude settings permissions allow `Bash(git ls-remote:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC411 / CLAUDE-CURL-PERMISSION` | Claude settings permissions allow `Bash(curl:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC412 / CLAUDE-WGET-PERMISSION` | Claude settings permissions allow `Bash(wget:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC413 / CLAUDE-GIT-CONFIG-PERMISSION` | Claude settings permissions allow `Bash(git config:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC414 / CLAUDE-GIT-TAG-PERMISSION` | Claude settings permissions allow `Bash(git tag:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC415 / CLAUDE-GIT-BRANCH-PERMISSION` | Claude settings permissions allow `Bash(git branch:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC416 / MD-CLAUDE-PIP-INSTALL` | AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC417 / MD-PIP-GIT-UNPINNED` | AI-native markdown installs Python packages from an unpinned `git+https://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC417 / MD-PIP-GIT-UNPINNED` | AI-native markdown installs Python packages from an unpinned `git+https://` source | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC418 / CLAUDE-WEBFETCH-RAW-GITHUB` | Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC419 / MD-CURL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(curl:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC420 / MD-WGET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(wget:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
@@ -166,32 +166,32 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC445 / MD-GIT-AM-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git am:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC446 / MCP-ARGS-SUDO` | MCP configuration passes `sudo` as the first launch argument | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC447 / MD-PACKAGE-INSTALL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants package installation authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC448 / MD-PIP-TRUSTED-HOST` | AI-native markdown installs Python packages with `--trusted-host` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC449 / MD-PIP-HTTP-INDEX` | AI-native markdown installs Python packages from an insecure `http://` package index | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC450 / MD-NPM-HTTP-REGISTRY` | AI-native markdown installs JavaScript packages from an insecure `http://` registry | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC451 / MD-CARGO-HTTP-GIT-INSTALL` | AI-native markdown installs Rust packages from an insecure `http://` git source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC452 / MD-CARGO-HTTP-INDEX` | AI-native markdown installs Rust packages from an insecure `http://` index | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC453 / MD-PIP-HTTP-SOURCE` | AI-native markdown installs Python packages from an insecure direct `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC454 / MD-NPM-HTTP-SOURCE` | AI-native markdown installs JavaScript packages from an insecure direct `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC455 / MD-PIP-HTTP-GIT-INSTALL` | AI-native markdown installs Python packages from an insecure `git+http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC456 / MD-PIP-HTTP-FIND-LINKS` | AI-native markdown installs Python packages with insecure `http://` find-links | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC457 / MD-JS-PACKAGE-STRICT-SSL-FALSE` | AI-native markdown disables strict SSL verification for JavaScript package manager config | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC458 / MD-PIP-CONFIG-HTTP-INDEX` | AI-native markdown configures Python package resolution with an insecure `http://` package index | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC459 / MD-JS-PACKAGE-CONFIG-HTTP-REGISTRY` | AI-native markdown configures a JavaScript package manager with an insecure `http://` registry | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC460 / MD-PIP-CONFIG-HTTP-FIND-LINKS` | AI-native markdown configures Python package discovery with insecure `http://` find-links | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC461 / MD-PIP-CONFIG-TRUSTED-HOST` | AI-native markdown configures Python package resolution with `trusted-host` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC462 / MD-NETWORK-TLS-BYPASS` | AI-native markdown disables TLS verification for a network-capable command | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC448 / MD-PIP-TRUSTED-HOST` | AI-native markdown installs Python packages with `--trusted-host` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC449 / MD-PIP-HTTP-INDEX` | AI-native markdown installs Python packages from an insecure `http://` package index | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC450 / MD-NPM-HTTP-REGISTRY` | AI-native markdown installs JavaScript packages from an insecure `http://` registry | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC451 / MD-CARGO-HTTP-GIT-INSTALL` | AI-native markdown installs Rust packages from an insecure `http://` git source | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC452 / MD-CARGO-HTTP-INDEX` | AI-native markdown installs Rust packages from an insecure `http://` index | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC453 / MD-PIP-HTTP-SOURCE` | AI-native markdown installs Python packages from an insecure direct `http://` source | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC454 / MD-NPM-HTTP-SOURCE` | AI-native markdown installs JavaScript packages from an insecure direct `http://` source | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC455 / MD-PIP-HTTP-GIT-INSTALL` | AI-native markdown installs Python packages from an insecure `git+http://` source | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC456 / MD-PIP-HTTP-FIND-LINKS` | AI-native markdown installs Python packages with insecure `http://` find-links | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC457 / MD-JS-PACKAGE-STRICT-SSL-FALSE` | AI-native markdown disables strict SSL verification for JavaScript package manager config | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC458 / MD-PIP-CONFIG-HTTP-INDEX` | AI-native markdown configures Python package resolution with an insecure `http://` package index | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC459 / MD-JS-PACKAGE-CONFIG-HTTP-REGISTRY` | AI-native markdown configures a JavaScript package manager with an insecure `http://` registry | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC460 / MD-PIP-CONFIG-HTTP-FIND-LINKS` | AI-native markdown configures Python package discovery with insecure `http://` find-links | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC461 / MD-PIP-CONFIG-TRUSTED-HOST` | AI-native markdown configures Python package resolution with `trusted-host` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC462 / MD-NETWORK-TLS-BYPASS` | AI-native markdown disables TLS verification for a network-capable command | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC463 / MD-SUDO-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(sudo:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC464 / MD-GIT-HTTP-CLONE` | AI-native markdown clones a Git repository from an insecure `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC465 / MD-GIT-HTTP-REMOTE` | AI-native markdown configures a Git remote with an insecure `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC464 / MD-GIT-HTTP-CLONE` | AI-native markdown clones a Git repository from an insecure `http://` source | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC465 / MD-GIT-HTTP-REMOTE` | AI-native markdown configures a Git remote with an insecure `http://` source | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC466 / MD-RM-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(rm:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC467 / MD-CHMOD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chmod:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC468 / MD-CHOWN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chown:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC469 / MD-CHGRP-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chgrp:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC470 / MD-SU-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(su:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC471 / MD-GIT-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `http.sslVerify false` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC472 / MD-GIT-SSL-NO-VERIFY` | AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC473 / MD-GIT-INLINE-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC471 / MD-GIT-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `http.sslVerify false` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC472 / MD-GIT-SSL-NO-VERIFY` | AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC473 / MD-GIT-INLINE-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC474 / MD-GH-PR-PERMISSION` | AI-native markdown frontmatter grants `Bash(gh pr:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC475 / CLAUDE-READ-UNSAFE-PATH` | Claude settings permissions allow `Read(...)` over an unsafe path in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC476 / CLAUDE-WRITE-UNSAFE-PATH` | Claude settings permissions allow `Write(...)` over an unsafe path in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
@@ -220,24 +220,24 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC499 / MD-PIPX-RUN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(pipx run:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC500 / MD-NPX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(npx:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC501 / MD-GIT-LS-REMOTE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git ls-remote:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC502 / CLAUDE-GH-API-POST-PERMISSION` | Claude settings permissions allow `Bash(gh api --method POST:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC503 / CLAUDE-GH-ISSUE-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh issue create:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC504 / CLAUDE-GH-REPO-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh repo create:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC505 / MD-GH-API-POST-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method POST:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC506 / MD-GH-ISSUE-CREATE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh issue create:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC507 / MD-GH-REPO-CREATE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo create:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC508 / CLAUDE-GH-SECRET-SET-PERMISSION` | Claude settings permissions allow `Bash(gh secret set:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC509 / CLAUDE-GH-VARIABLE-SET-PERMISSION` | Claude settings permissions allow `Bash(gh variable set:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC510 / CLAUDE-GH-WORKFLOW-RUN-PERMISSION` | Claude settings permissions allow `Bash(gh workflow run:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC511 / MD-GH-SECRET-SET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh secret set:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC512 / MD-GH-VARIABLE-SET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh variable set:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC513 / MD-GH-WORKFLOW-RUN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh workflow run:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC514 / CLAUDE-GH-SECRET-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh secret delete:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC515 / CLAUDE-GH-VARIABLE-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh variable delete:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC516 / CLAUDE-GH-WORKFLOW-DISABLE-PERMISSION` | Claude settings permissions allow `Bash(gh workflow disable:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC517 / MD-GH-SECRET-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh secret delete:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC518 / MD-GH-VARIABLE-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh variable delete:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC519 / MD-GH-WORKFLOW-DISABLE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh workflow disable:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC502 / CLAUDE-GH-API-POST-PERMISSION` | Claude settings permissions allow `Bash(gh api --method POST:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC503 / CLAUDE-GH-ISSUE-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh issue create:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC504 / CLAUDE-GH-REPO-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh repo create:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC505 / MD-GH-API-POST-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method POST:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC506 / MD-GH-ISSUE-CREATE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh issue create:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC507 / MD-GH-REPO-CREATE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo create:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC508 / CLAUDE-GH-SECRET-SET-PERMISSION` | Claude settings permissions allow `Bash(gh secret set:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC509 / CLAUDE-GH-VARIABLE-SET-PERMISSION` | Claude settings permissions allow `Bash(gh variable set:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC510 / CLAUDE-GH-WORKFLOW-RUN-PERMISSION` | Claude settings permissions allow `Bash(gh workflow run:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC511 / MD-GH-SECRET-SET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh secret set:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC512 / MD-GH-VARIABLE-SET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh variable set:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC513 / MD-GH-WORKFLOW-RUN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh workflow run:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC514 / CLAUDE-GH-SECRET-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh secret delete:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC515 / CLAUDE-GH-VARIABLE-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh variable delete:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC516 / CLAUDE-GH-WORKFLOW-DISABLE-PERMISSION` | Claude settings permissions allow `Bash(gh workflow disable:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC517 / MD-GH-SECRET-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh secret delete:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC518 / MD-GH-VARIABLE-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh variable delete:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC519 / MD-GH-WORKFLOW-DISABLE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh workflow disable:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC520 / MD-READ-WILDCARD` | AI-native markdown frontmatter grants `Read(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC521 / MD-WRITE-WILDCARD` | AI-native markdown frontmatter grants `Write(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC522 / MD-EDIT-WILDCARD` | AI-native markdown frontmatter grants `Edit(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
@@ -246,24 +246,24 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC525 / MD-WEBFETCH-WILDCARD` | AI-native markdown frontmatter grants `WebFetch(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC526 / MD-WEBSEARCH-WILDCARD` | AI-native markdown frontmatter grants `WebSearch(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC527 / MD-BASH-WILDCARD` | AI-native markdown frontmatter grants `Bash(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC528 / CLAUDE-GH-API-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh api --method DELETE:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC529 / MD-GH-API-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method DELETE:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC530 / CLAUDE-GH-API-PATCH-PERMISSION` | Claude settings permissions allow `Bash(gh api --method PATCH:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC531 / CLAUDE-GH-API-PUT-PERMISSION` | Claude settings permissions allow `Bash(gh api --method PUT:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC532 / MD-GH-API-PATCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method PATCH:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC533 / MD-GH-API-PUT-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method PUT:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC534 / CLAUDE-GH-REPO-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh repo delete:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC535 / MD-GH-REPO-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo delete:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC536 / CLAUDE-GH-RELEASE-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh release delete:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC537 / MD-GH-RELEASE-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh release delete:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC538 / CLAUDE-GH-REPO-EDIT-PERMISSION` | Claude settings permissions allow `Bash(gh repo edit:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC539 / MD-GH-REPO-EDIT-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo edit:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC540 / CLAUDE-GH-RELEASE-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh release create:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC541 / MD-GH-RELEASE-CREATE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh release create:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC542 / CLAUDE-GH-REPO-TRANSFER-PERMISSION` | Claude settings permissions allow `Bash(gh repo transfer:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC543 / MD-GH-REPO-TRANSFER-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo transfer:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC544 / CLAUDE-GH-RELEASE-UPLOAD-PERMISSION` | Claude settings permissions allow `Bash(gh release upload:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC545 / MD-GH-RELEASE-UPLOAD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh release upload:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC528 / CLAUDE-GH-API-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh api --method DELETE:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC529 / MD-GH-API-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method DELETE:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC530 / CLAUDE-GH-API-PATCH-PERMISSION` | Claude settings permissions allow `Bash(gh api --method PATCH:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC531 / CLAUDE-GH-API-PUT-PERMISSION` | Claude settings permissions allow `Bash(gh api --method PUT:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC532 / MD-GH-API-PATCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method PATCH:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC533 / MD-GH-API-PUT-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method PUT:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC534 / CLAUDE-GH-REPO-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh repo delete:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC535 / MD-GH-REPO-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo delete:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC536 / CLAUDE-GH-RELEASE-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh release delete:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC537 / MD-GH-RELEASE-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh release delete:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC538 / CLAUDE-GH-REPO-EDIT-PERMISSION` | Claude settings permissions allow `Bash(gh repo edit:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC539 / MD-GH-REPO-EDIT-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo edit:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC540 / CLAUDE-GH-RELEASE-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh release create:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC541 / MD-GH-RELEASE-CREATE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh release create:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC542 / CLAUDE-GH-REPO-TRANSFER-PERMISSION` | Claude settings permissions allow `Bash(gh repo transfer:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC543 / MD-GH-REPO-TRANSFER-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo transfer:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC544 / CLAUDE-GH-RELEASE-UPLOAD-PERMISSION` | Claude settings permissions allow `Bash(gh release upload:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC545 / MD-GH-RELEASE-UPLOAD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh release upload:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC546 / MCP-AUTOAPPROVE-BASH-WILDCARD` | MCP configuration auto-approves blanket shell execution with `autoApprove: ["Bash(*)"]` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC547 / MCP-AUTOAPPROVE-CURL` | MCP configuration auto-approves `Bash(curl:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC548 / MCP-AUTOAPPROVE-WGET` | MCP configuration auto-approves `Bash(wget:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
@@ -2531,13 +2531,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `git ls-remote` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for wildcard remote repository inspection grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(git ls-remote:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-git-ls-remote-permission`
+- Benign Corpus: `claude-settings-git-ls-remote-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC411 / CLAUDE-CURL-PERMISSION` — Claude settings permissions allow `Bash(curl:*)` in a shared committed config
 
@@ -2670,7 +2674,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -2680,7 +2684,7 @@ Important behavior:
 - Benign Corpus: `claude-unpinned-pip-git-install-commit-pinned-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC418 / CLAUDE-WEBFETCH-RAW-GITHUB` — Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config
 
@@ -3321,7 +3325,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3331,7 +3335,7 @@ Important behavior:
 - Benign Corpus: `skill-pip-index-url-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC449 / MD-PIP-HTTP-INDEX` — AI-native markdown installs Python packages from an insecure `http://` package index
 
@@ -3342,7 +3346,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3352,7 +3356,7 @@ Important behavior:
 - Benign Corpus: `skill-pip-https-index-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC450 / MD-NPM-HTTP-REGISTRY` — AI-native markdown installs JavaScript packages from an insecure `http://` registry
 
@@ -3363,7 +3367,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3373,7 +3377,7 @@ Important behavior:
 - Benign Corpus: `skill-npm-https-registry-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC451 / MD-CARGO-HTTP-GIT-INSTALL` — AI-native markdown installs Rust packages from an insecure `http://` git source
 
@@ -3384,7 +3388,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3394,7 +3398,7 @@ Important behavior:
 - Benign Corpus: `skill-cargo-https-git-install-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC452 / MD-CARGO-HTTP-INDEX` — AI-native markdown installs Rust packages from an insecure `http://` index
 
@@ -3405,7 +3409,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3415,7 +3419,7 @@ Important behavior:
 - Benign Corpus: `skill-cargo-https-index-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC453 / MD-PIP-HTTP-SOURCE` — AI-native markdown installs Python packages from an insecure direct `http://` source
 
@@ -3426,7 +3430,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3436,7 +3440,7 @@ Important behavior:
 - Benign Corpus: `skill-pip-https-source-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC454 / MD-NPM-HTTP-SOURCE` — AI-native markdown installs JavaScript packages from an insecure direct `http://` source
 
@@ -3447,7 +3451,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3457,7 +3461,7 @@ Important behavior:
 - Benign Corpus: `skill-npm-https-source-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC455 / MD-PIP-HTTP-GIT-INSTALL` — AI-native markdown installs Python packages from an insecure `git+http://` source
 
@@ -3468,7 +3472,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3478,7 +3482,7 @@ Important behavior:
 - Benign Corpus: `skill-pip-https-git-install-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC456 / MD-PIP-HTTP-FIND-LINKS` — AI-native markdown installs Python packages with insecure `http://` find-links
 
@@ -3489,7 +3493,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3499,7 +3503,7 @@ Important behavior:
 - Benign Corpus: `skill-pip-https-find-links-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC457 / MD-JS-PACKAGE-STRICT-SSL-FALSE` — AI-native markdown disables strict SSL verification for JavaScript package manager config
 
@@ -3510,7 +3514,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3520,7 +3524,7 @@ Important behavior:
 - Benign Corpus: `skill-js-package-strict-ssl-true-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC458 / MD-PIP-CONFIG-HTTP-INDEX` — AI-native markdown configures Python package resolution with an insecure `http://` package index
 
@@ -3531,7 +3535,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3541,7 +3545,7 @@ Important behavior:
 - Benign Corpus: `skill-pip-config-https-index-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC459 / MD-JS-PACKAGE-CONFIG-HTTP-REGISTRY` — AI-native markdown configures a JavaScript package manager with an insecure `http://` registry
 
@@ -3552,7 +3556,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3562,7 +3566,7 @@ Important behavior:
 - Benign Corpus: `skill-js-package-config-https-registry-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC460 / MD-PIP-CONFIG-HTTP-FIND-LINKS` — AI-native markdown configures Python package discovery with insecure `http://` find-links
 
@@ -3573,7 +3577,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3583,7 +3587,7 @@ Important behavior:
 - Benign Corpus: `skill-pip-config-https-find-links-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC461 / MD-PIP-CONFIG-TRUSTED-HOST` — AI-native markdown configures Python package resolution with `trusted-host`
 
@@ -3594,7 +3598,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3604,7 +3608,7 @@ Important behavior:
 - Benign Corpus: `skill-pip-config-unrelated-key-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC462 / MD-NETWORK-TLS-BYPASS` — AI-native markdown disables TLS verification for a network-capable command
 
@@ -3615,7 +3619,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3625,7 +3629,7 @@ Important behavior:
 - Benign Corpus: `skill-markdown-network-tls-bypass-warning-safe`, `skill-markdown-network-tls-bypass-powershell-warning-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC463 / MD-SUDO-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(sudo:*)` authority
 
@@ -3657,7 +3661,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3667,7 +3671,7 @@ Important behavior:
 - Benign Corpus: `skill-git-https-clone-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC465 / MD-GIT-HTTP-REMOTE` — AI-native markdown configures a Git remote with an insecure `http://` source
 
@@ -3678,7 +3682,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3688,7 +3692,7 @@ Important behavior:
 - Benign Corpus: `skill-git-https-remote-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC466 / MD-RM-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(rm:*)` authority
 
@@ -3804,7 +3808,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3814,7 +3818,7 @@ Important behavior:
 - Benign Corpus: `skill-git-sslverify-true-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC472 / MD-GIT-SSL-NO-VERIFY` — AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY`
 
@@ -3825,7 +3829,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3835,7 +3839,7 @@ Important behavior:
 - Benign Corpus: `skill-git-ssl-no-verify-disabled-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC473 / MD-GIT-INLINE-SSLVERIFY-FALSE` — AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false`
 
@@ -3846,7 +3850,7 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Stable`
+- Tier: `Preview`
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
@@ -3856,7 +3860,7 @@ Important behavior:
 - Benign Corpus: `skill-git-inline-sslverify-true-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ### `SEC474 / MD-GH-PR-PERMISSION` — AI-native markdown frontmatter grants `Bash(gh pr:*)` tool access
 
@@ -4363,13 +4367,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh api --method POST` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub API POST mutation authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh api --method POST:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-mutation-permissions`
+- Benign Corpus: `claude-settings-gh-mutation-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC503 / CLAUDE-GH-ISSUE-CREATE-PERMISSION` — Claude settings permissions allow `Bash(gh issue create:*)` in a shared committed config
 
@@ -4380,13 +4388,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh issue create` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub issue creation authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh issue create:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-mutation-permissions`
+- Benign Corpus: `claude-settings-gh-mutation-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC504 / CLAUDE-GH-REPO-CREATE-PERMISSION` — Claude settings permissions allow `Bash(gh repo create:*)` in a shared committed config
 
@@ -4397,13 +4409,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh repo create` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub repository creation authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh repo create:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-mutation-permissions`
+- Benign Corpus: `claude-settings-gh-mutation-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC505 / MD-GH-API-POST-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh api --method POST:*)` tool access
 
@@ -4414,13 +4430,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh api --method POST` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub API POST mutation authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh api --method POST:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-mutation-allowed-tools`
+- Benign Corpus: `skill-gh-mutation-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC506 / MD-GH-ISSUE-CREATE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh issue create:*)` tool access
 
@@ -4431,13 +4451,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh issue create` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub issue creation authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh issue create:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-mutation-allowed-tools`
+- Benign Corpus: `skill-gh-mutation-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC507 / MD-GH-REPO-CREATE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh repo create:*)` tool access
 
@@ -4448,13 +4472,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh repo create` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub repository creation authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh repo create:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-mutation-allowed-tools`
+- Benign Corpus: `skill-gh-mutation-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC508 / CLAUDE-GH-SECRET-SET-PERMISSION` — Claude settings permissions allow `Bash(gh secret set:*)` in a shared committed config
 
@@ -4465,13 +4493,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh secret set` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub secret mutation authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh secret set:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-secret-variable-workflow-permissions`
+- Benign Corpus: `claude-settings-gh-secret-variable-workflow-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC509 / CLAUDE-GH-VARIABLE-SET-PERMISSION` — Claude settings permissions allow `Bash(gh variable set:*)` in a shared committed config
 
@@ -4482,13 +4514,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh variable set` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub variable mutation authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh variable set:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-secret-variable-workflow-permissions`
+- Benign Corpus: `claude-settings-gh-secret-variable-workflow-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC510 / CLAUDE-GH-WORKFLOW-RUN-PERMISSION` — Claude settings permissions allow `Bash(gh workflow run:*)` in a shared committed config
 
@@ -4499,13 +4535,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh workflow run` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub workflow dispatch authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh workflow run:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-secret-variable-workflow-permissions`
+- Benign Corpus: `claude-settings-gh-secret-variable-workflow-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC511 / MD-GH-SECRET-SET-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh secret set:*)` tool access
 
@@ -4516,13 +4556,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh secret set` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub secret mutation authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh secret set:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-secret-variable-workflow-allowed-tools`
+- Benign Corpus: `skill-gh-secret-variable-workflow-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC512 / MD-GH-VARIABLE-SET-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh variable set:*)` tool access
 
@@ -4533,13 +4577,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh variable set` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub variable mutation authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh variable set:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-secret-variable-workflow-allowed-tools`
+- Benign Corpus: `skill-gh-secret-variable-workflow-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC513 / MD-GH-WORKFLOW-RUN-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh workflow run:*)` tool access
 
@@ -4550,13 +4598,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh workflow run` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub workflow dispatch authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh workflow run:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-secret-variable-workflow-allowed-tools`
+- Benign Corpus: `skill-gh-secret-variable-workflow-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC514 / CLAUDE-GH-SECRET-DELETE-PERMISSION` — Claude settings permissions allow `Bash(gh secret delete:*)` in a shared committed config
 
@@ -4567,13 +4619,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh secret delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub secret deletion authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh secret delete:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-mutation-permissions`
+- Benign Corpus: `claude-settings-gh-mutation-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC515 / CLAUDE-GH-VARIABLE-DELETE-PERMISSION` — Claude settings permissions allow `Bash(gh variable delete:*)` in a shared committed config
 
@@ -4584,13 +4640,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh variable delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub variable deletion authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh variable delete:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-mutation-permissions`
+- Benign Corpus: `claude-settings-gh-mutation-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC516 / CLAUDE-GH-WORKFLOW-DISABLE-PERMISSION` — Claude settings permissions allow `Bash(gh workflow disable:*)` in a shared committed config
 
@@ -4601,13 +4661,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh workflow disable` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub workflow disable authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh workflow disable:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-mutation-permissions`
+- Benign Corpus: `claude-settings-gh-mutation-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC517 / MD-GH-SECRET-DELETE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh secret delete:*)` tool access
 
@@ -4618,13 +4682,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh secret delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub secret deletion authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh secret delete:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-mutation-allowed-tools`
+- Benign Corpus: `skill-gh-mutation-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC518 / MD-GH-VARIABLE-DELETE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh variable delete:*)` tool access
 
@@ -4635,13 +4703,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh variable delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub variable deletion authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh variable delete:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-mutation-allowed-tools`
+- Benign Corpus: `skill-gh-mutation-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC519 / MD-GH-WORKFLOW-DISABLE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh workflow disable:*)` tool access
 
@@ -4652,13 +4724,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh workflow disable` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub workflow disable authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh workflow disable:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-mutation-allowed-tools`
+- Benign Corpus: `skill-gh-mutation-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC520 / MD-READ-WILDCARD` — AI-native markdown frontmatter grants `Read(*)` wildcard access
 
@@ -4837,13 +4913,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh api --method DELETE` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub API DELETE mutation authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh api --method DELETE:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-api-delete-permission`
+- Benign Corpus: `claude-settings-gh-api-delete-permission-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC529 / MD-GH-API-DELETE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh api --method DELETE:*)` tool access
 
@@ -4854,13 +4934,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh api --method DELETE` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub API DELETE mutation authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh api --method DELETE:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-api-delete-allowed-tools`
+- Benign Corpus: `skill-gh-api-delete-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC530 / CLAUDE-GH-API-PATCH-PERMISSION` — Claude settings permissions allow `Bash(gh api --method PATCH:*)` in a shared committed config
 
@@ -4871,13 +4955,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh api --method PATCH` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub API PATCH mutation authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh api --method PATCH:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-api-patch-permission`
+- Benign Corpus: `claude-settings-gh-api-patch-permission-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC531 / CLAUDE-GH-API-PUT-PERMISSION` — Claude settings permissions allow `Bash(gh api --method PUT:*)` in a shared committed config
 
@@ -4888,13 +4976,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh api --method PUT` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub API PUT mutation authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh api --method PUT:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-api-put-permission`
+- Benign Corpus: `claude-settings-gh-api-put-permission-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC532 / MD-GH-API-PATCH-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh api --method PATCH:*)` tool access
 
@@ -4905,13 +4997,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh api --method PATCH` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub API PATCH mutation authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh api --method PATCH:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-api-patch-allowed-tools`
+- Benign Corpus: `skill-gh-api-patch-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC533 / MD-GH-API-PUT-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh api --method PUT:*)` tool access
 
@@ -4922,13 +5018,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh api --method PUT` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub API PUT mutation authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh api --method PUT:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-api-put-allowed-tools`
+- Benign Corpus: `skill-gh-api-put-allowed-tools-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC534 / CLAUDE-GH-REPO-DELETE-PERMISSION` — Claude settings permissions allow `Bash(gh repo delete:*)` in a shared committed config
 
@@ -4939,13 +5039,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh repo delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub repository deletion authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh repo delete:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-repo-release-delete-permissions`
+- Benign Corpus: `claude-settings-gh-repo-release-delete-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC535 / MD-GH-REPO-DELETE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh repo delete:*)` tool access
 
@@ -4956,13 +5060,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh repo delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub repository deletion authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh repo delete:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-repo-release-delete-allowed-tools`
+- Benign Corpus: `skill-gh-repo-release-delete-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC536 / CLAUDE-GH-RELEASE-DELETE-PERMISSION` — Claude settings permissions allow `Bash(gh release delete:*)` in a shared committed config
 
@@ -4973,13 +5081,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh release delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub release deletion authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh release delete:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-repo-release-delete-permissions`
+- Benign Corpus: `claude-settings-gh-repo-release-delete-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC537 / MD-GH-RELEASE-DELETE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh release delete:*)` tool access
 
@@ -4990,13 +5102,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh release delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub release deletion authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh release delete:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-repo-release-delete-allowed-tools`
+- Benign Corpus: `skill-gh-repo-release-delete-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC538 / CLAUDE-GH-REPO-EDIT-PERMISSION` — Claude settings permissions allow `Bash(gh repo edit:*)` in a shared committed config
 
@@ -5007,13 +5123,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh repo edit` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub repository settings mutation authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh repo edit:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-repo-edit-release-create-permissions`
+- Benign Corpus: `claude-settings-gh-repo-edit-release-create-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC539 / MD-GH-REPO-EDIT-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh repo edit:*)` tool access
 
@@ -5024,13 +5144,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh repo edit` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub repository settings mutation authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh repo edit:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-repo-edit-release-create-allowed-tools`
+- Benign Corpus: `skill-gh-repo-edit-release-create-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC540 / CLAUDE-GH-RELEASE-CREATE-PERMISSION` — Claude settings permissions allow `Bash(gh release create:*)` in a shared committed config
 
@@ -5041,13 +5165,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh release create` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub release creation authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh release create:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-repo-edit-release-create-permissions`
+- Benign Corpus: `claude-settings-gh-repo-edit-release-create-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC541 / MD-GH-RELEASE-CREATE-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh release create:*)` tool access
 
@@ -5058,13 +5186,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh release create` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub release creation authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh release create:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-repo-edit-release-create-allowed-tools`
+- Benign Corpus: `skill-gh-repo-edit-release-create-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC542 / CLAUDE-GH-REPO-TRANSFER-PERMISSION` — Claude settings permissions allow `Bash(gh repo transfer:*)` in a shared committed config
 
@@ -5075,13 +5207,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh repo transfer` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub repository transfer authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh repo transfer:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-repo-transfer-release-upload-permissions`
+- Benign Corpus: `claude-settings-gh-repo-transfer-release-upload-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC543 / MD-GH-REPO-TRANSFER-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh repo transfer:*)` tool access
 
@@ -5092,13 +5228,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh repo transfer` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub repository transfer authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh repo transfer:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-repo-transfer-release-upload-allowed-tools`
+- Benign Corpus: `skill-gh-repo-transfer-release-upload-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC544 / CLAUDE-GH-RELEASE-UPLOAD-PERMISSION` — Claude settings permissions allow `Bash(gh release upload:*)` in a shared committed config
 
@@ -5109,13 +5249,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh release upload` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for exact GitHub release asset upload authority through `permissions.allow`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(gh release upload:*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-gh-repo-transfer-release-upload-permissions`
+- Benign Corpus: `claude-settings-gh-repo-transfer-release-upload-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC545 / MD-GH-RELEASE-UPLOAD-ALLOWED-TOOLS` — AI-native markdown frontmatter grants `Bash(gh release upload:*)` tool access
 
@@ -5126,13 +5270,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `governance`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared `gh release upload` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown frontmatter for exact GitHub release asset upload authority through `allowed-tools`.
+- Deterministic Signal Basis: MarkdownSignals exact frontmatter string detection for `Bash(gh release upload:*)` in allowed-tools entries.
+- Malicious Corpus: `skill-gh-repo-transfer-release-upload-allowed-tools`
+- Benign Corpus: `skill-gh-repo-transfer-release-upload-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC546 / MCP-AUTOAPPROVE-BASH-WILDCARD` — MCP configuration auto-approves blanket shell execution with `autoApprove: ["Bash(*)"]`
 

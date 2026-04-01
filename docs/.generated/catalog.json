@@ -4693,7 +4693,7 @@
       "summary": "Claude settings permissions allow `Bash(git ls-remote:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4702,13 +4702,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `git ls-remote` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for wildcard remote repository inspection grants.",
+        "maliciousCaseIds": [
+          "claude-settings-git-ls-remote-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-git-ls-remote-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(git ls-remote:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4950,7 +4958,7 @@
       "summary": "AI-native markdown installs Python packages from an unpinned `git+https://` source",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4973,7 +4981,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `pip install` plus `git+https://` token analysis with commit-pin detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -6159,7 +6167,7 @@
       "summary": "AI-native markdown installs Python packages with `--trusted-host`",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6182,7 +6190,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `pip install` token analysis with `--trusted-host` detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -6198,7 +6206,7 @@
       "summary": "AI-native markdown installs Python packages from an insecure `http://` package index",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6221,7 +6229,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `pip install` token analysis with `--index-url http://` or `--extra-index-url http://` detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -6237,7 +6245,7 @@
       "summary": "AI-native markdown installs JavaScript packages from an insecure `http://` registry",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6260,7 +6268,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `npm install`, `npm i`, `pnpm add/install`, `yarn add`, or `bun add` token analysis with `--registry http://` detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -6276,7 +6284,7 @@
       "summary": "AI-native markdown installs Rust packages from an insecure `http://` git source",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6299,7 +6307,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `cargo install` token analysis with `--git http://` detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -6315,7 +6323,7 @@
       "summary": "AI-native markdown installs Rust packages from an insecure `http://` index",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6338,7 +6346,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `cargo install` token analysis with `--index http://` detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -6354,7 +6362,7 @@
       "summary": "AI-native markdown installs Python packages from an insecure direct `http://` source",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6377,7 +6385,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `pip install` token analysis with direct `http://` source detection inside parsed markdown regions, excluding `--index-url` and `--extra-index-url` forms already covered by SEC449."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -6393,7 +6401,7 @@
       "summary": "AI-native markdown installs JavaScript packages from an insecure direct `http://` source",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6416,7 +6424,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `npm install`, `npm i`, `pnpm add/install`, `yarn add`, or `bun add` token analysis with direct `http://` source detection inside parsed markdown regions, excluding `--registry http://` forms already covered by SEC450."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -6432,7 +6440,7 @@
       "summary": "AI-native markdown installs Python packages from an insecure `git+http://` source",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6455,7 +6463,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `pip install` token analysis with `git+http://` detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -6471,7 +6479,7 @@
       "summary": "AI-native markdown installs Python packages with insecure `http://` find-links",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6494,7 +6502,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `pip install` token analysis with `--find-links http://`, `--find-links=http://`, or `-f http://` detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -6510,7 +6518,7 @@
       "summary": "AI-native markdown disables strict SSL verification for JavaScript package manager config",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6533,7 +6541,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `npm config set`, `pnpm config set`, or `yarn config set` token analysis with `strict-ssl false` or `strict-ssl=false` detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -6549,7 +6557,7 @@
       "summary": "AI-native markdown configures Python package resolution with an insecure `http://` package index",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6572,7 +6580,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `pip config set`, `pip3 config set`, or `python -m pip config set` token analysis with `global.index-url http://` or `global.extra-index-url http://` detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -6588,7 +6596,7 @@
       "summary": "AI-native markdown configures a JavaScript package manager with an insecure `http://` registry",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6611,7 +6619,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `npm config set`, `pnpm config set`, or `yarn config set` token analysis with `registry http://` or `registry=http://` detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -6627,7 +6635,7 @@
       "summary": "AI-native markdown configures Python package discovery with insecure `http://` find-links",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6650,7 +6658,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `pip config set`, `pip3 config set`, or `python -m pip config set` token analysis with `global.find-links http://` detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -6666,7 +6674,7 @@
       "summary": "AI-native markdown configures Python package resolution with `trusted-host`",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6689,7 +6697,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `pip config set`, `pip3 config set`, or `python -m pip config set` token analysis with `global.trusted-host` detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -6705,7 +6713,7 @@
       "summary": "AI-native markdown disables TLS verification for a network-capable command",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6730,7 +6738,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact command-token analysis with `--insecure`, `-k`, `--no-check-certificate`, `-SkipCertificateCheck`, or `NODE_TLS_REJECT_UNAUTHORIZED=0` detection inside parsed markdown regions, with safety-guidance suppression."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -6785,7 +6793,7 @@
       "summary": "AI-native markdown clones a Git repository from an insecure `http://` source",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6808,7 +6816,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `git clone` token analysis with direct `http://` source detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -6824,7 +6832,7 @@
       "summary": "AI-native markdown configures a Git remote with an insecure `http://` source",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -6847,7 +6855,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `git remote add` token analysis with direct `http://` source detection inside parsed markdown regions."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -7058,7 +7066,7 @@
       "summary": "AI-native markdown disables Git TLS verification with `http.sslVerify false`",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7081,7 +7089,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `git config` token analysis with `http.sslVerify false` or `http.sslVerify=false` detection inside parsed markdown regions, excluding safety-warning phrasing."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -7097,7 +7105,7 @@
       "summary": "AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY`",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7120,7 +7128,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `GIT_SSL_NO_VERIFY=1` or `GIT_SSL_NO_VERIFY=true` token analysis when a Git command appears in the same parsed markdown region, excluding safety-warning phrasing."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -7136,7 +7144,7 @@
       "summary": "AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false`",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "stable",
+      "tier": "preview",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7159,7 +7167,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `git -c http.sslVerify=false` token analysis inside parsed markdown regions, excluding safety-warning phrasing."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {
@@ -8074,7 +8082,7 @@
       "summary": "Claude settings permissions allow `Bash(gh api --method POST:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8083,13 +8091,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh api --method POST` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub API POST mutation authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-mutation-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-mutation-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh api --method POST:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8105,7 +8121,7 @@
       "summary": "Claude settings permissions allow `Bash(gh issue create:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8114,13 +8130,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh issue create` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub issue creation authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-mutation-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-mutation-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh issue create:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8136,7 +8160,7 @@
       "summary": "Claude settings permissions allow `Bash(gh repo create:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8145,13 +8169,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh repo create` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub repository creation authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-mutation-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-mutation-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh repo create:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8167,7 +8199,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh api --method POST:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8175,13 +8207,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh api --method POST` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub API POST mutation authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-mutation-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-mutation-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh api --method POST:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8197,7 +8237,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh issue create:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8205,13 +8245,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh issue create` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub issue creation authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-mutation-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-mutation-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh issue create:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8227,7 +8275,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh repo create:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8235,13 +8283,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh repo create` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub repository creation authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-mutation-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-mutation-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh repo create:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8257,7 +8313,7 @@
       "summary": "Claude settings permissions allow `Bash(gh secret set:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8266,13 +8322,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh secret set` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub secret mutation authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-secret-variable-workflow-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-secret-variable-workflow-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh secret set:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8288,7 +8352,7 @@
       "summary": "Claude settings permissions allow `Bash(gh variable set:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8297,13 +8361,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh variable set` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub variable mutation authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-secret-variable-workflow-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-secret-variable-workflow-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh variable set:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8319,7 +8391,7 @@
       "summary": "Claude settings permissions allow `Bash(gh workflow run:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8328,13 +8400,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh workflow run` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub workflow dispatch authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-secret-variable-workflow-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-secret-variable-workflow-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh workflow run:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8350,7 +8430,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh secret set:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8358,13 +8438,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh secret set` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub secret mutation authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-secret-variable-workflow-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-secret-variable-workflow-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh secret set:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8380,7 +8468,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh variable set:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8388,13 +8476,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh variable set` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub variable mutation authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-secret-variable-workflow-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-secret-variable-workflow-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh variable set:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8410,7 +8506,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh workflow run:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8418,13 +8514,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh workflow run` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub workflow dispatch authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-secret-variable-workflow-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-secret-variable-workflow-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh workflow run:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8440,7 +8544,7 @@
       "summary": "Claude settings permissions allow `Bash(gh secret delete:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8449,13 +8553,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh secret delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub secret deletion authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-mutation-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-mutation-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh secret delete:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8471,7 +8583,7 @@
       "summary": "Claude settings permissions allow `Bash(gh variable delete:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8480,13 +8592,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh variable delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub variable deletion authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-mutation-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-mutation-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh variable delete:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8502,7 +8622,7 @@
       "summary": "Claude settings permissions allow `Bash(gh workflow disable:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8511,13 +8631,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh workflow disable` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub workflow disable authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-mutation-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-mutation-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh workflow disable:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8533,7 +8661,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh secret delete:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8541,13 +8669,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh secret delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub secret deletion authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-mutation-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-mutation-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh secret delete:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8563,7 +8699,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh variable delete:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8571,13 +8707,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh variable delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub variable deletion authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-mutation-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-mutation-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh variable delete:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8593,7 +8737,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh workflow disable:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8601,13 +8745,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh workflow disable` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub workflow disable authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-mutation-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-mutation-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh workflow disable:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8935,7 +9087,7 @@
       "summary": "Claude settings permissions allow `Bash(gh api --method DELETE:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8944,13 +9096,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh api --method DELETE` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub API DELETE mutation authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-api-delete-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-api-delete-permission-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh api --method DELETE:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8966,7 +9126,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh api --method DELETE:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8974,13 +9134,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh api --method DELETE` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub API DELETE mutation authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-api-delete-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-api-delete-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh api --method DELETE:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8996,7 +9164,7 @@
       "summary": "Claude settings permissions allow `Bash(gh api --method PATCH:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -9005,13 +9173,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh api --method PATCH` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub API PATCH mutation authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-api-patch-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-api-patch-permission-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh api --method PATCH:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -9027,7 +9203,7 @@
       "summary": "Claude settings permissions allow `Bash(gh api --method PUT:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -9036,13 +9212,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh api --method PUT` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub API PUT mutation authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-api-put-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-api-put-permission-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh api --method PUT:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -9058,7 +9242,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh api --method PATCH:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -9066,13 +9250,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh api --method PATCH` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub API PATCH mutation authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-api-patch-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-api-patch-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh api --method PATCH:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -9088,7 +9280,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh api --method PUT:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -9096,13 +9288,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh api --method PUT` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub API PUT mutation authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-api-put-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-api-put-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh api --method PUT:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -9118,7 +9318,7 @@
       "summary": "Claude settings permissions allow `Bash(gh repo delete:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -9127,13 +9327,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh repo delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub repository deletion authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-repo-release-delete-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-repo-release-delete-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh repo delete:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -9149,7 +9357,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh repo delete:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -9157,13 +9365,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh repo delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub repository deletion authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-repo-release-delete-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-repo-release-delete-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh repo delete:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -9179,7 +9395,7 @@
       "summary": "Claude settings permissions allow `Bash(gh release delete:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -9188,13 +9404,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh release delete` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub release deletion authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-repo-release-delete-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-repo-release-delete-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh release delete:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -9210,7 +9434,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh release delete:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -9218,13 +9442,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh release delete` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub release deletion authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-repo-release-delete-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-repo-release-delete-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh release delete:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -9240,7 +9472,7 @@
       "summary": "Claude settings permissions allow `Bash(gh repo edit:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -9249,13 +9481,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh repo edit` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub repository settings mutation authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-repo-edit-release-create-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-repo-edit-release-create-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh repo edit:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -9271,7 +9511,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh repo edit:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -9279,13 +9519,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh repo edit` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub repository settings mutation authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-repo-edit-release-create-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-repo-edit-release-create-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh repo edit:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -9301,7 +9549,7 @@
       "summary": "Claude settings permissions allow `Bash(gh release create:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -9310,13 +9558,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh release create` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub release creation authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-repo-edit-release-create-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-repo-edit-release-create-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh release create:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -9332,7 +9588,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh release create:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -9340,13 +9596,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh release create` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub release creation authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-repo-edit-release-create-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-repo-edit-release-create-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh release create:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -9362,7 +9626,7 @@
       "summary": "Claude settings permissions allow `Bash(gh repo transfer:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -9371,13 +9635,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh repo transfer` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub repository transfer authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-repo-transfer-release-upload-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-repo-transfer-release-upload-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh repo transfer:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -9393,7 +9665,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh repo transfer:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -9401,13 +9673,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh repo transfer` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub repository transfer authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-repo-transfer-release-upload-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-repo-transfer-release-upload-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh repo transfer:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -9423,7 +9703,7 @@
       "summary": "Claude settings permissions allow `Bash(gh release upload:*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -9432,13 +9712,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh release upload` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for exact GitHub release asset upload authority through `permissions.allow`.",
+        "maliciousCaseIds": [
+          "claude-settings-gh-repo-transfer-release-upload-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-gh-repo-transfer-release-upload-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(gh release upload:*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -9454,7 +9742,7 @@
       "summary": "AI-native markdown frontmatter grants `Bash(gh release upload:*)` tool access",
       "scope": "per_file",
       "surface": "markdown",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -9462,13 +9750,21 @@
       "defaultPresets": [
         "governance"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared `gh release upload` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown frontmatter for exact GitHub release asset upload authority through `allowed-tools`.",
+        "maliciousCaseIds": [
+          "skill-gh-repo-transfer-release-upload-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-gh-repo-transfer-release-upload-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter string detection for `Bash(gh release upload:*)` in allowed-tools entries."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
