@@ -462,7 +462,9 @@
         "lintai-ai-security:SEC391",
         "lintai-ai-security:SEC392",
         "lintai-ai-security:SEC393",
-        "lintai-ai-security:SEC474"
+        "lintai-ai-security:SEC474",
+        "lintai-ai-security:SEC494",
+        "lintai-ai-security:SEC495"
       ],
       "canonicalPath": "/presets/governance"
     },
@@ -7466,6 +7468,66 @@
       "lifecycle": {
         "kind": "preview",
         "blocker": "Shared `Bash(bunx ...)` permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC494",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC494",
+      "alias": "MD-NPM-EXEC-ALLOWED-TOOLS",
+      "displayLabel": "SEC494 / MD-NPM-EXEC-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: shared npm exec tool grant",
+      "slug": "sec494",
+      "canonicalPath": "/rules/lintai-ai-security/sec494",
+      "summary": "AI-native markdown frontmatter grants `Bash(npm exec:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared npm exec grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC495",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC495",
+      "alias": "MD-BUNX-ALLOWED-TOOLS",
+      "displayLabel": "SEC495 / MD-BUNX-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: shared bunx tool grant",
+      "slug": "sec495",
+      "canonicalPath": "/rules/lintai-ai-security/sec495",
+      "summary": "AI-native markdown frontmatter grants `Bash(bunx:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared bunx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

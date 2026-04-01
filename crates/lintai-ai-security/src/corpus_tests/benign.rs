@@ -218,6 +218,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-markdown-network-tls-bypass-warning-safe",
             "skill-metadata-service-deny-list-safe",
             "skill-mutable-mcp-launcher-safety-guidance-safe",
+            "skill-npm-exec-bunx-specific-safe",
             "skill-npm-https-registry-safe",
             "skill-npm-https-source-safe",
             "skill-package-command-allowed-tools-safe",

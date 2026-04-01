@@ -2659,6 +2659,70 @@ fn ignores_fixture_like_gh_pr_allowed_tools_in_frontmatter() {
 }
 
 #[test]
+fn finds_npm_exec_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(npm exec:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC494")
+        .unwrap();
+    let start = content.find("Bash(npm exec:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(npm exec:*)".len())
+    );
+}
+
+#[test]
+fn ignores_specific_npm_exec_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_governance_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(npm run lint), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC494")
+    );
+}
+
+#[test]
+fn finds_bunx_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(bunx:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC495")
+        .unwrap();
+    let start = content.find("Bash(bunx:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(bunx:*)".len())
+    );
+}
+
+#[test]
+fn ignores_specific_bunx_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_governance_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(bun run lint), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC495")
+    );
+}
+
+#[test]
 fn finds_unscoped_webfetch_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: WebFetch, Read\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

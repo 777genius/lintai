@@ -747,6 +747,38 @@ pub(crate) fn check_gh_pr_allowed_tools(
     )
 }
 
+pub(crate) fn check_npm_exec_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.npm_exec_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(npm exec:*)` tool access",
+    )
+}
+
+pub(crate) fn check_bunx_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.bunx_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(bunx:*)` tool access",
+    )
+}
+
 pub(crate) fn check_curl_allowed_tools(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

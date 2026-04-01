@@ -2,11 +2,12 @@ use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
 
 use super::*;
 use crate::markdown_rules::{
-    check_approval_bypass_instruction, check_chgrp_allowed_tools, check_chmod_allowed_tools,
-    check_chown_allowed_tools, check_copilot_instruction_invalid_apply_to,
-    check_copilot_instruction_invalid_apply_to_glob, check_copilot_instruction_missing_apply_to,
-    check_copilot_instruction_too_long, check_copilot_instruction_wrong_suffix,
-    check_curl_allowed_tools, check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
+    check_approval_bypass_instruction, check_bunx_allowed_tools, check_chgrp_allowed_tools,
+    check_chmod_allowed_tools, check_chown_allowed_tools,
+    check_copilot_instruction_invalid_apply_to, check_copilot_instruction_invalid_apply_to_glob,
+    check_copilot_instruction_missing_apply_to, check_copilot_instruction_too_long,
+    check_copilot_instruction_wrong_suffix, check_curl_allowed_tools,
+    check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
     check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
     check_cursor_rule_unknown_frontmatter_key, check_edit_unsafe_path_allowed_tools,
     check_gh_pr_allowed_tools, check_git_add_allowed_tools, check_git_am_allowed_tools,
@@ -32,10 +33,11 @@ use crate::markdown_rules::{
     check_markdown_pip_http_find_links, check_markdown_pip_http_git_install,
     check_markdown_pip_http_index, check_markdown_pip_http_source, check_markdown_pip_trusted_host,
     check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
-    check_package_install_allowed_tools, check_plugin_agent_hooks_frontmatter,
-    check_plugin_agent_mcp_servers_frontmatter, check_plugin_agent_permission_mode,
-    check_read_unsafe_path_allowed_tools, check_rm_allowed_tools, check_su_allowed_tools,
-    check_sudo_allowed_tools, check_unscoped_bash_allowed_tools, check_unscoped_edit_allowed_tools,
+    check_npm_exec_allowed_tools, check_package_install_allowed_tools,
+    check_plugin_agent_hooks_frontmatter, check_plugin_agent_mcp_servers_frontmatter,
+    check_plugin_agent_permission_mode, check_read_unsafe_path_allowed_tools,
+    check_rm_allowed_tools, check_su_allowed_tools, check_sudo_allowed_tools,
+    check_unscoped_bash_allowed_tools, check_unscoped_edit_allowed_tools,
     check_unscoped_glob_allowed_tools, check_unscoped_grep_allowed_tools,
     check_unscoped_read_allowed_tools, check_unscoped_webfetch_allowed_tools,
     check_unscoped_websearch_allowed_tools, check_unscoped_write_allowed_tools,
@@ -516,6 +518,30 @@ declare_rule! {
         code: "SEC474",
         summary: "AI-native markdown frontmatter grants `Bash(gh pr:*)` tool access",
         doc_title: "AI markdown: shared gh pr tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct NpmExecAllowedToolsRule {
+        code: "SEC494",
+        summary: "AI-native markdown frontmatter grants `Bash(npm exec:*)` tool access",
+        doc_title: "AI markdown: shared npm exec tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct BunxAllowedToolsRule {
+        code: "SEC495",
+        summary: "AI-native markdown frontmatter grants `Bash(bunx:*)` tool access",
+        doc_title: "AI markdown: shared bunx tool grant",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -1123,7 +1149,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 90] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 92] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1847,6 +1873,38 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 90] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(gh pr:*)` access is really needed, or replace it with a narrower workflow-specific permission",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: NpmExecAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared npm exec grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_npm_exec_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(npm exec:*)` access is really needed, or replace it with a narrower workflow-specific permission",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: BunxAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared bunx grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_bunx_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(bunx:*)` access is really needed, or replace it with a narrower workflow-specific permission",
         ),
         suggestion_fix: None,
     },
