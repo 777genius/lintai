@@ -16,7 +16,8 @@ use crate::json_rules::{
     check_mcp_autoapprove_gh_secret_set, check_mcp_autoapprove_gh_variable_delete,
     check_mcp_autoapprove_gh_variable_set, check_mcp_autoapprove_gh_workflow_disable,
     check_mcp_autoapprove_gh_workflow_run, check_mcp_autoapprove_git_checkout,
-    check_mcp_autoapprove_git_clean, check_mcp_autoapprove_git_commit,
+    check_mcp_autoapprove_git_clean, check_mcp_autoapprove_git_clone,
+    check_mcp_autoapprove_git_commit, check_mcp_autoapprove_git_fetch,
     check_mcp_autoapprove_git_push, check_mcp_autoapprove_git_reset,
     check_mcp_autoapprove_glob_unsafe_path, check_mcp_autoapprove_glob_wildcard,
     check_mcp_autoapprove_grep_unsafe_path, check_mcp_autoapprove_grep_wildcard,
@@ -664,6 +665,30 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApproveGitCloneRule {
+        code: "SEC594",
+        summary: "MCP configuration auto-approves `Bash(git clone:*)` through `autoApprove`",
+        doc_title: "MCP config: git clone auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGitFetchRule {
+        code: "SEC595",
+        summary: "MCP configuration auto-approves `Bash(git fetch:*)` through `autoApprove`",
+        doc_title: "MCP config: git fetch auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpAutoApproveReadWildcardRule {
         code: "SEC567",
         summary: "MCP configuration auto-approves `Read(*)` through `autoApprove`",
@@ -963,7 +988,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 77] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 79] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -1985,6 +2010,46 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 77] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared package installation auto-approval and keep dependency installation under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGitCloneRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(git clone:*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-repo-fetch-family"],
+            benign_case_ids: &["mcp-autoapprove-repo-fetch-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git clone:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_git_clone,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `git clone` auto-approval and keep repository fetches under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGitFetchRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `Bash(git fetch:*)` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-repo-fetch-family"],
+            benign_case_ids: &["mcp-autoapprove-repo-fetch-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(git fetch:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_git_fetch,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `git fetch` auto-approval and keep repository synchronization under explicit user review",
         ),
         suggestion_fix: None,
     },

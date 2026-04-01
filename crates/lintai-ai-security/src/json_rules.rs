@@ -633,6 +633,36 @@ pub(crate) fn check_mcp_autoapprove_package_install(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_git_clone(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_clone_span.clone()),
+        "MCP configuration auto-approves `Bash(git clone:*)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_git_fetch(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_git_fetch_span.clone()),
+        "MCP configuration auto-approves `Bash(git fetch:*)` through `autoApprove`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_read_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

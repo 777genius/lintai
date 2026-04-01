@@ -312,6 +312,8 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC591 / MCP-AUTOAPPROVE-YARN-DLX` | MCP configuration auto-approves `Bash(yarn dlx ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC592 / MCP-AUTOAPPROVE-PIPX-RUN` | MCP configuration auto-approves `Bash(pipx run ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC593 / MCP-AUTOAPPROVE-PACKAGE-INSTALL` | MCP configuration auto-approves package installation commands through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC594 / MCP-AUTOAPPROVE-GIT-CLONE` | MCP configuration auto-approves `Bash(git clone:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC595 / MCP-AUTOAPPROVE-GIT-FETCH` | MCP configuration auto-approves `Bash(git fetch:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -6050,6 +6052,48 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals exact array-item detection for package installation entries such as `Bash(pip install)` and `Bash(npm install)` inside `autoApprove` on parsed MCP configuration.
 - Malicious Corpus: `mcp-autoapprove-package-install-family`
 - Benign Corpus: `mcp-autoapprove-package-install-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC594 / MCP-AUTOAPPROVE-GIT-CLONE` — MCP configuration auto-approves `Bash(git clone:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GIT-CLONE`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(git clone:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(git clone:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-repo-fetch-family`
+- Benign Corpus: `mcp-autoapprove-repo-fetch-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC595 / MCP-AUTOAPPROVE-GIT-FETCH` — MCP configuration auto-approves `Bash(git fetch:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GIT-FETCH`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(git fetch:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(git fetch:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-repo-fetch-family`
+- Benign Corpus: `mcp-autoapprove-repo-fetch-family-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

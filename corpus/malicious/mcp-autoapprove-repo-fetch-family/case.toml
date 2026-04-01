@@ -1,0 +1,7 @@
+id = "mcp-autoapprove-repo-fetch-family"
+description = "MCP config auto-approves repository fetch commands through autoApprove"
+
+expected_findings = [
+  "SEC594",
+  "SEC595",
+]

@@ -298,6 +298,8 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC591" => "MCP-AUTOAPPROVE-YARN-DLX",
         "SEC592" => "MCP-AUTOAPPROVE-PIPX-RUN",
         "SEC593" => "MCP-AUTOAPPROVE-PACKAGE-INSTALL",
+        "SEC594" => "MCP-AUTOAPPROVE-GIT-CLONE",
+        "SEC595" => "MCP-AUTOAPPROVE-GIT-FETCH",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",
