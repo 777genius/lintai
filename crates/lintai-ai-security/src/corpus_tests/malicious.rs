@@ -105,6 +105,8 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "hook-static-auth-userinfo",
             "hook-tls-bypass",
             "mcp-args-sudo",
+            "mcp-autoapprove-bash-wildcard",
+            "mcp-autoapprove-curl-wget",
             "mcp-autoapprove-tools-true",
             "mcp-autoapprove-wildcard",
             "mcp-capabilities-wildcard",

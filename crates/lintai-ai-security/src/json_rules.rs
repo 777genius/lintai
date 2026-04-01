@@ -93,6 +93,51 @@ pub(crate) fn check_mcp_autoapprove_wildcard(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_bash_wildcard(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_bash_wildcard_span.clone()),
+        "MCP configuration auto-approves blanket shell execution with `autoApprove: [\"Bash(*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_curl(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_curl_span.clone()),
+        "MCP configuration auto-approves network download execution with `autoApprove: [\"Bash(curl:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_wget(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_wget_span.clone()),
+        "MCP configuration auto-approves network download execution with `autoApprove: [\"Bash(wget:*)\"]`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_tools_true(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

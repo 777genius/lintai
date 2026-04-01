@@ -144,6 +144,8 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "hook-base64-decode-safe",
             "mcp-args-non-sudo-safe",
             "mcp-authorization-placeholder-safe",
+            "mcp-autoapprove-bash-specific-safe",
+            "mcp-autoapprove-curl-wget-specific-safe",
             "mcp-autoapprove-specific-safe",
             "mcp-autoapprove-tools-false-safe",
             "mcp-capabilities-scoped-safe",

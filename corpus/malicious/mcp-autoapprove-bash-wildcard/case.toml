@@ -1,0 +1,6 @@
+id = "mcp-autoapprove-bash-wildcard"
+description = "MCP config auto-approves blanket shell execution through Bash(*)"
+
+expected_findings = [
+  "SEC546",
+]

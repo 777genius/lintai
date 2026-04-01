@@ -6206,6 +6206,89 @@ fn ignores_mcp_specific_autoapprove_list() {
 }
 
 #[test]
+fn finds_mcp_autoapprove_bash_wildcard() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC546")
+        .unwrap();
+    let start = content.find("\"Bash(*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_curl() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(curl:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC547")
+        .unwrap();
+    let start = content.find("\"Bash(curl:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(curl:*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_wget() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(wget:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC548")
+        .unwrap();
+    let start = content.find("\"Bash(wget:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(wget:*)".len())
+    );
+}
+
+#[test]
+fn ignores_mcp_autoapprove_nonmatching_tools() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(git status:*)","Read(*)"]}}}"#,
+    );
+
+    assert!(
+        !findings.iter().any(|finding| {
+            matches!(finding.rule_code.as_str(), "SEC546" | "SEC547" | "SEC548")
+        })
+    );
+}
+
+#[test]
 fn finds_mcp_autoapprove_tools_true() {
     let provider = AiSecurityProvider::default();
     let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApproveTools":true}}}"#;

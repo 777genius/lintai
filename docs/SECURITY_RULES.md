@@ -264,6 +264,9 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC543 / MD-GH-REPO-TRANSFER-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo transfer:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC544 / CLAUDE-GH-RELEASE-UPLOAD-PERMISSION` | Claude settings permissions allow `Bash(gh release upload:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC545 / MD-GH-RELEASE-UPLOAD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh release upload:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC546 / MCP-AUTOAPPROVE-BASH-WILDCARD` | MCP configuration auto-approves blanket shell execution with `autoApprove: ["Bash(*)"]` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC547 / MCP-AUTOAPPROVE-CURL` | MCP configuration auto-approves `Bash(curl:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC548 / MCP-AUTOAPPROVE-WGET` | MCP configuration auto-approves `Bash(wget:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -4997,6 +5000,69 @@ Important behavior:
 - Promotion Blocker: Shared `gh release upload` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+
+### `SEC546 / MCP-AUTOAPPROVE-BASH-WILDCARD` — MCP configuration auto-approves blanket shell execution with `autoApprove: ["Bash(*)"]`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-BASH-WILDCARD`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit blanket shell auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-bash-wildcard`
+- Benign Corpus: `mcp-autoapprove-bash-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC547 / MCP-AUTOAPPROVE-CURL` — MCP configuration auto-approves `Bash(curl:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-CURL`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit `curl` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(curl:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-curl-wget`
+- Benign Corpus: `mcp-autoapprove-curl-wget-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC548 / MCP-AUTOAPPROVE-WGET` — MCP configuration auto-approves `Bash(wget:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-WGET`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches explicit `wget` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(wget:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-curl-wget`
+- Benign Corpus: `mcp-autoapprove-curl-wget-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ## Provider: `lintai-policy-mismatch`
 

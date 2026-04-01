@@ -63,7 +63,10 @@
         "lintai-ai-security:SEC397",
         "lintai-ai-security:SEC398",
         "lintai-ai-security:SEC422",
-        "lintai-ai-security:SEC446"
+        "lintai-ai-security:SEC446",
+        "lintai-ai-security:SEC546",
+        "lintai-ai-security:SEC547",
+        "lintai-ai-security:SEC548"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -398,7 +401,10 @@
         "lintai-ai-security:SEC397",
         "lintai-ai-security:SEC398",
         "lintai-ai-security:SEC422",
-        "lintai-ai-security:SEC446"
+        "lintai-ai-security:SEC446",
+        "lintai-ai-security:SEC546",
+        "lintai-ai-security:SEC547",
+        "lintai-ai-security:SEC548"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -9197,6 +9203,123 @@
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC546",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC546",
+      "alias": "MCP-AUTOAPPROVE-BASH-WILDCARD",
+      "displayLabel": "SEC546 / MCP-AUTOAPPROVE-BASH-WILDCARD",
+      "docTitle": "MCP config: Bash(*) auto-approve",
+      "slug": "sec546",
+      "canonicalPath": "/rules/lintai-ai-security/sec546",
+      "summary": "MCP configuration auto-approves blanket shell execution with `autoApprove: [\"Bash(*)\"]`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit blanket shell auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-bash-wildcard"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-bash-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC547",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC547",
+      "alias": "MCP-AUTOAPPROVE-CURL",
+      "displayLabel": "SEC547 / MCP-AUTOAPPROVE-CURL",
+      "docTitle": "MCP config: curl auto-approve",
+      "slug": "sec547",
+      "canonicalPath": "/rules/lintai-ai-security/sec547",
+      "summary": "MCP configuration auto-approves `Bash(curl:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit `curl` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-curl-wget"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-curl-wget-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(curl:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC548",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC548",
+      "alias": "MCP-AUTOAPPROVE-WGET",
+      "displayLabel": "SEC548 / MCP-AUTOAPPROVE-WGET",
+      "docTitle": "MCP config: wget auto-approve",
+      "slug": "sec548",
+      "canonicalPath": "/rules/lintai-ai-security/sec548",
+      "summary": "MCP configuration auto-approves `Bash(wget:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches explicit `wget` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-curl-wget"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-curl-wget-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(wget:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {

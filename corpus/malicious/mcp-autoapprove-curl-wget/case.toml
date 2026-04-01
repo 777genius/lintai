@@ -1,0 +1,7 @@
+id = "mcp-autoapprove-curl-wget"
+description = "MCP config auto-approves curl and wget execution through autoApprove"
+
+expected_findings = [
+  "SEC547",
+  "SEC548",
+]

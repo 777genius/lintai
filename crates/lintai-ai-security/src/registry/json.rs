@@ -4,8 +4,9 @@ use super::*;
 use crate::json_rules::{
     check_json_dangerous_endpoint_host, check_json_hidden_instruction, check_json_literal_secret,
     check_json_sensitive_env_reference, check_json_suspicious_remote_endpoint,
-    check_json_unsafe_plugin_path, check_mcp_autoapprove_tools_true,
-    check_mcp_autoapprove_wildcard, check_mcp_broad_env_file, check_mcp_capabilities_wildcard,
+    check_json_unsafe_plugin_path, check_mcp_autoapprove_bash_wildcard, check_mcp_autoapprove_curl,
+    check_mcp_autoapprove_tools_true, check_mcp_autoapprove_wget, check_mcp_autoapprove_wildcard,
+    check_mcp_broad_env_file, check_mcp_capabilities_wildcard,
     check_mcp_credential_env_passthrough, check_mcp_dangerous_docker_flag,
     check_mcp_inline_download_exec, check_mcp_mutable_docker_pull, check_mcp_mutable_launcher,
     check_mcp_network_tls_bypass_command, check_mcp_sandbox_disabled,
@@ -209,6 +210,42 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApproveBashWildcardRule {
+        code: "SEC546",
+        summary: "MCP configuration auto-approves blanket shell execution with `autoApprove: [\"Bash(*)\"]`",
+        doc_title: "MCP config: Bash(*) auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveCurlRule {
+        code: "SEC547",
+        summary: "MCP configuration auto-approves `Bash(curl:*)` through `autoApprove`",
+        doc_title: "MCP config: curl auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveWgetRule {
+        code: "SEC548",
+        summary: "MCP configuration auto-approves `Bash(wget:*)` through `autoApprove`",
+        doc_title: "MCP config: wget auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpAutoApproveToolsTrueRule {
         code: "SEC395",
         summary: "MCP configuration auto-approves all tools with `autoApproveTools: true`",
@@ -364,7 +401,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 29] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -666,6 +703,66 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 29] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove wildcard auto-approval and explicitly list only narrowly reviewed MCP tools",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveBashWildcardRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit blanket shell auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-bash-wildcard"],
+            benign_case_ids: &["mcp-autoapprove-bash-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_bash_wildcard,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove blanket shell auto-approval and explicitly list only narrowly reviewed MCP tools",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveCurlRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit `curl` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-curl-wget"],
+            benign_case_ids: &["mcp-autoapprove-curl-wget-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(curl:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_curl,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `curl` auto-approval and keep network download execution under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveWgetRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches explicit `wget` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-curl-wget"],
+            benign_case_ids: &["mcp-autoapprove-curl-wget-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(wget:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_wget,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `wget` auto-approval and keep network download execution under explicit user review",
         ),
         suggestion_fix: None,
     },
