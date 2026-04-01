@@ -749,16 +749,15 @@ fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
         "SEC101" | "SEC102" | "SEC103" | "SEC104" | "SEC105" | "SEC306" | "SEC307" | "SEC308"
         | "SEC313" | "SEC323" | "SEC325" | "SEC328" | "SEC335" | "SEC336" | "SEC347" | "SEC348"
         | "SEC349" | "SEC350" | "SEC351" | "SEC353" | "SEC354" | "SEC355" | "SEC356" | "SEC357"
-        | "SEC358" | "SEC359" | "SEC360" | "SEC361" | "SEC363" | "SEC365" | "SEC366" | "SEC368"
-        | "SEC370" | "SEC371" | "SEC377" | "SEC378" | "SEC379" | "SEC380" | "SEC381" | "SEC382"
-        | "SEC383" | "SEC390" | "SEC391" | "SEC392" | "SEC393" | "SEC416" | "SEC401" | "SEC402"
-        | "SEC403" => Some(RuleTier::Preview),
+        | "SEC358" | "SEC359" | "SEC360" | "SEC370" | "SEC371" | "SEC377" | "SEC378" | "SEC379"
+        | "SEC380" | "SEC381" | "SEC382" | "SEC383" | "SEC390" | "SEC391" | "SEC392" | "SEC393"
+        | "SEC416" | "SEC401" | "SEC402" | "SEC403" => Some(RuleTier::Preview),
         "SEC389" | "SEC399" | "SEC488" | "SEC489" | "SEC490" | "SEC491" | "SEC492" | "SEC493" => {
             Some(RuleTier::Stable)
         }
-        "SEC385" | "SEC386" | "SEC387" | "SEC388" | "SEC400" | "SEC406" | "SEC407" | "SEC408"
-        | "SEC409" | "SEC478" | "SEC479" | "SEC480" | "SEC481" | "SEC482" | "SEC483" | "SEC484"
-        | "SEC485" => Some(RuleTier::Stable),
+        "SEC361" | "SEC363" | "SEC365" | "SEC366" | "SEC368" | "SEC385" | "SEC386" | "SEC387"
+        | "SEC388" | "SEC400" | "SEC406" | "SEC407" | "SEC408" | "SEC409" | "SEC478" | "SEC479"
+        | "SEC480" | "SEC481" | "SEC482" | "SEC483" | "SEC484" | "SEC485" => Some(RuleTier::Stable),
         _ => None,
     }
 }

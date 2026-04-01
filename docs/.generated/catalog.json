@@ -3193,11 +3193,19 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Schema references in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for omission of a top-level `$schema` reference.",
+        "maliciousCaseIds": [
+          "claude-settings-missing-schema"
+        ],
+        "benignCaseIds": [
+          "claude-settings-schema-present-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact top-level `$schema` presence detection in parsed Claude settings JSON."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
@@ -3263,11 +3271,19 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Home-directory hook paths in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for hook commands rooted in the home directory.",
+        "maliciousCaseIds": [
+          "claude-settings-home-directory-hook-path"
+        ],
+        "benignCaseIds": [
+          "claude-settings-home-directory-safe-project-scoped"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact command-path analysis for home-directory rooted hook commands in parsed Claude settings JSON."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
@@ -3333,11 +3349,19 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Committed Claude settings with non-HTTPS `allowedHttpHookUrls` entries are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for non-HTTPS `allowedHttpHookUrls` entries.",
+        "maliciousCaseIds": [
+          "claude-settings-http-hook-url"
+        ],
+        "benignCaseIds": [
+          "claude-settings-http-hook-loopback-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact URL-scheme analysis over `allowedHttpHookUrls` entries in parsed Claude settings JSON."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
@@ -3364,11 +3388,19 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Committed Claude settings with dangerous host literals in `allowedHttpHookUrls` are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for dangerous host literals in `allowedHttpHookUrls`.",
+        "maliciousCaseIds": [
+          "claude-settings-dangerous-http-hook-host"
+        ],
+        "benignCaseIds": [
+          "claude-settings-http-hook-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact host analysis over `allowedHttpHookUrls` entries in parsed Claude settings JSON."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
@@ -3434,11 +3466,19 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Repo-external absolute hook paths in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared committed Claude settings for repo-external absolute hook command paths.",
+        "maliciousCaseIds": [
+          "claude-settings-repo-external-absolute-hook-path"
+        ],
+        "benignCaseIds": [
+          "claude-settings-repo-external-absolute-hook-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact command-path analysis for repo-external absolute hook commands in parsed Claude settings JSON."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
@@ -7925,7 +7965,7 @@
       "summary": "Claude settings permissions allow `Bash(pnpm dlx ...)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7948,7 +7988,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(pnpm dlx ...)` entries inside permissions.allow."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7964,7 +8004,7 @@
       "summary": "Claude settings permissions allow `Bash(yarn dlx ...)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7987,7 +8027,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(yarn dlx ...)` entries inside permissions.allow."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8003,7 +8043,7 @@
       "summary": "Claude settings permissions allow `Bash(pipx run ...)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8026,7 +8066,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(pipx run ...)` entries inside permissions.allow."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8042,7 +8082,7 @@
       "summary": "Claude settings permissions allow `Bash(npm exec ...)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8065,7 +8105,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(npm exec ...)` entries inside permissions.allow."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -8081,7 +8121,7 @@
       "summary": "Claude settings permissions allow `Bash(bunx ...)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -8104,7 +8144,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals exact permission detection for `Bash(bunx ...)` entries inside permissions.allow."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {

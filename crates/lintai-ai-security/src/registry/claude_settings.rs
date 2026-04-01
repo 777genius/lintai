@@ -721,7 +721,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -733,7 +733,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -745,7 +745,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -757,7 +757,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -769,7 +769,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -2355,9 +2355,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Repo-external absolute hook paths in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for repo-external absolute hook command paths.",
+            malicious_case_ids: &["claude-settings-repo-external-absolute-hook-path"],
+            benign_case_ids: &["claude-settings-repo-external-absolute-hook-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact command-path analysis for repo-external absolute hook commands in parsed Claude settings JSON.",
         },
         check: check_claude_settings_external_absolute_hook_command,
         safe_fix: None,
@@ -2391,9 +2395,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Committed Claude settings with dangerous host literals in `allowedHttpHookUrls` are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for dangerous host literals in `allowedHttpHookUrls`.",
+            malicious_case_ids: &["claude-settings-dangerous-http-hook-host"],
+            benign_case_ids: &["claude-settings-http-hook-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact host analysis over `allowedHttpHookUrls` entries in parsed Claude settings JSON.",
         },
         check: check_claude_settings_dangerous_http_hook_host,
         safe_fix: None,
@@ -2407,9 +2415,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Committed Claude settings with non-HTTPS `allowedHttpHookUrls` entries are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for non-HTTPS `allowedHttpHookUrls` entries.",
+            malicious_case_ids: &["claude-settings-http-hook-url"],
+            benign_case_ids: &["claude-settings-http-hook-loopback-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact URL-scheme analysis over `allowedHttpHookUrls` entries in parsed Claude settings JSON.",
         },
         check: check_claude_settings_insecure_http_hook_url,
         safe_fix: None,
@@ -2443,9 +2455,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Home-directory hook paths in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for hook commands rooted in the home directory.",
+            malicious_case_ids: &["claude-settings-home-directory-hook-path"],
+            benign_case_ids: &["claude-settings-home-directory-safe-project-scoped"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact command-path analysis for home-directory rooted hook commands in parsed Claude settings JSON.",
         },
         check: check_claude_settings_home_directory_hook_command,
         safe_fix: None,
@@ -2619,9 +2635,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Schema references in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared committed Claude settings for omission of a top-level `$schema` reference.",
+            malicious_case_ids: &["claude-settings-missing-schema"],
+            benign_case_ids: &["claude-settings-schema-present-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact top-level `$schema` presence detection in parsed Claude settings JSON.",
         },
         check: check_claude_settings_missing_schema,
         safe_fix: None,
