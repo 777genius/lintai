@@ -12,8 +12,10 @@ use crate::claude_settings_rules::{
     check_claude_settings_gh_issue_create_permission, check_claude_settings_gh_pr_permission,
     check_claude_settings_gh_release_create_permission,
     check_claude_settings_gh_release_delete_permission,
+    check_claude_settings_gh_release_upload_permission,
     check_claude_settings_gh_repo_create_permission,
     check_claude_settings_gh_repo_delete_permission, check_claude_settings_gh_repo_edit_permission,
+    check_claude_settings_gh_repo_transfer_permission,
     check_claude_settings_gh_secret_delete_permission,
     check_claude_settings_gh_secret_set_permission,
     check_claude_settings_gh_variable_delete_permission,
@@ -468,10 +470,34 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct ClaudeSettingsGhRepoTransferPermissionRule {
+        code: "SEC542",
+        summary: "Claude settings permissions allow `Bash(gh repo transfer:*)` in a shared committed config",
+        doc_title: "Claude settings: shared gh repo transfer permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct ClaudeSettingsGhReleaseCreatePermissionRule {
         code: "SEC540",
         summary: "Claude settings permissions allow `Bash(gh release create:*)` in a shared committed config",
         doc_title: "Claude settings: shared gh release create permissions",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct ClaudeSettingsGhReleaseUploadPermissionRule {
+        code: "SEC544",
+        summary: "Claude settings permissions allow `Bash(gh release upload:*)` in a shared committed config",
+        doc_title: "Claude settings: shared gh release upload permissions",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -935,7 +961,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 74] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
@@ -1357,6 +1383,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 74] = [
         suggestion_fix: None,
     },
     NativeRuleSpec {
+        metadata: ClaudeSettingsGhRepoTransferPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh repo transfer` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_gh_repo_transfer_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh repo transfer` permissions or replace them with a narrower reviewed workflow that keeps repository transfer under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
         metadata: ClaudeSettingsGhReleaseCreatePermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
@@ -1369,6 +1411,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 74] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `gh release create` permissions or replace them with a narrower reviewed workflow that keeps release publishing under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ClaudeSettingsGhReleaseUploadPermissionRule::METADATA,
+        surface: Surface::ClaudeSettings,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh release upload` permissions in committed Claude settings are deterministic, but the first release stays guidance-only until ecosystem usefulness is measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_claude_settings_gh_release_upload_permission,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh release upload` permissions or replace them with a narrower reviewed workflow that keeps release asset mutation under explicit user control",
         ),
         suggestion_fix: None,
     },

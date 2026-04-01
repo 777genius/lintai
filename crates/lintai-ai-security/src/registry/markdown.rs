@@ -14,8 +14,9 @@ use crate::markdown_rules::{
     check_gh_api_post_allowed_tools, check_gh_api_put_allowed_tools,
     check_gh_issue_create_allowed_tools, check_gh_pr_allowed_tools,
     check_gh_release_create_allowed_tools, check_gh_release_delete_allowed_tools,
-    check_gh_repo_create_allowed_tools, check_gh_repo_delete_allowed_tools,
-    check_gh_repo_edit_allowed_tools, check_gh_secret_delete_allowed_tools,
+    check_gh_release_upload_allowed_tools, check_gh_repo_create_allowed_tools,
+    check_gh_repo_delete_allowed_tools, check_gh_repo_edit_allowed_tools,
+    check_gh_repo_transfer_allowed_tools, check_gh_secret_delete_allowed_tools,
     check_gh_secret_set_allowed_tools, check_gh_variable_delete_allowed_tools,
     check_gh_variable_set_allowed_tools, check_gh_workflow_disable_allowed_tools,
     check_gh_workflow_run_allowed_tools, check_git_add_allowed_tools, check_git_am_allowed_tools,
@@ -745,10 +746,34 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct GhRepoTransferAllowedToolsRule {
+        code: "SEC543",
+        summary: "AI-native markdown frontmatter grants `Bash(gh repo transfer:*)` tool access",
+        doc_title: "AI markdown: shared gh repo transfer tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
     pub struct GhReleaseCreateAllowedToolsRule {
         code: "SEC541",
         summary: "AI-native markdown frontmatter grants `Bash(gh release create:*)` tool access",
         doc_title: "AI markdown: shared gh release create tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GhReleaseUploadAllowedToolsRule {
+        code: "SEC545",
+        summary: "AI-native markdown frontmatter grants `Bash(gh release upload:*)` tool access",
+        doc_title: "AI markdown: shared gh release upload tool grant",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -1524,7 +1549,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 122] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -2380,6 +2405,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 122] = [
         suggestion_fix: None,
     },
     NativeRuleSpec {
+        metadata: GhRepoTransferAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh repo transfer` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_gh_repo_transfer_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(gh repo transfer:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps repository transfer under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
         metadata: GhReleaseCreateAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
         default_presets: GOVERNANCE_PRESETS,
@@ -2392,6 +2433,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 122] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(gh release create:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps release publishing under explicit user control",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GhReleaseUploadAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared `gh release upload` grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_gh_release_upload_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(gh release upload:*)` access is really needed, or replace it with a narrower reviewed workflow that keeps release asset mutation under explicit user control",
         ),
         suggestion_fix: None,
     },

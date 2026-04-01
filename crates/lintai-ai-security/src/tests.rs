@@ -2947,6 +2947,38 @@ fn ignores_specific_gh_repo_edit_allowed_tools_in_frontmatter() {
 }
 
 #[test]
+fn finds_gh_repo_transfer_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(gh repo transfer:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC543")
+        .unwrap();
+    let start = content.find("Bash(gh repo transfer:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(gh repo transfer:*)".len())
+    );
+}
+
+#[test]
+fn ignores_specific_gh_repo_transfer_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_governance_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(gh repo view:*), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC543")
+    );
+}
+
+#[test]
 fn finds_gh_release_create_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(gh release create:*), Read\n---\n# Skill\n";
     let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
@@ -2975,6 +3007,38 @@ fn ignores_specific_gh_release_create_allowed_tools_in_frontmatter() {
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC541")
+    );
+}
+
+#[test]
+fn finds_gh_release_upload_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(gh release upload:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC545")
+        .unwrap();
+    let start = content.find("Bash(gh release upload:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(gh release upload:*)".len())
+    );
+}
+
+#[test]
+fn ignores_specific_gh_release_upload_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_governance_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(gh release view:*), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC545")
     );
 }
 
@@ -7102,6 +7166,23 @@ fn finds_claude_settings_gh_repo_edit_permission() {
 }
 
 #[test]
+fn finds_claude_settings_gh_repo_transfer_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(gh repo transfer:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC542")
+        .unwrap();
+    let start = content.find("Bash(gh repo transfer:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(gh repo transfer:*)".len())
+    );
+}
+
+#[test]
 fn finds_claude_settings_gh_release_create_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh release create:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -7115,6 +7196,23 @@ fn finds_claude_settings_gh_release_create_permission() {
     assert_eq!(
         finding.location.span,
         lintai_api::Span::new(start, start + "Bash(gh release create:*)".len())
+    );
+}
+
+#[test]
+fn finds_claude_settings_gh_release_upload_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(gh release upload:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC544")
+        .unwrap();
+    let start = content.find("Bash(gh release upload:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(gh release upload:*)".len())
     );
 }
 
@@ -7171,6 +7269,19 @@ fn ignores_specific_claude_settings_gh_repo_edit_permission() {
 }
 
 #[test]
+fn ignores_specific_claude_settings_gh_repo_transfer_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(gh repo view:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC542")
+    );
+}
+
+#[test]
 fn ignores_specific_claude_settings_gh_release_create_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh release view:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
@@ -7180,6 +7291,19 @@ fn ignores_specific_claude_settings_gh_release_create_permission() {
             .findings
             .iter()
             .any(|finding| finding.rule_code == "SEC540")
+    );
+}
+
+#[test]
+fn ignores_specific_claude_settings_gh_release_upload_permission() {
+    let content = r#"{"permissions":{"allow":["Bash(gh release view:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
+    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC544")
     );
 }
 
@@ -11786,12 +11910,16 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC507"
                         | "SEC535"
                         | "SEC539"
+                        | "SEC542"
                         | "SEC511"
                         | "SEC512"
                         | "SEC513"
                         | "SEC540"
+                        | "SEC544"
                         | "SEC537"
                         | "SEC541"
+                        | "SEC543"
+                        | "SEC545"
                         | "SEC517"
                         | "SEC518"
                         | "SEC519"

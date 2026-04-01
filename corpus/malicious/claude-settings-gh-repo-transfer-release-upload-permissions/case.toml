@@ -1,0 +1,7 @@
+id = "claude-settings-gh-repo-transfer-release-upload-permissions"
+description = "Claude settings grant shared GitHub repository transfer and release upload permissions"
+
+expected_findings = [
+  "SEC542",
+  "SEC544",
+]

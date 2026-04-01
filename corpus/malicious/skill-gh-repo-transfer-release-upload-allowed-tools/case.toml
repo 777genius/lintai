@@ -1,0 +1,7 @@
+id = "skill-gh-repo-transfer-release-upload-allowed-tools"
+description = "AI-native markdown frontmatter grants shared GitHub repository transfer and release upload authority"
+
+expected_findings = [
+  "SEC543",
+  "SEC545",
+]
