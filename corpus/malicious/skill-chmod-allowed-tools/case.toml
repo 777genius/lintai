@@ -1,0 +1,7 @@
+id = "skill-chmod-allowed-tools"
+description = "AI-native markdown frontmatter grants Bash(chmod:*) authority"
+kind = "Skill"
+expected_findings = [
+  { rule = "SEC467", tier = "stable", match = "Bash(chmod:*)" },
+]
+

@@ -1840,6 +1840,36 @@ fn ignores_rm_specific_allowed_tools() {
 }
 
 #[test]
+fn finds_chmod_allowed_tools() {
+    let content = "---\nallowed-tools: Bash(chmod:*)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC467")
+        .unwrap();
+    let start = content.find("Bash(chmod:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(chmod:*)".len())
+    );
+}
+
+#[test]
+fn ignores_chmod_specific_allowed_tools() {
+    let content = "---\nallowed-tools: Bash(chmod 600 ~/.ssh/id_rsa)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC467")
+    );
+}
+
+#[test]
 fn finds_markdown_cargo_http_index() {
     let content = "cargo install ripgrep --index http://index.example.test/\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);

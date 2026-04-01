@@ -167,6 +167,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-base64-fenced-safe",
             "skill-cargo-https-git-install-safe",
             "skill-cargo-https-index-safe",
+            "skill-chmod-allowed-tools-specific-safe",
             "skill-clean-basic",
             "skill-command-snippet-bare-npx-safe",
             "skill-command-snippet-without-mcp-context-safe",

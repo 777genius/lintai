@@ -2,10 +2,11 @@ use lintai_api::{Category, Confidence, RuleTier, Severity, declare_rule};
 
 use super::*;
 use crate::markdown_rules::{
-    check_approval_bypass_instruction, check_copilot_instruction_invalid_apply_to,
-    check_copilot_instruction_invalid_apply_to_glob, check_copilot_instruction_missing_apply_to,
-    check_copilot_instruction_too_long, check_copilot_instruction_wrong_suffix,
-    check_curl_allowed_tools, check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
+    check_approval_bypass_instruction, check_chmod_allowed_tools,
+    check_copilot_instruction_invalid_apply_to, check_copilot_instruction_invalid_apply_to_glob,
+    check_copilot_instruction_missing_apply_to, check_copilot_instruction_too_long,
+    check_copilot_instruction_wrong_suffix, check_curl_allowed_tools,
+    check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
     check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
     check_cursor_rule_unknown_frontmatter_key, check_edit_unsafe_path_allowed_tools,
     check_git_add_allowed_tools, check_git_am_allowed_tools, check_git_apply_allowed_tools,
@@ -606,6 +607,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct ChmodAllowedToolsRule {
+        code: "SEC467",
+        summary: "AI-native markdown frontmatter grants `Bash(chmod:*)` authority",
+        doc_title: "AI markdown: `Bash(chmod:*)` tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct GitCloneAllowedToolsRule {
         code: "SEC421",
         summary: "AI-native markdown frontmatter grants `Bash(git clone:*)` authority",
@@ -1025,7 +1038,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 82] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 83] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1769,6 +1782,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 82] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(rm:*)` authority is really needed, or replace it with a narrower reviewed cleanup workflow instead of a default team-wide grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: ChmodAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for explicit wildcard chmod grants in shared allowed-tools policy.",
+            malicious_case_ids: &["skill-chmod-allowed-tools"],
+            benign_case_ids: &["skill-chmod-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Bash(chmod:*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_chmod_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(chmod:*)` authority is really needed, or replace it with a narrower reviewed permission-change workflow instead of a default team-wide grant",
         ),
         suggestion_fix: None,
     },

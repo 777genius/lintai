@@ -186,7 +186,8 @@
         "lintai-ai-security:SEC463",
         "lintai-ai-security:SEC464",
         "lintai-ai-security:SEC465",
-        "lintai-ai-security:SEC466"
+        "lintai-ai-security:SEC466",
+        "lintai-ai-security:SEC467"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -282,7 +283,8 @@
         "lintai-ai-security:SEC463",
         "lintai-ai-security:SEC464",
         "lintai-ai-security:SEC465",
-        "lintai-ai-security:SEC466"
+        "lintai-ai-security:SEC466",
+        "lintai-ai-security:SEC467"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -6522,6 +6524,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(rm:*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC467",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC467",
+      "alias": "MD-CHMOD-ALLOWED-TOOLS",
+      "displayLabel": "SEC467 / MD-CHMOD-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(chmod:*)` tool grant",
+      "slug": "sec467",
+      "canonicalPath": "/rules/lintai-ai-security/sec467",
+      "summary": "AI-native markdown frontmatter grants `Bash(chmod:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for explicit wildcard chmod grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-chmod-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-chmod-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(chmod:*)` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

@@ -1,0 +1,5 @@
+id = "skill-chmod-allowed-tools-specific-safe"
+description = "AI-native markdown frontmatter scopes chmod authority to a reviewed command"
+kind = "Skill"
+expected_absent_rules = ["SEC467"]
+

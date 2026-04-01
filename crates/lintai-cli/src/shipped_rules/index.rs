@@ -334,6 +334,7 @@ mod tests {
         assert_eq!(shipped_rule_alias("SEC464"), Some("MD-GIT-HTTP-CLONE"));
         assert_eq!(shipped_rule_alias("SEC465"), Some("MD-GIT-HTTP-REMOTE"));
         assert_eq!(shipped_rule_alias("SEC466"), Some("MD-RM-ALLOWED-TOOLS"));
+        assert_eq!(shipped_rule_alias("SEC467"), Some("MD-CHMOD-ALLOWED-TOOLS"));
         assert_eq!(shipped_rule_alias("SEC401"), Some("POLICY-EXEC-MISMATCH"));
         assert_eq!(shipped_rule_docs_url("NOPE"), None);
         assert_eq!(docs_site_url(), "https://777genius.github.io/lintai");
