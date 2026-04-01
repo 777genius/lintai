@@ -1,0 +1,5 @@
+id = "skill-rm-allowed-tools-specific-safe"
+description = "AI-native markdown frontmatter scopes rm authority to a reviewed command"
+kind = "Skill"
+expected_absent_rules = ["SEC466"]
+

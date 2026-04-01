@@ -185,7 +185,8 @@
         "lintai-ai-security:SEC462",
         "lintai-ai-security:SEC463",
         "lintai-ai-security:SEC464",
-        "lintai-ai-security:SEC465"
+        "lintai-ai-security:SEC465",
+        "lintai-ai-security:SEC466"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -280,7 +281,8 @@
         "lintai-ai-security:SEC462",
         "lintai-ai-security:SEC463",
         "lintai-ai-security:SEC464",
-        "lintai-ai-security:SEC465"
+        "lintai-ai-security:SEC465",
+        "lintai-ai-security:SEC466"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -6481,6 +6483,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact `git remote add` token analysis with direct `http://` source detection inside parsed markdown regions."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC466",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC466",
+      "alias": "MD-RM-ALLOWED-TOOLS",
+      "displayLabel": "SEC466 / MD-RM-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(rm:*)` tool grant",
+      "slug": "sec466",
+      "canonicalPath": "/rules/lintai-ai-security/sec466",
+      "summary": "AI-native markdown frontmatter grants `Bash(rm:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for explicit wildcard rm grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-rm-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-rm-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(rm:*)` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

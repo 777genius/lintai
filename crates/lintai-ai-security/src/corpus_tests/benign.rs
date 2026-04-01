@@ -219,6 +219,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-public-key-pem-safe",
             "skill-read-unsafe-path-allowed-tools-specific-safe",
             "skill-reviewed-frontmatter-tool-grants-safe",
+            "skill-rm-allowed-tools-specific-safe",
             "skill-scoped-bash-allowed-tools-safe",
             "skill-scoped-webfetch-allowed-tools-safe",
             "skill-sudo-allowed-tools-specific-safe",

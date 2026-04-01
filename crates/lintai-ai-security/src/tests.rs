@@ -1810,6 +1810,36 @@ fn ignores_markdown_git_https_remote() {
 }
 
 #[test]
+fn finds_rm_allowed_tools() {
+    let content = "---\nallowed-tools: Bash(rm:*)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC466")
+        .unwrap();
+    let start = content.find("Bash(rm:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(rm:*)".len())
+    );
+}
+
+#[test]
+fn ignores_rm_specific_allowed_tools() {
+    let content = "---\nallowed-tools: Bash(rm ./tmp/output.txt)\n---\n# Skill\n";
+    let summary = scan_preview_skill_fixture("SKILL.md", content);
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC466")
+    );
+}
+
+#[test]
 fn finds_markdown_cargo_http_index() {
     let content = "cargo install ripgrep --index http://index.example.test/\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);
