@@ -14,10 +14,30 @@ const CURSOR_HOOK_SCRIPT_RULES: &[DetectionRuleSpec] = &[DetectionRuleSpec {
     format: SourceFormat::Shell,
 }];
 
-pub(super) const SURFACE_SPECS: [SurfaceSpec; 1] = [SurfaceSpec {
-    id: "cursor_hook_script_shell",
-    artifact_kind: ArtifactKind::CursorHookScript,
+const DOCKERFILE_RULES: &[DetectionRuleSpec] = &[DetectionRuleSpec {
+    priority: 2,
+    file_name: Some("Dockerfile"),
+    file_name_fragment: None,
+    suffix: None,
+    parent_dir: None,
+    path_fragment: None,
+    artifact_kind: ArtifactKind::Dockerfile,
     format: SourceFormat::Shell,
-    detection_rules: CURSOR_HOOK_SCRIPT_RULES,
-    parse_fn: parse_shell_surface,
 }];
+
+pub(super) const SURFACE_SPECS: [SurfaceSpec; 2] = [
+    SurfaceSpec {
+        id: "dockerfile_shell",
+        artifact_kind: ArtifactKind::Dockerfile,
+        format: SourceFormat::Shell,
+        detection_rules: DOCKERFILE_RULES,
+        parse_fn: parse_shell_surface,
+    },
+    SurfaceSpec {
+        id: "cursor_hook_script_shell",
+        artifact_kind: ArtifactKind::CursorHookScript,
+        format: SourceFormat::Shell,
+        detection_rules: CURSOR_HOOK_SCRIPT_RULES,
+        parse_fn: parse_shell_surface,
+    },
+];

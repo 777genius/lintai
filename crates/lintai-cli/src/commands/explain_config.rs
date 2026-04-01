@@ -96,6 +96,8 @@ fn relevant_surface_presets(detected_kind: Option<ArtifactKind>) -> Vec<&'static
             | ArtifactKind::CursorPluginManifest
             | ArtifactKind::CursorPluginHooks,
         ) => vec!["mcp"],
+        Some(ArtifactKind::PackageManifest) => vec!["supply-chain"],
+        Some(ArtifactKind::Dockerfile) => vec!["supply-chain"],
         Some(ArtifactKind::ClaudeSettings) => vec!["claude"],
         Some(ArtifactKind::GitHubWorkflow | ArtifactKind::CursorHookScript) | None => Vec::new(),
         Some(_) => Vec::new(),

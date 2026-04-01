@@ -1,0 +1,7 @@
+{
+  "name": "safe-lifecycle-demo",
+  "version": "1.0.0",
+  "scripts": {
+    "postinstall": "node ./scripts/postinstall.js"
+  }
+}

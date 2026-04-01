@@ -110,6 +110,21 @@ fn parses_json_semantics_for_mcp() {
 }
 
 #[test]
+fn parses_json_semantics_for_package_manifest() {
+    let parsed = parse_document(
+        &Artifact::new(
+            "package.json",
+            ArtifactKind::PackageManifest,
+            SourceFormat::Json,
+        ),
+        r#"{"dependencies":{"left-pad":"1.3.0"}}"#,
+    )
+    .unwrap();
+
+    assert!(matches!(parsed.semantics, Some(DocumentSemantics::Json(_))));
+}
+
+#[test]
 fn parses_json_semantics_for_claude_settings() {
     let parsed = parse_document(
         &Artifact::new(
@@ -152,6 +167,17 @@ fn parses_yaml_semantics_for_github_workflow() {
     .unwrap();
 
     assert!(matches!(parsed.semantics, Some(DocumentSemantics::Yaml(_))));
+}
+
+#[test]
+fn parses_shell_semantics_for_dockerfile() {
+    let parsed = parse_document(
+        &Artifact::new("Dockerfile", ArtifactKind::Dockerfile, SourceFormat::Shell),
+        "FROM alpine:3.20\nRUN echo hi\n",
+    )
+    .unwrap();
+
+    assert!(matches!(parsed.semantics, Some(DocumentSemantics::Shell(_))));
 }
 
 #[test]
@@ -216,12 +242,14 @@ fn surface_specs_assemble_in_fixed_order() {
             "cursor_plugin_command_markdown",
             "cursor_plugin_agent_markdown",
             "mcp_config_json",
+            "package_manifest_json",
             "server_registry_json",
             "claude_settings_json",
             "cursor_plugin_manifest_json",
             "cursor_plugin_hooks_json",
             "tool_descriptor_json",
             "github_workflow_yaml",
+            "dockerfile_shell",
             "cursor_hook_script_shell",
         ]
     );
@@ -234,10 +262,12 @@ fn artifact_kind_routes_are_unique_for_shipped_surfaces() {
         (ArtifactKind::Instructions, SourceFormat::Markdown),
         (ArtifactKind::CursorRules, SourceFormat::Markdown),
         (ArtifactKind::McpConfig, SourceFormat::Json),
+        (ArtifactKind::PackageManifest, SourceFormat::Json),
         (ArtifactKind::ClaudeSettings, SourceFormat::Json),
         (ArtifactKind::ServerRegistryConfig, SourceFormat::Json),
         (ArtifactKind::ToolDescriptorJson, SourceFormat::Json),
         (ArtifactKind::GitHubWorkflow, SourceFormat::Yaml),
+        (ArtifactKind::Dockerfile, SourceFormat::Shell),
         (ArtifactKind::CursorPluginManifest, SourceFormat::Json),
         (ArtifactKind::CursorPluginHooks, SourceFormat::Json),
         (ArtifactKind::CursorHookScript, SourceFormat::Shell),

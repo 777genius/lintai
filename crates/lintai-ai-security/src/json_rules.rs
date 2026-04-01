@@ -78,6 +78,51 @@ pub(crate) fn check_mcp_broad_env_file(
     )
 }
 
+pub(crate) fn check_package_manifest_dangerous_lifecycle_script(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.dangerous_lifecycle_script_span.clone()),
+        "package manifest defines an install-time lifecycle script with download-exec, eval, or npm explore shell behavior",
+    )
+}
+
+pub(crate) fn check_package_manifest_git_dependency(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.git_dependency_span.clone()),
+        "package manifest installs a dependency from a git or forge shortcut source instead of the registry",
+    )
+}
+
+pub(crate) fn check_package_manifest_unbounded_dependency(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.unbounded_dependency_span.clone()),
+        "package manifest uses an unbounded dependency spec such as `*` or `latest`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

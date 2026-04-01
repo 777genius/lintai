@@ -188,6 +188,9 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "mcp-trusted-endpoint-safe",
             "mcp-vscode-placeholder-envfile-safe",
             "mixed-clean-workspace",
+            "package-manifest-pinned-dependency-safe",
+            "package-manifest-registry-dependency-safe",
+            "package-manifest-safe-lifecycle-script",
             "plugin-agent-hooks-fixture-safe",
             "plugin-agent-markdown-covered",
             "plugin-agent-mcpservers-fixture-safe",
@@ -343,4 +346,19 @@ fn policy_truthful_workspace_stays_clean() {
             .iter()
             .all(|finding| !matches!(finding.rule_code.as_str(), "SEC401" | "SEC402" | "SEC403"))
     );
+}
+
+#[test]
+fn package_manifest_supply_chain_cases_stay_clean_when_safe() {
+    for case_name in [
+        "package-manifest-pinned-dependency-safe",
+        "package-manifest-registry-dependency-safe",
+        "package-manifest-safe-lifecycle-script",
+    ] {
+        let case_dir = case_dir("benign", case_name);
+        let manifest = load_case(&case_dir);
+        let summary = harness().scan_case(&case_dir).unwrap();
+        assert_case_summary(&manifest, &summary);
+        assert!(summary.findings.is_empty());
+    }
 }

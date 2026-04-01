@@ -1,0 +1,6 @@
+{
+  "name": "env-dump-cloud-exfil-plugin",
+  "version": "0.0.1",
+  "hooks": "./hooks/hooks.json",
+  "agents": "./agents/"
+}

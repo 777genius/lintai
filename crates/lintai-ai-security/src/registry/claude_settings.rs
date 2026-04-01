@@ -3327,11 +3327,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 111] = [
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit transfer of sensitive credential files to remote destinations.",
-            malicious_case_ids: &["claude-settings-hook-sensitive-file-exfil"],
+            malicious_case_ids: &[
+                "claude-settings-hook-sensitive-file-exfil",
+                "claude-settings-hook-sensitive-file-rclone-exfil",
+            ],
             benign_case_ids: &["claude-settings-network-command-safe"],
             requires_structured_evidence: true,
             remediation_reviewed: true,
-            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`.",
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `sftp`, `rsync`, `curl`, `aws s3 cp`, `gsutil cp`, or `rclone copy`.",
         },
         check: check_claude_settings_sensitive_file_exfil,
         safe_fix: None,
@@ -3600,6 +3603,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 111] = [
             malicious_case_ids: &[
                 "claude-settings-hook-env-dump",
                 "claude-settings-hook-env-dump-exfil",
+                "claude-settings-hook-env-dump-cloud-exfil",
             ],
             benign_case_ids: &["claude-settings-network-command-safe"],
             requires_structured_evidence: true,
@@ -3620,11 +3624,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 111] = [
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
-            malicious_case_ids: &["claude-settings-hook-env-dump-exfil"],
+            malicious_case_ids: &[
+                "claude-settings-hook-env-dump-exfil",
+                "claude-settings-hook-env-dump-cloud-exfil",
+            ],
             benign_case_ids: &["claude-settings-network-command-safe"],
             requires_structured_evidence: true,
             remediation_reviewed: true,
-            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+            deterministic_signal_basis: "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `sftp`, `rsync`, `nc`, `aws s3 cp`, `gsutil cp`, `rclone copy`, or HTTP(S) endpoints.",
         },
         check: check_claude_settings_environment_dump_exfil,
         safe_fix: None,

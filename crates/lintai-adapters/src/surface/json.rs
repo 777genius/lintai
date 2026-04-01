@@ -87,6 +87,17 @@ const SERVER_REGISTRY_RULES: &[DetectionRuleSpec] = &[DetectionRuleSpec {
     format: SourceFormat::Json,
 }];
 
+const PACKAGE_MANIFEST_RULES: &[DetectionRuleSpec] = &[DetectionRuleSpec {
+    priority: 1,
+    file_name: Some("package.json"),
+    file_name_fragment: None,
+    suffix: None,
+    parent_dir: None,
+    path_fragment: None,
+    artifact_kind: ArtifactKind::PackageManifest,
+    format: SourceFormat::Json,
+}];
+
 const CLAUDE_SETTINGS_RULES: &[DetectionRuleSpec] = &[
     DetectionRuleSpec {
         priority: 1,
@@ -195,12 +206,19 @@ const TOOL_DESCRIPTOR_RULES: &[DetectionRuleSpec] = &[
     },
 ];
 
-pub(super) const SURFACE_SPECS: [SurfaceSpec; 6] = [
+pub(super) const SURFACE_SPECS: [SurfaceSpec; 7] = [
     SurfaceSpec {
         id: "mcp_config_json",
         artifact_kind: ArtifactKind::McpConfig,
         format: SourceFormat::Json,
         detection_rules: MCP_CONFIG_RULES,
+        parse_fn: parse_json_surface,
+    },
+    SurfaceSpec {
+        id: "package_manifest_json",
+        artifact_kind: ArtifactKind::PackageManifest,
+        format: SourceFormat::Json,
+        detection_rules: PACKAGE_MANIFEST_RULES,
         parse_fn: parse_json_surface,
     },
     SurfaceSpec {

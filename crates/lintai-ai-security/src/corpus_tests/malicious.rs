@@ -58,6 +58,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-settings-hook-device-capture",
             "claude-settings-hook-device-capture-exfil",
             "claude-settings-hook-env-dump",
+            "claude-settings-hook-env-dump-cloud-exfil",
             "claude-settings-hook-env-dump-exfil",
             "claude-settings-hook-keylogger",
             "claude-settings-hook-keylogger-exfil",
@@ -69,6 +70,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "claude-settings-hook-screen-capture-exfil",
             "claude-settings-hook-secret-exfil-payloads",
             "claude-settings-hook-sensitive-file-exfil",
+            "claude-settings-hook-sensitive-file-rclone-exfil",
             "claude-settings-hook-service-persistence",
             "claude-settings-http-hook-url",
             "claude-settings-inline-download-exec",
@@ -119,6 +121,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "hook-device-capture-exfil",
             "hook-download-exec",
             "hook-env-dump",
+            "hook-env-dump-cloud-exfil",
             "hook-env-dump-exfil",
             "hook-keylogger",
             "hook-keylogger-exfil",
@@ -131,6 +134,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "hook-screen-capture-exfil",
             "hook-secret-exfil",
             "hook-sensitive-file-exfil",
+            "hook-sensitive-file-rclone-exfil",
             "hook-service-persistence",
             "hook-static-auth-userinfo",
             "hook-tls-bypass",
@@ -162,6 +166,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "mcp-command-device-capture",
             "mcp-command-device-capture-exfil",
             "mcp-command-env-dump",
+            "mcp-command-env-dump-cloud-exfil",
             "mcp-command-env-dump-exfil",
             "mcp-command-keylogger",
             "mcp-command-keylogger-exfil",
@@ -173,6 +178,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "mcp-command-screen-capture-exfil",
             "mcp-command-secret-exfil-payloads",
             "mcp-command-sensitive-file-exfil",
+            "mcp-command-sensitive-file-rclone-exfil",
             "mcp-command-service-persistence",
             "mcp-command-sudo",
             "mcp-command-tls-bypass",
@@ -196,6 +202,9 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "mcp-suspicious-endpoint",
             "mcp-trust-tools-true",
             "mcp-trust-verification-disabled",
+            "package-manifest-dangerous-lifecycle-script",
+            "package-manifest-git-url-dependency",
+            "package-manifest-unbounded-dependency",
             "plugin-agent-hooks-frontmatter",
             "plugin-agent-mcpservers-frontmatter",
             "plugin-agent-permission-mode-frontmatter",
@@ -203,6 +212,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "plugin-hook-command-device-capture",
             "plugin-hook-command-device-capture-exfil",
             "plugin-hook-command-env-dump",
+            "plugin-hook-command-env-dump-cloud-exfil",
             "plugin-hook-command-env-dump-exfil",
             "plugin-hook-command-inline-download-exec",
             "plugin-hook-command-keylogger",
@@ -216,6 +226,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "plugin-hook-command-screen-capture-exfil",
             "plugin-hook-command-secret-exfil-payloads",
             "plugin-hook-command-sensitive-file-exfil",
+            "plugin-hook-command-sensitive-file-rclone-exfil",
             "plugin-hook-command-service-persistence",
             "plugin-hook-command-tls-bypass",
             "policy-exec-network-mismatch",
@@ -410,4 +421,18 @@ fn policy_frontmatter_conflict_emits_preview_evidence() {
             .iter()
             .any(|evidence| matches!(evidence.kind, EvidenceKind::ObservedBehavior))
     );
+}
+
+#[test]
+fn package_manifest_supply_chain_cases_trigger_expected_findings() {
+    for case_name in [
+        "package-manifest-dangerous-lifecycle-script",
+        "package-manifest-git-url-dependency",
+        "package-manifest-unbounded-dependency",
+    ] {
+        let case_dir = case_dir("malicious", case_name);
+        let manifest = load_case(&case_dir);
+        let summary = harness().scan_case(&case_dir).unwrap();
+        assert_case_summary(&manifest, &summary);
+    }
 }

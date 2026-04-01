@@ -20,6 +20,7 @@ pub(super) fn native_catalog_entry(entry: NativeRuleCatalogEntry) -> SecurityRul
         surface: match entry.surface {
             NativeCatalogSurface::Markdown => CatalogSurface::Markdown,
             NativeCatalogSurface::Hook => CatalogSurface::Hook,
+            NativeCatalogSurface::Dockerfile => CatalogSurface::Dockerfile,
             NativeCatalogSurface::Json => CatalogSurface::Json,
             NativeCatalogSurface::ClaudeSettings => CatalogSurface::ClaudeSettings,
             NativeCatalogSurface::ToolJson => CatalogSurface::ToolJson,

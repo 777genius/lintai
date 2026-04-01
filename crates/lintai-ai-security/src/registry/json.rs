@@ -59,7 +59,9 @@ use crate::json_rules::{
     check_mcp_sensitive_docker_mount, check_mcp_sensitive_file_exfil, check_mcp_setuid_setgid,
     check_mcp_shell_profile_write, check_mcp_shell_wrapper, check_mcp_sudo_args0,
     check_mcp_sudo_command, check_mcp_systemd_service_registration, check_mcp_trust_tools_true,
-    check_mcp_unpinned_docker_image, check_mcp_webhook_secret_exfil, check_plain_http_config,
+    check_mcp_unpinned_docker_image, check_mcp_webhook_secret_exfil,
+    check_package_manifest_dangerous_lifecycle_script, check_package_manifest_git_dependency,
+    check_package_manifest_unbounded_dependency, check_plain_http_config,
     check_plugin_hook_authorized_keys_write, check_plugin_hook_browser_secret_store_access,
     check_plugin_hook_browser_secret_store_exfil, check_plugin_hook_camera_capture,
     check_plugin_hook_camera_capture_exfil, check_plugin_hook_clipboard_exfil,
@@ -2059,7 +2061,43 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 165] = [
+declare_rule! {
+    pub struct PackageManifestDangerousLifecycleScriptRule {
+        code: "SEC743",
+        summary: "package.json defines a dangerous install-time lifecycle script",
+        doc_title: "package.json: dangerous lifecycle script",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PackageManifestGitDependencyRule {
+        code: "SEC744",
+        summary: "package.json installs a dependency from a git or forge shortcut source",
+        doc_title: "package.json: git or forge dependency source",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct PackageManifestUnboundedDependencyRule {
+        code: "SEC745",
+        summary: "package.json uses an unbounded dependency version like * or latest",
+        doc_title: "package.json: unbounded dependency version",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 168] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -4751,11 +4789,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 165] = [
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit transfer of sensitive credential files to remote destinations.",
-            malicious_case_ids: &["mcp-command-sensitive-file-exfil"],
+            malicious_case_ids: &[
+                "mcp-command-sensitive-file-exfil",
+                "mcp-command-sensitive-file-rclone-exfil",
+            ],
             benign_case_ids: &["mcp-safe-basic"],
             requires_structured_evidence: true,
             remediation_reviewed: true,
-            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`.",
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `sftp`, `rsync`, `curl`, `aws s3 cp`, `gsutil cp`, or `rclone copy`.",
         },
         check: check_mcp_sensitive_file_exfil,
         safe_fix: None,
@@ -4771,11 +4812,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 165] = [
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit transfer of sensitive credential files to remote destinations.",
-            malicious_case_ids: &["plugin-hook-command-sensitive-file-exfil"],
+            malicious_case_ids: &[
+                "plugin-hook-command-sensitive-file-exfil",
+                "plugin-hook-command-sensitive-file-rclone-exfil",
+            ],
             benign_case_ids: &["plugin-hook-command-safe"],
             requires_structured_evidence: true,
             remediation_reviewed: true,
-            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`.",
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `sftp`, `rsync`, `curl`, `aws s3 cp`, `gsutil cp`, or `rclone copy`.",
         },
         check: check_plugin_hook_sensitive_file_exfil,
         safe_fix: None,
@@ -5288,7 +5332,11 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 165] = [
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit environment or shell-state enumeration commands.",
-            malicious_case_ids: &["mcp-command-env-dump", "mcp-command-env-dump-exfil"],
+            malicious_case_ids: &[
+                "mcp-command-env-dump",
+                "mcp-command-env-dump-exfil",
+                "mcp-command-env-dump-cloud-exfil",
+            ],
             benign_case_ids: &["mcp-safe-basic"],
             requires_structured_evidence: true,
             remediation_reviewed: true,
@@ -5308,11 +5356,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 165] = [
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
-            malicious_case_ids: &["mcp-command-env-dump-exfil"],
+            malicious_case_ids: &[
+                "mcp-command-env-dump-exfil",
+                "mcp-command-env-dump-cloud-exfil",
+            ],
             benign_case_ids: &["mcp-safe-basic"],
             requires_structured_evidence: true,
             remediation_reviewed: true,
-            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+            deterministic_signal_basis: "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `sftp`, `rsync`, `nc`, `aws s3 cp`, `gsutil cp`, `rclone copy`, or HTTP(S) endpoints.",
         },
         check: check_mcp_environment_dump_exfil,
         safe_fix: None,
@@ -5331,6 +5382,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 165] = [
             malicious_case_ids: &[
                 "plugin-hook-command-env-dump",
                 "plugin-hook-command-env-dump-exfil",
+                "plugin-hook-command-env-dump-cloud-exfil",
             ],
             benign_case_ids: &["plugin-hook-command-safe"],
             requires_structured_evidence: true,
@@ -5351,16 +5403,79 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 165] = [
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
-            malicious_case_ids: &["plugin-hook-command-env-dump-exfil"],
+            malicious_case_ids: &[
+                "plugin-hook-command-env-dump-exfil",
+                "plugin-hook-command-env-dump-cloud-exfil",
+            ],
             benign_case_ids: &["plugin-hook-command-safe"],
             requires_structured_evidence: true,
             remediation_reviewed: true,
-            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+            deterministic_signal_basis: "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `sftp`, `rsync`, `nc`, `aws s3 cp`, `gsutil cp`, `rclone copy`, or HTTP(S) endpoints.",
         },
         check: check_plugin_hook_environment_dump_exfil,
         safe_fix: None,
         suggestion_message: Some(
             "remove environment dumping and remote transfer behavior from the committed plugin hook",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PackageManifestDangerousLifecycleScriptRule::METADATA,
+        surface: Surface::Json,
+        default_presets: SUPPLY_CHAIN_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed package.json install-time lifecycle hooks for explicit download-exec, eval, or npm-explore shell behavior.",
+            malicious_case_ids: &["package-manifest-dangerous-lifecycle-script"],
+            benign_case_ids: &["package-manifest-safe-lifecycle-script"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals package manifest analysis over `scripts.preinstall|install|postinstall|prepare` values for download-exec patterns, `eval`, or `npm explore` shell execution.",
+        },
+        check: check_package_manifest_dangerous_lifecycle_script,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove install-time lifecycle execution that downloads, evals, or shells into remote code",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PackageManifestGitDependencyRule::METADATA,
+        surface: Surface::Json,
+        default_presets: SUPPLY_CHAIN_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed package.json dependency sections for direct git or forge shortcut sources that bypass the normal registry release path.",
+            malicious_case_ids: &["package-manifest-git-url-dependency"],
+            benign_case_ids: &["package-manifest-registry-dependency-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals package manifest analysis over dependency sections for specs starting with `git://`, `git+https://`, `git+ssh://`, `github:`, `gitlab:`, or `bitbucket:`.",
+        },
+        check: check_package_manifest_git_dependency,
+        safe_fix: None,
+        suggestion_message: Some(
+            "prefer a published registry release over a direct git or forge dependency source",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: PackageManifestUnboundedDependencyRule::METADATA,
+        surface: Surface::Json,
+        default_presets: SUPPLY_CHAIN_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks committed package.json dependency sections for unbounded or mutable selectors that undermine reproducibility.",
+            malicious_case_ids: &["package-manifest-unbounded-dependency"],
+            benign_case_ids: &["package-manifest-pinned-dependency-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals package manifest analysis over dependency sections for exact specs equal to `*` or `latest`.",
+        },
+        check: check_package_manifest_unbounded_dependency,
+        safe_fix: None,
+        suggestion_message: Some(
+            "replace `*` or `latest` with an explicit reviewed dependency version or constrained range",
         ),
         suggestion_fix: None,
     },

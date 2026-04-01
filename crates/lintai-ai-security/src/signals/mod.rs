@@ -3,6 +3,7 @@ use lintai_api::{ScanContext, Span};
 use crate::json_locator::JsonLocationMap;
 
 mod claude_settings;
+mod dockerfile;
 mod github_workflow;
 mod hook;
 mod json;
@@ -17,6 +18,7 @@ mod tool_json;
 pub(crate) struct ArtifactSignals {
     markdown: Option<MarkdownSignals>,
     hook: Option<HookSignals>,
+    dockerfile: Option<DockerfileSignals>,
     json: Option<JsonSignals>,
     claude_settings: Option<ClaudeSettingsSignals>,
     server_json: Option<ServerJsonSignals>,
@@ -41,6 +43,7 @@ impl ArtifactSignals {
         Self {
             markdown: MarkdownSignals::from_context(ctx, &mut metrics),
             hook: HookSignals::from_context(ctx, &mut metrics),
+            dockerfile: DockerfileSignals::from_context(ctx, &mut metrics),
             json: JsonSignals::from_context(ctx, &mut metrics),
             claude_settings: ClaudeSettingsSignals::from_context(ctx, &mut metrics),
             server_json: ServerJsonSignals::from_context(ctx, &mut metrics),
@@ -60,6 +63,10 @@ impl ArtifactSignals {
 
     pub(crate) fn json(&self) -> Option<&JsonSignals> {
         self.json.as_ref()
+    }
+
+    pub(crate) fn dockerfile(&self) -> Option<&DockerfileSignals> {
+        self.dockerfile.as_ref()
     }
 
     pub(crate) fn claude_settings(&self) -> Option<&ClaudeSettingsSignals> {
@@ -249,6 +256,11 @@ pub(crate) struct HookSignals {
 }
 
 #[derive(Clone, Debug, Default)]
+pub(crate) struct DockerfileSignals {
+    pub(crate) download_exec_span: Option<Span>,
+}
+
+#[derive(Clone, Debug, Default)]
 pub(crate) struct JsonSignals {
     pub(crate) locator: Option<JsonLocationMap>,
     pub(crate) expanded_mcp_client_variant: bool,
@@ -279,6 +291,9 @@ pub(crate) struct JsonSignals {
     pub(crate) secret_exfil_command_span: Option<Span>,
     pub(crate) plain_http_secret_exfil_command_span: Option<Span>,
     pub(crate) webhook_secret_exfil_command_span: Option<Span>,
+    pub(crate) dangerous_lifecycle_script_span: Option<Span>,
+    pub(crate) git_dependency_span: Option<Span>,
+    pub(crate) unbounded_dependency_span: Option<Span>,
     pub(crate) cron_persistence_command_span: Option<Span>,
     pub(crate) systemd_service_registration_command_span: Option<Span>,
     pub(crate) launchd_registration_command_span: Option<Span>,

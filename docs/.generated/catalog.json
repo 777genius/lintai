@@ -923,7 +923,10 @@
         "lintai-ai-security:SEC325",
         "lintai-ai-security:SEC326",
         "lintai-ai-security:SEC327",
-        "lintai-ai-security:SEC328"
+        "lintai-ai-security:SEC328",
+        "lintai-ai-security:SEC743",
+        "lintai-ai-security:SEC744",
+        "lintai-ai-security:SEC745"
       ],
       "canonicalPath": "/presets/supply-chain"
     },
@@ -15701,14 +15704,15 @@
         "kind": "stable",
         "rationale": "Matches explicit transfer of sensitive credential files to remote network or cloud-storage destinations in executable hook lines.",
         "maliciousCaseIds": [
-          "hook-sensitive-file-exfil"
+          "hook-sensitive-file-exfil",
+          "hook-sensitive-file-rclone-exfil"
         ],
         "benignCaseIds": [
           "cursor-plugin-clean-basic"
         ],
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
-        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`."
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `sftp`, `rsync`, `curl`, `aws s3 cp`, `gsutil cp`, or `rclone copy`."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -15740,14 +15744,15 @@
         "kind": "stable",
         "rationale": "Checks committed MCP launch paths for explicit transfer of sensitive credential files to remote destinations.",
         "maliciousCaseIds": [
-          "mcp-command-sensitive-file-exfil"
+          "mcp-command-sensitive-file-exfil",
+          "mcp-command-sensitive-file-rclone-exfil"
         ],
         "benignCaseIds": [
           "mcp-safe-basic"
         ],
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
-        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`."
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `sftp`, `rsync`, `curl`, `aws s3 cp`, `gsutil cp`, or `rclone copy`."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -15779,14 +15784,15 @@
         "kind": "stable",
         "rationale": "Checks committed Claude settings command hooks for explicit transfer of sensitive credential files to remote destinations.",
         "maliciousCaseIds": [
-          "claude-settings-hook-sensitive-file-exfil"
+          "claude-settings-hook-sensitive-file-exfil",
+          "claude-settings-hook-sensitive-file-rclone-exfil"
         ],
         "benignCaseIds": [
           "claude-settings-network-command-safe"
         ],
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
-        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`."
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `sftp`, `rsync`, `curl`, `aws s3 cp`, `gsutil cp`, or `rclone copy`."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -15818,14 +15824,15 @@
         "kind": "stable",
         "rationale": "Checks committed plugin hook command values for explicit transfer of sensitive credential files to remote destinations.",
         "maliciousCaseIds": [
-          "plugin-hook-command-sensitive-file-exfil"
+          "plugin-hook-command-sensitive-file-exfil",
+          "plugin-hook-command-sensitive-file-rclone-exfil"
         ],
         "benignCaseIds": [
           "plugin-hook-command-safe"
         ],
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
-        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`."
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `sftp`, `rsync`, `curl`, `aws s3 cp`, `gsutil cp`, or `rclone copy`."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -17733,7 +17740,8 @@
         "rationale": "Checks hook shell lines for explicit environment or shell-state enumeration commands.",
         "maliciousCaseIds": [
           "hook-env-dump",
-          "hook-env-dump-exfil"
+          "hook-env-dump-exfil",
+          "hook-env-dump-cloud-exfil"
         ],
         "benignCaseIds": [
           "cursor-plugin-clean-basic"
@@ -17771,14 +17779,15 @@
         "kind": "stable",
         "rationale": "Checks hook shell lines for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
         "maliciousCaseIds": [
-          "hook-env-dump-exfil"
+          "hook-env-dump-exfil",
+          "hook-env-dump-cloud-exfil"
         ],
         "benignCaseIds": [
           "cursor-plugin-clean-basic"
         ],
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
-        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+        "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `sftp`, `rsync`, `nc`, `aws s3 cp`, `gsutil cp`, `rclone copy`, or HTTP(S) endpoints."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -17811,7 +17820,8 @@
         "rationale": "Checks committed MCP launch paths for explicit environment or shell-state enumeration commands.",
         "maliciousCaseIds": [
           "mcp-command-env-dump",
-          "mcp-command-env-dump-exfil"
+          "mcp-command-env-dump-exfil",
+          "mcp-command-env-dump-cloud-exfil"
         ],
         "benignCaseIds": [
           "mcp-safe-basic"
@@ -17850,14 +17860,15 @@
         "kind": "stable",
         "rationale": "Checks committed MCP launch paths for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
         "maliciousCaseIds": [
-          "mcp-command-env-dump-exfil"
+          "mcp-command-env-dump-exfil",
+          "mcp-command-env-dump-cloud-exfil"
         ],
         "benignCaseIds": [
           "mcp-safe-basic"
         ],
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
-        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+        "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `sftp`, `rsync`, `nc`, `aws s3 cp`, `gsutil cp`, `rclone copy`, or HTTP(S) endpoints."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -17890,7 +17901,8 @@
         "rationale": "Checks committed Claude settings command hooks for explicit environment or shell-state enumeration commands.",
         "maliciousCaseIds": [
           "claude-settings-hook-env-dump",
-          "claude-settings-hook-env-dump-exfil"
+          "claude-settings-hook-env-dump-exfil",
+          "claude-settings-hook-env-dump-cloud-exfil"
         ],
         "benignCaseIds": [
           "claude-settings-network-command-safe"
@@ -17929,14 +17941,15 @@
         "kind": "stable",
         "rationale": "Checks committed Claude settings command hooks for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
         "maliciousCaseIds": [
-          "claude-settings-hook-env-dump-exfil"
+          "claude-settings-hook-env-dump-exfil",
+          "claude-settings-hook-env-dump-cloud-exfil"
         ],
         "benignCaseIds": [
           "claude-settings-network-command-safe"
         ],
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
-        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+        "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `sftp`, `rsync`, `nc`, `aws s3 cp`, `gsutil cp`, `rclone copy`, or HTTP(S) endpoints."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
@@ -17969,7 +17982,8 @@
         "rationale": "Checks committed plugin hook command values for explicit environment or shell-state enumeration commands.",
         "maliciousCaseIds": [
           "plugin-hook-command-env-dump",
-          "plugin-hook-command-env-dump-exfil"
+          "plugin-hook-command-env-dump-exfil",
+          "plugin-hook-command-env-dump-cloud-exfil"
         ],
         "benignCaseIds": [
           "plugin-hook-command-safe"
@@ -18008,14 +18022,129 @@
         "kind": "stable",
         "rationale": "Checks committed plugin hook command values for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
         "maliciousCaseIds": [
-          "plugin-hook-command-env-dump-exfil"
+          "plugin-hook-command-env-dump-exfil",
+          "plugin-hook-command-env-dump-cloud-exfil"
         ],
         "benignCaseIds": [
           "plugin-hook-command-safe"
         ],
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
-        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
+        "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `sftp`, `rsync`, `nc`, `aws s3 cp`, `gsutil cp`, `rclone copy`, or HTTP(S) endpoints."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC743",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC743",
+      "alias": null,
+      "displayLabel": "SEC743",
+      "docTitle": "package.json: dangerous lifecycle script",
+      "slug": "sec743",
+      "canonicalPath": "/rules/lintai-ai-security/sec743",
+      "summary": "package.json defines a dangerous install-time lifecycle script",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "supply-chain"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed package.json install-time lifecycle hooks for explicit download-exec, eval, or npm-explore shell behavior.",
+        "maliciousCaseIds": [
+          "package-manifest-dangerous-lifecycle-script"
+        ],
+        "benignCaseIds": [
+          "package-manifest-safe-lifecycle-script"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals package manifest analysis over `scripts.preinstall|install|postinstall|prepare` values for download-exec patterns, `eval`, or `npm explore` shell execution."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC744",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC744",
+      "alias": null,
+      "displayLabel": "SEC744",
+      "docTitle": "package.json: git or forge dependency source",
+      "slug": "sec744",
+      "canonicalPath": "/rules/lintai-ai-security/sec744",
+      "summary": "package.json installs a dependency from a git or forge shortcut source",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "supply-chain"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed package.json dependency sections for direct git or forge shortcut sources that bypass the normal registry release path.",
+        "maliciousCaseIds": [
+          "package-manifest-git-url-dependency"
+        ],
+        "benignCaseIds": [
+          "package-manifest-registry-dependency-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals package manifest analysis over dependency sections for specs starting with `git://`, `git+https://`, `git+ssh://`, `github:`, `gitlab:`, or `bitbucket:`."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC745",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC745",
+      "alias": null,
+      "displayLabel": "SEC745",
+      "docTitle": "package.json: unbounded dependency version",
+      "slug": "sec745",
+      "canonicalPath": "/rules/lintai-ai-security/sec745",
+      "summary": "package.json uses an unbounded dependency version like * or latest",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "supply-chain"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks committed package.json dependency sections for unbounded or mutable selectors that undermine reproducibility.",
+        "maliciousCaseIds": [
+          "package-manifest-unbounded-dependency"
+        ],
+        "benignCaseIds": [
+          "package-manifest-pinned-dependency-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals package manifest analysis over dependency sections for exact specs equal to `*` or `latest`."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

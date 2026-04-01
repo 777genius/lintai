@@ -743,11 +743,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit transfer of sensitive credential files to remote network or cloud-storage destinations in executable hook lines.",
-            malicious_case_ids: &["hook-sensitive-file-exfil"],
+            malicious_case_ids: &[
+                "hook-sensitive-file-exfil",
+                "hook-sensitive-file-rclone-exfil",
+            ],
             benign_case_ids: &["cursor-plugin-clean-basic"],
             requires_structured_evidence: true,
             remediation_reviewed: true,
-            deterministic_signal_basis: "HookSignals command-line analysis over non-comment hook lines for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`.",
+            deterministic_signal_basis: "HookSignals command-line analysis over non-comment hook lines for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `sftp`, `rsync`, `curl`, `aws s3 cp`, `gsutil cp`, or `rclone copy`.",
         },
         check: check_hook_sensitive_file_exfil,
         safe_fix: None,
@@ -999,7 +1002,11 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks hook shell lines for explicit environment or shell-state enumeration commands.",
-            malicious_case_ids: &["hook-env-dump", "hook-env-dump-exfil"],
+            malicious_case_ids: &[
+                "hook-env-dump",
+                "hook-env-dump-exfil",
+                "hook-env-dump-cloud-exfil",
+            ],
             benign_case_ids: &["cursor-plugin-clean-basic"],
             requires_structured_evidence: true,
             remediation_reviewed: true,
@@ -1017,11 +1024,11 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks hook shell lines for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
-            malicious_case_ids: &["hook-env-dump-exfil"],
+            malicious_case_ids: &["hook-env-dump-exfil", "hook-env-dump-cloud-exfil"],
             benign_case_ids: &["cursor-plugin-clean-basic"],
             requires_structured_evidence: true,
             remediation_reviewed: true,
-            deterministic_signal_basis: "HookSignals command-line analysis over non-comment hook lines for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.",
+            deterministic_signal_basis: "HookSignals command-line analysis over non-comment hook lines for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `sftp`, `rsync`, `nc`, `aws s3 cp`, `gsutil cp`, `rclone copy`, or HTTP(S) endpoints.",
         },
         check: check_hook_environment_dump_exfil,
         safe_fix: None,

@@ -742,7 +742,7 @@ fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
         | "SEC528" | "SEC529" | "SEC530" | "SEC531" | "SEC532" | "SEC533" | "SEC534" | "SEC535"
         | "SEC536" | "SEC537" | "SEC538" | "SEC539" | "SEC540" | "SEC541" | "SEC542" | "SEC543"
         | "SEC544" | "SEC545" | "SEC410" | "SEC626" | "SEC627" | "SEC628" | "SEC629" | "SEC630"
-        | "SEC631" | "SEC632" => Some(RuleTier::Stable),
+        | "SEC631" | "SEC632" | "SEC743" | "SEC744" | "SEC745" | "SEC746" => Some(RuleTier::Stable),
         "SEC618" | "SEC619" | "SEC620" | "SEC621" | "SEC622" | "SEC623" | "SEC624" | "SEC625" => {
             Some(RuleTier::Stable)
         }
@@ -779,6 +779,7 @@ fn fixture_path_for(artifact_kind: ArtifactKind, format: SourceFormat) -> &'stat
         (ArtifactKind::Instructions, SourceFormat::Markdown) => Path::new("CLAUDE.md"),
         (ArtifactKind::CursorRules, SourceFormat::Markdown) => Path::new("rules.mdc"),
         (ArtifactKind::McpConfig, SourceFormat::Json) => Path::new("mcp.json"),
+        (ArtifactKind::PackageManifest, SourceFormat::Json) => Path::new("package.json"),
         (ArtifactKind::ClaudeSettings, SourceFormat::Json) => Path::new(".claude/settings.json"),
         (ArtifactKind::ServerRegistryConfig, SourceFormat::Json) => Path::new("server.json"),
         (ArtifactKind::ToolDescriptorJson, SourceFormat::Json) => {
@@ -791,6 +792,7 @@ fn fixture_path_for(artifact_kind: ArtifactKind, format: SourceFormat) -> &'stat
         (ArtifactKind::CursorPluginHooks, SourceFormat::Json) => {
             Path::new(".cursor-plugin/hooks.json")
         }
+        (ArtifactKind::Dockerfile, SourceFormat::Shell) => Path::new("Dockerfile"),
         (ArtifactKind::CursorHookScript, SourceFormat::Shell) => {
             Path::new(".cursor-plugin/hooks/install.sh")
         }

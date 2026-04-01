@@ -34,6 +34,8 @@ pub enum ArtifactKind {
     Instructions,
     CursorRules,
     McpConfig,
+    PackageManifest,
+    Dockerfile,
     ClaudeSettings,
     ServerRegistryConfig,
     ToolDescriptorJson,

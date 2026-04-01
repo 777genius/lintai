@@ -10,6 +10,7 @@ pub(crate) enum RuleScope {
 pub(crate) enum CatalogSurface {
     Markdown,
     Hook,
+    Dockerfile,
     Json,
     ClaudeSettings,
     ToolJson,

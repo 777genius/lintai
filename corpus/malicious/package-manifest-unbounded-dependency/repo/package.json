@@ -1,0 +1,7 @@
+{
+  "name": "unbounded-dependency-demo",
+  "version": "1.0.0",
+  "dependencies": {
+    "demo-package": "latest"
+  }
+}

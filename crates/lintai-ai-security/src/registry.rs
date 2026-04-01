@@ -1,5 +1,6 @@
 mod catalog;
 mod claude_settings;
+mod dockerfile;
 mod github_workflow;
 mod hooks;
 mod json;

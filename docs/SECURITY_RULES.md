@@ -461,6 +461,9 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC740` | Claude settings command hook dumps and exfiltrates environment variables or shell state | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
 | `SEC741` | Plugin hook command dumps environment variables or shell state | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC742` | Plugin hook command dumps and exfiltrates environment variables or shell state | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC743` | package.json defines a dangerous install-time lifecycle script | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
+| `SEC744` | package.json installs a dependency from a git or forge shortcut source | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
+| `SEC745` | package.json uses an unbounded dependency version like * or latest | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 
 ## Builtin preset activation model
 
@@ -8474,8 +8477,8 @@ Important behavior:
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit transfer of sensitive credential files to remote network or cloud-storage destinations in executable hook lines.
-- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`.
-- Malicious Corpus: `hook-sensitive-file-exfil`
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `sftp`, `rsync`, `curl`, `aws s3 cp`, `gsutil cp`, or `rclone copy`.
+- Malicious Corpus: `hook-sensitive-file-exfil`, `hook-sensitive-file-rclone-exfil`
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
@@ -8495,8 +8498,8 @@ Important behavior:
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit transfer of sensitive credential files to remote destinations.
-- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`.
-- Malicious Corpus: `mcp-command-sensitive-file-exfil`
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `sftp`, `rsync`, `curl`, `aws s3 cp`, `gsutil cp`, or `rclone copy`.
+- Malicious Corpus: `mcp-command-sensitive-file-exfil`, `mcp-command-sensitive-file-rclone-exfil`
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
@@ -8516,8 +8519,8 @@ Important behavior:
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit transfer of sensitive credential files to remote destinations.
-- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`.
-- Malicious Corpus: `claude-settings-hook-sensitive-file-exfil`
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `sftp`, `rsync`, `curl`, `aws s3 cp`, `gsutil cp`, or `rclone copy`.
+- Malicious Corpus: `claude-settings-hook-sensitive-file-exfil`, `claude-settings-hook-sensitive-file-rclone-exfil`
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
@@ -8537,8 +8540,8 @@ Important behavior:
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit transfer of sensitive credential files to remote destinations.
-- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `rsync`, `curl`, `aws s3 cp`, or `gsutil cp`.
-- Malicious Corpus: `plugin-hook-command-sensitive-file-exfil`
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `sftp`, `rsync`, `curl`, `aws s3 cp`, `gsutil cp`, or `rclone copy`.
+- Malicious Corpus: `plugin-hook-command-sensitive-file-exfil`, `plugin-hook-command-sensitive-file-rclone-exfil`
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
@@ -9567,7 +9570,7 @@ Important behavior:
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks hook shell lines for explicit environment or shell-state enumeration commands.
 - Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`.
-- Malicious Corpus: `hook-env-dump`, `hook-env-dump-exfil`
+- Malicious Corpus: `hook-env-dump`, `hook-env-dump-exfil`, `hook-env-dump-cloud-exfil`
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
@@ -9587,8 +9590,8 @@ Important behavior:
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks hook shell lines for explicit environment or shell-state enumeration commands combined with remote transfer behavior.
-- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
-- Malicious Corpus: `hook-env-dump-exfil`
+- Deterministic Signal Basis: HookSignals command-line analysis over non-comment hook lines for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `sftp`, `rsync`, `nc`, `aws s3 cp`, `gsutil cp`, `rclone copy`, or HTTP(S) endpoints.
+- Malicious Corpus: `hook-env-dump-exfil`, `hook-env-dump-cloud-exfil`
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
@@ -9609,7 +9612,7 @@ Important behavior:
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit environment or shell-state enumeration commands.
 - Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`.
-- Malicious Corpus: `mcp-command-env-dump`, `mcp-command-env-dump-exfil`
+- Malicious Corpus: `mcp-command-env-dump`, `mcp-command-env-dump-exfil`, `mcp-command-env-dump-cloud-exfil`
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
@@ -9629,8 +9632,8 @@ Important behavior:
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit environment or shell-state enumeration commands combined with remote transfer behavior.
-- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
-- Malicious Corpus: `mcp-command-env-dump-exfil`
+- Deterministic Signal Basis: JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `sftp`, `rsync`, `nc`, `aws s3 cp`, `gsutil cp`, `rclone copy`, or HTTP(S) endpoints.
+- Malicious Corpus: `mcp-command-env-dump-exfil`, `mcp-command-env-dump-cloud-exfil`
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
@@ -9651,7 +9654,7 @@ Important behavior:
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit environment or shell-state enumeration commands.
 - Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`.
-- Malicious Corpus: `claude-settings-hook-env-dump`, `claude-settings-hook-env-dump-exfil`
+- Malicious Corpus: `claude-settings-hook-env-dump`, `claude-settings-hook-env-dump-exfil`, `claude-settings-hook-env-dump-cloud-exfil`
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
@@ -9671,8 +9674,8 @@ Important behavior:
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit environment or shell-state enumeration commands combined with remote transfer behavior.
-- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
-- Malicious Corpus: `claude-settings-hook-env-dump-exfil`
+- Deterministic Signal Basis: ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `sftp`, `rsync`, `nc`, `aws s3 cp`, `gsutil cp`, `rclone copy`, or HTTP(S) endpoints.
+- Malicious Corpus: `claude-settings-hook-env-dump-exfil`, `claude-settings-hook-env-dump-cloud-exfil`
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
@@ -9693,7 +9696,7 @@ Important behavior:
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit environment or shell-state enumeration commands.
 - Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`.
-- Malicious Corpus: `plugin-hook-command-env-dump`, `plugin-hook-command-env-dump-exfil`
+- Malicious Corpus: `plugin-hook-command-env-dump`, `plugin-hook-command-env-dump-exfil`, `plugin-hook-command-env-dump-cloud-exfil`
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
@@ -9713,9 +9716,72 @@ Important behavior:
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit environment or shell-state enumeration commands combined with remote transfer behavior.
-- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints.
-- Malicious Corpus: `plugin-hook-command-env-dump-exfil`
+- Deterministic Signal Basis: JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `sftp`, `rsync`, `nc`, `aws s3 cp`, `gsutil cp`, `rclone copy`, or HTTP(S) endpoints.
+- Malicious Corpus: `plugin-hook-command-env-dump-exfil`, `plugin-hook-command-env-dump-cloud-exfil`
 - Benign Corpus: `plugin-hook-command-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC743` — package.json defines a dangerous install-time lifecycle script
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `supply-chain`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed package.json install-time lifecycle hooks for explicit download-exec, eval, or npm-explore shell behavior.
+- Deterministic Signal Basis: JsonSignals package manifest analysis over `scripts.preinstall|install|postinstall|prepare` values for download-exec patterns, `eval`, or `npm explore` shell execution.
+- Malicious Corpus: `package-manifest-dangerous-lifecycle-script`
+- Benign Corpus: `package-manifest-safe-lifecycle-script`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC744` — package.json installs a dependency from a git or forge shortcut source
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `supply-chain`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed package.json dependency sections for direct git or forge shortcut sources that bypass the normal registry release path.
+- Deterministic Signal Basis: JsonSignals package manifest analysis over dependency sections for specs starting with `git://`, `git+https://`, `git+ssh://`, `github:`, `gitlab:`, or `bitbucket:`.
+- Malicious Corpus: `package-manifest-git-url-dependency`
+- Benign Corpus: `package-manifest-registry-dependency-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC745` — package.json uses an unbounded dependency version like * or latest
+
+- Provider: `lintai-ai-security`
+- Alias: `none`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `supply-chain`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks committed package.json dependency sections for unbounded or mutable selectors that undermine reproducibility.
+- Deterministic Signal Basis: JsonSignals package manifest analysis over dependency sections for exact specs equal to `*` or `latest`.
+- Malicious Corpus: `package-manifest-unbounded-dependency`
+- Benign Corpus: `package-manifest-pinned-dependency-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

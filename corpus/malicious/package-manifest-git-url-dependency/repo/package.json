@@ -1,0 +1,7 @@
+{
+  "name": "git-dependency-demo",
+  "version": "1.0.0",
+  "dependencies": {
+    "demo-package": "git+https://github.com/acme/demo-package.git"
+  }
+}

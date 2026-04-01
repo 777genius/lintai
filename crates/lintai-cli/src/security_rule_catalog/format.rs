@@ -14,6 +14,7 @@ pub(super) fn format_surface(surface: CatalogSurface) -> &'static str {
     match surface {
         CatalogSurface::Markdown => "markdown",
         CatalogSurface::Hook => "hook",
+        CatalogSurface::Dockerfile => "dockerfile",
         CatalogSurface::Json => "json",
         CatalogSurface::ClaudeSettings => "claude_settings",
         CatalogSurface::ToolJson => "tool_json",

@@ -26,6 +26,39 @@ pub(crate) fn has_inline_download_pipe_exec(lowered: &str) -> bool {
     has_download && has_pipe_exec
 }
 
+pub(crate) fn looks_like_dangerous_lifecycle_script(script: &str) -> bool {
+    let lowered = script.to_ascii_lowercase();
+    let has_download_to_exec = has_download_exec(&lowered)
+        || (has_inline_download_pipe_exec(&lowered)
+            && (lowered.contains("| node") || lowered.contains("node -e")));
+    let has_eval = lowered.contains("eval ")
+        || lowered.contains(" eval ")
+        || lowered.starts_with("eval ")
+        || lowered.contains("eval(");
+    let has_npm_explore_exec = lowered.contains("npm explore ")
+        && (lowered.contains(" sh ")
+            || lowered.contains(" bash ")
+            || lowered.contains(" zsh ")
+            || lowered.contains(" -c "));
+
+    has_download_to_exec || has_eval || has_npm_explore_exec
+}
+
+pub(crate) fn looks_like_git_dependency_spec(spec: &str) -> bool {
+    let lowered = spec.trim().to_ascii_lowercase();
+    lowered.starts_with("git://")
+        || lowered.starts_with("git+https://")
+        || lowered.starts_with("git+ssh://")
+        || lowered.starts_with("github:")
+        || lowered.starts_with("gitlab:")
+        || lowered.starts_with("bitbucket:")
+}
+
+pub(crate) fn looks_like_unbounded_dependency_spec(spec: &str) -> bool {
+    let trimmed = spec.trim();
+    trimmed == "*" || trimmed.eq_ignore_ascii_case("latest")
+}
+
 pub(crate) fn is_mutable_mcp_launcher(command: &str, args: Option<&Vec<Value>>) -> bool {
     if command.eq_ignore_ascii_case("npx") || command.eq_ignore_ascii_case("uvx") {
         return true;
@@ -137,6 +170,10 @@ pub(crate) fn looks_like_exfil_network_command(text: &str) -> bool {
         return true;
     }
 
+    if looks_like_sensitive_file_transfer_command(text) {
+        return true;
+    }
+
     shell_tokens(text).iter().any(|token| {
         command_name_eq(token.text, "curl")
             || command_name_eq(token.text, "wget")
@@ -144,6 +181,7 @@ pub(crate) fn looks_like_exfil_network_command(text: &str) -> bool {
             || command_name_eq(token.text, "netcat")
             || command_name_eq(token.text, "scp")
             || command_name_eq(token.text, "rsync")
+            || command_name_eq(token.text, "sftp")
             || command_name_eq(token.text, "ftp")
     })
 }
@@ -514,6 +552,13 @@ pub(crate) fn looks_like_sensitive_file_transfer_command(text: &str) -> bool {
         return true;
     }
 
+    let has_sftp = tokens
+        .iter()
+        .any(|token| command_name_eq(token.text, "sftp"));
+    if has_sftp {
+        return true;
+    }
+
     let has_nc = tokens
         .iter()
         .any(|token| command_name_eq(token.text, "nc") || command_name_eq(token.text, "netcat"));
@@ -528,7 +573,9 @@ pub(crate) fn looks_like_sensitive_file_transfer_command(text: &str) -> bool {
             .iter()
             .any(|token| token.text.eq_ignore_ascii_case("s3"))
         && tokens.iter().any(|token| {
-            token.text.eq_ignore_ascii_case("cp") || token.text.eq_ignore_ascii_case("sync")
+            token.text.eq_ignore_ascii_case("cp")
+                || token.text.eq_ignore_ascii_case("mv")
+                || token.text.eq_ignore_ascii_case("sync")
         })
         && tokens
             .iter()
@@ -541,12 +588,27 @@ pub(crate) fn looks_like_sensitive_file_transfer_command(text: &str) -> bool {
         .iter()
         .any(|token| command_name_eq(token.text, "gsutil"))
         && tokens.iter().any(|token| {
-            token.text.eq_ignore_ascii_case("cp") || token.text.eq_ignore_ascii_case("rsync")
+            token.text.eq_ignore_ascii_case("cp")
+                || token.text.eq_ignore_ascii_case("mv")
+                || token.text.eq_ignore_ascii_case("rsync")
         })
         && tokens
             .iter()
             .any(|token| starts_with_ascii_case_insensitive(token.text, "gs://"));
     if has_gsutil {
+        return true;
+    }
+
+    let has_rclone = tokens
+        .iter()
+        .any(|token| command_name_eq(token.text, "rclone"))
+        && tokens.iter().any(|token| {
+            token.text.eq_ignore_ascii_case("copy")
+                || token.text.eq_ignore_ascii_case("move")
+                || token.text.eq_ignore_ascii_case("sync")
+        })
+        && tokens.iter().any(|token| token.text.contains(':'));
+    if has_rclone {
         return true;
     }
 
