@@ -300,6 +300,10 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC579 / MCP-AUTOAPPROVE-GH-SECRET-DELETE` | MCP configuration auto-approves `Bash(gh secret delete:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC580 / MCP-AUTOAPPROVE-GH-VARIABLE-DELETE` | MCP configuration auto-approves `Bash(gh variable delete:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC581 / MCP-AUTOAPPROVE-GH-WORKFLOW-DISABLE` | MCP configuration auto-approves `Bash(gh workflow disable:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC582 / MCP-AUTOAPPROVE-GH-REPO-TRANSFER` | MCP configuration auto-approves `Bash(gh repo transfer:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC583 / MCP-AUTOAPPROVE-GH-RELEASE-CREATE` | MCP configuration auto-approves `Bash(gh release create:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC584 / MCP-AUTOAPPROVE-GH-RELEASE-DELETE` | MCP configuration auto-approves `Bash(gh release delete:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC585 / MCP-AUTOAPPROVE-GH-RELEASE-UPLOAD` | MCP configuration auto-approves `Bash(gh release upload:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -5786,6 +5790,90 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh workflow disable:*)"]` on parsed MCP configuration.
 - Malicious Corpus: `mcp-autoapprove-gh-delete-family`
 - Benign Corpus: `mcp-autoapprove-gh-delete-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC582 / MCP-AUTOAPPROVE-GH-REPO-TRANSFER` — MCP configuration auto-approves `Bash(gh repo transfer:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GH-REPO-TRANSFER`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `gh repo transfer` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh repo transfer:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-gh-release-transfer-family`
+- Benign Corpus: `mcp-autoapprove-gh-release-transfer-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC583 / MCP-AUTOAPPROVE-GH-RELEASE-CREATE` — MCP configuration auto-approves `Bash(gh release create:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GH-RELEASE-CREATE`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `gh release create` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh release create:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-gh-release-transfer-family`
+- Benign Corpus: `mcp-autoapprove-gh-release-transfer-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC584 / MCP-AUTOAPPROVE-GH-RELEASE-DELETE` — MCP configuration auto-approves `Bash(gh release delete:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GH-RELEASE-DELETE`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `gh release delete` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh release delete:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-gh-release-transfer-family`
+- Benign Corpus: `mcp-autoapprove-gh-release-transfer-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC585 / MCP-AUTOAPPROVE-GH-RELEASE-UPLOAD` — MCP configuration auto-approves `Bash(gh release upload:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-GH-RELEASE-UPLOAD`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `gh release upload` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(gh release upload:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-gh-release-transfer-family`
+- Benign Corpus: `mcp-autoapprove-gh-release-transfer-family-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

@@ -99,7 +99,11 @@
         "lintai-ai-security:SEC578",
         "lintai-ai-security:SEC579",
         "lintai-ai-security:SEC580",
-        "lintai-ai-security:SEC581"
+        "lintai-ai-security:SEC581",
+        "lintai-ai-security:SEC582",
+        "lintai-ai-security:SEC583",
+        "lintai-ai-security:SEC584",
+        "lintai-ai-security:SEC585"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -470,7 +474,11 @@
         "lintai-ai-security:SEC578",
         "lintai-ai-security:SEC579",
         "lintai-ai-security:SEC580",
-        "lintai-ai-security:SEC581"
+        "lintai-ai-security:SEC581",
+        "lintai-ai-security:SEC582",
+        "lintai-ai-security:SEC583",
+        "lintai-ai-security:SEC584",
+        "lintai-ai-security:SEC585"
       ],
       "canonicalPath": "/presets/mcp"
     },
@@ -10671,6 +10679,162 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh workflow disable:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC582",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC582",
+      "alias": "MCP-AUTOAPPROVE-GH-REPO-TRANSFER",
+      "displayLabel": "SEC582 / MCP-AUTOAPPROVE-GH-REPO-TRANSFER",
+      "docTitle": "MCP config: gh repo transfer auto-approve",
+      "slug": "sec582",
+      "canonicalPath": "/rules/lintai-ai-security/sec582",
+      "summary": "MCP configuration auto-approves `Bash(gh repo transfer:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `gh repo transfer` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-gh-release-transfer-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-gh-release-transfer-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh repo transfer:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC583",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC583",
+      "alias": "MCP-AUTOAPPROVE-GH-RELEASE-CREATE",
+      "displayLabel": "SEC583 / MCP-AUTOAPPROVE-GH-RELEASE-CREATE",
+      "docTitle": "MCP config: gh release create auto-approve",
+      "slug": "sec583",
+      "canonicalPath": "/rules/lintai-ai-security/sec583",
+      "summary": "MCP configuration auto-approves `Bash(gh release create:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `gh release create` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-gh-release-transfer-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-gh-release-transfer-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh release create:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC584",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC584",
+      "alias": "MCP-AUTOAPPROVE-GH-RELEASE-DELETE",
+      "displayLabel": "SEC584 / MCP-AUTOAPPROVE-GH-RELEASE-DELETE",
+      "docTitle": "MCP config: gh release delete auto-approve",
+      "slug": "sec584",
+      "canonicalPath": "/rules/lintai-ai-security/sec584",
+      "summary": "MCP configuration auto-approves `Bash(gh release delete:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `gh release delete` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-gh-release-transfer-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-gh-release-transfer-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh release delete:*)\"]` on parsed MCP configuration."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC585",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC585",
+      "alias": "MCP-AUTOAPPROVE-GH-RELEASE-UPLOAD",
+      "displayLabel": "SEC585 / MCP-AUTOAPPROVE-GH-RELEASE-UPLOAD",
+      "docTitle": "MCP config: gh release upload auto-approve",
+      "slug": "sec585",
+      "canonicalPath": "/rules/lintai-ai-security/sec585",
+      "summary": "MCP configuration auto-approves `Bash(gh release upload:*)` through `autoApprove`",
+      "scope": "per_file",
+      "surface": "json",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "base",
+        "mcp"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Matches exact `gh release upload` auto-approval in MCP client config.",
+        "maliciousCaseIds": [
+          "mcp-autoapprove-gh-release-transfer-family"
+        ],
+        "benignCaseIds": [
+          "mcp-autoapprove-gh-release-transfer-family-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh release upload:*)\"]` on parsed MCP configuration."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

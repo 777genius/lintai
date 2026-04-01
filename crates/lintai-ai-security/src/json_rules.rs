@@ -453,6 +453,66 @@ pub(crate) fn check_mcp_autoapprove_gh_workflow_disable(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_gh_repo_transfer(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_repo_transfer_span.clone()),
+        "MCP configuration auto-approves `gh repo transfer` with `autoApprove: [\"Bash(gh repo transfer:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_gh_release_create(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_release_create_span.clone()),
+        "MCP configuration auto-approves `gh release create` with `autoApprove: [\"Bash(gh release create:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_gh_release_delete(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_release_delete_span.clone()),
+        "MCP configuration auto-approves `gh release delete` with `autoApprove: [\"Bash(gh release delete:*)\"]`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_gh_release_upload(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_gh_release_upload_span.clone()),
+        "MCP configuration auto-approves `gh release upload` with `autoApprove: [\"Bash(gh release upload:*)\"]`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_read_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

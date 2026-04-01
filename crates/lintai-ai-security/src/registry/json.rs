@@ -8,8 +8,10 @@ use crate::json_rules::{
     check_mcp_autoapprove_edit_unsafe_path, check_mcp_autoapprove_edit_wildcard,
     check_mcp_autoapprove_gh_api_delete, check_mcp_autoapprove_gh_api_patch,
     check_mcp_autoapprove_gh_api_post, check_mcp_autoapprove_gh_api_put,
-    check_mcp_autoapprove_gh_issue_create, check_mcp_autoapprove_gh_repo_create,
-    check_mcp_autoapprove_gh_repo_delete, check_mcp_autoapprove_gh_repo_edit,
+    check_mcp_autoapprove_gh_issue_create, check_mcp_autoapprove_gh_release_create,
+    check_mcp_autoapprove_gh_release_delete, check_mcp_autoapprove_gh_release_upload,
+    check_mcp_autoapprove_gh_repo_create, check_mcp_autoapprove_gh_repo_delete,
+    check_mcp_autoapprove_gh_repo_edit, check_mcp_autoapprove_gh_repo_transfer,
     check_mcp_autoapprove_gh_secret_delete, check_mcp_autoapprove_gh_secret_set,
     check_mcp_autoapprove_gh_variable_delete, check_mcp_autoapprove_gh_variable_set,
     check_mcp_autoapprove_gh_workflow_disable, check_mcp_autoapprove_gh_workflow_run,
@@ -514,6 +516,54 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct McpAutoApproveGhRepoTransferRule {
+        code: "SEC582",
+        summary: "MCP configuration auto-approves `Bash(gh repo transfer:*)` through `autoApprove`",
+        doc_title: "MCP config: gh repo transfer auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGhReleaseCreateRule {
+        code: "SEC583",
+        summary: "MCP configuration auto-approves `Bash(gh release create:*)` through `autoApprove`",
+        doc_title: "MCP config: gh release create auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGhReleaseDeleteRule {
+        code: "SEC584",
+        summary: "MCP configuration auto-approves `Bash(gh release delete:*)` through `autoApprove`",
+        doc_title: "MCP config: gh release delete auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
+    pub struct McpAutoApproveGhReleaseUploadRule {
+        code: "SEC585",
+        summary: "MCP configuration auto-approves `Bash(gh release upload:*)` through `autoApprove`",
+        doc_title: "MCP config: gh release upload auto-approve",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct McpAutoApproveReadWildcardRule {
         code: "SEC567",
         summary: "MCP configuration auto-approves `Read(*)` through `autoApprove`",
@@ -813,7 +863,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 65] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 69] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
@@ -1595,6 +1645,86 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 65] = [
         safe_fix: None,
         suggestion_message: Some(
             "remove shared `gh workflow disable` auto-approval and keep workflow disabling under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhRepoTransferRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `gh repo transfer` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-gh-release-transfer-family"],
+            benign_case_ids: &["mcp-autoapprove-gh-release-transfer-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh repo transfer:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_repo_transfer,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh repo transfer` auto-approval and keep repository transfer under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhReleaseCreateRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `gh release create` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-gh-release-transfer-family"],
+            benign_case_ids: &["mcp-autoapprove-gh-release-transfer-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh release create:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_release_create,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh release create` auto-approval and keep release publishing under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhReleaseDeleteRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `gh release delete` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-gh-release-transfer-family"],
+            benign_case_ids: &["mcp-autoapprove-gh-release-transfer-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh release delete:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_release_delete,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh release delete` auto-approval and keep release deletion under explicit user review",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: McpAutoApproveGhReleaseUploadRule::METADATA,
+        surface: Surface::Json,
+        default_presets: BASE_MCP_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Matches exact `gh release upload` auto-approval in MCP client config.",
+            malicious_case_ids: &["mcp-autoapprove-gh-release-transfer-family"],
+            benign_case_ids: &["mcp-autoapprove-gh-release-transfer-family-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "JsonSignals exact array-item detection for `autoApprove: [\"Bash(gh release upload:*)\"]` on parsed MCP configuration.",
+        },
+        check: check_mcp_autoapprove_gh_release_upload,
+        safe_fix: None,
+        suggestion_message: Some(
+            "remove shared `gh release upload` auto-approval and keep release asset mutation under explicit user review",
         ),
         suggestion_fix: None,
     },

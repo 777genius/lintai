@@ -1,0 +1,9 @@
+id = "mcp-autoapprove-gh-release-transfer-family"
+description = "MCP config auto-approves GitHub repository transfer and release mutation commands through autoApprove"
+
+expected_findings = [
+  "SEC582",
+  "SEC583",
+  "SEC584",
+  "SEC585",
+]
