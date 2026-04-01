@@ -93,7 +93,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -105,7 +105,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -117,7 +117,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -129,7 +129,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -141,7 +141,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -153,7 +153,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -165,7 +165,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -177,7 +177,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -189,7 +189,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -297,7 +297,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -681,7 +681,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -813,7 +813,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -825,7 +825,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -849,7 +849,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -885,7 +885,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -909,7 +909,7 @@ declare_rule! {
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
-        tier: RuleTier::Preview,
+        tier: RuleTier::Stable,
     }
 }
 
@@ -1015,9 +1015,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Wildcard Write grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for explicit wildcard `Write(*)` grants.",
+            malicious_case_ids: &["claude-settings-write-wildcard"],
+            benign_case_ids: &["claude-settings-write-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Write(*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_write_wildcard,
         safe_fix: None,
@@ -1031,9 +1035,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Wildcard Read grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for explicit wildcard `Read(*)` grants.",
+            malicious_case_ids: &["claude-settings-read-wildcard"],
+            benign_case_ids: &["claude-settings-read-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Read(*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_read_wildcard,
         safe_fix: None,
@@ -1047,9 +1055,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Wildcard Edit grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for explicit wildcard `Edit(*)` grants.",
+            malicious_case_ids: &["claude-settings-edit-wildcard"],
+            benign_case_ids: &["claude-settings-edit-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Edit(*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_edit_wildcard,
         safe_fix: None,
@@ -1063,9 +1075,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Unsafe Read path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for exact unsafe-path `Read(...)` grants.",
+            malicious_case_ids: &["claude-settings-unsafe-path-permissions"],
+            benign_case_ids: &["claude-settings-unsafe-path-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission-scope detection for `Read(...)` entries that target absolute, home-relative, parent-traversing, or drive-qualified paths inside parsed Claude settings JSON.",
         },
         check: check_claude_settings_read_unsafe_path,
         safe_fix: None,
@@ -1079,9 +1095,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Unsafe Write path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for exact unsafe-path `Write(...)` grants.",
+            malicious_case_ids: &["claude-settings-unsafe-path-permissions"],
+            benign_case_ids: &["claude-settings-unsafe-path-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission-scope detection for `Write(...)` entries that target absolute, home-relative, parent-traversing, or drive-qualified paths inside parsed Claude settings JSON.",
         },
         check: check_claude_settings_write_unsafe_path,
         safe_fix: None,
@@ -1095,9 +1115,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Unsafe Edit path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for exact unsafe-path `Edit(...)` grants.",
+            malicious_case_ids: &["claude-settings-unsafe-path-permissions"],
+            benign_case_ids: &["claude-settings-unsafe-path-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission-scope detection for `Edit(...)` entries that target absolute, home-relative, parent-traversing, or drive-qualified paths inside parsed Claude settings JSON.",
         },
         check: check_claude_settings_edit_unsafe_path,
         safe_fix: None,
@@ -1111,9 +1135,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Unsafe Glob path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for exact unsafe-path `Glob(...)` grants.",
+            malicious_case_ids: &["claude-settings-glob-grep-unsafe-path-permissions"],
+            benign_case_ids: &["claude-settings-unsafe-path-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission-scope detection for `Glob(...)` entries that target absolute, home-relative, parent-traversing, or drive-qualified paths inside parsed Claude settings JSON.",
         },
         check: check_claude_settings_glob_unsafe_path,
         safe_fix: None,
@@ -1127,9 +1155,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Unsafe Grep path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for exact unsafe-path `Grep(...)` grants.",
+            malicious_case_ids: &["claude-settings-glob-grep-unsafe-path-permissions"],
+            benign_case_ids: &["claude-settings-unsafe-path-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact permission-scope detection for `Grep(...)` entries that target absolute, home-relative, parent-traversing, or drive-qualified paths inside parsed Claude settings JSON.",
         },
         check: check_claude_settings_grep_unsafe_path,
         safe_fix: None,
@@ -1143,9 +1175,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Wildcard WebSearch grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for explicit wildcard `WebSearch(*)` grants.",
+            malicious_case_ids: &["claude-settings-websearch-wildcard"],
+            benign_case_ids: &["claude-settings-websearch-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `WebSearch(*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_websearch_wildcard,
         safe_fix: None,
@@ -1159,9 +1195,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Bare WebSearch grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for bare `WebSearch` grants without a reviewed scope.",
+            malicious_case_ids: &["claude-settings-unscoped-websearch"],
+            benign_case_ids: &["claude-settings-websearch-scoped-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for bare `WebSearch` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_unscoped_websearch,
         safe_fix: None,
@@ -1695,9 +1735,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Shared package installation permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for broad package installation authority.",
+            malicious_case_ids: &["claude-settings-package-install-permission"],
+            benign_case_ids: &["claude-settings-bash-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string-family detection for package installation permissions such as `Bash(pip install)` or `Bash(npm install)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_package_install_permission,
         safe_fix: None,
@@ -1999,9 +2043,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Wildcard Glob grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for explicit wildcard `Glob(*)` grants.",
+            malicious_case_ids: &["claude-settings-glob-wildcard"],
+            benign_case_ids: &["claude-settings-glob-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Glob(*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_glob_wildcard,
         safe_fix: None,
@@ -2015,9 +2063,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Wildcard Grep grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for explicit wildcard `Grep(*)` grants.",
+            malicious_case_ids: &["claude-settings-grep-wildcard"],
+            benign_case_ids: &["claude-settings-grep-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Grep(*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_grep_wildcard,
         safe_fix: None,
@@ -2047,9 +2099,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Wildcard WebFetch grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for explicit wildcard `WebFetch(*)` grants.",
+            malicious_case_ids: &["claude-settings-webfetch-wildcard"],
+            benign_case_ids: &["claude-settings-webfetch-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `WebFetch(*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_webfetch_wildcard,
         safe_fix: None,
@@ -2095,9 +2151,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Committed Claude settings with `permissions.defaultMode = bypassPermissions` are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings for explicit `permissions.defaultMode = bypassPermissions`.",
+            malicious_case_ids: &["claude-settings-bypass-permissions"],
+            benign_case_ids: &["claude-settings-bypass-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `permissions.defaultMode = bypassPermissions` on parsed Claude settings JSON.",
         },
         check: check_claude_settings_bypass_permissions,
         safe_fix: None,
@@ -2127,9 +2187,13 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 76] = [
         surface: Surface::ClaudeSettings,
         default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
-        lifecycle: RuleLifecycle::Preview {
-            blocker: "Wildcard Bash grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks shared Claude settings permissions for explicit wildcard `Bash(*)` grants.",
+            malicious_case_ids: &["claude-settings-bash-wildcard"],
+            benign_case_ids: &["claude-settings-bash-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "ClaudeSettingsSignals exact string detection for `Bash(*)` inside permissions.allow on parsed Claude settings JSON.",
         },
         check: check_claude_settings_bash_wildcard,
         safe_fix: None,

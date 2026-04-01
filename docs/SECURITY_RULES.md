@@ -80,21 +80,21 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC359 / CURSOR-RULE-ALWAYSAPPLY` | Cursor rule frontmatter `alwaysApply` must be boolean | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC360 / CURSOR-RULE-GLOBS` | Cursor rule frontmatter `globs` must be a sequence of patterns | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC361 / CLAUDE-SETTINGS-SCHEMA` | Claude settings file is missing a top-level `$schema` reference | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC362 / CLAUDE-BASH-WILDCARD` | Claude settings permissions allow `Bash(*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC362 / CLAUDE-BASH-WILDCARD` | Claude settings permissions allow `Bash(*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC363 / CLAUDE-HOME-HOOK-PATH` | Claude settings hook command uses a home-directory path in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC364 / CLAUDE-BYPASS-PERMISSIONS` | Claude settings set `permissions.defaultMode` to `bypassPermissions` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC364 / CLAUDE-BYPASS-PERMISSIONS` | Claude settings set `permissions.defaultMode` to `bypassPermissions` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC365 / CLAUDE-HTTP-HOOK-URL` | Claude settings allow non-HTTPS HTTP hook URLs in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC366 / CLAUDE-HTTP-HOOK-HOST` | Claude settings allow dangerous host literals in `allowedHttpHookUrls` | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC367 / CLAUDE-WEBFETCH-WILDCARD` | Claude settings permissions allow `WebFetch(*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC367 / CLAUDE-WEBFETCH-WILDCARD` | Claude settings permissions allow `WebFetch(*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC368 / CLAUDE-ABS-HOOK-PATH` | Claude settings hook command uses a repo-external absolute path in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC369 / CLAUDE-WRITE-WILDCARD` | Claude settings permissions allow `Write(*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC369 / CLAUDE-WRITE-WILDCARD` | Claude settings permissions allow `Write(*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC370 / COPILOT-PATH-SUFFIX` | Path-specific GitHub Copilot instruction markdown under `.github/instructions/` uses the wrong file suffix | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC371 / COPILOT-APPLYTO-TYPE` | Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` shape | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
-| `SEC372 / CLAUDE-READ-WILDCARD` | Claude settings permissions allow `Read(*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC373 / CLAUDE-EDIT-WILDCARD` | Claude settings permissions allow `Edit(*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC374 / CLAUDE-WEBSEARCH-WILDCARD` | Claude settings permissions allow `WebSearch(*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC375 / CLAUDE-GLOB-WILDCARD` | Claude settings permissions allow `Glob(*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC376 / CLAUDE-GREP-WILDCARD` | Claude settings permissions allow `Grep(*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC372 / CLAUDE-READ-WILDCARD` | Claude settings permissions allow `Read(*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC373 / CLAUDE-EDIT-WILDCARD` | Claude settings permissions allow `Edit(*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC374 / CLAUDE-WEBSEARCH-WILDCARD` | Claude settings permissions allow `WebSearch(*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC375 / CLAUDE-GLOB-WILDCARD` | Claude settings permissions allow `Glob(*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC376 / CLAUDE-GREP-WILDCARD` | Claude settings permissions allow `Grep(*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC377 / COPILOT-APPLYTO-GLOB` | Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` glob pattern | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC378 / CURSOR-ALWAYSAPPLY-GLOBS` | Cursor rule frontmatter should not set `globs` when `alwaysApply` is `true` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC379 / CURSOR-UNKNOWN-FRONTMATTER` | Cursor rule frontmatter contains an unknown key | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
@@ -102,7 +102,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC381 / CLAUDE-HOOK-TIMEOUT` | Claude settings command hook should set `timeout` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC382 / CLAUDE-HOOK-MATCHER-EVENT` | Claude settings should not use `matcher` on unsupported hook events | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC383 / CLAUDE-HOOK-MISSING-MATCHER` | Claude settings should set `matcher` on matcher-capable hook events | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC384 / CLAUDE-WEBSEARCH-UNSCOPED` | Claude settings permissions allow bare `WebSearch` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC384 / CLAUDE-WEBSEARCH-UNSCOPED` | Claude settings permissions allow bare `WebSearch` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC385 / CLAUDE-GIT-PUSH-PERMISSION` | Claude settings permissions allow `Bash(git push)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC386 / CLAUDE-GIT-CHECKOUT-PERMISSION` | Claude settings permissions allow `Bash(git checkout:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC387 / CLAUDE-GIT-COMMIT-PERMISSION` | Claude settings permissions allow `Bash(git commit:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
@@ -123,7 +123,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC402 / POLICY-NETWORK-MISMATCH` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC403 / POLICY-SKILL-CAPABILITIES-MISMATCH` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC404 / MD-WEBFETCH-UNSCOPED` | AI-native markdown frontmatter grants bare `WebFetch` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC405 / CLAUDE-PACKAGE-INSTALL-PERMISSION` | Claude settings permissions allow package installation commands in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC405 / CLAUDE-PACKAGE-INSTALL-PERMISSION` | Claude settings permissions allow package installation commands in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC406 / CLAUDE-GIT-ADD-PERMISSION` | Claude settings permissions allow `Bash(git add:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC407 / CLAUDE-GIT-CLONE-PERMISSION` | Claude settings permissions allow `Bash(git clone:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC408 / CLAUDE-GH-PR-PERMISSION` | Claude settings permissions allow `Bash(gh pr:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
@@ -193,9 +193,9 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC472 / MD-GIT-SSL-NO-VERIFY` | AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC473 / MD-GIT-INLINE-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC474 / MD-GH-PR-PERMISSION` | AI-native markdown frontmatter grants `Bash(gh pr:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC475 / CLAUDE-READ-UNSAFE-PATH` | Claude settings permissions allow `Read(...)` over an unsafe path in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC476 / CLAUDE-WRITE-UNSAFE-PATH` | Claude settings permissions allow `Write(...)` over an unsafe path in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC477 / CLAUDE-EDIT-UNSAFE-PATH` | Claude settings permissions allow `Edit(...)` over an unsafe path in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC475 / CLAUDE-READ-UNSAFE-PATH` | Claude settings permissions allow `Read(...)` over an unsafe path in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC476 / CLAUDE-WRITE-UNSAFE-PATH` | Claude settings permissions allow `Write(...)` over an unsafe path in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC477 / CLAUDE-EDIT-UNSAFE-PATH` | Claude settings permissions allow `Edit(...)` over an unsafe path in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC478 / CLAUDE-GIT-RESET-PERMISSION` | Claude settings permissions allow `Bash(git reset:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC479 / CLAUDE-GIT-CLEAN-PERMISSION` | Claude settings permissions allow `Bash(git clean:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC480 / CLAUDE-GIT-RESTORE-PERMISSION` | Claude settings permissions allow `Bash(git restore:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
@@ -204,8 +204,8 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC483 / CLAUDE-GIT-CHERRY-PICK-PERMISSION` | Claude settings permissions allow `Bash(git cherry-pick:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC484 / CLAUDE-GIT-APPLY-PERMISSION` | Claude settings permissions allow `Bash(git apply:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC485 / CLAUDE-GIT-AM-PERMISSION` | Claude settings permissions allow `Bash(git am:*)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC486 / CLAUDE-GLOB-UNSAFE-PATH` | Claude settings permissions allow `Glob(...)` over an unsafe path in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC487 / CLAUDE-GREP-UNSAFE-PATH` | Claude settings permissions allow `Grep(...)` over an unsafe path in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC486 / CLAUDE-GLOB-UNSAFE-PATH` | Claude settings permissions allow `Glob(...)` over an unsafe path in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC487 / CLAUDE-GREP-UNSAFE-PATH` | Claude settings permissions allow `Grep(...)` over an unsafe path in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC488 / CLAUDE-UVX-PERMISSION` | Claude settings permissions allow `Bash(uvx ...)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC489 / CLAUDE-PNPM-DLX-PERMISSION` | Claude settings permissions allow `Bash(pnpm dlx ...)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC490 / CLAUDE-YARN-DLX-PERMISSION` | Claude settings permissions allow `Bash(yarn dlx ...)` in a shared committed config | Preview | `preview_blocked` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
@@ -1702,13 +1702,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Wildcard Bash grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for explicit wildcard `Bash(*)` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Bash(*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-bash-wildcard`
+- Benign Corpus: `claude-settings-bash-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC363 / CLAUDE-HOME-HOOK-PATH` — Claude settings hook command uses a home-directory path in a shared committed config
 
@@ -1736,13 +1740,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Committed Claude settings with `permissions.defaultMode = bypassPermissions` are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings for explicit `permissions.defaultMode = bypassPermissions`.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `permissions.defaultMode = bypassPermissions` on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-bypass-permissions`
+- Benign Corpus: `claude-settings-bypass-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC365 / CLAUDE-HTTP-HOOK-URL` — Claude settings allow non-HTTPS HTTP hook URLs in a shared committed config
 
@@ -1787,13 +1795,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Wildcard WebFetch grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for explicit wildcard `WebFetch(*)` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `WebFetch(*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-webfetch-wildcard`
+- Benign Corpus: `claude-settings-webfetch-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC368 / CLAUDE-ABS-HOOK-PATH` — Claude settings hook command uses a repo-external absolute path in a shared committed config
 
@@ -1821,13 +1833,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Wildcard Write grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for explicit wildcard `Write(*)` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Write(*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-write-wildcard`
+- Benign Corpus: `claude-settings-write-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC370 / COPILOT-PATH-SUFFIX` — Path-specific GitHub Copilot instruction markdown under `.github/instructions/` uses the wrong file suffix
 
@@ -1872,13 +1888,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Wildcard Read grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for explicit wildcard `Read(*)` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Read(*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-read-wildcard`
+- Benign Corpus: `claude-settings-read-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC373 / CLAUDE-EDIT-WILDCARD` — Claude settings permissions allow `Edit(*)` in a shared committed config
 
@@ -1889,13 +1909,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Wildcard Edit grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for explicit wildcard `Edit(*)` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Edit(*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-edit-wildcard`
+- Benign Corpus: `claude-settings-edit-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC374 / CLAUDE-WEBSEARCH-WILDCARD` — Claude settings permissions allow `WebSearch(*)` in a shared committed config
 
@@ -1906,13 +1930,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Wildcard WebSearch grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for explicit wildcard `WebSearch(*)` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `WebSearch(*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-websearch-wildcard`
+- Benign Corpus: `claude-settings-websearch-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC375 / CLAUDE-GLOB-WILDCARD` — Claude settings permissions allow `Glob(*)` in a shared committed config
 
@@ -1923,13 +1951,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Wildcard Glob grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for explicit wildcard `Glob(*)` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Glob(*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-glob-wildcard`
+- Benign Corpus: `claude-settings-glob-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC376 / CLAUDE-GREP-WILDCARD` — Claude settings permissions allow `Grep(*)` in a shared committed config
 
@@ -1940,13 +1972,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Wildcard Grep grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for explicit wildcard `Grep(*)` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for `Grep(*)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-grep-wildcard`
+- Benign Corpus: `claude-settings-grep-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC377 / COPILOT-APPLYTO-GLOB` — Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` glob pattern
 
@@ -2076,13 +2112,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Bare WebSearch grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for bare `WebSearch` grants without a reviewed scope.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string detection for bare `WebSearch` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-unscoped-websearch`
+- Benign Corpus: `claude-settings-websearch-scoped-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC385 / CLAUDE-GIT-PUSH-PERMISSION` — Claude settings permissions allow `Bash(git push)` in a shared committed config
 
@@ -2402,13 +2442,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Shared package installation permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for broad package installation authority.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact string-family detection for package installation permissions such as `Bash(pip install)` or `Bash(npm install)` inside permissions.allow on parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-package-install-permission`
+- Benign Corpus: `claude-settings-bash-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC406 / CLAUDE-GIT-ADD-PERMISSION` — Claude settings permissions allow `Bash(git add:*)` in a shared committed config
 
@@ -3840,13 +3884,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Unsafe Read path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for exact unsafe-path `Read(...)` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact permission-scope detection for `Read(...)` entries that target absolute, home-relative, parent-traversing, or drive-qualified paths inside parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-unsafe-path-permissions`
+- Benign Corpus: `claude-settings-unsafe-path-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC476 / CLAUDE-WRITE-UNSAFE-PATH` — Claude settings permissions allow `Write(...)` over an unsafe path in a shared committed config
 
@@ -3857,13 +3905,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Unsafe Write path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for exact unsafe-path `Write(...)` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact permission-scope detection for `Write(...)` entries that target absolute, home-relative, parent-traversing, or drive-qualified paths inside parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-unsafe-path-permissions`
+- Benign Corpus: `claude-settings-unsafe-path-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC477 / CLAUDE-EDIT-UNSAFE-PATH` — Claude settings permissions allow `Edit(...)` over an unsafe path in a shared committed config
 
@@ -3874,13 +3926,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Unsafe Edit path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for exact unsafe-path `Edit(...)` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact permission-scope detection for `Edit(...)` entries that target absolute, home-relative, parent-traversing, or drive-qualified paths inside parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-unsafe-path-permissions`
+- Benign Corpus: `claude-settings-unsafe-path-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC478 / CLAUDE-GIT-RESET-PERMISSION` — Claude settings permissions allow `Bash(git reset:*)` in a shared committed config
 
@@ -4027,13 +4083,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Unsafe Glob path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for exact unsafe-path `Glob(...)` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact permission-scope detection for `Glob(...)` entries that target absolute, home-relative, parent-traversing, or drive-qualified paths inside parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-glob-grep-unsafe-path-permissions`
+- Benign Corpus: `claude-settings-unsafe-path-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC487 / CLAUDE-GREP-UNSAFE-PATH` — Claude settings permissions allow `Grep(...)` over an unsafe path in a shared committed config
 
@@ -4044,13 +4104,17 @@ Important behavior:
 - Detection: `structural`
 - Default Severity: `Warn`
 - Default Confidence: `High`
-- Tier: `Preview`
+- Tier: `Stable`
 - Default Presets: `preview`, `claude`
 - Remediation: `message_only`
-- Lifecycle: `preview_blocked`
-- Promotion Blocker: Unsafe Grep path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
-- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
-- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks shared Claude settings permissions for exact unsafe-path `Grep(...)` grants.
+- Deterministic Signal Basis: ClaudeSettingsSignals exact permission-scope detection for `Grep(...)` entries that target absolute, home-relative, parent-traversing, or drive-qualified paths inside parsed Claude settings JSON.
+- Malicious Corpus: `claude-settings-glob-grep-unsafe-path-permissions`
+- Benign Corpus: `claude-settings-unsafe-path-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
 
 ### `SEC488 / CLAUDE-UVX-PERMISSION` — Claude settings permissions allow `Bash(uvx ...)` in a shared committed config
 

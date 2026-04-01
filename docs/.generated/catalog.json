@@ -3177,7 +3177,7 @@
       "summary": "Claude settings permissions allow `Bash(*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -3186,13 +3186,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Wildcard Bash grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for explicit wildcard `Bash(*)` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-bash-wildcard"
+        ],
+        "benignCaseIds": [
+          "claude-settings-bash-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Bash(*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -3239,7 +3247,7 @@
       "summary": "Claude settings set `permissions.defaultMode` to `bypassPermissions` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -3248,13 +3256,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Committed Claude settings with `permissions.defaultMode = bypassPermissions` are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings for explicit `permissions.defaultMode = bypassPermissions`.",
+        "maliciousCaseIds": [
+          "claude-settings-bypass-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-bypass-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `permissions.defaultMode = bypassPermissions` on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -3332,7 +3348,7 @@
       "summary": "Claude settings permissions allow `WebFetch(*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -3341,13 +3357,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Wildcard WebFetch grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for explicit wildcard `WebFetch(*)` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-webfetch-wildcard"
+        ],
+        "benignCaseIds": [
+          "claude-settings-webfetch-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `WebFetch(*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -3394,7 +3418,7 @@
       "summary": "Claude settings permissions allow `Write(*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -3403,13 +3427,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Wildcard Write grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for explicit wildcard `Write(*)` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-write-wildcard"
+        ],
+        "benignCaseIds": [
+          "claude-settings-write-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Write(*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -3485,7 +3517,7 @@
       "summary": "Claude settings permissions allow `Read(*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -3494,13 +3526,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Wildcard Read grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for explicit wildcard `Read(*)` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-read-wildcard"
+        ],
+        "benignCaseIds": [
+          "claude-settings-read-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Read(*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -3516,7 +3556,7 @@
       "summary": "Claude settings permissions allow `Edit(*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -3525,13 +3565,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Wildcard Edit grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for explicit wildcard `Edit(*)` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-edit-wildcard"
+        ],
+        "benignCaseIds": [
+          "claude-settings-edit-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Edit(*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -3547,7 +3595,7 @@
       "summary": "Claude settings permissions allow `WebSearch(*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -3556,13 +3604,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Wildcard WebSearch grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for explicit wildcard `WebSearch(*)` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-websearch-wildcard"
+        ],
+        "benignCaseIds": [
+          "claude-settings-websearch-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `WebSearch(*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -3578,7 +3634,7 @@
       "summary": "Claude settings permissions allow `Glob(*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -3587,13 +3643,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Wildcard Glob grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for explicit wildcard `Glob(*)` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-glob-wildcard"
+        ],
+        "benignCaseIds": [
+          "claude-settings-glob-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Glob(*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -3609,7 +3673,7 @@
       "summary": "Claude settings permissions allow `Grep(*)` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -3618,13 +3682,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Wildcard Grep grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for explicit wildcard `Grep(*)` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-grep-wildcard"
+        ],
+        "benignCaseIds": [
+          "claude-settings-grep-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for `Grep(*)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -3856,7 +3928,7 @@
       "summary": "Claude settings permissions allow bare `WebSearch` in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -3865,13 +3937,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Bare WebSearch grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for bare `WebSearch` grants without a reviewed scope.",
+        "maliciousCaseIds": [
+          "claude-settings-unscoped-websearch"
+        ],
+        "benignCaseIds": [
+          "claude-settings-websearch-scoped-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string detection for bare `WebSearch` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -4450,7 +4530,7 @@
       "summary": "Claude settings permissions allow package installation commands in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -4459,13 +4539,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Shared package installation permissions in committed Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for broad package installation authority.",
+        "maliciousCaseIds": [
+          "claude-settings-package-install-permission"
+        ],
+        "benignCaseIds": [
+          "claude-settings-bash-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact string-family detection for package installation permissions such as `Bash(pip install)` or `Bash(npm install)` inside permissions.allow on parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7117,7 +7205,7 @@
       "summary": "Claude settings permissions allow `Read(...)` over an unsafe path in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7126,13 +7214,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Unsafe Read path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for exact unsafe-path `Read(...)` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-unsafe-path-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-unsafe-path-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact permission-scope detection for `Read(...)` entries that target absolute, home-relative, parent-traversing, or drive-qualified paths inside parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7148,7 +7244,7 @@
       "summary": "Claude settings permissions allow `Write(...)` over an unsafe path in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7157,13 +7253,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Unsafe Write path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for exact unsafe-path `Write(...)` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-unsafe-path-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-unsafe-path-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact permission-scope detection for `Write(...)` entries that target absolute, home-relative, parent-traversing, or drive-qualified paths inside parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7179,7 +7283,7 @@
       "summary": "Claude settings permissions allow `Edit(...)` over an unsafe path in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7188,13 +7292,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Unsafe Edit path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for exact unsafe-path `Edit(...)` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-unsafe-path-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-unsafe-path-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact permission-scope detection for `Edit(...)` entries that target absolute, home-relative, parent-traversing, or drive-qualified paths inside parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7458,7 +7570,7 @@
       "summary": "Claude settings permissions allow `Glob(...)` over an unsafe path in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7467,13 +7579,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Unsafe Glob path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for exact unsafe-path `Glob(...)` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-glob-grep-unsafe-path-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-unsafe-path-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact permission-scope detection for `Glob(...)` entries that target absolute, home-relative, parent-traversing, or drive-qualified paths inside parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {
@@ -7489,7 +7609,7 @@
       "summary": "Claude settings permissions allow `Grep(...)` over an unsafe path in a shared committed config",
       "scope": "per_file",
       "surface": "claude_settings",
-      "tier": "preview",
+      "tier": "stable",
       "defaultSeverity": "warn",
       "defaultConfidence": "high",
       "detectionClass": "structural",
@@ -7498,13 +7618,21 @@
         "preview",
         "claude"
       ],
-      "lifecycleState": "preview_blocked",
+      "lifecycleState": "stable_gated",
       "lifecycle": {
-        "kind": "preview",
-        "blocker": "Unsafe Grep path grants in shared Claude settings are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
-        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+        "kind": "stable",
+        "rationale": "Checks shared Claude settings permissions for exact unsafe-path `Grep(...)` grants.",
+        "maliciousCaseIds": [
+          "claude-settings-glob-grep-unsafe-path-permissions"
+        ],
+        "benignCaseIds": [
+          "claude-settings-unsafe-path-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "ClaudeSettingsSignals exact permission-scope detection for `Grep(...)` entries that target absolute, home-relative, parent-traversing, or drive-qualified paths inside parsed Claude settings JSON."
       },
-      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []
     },
     {

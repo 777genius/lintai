@@ -5,7 +5,7 @@ expected_output = ["text", "json", "sarif"]
 expected_runtime_errors = 0
 expected_diagnostics = 0
 expected_findings = [
-  { rule_code = "SEC374", tier = "preview", min_evidence_count = 1 }
+  { rule_code = "SEC374", tier = "stable", min_evidence_count = 1 }
 ]
 expected_absent_rules = []
 
