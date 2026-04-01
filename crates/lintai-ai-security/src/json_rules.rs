@@ -858,6 +858,66 @@ pub(crate) fn check_mcp_autoapprove_gh_pr(
     )
 }
 
+pub(crate) fn check_mcp_autoapprove_crontab(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_crontab_span.clone()),
+        "MCP configuration auto-approves `Bash(crontab:*)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_systemctl_enable(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_systemctl_enable_span.clone()),
+        "MCP configuration auto-approves `Bash(systemctl enable:*)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_launchctl_load(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_launchctl_load_span.clone()),
+        "MCP configuration auto-approves `Bash(launchctl load:*)` through `autoApprove`",
+    )
+}
+
+pub(crate) fn check_mcp_autoapprove_launchctl_bootstrap(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    finding_from_span(
+        ctx,
+        meta,
+        signals
+            .json()
+            .and_then(|signals| signals.autoapprove_launchctl_bootstrap_span.clone()),
+        "MCP configuration auto-approves `Bash(launchctl bootstrap:*)` through `autoApprove`",
+    )
+}
+
 pub(crate) fn check_mcp_autoapprove_read_wildcard(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

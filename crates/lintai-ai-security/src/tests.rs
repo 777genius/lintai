@@ -7580,6 +7580,90 @@ fn finds_mcp_autoapprove_git_am() {
 }
 
 #[test]
+fn finds_mcp_autoapprove_crontab() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(crontab:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC609")
+        .unwrap();
+    let start = content.find("\"Bash(crontab:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(crontab:*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_systemctl_enable() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(systemctl enable:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC610")
+        .unwrap();
+    let start = content.find("\"Bash(systemctl enable:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(systemctl enable:*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_launchctl_load() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(launchctl load:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC611")
+        .unwrap();
+    let start = content.find("\"Bash(launchctl load:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(launchctl load:*)".len())
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_launchctl_bootstrap() {
+    let provider = AiSecurityProvider::default();
+    let content = r#"{"mcpServers":{"demo":{"command":"node","args":["server.js"],"autoApprove":["Bash(launchctl bootstrap:*)"]}}}"#;
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::McpConfig,
+        SourceFormat::Json,
+        content,
+    );
+    let finding = findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC612")
+        .unwrap();
+    let start = content.find("\"Bash(launchctl bootstrap:*)\"").unwrap() + 1;
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(launchctl bootstrap:*)".len())
+    );
+}
+
+#[test]
 fn ignores_mcp_autoapprove_nonmatching_tools() {
     let provider = AiSecurityProvider::default();
     let findings = ProviderHarness::run(
@@ -7655,6 +7739,10 @@ fn ignores_mcp_autoapprove_nonmatching_tools() {
                 | "SEC606"
                 | "SEC607"
                 | "SEC608"
+                | "SEC609"
+                | "SEC610"
+                | "SEC611"
+                | "SEC612"
         )
     }));
 }

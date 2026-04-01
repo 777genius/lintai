@@ -327,6 +327,10 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC606 / MCP-AUTOAPPROVE-GIT-CHERRY-PICK` | MCP configuration auto-approves `Bash(git cherry-pick:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC607 / MCP-AUTOAPPROVE-GIT-APPLY` | MCP configuration auto-approves `Bash(git apply:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC608 / MCP-AUTOAPPROVE-GIT-AM` | MCP configuration auto-approves `Bash(git am:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC609 / MCP-AUTOAPPROVE-CRONTAB` | MCP configuration auto-approves `Bash(crontab:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC610 / MCP-AUTOAPPROVE-SYSTEMCTL-ENABLE` | MCP configuration auto-approves `Bash(systemctl enable:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC611 / MCP-AUTOAPPROVE-LAUNCHCTL-LOAD` | MCP configuration auto-approves `Bash(launchctl load:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC612 / MCP-AUTOAPPROVE-LAUNCHCTL-BOOTSTRAP` | MCP configuration auto-approves `Bash(launchctl bootstrap:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 
 ## Builtin preset activation model
 
@@ -6380,6 +6384,90 @@ Important behavior:
 - Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(git am:*)"]` on parsed MCP configuration.
 - Malicious Corpus: `mcp-autoapprove-git-history-family`
 - Benign Corpus: `mcp-autoapprove-git-history-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC609 / MCP-AUTOAPPROVE-CRONTAB` — MCP configuration auto-approves `Bash(crontab:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-CRONTAB`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(crontab:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(crontab:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-persistence-family`
+- Benign Corpus: `mcp-autoapprove-persistence-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC610 / MCP-AUTOAPPROVE-SYSTEMCTL-ENABLE` — MCP configuration auto-approves `Bash(systemctl enable:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-SYSTEMCTL-ENABLE`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(systemctl enable:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(systemctl enable:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-persistence-family`
+- Benign Corpus: `mcp-autoapprove-persistence-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC611 / MCP-AUTOAPPROVE-LAUNCHCTL-LOAD` — MCP configuration auto-approves `Bash(launchctl load:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-LAUNCHCTL-LOAD`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(launchctl load:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(launchctl load:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-persistence-family`
+- Benign Corpus: `mcp-autoapprove-persistence-family-specific-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC612 / MCP-AUTOAPPROVE-LAUNCHCTL-BOOTSTRAP` — MCP configuration auto-approves `Bash(launchctl bootstrap:*)` through `autoApprove`
+
+- Provider: `lintai-ai-security`
+- Alias: `MCP-AUTOAPPROVE-LAUNCHCTL-BOOTSTRAP`
+- Scope: `per_file`
+- Surface: `json`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `base`, `mcp`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Matches exact `Bash(launchctl bootstrap:*)` auto-approval in MCP client config.
+- Deterministic Signal Basis: JsonSignals exact array-item detection for `autoApprove: ["Bash(launchctl bootstrap:*)"]` on parsed MCP configuration.
+- Malicious Corpus: `mcp-autoapprove-persistence-family`
+- Benign Corpus: `mcp-autoapprove-persistence-family-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.

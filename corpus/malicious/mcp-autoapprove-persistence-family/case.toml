@@ -1,0 +1,9 @@
+id = "mcp-autoapprove-persistence-family"
+description = "MCP config auto-approves persistence and service-enablement commands through autoApprove"
+
+expected_findings = [
+  "SEC609",
+  "SEC610",
+  "SEC611",
+  "SEC612",
+]

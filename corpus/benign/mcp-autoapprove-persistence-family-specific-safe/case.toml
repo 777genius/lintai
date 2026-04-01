@@ -1,0 +1,12 @@
+id = "mcp-autoapprove-persistence-family-specific-safe"
+kind = "benign"
+entry_path = "repo"
+expected_output = ["text", "json", "sarif"]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC609", "SEC610", "SEC611", "SEC612"]
+
+[snapshot]
+kind = "none"
+name = ""
