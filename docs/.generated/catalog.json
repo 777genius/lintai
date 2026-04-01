@@ -189,7 +189,8 @@
         "lintai-ai-security:SEC466",
         "lintai-ai-security:SEC467",
         "lintai-ai-security:SEC468",
-        "lintai-ai-security:SEC469"
+        "lintai-ai-security:SEC469",
+        "lintai-ai-security:SEC470"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -288,7 +289,8 @@
         "lintai-ai-security:SEC466",
         "lintai-ai-security:SEC467",
         "lintai-ai-security:SEC468",
-        "lintai-ai-security:SEC469"
+        "lintai-ai-security:SEC469",
+        "lintai-ai-security:SEC470"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -6645,6 +6647,45 @@
         "requiresStructuredEvidence": true,
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(chgrp:*)` inside allowed-tools or allowed_tools."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC470",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC470",
+      "alias": "MD-SU-ALLOWED-TOOLS",
+      "displayLabel": "SEC470 / MD-SU-ALLOWED-TOOLS",
+      "docTitle": "AI markdown: `Bash(su:*)` tool grant",
+      "slug": "sec470",
+      "canonicalPath": "/rules/lintai-ai-security/sec470",
+      "summary": "AI-native markdown frontmatter grants `Bash(su:*)` authority",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native frontmatter for explicit wildcard su grants in shared allowed-tools policy.",
+        "maliciousCaseIds": [
+          "skill-su-allowed-tools"
+        ],
+        "benignCaseIds": [
+          "skill-su-allowed-tools-specific-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact frontmatter token detection for `Bash(su:*)` inside allowed-tools or allowed_tools."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
       "relatedRuleIds": []

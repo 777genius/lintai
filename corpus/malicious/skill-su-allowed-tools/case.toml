@@ -1,0 +1,7 @@
+id = "skill-su-allowed-tools"
+description = "AI-native markdown frontmatter grants Bash(su:*) authority"
+kind = "Skill"
+expected_findings = [
+  { rule = "SEC470", tier = "stable", match = "Bash(su:*)" },
+]
+

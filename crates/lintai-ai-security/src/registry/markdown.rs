@@ -33,8 +33,8 @@ use crate::markdown_rules::{
     check_markdown_private_key_pem, check_markdown_unpinned_pip_git_install,
     check_package_install_allowed_tools, check_plugin_agent_hooks_frontmatter,
     check_plugin_agent_mcp_servers_frontmatter, check_plugin_agent_permission_mode,
-    check_read_unsafe_path_allowed_tools, check_rm_allowed_tools, check_sudo_allowed_tools,
-    check_unscoped_bash_allowed_tools, check_unscoped_edit_allowed_tools,
+    check_read_unsafe_path_allowed_tools, check_rm_allowed_tools, check_su_allowed_tools,
+    check_sudo_allowed_tools, check_unscoped_bash_allowed_tools, check_unscoped_edit_allowed_tools,
     check_unscoped_glob_allowed_tools, check_unscoped_grep_allowed_tools,
     check_unscoped_read_allowed_tools, check_unscoped_webfetch_allowed_tools,
     check_unscoped_websearch_allowed_tools, check_unscoped_write_allowed_tools,
@@ -643,6 +643,18 @@ declare_rule! {
 }
 
 declare_rule! {
+    pub struct SuAllowedToolsRule {
+        code: "SEC470",
+        summary: "AI-native markdown frontmatter grants `Bash(su:*)` authority",
+        doc_title: "AI markdown: `Bash(su:*)` tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Stable,
+    }
+}
+
+declare_rule! {
     pub struct GitCloneAllowedToolsRule {
         code: "SEC421",
         summary: "AI-native markdown frontmatter grants `Bash(git clone:*)` authority",
@@ -1062,7 +1074,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 85] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 86] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1866,6 +1878,26 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 85] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(chgrp:*)` authority is really needed, or replace it with a narrower reviewed group-change workflow instead of a default team-wide grant",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: SuAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: PREVIEW_SKILLS_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Stable {
+            rationale: "Checks AI-native frontmatter for explicit wildcard su grants in shared allowed-tools policy.",
+            malicious_case_ids: &["skill-su-allowed-tools"],
+            benign_case_ids: &["skill-su-allowed-tools-specific-safe"],
+            requires_structured_evidence: true,
+            remediation_reviewed: true,
+            deterministic_signal_basis: "MarkdownSignals exact frontmatter token detection for `Bash(su:*)` inside allowed-tools or allowed_tools.",
+        },
+        check: check_su_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(su:*)` authority is really needed, or replace it with a narrower reviewed privilege-switch workflow instead of a default team-wide grant",
         ),
         suggestion_fix: None,
     },

@@ -225,6 +225,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "skill-rm-allowed-tools-specific-safe",
             "skill-scoped-bash-allowed-tools-safe",
             "skill-scoped-webfetch-allowed-tools-safe",
+            "skill-su-allowed-tools-specific-safe",
             "skill-sudo-allowed-tools-specific-safe",
             "skill-unscoped-bash-fixture-safe",
             "skill-unscoped-edit-allowed-tools-fixture-safe",
