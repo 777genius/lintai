@@ -1,11 +1,11 @@
-id = "skill-reviewed-frontmatter-tool-grants-safe"
+id = "skill-gh-pr-allowed-tools-fixture-safe"
 kind = "benign"
 entry_path = "repo"
 expected_output = ["text", "json", "sarif"]
 expected_runtime_errors = 0
 expected_diagnostics = 0
 expected_findings = []
-expected_absent_rules = ["SEC389", "SEC390", "SEC391", "SEC392", "SEC393", "SEC474"]
+expected_absent_rules = ["SEC474"]
 
 [snapshot]
 kind = "none"

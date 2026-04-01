@@ -178,6 +178,7 @@ pub(crate) fn shipped_rule_alias(rule_code: &str) -> Option<&'static str> {
         "SEC471" => "MD-GIT-SSLVERIFY-FALSE",
         "SEC472" => "MD-GIT-SSL-NO-VERIFY",
         "SEC473" => "MD-GIT-INLINE-SSLVERIFY-FALSE",
+        "SEC474" => "MD-GH-PR-PERMISSION",
         "SEC401" => "POLICY-EXEC-MISMATCH",
         "SEC402" => "POLICY-NETWORK-MISMATCH",
         "SEC403" => "POLICY-SKILL-CAPABILITIES-MISMATCH",

@@ -4,7 +4,9 @@ use serde_json::Value;
 use crate::json_locator::{JsonLocationMap, JsonPathSegment};
 use crate::signals::{JsonSignals, SignalWorkBudget};
 
-use super::spans::{resolve_child_value_span, resolve_value_span, with_child_index, with_child_key};
+use super::spans::{
+    resolve_child_value_span, resolve_value_span, with_child_index, with_child_key,
+};
 
 mod claude_settings;
 mod mcp_command;

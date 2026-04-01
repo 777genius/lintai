@@ -731,6 +731,22 @@ pub(crate) fn check_git_stash_allowed_tools(
     )
 }
 
+pub(crate) fn check_gh_pr_allowed_tools(
+    ctx: &ScanContext,
+    signals: &ArtifactSignals,
+    meta: RuleMetadata,
+) -> Vec<Finding> {
+    findings_for_spans(
+        ctx,
+        meta,
+        signals
+            .markdown()
+            .map(|signals| signals.gh_pr_allowed_tools_spans.as_slice())
+            .unwrap_or(&[]),
+        "frontmatter grants `Bash(gh pr:*)` tool access",
+    )
+}
+
 pub(crate) fn check_curl_allowed_tools(
     ctx: &ScanContext,
     signals: &ArtifactSignals,

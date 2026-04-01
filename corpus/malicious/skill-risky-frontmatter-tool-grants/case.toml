@@ -31,6 +31,11 @@ rule_code = "SEC393"
 tier = "preview"
 min_evidence_count = 1
 
+[[expected_findings]]
+rule_code = "SEC474"
+tier = "preview"
+min_evidence_count = 1
+
 [snapshot]
 kind = "none"
 name = ""

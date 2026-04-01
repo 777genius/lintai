@@ -216,6 +216,7 @@ mod tests {
             shipped_rule_alias("SEC393"),
             Some("MD-GIT-STASH-PERMISSION")
         );
+        assert_eq!(shipped_rule_alias("SEC474"), Some("MD-GH-PR-PERMISSION"));
         assert_eq!(
             shipped_rule_alias("SEC394"),
             Some("MCP-AUTOAPPROVE-WILDCARD")

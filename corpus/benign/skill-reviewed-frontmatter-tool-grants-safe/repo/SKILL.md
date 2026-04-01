@@ -6,6 +6,7 @@ allowed-tools:
   - Bash(git checkout feature-branch)
   - Bash(git commit -m reviewed)
   - Bash(git stash push -u)
+  - Bash(gh pr diff:*)
   - Read
 ---
 

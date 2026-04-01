@@ -9,13 +9,13 @@ use crate::markdown_rules::{
     check_curl_allowed_tools, check_cursor_rule_always_apply_type, check_cursor_rule_globs_type,
     check_cursor_rule_missing_description, check_cursor_rule_redundant_globs,
     check_cursor_rule_unknown_frontmatter_key, check_edit_unsafe_path_allowed_tools,
-    check_git_add_allowed_tools, check_git_am_allowed_tools, check_git_apply_allowed_tools,
-    check_git_branch_allowed_tools, check_git_checkout_allowed_tools,
-    check_git_cherry_pick_allowed_tools, check_git_clean_allowed_tools,
-    check_git_clone_allowed_tools, check_git_commit_allowed_tools, check_git_config_allowed_tools,
-    check_git_fetch_allowed_tools, check_git_merge_allowed_tools, check_git_push_allowed_tools,
-    check_git_rebase_allowed_tools, check_git_reset_allowed_tools, check_git_restore_allowed_tools,
-    check_git_stash_allowed_tools, check_git_tag_allowed_tools,
+    check_gh_pr_allowed_tools, check_git_add_allowed_tools, check_git_am_allowed_tools,
+    check_git_apply_allowed_tools, check_git_branch_allowed_tools,
+    check_git_checkout_allowed_tools, check_git_cherry_pick_allowed_tools,
+    check_git_clean_allowed_tools, check_git_clone_allowed_tools, check_git_commit_allowed_tools,
+    check_git_config_allowed_tools, check_git_fetch_allowed_tools, check_git_merge_allowed_tools,
+    check_git_push_allowed_tools, check_git_rebase_allowed_tools, check_git_reset_allowed_tools,
+    check_git_restore_allowed_tools, check_git_stash_allowed_tools, check_git_tag_allowed_tools,
     check_glob_unsafe_path_allowed_tools, check_html_comment_directive,
     check_html_comment_download_exec, check_markdown_base64_exec,
     check_markdown_cargo_http_git_install, check_markdown_cargo_http_index,
@@ -504,6 +504,18 @@ declare_rule! {
         code: "SEC393",
         summary: "AI-native markdown frontmatter grants `Bash(git stash:*)` tool access",
         doc_title: "AI markdown: shared git stash tool grant",
+        category: Category::Security,
+        default_severity: Severity::Warn,
+        default_confidence: Confidence::High,
+        tier: RuleTier::Preview,
+    }
+}
+
+declare_rule! {
+    pub struct GhPrAllowedToolsRule {
+        code: "SEC474",
+        summary: "AI-native markdown frontmatter grants `Bash(gh pr:*)` tool access",
+        doc_title: "AI markdown: shared gh pr tool grant",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -1111,7 +1123,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 89] = [
+pub(crate) const RULE_SPECS: [NativeRuleSpec; 90] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
@@ -1819,6 +1831,22 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 89] = [
         safe_fix: None,
         suggestion_message: Some(
             "review whether shared `Bash(git stash:*)` access is really needed, or replace it with a narrower workflow-specific permission",
+        ),
+        suggestion_fix: None,
+    },
+    NativeRuleSpec {
+        metadata: GhPrAllowedToolsRule::METADATA,
+        surface: Surface::Markdown,
+        default_presets: GOVERNANCE_PRESETS,
+        detection_class: DetectionClass::Structural,
+        lifecycle: RuleLifecycle::Preview {
+            blocker: "Shared gh pr grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+            promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
+        },
+        check: check_gh_pr_allowed_tools,
+        safe_fix: None,
+        suggestion_message: Some(
+            "review whether shared `Bash(gh pr:*)` access is really needed, or replace it with a narrower workflow-specific permission",
         ),
         suggestion_fix: None,
     },

@@ -2612,6 +2612,53 @@ fn finds_git_stash_allowed_tools_in_frontmatter() {
 }
 
 #[test]
+fn finds_gh_pr_allowed_tools_in_frontmatter() {
+    let content = "---\nallowed-tools: Bash(gh pr:*), Read\n---\n# Skill\n";
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
+
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == "SEC474")
+        .unwrap();
+    let start = content.find("Bash(gh pr:*)").unwrap();
+    assert_eq!(
+        finding.location.span,
+        lintai_api::Span::new(start, start + "Bash(gh pr:*)".len())
+    );
+}
+
+#[test]
+fn ignores_specific_gh_pr_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_governance_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Bash(gh pr diff:*), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC474")
+    );
+}
+
+#[test]
+fn ignores_fixture_like_gh_pr_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_governance_skill_fixture(
+        "tests/fixtures/SKILL.md",
+        "---\nallowed-tools: Bash(gh pr:*), Read\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC474")
+    );
+}
+
+#[test]
 fn finds_unscoped_webfetch_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: WebFetch, Read\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);
@@ -9573,6 +9620,7 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                         | "SEC391"
                         | "SEC392"
                         | "SEC393"
+                        | "SEC474"
                         | "SEC399"
                         | "SEC400"
                         | "SEC404"

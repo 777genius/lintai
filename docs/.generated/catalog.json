@@ -192,7 +192,8 @@
         "lintai-ai-security:SEC469",
         "lintai-ai-security:SEC470",
         "lintai-ai-security:SEC471",
-        "lintai-ai-security:SEC472"
+        "lintai-ai-security:SEC472",
+        "lintai-ai-security:SEC473"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -294,7 +295,8 @@
         "lintai-ai-security:SEC469",
         "lintai-ai-security:SEC470",
         "lintai-ai-security:SEC471",
-        "lintai-ai-security:SEC472"
+        "lintai-ai-security:SEC472",
+        "lintai-ai-security:SEC473"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -421,7 +423,8 @@
         "lintai-ai-security:SEC390",
         "lintai-ai-security:SEC391",
         "lintai-ai-security:SEC392",
-        "lintai-ai-security:SEC393"
+        "lintai-ai-security:SEC393",
+        "lintai-ai-security:SEC474"
       ],
       "canonicalPath": "/presets/governance"
     },
@@ -6770,6 +6773,75 @@
         "deterministicSignalBasis": "MarkdownSignals exact `GIT_SSL_NO_VERIFY=1` or `GIT_SSL_NO_VERIFY=true` token analysis when a Git command appears in the same parsed markdown region, excluding safety-warning phrasing."
       },
       "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC473",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC473",
+      "alias": "MD-GIT-INLINE-SSLVERIFY-FALSE",
+      "displayLabel": "SEC473 / MD-GIT-INLINE-SSLVERIFY-FALSE",
+      "docTitle": "AI markdown: git inline sslVerify false",
+      "slug": "sec473",
+      "canonicalPath": "/rules/lintai-ai-security/sec473",
+      "summary": "AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false`",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "stable",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "preview",
+        "skills"
+      ],
+      "lifecycleState": "stable_gated",
+      "lifecycle": {
+        "kind": "stable",
+        "rationale": "Checks AI-native markdown for exact `git -c` examples that disable Git TLS verification inline through `http.sslVerify=false`.",
+        "maliciousCaseIds": [
+          "skill-git-inline-sslverify-false"
+        ],
+        "benignCaseIds": [
+          "skill-git-inline-sslverify-true-safe"
+        ],
+        "requiresStructuredEvidence": true,
+        "remediationReviewed": true,
+        "deterministicSignalBasis": "MarkdownSignals exact `git -c http.sslVerify=false` token analysis inside parsed markdown regions, excluding safety-warning phrasing."
+      },
+      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "relatedRuleIds": []
+    },
+    {
+      "ruleId": "lintai-ai-security:SEC474",
+      "providerId": "lintai-ai-security",
+      "providerSlug": "lintai-ai-security",
+      "displayCode": "SEC474",
+      "alias": "MD-GH-PR-PERMISSION",
+      "displayLabel": "SEC474 / MD-GH-PR-PERMISSION",
+      "docTitle": "AI markdown: shared gh pr tool grant",
+      "slug": "sec474",
+      "canonicalPath": "/rules/lintai-ai-security/sec474",
+      "summary": "AI-native markdown frontmatter grants `Bash(gh pr:*)` tool access",
+      "scope": "per_file",
+      "surface": "markdown",
+      "tier": "preview",
+      "defaultSeverity": "warn",
+      "defaultConfidence": "high",
+      "detectionClass": "structural",
+      "remediationSupport": "message_only",
+      "defaultPresets": [
+        "governance"
+      ],
+      "lifecycleState": "preview_blocked",
+      "lifecycle": {
+        "kind": "preview",
+        "blocker": "Shared gh pr grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.",
+        "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
+      },
+      "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
       "relatedRuleIds": []
     },
     {

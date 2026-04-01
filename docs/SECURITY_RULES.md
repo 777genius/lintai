@@ -191,6 +191,8 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC470 / MD-SU-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(su:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC471 / MD-GIT-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `http.sslVerify false` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC472 / MD-GIT-SSL-NO-VERIFY` | AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC473 / MD-GIT-INLINE-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC474 / MD-GH-PR-PERMISSION` | AI-native markdown frontmatter grants `Bash(gh pr:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 
 ## Builtin preset activation model
 
@@ -3647,6 +3649,44 @@ Important behavior:
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC473 / MD-GIT-INLINE-SSLVERIFY-FALSE` — AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false`
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GIT-INLINE-SSLVERIFY-FALSE`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Stable`
+- Default Presets: `preview`, `skills`
+- Remediation: `message_only`
+- Lifecycle: `stable_gated`
+- Graduation Rationale: Checks AI-native markdown for exact `git -c` examples that disable Git TLS verification inline through `http.sslVerify=false`.
+- Deterministic Signal Basis: MarkdownSignals exact `git -c http.sslVerify=false` token analysis inside parsed markdown regions, excluding safety-warning phrasing.
+- Malicious Corpus: `skill-git-inline-sslverify-false`
+- Benign Corpus: `skill-git-inline-sslverify-true-safe`
+- Structured Evidence Required: `true`
+- Remediation Reviewed: `true`
+- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+
+### `SEC474 / MD-GH-PR-PERMISSION` — AI-native markdown frontmatter grants `Bash(gh pr:*)` tool access
+
+- Provider: `lintai-ai-security`
+- Alias: `MD-GH-PR-PERMISSION`
+- Scope: `per_file`
+- Surface: `markdown`
+- Detection: `structural`
+- Default Severity: `Warn`
+- Default Confidence: `High`
+- Tier: `Preview`
+- Default Presets: `governance`
+- Remediation: `message_only`
+- Lifecycle: `preview_blocked`
+- Promotion Blocker: Shared gh pr grants in AI-native frontmatter can be legitimate workflow policy, so the first release stays in the opt-in governance lane while usefulness and default posture are measured.
+- Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
+- Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
 ## Provider: `lintai-policy-mismatch`
 

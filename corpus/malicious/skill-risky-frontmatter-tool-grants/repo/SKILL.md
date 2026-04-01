@@ -5,6 +5,7 @@ allowed-tools:
   - Bash(git checkout:*)
   - Bash(git commit:*)
   - Bash(git stash:*)
+  - Bash(gh pr:*)
   - Read
 ---
 
