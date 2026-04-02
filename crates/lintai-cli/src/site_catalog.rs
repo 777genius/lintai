@@ -354,7 +354,7 @@ mod tests {
     use std::fs;
     use std::path::{Path, PathBuf};
 
-    use super::{build_site_catalog, render_site_catalog_json};
+    use super::{SiteRule, SiteRuleLifecycle, build_site_catalog, render_site_catalog_json};
 
     fn repo_root() -> PathBuf {
         PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -404,11 +404,259 @@ mod tests {
         fields
     }
 
+    fn inline_code(text: &str) -> String {
+        format!("`{text}`")
+    }
+
+    fn escape_markdown_text(text: &str) -> String {
+        text.replace("\r\n", "\n")
+            .replace(['\r', '\n'], " ")
+            .replace('&', "&amp;")
+            .replace('<', "&lt;")
+            .replace('>', "&gt;")
+    }
+
+    fn escape_markdown_table_cell(text: &str) -> String {
+        escape_markdown_text(text).replace('|', "\\|")
+    }
+
+    fn format_presets(presets: &[String]) -> String {
+        presets
+            .iter()
+            .map(|preset| inline_code(preset))
+            .collect::<Vec<_>>()
+            .join(", ")
+    }
+
+    fn severity_label(slug: &str) -> &'static str {
+        match slug {
+            "deny" => "Deny",
+            "warn" => "Warn",
+            "allow" => "Allow",
+            other => panic!("unexpected severity slug {other}"),
+        }
+    }
+
+    fn confidence_label(slug: &str) -> &'static str {
+        match slug {
+            "low" => "Low",
+            "medium" => "Medium",
+            "high" => "High",
+            other => panic!("unexpected confidence slug {other}"),
+        }
+    }
+
+    fn tier_label(slug: &str) -> &'static str {
+        match slug {
+            "stable" => "Stable",
+            "preview" => "Preview",
+            other => panic!("unexpected tier slug {other}"),
+        }
+    }
+
+    fn markdown_detail_section<'a>(markdown: &'a str, rule: &SiteRule) -> &'a str {
+        let heading = format!(
+            "### {} — {}",
+            inline_code(&rule.display_label),
+            escape_markdown_text(&rule.summary)
+        );
+        let start = markdown
+            .find(&heading)
+            .unwrap_or_else(|| panic!("missing markdown heading for {}", rule.rule_id));
+        let tail = &markdown[start..];
+        let end = tail
+            .find("\n### ")
+            .or_else(|| tail.find("\n## Provider: "))
+            .unwrap_or(tail.len());
+        &tail[..end]
+    }
+
     #[test]
     fn site_catalog_matches_checked_in_snapshot() {
         let expected = fs::read_to_string(docs_root().join(".generated/catalog.json"))
             .expect("checked-in site catalog snapshot should exist");
         assert_eq!(render_site_catalog_json(), expected);
+    }
+
+    #[test]
+    fn security_rules_markdown_matches_site_catalog_matrix() {
+        let catalog = build_site_catalog();
+        let markdown = crate::security_rule_catalog::render_security_rules_markdown();
+
+        let provider_summary_lines = markdown
+            .lines()
+            .skip_while(|line| {
+                *line != "Canonical catalog for the shipped security rules currently exposed by:"
+            })
+            .skip(1)
+            .take_while(|line| !line.is_empty())
+            .map(str::to_owned)
+            .collect::<Vec<_>>();
+        let expected_provider_summary_lines = catalog
+            .providers
+            .iter()
+            .map(|provider| format!("- {}", inline_code(&provider.id)))
+            .collect::<Vec<_>>();
+        assert_eq!(provider_summary_lines, expected_provider_summary_lines);
+
+        let summary_row_count = markdown
+            .lines()
+            .filter(|line| line.starts_with("| `"))
+            .count();
+        assert_eq!(summary_row_count, catalog.rules.len());
+
+        for provider in &catalog.providers {
+            assert!(
+                markdown.contains(&format!("## Provider: {}", inline_code(&provider.id))),
+                "markdown is missing provider section for {}",
+                provider.id
+            );
+        }
+
+        for rule in &catalog.rules {
+            let summary_line = format!(
+                "| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |",
+                inline_code(&rule.display_label),
+                escape_markdown_table_cell(&rule.summary),
+                tier_label(&rule.tier),
+                inline_code(&rule.lifecycle_state),
+                severity_label(&rule.default_severity),
+                inline_code(&rule.scope),
+                inline_code(&rule.surface),
+                inline_code(&rule.detection_class),
+                inline_code(&rule.remediation_support),
+                format_presets(&rule.default_presets),
+            );
+            assert!(
+                markdown.contains(&summary_line),
+                "markdown summary row drifted for {}",
+                rule.rule_id
+            );
+
+            let detail_section = markdown_detail_section(&markdown, rule);
+            let expected_detail_lines = [
+                format!("- Provider: {}", inline_code(&rule.provider_id)),
+                format!(
+                    "- Alias: {}",
+                    rule.alias
+                        .as_deref()
+                        .map(inline_code)
+                        .unwrap_or_else(|| inline_code("none"))
+                ),
+                format!("- Scope: {}", inline_code(&rule.scope)),
+                format!("- Surface: {}", inline_code(&rule.surface)),
+                format!("- Detection: {}", inline_code(&rule.detection_class)),
+                format!(
+                    "- Default Severity: {}",
+                    inline_code(severity_label(&rule.default_severity))
+                ),
+                format!(
+                    "- Default Confidence: {}",
+                    inline_code(confidence_label(&rule.default_confidence))
+                ),
+                format!("- Tier: {}", inline_code(tier_label(&rule.tier))),
+                format!(
+                    "- Default Presets: {}",
+                    format_presets(&rule.default_presets)
+                ),
+                format!("- Remediation: {}", inline_code(&rule.remediation_support)),
+                format!("- Lifecycle: {}", inline_code(&rule.lifecycle_state)),
+                format!(
+                    "- Canonical Note: {}",
+                    escape_markdown_text(&rule.canonical_note)
+                ),
+            ];
+            for expected_line in expected_detail_lines {
+                assert!(
+                    detail_section.contains(&expected_line),
+                    "markdown detail section drifted for {} on line: {}",
+                    rule.rule_id,
+                    expected_line
+                );
+            }
+
+            match &rule.lifecycle {
+                SiteRuleLifecycle::Preview {
+                    blocker,
+                    promotion_requirements,
+                } => {
+                    let expected_lines = [
+                        format!("- Promotion Blocker: {}", escape_markdown_text(blocker)),
+                        format!(
+                            "- Promotion Requirements: {}",
+                            escape_markdown_text(promotion_requirements)
+                        ),
+                    ];
+                    for expected_line in expected_lines {
+                        assert!(
+                            detail_section.contains(&expected_line),
+                            "markdown preview lifecycle drifted for {} on line: {}",
+                            rule.rule_id,
+                            expected_line
+                        );
+                    }
+                }
+                SiteRuleLifecycle::Stable {
+                    rationale,
+                    malicious_case_ids,
+                    benign_case_ids,
+                    requires_structured_evidence,
+                    remediation_reviewed,
+                    deterministic_signal_basis,
+                } => {
+                    let expected_lines = [
+                        format!(
+                            "- Graduation Rationale: {}",
+                            escape_markdown_text(rationale)
+                        ),
+                        format!(
+                            "- Deterministic Signal Basis: {}",
+                            escape_markdown_text(deterministic_signal_basis)
+                        ),
+                        format!(
+                            "- Malicious Corpus: {}",
+                            malicious_case_ids
+                                .iter()
+                                .map(|id| inline_code(id))
+                                .collect::<Vec<_>>()
+                                .join(", ")
+                        ),
+                        format!(
+                            "- Benign Corpus: {}",
+                            benign_case_ids
+                                .iter()
+                                .map(|id| inline_code(id))
+                                .collect::<Vec<_>>()
+                                .join(", ")
+                        ),
+                        format!(
+                            "- Structured Evidence Required: `{}`",
+                            if *requires_structured_evidence {
+                                "true"
+                            } else {
+                                "false"
+                            }
+                        ),
+                        format!(
+                            "- Remediation Reviewed: `{}`",
+                            if *remediation_reviewed {
+                                "true"
+                            } else {
+                                "false"
+                            }
+                        ),
+                    ];
+                    for expected_line in expected_lines {
+                        assert!(
+                            detail_section.contains(&expected_line),
+                            "markdown stable lifecycle drifted for {} on line: {}",
+                            rule.rule_id,
+                            expected_line
+                        );
+                    }
+                }
+            }
+        }
     }
 
     #[test]
