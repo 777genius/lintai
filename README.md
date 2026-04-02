@@ -1,7 +1,5 @@
 # lintai
 
-Build your plugin once and easily export it to any AI agent, like Claude, Codex, or Gemini, without duplicating code.
-
 Fast offline security checks for AI agent artifacts in your repo.
 
 `lintai` helps you verify skills, MCP configs, agent rules, hooks, and plugin manifests before you trust them in local workflows or CI.

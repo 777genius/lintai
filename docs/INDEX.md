@@ -2,7 +2,7 @@
 
 <div class="lintai-page-intro">
   <p class="lintai-kicker">Rule Guide</p>
-  <h1>Build your plugin once and easily export it to any AI agent, like Claude, Codex, or Gemini, without duplicating code.</h1>
+  <h1>Browse rules and presets with less guesswork.</h1>
   <p class="lintai-lead">
     This docs site helps you quickly understand what each lintai rule checks, where it applies,
     and which presets enable it.
