@@ -5,7 +5,7 @@ use lintai_ai_security::{
     NativeCatalogSurface, native_rule_catalog_entries,
 };
 use lintai_api::{
-    CatalogDetectionClassKind, CatalogLifecycleClass, CatalogRuleIdentity, RuleMetadata,
+    CatalogDetectionClassKind, CatalogLifecycleClass, CatalogRuleIdentity,
     validate_rule_identities, validate_rule_presets, validate_rule_quality_contract,
 };
 use lintai_dep_vulns::{
@@ -17,68 +17,13 @@ use lintai_policy::{
     policy_rule_catalog_entries,
 };
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum BuiltinRuleScope {
-    PerFile,
-    Workspace,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum BuiltinCatalogSurface {
-    Markdown,
-    Hook,
-    Devcontainer,
-    DockerCompose,
-    Dockerfile,
-    Json,
-    ClaudeSettings,
-    ToolJson,
-    ServerJson,
-    GithubWorkflow,
-    Workspace,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum BuiltinCatalogDetectionClass {
-    Structural,
-    Heuristic,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum BuiltinCatalogRuleLifecycle {
-    Preview {
-        blocker: &'static str,
-        promotion_requirements: &'static str,
-    },
-    Stable {
-        rationale: &'static str,
-        malicious_case_ids: &'static [&'static str],
-        benign_case_ids: &'static [&'static str],
-        requires_structured_evidence: bool,
-        remediation_reviewed: bool,
-        deterministic_signal_basis: &'static str,
-    },
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum BuiltinCatalogRemediationSupport {
-    SafeFix,
-    Suggestion,
-    MessageOnly,
-    None,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct BuiltinRuleCatalogEntry {
-    pub metadata: RuleMetadata,
-    pub provider_id: &'static str,
-    pub scope: BuiltinRuleScope,
-    pub surface: BuiltinCatalogSurface,
-    pub default_presets: &'static [&'static str],
-    pub detection_class: BuiltinCatalogDetectionClass,
-    pub lifecycle: BuiltinCatalogRuleLifecycle,
-    pub remediation_support: BuiltinCatalogRemediationSupport,
-}
+pub use lintai_api::{
+    CatalogDetectionClass as BuiltinCatalogDetectionClass,
+    CatalogRemediationSupport as BuiltinCatalogRemediationSupport,
+    CatalogRuleEntry as BuiltinRuleCatalogEntry,
+    CatalogRuleLifecycle as BuiltinCatalogRuleLifecycle, CatalogRuleScope as BuiltinRuleScope,
+    CatalogSurface as BuiltinCatalogSurface,
+};
 
 pub fn builtin_rule_catalog_entries() -> Vec<BuiltinRuleCatalogEntry> {
     let mut entries = native_rule_catalog_entries()

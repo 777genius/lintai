@@ -1,11 +1,8 @@
-use lintai_api::{RuleMetadata, RuleTier};
-use lintai_builtins::BuiltinRuleCatalogEntry;
+use lintai_api::{CatalogRuleEntry, RuleMetadata, RuleTier};
 
-pub(crate) use lintai_builtins::{
-    BuiltinCatalogDetectionClass as CatalogDetectionClass,
-    BuiltinCatalogRemediationSupport as CatalogRemediationSupport,
-    BuiltinCatalogRuleLifecycle as CatalogRuleLifecycle, BuiltinCatalogSurface as CatalogSurface,
-    BuiltinRuleScope as RuleScope,
+pub(crate) use lintai_api::{
+    CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleLifecycle,
+    CatalogRuleScope as RuleScope, CatalogSurface,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -20,8 +17,8 @@ pub(crate) struct SecurityRuleCatalogEntry {
     pub(crate) remediation_support: CatalogRemediationSupport,
 }
 
-impl From<BuiltinRuleCatalogEntry> for SecurityRuleCatalogEntry {
-    fn from(entry: BuiltinRuleCatalogEntry) -> Self {
+impl From<CatalogRuleEntry> for SecurityRuleCatalogEntry {
+    fn from(entry: CatalogRuleEntry) -> Self {
         Self {
             metadata: entry.metadata,
             provider_id: entry.provider_id,
