@@ -1,5 +1,18 @@
 pub(crate) const HEURISTIC_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.";
 pub(crate) const STRUCTURAL_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.";
+pub(crate) const ALL_PRESET_IDS: &[&str] = &[
+    "base",
+    "preview",
+    "compat",
+    "skills",
+    "mcp",
+    "claude",
+    "guidance",
+    "governance",
+    "supply-chain",
+    "advisory",
+    "strict",
+];
 pub(crate) const BASE_PRESETS: &[&str] = &["base"];
 pub(crate) const BASE_SKILLS_PRESETS: &[&str] = &["base", "skills"];
 pub(crate) const PREVIEW_SKILLS_PRESETS: &[&str] = &["preview", "skills"];
