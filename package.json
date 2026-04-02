@@ -8,7 +8,8 @@
     "docs:check": "npm run docs:generate && cargo test -q -p lintai-cli site_catalog -- --nocapture && cargo test -q -p lintai-cli --test docs_contract -- --nocapture && vitepress build docs",
     "docs:dev": "npm run docs:generate && vitepress dev docs",
     "docs:build": "npm run docs:generate && vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "fixtures:check": "cargo run --quiet -p lintai-testing --bin normalize-case-manifests -- --check"
   },
   "devDependencies": {
     "vitepress": "1.6.4"
