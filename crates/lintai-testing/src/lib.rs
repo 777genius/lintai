@@ -14,7 +14,7 @@ use lintai_engine::{
 };
 use lintai_runtime::{InProcessProviderBackend, ProviderBackend};
 use serde::{Deserialize, Serialize};
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeMap;
 
 pub struct ProviderHarness;
 
@@ -192,121 +192,6 @@ pub struct CaseManifest {
     pub snapshot: SnapshotExpectation,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
-pub enum CaseManifestDialectFlag {
-    LegacyCaseSection,
-    LegacyPathKeys,
-    LegacyExpectKeys,
-    ImplicitCanonicalDefaults,
-    BucketScopedArtifactProviderKeys,
-    ArtifactListShorthand,
-    BucketScopedArtifactKind,
-    BucketScopedExpectedRules,
-    BucketScopedExpectations,
-    BucketScopedExpectSection,
-    BucketScopedSourcePath,
-    BucketScopedSingleRule,
-    StringExpectedFindings,
-    RuleAliasExpectedFindings,
-}
-
-impl CaseManifestDialectFlag {
-    pub fn label(self) -> &'static str {
-        match self {
-            Self::LegacyCaseSection => "legacy_case_section",
-            Self::LegacyPathKeys => "legacy_path_keys",
-            Self::LegacyExpectKeys => "legacy_expect_keys",
-            Self::ImplicitCanonicalDefaults => "implicit_canonical_defaults",
-            Self::BucketScopedArtifactProviderKeys => "bucket_scoped_artifact_provider_keys",
-            Self::ArtifactListShorthand => "artifact_list_shorthand",
-            Self::BucketScopedArtifactKind => "bucket_scoped_artifact_kind",
-            Self::BucketScopedExpectedRules => "bucket_scoped_expected_rules",
-            Self::BucketScopedExpectations => "bucket_scoped_expectations",
-            Self::BucketScopedExpectSection => "bucket_scoped_expect_section",
-            Self::BucketScopedSourcePath => "bucket_scoped_source_path",
-            Self::BucketScopedSingleRule => "bucket_scoped_single_rule",
-            Self::StringExpectedFindings => "string_expected_findings",
-            Self::RuleAliasExpectedFindings => "rule_alias_expected_findings",
-        }
-    }
-}
-
-#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
-struct LegacyExpectedAbsent {
-    rule: String,
-}
-
-#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
-struct LegacyCaseSection {
-    id: Option<String>,
-}
-
-#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
-struct LegacyCaseManifest {
-    case: Option<LegacyCaseSection>,
-    id: Option<String>,
-    name: Option<String>,
-    description: Option<String>,
-    path: Option<PathBuf>,
-    entry: Option<PathBuf>,
-    entrypoint: Option<PathBuf>,
-    expect_findings: Option<Vec<String>>,
-    expect_absent: Option<Vec<LegacyExpectedAbsent>>,
-}
-
-#[derive(Clone, Debug, Deserialize)]
-struct BucketScopedCaseManifest {
-    id: String,
-    #[allow(dead_code)]
-    kind: Option<String>,
-    description: Option<String>,
-    #[allow(dead_code)]
-    rule: Option<String>,
-    #[allow(dead_code)]
-    severity: Option<String>,
-    #[allow(dead_code)]
-    category: Option<String>,
-    #[allow(dead_code)]
-    expected: Option<usize>,
-    entry_path: Option<PathBuf>,
-    expected_output: Option<Vec<HarnessOutputFormat>>,
-    #[serde(default)]
-    expected_runtime_errors: usize,
-    #[serde(default)]
-    expected_runtime_error_kinds: Vec<ExpectedRuntimeErrorKind>,
-    #[serde(default)]
-    expected_diagnostics: usize,
-    expected_scanned_files: Option<usize>,
-    expected_skipped_files: Option<usize>,
-    expected_findings: Option<toml::Value>,
-    #[serde(default)]
-    expected_rules: Vec<String>,
-    #[serde(default)]
-    expectations: Vec<BucketScopedExpectation>,
-    source: Option<BucketScopedSource>,
-    expect: Option<BucketScopedExpect>,
-    #[serde(default)]
-    expected_absent_rules: Option<Vec<String>>,
-    snapshot: Option<SnapshotExpectation>,
-}
-
-#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
-struct BucketScopedExpectation {
-    rule: String,
-    tier: Option<RuleTier>,
-}
-
-#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
-struct BucketScopedSource {
-    path: PathBuf,
-}
-
-#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
-struct BucketScopedExpect {
-    #[serde(default)]
-    findings: Vec<String>,
-}
-
 impl CaseManifest {
     pub fn from_toml(input: &str) -> Result<Self, toml::de::Error> {
         toml::from_str(input)
@@ -325,24 +210,6 @@ impl CaseManifest {
         })
     }
 
-    pub fn load_with_legacy_compat(case_dir: &Path) -> Result<Self, ManifestLoadError> {
-        let manifest_path = case_dir.join("case.toml");
-        let contents =
-            std::fs::read_to_string(&manifest_path).map_err(|source| ManifestLoadError::Io {
-                path: manifest_path.clone(),
-                source,
-            })?;
-        match Self::from_toml(&contents) {
-            Ok(manifest) => Ok(manifest),
-            Err(source) => Self::from_bucket_scoped_toml(case_dir, &contents)
-                .or_else(|| Self::from_legacy_toml(case_dir, &contents))
-                .ok_or(ManifestLoadError::Parse {
-                    path: manifest_path,
-                    source,
-                }),
-        }
-    }
-
     pub fn entry_root(&self, case_dir: &Path) -> PathBuf {
         case_dir.join(&self.entry_path)
     }
@@ -350,207 +217,6 @@ impl CaseManifest {
     pub fn to_canonical_toml(&self) -> Result<String, toml::ser::Error> {
         toml::to_string_pretty(self)
     }
-
-    fn from_legacy_toml(case_dir: &Path, input: &str) -> Option<Self> {
-        let legacy = toml::from_str::<LegacyCaseManifest>(input).ok()?;
-        let id = legacy.id.or(legacy.name).or_else(|| {
-            legacy
-                .case
-                .as_ref()
-                .and_then(|section| section.id.as_ref().cloned())
-        })?;
-        let raw_entry = legacy
-            .entry
-            .or(legacy.entrypoint)
-            .or(legacy.path)
-            .unwrap_or_else(|| PathBuf::from("repo"));
-        let entry_path = default_case_entry_path(case_dir, Some(raw_entry));
-        let kind = case_kind_from_dir(case_dir)?;
-        let expected_findings = legacy
-            .expect_findings
-            .unwrap_or_default()
-            .into_iter()
-            .map(|rule_code| ExpectedFinding {
-                tier: known_rule_tier(&rule_code),
-                rule_code,
-                stable_key: None,
-                min_evidence_count: Some(1),
-            })
-            .collect();
-        let expected_absent_rules = legacy
-            .expect_absent
-            .unwrap_or_default()
-            .into_iter()
-            .map(|entry| entry.rule)
-            .collect();
-
-        Some(Self {
-            id,
-            description: legacy.description,
-            kind,
-            entry_path,
-            expected_output: default_case_output_formats(),
-            expected_runtime_errors: 0,
-            expected_runtime_error_kinds: Vec::new(),
-            expected_diagnostics: 0,
-            expected_scanned_files: None,
-            expected_skipped_files: None,
-            expected_findings,
-            expected_absent_rules,
-            snapshot: SnapshotExpectation {
-                kind: SnapshotKind::None,
-                name: "none".to_owned(),
-            },
-        })
-    }
-
-    fn from_bucket_scoped_toml(case_dir: &Path, input: &str) -> Option<Self> {
-        let manifest = toml::from_str::<BucketScopedCaseManifest>(input).ok()?;
-        let inferred_entry_path = manifest
-            .source
-            .as_ref()
-            .and_then(|source| infer_entry_path_from_source(&source.path));
-        Some(Self {
-            id: manifest.id,
-            description: manifest.description,
-            kind: case_kind_from_dir(case_dir)?,
-            entry_path: manifest
-                .entry_path
-                .or(inferred_entry_path)
-                .unwrap_or_else(|| default_case_entry_path(case_dir, None)),
-            expected_output: manifest
-                .expected_output
-                .unwrap_or_else(default_case_output_formats),
-            expected_runtime_errors: manifest.expected_runtime_errors,
-            expected_runtime_error_kinds: manifest.expected_runtime_error_kinds,
-            expected_diagnostics: manifest.expected_diagnostics,
-            expected_scanned_files: manifest.expected_scanned_files,
-            expected_skipped_files: manifest.expected_skipped_files,
-            expected_findings: normalize_bucket_expected_findings(
-                manifest.expected_findings,
-                &manifest.expected_rules,
-                &manifest.expectations,
-                manifest.rule.as_deref(),
-                manifest
-                    .expected
-                    .or_else(|| manifest.expect.as_ref().map(|expect| expect.findings.len())),
-                manifest.expect.as_ref(),
-            )?,
-            expected_absent_rules: normalize_bucket_expected_absent_rules(
-                manifest.expected_absent_rules,
-                manifest.rule.as_deref(),
-                manifest
-                    .expected
-                    .or_else(|| manifest.expect.as_ref().map(|expect| expect.findings.len())),
-            ),
-            snapshot: manifest.snapshot.unwrap_or(SnapshotExpectation {
-                kind: SnapshotKind::None,
-                name: String::new(),
-            }),
-        })
-    }
-}
-
-pub fn case_manifest_dialect_flags(input: &str) -> BTreeSet<CaseManifestDialectFlag> {
-    let mut flags = BTreeSet::new();
-    let Ok(value) = toml::from_str::<toml::Value>(input) else {
-        return flags;
-    };
-    let Some(table) = value.as_table() else {
-        return flags;
-    };
-
-    if table.contains_key("case") {
-        flags.insert(CaseManifestDialectFlag::LegacyCaseSection);
-    }
-    if table.contains_key("path") || table.contains_key("entry") || table.contains_key("entrypoint")
-    {
-        flags.insert(CaseManifestDialectFlag::LegacyPathKeys);
-    }
-    if table.contains_key("expect_findings") || table.contains_key("expect_absent") {
-        flags.insert(CaseManifestDialectFlag::LegacyExpectKeys);
-    }
-    if [
-        "kind",
-        "entry_path",
-        "expected_output",
-        "expected_runtime_errors",
-        "expected_diagnostics",
-        "expected_absent_rules",
-        "snapshot",
-    ]
-    .iter()
-    .any(|key| !table.contains_key(*key))
-    {
-        flags.insert(CaseManifestDialectFlag::ImplicitCanonicalDefaults);
-    }
-    if table.contains_key("artifact_kind") || table.contains_key("provider") {
-        flags.insert(CaseManifestDialectFlag::BucketScopedArtifactProviderKeys);
-    }
-    if table
-        .get("artifacts")
-        .and_then(|value| value.as_array())
-        .is_some_and(|items| !items.is_empty())
-    {
-        flags.insert(CaseManifestDialectFlag::ArtifactListShorthand);
-    }
-    if table
-        .get("kind")
-        .and_then(|value| value.as_str())
-        .is_some_and(|kind| !matches!(kind, "benign" | "malicious" | "edge" | "compat"))
-    {
-        flags.insert(CaseManifestDialectFlag::BucketScopedArtifactKind);
-    }
-    if table
-        .get("expected_rules")
-        .and_then(|value| value.as_array())
-        .is_some_and(|items| !items.is_empty())
-    {
-        flags.insert(CaseManifestDialectFlag::BucketScopedExpectedRules);
-    }
-    if table
-        .get("expectations")
-        .and_then(|value| value.as_array())
-        .is_some_and(|items| !items.is_empty())
-    {
-        flags.insert(CaseManifestDialectFlag::BucketScopedExpectations);
-    }
-    if table
-        .get("expect")
-        .and_then(|value| value.as_table())
-        .and_then(|expect| expect.get("findings"))
-        .and_then(|value| value.as_array())
-        .is_some_and(|items| !items.is_empty())
-    {
-        flags.insert(CaseManifestDialectFlag::BucketScopedExpectSection);
-    }
-    if table
-        .get("source")
-        .and_then(|value| value.as_table())
-        .is_some_and(|source| source.contains_key("path"))
-    {
-        flags.insert(CaseManifestDialectFlag::BucketScopedSourcePath);
-    }
-    if table.contains_key("rule") || table.contains_key("expected") {
-        flags.insert(CaseManifestDialectFlag::BucketScopedSingleRule);
-    }
-    if let Some(entries) = table
-        .get("expected_findings")
-        .and_then(|value| value.as_array())
-    {
-        if entries.iter().any(toml::Value::is_str) {
-            flags.insert(CaseManifestDialectFlag::StringExpectedFindings);
-        }
-        if entries.iter().any(|entry| {
-            entry
-                .as_table()
-                .is_some_and(|item| item.contains_key("rule") && !item.contains_key("rule_code"))
-        }) {
-            flags.insert(CaseManifestDialectFlag::RuleAliasExpectedFindings);
-        }
-    }
-
-    flags
 }
 
 fn workspace_root() -> PathBuf {
@@ -577,176 +243,6 @@ pub fn checked_in_case_dirs() -> Result<Vec<PathBuf>, HarnessError> {
     }
     case_dirs.sort();
     Ok(case_dirs)
-}
-
-fn case_kind_from_dir(case_dir: &Path) -> Option<CaseKind> {
-    match case_dir.parent()?.file_name()?.to_str()? {
-        "benign" => Some(CaseKind::Benign),
-        "malicious" => Some(CaseKind::Malicious),
-        "edge" => Some(CaseKind::Edge),
-        "compat" => Some(CaseKind::Compat),
-        _ => None,
-    }
-}
-
-fn default_case_output_formats() -> Vec<HarnessOutputFormat> {
-    vec![
-        HarnessOutputFormat::Text,
-        HarnessOutputFormat::Json,
-        HarnessOutputFormat::Sarif,
-    ]
-}
-
-fn default_case_entry_path(case_dir: &Path, raw_entry: Option<PathBuf>) -> PathBuf {
-    if case_dir.join("repo").is_dir() {
-        PathBuf::from("repo")
-    } else if raw_entry.as_deref() == Some(Path::new("repo")) {
-        PathBuf::from("repo")
-    } else {
-        PathBuf::from(".")
-    }
-}
-
-fn normalize_bucket_expected_findings(
-    value: Option<toml::Value>,
-    expected_rules: &[String],
-    expectations: &[BucketScopedExpectation],
-    single_rule: Option<&str>,
-    expected_count: Option<usize>,
-    expect: Option<&BucketScopedExpect>,
-) -> Option<Vec<ExpectedFinding>> {
-    let Some(value) = value else {
-        if let Some(expect) = expect {
-            return Some(
-                expect
-                    .findings
-                    .iter()
-                    .map(|rule_code| ExpectedFinding {
-                        tier: None,
-                        rule_code: rule_code.clone(),
-                        stable_key: None,
-                        min_evidence_count: Some(1),
-                    })
-                    .collect(),
-            );
-        }
-        if !expectations.is_empty() {
-            return Some(
-                expectations
-                    .iter()
-                    .map(|expectation| ExpectedFinding {
-                        tier: expectation.tier,
-                        rule_code: expectation.rule.clone(),
-                        stable_key: None,
-                        min_evidence_count: Some(1),
-                    })
-                    .collect(),
-            );
-        }
-        if let Some(rule_code) = single_rule {
-            if expected_count.unwrap_or(0) > 0 {
-                return Some(vec![ExpectedFinding {
-                    tier: None,
-                    rule_code: rule_code.to_owned(),
-                    stable_key: None,
-                    min_evidence_count: Some(1),
-                }]);
-            }
-        }
-        return Some(
-            expected_rules
-                .iter()
-                .map(|rule_code| ExpectedFinding {
-                    tier: None,
-                    rule_code: rule_code.clone(),
-                    stable_key: None,
-                    min_evidence_count: Some(1),
-                })
-                .collect(),
-        );
-    };
-    let entries = value.as_array()?;
-    let mut findings = Vec::with_capacity(entries.len());
-
-    for entry in entries {
-        if let Some(rule_code) = entry.as_str() {
-            findings.push(ExpectedFinding {
-                tier: None,
-                rule_code: rule_code.to_owned(),
-                stable_key: None,
-                min_evidence_count: Some(1),
-            });
-            continue;
-        }
-
-        let table = entry.as_table()?;
-        if let Some(rule_code) = table.get("rule_code").and_then(|value| value.as_str()) {
-            findings.push(ExpectedFinding {
-                rule_code: rule_code.to_owned(),
-                stable_key: table
-                    .get("stable_key")
-                    .and_then(|value| value.as_str())
-                    .map(str::to_owned),
-                tier: table
-                    .get("tier")
-                    .and_then(|value| value.as_str())
-                    .and_then(parse_rule_tier),
-                min_evidence_count: table
-                    .get("min_evidence_count")
-                    .and_then(|value| value.as_integer())
-                    .and_then(|value| usize::try_from(value).ok()),
-            });
-            continue;
-        }
-
-        if let Some(rule_code) = table.get("rule").and_then(|value| value.as_str()) {
-            findings.push(ExpectedFinding {
-                tier: table
-                    .get("tier")
-                    .and_then(|value| value.as_str())
-                    .and_then(parse_rule_tier),
-                rule_code: rule_code.to_owned(),
-                stable_key: None,
-                min_evidence_count: table
-                    .get("min_evidence_count")
-                    .and_then(|value| value.as_integer())
-                    .and_then(|value| usize::try_from(value).ok())
-                    .or(Some(1)),
-            });
-            continue;
-        }
-
-        return None;
-    }
-
-    Some(findings)
-}
-
-fn normalize_bucket_expected_absent_rules(
-    expected_absent_rules: Option<Vec<String>>,
-    single_rule: Option<&str>,
-    expected_count: Option<usize>,
-) -> Vec<String> {
-    let mut absent_rules = expected_absent_rules.unwrap_or_default();
-    if absent_rules.is_empty() && expected_count == Some(0) {
-        if let Some(rule_code) = single_rule {
-            absent_rules.push(rule_code.to_owned());
-        }
-    }
-    absent_rules
-}
-
-fn infer_entry_path_from_source(path: &Path) -> Option<PathBuf> {
-    let first = path.components().next()?.as_os_str();
-    Some(PathBuf::from(first))
-}
-
-fn parse_rule_tier(value: &str) -> Option<RuleTier> {
-    match value {
-        "preview" => Some(RuleTier::Preview),
-        "stable" => Some(RuleTier::Stable),
-        _ => None,
-    }
 }
 
 #[derive(Debug)]
@@ -1336,8 +832,8 @@ mod tests {
 
     use super::{
         CaseManifest, HarnessError, HarnessOutputFormat, OutputHarness, SnapshotExpectation,
-        SnapshotKind, WorkspaceHarness, assert_case_summary, case_manifest_dialect_flags,
-        discover_case_dirs, repo_root, unique_temp_dir,
+        SnapshotKind, WorkspaceHarness, assert_case_summary, discover_case_dirs, repo_root,
+        unique_temp_dir,
     };
     use lintai_api::{
         Category, Confidence, Finding, Location, RuleMetadata, RuleTier, Severity, Span,
@@ -1418,39 +914,6 @@ name = ""
         .unwrap_err();
 
         assert!(error.to_string().contains("kind"));
-    }
-
-    #[test]
-    fn load_with_legacy_compat_preserves_expected_findings_for_bucket_scoped_manifests() {
-        let bucket_root = unique_temp_dir("lintai-bucket-scoped-manifest");
-        let case_dir = bucket_root
-            .join("malicious")
-            .join("skill-pip-http-git-install");
-        std::fs::create_dir_all(case_dir.join("repo")).unwrap();
-        std::fs::write(
-            case_dir.join("case.toml"),
-            r#"
-id = "skill-pip-http-git-install"
-kind = "Skill"
-entry_path = "repo"
-expected_output = ["text"]
-expected_runtime_errors = 0
-expected_diagnostics = 1
-expected_findings = [
-  { rule_code = "SEC455", min_evidence_count = 1, tier = "stable" },
-]
-expected_absent_rules = []
-snapshot = { kind = "none", name = "" }
-"#,
-        )
-        .unwrap();
-
-        let manifest = CaseManifest::load_with_legacy_compat(&case_dir).unwrap();
-        assert_eq!(manifest.kind, super::CaseKind::Malicious);
-        assert_eq!(manifest.expected_findings.len(), 1);
-        assert_eq!(manifest.expected_findings[0].rule_code, "SEC455");
-        assert_eq!(manifest.expected_findings[0].tier, Some(RuleTier::Stable));
-        assert!(manifest.expected_absent_rules.is_empty());
     }
 
     #[test]
@@ -1626,17 +1089,9 @@ name = ""
 
         for case_dir in case_dirs {
             let manifest_path = case_dir.join("case.toml");
-            let raw = std::fs::read_to_string(&manifest_path).unwrap();
-            let flags = case_manifest_dialect_flags(&raw);
-            assert!(
-                flags.is_empty(),
-                "checked-in manifest {} still uses legacy dialect flags: {:?}",
-                manifest_path.display(),
-                flags
-            );
-            CaseManifest::from_toml(&raw).unwrap_or_else(|error| {
+            CaseManifest::load(&case_dir).unwrap_or_else(|error| {
                 panic!(
-                    "checked-in manifest {} must parse through the canonical contract: {error}",
+                    "checked-in manifest {} must stay canonical: {error}",
                     manifest_path.display()
                 )
             });
