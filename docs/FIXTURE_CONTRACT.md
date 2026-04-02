@@ -58,6 +58,8 @@ name = ""
 - Compatibility cases use `kind = "compat"` and `snapshot.kind != "none"`.
 - Sample repos use the same manifest shape as corpus cases.
 - Only TOML is allowed for fixture manifests.
+- Checked-in manifests that still rely on non-canonical legacy shorthands are treated as migration debt, not an open-ended second contract.
+- `lintai-testing` audits those legacy dialects with an explicit budget so new shorthand shapes cannot land silently.
 
 ## Snapshot Files
 

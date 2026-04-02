@@ -14,7 +14,7 @@ use lintai_engine::{
 };
 use lintai_runtime::{InProcessProviderBackend, ProviderBackend};
 use serde::Deserialize;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 pub struct ProviderHarness;
 
@@ -182,6 +182,45 @@ pub struct CaseManifest {
     pub expected_findings: Vec<ExpectedFinding>,
     pub expected_absent_rules: Vec<String>,
     pub snapshot: SnapshotExpectation,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub enum CaseManifestDialectFlag {
+    LegacyCaseSection,
+    LegacyPathKeys,
+    LegacyExpectKeys,
+    ImplicitCanonicalDefaults,
+    BucketScopedArtifactProviderKeys,
+    ArtifactListShorthand,
+    BucketScopedArtifactKind,
+    BucketScopedExpectedRules,
+    BucketScopedExpectations,
+    BucketScopedExpectSection,
+    BucketScopedSourcePath,
+    BucketScopedSingleRule,
+    StringExpectedFindings,
+    RuleAliasExpectedFindings,
+}
+
+impl CaseManifestDialectFlag {
+    pub fn label(self) -> &'static str {
+        match self {
+            Self::LegacyCaseSection => "legacy_case_section",
+            Self::LegacyPathKeys => "legacy_path_keys",
+            Self::LegacyExpectKeys => "legacy_expect_keys",
+            Self::ImplicitCanonicalDefaults => "implicit_canonical_defaults",
+            Self::BucketScopedArtifactProviderKeys => "bucket_scoped_artifact_provider_keys",
+            Self::ArtifactListShorthand => "artifact_list_shorthand",
+            Self::BucketScopedArtifactKind => "bucket_scoped_artifact_kind",
+            Self::BucketScopedExpectedRules => "bucket_scoped_expected_rules",
+            Self::BucketScopedExpectations => "bucket_scoped_expectations",
+            Self::BucketScopedExpectSection => "bucket_scoped_expect_section",
+            Self::BucketScopedSourcePath => "bucket_scoped_source_path",
+            Self::BucketScopedSingleRule => "bucket_scoped_single_rule",
+            Self::StringExpectedFindings => "string_expected_findings",
+            Self::RuleAliasExpectedFindings => "rule_alias_expected_findings",
+        }
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
@@ -383,6 +422,108 @@ impl CaseManifest {
             }),
         })
     }
+}
+
+pub fn case_manifest_dialect_flags(input: &str) -> BTreeSet<CaseManifestDialectFlag> {
+    let mut flags = BTreeSet::new();
+    let Ok(value) = toml::from_str::<toml::Value>(input) else {
+        return flags;
+    };
+    let Some(table) = value.as_table() else {
+        return flags;
+    };
+
+    if table.contains_key("case") {
+        flags.insert(CaseManifestDialectFlag::LegacyCaseSection);
+    }
+    if table.contains_key("path") || table.contains_key("entry") || table.contains_key("entrypoint")
+    {
+        flags.insert(CaseManifestDialectFlag::LegacyPathKeys);
+    }
+    if table.contains_key("expect_findings") || table.contains_key("expect_absent") {
+        flags.insert(CaseManifestDialectFlag::LegacyExpectKeys);
+    }
+    if [
+        "kind",
+        "entry_path",
+        "expected_output",
+        "expected_runtime_errors",
+        "expected_diagnostics",
+        "expected_absent_rules",
+        "snapshot",
+    ]
+    .iter()
+    .any(|key| !table.contains_key(*key))
+    {
+        flags.insert(CaseManifestDialectFlag::ImplicitCanonicalDefaults);
+    }
+    if table.contains_key("artifact_kind") || table.contains_key("provider") {
+        flags.insert(CaseManifestDialectFlag::BucketScopedArtifactProviderKeys);
+    }
+    if table
+        .get("artifacts")
+        .and_then(|value| value.as_array())
+        .is_some_and(|items| !items.is_empty())
+    {
+        flags.insert(CaseManifestDialectFlag::ArtifactListShorthand);
+    }
+    if table
+        .get("kind")
+        .and_then(|value| value.as_str())
+        .is_some_and(|kind| !matches!(kind, "benign" | "malicious" | "edge" | "compat"))
+    {
+        flags.insert(CaseManifestDialectFlag::BucketScopedArtifactKind);
+    }
+    if table
+        .get("expected_rules")
+        .and_then(|value| value.as_array())
+        .is_some_and(|items| !items.is_empty())
+    {
+        flags.insert(CaseManifestDialectFlag::BucketScopedExpectedRules);
+    }
+    if table
+        .get("expectations")
+        .and_then(|value| value.as_array())
+        .is_some_and(|items| !items.is_empty())
+    {
+        flags.insert(CaseManifestDialectFlag::BucketScopedExpectations);
+    }
+    if table
+        .get("expect")
+        .and_then(|value| value.as_table())
+        .and_then(|expect| expect.get("findings"))
+        .and_then(|value| value.as_array())
+        .is_some_and(|items| !items.is_empty())
+    {
+        flags.insert(CaseManifestDialectFlag::BucketScopedExpectSection);
+    }
+    if table
+        .get("source")
+        .and_then(|value| value.as_table())
+        .is_some_and(|source| source.contains_key("path"))
+    {
+        flags.insert(CaseManifestDialectFlag::BucketScopedSourcePath);
+    }
+    if table.contains_key("rule") || table.contains_key("expected") {
+        flags.insert(CaseManifestDialectFlag::BucketScopedSingleRule);
+    }
+    if let Some(entries) = table
+        .get("expected_findings")
+        .and_then(|value| value.as_array())
+    {
+        if entries.iter().any(toml::Value::is_str) {
+            flags.insert(CaseManifestDialectFlag::StringExpectedFindings);
+        }
+        if entries.iter().any(|entry| {
+            entry
+                .as_table()
+                .is_some_and(|item| item.contains_key("rule") && !item.contains_key("rule_code"))
+        }) {
+            flags.insert(CaseManifestDialectFlag::RuleAliasExpectedFindings);
+        }
+    }
+
+    flags
 }
 
 fn case_kind_from_dir(case_dir: &Path) -> Option<CaseKind> {
@@ -1141,12 +1282,13 @@ fn repo_root() -> PathBuf {
 
 #[cfg(test)]
 mod tests {
+    use std::collections::BTreeMap;
     use std::path::{Path, PathBuf};
 
     use super::{
         CaseManifest, HarnessError, HarnessOutputFormat, OutputHarness, SnapshotExpectation,
-        SnapshotKind, WorkspaceHarness, assert_case_summary, discover_case_dirs, repo_root,
-        unique_temp_dir,
+        SnapshotKind, WorkspaceHarness, assert_case_summary, case_manifest_dialect_flags,
+        discover_case_dirs, repo_root, unique_temp_dir,
     };
     use lintai_api::{
         Category, Confidence, Finding, Location, RuleMetadata, RuleTier, Severity, Span,
@@ -1390,6 +1532,78 @@ name = ""
         assert!(
             names.len() >= 10,
             "expected benign corpus to contain a non-trivial checked-in case set"
+        );
+    }
+
+    #[test]
+    fn checked_in_case_manifests_stay_within_known_legacy_dialects_budget() {
+        let root = repo_root();
+        let corpus_roots = [
+            root.join("corpus/benign"),
+            root.join("corpus/malicious"),
+            root.join("corpus/edge"),
+            root.join("corpus/compat"),
+            root.join("crates/lintai-dep-vulns/corpus/benign"),
+            root.join("crates/lintai-dep-vulns/corpus/malicious"),
+        ];
+        let mut counts = BTreeMap::new();
+        let mut canonical = 0usize;
+
+        for bucket_root in corpus_roots {
+            for case_dir in discover_case_dirs(&bucket_root).unwrap() {
+                let manifest_path = case_dir.join("case.toml");
+                let raw = std::fs::read_to_string(&manifest_path).unwrap();
+                let flags = case_manifest_dialect_flags(&raw);
+                if CaseManifest::from_toml(&raw).is_ok() {
+                    assert!(
+                        flags.is_empty(),
+                        "canonical manifest {} should not require legacy dialect flags: {:?}",
+                        manifest_path.display(),
+                        flags
+                    );
+                    canonical += 1;
+                    continue;
+                }
+
+                assert!(
+                    !flags.is_empty(),
+                    "non-canonical manifest {} must declare a known legacy dialect",
+                    manifest_path.display()
+                );
+                CaseManifest::load(&case_dir).unwrap_or_else(|error| {
+                    panic!(
+                        "legacy manifest {} must remain loadable through compatibility path: {error}",
+                        manifest_path.display()
+                    )
+                });
+                for flag in flags {
+                    *counts.entry(flag.label()).or_insert(0usize) += 1;
+                }
+            }
+        }
+
+        let expected = BTreeMap::from([
+            ("artifact_list_shorthand", 21usize),
+            ("bucket_scoped_artifact_kind", 77usize),
+            ("bucket_scoped_artifact_provider_keys", 16usize),
+            ("bucket_scoped_expect_section", 2usize),
+            ("bucket_scoped_expectations", 9usize),
+            ("bucket_scoped_expected_rules", 8usize),
+            ("bucket_scoped_single_rule", 22usize),
+            ("bucket_scoped_source_path", 6usize),
+            ("implicit_canonical_defaults", 119usize),
+            ("legacy_path_keys", 8usize),
+            ("rule_alias_expected_findings", 9usize),
+            ("string_expected_findings", 35usize),
+        ]);
+
+        assert_eq!(
+            counts, expected,
+            "checked-in legacy corpus dialect budget drifted; update manifests toward docs/FIXTURE_CONTRACT.md or explicitly bless the new debt"
+        );
+        assert_eq!(
+            canonical, 451,
+            "checked-in canonical manifest count drifted unexpectedly"
         );
     }
 
