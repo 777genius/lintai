@@ -1,12 +1,11 @@
 use std::collections::{BTreeMap, BTreeSet};
 
-use lintai_api::{BuiltinPresetKind, builtin_presets};
+use lintai_api::{BuiltinPresetKind, RuleMetadata, builtin_presets};
 use serde::Serialize;
 
 use crate::shipped_rules::{
-    CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleLifecycle, CatalogSurface,
-    RuleScope, SecurityRuleCatalogEntry, canonical_rule_path, provider_slug, provider_sort_key,
-    rule_slug, shipped_rule_alias, shipped_security_rule_catalog_entries,
+    CatalogRuleLifecycle, SecurityRuleCatalogEntry, canonical_rule_path, provider_slug,
+    provider_sort_key, rule_slug, shipped_rule_alias, shipped_security_rule_catalog_entries,
 };
 
 #[derive(Debug, Serialize)]
@@ -182,13 +181,13 @@ fn site_rule(
         slug: slug.clone(),
         canonical_path: canonical_rule_path(entry.provider_id, entry.metadata.code),
         summary: entry.metadata.summary.to_owned(),
-        scope: scope_name(entry.scope).to_owned(),
-        surface: surface_name(entry.surface).to_owned(),
-        tier: tier_name(entry.metadata.tier).to_owned(),
+        scope: entry.scope.slug().to_owned(),
+        surface: entry.surface.slug().to_owned(),
+        tier: entry.metadata.tier.slug().to_owned(),
         default_severity: severity_name(entry.metadata).to_owned(),
         default_confidence: confidence_name(entry.metadata).to_owned(),
-        detection_class: detection_name(entry.detection_class).to_owned(),
-        remediation_support: remediation_name(entry.remediation_support).to_owned(),
+        detection_class: entry.detection_class.slug().to_owned(),
+        remediation_support: entry.remediation_support.slug().to_owned(),
         default_presets: entry
             .default_presets()
             .into_iter()
@@ -341,66 +340,12 @@ fn lifecycle(lifecycle: CatalogRuleLifecycle) -> SiteRuleLifecycle {
     }
 }
 
-fn scope_name(scope: RuleScope) -> &'static str {
-    match scope {
-        RuleScope::PerFile => "per_file",
-        RuleScope::Workspace => "workspace",
-    }
+fn severity_name(metadata: RuleMetadata) -> &'static str {
+    metadata.default_severity.slug()
 }
 
-fn surface_name(surface: CatalogSurface) -> &'static str {
-    match surface {
-        CatalogSurface::Markdown => "markdown",
-        CatalogSurface::Hook => "hook",
-        CatalogSurface::Devcontainer => "devcontainer",
-        CatalogSurface::DockerCompose => "docker-compose",
-        CatalogSurface::Dockerfile => "dockerfile",
-        CatalogSurface::Json => "json",
-        CatalogSurface::ClaudeSettings => "claude_settings",
-        CatalogSurface::ToolJson => "tool_json",
-        CatalogSurface::ServerJson => "server_json",
-        CatalogSurface::GithubWorkflow => "github_workflow",
-        CatalogSurface::Workspace => "workspace",
-    }
-}
-
-fn detection_name(class: CatalogDetectionClass) -> &'static str {
-    match class {
-        CatalogDetectionClass::Structural => "structural",
-        CatalogDetectionClass::Heuristic => "heuristic",
-    }
-}
-
-fn remediation_name(remediation: CatalogRemediationSupport) -> &'static str {
-    match remediation {
-        CatalogRemediationSupport::SafeFix => "safe_fix",
-        CatalogRemediationSupport::Suggestion => "suggestion",
-        CatalogRemediationSupport::MessageOnly => "message_only",
-        CatalogRemediationSupport::None => "none",
-    }
-}
-
-fn tier_name(tier: lintai_api::RuleTier) -> &'static str {
-    match tier {
-        lintai_api::RuleTier::Stable => "stable",
-        lintai_api::RuleTier::Preview => "preview",
-    }
-}
-
-fn severity_name(metadata: lintai_api::RuleMetadata) -> &'static str {
-    match metadata.default_severity {
-        lintai_api::Severity::Warn => "warn",
-        lintai_api::Severity::Deny => "deny",
-        lintai_api::Severity::Allow => "allow",
-    }
-}
-
-fn confidence_name(metadata: lintai_api::RuleMetadata) -> &'static str {
-    match metadata.default_confidence {
-        lintai_api::Confidence::Low => "low",
-        lintai_api::Confidence::Medium => "medium",
-        lintai_api::Confidence::High => "high",
-    }
+fn confidence_name(metadata: RuleMetadata) -> &'static str {
+    metadata.default_confidence.slug()
 }
 
 #[cfg(test)]

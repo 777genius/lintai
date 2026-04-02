@@ -62,6 +62,24 @@ pub enum Confidence {
     Low,
 }
 
+impl Confidence {
+    pub const fn slug(self) -> &'static str {
+        match self {
+            Self::High => "high",
+            Self::Medium => "medium",
+            Self::Low => "low",
+        }
+    }
+
+    pub const fn label(self) -> &'static str {
+        match self {
+            Self::High => "High",
+            Self::Medium => "Medium",
+            Self::Low => "Low",
+        }
+    }
+}
+
 #[macro_export]
 macro_rules! declare_rule {
     (
@@ -139,5 +157,11 @@ mod tests {
         assert_eq!(metadata.default_severity, Severity::Warn);
         assert_eq!(metadata.default_confidence, Confidence::High);
         assert_eq!(metadata.tier, RuleTier::Stable);
+    }
+
+    #[test]
+    fn confidence_labels_and_slugs_are_stable() {
+        assert_eq!(Confidence::High.slug(), "high");
+        assert_eq!(Confidence::Medium.label(), "Medium");
     }
 }

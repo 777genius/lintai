@@ -4,65 +4,31 @@ use crate::shipped_rules::{
 use lintai_api::{RuleMetadata, RuleTier};
 
 pub(super) fn format_scope(scope: RuleScope) -> &'static str {
-    match scope {
-        RuleScope::PerFile => "per_file",
-        RuleScope::Workspace => "workspace",
-    }
+    scope.slug()
 }
 
 pub(super) fn format_surface(surface: CatalogSurface) -> &'static str {
-    match surface {
-        CatalogSurface::Markdown => "markdown",
-        CatalogSurface::Hook => "hook",
-        CatalogSurface::Devcontainer => "devcontainer",
-        CatalogSurface::DockerCompose => "docker-compose",
-        CatalogSurface::Dockerfile => "dockerfile",
-        CatalogSurface::Json => "json",
-        CatalogSurface::ClaudeSettings => "claude_settings",
-        CatalogSurface::ToolJson => "tool_json",
-        CatalogSurface::ServerJson => "server_json",
-        CatalogSurface::GithubWorkflow => "github_workflow",
-        CatalogSurface::Workspace => "workspace",
-    }
+    surface.slug()
 }
 
 pub(super) fn format_detection(detection_class: CatalogDetectionClass) -> &'static str {
-    match detection_class {
-        CatalogDetectionClass::Structural => "structural",
-        CatalogDetectionClass::Heuristic => "heuristic",
-    }
+    detection_class.slug()
 }
 
 pub(super) fn format_remediation(remediation_support: CatalogRemediationSupport) -> &'static str {
-    match remediation_support {
-        CatalogRemediationSupport::SafeFix => "safe_fix",
-        CatalogRemediationSupport::Suggestion => "suggestion",
-        CatalogRemediationSupport::MessageOnly => "message_only",
-        CatalogRemediationSupport::None => "none",
-    }
+    remediation_support.slug()
 }
 
 pub(super) fn format_tier(tier: RuleTier) -> &'static str {
-    match tier {
-        RuleTier::Stable => "Stable",
-        RuleTier::Preview => "Preview",
-    }
+    tier.label()
 }
 
 pub(super) fn format_severity(metadata: RuleMetadata) -> &'static str {
-    match metadata.default_severity {
-        lintai_api::Severity::Deny => "Deny",
-        lintai_api::Severity::Warn => "Warn",
-        lintai_api::Severity::Allow => "Allow",
-    }
+    metadata.default_severity.label()
 }
 
 pub(super) fn format_confidence(metadata: RuleMetadata) -> &'static str {
-    match metadata.default_confidence {
-        lintai_api::Confidence::Low => "Low",
-        lintai_api::Confidence::Medium => "Medium",
-        lintai_api::Confidence::High => "High",
-    }
+    metadata.default_confidence.label()
 }
 
 pub(super) fn format_case_ids(case_ids: &[&str]) -> String {

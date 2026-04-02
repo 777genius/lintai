@@ -103,6 +103,24 @@ pub enum Severity {
     Allow,
 }
 
+impl Severity {
+    pub const fn slug(self) -> &'static str {
+        match self {
+            Self::Deny => "deny",
+            Self::Warn => "warn",
+            Self::Allow => "allow",
+        }
+    }
+
+    pub const fn label(self) -> &'static str {
+        match self {
+            Self::Deny => "Deny",
+            Self::Warn => "Warn",
+            Self::Allow => "Allow",
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, Deserialize, Eq, JsonSchema, PartialEq, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Applicability {

@@ -6,6 +6,15 @@ pub enum CatalogRuleScope {
     Workspace,
 }
 
+impl CatalogRuleScope {
+    pub const fn slug(self) -> &'static str {
+        match self {
+            Self::PerFile => "per_file",
+            Self::Workspace => "workspace",
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum CatalogSurface {
     Markdown,
@@ -21,10 +30,37 @@ pub enum CatalogSurface {
     Workspace,
 }
 
+impl CatalogSurface {
+    pub const fn slug(self) -> &'static str {
+        match self {
+            Self::Markdown => "markdown",
+            Self::Hook => "hook",
+            Self::Devcontainer => "devcontainer",
+            Self::DockerCompose => "docker-compose",
+            Self::Dockerfile => "dockerfile",
+            Self::Json => "json",
+            Self::ClaudeSettings => "claude_settings",
+            Self::ToolJson => "tool_json",
+            Self::ServerJson => "server_json",
+            Self::GithubWorkflow => "github_workflow",
+            Self::Workspace => "workspace",
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum CatalogDetectionClass {
     Structural,
     Heuristic,
+}
+
+impl CatalogDetectionClass {
+    pub const fn slug(self) -> &'static str {
+        match self {
+            Self::Structural => "structural",
+            Self::Heuristic => "heuristic",
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -51,6 +87,17 @@ pub enum CatalogRemediationSupport {
     None,
 }
 
+impl CatalogRemediationSupport {
+    pub const fn slug(self) -> &'static str {
+        match self {
+            Self::SafeFix => "safe_fix",
+            Self::Suggestion => "suggestion",
+            Self::MessageOnly => "message_only",
+            Self::None => "none",
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct CatalogRuleEntry {
     pub metadata: RuleMetadata,
@@ -61,4 +108,23 @@ pub struct CatalogRuleEntry {
     pub detection_class: CatalogDetectionClass,
     pub lifecycle: CatalogRuleLifecycle,
     pub remediation_support: CatalogRemediationSupport,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{
+        CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleScope, CatalogSurface,
+    };
+
+    #[test]
+    fn catalog_taxonomy_slugs_are_stable() {
+        assert_eq!(CatalogRuleScope::PerFile.slug(), "per_file");
+        assert_eq!(CatalogRuleScope::Workspace.slug(), "workspace");
+        assert_eq!(CatalogSurface::GithubWorkflow.slug(), "github_workflow");
+        assert_eq!(CatalogDetectionClass::Heuristic.slug(), "heuristic");
+        assert_eq!(
+            CatalogRemediationSupport::MessageOnly.slug(),
+            "message_only"
+        );
+    }
 }
