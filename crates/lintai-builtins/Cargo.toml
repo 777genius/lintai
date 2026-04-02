@@ -12,5 +12,8 @@ lintai-ai-security.workspace = true
 lintai-dep-vulns.workspace = true
 lintai-policy.workspace = true
 
+[dev-dependencies]
+lintai-testing.workspace = true
+
 [lib]
 path = "src/lib.rs"

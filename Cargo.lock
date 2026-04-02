@@ -352,6 +352,7 @@ dependencies = [
  "lintai-api",
  "lintai-dep-vulns",
  "lintai-policy",
+ "lintai-testing",
 ]
 
 [[package]]

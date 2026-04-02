@@ -99,7 +99,42 @@ fn validate_builtin_rule_catalog_entries(entries: &[BuiltinRuleCatalogEntry]) {
 
 #[cfg(test)]
 mod tests {
-    use super::builtin_rule_catalog_entries;
+    use std::collections::BTreeSet;
+    use std::path::PathBuf;
+
+    use lintai_testing::{CaseManifest, discover_case_dirs};
+
+    use super::{BuiltinCatalogRuleLifecycle, builtin_rule_catalog_entries};
+
+    fn repo_root() -> PathBuf {
+        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("../..")
+            .canonicalize()
+            .expect("workspace root should be discoverable from lintai-builtins")
+    }
+
+    fn bucket_case_ids(bucket: &str) -> BTreeSet<String> {
+        let bucket_root = repo_root().join("corpus").join(bucket);
+        let mut ids = BTreeSet::new();
+
+        for case_dir in discover_case_dirs(&bucket_root).expect("corpus bucket should load") {
+            let manifest = CaseManifest::load(&case_dir).expect("corpus manifest should load");
+            assert!(
+                ids.insert(manifest.id.clone()),
+                "duplicate corpus manifest id {} in bucket {}",
+                manifest.id,
+                bucket
+            );
+        }
+
+        assert!(
+            !ids.is_empty(),
+            "expected corpus bucket {} to contain checked-in cases",
+            bucket
+        );
+
+        ids
+    }
 
     #[test]
     fn builtin_rule_catalog_entries_pass_validation_contracts() {
@@ -107,6 +142,47 @@ mod tests {
         assert!(
             !entries.is_empty(),
             "builtin rule catalog should not be empty"
+        );
+    }
+
+    #[test]
+    fn stable_rule_corpus_links_resolve_to_checked_in_cases() {
+        let malicious_case_ids = bucket_case_ids("malicious");
+        let benign_case_ids = bucket_case_ids("benign");
+        let mut stable_rule_count = 0usize;
+
+        for entry in builtin_rule_catalog_entries() {
+            if let BuiltinCatalogRuleLifecycle::Stable {
+                malicious_case_ids: expected_malicious,
+                benign_case_ids: expected_benign,
+                ..
+            } = entry.lifecycle
+            {
+                stable_rule_count += 1;
+
+                for case_id in expected_malicious {
+                    assert!(
+                        malicious_case_ids.contains(*case_id),
+                        "stable rule {} references missing malicious corpus case {}",
+                        entry.metadata.code,
+                        case_id
+                    );
+                }
+
+                for case_id in expected_benign {
+                    assert!(
+                        benign_case_ids.contains(*case_id),
+                        "stable rule {} references missing benign corpus case {}",
+                        entry.metadata.code,
+                        case_id
+                    );
+                }
+            }
+        }
+
+        assert!(
+            stable_rule_count > 0,
+            "expected shipped rule catalog to contain stable rules"
         );
     }
 }
