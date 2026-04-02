@@ -1,4 +1,7 @@
-use lintai_api::{RuleMetadata, RuleTier, declare_rule};
+use lintai_api::{
+    CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleEntry, CatalogRuleLifecycle,
+    CatalogRuleScope, CatalogSurface, RuleMetadata, RuleTier, declare_rule,
+};
 
 use crate::PROVIDER_ID;
 
@@ -123,4 +126,33 @@ const POLICY_RULE_CATALOG_ENTRIES: [PolicyRuleCatalogEntry; 3] = [
 
 pub fn policy_rule_catalog_entries() -> &'static [PolicyRuleCatalogEntry] {
     &POLICY_RULE_CATALOG_ENTRIES
+}
+
+impl From<PolicyRuleCatalogEntry> for CatalogRuleEntry {
+    fn from(entry: PolicyRuleCatalogEntry) -> Self {
+        Self {
+            metadata: entry.metadata,
+            provider_id: entry.provider_id,
+            scope: CatalogRuleScope::Workspace,
+            surface: match entry.surface {
+                PolicySurface::Workspace => CatalogSurface::Workspace,
+            },
+            default_presets: entry.default_presets,
+            detection_class: match entry.detection_class {
+                PolicyDetectionClass::Structural => CatalogDetectionClass::Structural,
+            },
+            lifecycle: match entry.lifecycle {
+                PolicyRuleLifecycle::Preview {
+                    blocker,
+                    promotion_requirements,
+                } => CatalogRuleLifecycle::Preview {
+                    blocker,
+                    promotion_requirements,
+                },
+            },
+            remediation_support: match entry.remediation_support {
+                PolicyRemediationSupport::None => CatalogRemediationSupport::None,
+            },
+        }
+    }
 }

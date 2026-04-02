@@ -1,4 +1,7 @@
-use lintai_api::RuleMetadata;
+use lintai_api::{
+    CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleEntry, CatalogRuleLifecycle,
+    CatalogRuleScope, CatalogSurface, RuleMetadata,
+};
 
 use crate::registry::{
     DetectionClass, PROVIDER_ID, RemediationSupport, RuleLifecycle, Surface, rule_specs,
@@ -72,6 +75,67 @@ pub fn native_rule_catalog_entries() -> Vec<NativeRuleCatalogEntry> {
             remediation_support: map_remediation(spec.remediation_support()),
         })
         .collect()
+}
+
+impl From<NativeRuleCatalogEntry> for CatalogRuleEntry {
+    fn from(entry: NativeRuleCatalogEntry) -> Self {
+        Self {
+            metadata: entry.metadata,
+            provider_id: entry.provider_id,
+            scope: CatalogRuleScope::PerFile,
+            surface: match entry.surface {
+                NativeCatalogSurface::Markdown => CatalogSurface::Markdown,
+                NativeCatalogSurface::Hook => CatalogSurface::Hook,
+                NativeCatalogSurface::Devcontainer => CatalogSurface::Devcontainer,
+                NativeCatalogSurface::DockerCompose => CatalogSurface::DockerCompose,
+                NativeCatalogSurface::Dockerfile => CatalogSurface::Dockerfile,
+                NativeCatalogSurface::Json => CatalogSurface::Json,
+                NativeCatalogSurface::ClaudeSettings => CatalogSurface::ClaudeSettings,
+                NativeCatalogSurface::ToolJson => CatalogSurface::ToolJson,
+                NativeCatalogSurface::ServerJson => CatalogSurface::ServerJson,
+                NativeCatalogSurface::GithubWorkflow => CatalogSurface::GithubWorkflow,
+            },
+            default_presets: entry.default_presets,
+            detection_class: match entry.detection_class {
+                NativeCatalogDetectionClass::Structural => CatalogDetectionClass::Structural,
+                NativeCatalogDetectionClass::Heuristic => CatalogDetectionClass::Heuristic,
+            },
+            lifecycle: match entry.lifecycle {
+                NativeCatalogRuleLifecycle::Preview {
+                    blocker,
+                    promotion_requirements,
+                } => CatalogRuleLifecycle::Preview {
+                    blocker,
+                    promotion_requirements,
+                },
+                NativeCatalogRuleLifecycle::Stable {
+                    rationale,
+                    malicious_case_ids,
+                    benign_case_ids,
+                    requires_structured_evidence,
+                    remediation_reviewed,
+                    deterministic_signal_basis,
+                } => CatalogRuleLifecycle::Stable {
+                    rationale,
+                    malicious_case_ids,
+                    benign_case_ids,
+                    requires_structured_evidence,
+                    remediation_reviewed,
+                    deterministic_signal_basis,
+                },
+            },
+            remediation_support: match entry.remediation_support {
+                NativeCatalogRemediationSupport::SafeFix => CatalogRemediationSupport::SafeFix,
+                NativeCatalogRemediationSupport::Suggestion => {
+                    CatalogRemediationSupport::Suggestion
+                }
+                NativeCatalogRemediationSupport::MessageOnly => {
+                    CatalogRemediationSupport::MessageOnly
+                }
+                NativeCatalogRemediationSupport::None => CatalogRemediationSupport::None,
+            },
+        }
+    }
 }
 
 fn map_surface(surface: Surface) -> NativeCatalogSurface {

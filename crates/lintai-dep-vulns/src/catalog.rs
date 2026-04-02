@@ -1,4 +1,7 @@
-use lintai_api::{RuleMetadata, RuleTier, declare_rule};
+use lintai_api::{
+    CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleEntry, CatalogRuleLifecycle,
+    CatalogRuleScope, CatalogSurface, RuleMetadata, RuleTier, declare_rule,
+};
 
 use crate::PROVIDER_ID;
 
@@ -67,4 +70,33 @@ const DEP_VULN_RULE_CATALOG_ENTRIES: [DepVulnRuleCatalogEntry; 1] = [DepVulnRule
 
 pub fn dep_vuln_rule_catalog_entries() -> &'static [DepVulnRuleCatalogEntry] {
     &DEP_VULN_RULE_CATALOG_ENTRIES
+}
+
+impl From<DepVulnRuleCatalogEntry> for CatalogRuleEntry {
+    fn from(entry: DepVulnRuleCatalogEntry) -> Self {
+        Self {
+            metadata: entry.metadata,
+            provider_id: entry.provider_id,
+            scope: CatalogRuleScope::Workspace,
+            surface: match entry.surface {
+                DepVulnSurface::Workspace => CatalogSurface::Workspace,
+            },
+            default_presets: entry.default_presets,
+            detection_class: match entry.detection_class {
+                DepVulnDetectionClass::Structural => CatalogDetectionClass::Structural,
+            },
+            lifecycle: match entry.lifecycle {
+                DepVulnRuleLifecycle::Preview {
+                    blocker,
+                    promotion_requirements,
+                } => CatalogRuleLifecycle::Preview {
+                    blocker,
+                    promotion_requirements,
+                },
+            },
+            remediation_support: match entry.remediation_support {
+                DepVulnRemediationSupport::Suggestion => CatalogRemediationSupport::Suggestion,
+            },
+        }
+    }
 }
