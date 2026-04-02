@@ -156,3 +156,49 @@ impl From<PolicyRuleCatalogEntry> for CatalogRuleEntry {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use lintai_api::{
+        CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleEntry, CatalogRuleLifecycle,
+        CatalogRuleScope, CatalogSurface,
+    };
+
+    use super::policy_rule_catalog_entries;
+
+    #[test]
+    fn policy_catalog_entries_convert_to_shared_catalog_entries() {
+        for entry in policy_rule_catalog_entries().iter().copied() {
+            let converted = CatalogRuleEntry::from(entry);
+            assert_eq!(converted.metadata, entry.metadata);
+            assert_eq!(converted.provider_id, entry.provider_id);
+            assert_eq!(converted.scope, CatalogRuleScope::Workspace);
+            assert_eq!(converted.surface, CatalogSurface::Workspace);
+            assert_eq!(converted.default_presets, entry.default_presets);
+            assert_eq!(converted.detection_class, CatalogDetectionClass::Structural);
+            assert_eq!(
+                converted.remediation_support,
+                CatalogRemediationSupport::None
+            );
+            match (entry.lifecycle, converted.lifecycle) {
+                (
+                    super::PolicyRuleLifecycle::Preview {
+                        blocker: expected_blocker,
+                        promotion_requirements: expected_requirements,
+                    },
+                    CatalogRuleLifecycle::Preview {
+                        blocker,
+                        promotion_requirements,
+                    },
+                ) => {
+                    assert_eq!(blocker, expected_blocker);
+                    assert_eq!(promotion_requirements, expected_requirements);
+                }
+                _ => panic!(
+                    "policy lifecycle conversion drifted for {}",
+                    entry.metadata.code
+                ),
+            }
+        }
+    }
+}

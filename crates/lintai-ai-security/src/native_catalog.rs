@@ -196,3 +196,108 @@ fn map_remediation(remediation: RemediationSupport) -> NativeCatalogRemediationS
         RemediationSupport::None => NativeCatalogRemediationSupport::None,
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use lintai_api::{
+        CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleEntry, CatalogRuleLifecycle,
+        CatalogRuleScope, CatalogSurface,
+    };
+
+    use super::{
+        NativeCatalogDetectionClass, NativeCatalogRemediationSupport, NativeCatalogRuleLifecycle,
+        NativeCatalogSurface, native_rule_catalog_entries,
+    };
+
+    #[test]
+    fn native_catalog_entries_convert_to_shared_catalog_entries() {
+        for entry in native_rule_catalog_entries() {
+            let converted = CatalogRuleEntry::from(entry);
+            assert_eq!(converted.metadata, entry.metadata);
+            assert_eq!(converted.provider_id, entry.provider_id);
+            assert_eq!(converted.scope, CatalogRuleScope::PerFile);
+            assert_eq!(converted.default_presets, entry.default_presets);
+            assert_eq!(
+                converted.surface.slug(),
+                match entry.surface {
+                    NativeCatalogSurface::Markdown => CatalogSurface::Markdown.slug(),
+                    NativeCatalogSurface::Hook => CatalogSurface::Hook.slug(),
+                    NativeCatalogSurface::Devcontainer => CatalogSurface::Devcontainer.slug(),
+                    NativeCatalogSurface::DockerCompose => CatalogSurface::DockerCompose.slug(),
+                    NativeCatalogSurface::Dockerfile => CatalogSurface::Dockerfile.slug(),
+                    NativeCatalogSurface::Json => CatalogSurface::Json.slug(),
+                    NativeCatalogSurface::ClaudeSettings => CatalogSurface::ClaudeSettings.slug(),
+                    NativeCatalogSurface::ToolJson => CatalogSurface::ToolJson.slug(),
+                    NativeCatalogSurface::ServerJson => CatalogSurface::ServerJson.slug(),
+                    NativeCatalogSurface::GithubWorkflow => {
+                        CatalogSurface::GithubWorkflow.slug()
+                    }
+                }
+            );
+            assert_eq!(
+                converted.detection_class,
+                match entry.detection_class {
+                    NativeCatalogDetectionClass::Structural => CatalogDetectionClass::Structural,
+                    NativeCatalogDetectionClass::Heuristic => CatalogDetectionClass::Heuristic,
+                }
+            );
+            assert_eq!(
+                converted.remediation_support,
+                match entry.remediation_support {
+                    NativeCatalogRemediationSupport::SafeFix => CatalogRemediationSupport::SafeFix,
+                    NativeCatalogRemediationSupport::Suggestion => {
+                        CatalogRemediationSupport::Suggestion
+                    }
+                    NativeCatalogRemediationSupport::MessageOnly => {
+                        CatalogRemediationSupport::MessageOnly
+                    }
+                    NativeCatalogRemediationSupport::None => CatalogRemediationSupport::None,
+                }
+            );
+            match (entry.lifecycle, converted.lifecycle) {
+                (
+                    NativeCatalogRuleLifecycle::Preview {
+                        blocker: expected_blocker,
+                        promotion_requirements: expected_requirements,
+                    },
+                    CatalogRuleLifecycle::Preview {
+                        blocker,
+                        promotion_requirements,
+                    },
+                ) => {
+                    assert_eq!(blocker, expected_blocker);
+                    assert_eq!(promotion_requirements, expected_requirements);
+                }
+                (
+                    NativeCatalogRuleLifecycle::Stable {
+                        rationale: expected_rationale,
+                        malicious_case_ids: expected_malicious,
+                        benign_case_ids: expected_benign,
+                        requires_structured_evidence: expected_structured_evidence,
+                        remediation_reviewed: expected_reviewed,
+                        deterministic_signal_basis: expected_signal_basis,
+                    },
+                    CatalogRuleLifecycle::Stable {
+                        rationale,
+                        malicious_case_ids,
+                        benign_case_ids,
+                        requires_structured_evidence,
+                        remediation_reviewed,
+                        deterministic_signal_basis,
+                    },
+                ) => {
+                    assert_eq!(rationale, expected_rationale);
+                    assert_eq!(malicious_case_ids, expected_malicious);
+                    assert_eq!(benign_case_ids, expected_benign);
+                    assert_eq!(requires_structured_evidence, expected_structured_evidence);
+                    assert_eq!(remediation_reviewed, expected_reviewed);
+                    assert_eq!(deterministic_signal_basis, expected_signal_basis);
+                }
+                _ => panic!(
+                    "native lifecycle conversion drifted for {}",
+                    entry.metadata.code
+                ),
+            }
+        }
+    }
+}
