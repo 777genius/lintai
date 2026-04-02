@@ -9,6 +9,7 @@ mod compat_tests;
 mod execution;
 #[path = "external_validation/mod.rs"]
 mod external_validation;
+mod generated_docs;
 mod internal_bin;
 #[path = "known_scan/mod.rs"]
 mod known_scan;
@@ -35,4 +36,10 @@ pub fn render_security_rules_catalog() -> String {
 
 pub fn render_site_catalog_json() -> String {
     site_catalog::render_site_catalog_json()
+}
+
+pub fn write_generated_docs(
+    repo_root: &std::path::Path,
+) -> Result<Vec<std::path::PathBuf>, String> {
+    generated_docs::write_generated_doc_artifacts(repo_root)
 }

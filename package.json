@@ -4,7 +4,7 @@
   "type": "module",
   "packageManager": "npm@10.9.4",
   "scripts": {
-    "docs:generate": "mkdir -p docs/.generated && cargo run --quiet -p lintai-cli --bin render-site-catalog > docs/.generated/catalog.json.tmp && mv docs/.generated/catalog.json.tmp docs/.generated/catalog.json && cargo run --quiet -p lintai-cli --bin render-security-rule-catalog > docs/SECURITY_RULES.md.tmp && mv docs/SECURITY_RULES.md.tmp docs/SECURITY_RULES.md",
+    "docs:generate": "cargo run --quiet -p lintai-cli --bin write-generated-docs",
     "docs:check": "npm run docs:generate && cargo test -q -p lintai-cli site_catalog -- --nocapture && cargo test -q -p lintai-cli --test docs_contract -- --nocapture && vitepress build docs",
     "docs:dev": "npm run docs:generate && vitepress dev docs",
     "docs:build": "npm run docs:generate && vitepress build docs",

@@ -35,3 +35,7 @@ path = "src/main.rs"
 [[bin]]
 name = "lintai-external-validation"
 path = "src/bin/lintai-external-validation.rs"
+
+[[bin]]
+name = "write-generated-docs"
+path = "src/bin/write-generated-docs.rs"
