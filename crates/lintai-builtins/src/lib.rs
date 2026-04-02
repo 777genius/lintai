@@ -99,7 +99,7 @@ fn validate_builtin_rule_catalog_entries(entries: &[BuiltinRuleCatalogEntry]) {
 
 #[cfg(test)]
 mod tests {
-    use std::collections::BTreeSet;
+    use std::collections::BTreeMap;
     use std::path::PathBuf;
 
     use lintai_testing::{CaseManifest, discover_case_dirs};
@@ -113,14 +113,16 @@ mod tests {
             .expect("workspace root should be discoverable from lintai-builtins")
     }
 
-    fn bucket_case_ids(bucket: &str) -> BTreeSet<String> {
+    fn bucket_case_manifests(bucket: &str) -> BTreeMap<String, CaseManifest> {
         let bucket_root = repo_root().join("corpus").join(bucket);
-        let mut ids = BTreeSet::new();
+        let mut manifests = BTreeMap::new();
 
         for case_dir in discover_case_dirs(&bucket_root).expect("corpus bucket should load") {
             let manifest = CaseManifest::load(&case_dir).expect("corpus manifest should load");
             assert!(
-                ids.insert(manifest.id.clone()),
+                manifests
+                    .insert(manifest.id.clone(), manifest.clone())
+                    .is_none(),
                 "duplicate corpus manifest id {} in bucket {}",
                 manifest.id,
                 bucket
@@ -128,12 +130,12 @@ mod tests {
         }
 
         assert!(
-            !ids.is_empty(),
+            !manifests.is_empty(),
             "expected corpus bucket {} to contain checked-in cases",
             bucket
         );
 
-        ids
+        manifests
     }
 
     #[test]
@@ -147,8 +149,8 @@ mod tests {
 
     #[test]
     fn stable_rule_corpus_links_resolve_to_checked_in_cases() {
-        let malicious_case_ids = bucket_case_ids("malicious");
-        let benign_case_ids = bucket_case_ids("benign");
+        let malicious_case_manifests = bucket_case_manifests("malicious");
+        let benign_case_manifests = bucket_case_manifests("benign");
         let mut stable_rule_count = 0usize;
 
         for entry in builtin_rule_catalog_entries() {
@@ -161,18 +163,51 @@ mod tests {
                 stable_rule_count += 1;
 
                 for case_id in expected_malicious {
+                    let manifest = malicious_case_manifests.get(*case_id).unwrap_or_else(|| {
+                        panic!(
+                            "stable rule {} references missing malicious corpus case {}",
+                            entry.metadata.code, case_id
+                        )
+                    });
                     assert!(
-                        malicious_case_ids.contains(*case_id),
-                        "stable rule {} references missing malicious corpus case {}",
+                        manifest
+                            .expected_findings
+                            .iter()
+                            .any(|finding| finding.rule_code == entry.metadata.code),
+                        "stable rule {} links malicious corpus case {} but that manifest does not expect the rule",
                         entry.metadata.code,
                         case_id
+                    );
+                    assert!(
+                        manifest.expected_findings.iter().any(|finding| {
+                            finding.rule_code == entry.metadata.code
+                                && finding.tier.is_none_or(|tier| tier == entry.metadata.tier)
+                        }),
+                        "stable rule {} links malicious corpus case {} but that manifest pins a conflicting tier for {:?}",
+                        entry.metadata.code,
+                        case_id,
+                        entry.metadata.tier
                     );
                 }
 
                 for case_id in expected_benign {
+                    let manifest = benign_case_manifests.get(*case_id).unwrap_or_else(|| {
+                        panic!(
+                            "stable rule {} references missing benign corpus case {}",
+                            entry.metadata.code, case_id
+                        )
+                    });
+                    let manifest_expects_rule = manifest
+                        .expected_findings
+                        .iter()
+                        .any(|finding| finding.rule_code == entry.metadata.code);
                     assert!(
-                        benign_case_ids.contains(*case_id),
-                        "stable rule {} references missing benign corpus case {}",
+                        manifest
+                            .expected_absent_rules
+                            .iter()
+                            .any(|rule_code| rule_code == entry.metadata.code)
+                            || !manifest_expects_rule,
+                        "stable rule {} links benign corpus case {} but that manifest still positively expects the rule",
                         entry.metadata.code,
                         case_id
                     );

@@ -2307,7 +2307,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 111] = [
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(npx ...)` mutable package-runner authority.",
-            malicious_case_ids: &["claude-settings-mutable-runner-permissions"],
+            malicious_case_ids: &["claude-settings-npx-permission"],
             benign_case_ids: &["claude-settings-npx-specific-safe"],
             requires_structured_evidence: true,
             remediation_reviewed: true,

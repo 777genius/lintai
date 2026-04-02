@@ -206,6 +206,60 @@ struct LegacyCaseManifest {
     expect_absent: Option<Vec<LegacyExpectedAbsent>>,
 }
 
+#[derive(Clone, Debug, Deserialize)]
+struct BucketScopedCaseManifest {
+    id: String,
+    #[allow(dead_code)]
+    kind: Option<String>,
+    #[allow(dead_code)]
+    description: Option<String>,
+    #[allow(dead_code)]
+    rule: Option<String>,
+    #[allow(dead_code)]
+    severity: Option<String>,
+    #[allow(dead_code)]
+    category: Option<String>,
+    #[allow(dead_code)]
+    expected: Option<usize>,
+    entry_path: Option<PathBuf>,
+    expected_output: Option<Vec<HarnessOutputFormat>>,
+    #[serde(default)]
+    expected_runtime_errors: usize,
+    #[serde(default)]
+    expected_runtime_error_kinds: Vec<ExpectedRuntimeErrorKind>,
+    #[serde(default)]
+    expected_diagnostics: usize,
+    expected_scanned_files: Option<usize>,
+    expected_skipped_files: Option<usize>,
+    expected_findings: Option<toml::Value>,
+    #[serde(default)]
+    expected_rules: Vec<String>,
+    #[serde(default)]
+    expectations: Vec<BucketScopedExpectation>,
+    source: Option<BucketScopedSource>,
+    expect: Option<BucketScopedExpect>,
+    #[serde(default)]
+    expected_absent_rules: Option<Vec<String>>,
+    snapshot: Option<SnapshotExpectation>,
+}
+
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
+struct BucketScopedExpectation {
+    rule: String,
+    tier: Option<RuleTier>,
+}
+
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
+struct BucketScopedSource {
+    path: PathBuf,
+}
+
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
+struct BucketScopedExpect {
+    #[serde(default)]
+    findings: Vec<String>,
+}
+
 impl CaseManifest {
     pub fn from_toml(input: &str) -> Result<Self, toml::de::Error> {
         toml::from_str(input)
@@ -220,12 +274,12 @@ impl CaseManifest {
             })?;
         match Self::from_toml(&contents) {
             Ok(manifest) => Ok(manifest),
-            Err(source) => {
-                Self::from_legacy_toml(case_dir, &contents).ok_or(ManifestLoadError::Parse {
+            Err(source) => Self::from_bucket_scoped_toml(case_dir, &contents)
+                .or_else(|| Self::from_legacy_toml(case_dir, &contents))
+                .ok_or(ManifestLoadError::Parse {
                     path: manifest_path,
                     source,
-                })
-            }
+                }),
         }
     }
 
@@ -246,20 +300,8 @@ impl CaseManifest {
             .or(legacy.entrypoint)
             .or(legacy.path)
             .unwrap_or_else(|| PathBuf::from("repo"));
-        let entry_path = if case_dir.join("repo").is_dir() {
-            PathBuf::from("repo")
-        } else if raw_entry == Path::new("repo") {
-            PathBuf::from("repo")
-        } else {
-            PathBuf::from(".")
-        };
-        let kind = match case_dir.parent()?.file_name()?.to_str()? {
-            "benign" => CaseKind::Benign,
-            "malicious" => CaseKind::Malicious,
-            "edge" => CaseKind::Edge,
-            "compat" => CaseKind::Compat,
-            _ => return None,
-        };
+        let entry_path = default_case_entry_path(case_dir, Some(raw_entry));
+        let kind = case_kind_from_dir(case_dir)?;
         let expected_findings = legacy
             .expect_findings
             .unwrap_or_default()
@@ -282,11 +324,7 @@ impl CaseManifest {
             id,
             kind,
             entry_path,
-            expected_output: vec![
-                HarnessOutputFormat::Text,
-                HarnessOutputFormat::Json,
-                HarnessOutputFormat::Sarif,
-            ],
+            expected_output: default_case_output_formats(),
             expected_runtime_errors: 0,
             expected_runtime_error_kinds: Vec::new(),
             expected_diagnostics: 0,
@@ -299,6 +337,221 @@ impl CaseManifest {
                 name: "none".to_owned(),
             },
         })
+    }
+
+    fn from_bucket_scoped_toml(case_dir: &Path, input: &str) -> Option<Self> {
+        let manifest = toml::from_str::<BucketScopedCaseManifest>(input).ok()?;
+        let inferred_entry_path = manifest
+            .source
+            .as_ref()
+            .and_then(|source| infer_entry_path_from_source(&source.path));
+        Some(Self {
+            id: manifest.id,
+            kind: case_kind_from_dir(case_dir)?,
+            entry_path: manifest
+                .entry_path
+                .or(inferred_entry_path)
+                .unwrap_or_else(|| default_case_entry_path(case_dir, None)),
+            expected_output: manifest
+                .expected_output
+                .unwrap_or_else(default_case_output_formats),
+            expected_runtime_errors: manifest.expected_runtime_errors,
+            expected_runtime_error_kinds: manifest.expected_runtime_error_kinds,
+            expected_diagnostics: manifest.expected_diagnostics,
+            expected_scanned_files: manifest.expected_scanned_files,
+            expected_skipped_files: manifest.expected_skipped_files,
+            expected_findings: normalize_bucket_expected_findings(
+                manifest.expected_findings,
+                &manifest.expected_rules,
+                &manifest.expectations,
+                manifest.rule.as_deref(),
+                manifest
+                    .expected
+                    .or_else(|| manifest.expect.as_ref().map(|expect| expect.findings.len())),
+                manifest.expect.as_ref(),
+            )?,
+            expected_absent_rules: normalize_bucket_expected_absent_rules(
+                manifest.expected_absent_rules,
+                manifest.rule.as_deref(),
+                manifest
+                    .expected
+                    .or_else(|| manifest.expect.as_ref().map(|expect| expect.findings.len())),
+            ),
+            snapshot: manifest.snapshot.unwrap_or(SnapshotExpectation {
+                kind: SnapshotKind::None,
+                name: String::new(),
+            }),
+        })
+    }
+}
+
+fn case_kind_from_dir(case_dir: &Path) -> Option<CaseKind> {
+    match case_dir.parent()?.file_name()?.to_str()? {
+        "benign" => Some(CaseKind::Benign),
+        "malicious" => Some(CaseKind::Malicious),
+        "edge" => Some(CaseKind::Edge),
+        "compat" => Some(CaseKind::Compat),
+        _ => None,
+    }
+}
+
+fn default_case_output_formats() -> Vec<HarnessOutputFormat> {
+    vec![
+        HarnessOutputFormat::Text,
+        HarnessOutputFormat::Json,
+        HarnessOutputFormat::Sarif,
+    ]
+}
+
+fn default_case_entry_path(case_dir: &Path, raw_entry: Option<PathBuf>) -> PathBuf {
+    if case_dir.join("repo").is_dir() {
+        PathBuf::from("repo")
+    } else if raw_entry.as_deref() == Some(Path::new("repo")) {
+        PathBuf::from("repo")
+    } else {
+        PathBuf::from(".")
+    }
+}
+
+fn normalize_bucket_expected_findings(
+    value: Option<toml::Value>,
+    expected_rules: &[String],
+    expectations: &[BucketScopedExpectation],
+    single_rule: Option<&str>,
+    expected_count: Option<usize>,
+    expect: Option<&BucketScopedExpect>,
+) -> Option<Vec<ExpectedFinding>> {
+    let Some(value) = value else {
+        if let Some(expect) = expect {
+            return Some(
+                expect
+                    .findings
+                    .iter()
+                    .map(|rule_code| ExpectedFinding {
+                        tier: None,
+                        rule_code: rule_code.clone(),
+                        stable_key: None,
+                        min_evidence_count: Some(1),
+                    })
+                    .collect(),
+            );
+        }
+        if !expectations.is_empty() {
+            return Some(
+                expectations
+                    .iter()
+                    .map(|expectation| ExpectedFinding {
+                        tier: expectation.tier,
+                        rule_code: expectation.rule.clone(),
+                        stable_key: None,
+                        min_evidence_count: Some(1),
+                    })
+                    .collect(),
+            );
+        }
+        if let Some(rule_code) = single_rule {
+            if expected_count.unwrap_or(0) > 0 {
+                return Some(vec![ExpectedFinding {
+                    tier: None,
+                    rule_code: rule_code.to_owned(),
+                    stable_key: None,
+                    min_evidence_count: Some(1),
+                }]);
+            }
+        }
+        return Some(
+            expected_rules
+                .iter()
+                .map(|rule_code| ExpectedFinding {
+                    tier: None,
+                    rule_code: rule_code.clone(),
+                    stable_key: None,
+                    min_evidence_count: Some(1),
+                })
+                .collect(),
+        );
+    };
+    let entries = value.as_array()?;
+    let mut findings = Vec::with_capacity(entries.len());
+
+    for entry in entries {
+        if let Some(rule_code) = entry.as_str() {
+            findings.push(ExpectedFinding {
+                tier: None,
+                rule_code: rule_code.to_owned(),
+                stable_key: None,
+                min_evidence_count: Some(1),
+            });
+            continue;
+        }
+
+        let table = entry.as_table()?;
+        if let Some(rule_code) = table.get("rule_code").and_then(|value| value.as_str()) {
+            findings.push(ExpectedFinding {
+                rule_code: rule_code.to_owned(),
+                stable_key: table
+                    .get("stable_key")
+                    .and_then(|value| value.as_str())
+                    .map(str::to_owned),
+                tier: table
+                    .get("tier")
+                    .and_then(|value| value.as_str())
+                    .and_then(parse_rule_tier),
+                min_evidence_count: table
+                    .get("min_evidence_count")
+                    .and_then(|value| value.as_integer())
+                    .and_then(|value| usize::try_from(value).ok()),
+            });
+            continue;
+        }
+
+        if let Some(rule_code) = table.get("rule").and_then(|value| value.as_str()) {
+            findings.push(ExpectedFinding {
+                tier: table
+                    .get("tier")
+                    .and_then(|value| value.as_str())
+                    .and_then(parse_rule_tier),
+                rule_code: rule_code.to_owned(),
+                stable_key: None,
+                min_evidence_count: table
+                    .get("min_evidence_count")
+                    .and_then(|value| value.as_integer())
+                    .and_then(|value| usize::try_from(value).ok())
+                    .or(Some(1)),
+            });
+            continue;
+        }
+
+        return None;
+    }
+
+    Some(findings)
+}
+
+fn normalize_bucket_expected_absent_rules(
+    expected_absent_rules: Option<Vec<String>>,
+    single_rule: Option<&str>,
+    expected_count: Option<usize>,
+) -> Vec<String> {
+    let mut absent_rules = expected_absent_rules.unwrap_or_default();
+    if absent_rules.is_empty() && expected_count == Some(0) {
+        if let Some(rule_code) = single_rule {
+            absent_rules.push(rule_code.to_owned());
+        }
+    }
+    absent_rules
+}
+
+fn infer_entry_path_from_source(path: &Path) -> Option<PathBuf> {
+    let first = path.components().next()?.as_os_str();
+    Some(PathBuf::from(first))
+}
+
+fn parse_rule_tier(value: &str) -> Option<RuleTier> {
+    match value {
+        "preview" => Some(RuleTier::Preview),
+        "stable" => Some(RuleTier::Stable),
+        _ => None,
     }
 }
 
@@ -974,6 +1227,39 @@ name = ""
         .unwrap_err();
 
         assert!(error.to_string().contains("kind"));
+    }
+
+    #[test]
+    fn load_preserves_expected_findings_for_bucket_scoped_manifests() {
+        let bucket_root = unique_temp_dir("lintai-bucket-scoped-manifest");
+        let case_dir = bucket_root
+            .join("malicious")
+            .join("skill-pip-http-git-install");
+        std::fs::create_dir_all(case_dir.join("repo")).unwrap();
+        std::fs::write(
+            case_dir.join("case.toml"),
+            r#"
+id = "skill-pip-http-git-install"
+kind = "Skill"
+entry_path = "repo"
+expected_output = ["text"]
+expected_runtime_errors = 0
+expected_diagnostics = 1
+expected_findings = [
+  { rule_code = "SEC455", min_evidence_count = 1, tier = "stable" },
+]
+expected_absent_rules = []
+snapshot = { kind = "none", name = "" }
+"#,
+        )
+        .unwrap();
+
+        let manifest = CaseManifest::load(&case_dir).unwrap();
+        assert_eq!(manifest.kind, super::CaseKind::Malicious);
+        assert_eq!(manifest.expected_findings.len(), 1);
+        assert_eq!(manifest.expected_findings[0].rule_code, "SEC455");
+        assert_eq!(manifest.expected_findings[0].tier, Some(RuleTier::Stable));
+        assert!(manifest.expected_absent_rules.is_empty());
     }
 
     #[test]
