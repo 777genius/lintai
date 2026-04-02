@@ -1,55 +1,12 @@
 use lintai_api::{RuleMetadata, RuleTier};
+use lintai_builtins::BuiltinRuleCatalogEntry;
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum RuleScope {
-    PerFile,
-    Workspace,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum CatalogSurface {
-    Markdown,
-    Hook,
-    Devcontainer,
-    DockerCompose,
-    Dockerfile,
-    Json,
-    ClaudeSettings,
-    ToolJson,
-    ServerJson,
-    GithubWorkflow,
-    Workspace,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum CatalogDetectionClass {
-    Structural,
-    Heuristic,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum CatalogRuleLifecycle {
-    Preview {
-        blocker: &'static str,
-        promotion_requirements: &'static str,
-    },
-    Stable {
-        rationale: &'static str,
-        malicious_case_ids: &'static [&'static str],
-        benign_case_ids: &'static [&'static str],
-        requires_structured_evidence: bool,
-        remediation_reviewed: bool,
-        deterministic_signal_basis: &'static str,
-    },
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum CatalogRemediationSupport {
-    SafeFix,
-    Suggestion,
-    MessageOnly,
-    None,
-}
+pub(crate) use lintai_builtins::{
+    BuiltinCatalogDetectionClass as CatalogDetectionClass,
+    BuiltinCatalogRemediationSupport as CatalogRemediationSupport,
+    BuiltinCatalogRuleLifecycle as CatalogRuleLifecycle, BuiltinCatalogSurface as CatalogSurface,
+    BuiltinRuleScope as RuleScope,
+};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) struct SecurityRuleCatalogEntry {
@@ -61,6 +18,21 @@ pub(crate) struct SecurityRuleCatalogEntry {
     pub(crate) detection_class: CatalogDetectionClass,
     pub(crate) lifecycle: CatalogRuleLifecycle,
     pub(crate) remediation_support: CatalogRemediationSupport,
+}
+
+impl From<BuiltinRuleCatalogEntry> for SecurityRuleCatalogEntry {
+    fn from(entry: BuiltinRuleCatalogEntry) -> Self {
+        Self {
+            metadata: entry.metadata,
+            provider_id: entry.provider_id,
+            scope: entry.scope,
+            surface: entry.surface,
+            default_presets: entry.default_presets,
+            detection_class: entry.detection_class,
+            lifecycle: entry.lifecycle,
+            remediation_support: entry.remediation_support,
+        }
+    }
 }
 
 impl SecurityRuleCatalogEntry {
