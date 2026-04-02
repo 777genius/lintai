@@ -1,7 +1,24 @@
 id = "mcp-autoapprove-sudo-rm"
 description = "MCP config auto-approves sudo and rm shell execution through autoApprove"
-
-expected_findings = [
-  "SEC549",
-  "SEC550",
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC549"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC550"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

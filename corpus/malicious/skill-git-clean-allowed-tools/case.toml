@@ -1,6 +1,20 @@
 id = "skill-git-clean-allowed-tools"
-rule = "SEC439"
 description = "AI-native markdown frontmatter grants Bash(git clean:*) authority"
-severity = "warning"
-category = "security"
-expected = 1
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
+]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC439"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

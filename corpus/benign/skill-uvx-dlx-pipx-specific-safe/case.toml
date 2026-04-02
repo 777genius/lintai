@@ -1,9 +1,22 @@
 id = "skill-uvx-dlx-pipx-specific-safe"
 description = "AI-native markdown frontmatter keeps mutable runner authority scoped to specific reviewed commands"
-
-expected_absent_rules = [
-  "SEC496",
-  "SEC497",
-  "SEC498",
-  "SEC499",
+kind = "benign"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = [
+    "SEC496",
+    "SEC497",
+    "SEC498",
+    "SEC499",
+]
+
+[snapshot]
+kind = "none"
+name = ""

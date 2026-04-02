@@ -1,8 +1,28 @@
 id = "mcp-autoapprove-gh-api-mutation-family"
 description = "MCP config auto-approves GitHub API mutation methods through autoApprove"
-
-expected_findings = [
-  "SEC557",
-  "SEC558",
-  "SEC559",
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC557"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC558"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC559"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

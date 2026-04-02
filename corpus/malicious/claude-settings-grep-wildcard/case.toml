@@ -1,5 +1,19 @@
 id = "claude-settings-grep-wildcard"
 kind = "malicious"
-entry = "repo/.claude/settings.json"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
+]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
 
-expected_findings = ["SEC376"]
+[[expected_findings]]
+rule_code = "SEC376"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

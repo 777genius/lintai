@@ -1,5 +1,20 @@
 id = "claude-settings-gh-api-delete-permission"
 description = "Shared Claude settings grant gh api DELETE mutation authority"
-artifact_kind = "ClaudeSettings"
-provider = "lintai-ai-security"
-expected_rules = ["SEC528"]
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
+]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC528"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

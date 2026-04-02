@@ -1,8 +1,17 @@
 id = "skill-unscoped-read-allowed-tools-fixture-safe"
-kind = "benign"
 description = "Fixture-like AI-native markdown path suppresses bare Read tool grant findings"
+kind = "benign"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
+]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = []
 
-[[artifacts]]
-path = "tests/fixtures/skill/SKILL.md"
-kind = "Skill"
-source_format = "markdown"
+[snapshot]
+kind = "none"
+name = ""

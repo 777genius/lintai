@@ -1,7 +1,20 @@
 id = "skill-npx-git-ls-remote-specific-safe"
 description = "AI-native markdown frontmatter keeps npx and git ls-remote commands specific"
-
-expected_absent_rules = [
-  "SEC500",
-  "SEC501",
+kind = "benign"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = [
+    "SEC500",
+    "SEC501",
+]
+
+[snapshot]
+kind = "none"
+name = ""

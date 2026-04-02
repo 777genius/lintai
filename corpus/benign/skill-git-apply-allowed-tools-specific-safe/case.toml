@@ -1,4 +1,17 @@
 id = "skill-git-apply-allowed-tools-specific-safe"
-rule = "SEC444"
 description = "AI-native markdown frontmatter allows only a specific git apply command"
-expected = 0
+kind = "benign"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
+]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC444"]
+
+[snapshot]
+kind = "none"
+name = ""

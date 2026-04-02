@@ -1,5 +1,17 @@
 id = "skill-git-sslverify-true-safe"
-kind = "Skill"
 description = "AI-native markdown keeps Git TLS verification enabled"
-
+kind = "benign"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
+]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
 expected_absent_rules = ["SEC471"]
+
+[snapshot]
+kind = "none"
+name = ""

@@ -1,10 +1,17 @@
 id = "skill-unscoped-glob-allowed-tools-fixture-safe"
-rule = "SEC426"
 description = "Does not flag bare Glob authority under fixture-like paths."
+kind = "benign"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
+]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC426"]
 
-[source]
-path = "repo/tests/fixtures/SKILL.md"
-kind = "Skill"
-
-[expect]
-findings = []
+[snapshot]
+kind = "none"
+name = ""

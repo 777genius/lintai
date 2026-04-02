@@ -1,7 +1,21 @@
 id = "skill-git-http-remote"
 description = "AI-native markdown configures a Git remote with an insecure http source"
-kind = "Skill"
-expected_findings = [
-  { rule = "SEC465", tier = "stable", match = "http://" },
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
 
+[[expected_findings]]
+rule_code = "SEC465"
+tier = "stable"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

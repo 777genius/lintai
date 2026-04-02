@@ -1,13 +1,48 @@
 id = "mcp-autoapprove-unscoped-tool-family"
 description = "MCP config auto-approves bare unscoped filesystem and network tools through autoApprove"
-
-expected_findings = [
-  "SEC625",
-  "SEC618",
-  "SEC619",
-  "SEC620",
-  "SEC621",
-  "SEC622",
-  "SEC623",
-  "SEC624",
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC625"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC618"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC619"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC620"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC621"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC622"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC623"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC624"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

@@ -1,8 +1,28 @@
 id = "claude-settings-gh-secret-variable-workflow-permissions"
 description = "Claude settings grant shared GitHub secret, variable, and workflow mutation permissions"
-
-expected_findings = [
-  "SEC508",
-  "SEC509",
-  "SEC510",
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC508"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC509"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC510"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

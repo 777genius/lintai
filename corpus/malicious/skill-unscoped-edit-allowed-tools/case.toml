@@ -1,12 +1,20 @@
 id = "skill-unscoped-edit-allowed-tools"
-kind = "malicious"
 description = "AI-native markdown frontmatter grants bare Edit authority"
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
+]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
 
-[[artifacts]]
-path = "SKILL.md"
-kind = "Skill"
-source_format = "markdown"
+[[expected_findings]]
+rule_code = "SEC425"
+min_evidence_count = 1
 
-[[expectations]]
-rule = "SEC425"
-path = "SKILL.md"
+[snapshot]
+kind = "none"
+name = ""

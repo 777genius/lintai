@@ -1,10 +1,36 @@
 id = "mcp-autoapprove-repo-management-family"
 description = "MCP config auto-approves repository management and PR mutation commands through autoApprove"
-
-expected_findings = [
-  "SEC597",
-  "SEC598",
-  "SEC599",
-  "SEC600",
-  "SEC601",
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC597"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC598"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC599"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC600"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC601"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

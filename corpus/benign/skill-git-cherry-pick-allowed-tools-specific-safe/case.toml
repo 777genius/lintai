@@ -1,4 +1,17 @@
 id = "skill-git-cherry-pick-allowed-tools-specific-safe"
-rule = "SEC443"
 description = "AI-native markdown frontmatter allows only a specific git cherry-pick command"
-expected = 0
+kind = "benign"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
+]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = ["SEC443"]
+
+[snapshot]
+kind = "none"
+name = ""

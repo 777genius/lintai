@@ -1,5 +1,17 @@
 id = "skill-rm-allowed-tools-specific-safe"
 description = "AI-native markdown frontmatter scopes rm authority to a reviewed command"
-kind = "Skill"
+kind = "benign"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
+]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
 expected_absent_rules = ["SEC466"]
 
+[snapshot]
+kind = "none"
+name = ""

@@ -1,7 +1,21 @@
 id = "skill-git-sslverify-false"
-kind = "Skill"
 description = "AI-native markdown teaches git config http.sslVerify false"
-
-expected_findings = [
-  { rule = "SEC471", tier = "stable", match = "http.sslVerify false" },
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC471"
+tier = "stable"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

@@ -1,11 +1,40 @@
 id = "skill-gh-mutation-allowed-tools"
 description = "AI-native markdown frontmatter grants shared GitHub mutation tool authority"
-
-expected_findings = [
-  "SEC505",
-  "SEC506",
-  "SEC507",
-  "SEC517",
-  "SEC518",
-  "SEC519",
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC505"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC506"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC507"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC517"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC518"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC519"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

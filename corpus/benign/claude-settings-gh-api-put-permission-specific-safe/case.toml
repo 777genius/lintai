@@ -1,5 +1,17 @@
 id = "claude-settings-gh-api-put-permission-specific-safe"
 description = "Shared Claude settings keep gh api authority read-only instead of PUT"
-artifact_kind = "ClaudeSettings"
-provider = "lintai-ai-security"
+kind = "benign"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
+]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
 expected_absent_rules = ["SEC531"]
+
+[snapshot]
+kind = "none"
+name = ""

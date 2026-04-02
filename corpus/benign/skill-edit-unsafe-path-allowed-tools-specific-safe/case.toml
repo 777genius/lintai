@@ -1,8 +1,17 @@
 id = "skill-edit-unsafe-path-allowed-tools-specific-safe"
-kind = "benign"
 description = "AI-native markdown frontmatter keeps Edit scoped to repo-local paths"
+kind = "benign"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
+]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = []
 
-[[artifacts]]
-path = "SKILL.md"
-kind = "Skill"
-source_format = "markdown"
+[snapshot]
+kind = "none"
+name = ""

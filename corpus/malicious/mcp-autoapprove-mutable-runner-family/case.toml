@@ -1,12 +1,44 @@
 id = "mcp-autoapprove-mutable-runner-family"
 description = "MCP config auto-approves mutable package runner commands through autoApprove"
-
-expected_findings = [
-  "SEC586",
-  "SEC587",
-  "SEC588",
-  "SEC589",
-  "SEC590",
-  "SEC591",
-  "SEC592",
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC586"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC587"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC588"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC589"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC590"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC591"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC592"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

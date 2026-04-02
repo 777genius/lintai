@@ -1,12 +1,44 @@
 id = "mcp-autoapprove-wildcard-tool-family"
 description = "MCP config auto-approves wildcard filesystem and network tools through autoApprove"
-
-expected_findings = [
-  "SEC567",
-  "SEC568",
-  "SEC569",
-  "SEC570",
-  "SEC571",
-  "SEC572",
-  "SEC573",
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC567"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC568"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC569"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC570"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC571"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC572"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC573"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

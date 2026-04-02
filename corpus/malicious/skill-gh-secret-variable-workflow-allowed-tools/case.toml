@@ -1,8 +1,28 @@
 id = "skill-gh-secret-variable-workflow-allowed-tools"
 description = "AI-native markdown frontmatter grants shared GitHub secret, variable, and workflow mutation authority"
-
-expected_findings = [
-  "SEC511",
-  "SEC512",
-  "SEC513",
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC511"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC512"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC513"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

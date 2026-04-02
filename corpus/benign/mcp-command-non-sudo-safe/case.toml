@@ -1,8 +1,17 @@
 id = "mcp-command-non-sudo-safe"
-kind = "benign"
 description = "MCP config uses a non-privileged command"
+kind = "benign"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
+]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = []
 
-[[artifacts]]
-path = "mcp.json"
-kind = "McpConfig"
-source_format = "json"
+[snapshot]
+kind = "none"
+name = ""

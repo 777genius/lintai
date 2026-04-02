@@ -1,11 +1,40 @@
 id = "claude-settings-gh-mutation-permissions"
 description = "Claude settings grant shared GitHub mutation permissions"
-
-expected_findings = [
-  "SEC502",
-  "SEC503",
-  "SEC504",
-  "SEC514",
-  "SEC515",
-  "SEC516",
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC502"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC503"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC504"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC514"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC515"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC516"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

@@ -13,7 +13,7 @@ use lintai_engine::{
     SuppressionMatcher, load_workspace_config,
 };
 use lintai_runtime::{InProcessProviderBackend, ProviderBackend};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
 pub struct ProviderHarness;
@@ -113,7 +113,7 @@ fn provider_harness_presets_config() -> String {
     format!("[presets]\nenable = [{enabled}]\n")
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "lowercase")]
 pub enum CaseKind {
     Benign,
@@ -122,7 +122,7 @@ pub enum CaseKind {
     Compat,
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "lowercase")]
 pub enum HarnessOutputFormat {
     Text,
@@ -130,7 +130,7 @@ pub enum HarnessOutputFormat {
     Sarif,
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "lowercase")]
 pub enum SnapshotKind {
     None,
@@ -142,7 +142,7 @@ pub enum SnapshotKind {
     StableKey,
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Eq, Ord, PartialOrd)]
+#[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq, Eq, Ord, PartialOrd)]
 #[serde(rename_all = "snake_case")]
 pub enum ExpectedRuntimeErrorKind {
     Read,
@@ -152,31 +152,39 @@ pub enum ExpectedRuntimeErrorKind {
     ProviderTimeout,
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct ExpectedFinding {
     pub rule_code: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub stable_key: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub tier: Option<RuleTier>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub min_evidence_count: Option<usize>,
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct SnapshotExpectation {
     pub kind: SnapshotKind,
     pub name: String,
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct CaseManifest {
     pub id: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     pub kind: CaseKind,
     pub entry_path: PathBuf,
     pub expected_output: Vec<HarnessOutputFormat>,
     pub expected_runtime_errors: usize,
     #[serde(default)]
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub expected_runtime_error_kinds: Vec<ExpectedRuntimeErrorKind>,
     pub expected_diagnostics: usize,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub expected_scanned_files: Option<usize>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub expected_skipped_files: Option<usize>,
     #[serde(default)]
     pub expected_findings: Vec<ExpectedFinding>,
@@ -238,6 +246,7 @@ struct LegacyCaseManifest {
     case: Option<LegacyCaseSection>,
     id: Option<String>,
     name: Option<String>,
+    description: Option<String>,
     path: Option<PathBuf>,
     entry: Option<PathBuf>,
     entrypoint: Option<PathBuf>,
@@ -250,7 +259,6 @@ struct BucketScopedCaseManifest {
     id: String,
     #[allow(dead_code)]
     kind: Option<String>,
-    #[allow(dead_code)]
     description: Option<String>,
     #[allow(dead_code)]
     rule: Option<String>,
@@ -326,6 +334,10 @@ impl CaseManifest {
         case_dir.join(&self.entry_path)
     }
 
+    pub fn to_canonical_toml(&self) -> Result<String, toml::ser::Error> {
+        toml::to_string_pretty(self)
+    }
+
     fn from_legacy_toml(case_dir: &Path, input: &str) -> Option<Self> {
         let legacy = toml::from_str::<LegacyCaseManifest>(input).ok()?;
         let id = legacy.id.or(legacy.name).or_else(|| {
@@ -361,6 +373,7 @@ impl CaseManifest {
 
         Some(Self {
             id,
+            description: legacy.description,
             kind,
             entry_path,
             expected_output: default_case_output_formats(),
@@ -386,6 +399,7 @@ impl CaseManifest {
             .and_then(|source| infer_entry_path_from_source(&source.path));
         Some(Self {
             id: manifest.id,
+            description: manifest.description,
             kind: case_kind_from_dir(case_dir)?,
             entry_path: manifest
                 .entry_path
@@ -524,6 +538,32 @@ pub fn case_manifest_dialect_flags(input: &str) -> BTreeSet<CaseManifestDialectF
     }
 
     flags
+}
+
+fn workspace_root() -> PathBuf {
+    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("../..")
+        .canonicalize()
+        .expect("workspace root should be discoverable from lintai-testing")
+}
+
+pub fn checked_in_case_dirs() -> Result<Vec<PathBuf>, HarnessError> {
+    let root = workspace_root();
+    let roots = [
+        root.join("corpus/benign"),
+        root.join("corpus/malicious"),
+        root.join("corpus/edge"),
+        root.join("corpus/compat"),
+        root.join("sample-repos"),
+        root.join("crates/lintai-dep-vulns/corpus/benign"),
+        root.join("crates/lintai-dep-vulns/corpus/malicious"),
+    ];
+    let mut case_dirs = Vec::new();
+    for bucket_root in roots {
+        case_dirs.extend(discover_case_dirs(&bucket_root)?);
+    }
+    case_dirs.sort();
+    Ok(case_dirs)
 }
 
 fn case_kind_from_dir(case_dir: &Path) -> Option<CaseKind> {
@@ -1274,15 +1314,11 @@ fn runtime_error_kind_counts(
 
 #[cfg(test)]
 fn repo_root() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("../..")
-        .canonicalize()
-        .expect("workspace root should be discoverable from lintai-testing")
+    workspace_root()
 }
 
 #[cfg(test)]
 mod tests {
-    use std::collections::BTreeMap;
     use std::path::{Path, PathBuf};
 
     use super::{
@@ -1536,75 +1572,30 @@ name = ""
     }
 
     #[test]
-    fn checked_in_case_manifests_stay_within_known_legacy_dialects_budget() {
-        let root = repo_root();
-        let corpus_roots = [
-            root.join("corpus/benign"),
-            root.join("corpus/malicious"),
-            root.join("corpus/edge"),
-            root.join("corpus/compat"),
-            root.join("crates/lintai-dep-vulns/corpus/benign"),
-            root.join("crates/lintai-dep-vulns/corpus/malicious"),
-        ];
-        let mut counts = BTreeMap::new();
-        let mut canonical = 0usize;
+    fn checked_in_case_manifests_are_canonical() {
+        let case_dirs = super::checked_in_case_dirs().unwrap();
+        assert!(
+            !case_dirs.is_empty(),
+            "expected checked-in corpus/sample repos to contain manifests"
+        );
 
-        for bucket_root in corpus_roots {
-            for case_dir in discover_case_dirs(&bucket_root).unwrap() {
-                let manifest_path = case_dir.join("case.toml");
-                let raw = std::fs::read_to_string(&manifest_path).unwrap();
-                let flags = case_manifest_dialect_flags(&raw);
-                if CaseManifest::from_toml(&raw).is_ok() {
-                    assert!(
-                        flags.is_empty(),
-                        "canonical manifest {} should not require legacy dialect flags: {:?}",
-                        manifest_path.display(),
-                        flags
-                    );
-                    canonical += 1;
-                    continue;
-                }
-
-                assert!(
-                    !flags.is_empty(),
-                    "non-canonical manifest {} must declare a known legacy dialect",
+        for case_dir in case_dirs {
+            let manifest_path = case_dir.join("case.toml");
+            let raw = std::fs::read_to_string(&manifest_path).unwrap();
+            let flags = case_manifest_dialect_flags(&raw);
+            assert!(
+                flags.is_empty(),
+                "checked-in manifest {} still uses legacy dialect flags: {:?}",
+                manifest_path.display(),
+                flags
+            );
+            CaseManifest::from_toml(&raw).unwrap_or_else(|error| {
+                panic!(
+                    "checked-in manifest {} must parse through the canonical contract: {error}",
                     manifest_path.display()
-                );
-                CaseManifest::load(&case_dir).unwrap_or_else(|error| {
-                    panic!(
-                        "legacy manifest {} must remain loadable through compatibility path: {error}",
-                        manifest_path.display()
-                    )
-                });
-                for flag in flags {
-                    *counts.entry(flag.label()).or_insert(0usize) += 1;
-                }
-            }
+                )
+            });
         }
-
-        let expected = BTreeMap::from([
-            ("artifact_list_shorthand", 21usize),
-            ("bucket_scoped_artifact_kind", 77usize),
-            ("bucket_scoped_artifact_provider_keys", 16usize),
-            ("bucket_scoped_expect_section", 2usize),
-            ("bucket_scoped_expectations", 9usize),
-            ("bucket_scoped_expected_rules", 8usize),
-            ("bucket_scoped_single_rule", 22usize),
-            ("bucket_scoped_source_path", 6usize),
-            ("implicit_canonical_defaults", 119usize),
-            ("legacy_path_keys", 8usize),
-            ("rule_alias_expected_findings", 9usize),
-            ("string_expected_findings", 35usize),
-        ]);
-
-        assert_eq!(
-            counts, expected,
-            "checked-in legacy corpus dialect budget drifted; update manifests toward docs/FIXTURE_CONTRACT.md or explicitly bless the new debt"
-        );
-        assert_eq!(
-            canonical, 451,
-            "checked-in canonical manifest count drifted unexpectedly"
-        );
     }
 
     #[test]

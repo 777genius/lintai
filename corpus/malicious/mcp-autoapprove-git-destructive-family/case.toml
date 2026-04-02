@@ -1,9 +1,32 @@
 id = "mcp-autoapprove-git-destructive-family"
 description = "MCP config auto-approves destructive git state mutation through autoApprove"
-
-expected_findings = [
-  "SEC553",
-  "SEC554",
-  "SEC555",
-  "SEC556",
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC553"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC554"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC555"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC556"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

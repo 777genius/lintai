@@ -1,9 +1,32 @@
 id = "mcp-autoapprove-persistence-family"
 description = "MCP config auto-approves persistence and service-enablement commands through autoApprove"
-
-expected_findings = [
-  "SEC609",
-  "SEC610",
-  "SEC611",
-  "SEC612",
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC609"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC610"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC611"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC612"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

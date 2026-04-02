@@ -1,3 +1,16 @@
 id = "claude-settings-glob-wildcard-fixture-safe"
 kind = "benign"
-entry = "repo/tests/fixtures/.claude/settings.json"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
+]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = []
+
+[snapshot]
+kind = "none"
+name = ""

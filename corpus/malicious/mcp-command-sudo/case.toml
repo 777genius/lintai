@@ -1,12 +1,20 @@
 id = "mcp-command-sudo"
-kind = "malicious"
 description = "MCP config launches a server through sudo"
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
+]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
 
-[[artifacts]]
-path = "mcp.json"
-kind = "McpConfig"
-source_format = "json"
+[[expected_findings]]
+rule_code = "SEC422"
+min_evidence_count = 1
 
-[[expectations]]
-rule = "SEC422"
-path = "mcp.json"
+[snapshot]
+kind = "none"
+name = ""

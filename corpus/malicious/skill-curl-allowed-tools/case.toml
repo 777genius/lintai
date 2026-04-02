@@ -1,11 +1,16 @@
 id = "skill-curl-allowed-tools"
-kind = "Skill"
+kind = "malicious"
 entry_path = "repo"
 expected_output = ["text"]
 expected_runtime_errors = 0
 expected_diagnostics = 1
-expected_findings = [
-  { rule_code = "SEC419", min_evidence_count = 1, tier = "preview" },
-]
 expected_absent_rules = []
-snapshot = { kind = "none", name = "" }
+
+[[expected_findings]]
+rule_code = "SEC419"
+tier = "preview"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

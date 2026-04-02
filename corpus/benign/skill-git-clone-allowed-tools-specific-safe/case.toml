@@ -1,9 +1,12 @@
 id = "skill-git-clone-allowed-tools-specific-safe"
-kind = "Skill"
+kind = "benign"
 entry_path = "repo"
 expected_output = ["text"]
 expected_runtime_errors = 0
 expected_diagnostics = 0
 expected_findings = []
 expected_absent_rules = ["SEC421"]
-snapshot = { kind = "none", name = "" }
+
+[snapshot]
+kind = "none"
+name = ""

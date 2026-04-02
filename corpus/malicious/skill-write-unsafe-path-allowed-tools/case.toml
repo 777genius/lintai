@@ -1,12 +1,20 @@
 id = "skill-write-unsafe-path-allowed-tools"
-kind = "malicious"
 description = "AI-native markdown frontmatter grants Write over a repo-external path"
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
+]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
 
-[[artifacts]]
-path = "SKILL.md"
-kind = "Skill"
-source_format = "markdown"
+[[expected_findings]]
+rule_code = "SEC429"
+min_evidence_count = 1
 
-[[expectations]]
-rule = "SEC429"
-path = "SKILL.md"
+[snapshot]
+kind = "none"
+name = ""

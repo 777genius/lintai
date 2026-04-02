@@ -1,14 +1,44 @@
 id = "skill-core-wildcard-allowed-tools"
 description = "AI-native markdown frontmatter grants wildcard core tool authority"
-artifact_kind = "Skill"
-provider = "lintai-ai-security"
-expected_rules = [
-  "SEC520",
-  "SEC521",
-  "SEC522",
-  "SEC523",
-  "SEC524",
-  "SEC525",
-  "SEC526",
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
 
+[[expected_findings]]
+rule_code = "SEC520"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC521"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC522"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC523"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC524"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC525"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC526"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

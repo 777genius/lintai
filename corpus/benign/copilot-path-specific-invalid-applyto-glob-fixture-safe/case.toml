@@ -1,3 +1,16 @@
 id = "copilot-path-specific-invalid-applyto-glob-fixture-safe"
 kind = "benign"
-entry = "repo/tests/fixtures/.github/instructions/review.instructions.md"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
+]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_findings = []
+expected_absent_rules = []
+
+[snapshot]
+kind = "none"
+name = ""

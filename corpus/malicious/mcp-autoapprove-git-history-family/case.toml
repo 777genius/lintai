@@ -1,12 +1,44 @@
 id = "mcp-autoapprove-git-history-family"
 description = "MCP config auto-approves git history and patch mutation commands through autoApprove"
-
-expected_findings = [
-  "SEC602",
-  "SEC603",
-  "SEC604",
-  "SEC605",
-  "SEC606",
-  "SEC607",
-  "SEC608",
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC602"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC603"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC604"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC605"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC606"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC607"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC608"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""

@@ -1,9 +1,32 @@
 id = "mcp-autoapprove-privileged-shell-family"
 description = "MCP config auto-approves privileged shell and ownership mutation commands through autoApprove"
-
-expected_findings = [
-  "SEC613",
-  "SEC614",
-  "SEC615",
-  "SEC616",
+kind = "malicious"
+entry_path = "repo"
+expected_output = [
+    "text",
+    "json",
+    "sarif",
 ]
+expected_runtime_errors = 0
+expected_diagnostics = 0
+expected_absent_rules = []
+
+[[expected_findings]]
+rule_code = "SEC613"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC614"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC615"
+min_evidence_count = 1
+
+[[expected_findings]]
+rule_code = "SEC616"
+min_evidence_count = 1
+
+[snapshot]
+kind = "none"
+name = ""
