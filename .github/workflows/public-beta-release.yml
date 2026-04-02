@@ -66,6 +66,8 @@ jobs:
         with:
           toolchain: 1.90.0
       - uses: Swatinem/rust-cache@v2
+      - name: Verify checked-in case manifests stay canonical
+        run: cargo run --manifest-path Cargo.toml --locked -p lintai-testing --bin normalize-case-manifests -- --check
       - name: Run CLI contract suites
         run: cargo test --manifest-path Cargo.toml --locked -p lintai-cli
       - name: Run security provider suites

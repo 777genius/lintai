@@ -1,6 +1,6 @@
 # GitHub Workflows
 
-Active release barrier workflows start in Iteration 6. The docs contract gate is added in Iteration 7.
+Active release barrier workflows start in Iteration 6. The docs contract gate is added in Iteration 7. Canonical fixture enforcement is now required across the main release/docs pipelines.
 
 The release barrier is split into:
 
@@ -14,6 +14,7 @@ Required aggregate checks for `v0.1` release certification:
 - `Barrier Gate`
 - `Smoke Gate`
 - `Docs Gate`
+- checked-in fixture canonicalization gate via `normalize-case-manifests --check`
 
 Public beta shipping is tag-driven:
 

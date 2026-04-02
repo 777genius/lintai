@@ -36,6 +36,8 @@ jobs:
           enablement: true
       - name: Install docs dependencies
         run: npm ci
+      - name: Verify checked-in case manifests stay canonical
+        run: npm run fixtures:check
       - name: Validate docs contracts
         run: |
           cargo test -q -p lintai-cli site_catalog -- --nocapture
