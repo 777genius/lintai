@@ -5,7 +5,13 @@ use lintai_testing::{CaseManifest, case_manifest_dialect_flags, checked_in_case_
 
 fn main() -> ExitCode {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
-    let check_only = match args.as_slice().iter().map(String::as_str).collect::<Vec<_>>().as_slice() {
+    let check_only = match args
+        .as_slice()
+        .iter()
+        .map(String::as_str)
+        .collect::<Vec<_>>()
+        .as_slice()
+    {
         [] | ["--write"] => false,
         ["--check"] => true,
         _ => {
@@ -38,17 +44,23 @@ fn main() -> ExitCode {
             continue;
         }
 
-        let manifest = match CaseManifest::load(&case_dir) {
+        let manifest = match CaseManifest::load_with_legacy_compat(&case_dir) {
             Ok(value) => value,
             Err(error) => {
-                eprintln!("failed to load {} through compatibility path: {error}", manifest_path.display());
+                eprintln!(
+                    "failed to load {} through compatibility path: {error}",
+                    manifest_path.display()
+                );
                 return ExitCode::FAILURE;
             }
         };
         let canonical = match manifest.to_canonical_toml() {
             Ok(value) => value,
             Err(error) => {
-                eprintln!("failed to serialize {} canonically: {error}", manifest_path.display());
+                eprintln!(
+                    "failed to serialize {} canonically: {error}",
+                    manifest_path.display()
+                );
                 return ExitCode::FAILURE;
             }
         };
@@ -64,7 +76,10 @@ fn main() -> ExitCode {
         for (path, _) in &rewrites {
             println!("{}", path.display());
         }
-        eprintln!("{} checked-in case manifests need canonicalization", rewrites.len());
+        eprintln!(
+            "{} checked-in case manifests need canonicalization",
+            rewrites.len()
+        );
         return ExitCode::FAILURE;
     }
 

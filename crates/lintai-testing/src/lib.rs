@@ -319,6 +319,19 @@ impl CaseManifest {
                 path: manifest_path.clone(),
                 source,
             })?;
+        Self::from_toml(&contents).map_err(|source| ManifestLoadError::Parse {
+            path: manifest_path,
+            source,
+        })
+    }
+
+    pub fn load_with_legacy_compat(case_dir: &Path) -> Result<Self, ManifestLoadError> {
+        let manifest_path = case_dir.join("case.toml");
+        let contents =
+            std::fs::read_to_string(&manifest_path).map_err(|source| ManifestLoadError::Io {
+                path: manifest_path.clone(),
+                source,
+            })?;
         match Self::from_toml(&contents) {
             Ok(manifest) => Ok(manifest),
             Err(source) => Self::from_bucket_scoped_toml(case_dir, &contents)
@@ -1408,7 +1421,7 @@ name = ""
     }
 
     #[test]
-    fn load_preserves_expected_findings_for_bucket_scoped_manifests() {
+    fn load_with_legacy_compat_preserves_expected_findings_for_bucket_scoped_manifests() {
         let bucket_root = unique_temp_dir("lintai-bucket-scoped-manifest");
         let case_dir = bucket_root
             .join("malicious")
@@ -1432,12 +1445,44 @@ snapshot = { kind = "none", name = "" }
         )
         .unwrap();
 
-        let manifest = CaseManifest::load(&case_dir).unwrap();
+        let manifest = CaseManifest::load_with_legacy_compat(&case_dir).unwrap();
         assert_eq!(manifest.kind, super::CaseKind::Malicious);
         assert_eq!(manifest.expected_findings.len(), 1);
         assert_eq!(manifest.expected_findings[0].rule_code, "SEC455");
         assert_eq!(manifest.expected_findings[0].tier, Some(RuleTier::Stable));
         assert!(manifest.expected_absent_rules.is_empty());
+    }
+
+    #[test]
+    fn load_rejects_legacy_bucket_scoped_manifest_shapes() {
+        let bucket_root = unique_temp_dir("lintai-legacy-case-manifest-reject");
+        let case_dir = bucket_root
+            .join("malicious")
+            .join("skill-pip-http-git-install");
+        std::fs::create_dir_all(case_dir.join("repo")).unwrap();
+        std::fs::write(
+            case_dir.join("case.toml"),
+            r#"
+id = "skill-pip-http-git-install"
+kind = "Skill"
+entry_path = "repo"
+expected_output = ["text"]
+expected_runtime_errors = 0
+expected_diagnostics = 1
+expected_findings = [
+  { rule_code = "SEC455", min_evidence_count = 1, tier = "stable" },
+]
+expected_absent_rules = []
+snapshot = { kind = "none", name = "" }
+"#,
+        )
+        .unwrap();
+
+        let error = CaseManifest::load(&case_dir).unwrap_err();
+        assert!(
+            error.to_string().contains("failed to parse case manifest"),
+            "strict canonical loader should reject legacy shorthand manifests: {error}"
+        );
     }
 
     #[test]
