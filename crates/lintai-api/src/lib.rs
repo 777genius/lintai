@@ -1,6 +1,7 @@
 mod context;
 mod finding;
 mod parsed;
+mod preset;
 mod rule;
 
 use schemars::JsonSchema;
@@ -18,6 +19,10 @@ pub use parsed::{
     Artifact, ArtifactKind, DocumentSemantics, FrontmatterFormat, FrontmatterSemantics,
     JsonSemantics, MarkdownSemantics, ParsedDocument, RegionKind, ShellSemantics, SourceFormat,
     TextRegion, YamlSemantics,
+};
+pub use preset::{
+    BuiltinPresetKind, BuiltinPresetSpec, builtin_membership_preset_ids, builtin_preset_ids,
+    builtin_presets,
 };
 pub use rule::{
     FileRuleProvider, ProviderError, ProviderErrorKind, ProviderScanResult, RuleMetadata,

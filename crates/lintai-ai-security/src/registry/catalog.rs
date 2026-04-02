@@ -2,10 +2,10 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::sync::OnceLock;
 
 use super::{
-    ALL_PRESET_IDS, DetectionClass, NativeRuleSpec, RuleLifecycle, claude_settings, devcontainer,
-    docker_compose, dockerfile, github_workflow, hooks, json, markdown, server_json, tool_json,
+    DetectionClass, NativeRuleSpec, RuleLifecycle, claude_settings, devcontainer, docker_compose,
+    dockerfile, github_workflow, hooks, json, markdown, server_json, tool_json,
 };
-use lintai_api::RuleTier;
+use lintai_api::{RuleTier, builtin_preset_ids};
 
 #[derive(Clone, Copy)]
 pub(crate) struct RuleSpecGroup {
@@ -81,6 +81,7 @@ pub(crate) fn rule_specs() -> &'static [NativeRuleSpec] {
 }
 
 fn validate_rule_specs(specs: &[NativeRuleSpec]) {
+    let known_preset_ids = builtin_preset_ids();
     let mut group_ids = BTreeSet::new();
     for group in rule_spec_groups() {
         assert!(
@@ -120,7 +121,7 @@ fn validate_rule_specs(specs: &[NativeRuleSpec]) {
                 preset_id
             );
             assert!(
-                ALL_PRESET_IDS.contains(preset_id),
+                known_preset_ids.contains(preset_id),
                 "rule {} references unknown preset {}",
                 spec.metadata.code,
                 preset_id

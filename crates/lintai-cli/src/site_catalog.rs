@@ -1,5 +1,6 @@
 use std::collections::{BTreeMap, BTreeSet};
 
+use lintai_api::{BuiltinPresetKind, builtin_presets};
 use serde::Serialize;
 
 use crate::shipped_rules::{
@@ -89,83 +90,6 @@ enum SiteRuleLifecycle {
         deterministic_signal_basis: String,
     },
 }
-
-#[derive(Clone, Copy)]
-struct BuiltinPresetSpec {
-    id: &'static str,
-    kind: SitePresetKind,
-    description: &'static str,
-    extends: &'static [&'static str],
-}
-
-const BUILTIN_PRESETS: [BuiltinPresetSpec; 11] = [
-    BuiltinPresetSpec {
-        id: "base",
-        kind: SitePresetKind::Membership,
-        description: "Core shipped rules for the default lintai baseline.",
-        extends: &[],
-    },
-    BuiltinPresetSpec {
-        id: "preview",
-        kind: SitePresetKind::Membership,
-        description: "Preview rules that expand coverage beyond the stable baseline.",
-        extends: &[],
-    },
-    BuiltinPresetSpec {
-        id: "compat",
-        kind: SitePresetKind::Membership,
-        description: "Policy and compatibility checks that compare declared workspace posture against repository behavior.",
-        extends: &[],
-    },
-    BuiltinPresetSpec {
-        id: "skills",
-        kind: SitePresetKind::Membership,
-        description: "Rules for instruction and skills markdown that remain inside the core agent-artifact surface.",
-        extends: &[],
-    },
-    BuiltinPresetSpec {
-        id: "mcp",
-        kind: SitePresetKind::Membership,
-        description: "Rules for MCP, tool, and server JSON configs, including preview-only coverage.",
-        extends: &[],
-    },
-    BuiltinPresetSpec {
-        id: "claude",
-        kind: SitePresetKind::Membership,
-        description: "Rules for Claude settings and command-hook configuration.",
-        extends: &[],
-    },
-    BuiltinPresetSpec {
-        id: "guidance",
-        kind: SitePresetKind::Membership,
-        description: "Advice-oriented guidance rules that are useful, but intentionally not part of the core security baseline.",
-        extends: &[],
-    },
-    BuiltinPresetSpec {
-        id: "governance",
-        kind: SitePresetKind::Membership,
-        description: "Opt-in review rules for shared mutation authority and broad bare tool grants that should not read like headline security findings.",
-        extends: &[],
-    },
-    BuiltinPresetSpec {
-        id: "supply-chain",
-        kind: SitePresetKind::Membership,
-        description: "Sidecar supply-chain hardening rules, including GitHub Actions workflow checks.",
-        extends: &[],
-    },
-    BuiltinPresetSpec {
-        id: "advisory",
-        kind: SitePresetKind::Membership,
-        description: "Offline dependency vulnerability checks that match installed lockfile versions against the active advisory snapshot.",
-        extends: &[],
-    },
-    BuiltinPresetSpec {
-        id: "strict",
-        kind: SitePresetKind::Overlay,
-        description: "Severity overlay for active security rules; it does not activate additional rules by itself.",
-        extends: &["base"],
-    },
-];
 
 pub(crate) fn render_site_catalog_json() -> String {
     let catalog = build_site_catalog();
@@ -278,7 +202,7 @@ fn site_rule(
 }
 
 fn build_presets(rules: &[SiteRule]) -> Vec<SitePreset> {
-    BUILTIN_PRESETS
+    builtin_presets()
         .iter()
         .map(|preset| {
             let mut rule_ids = rules
@@ -294,7 +218,7 @@ fn build_presets(rules: &[SiteRule]) -> Vec<SitePreset> {
 
             SitePreset {
                 id: preset.id.to_owned(),
-                kind: preset.kind,
+                kind: site_preset_kind(preset.kind),
                 title: preset.id.to_owned(),
                 description: preset.description.to_owned(),
                 extends: preset
@@ -310,7 +234,7 @@ fn build_presets(rules: &[SiteRule]) -> Vec<SitePreset> {
 }
 
 fn validate_site_catalog(catalog: &SiteCatalog) {
-    let known_preset_ids = BUILTIN_PRESETS
+    let known_preset_ids = builtin_presets()
         .iter()
         .map(|preset| preset.id)
         .collect::<BTreeSet<_>>();
@@ -374,6 +298,13 @@ fn validate_site_catalog(catalog: &SiteCatalog) {
                 extended
             );
         }
+    }
+}
+
+fn site_preset_kind(kind: BuiltinPresetKind) -> SitePresetKind {
+    match kind {
+        BuiltinPresetKind::Membership => SitePresetKind::Membership,
+        BuiltinPresetKind::Overlay => SitePresetKind::Overlay,
     }
 }
 

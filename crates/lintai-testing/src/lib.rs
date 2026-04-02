@@ -4,7 +4,9 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{SystemTime, UNIX_EPOCH};
 
-use lintai_api::{ArtifactKind, Finding, RuleProvider, RuleTier, SourceFormat};
+use lintai_api::{
+    ArtifactKind, Finding, RuleProvider, RuleTier, SourceFormat, builtin_membership_preset_ids,
+};
 use lintai_engine::{
     ConfigError, EngineBuilder, EngineConfig, EngineError, FileSuppressions,
     NoopSuppressionMatcher, ProviderExecutionPhase, RuntimeErrorKind, ScanSummary,
@@ -15,10 +17,6 @@ use serde::Deserialize;
 use std::collections::BTreeMap;
 
 pub struct ProviderHarness;
-
-const PROVIDER_HARNESS_PRESETS_CONFIG: &str = r#"[presets]
-enable = ["base", "preview", "skills", "mcp", "claude", "guidance", "governance", "supply-chain", "advisory"]
-"#;
 
 impl ProviderHarness {
     pub fn run(
@@ -79,7 +77,7 @@ impl ProviderHarnessBuilder {
         if config.project_root.is_none() {
             std::fs::write(
                 temp_dir.join("lintai.toml"),
-                PROVIDER_HARNESS_PRESETS_CONFIG,
+                provider_harness_presets_config(),
             )
             .expect("provider harness config write should succeed");
             config = load_workspace_config(&temp_dir)
@@ -104,6 +102,15 @@ impl ProviderHarnessBuilder {
 
         summary
     }
+}
+
+fn provider_harness_presets_config() -> String {
+    let enabled = builtin_membership_preset_ids()
+        .into_iter()
+        .map(|preset| format!("\"{preset}\""))
+        .collect::<Vec<_>>()
+        .join(", ");
+    format!("[presets]\nenable = [{enabled}]\n")
 }
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
