@@ -2,7 +2,7 @@ use std::collections::BTreeSet;
 
 use lintai_ai_security::ai_security_rule_catalog_entries;
 use lintai_api::{
-    CatalogDetectionClassKind, CatalogLifecycleClass, CatalogRuleIdentity,
+    CatalogDetectionClassKind, CatalogLifecycleDetails, CatalogRuleIdentity,
     validate_rule_identities, validate_rule_presets, validate_rule_quality_contract,
 };
 use lintai_dep_vulns::dep_vuln_shared_rule_catalog_entries;
@@ -68,9 +68,30 @@ fn validate_builtin_rule_catalog_entries(entries: &[BuiltinRuleCatalogEntry]) {
                 BuiltinCatalogDetectionClass::Heuristic => CatalogDetectionClassKind::Heuristic,
             },
             match entry.lifecycle {
-                BuiltinCatalogRuleLifecycle::Preview { .. } => CatalogLifecycleClass::Preview,
-                BuiltinCatalogRuleLifecycle::Stable { .. } => CatalogLifecycleClass::Stable,
+                BuiltinCatalogRuleLifecycle::Preview {
+                    blocker,
+                    promotion_requirements,
+                } => CatalogLifecycleDetails::Preview {
+                    blocker,
+                    promotion_requirements,
+                },
+                BuiltinCatalogRuleLifecycle::Stable {
+                    rationale,
+                    malicious_case_ids,
+                    benign_case_ids,
+                    requires_structured_evidence,
+                    remediation_reviewed,
+                    deterministic_signal_basis,
+                } => CatalogLifecycleDetails::Stable {
+                    rationale,
+                    malicious_case_ids,
+                    benign_case_ids,
+                    requires_structured_evidence,
+                    remediation_reviewed,
+                    deterministic_signal_basis,
+                },
             },
+            entry.remediation_support,
             entry.default_presets,
         );
     }

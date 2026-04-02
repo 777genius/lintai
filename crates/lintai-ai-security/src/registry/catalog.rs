@@ -5,7 +5,7 @@ use super::{
     dockerfile, github_workflow, hooks, json, markdown, server_json, tool_json,
 };
 use lintai_api::{
-    CatalogDetectionClassKind, CatalogLifecycleClass, CatalogRuleIdentity, validate_group_ids,
+    CatalogDetectionClassKind, CatalogLifecycleDetails, CatalogRuleIdentity, validate_group_ids,
     validate_rule_identities, validate_rule_presets, validate_rule_quality_contract,
 };
 
@@ -110,8 +110,40 @@ fn validate_rule_specs(specs: &[NativeRuleSpec]) {
                 DetectionClass::Heuristic => CatalogDetectionClassKind::Heuristic,
             },
             match spec.lifecycle {
-                RuleLifecycle::Preview { .. } => CatalogLifecycleClass::Preview,
-                RuleLifecycle::Stable { .. } => CatalogLifecycleClass::Stable,
+                RuleLifecycle::Preview {
+                    blocker,
+                    promotion_requirements,
+                } => CatalogLifecycleDetails::Preview {
+                    blocker,
+                    promotion_requirements,
+                },
+                RuleLifecycle::Stable {
+                    rationale,
+                    malicious_case_ids,
+                    benign_case_ids,
+                    requires_structured_evidence,
+                    remediation_reviewed,
+                    deterministic_signal_basis,
+                } => CatalogLifecycleDetails::Stable {
+                    rationale,
+                    malicious_case_ids,
+                    benign_case_ids,
+                    requires_structured_evidence,
+                    remediation_reviewed,
+                    deterministic_signal_basis,
+                },
+            },
+            match spec.remediation_support() {
+                super::RemediationSupport::SafeFix => {
+                    lintai_api::CatalogRemediationSupport::SafeFix
+                }
+                super::RemediationSupport::Suggestion => {
+                    lintai_api::CatalogRemediationSupport::Suggestion
+                }
+                super::RemediationSupport::MessageOnly => {
+                    lintai_api::CatalogRemediationSupport::MessageOnly
+                }
+                super::RemediationSupport::None => lintai_api::CatalogRemediationSupport::None,
             },
             spec.default_presets,
         );

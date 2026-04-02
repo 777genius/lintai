@@ -14,8 +14,9 @@ pub use catalog::{
     CatalogRuleScope, CatalogSurface,
 };
 pub use catalog_validation::{
-    CatalogDetectionClassKind, CatalogLifecycleClass, CatalogRuleIdentity, validate_group_ids,
-    validate_rule_identities, validate_rule_presets, validate_rule_quality_contract,
+    CatalogDetectionClassKind, CatalogLifecycleClass, CatalogLifecycleDetails, CatalogRuleIdentity,
+    validate_group_ids, validate_rule_identities, validate_rule_presets,
+    validate_rule_quality_contract,
 };
 pub use context::{
     CapabilityConflictMode, CapabilityProfile, ExecCapability, FileSystemCapability, McpCapability,
