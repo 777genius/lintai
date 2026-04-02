@@ -81,6 +81,32 @@ Current `v0.1` supported surfaces focus on files that steer agent behavior or la
 - `npm-shrinkwrap.json`
 - `pnpm-lock.yaml`
 
+## Advisory Lane
+
+The dependency advisory lane is intentionally opt-in. Enable it in the target repository root:
+
+```toml
+[presets]
+enable = ["advisory"]
+```
+
+Then run the scan from that repository root so `lintai` picks up the local `lintai.toml`:
+
+```bash
+cd your-repo
+lintai scan .
+lintai explain-config lintai.toml
+```
+
+This lane matches installed versions from committed npm lockfiles against the bundled offline advisory snapshot. It does not guess from `package.json` version ranges and it does not perform live network lookups during scan.
+
+The bundled snapshot can also be inspected or normalized explicitly:
+
+```bash
+lintai advisory-db export-bundled
+lintai advisory-db update --input advisories.json --output advisories.normalized.json
+```
+
 ## What It Catches
 
 Current `lintai` rules focus on high-signal repository-local risks such as:
