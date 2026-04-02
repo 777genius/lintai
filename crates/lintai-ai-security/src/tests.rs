@@ -1,3 +1,4 @@
+use std::collections::{BTreeMap, BTreeSet};
 use std::sync::Arc;
 
 use lintai_api::{ArtifactKind, RuleProvider, RuleTier, ScanScope, Severity, SourceFormat};
@@ -10,7 +11,7 @@ use lintai_testing::ProviderHarness;
 
 use crate::{
     AiSecurityProvider,
-    registry::{DetectionClass, rule_specs},
+    registry::{DetectionClass, RuleLifecycle, rule_spec_groups, rule_specs},
 };
 
 #[test]
@@ -14106,10 +14107,86 @@ fn provider_rules_are_derived_from_rule_specs() {
 }
 
 #[test]
-fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
+fn rule_spec_groups_cover_every_rule_once() {
+    let groups = rule_spec_groups();
+    assert!(
+        !groups.is_empty(),
+        "native rule catalog should define groups"
+    );
+
+    let mut group_ids = BTreeSet::new();
+    let mut grouped_codes = Vec::new();
+    for group in groups {
+        assert!(
+            group_ids.insert(group.id),
+            "duplicate native rule group id {}",
+            group.id
+        );
+        assert!(
+            !group.specs.is_empty(),
+            "native rule group {} should not be empty",
+            group.id
+        );
+        grouped_codes.extend(group.specs.iter().map(|spec| spec.metadata.code));
+    }
+
+    let flattened_codes: Vec<_> = rule_specs().iter().map(|spec| spec.metadata.code).collect();
+    assert_eq!(grouped_codes, flattened_codes);
+
+    let unique_codes: BTreeSet<_> = flattened_codes.iter().copied().collect();
+    assert_eq!(
+        unique_codes.len(),
+        flattened_codes.len(),
+        "native rule codes must stay globally unique"
+    );
+}
+
+#[test]
+fn rule_specs_keep_catalog_identity_fields_unique() {
+    let mut by_code = BTreeMap::new();
+    let mut by_doc_title = BTreeMap::new();
+
     for spec in rule_specs() {
-        match spec.detection_class {
-            DetectionClass::Heuristic => {
+        assert!(
+            by_code
+                .insert(spec.metadata.code, spec.metadata.doc_title)
+                .is_none(),
+            "duplicate native rule code {}",
+            spec.metadata.code
+        );
+
+        if let Some(previous_code) =
+            by_doc_title.insert(spec.metadata.doc_title, spec.metadata.code)
+        {
+            panic!(
+                "duplicate native rule doc title {:?} used by {} and {}",
+                spec.metadata.doc_title, previous_code, spec.metadata.code
+            );
+        }
+    }
+}
+
+#[test]
+fn rule_specs_keep_tier_detection_and_lifecycle_contracts_in_sync() {
+    for spec in rule_specs() {
+        match (spec.detection_class, spec.lifecycle) {
+            (
+                DetectionClass::Heuristic,
+                RuleLifecycle::Preview {
+                    blocker,
+                    promotion_requirements,
+                },
+            ) => {
+                assert!(
+                    !blocker.is_empty(),
+                    "preview heuristic rule {} should declare a blocker",
+                    spec.metadata.code
+                );
+                assert!(
+                    !promotion_requirements.is_empty(),
+                    "preview heuristic rule {} should declare promotion requirements",
+                    spec.metadata.code
+                );
                 assert_eq!(
                     spec.metadata.tier,
                     RuleTier::Preview,
@@ -14117,102 +14194,86 @@ fn heuristic_rules_live_in_preview_and_structural_rules_stay_stable() {
                     spec.metadata.code
                 );
             }
-            DetectionClass::Structural => {
-                if matches!(
-                    spec.metadata.code,
-                    "SEC313"
-                        | "SEC335"
-                        | "SEC347"
-                        | "SEC348"
-                        | "SEC349"
-                        | "SEC350"
-                        | "SEC353"
-                        | "SEC354"
-                        | "SEC355"
-                        | "SEC356"
-                        | "SEC357"
-                        | "SEC358"
-                        | "SEC359"
-                        | "SEC360"
-                        | "SEC361"
-                        | "SEC363"
-                        | "SEC365"
-                        | "SEC366"
-                        | "SEC368"
-                        | "SEC370"
-                        | "SEC371"
-                        | "SEC377"
-                        | "SEC378"
-                        | "SEC379"
-                        | "SEC380"
-                        | "SEC381"
-                        | "SEC382"
-                        | "SEC383"
-                        | "SEC385"
-                        | "SEC386"
-                        | "SEC387"
-                        | "SEC388"
-                        | "SEC389"
-                        | "SEC390"
-                        | "SEC391"
-                        | "SEC392"
-                        | "SEC393"
-                        | "SEC474"
-                        | "SEC399"
-                        | "SEC404"
-                        | "SEC406"
-                        | "SEC407"
-                        | "SEC408"
-                        | "SEC409"
-                        | "SEC410"
-                        | "SEC419"
-                        | "SEC420"
-                        | "SEC421"
-                        | "SEC478"
-                        | "SEC479"
-                        | "SEC480"
-                        | "SEC481"
-                        | "SEC482"
-                        | "SEC483"
-                        | "SEC484"
-                        | "SEC485"
-                        | "SEC488"
-                        | "SEC489"
-                        | "SEC490"
-                        | "SEC491"
-                        | "SEC492"
-                        | "SEC493"
-                        | "SEC494"
-                        | "SEC495"
-                        | "SEC496"
-                        | "SEC497"
-                        | "SEC498"
-                        | "SEC499"
-                        | "SEC500"
-                        | "SEC501"
-                        | "SEC323"
-                        | "SEC325"
-                        | "SEC328"
-                        | "SEC336"
-                        | "SEC401"
-                        | "SEC402"
-                        | "SEC403"
-                ) {
-                    assert_eq!(
-                        spec.metadata.tier,
-                        RuleTier::Preview,
-                        "structural preview rule {} must stay preview",
-                        spec.metadata.code
-                    );
-                } else {
-                    assert_eq!(
-                        spec.metadata.tier,
-                        RuleTier::Stable,
-                        "structural rule {} must stay stable",
-                        spec.metadata.code
-                    );
-                }
+            (DetectionClass::Heuristic, RuleLifecycle::Stable { .. }) => {
+                panic!(
+                    "heuristic rule {} cannot declare stable lifecycle",
+                    spec.metadata.code
+                );
             }
+            (
+                DetectionClass::Structural,
+                RuleLifecycle::Preview {
+                    blocker,
+                    promotion_requirements,
+                },
+            ) => {
+                assert!(
+                    !blocker.is_empty(),
+                    "preview structural rule {} should declare a blocker",
+                    spec.metadata.code
+                );
+                assert!(
+                    !promotion_requirements.is_empty(),
+                    "preview structural rule {} should declare promotion requirements",
+                    spec.metadata.code
+                );
+                assert_eq!(
+                    spec.metadata.tier,
+                    RuleTier::Preview,
+                    "structural preview rule {} must stay preview",
+                    spec.metadata.code
+                );
+            }
+            (
+                DetectionClass::Structural,
+                RuleLifecycle::Stable {
+                    rationale,
+                    malicious_case_ids,
+                    benign_case_ids,
+                    deterministic_signal_basis,
+                    ..
+                },
+            ) => {
+                assert!(
+                    !rationale.is_empty(),
+                    "stable structural rule {} should declare rationale",
+                    spec.metadata.code
+                );
+                assert!(
+                    !malicious_case_ids.is_empty(),
+                    "stable structural rule {} should link malicious corpus",
+                    spec.metadata.code
+                );
+                assert!(
+                    !benign_case_ids.is_empty(),
+                    "stable structural rule {} should link benign corpus",
+                    spec.metadata.code
+                );
+                assert!(
+                    !deterministic_signal_basis.is_empty(),
+                    "stable structural rule {} should declare signal basis",
+                    spec.metadata.code
+                );
+                assert!(
+                    matches!(spec.metadata.tier, RuleTier::Preview | RuleTier::Stable),
+                    "structural stable-lifecycle rule {} should stay in a supported tier",
+                    spec.metadata.code
+                );
+            }
+        }
+
+        if spec.metadata.tier == RuleTier::Stable {
+            assert!(
+                matches!(spec.lifecycle, RuleLifecycle::Stable { .. }),
+                "stable-tier rule {} must declare stable lifecycle",
+                spec.metadata.code
+            );
+        } else {
+            assert!(
+                !spec.default_presets.contains(&"base"),
+                "preview-tier rule {} must not ship in the base preset",
+                spec.metadata.code
+            );
         }
     }
 }

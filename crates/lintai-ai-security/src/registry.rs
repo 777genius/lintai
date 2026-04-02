@@ -13,6 +13,8 @@ mod remediation;
 mod server_json;
 mod tool_json;
 
+#[cfg(test)]
+pub(crate) use catalog::rule_spec_groups;
 pub(crate) use catalog::rule_specs;
 #[allow(unused_imports)]
 pub(crate) use metadata::{

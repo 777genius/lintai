@@ -405,7 +405,7 @@ fn confidence_name(metadata: lintai_api::RuleMetadata) -> &'static str {
 
 #[cfg(test)]
 mod tests {
-    use std::collections::BTreeMap;
+    use std::collections::{BTreeMap, BTreeSet};
     use std::fs;
     use std::path::{Path, PathBuf};
 
@@ -657,6 +657,41 @@ mod tests {
                     path.display()
                 );
             }
+        }
+    }
+
+    #[test]
+    fn catalog_identity_fields_are_unique() {
+        let catalog = build_site_catalog();
+        let mut rule_ids = BTreeSet::new();
+        let mut rule_paths = BTreeSet::new();
+        let mut preset_ids = BTreeSet::new();
+        let mut preset_paths = BTreeSet::new();
+
+        for rule in &catalog.rules {
+            assert!(
+                rule_ids.insert(rule.rule_id.clone()),
+                "duplicate site catalog rule id {}",
+                rule.rule_id
+            );
+            assert!(
+                rule_paths.insert(rule.canonical_path.clone()),
+                "duplicate site catalog rule path {}",
+                rule.canonical_path
+            );
+        }
+
+        for preset in &catalog.presets {
+            assert!(
+                preset_ids.insert(preset.id.clone()),
+                "duplicate site catalog preset id {}",
+                preset.id
+            );
+            assert!(
+                preset_paths.insert(preset.canonical_path.clone()),
+                "duplicate site catalog preset path {}",
+                preset.canonical_path
+            );
         }
     }
 
