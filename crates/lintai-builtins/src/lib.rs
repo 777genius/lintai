@@ -1,6 +1,6 @@
 use std::collections::BTreeSet;
 
-use lintai_ai_security::native_rule_catalog_entries;
+use lintai_ai_security::ai_security_rule_catalog_entries;
 use lintai_api::{
     CatalogDetectionClassKind, CatalogLifecycleClass, CatalogRuleIdentity,
     validate_rule_identities, validate_rule_presets, validate_rule_quality_contract,
@@ -17,10 +17,7 @@ pub use lintai_api::{
 };
 
 pub fn builtin_rule_catalog_entries() -> Vec<BuiltinRuleCatalogEntry> {
-    let mut entries = native_rule_catalog_entries()
-        .into_iter()
-        .map(BuiltinRuleCatalogEntry::from)
-        .collect::<Vec<_>>();
+    let mut entries = ai_security_rule_catalog_entries();
     entries.extend(
         policy_rule_catalog_entries()
             .iter()

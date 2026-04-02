@@ -62,19 +62,47 @@ pub struct NativeRuleCatalogEntry {
     pub remediation_support: NativeCatalogRemediationSupport,
 }
 
-pub fn native_rule_catalog_entries() -> Vec<NativeRuleCatalogEntry> {
+pub fn ai_security_rule_catalog_entries() -> Vec<CatalogRuleEntry> {
     rule_specs()
         .iter()
-        .map(|spec| NativeRuleCatalogEntry {
+        .map(|spec| CatalogRuleEntry {
             metadata: spec.metadata,
             provider_id: PROVIDER_ID,
-            surface: map_surface(spec.surface),
+            scope: CatalogRuleScope::PerFile,
+            surface: map_catalog_surface(spec.surface),
             default_presets: spec.default_presets,
-            detection_class: map_detection_class(spec.detection_class),
-            lifecycle: map_lifecycle(spec.lifecycle),
-            remediation_support: map_remediation(spec.remediation_support()),
+            detection_class: map_catalog_detection_class(spec.detection_class),
+            lifecycle: map_catalog_lifecycle(spec.lifecycle),
+            remediation_support: map_catalog_remediation(spec.remediation_support()),
         })
         .collect()
+}
+
+pub fn native_rule_catalog_entries() -> Vec<NativeRuleCatalogEntry> {
+    ai_security_rule_catalog_entries()
+        .into_iter()
+        .map(NativeRuleCatalogEntry::from)
+        .collect()
+}
+
+impl From<CatalogRuleEntry> for NativeRuleCatalogEntry {
+    fn from(entry: CatalogRuleEntry) -> Self {
+        assert!(
+            entry.scope == CatalogRuleScope::PerFile,
+            "ai-security shared catalog entry {} unexpectedly declared {:?} scope",
+            entry.metadata.code,
+            entry.scope
+        );
+        Self {
+            metadata: entry.metadata,
+            provider_id: entry.provider_id,
+            surface: map_native_surface(entry.surface),
+            default_presets: entry.default_presets,
+            detection_class: map_native_detection_class(entry.detection_class),
+            lifecycle: map_native_lifecycle(entry.lifecycle),
+            remediation_support: map_native_remediation(entry.remediation_support),
+        }
+    }
 }
 
 impl From<NativeRuleCatalogEntry> for CatalogRuleEntry {
@@ -83,94 +111,124 @@ impl From<NativeRuleCatalogEntry> for CatalogRuleEntry {
             metadata: entry.metadata,
             provider_id: entry.provider_id,
             scope: CatalogRuleScope::PerFile,
-            surface: match entry.surface {
-                NativeCatalogSurface::Markdown => CatalogSurface::Markdown,
-                NativeCatalogSurface::Hook => CatalogSurface::Hook,
-                NativeCatalogSurface::Devcontainer => CatalogSurface::Devcontainer,
-                NativeCatalogSurface::DockerCompose => CatalogSurface::DockerCompose,
-                NativeCatalogSurface::Dockerfile => CatalogSurface::Dockerfile,
-                NativeCatalogSurface::Json => CatalogSurface::Json,
-                NativeCatalogSurface::ClaudeSettings => CatalogSurface::ClaudeSettings,
-                NativeCatalogSurface::ToolJson => CatalogSurface::ToolJson,
-                NativeCatalogSurface::ServerJson => CatalogSurface::ServerJson,
-                NativeCatalogSurface::GithubWorkflow => CatalogSurface::GithubWorkflow,
-            },
+            surface: map_catalog_surface_from_native(entry.surface),
             default_presets: entry.default_presets,
-            detection_class: match entry.detection_class {
-                NativeCatalogDetectionClass::Structural => CatalogDetectionClass::Structural,
-                NativeCatalogDetectionClass::Heuristic => CatalogDetectionClass::Heuristic,
-            },
-            lifecycle: match entry.lifecycle {
-                NativeCatalogRuleLifecycle::Preview {
-                    blocker,
-                    promotion_requirements,
-                } => CatalogRuleLifecycle::Preview {
-                    blocker,
-                    promotion_requirements,
-                },
-                NativeCatalogRuleLifecycle::Stable {
-                    rationale,
-                    malicious_case_ids,
-                    benign_case_ids,
-                    requires_structured_evidence,
-                    remediation_reviewed,
-                    deterministic_signal_basis,
-                } => CatalogRuleLifecycle::Stable {
-                    rationale,
-                    malicious_case_ids,
-                    benign_case_ids,
-                    requires_structured_evidence,
-                    remediation_reviewed,
-                    deterministic_signal_basis,
-                },
-            },
-            remediation_support: match entry.remediation_support {
-                NativeCatalogRemediationSupport::SafeFix => CatalogRemediationSupport::SafeFix,
-                NativeCatalogRemediationSupport::Suggestion => {
-                    CatalogRemediationSupport::Suggestion
-                }
-                NativeCatalogRemediationSupport::MessageOnly => {
-                    CatalogRemediationSupport::MessageOnly
-                }
-                NativeCatalogRemediationSupport::None => CatalogRemediationSupport::None,
-            },
+            detection_class: map_catalog_detection_class_from_native(entry.detection_class),
+            lifecycle: map_catalog_lifecycle_from_native(entry.lifecycle),
+            remediation_support: map_catalog_remediation_from_native(entry.remediation_support),
         }
     }
 }
 
-fn map_surface(surface: Surface) -> NativeCatalogSurface {
+fn map_catalog_surface(surface: Surface) -> CatalogSurface {
     match surface {
-        Surface::Markdown => NativeCatalogSurface::Markdown,
-        Surface::Hook => NativeCatalogSurface::Hook,
-        Surface::Devcontainer => NativeCatalogSurface::Devcontainer,
-        Surface::DockerCompose => NativeCatalogSurface::DockerCompose,
-        Surface::Dockerfile => NativeCatalogSurface::Dockerfile,
-        Surface::Json => NativeCatalogSurface::Json,
-        Surface::ClaudeSettings => NativeCatalogSurface::ClaudeSettings,
-        Surface::ToolJson => NativeCatalogSurface::ToolJson,
-        Surface::ServerJson => NativeCatalogSurface::ServerJson,
-        Surface::GithubWorkflow => NativeCatalogSurface::GithubWorkflow,
+        Surface::Markdown => CatalogSurface::Markdown,
+        Surface::Hook => CatalogSurface::Hook,
+        Surface::Devcontainer => CatalogSurface::Devcontainer,
+        Surface::DockerCompose => CatalogSurface::DockerCompose,
+        Surface::Dockerfile => CatalogSurface::Dockerfile,
+        Surface::Json => CatalogSurface::Json,
+        Surface::ClaudeSettings => CatalogSurface::ClaudeSettings,
+        Surface::ToolJson => CatalogSurface::ToolJson,
+        Surface::ServerJson => CatalogSurface::ServerJson,
+        Surface::GithubWorkflow => CatalogSurface::GithubWorkflow,
         Surface::Workspace => unreachable!("workspace rules do not belong to lintai-ai-security"),
     }
 }
 
-fn map_detection_class(class: DetectionClass) -> NativeCatalogDetectionClass {
-    match class {
-        DetectionClass::Structural => NativeCatalogDetectionClass::Structural,
-        DetectionClass::Heuristic => NativeCatalogDetectionClass::Heuristic,
+fn map_native_surface(surface: CatalogSurface) -> NativeCatalogSurface {
+    match surface {
+        CatalogSurface::Markdown => NativeCatalogSurface::Markdown,
+        CatalogSurface::Hook => NativeCatalogSurface::Hook,
+        CatalogSurface::Devcontainer => NativeCatalogSurface::Devcontainer,
+        CatalogSurface::DockerCompose => NativeCatalogSurface::DockerCompose,
+        CatalogSurface::Dockerfile => NativeCatalogSurface::Dockerfile,
+        CatalogSurface::Json => NativeCatalogSurface::Json,
+        CatalogSurface::ClaudeSettings => NativeCatalogSurface::ClaudeSettings,
+        CatalogSurface::ToolJson => NativeCatalogSurface::ToolJson,
+        CatalogSurface::ServerJson => NativeCatalogSurface::ServerJson,
+        CatalogSurface::GithubWorkflow => NativeCatalogSurface::GithubWorkflow,
+        CatalogSurface::Workspace => {
+            unreachable!("workspace rules do not belong to lintai-ai-security")
+        }
     }
 }
 
-fn map_lifecycle(lifecycle: RuleLifecycle) -> NativeCatalogRuleLifecycle {
+fn map_catalog_surface_from_native(surface: NativeCatalogSurface) -> CatalogSurface {
+    match surface {
+        NativeCatalogSurface::Markdown => CatalogSurface::Markdown,
+        NativeCatalogSurface::Hook => CatalogSurface::Hook,
+        NativeCatalogSurface::Devcontainer => CatalogSurface::Devcontainer,
+        NativeCatalogSurface::DockerCompose => CatalogSurface::DockerCompose,
+        NativeCatalogSurface::Dockerfile => CatalogSurface::Dockerfile,
+        NativeCatalogSurface::Json => CatalogSurface::Json,
+        NativeCatalogSurface::ClaudeSettings => CatalogSurface::ClaudeSettings,
+        NativeCatalogSurface::ToolJson => CatalogSurface::ToolJson,
+        NativeCatalogSurface::ServerJson => CatalogSurface::ServerJson,
+        NativeCatalogSurface::GithubWorkflow => CatalogSurface::GithubWorkflow,
+    }
+}
+
+fn map_catalog_detection_class(class: DetectionClass) -> CatalogDetectionClass {
+    match class {
+        DetectionClass::Structural => CatalogDetectionClass::Structural,
+        DetectionClass::Heuristic => CatalogDetectionClass::Heuristic,
+    }
+}
+
+fn map_native_detection_class(class: CatalogDetectionClass) -> NativeCatalogDetectionClass {
+    match class {
+        CatalogDetectionClass::Structural => NativeCatalogDetectionClass::Structural,
+        CatalogDetectionClass::Heuristic => NativeCatalogDetectionClass::Heuristic,
+    }
+}
+
+fn map_catalog_detection_class_from_native(
+    class: NativeCatalogDetectionClass,
+) -> CatalogDetectionClass {
+    match class {
+        NativeCatalogDetectionClass::Structural => CatalogDetectionClass::Structural,
+        NativeCatalogDetectionClass::Heuristic => CatalogDetectionClass::Heuristic,
+    }
+}
+
+fn map_catalog_lifecycle(lifecycle: RuleLifecycle) -> CatalogRuleLifecycle {
     match lifecycle {
         RuleLifecycle::Preview {
+            blocker,
+            promotion_requirements,
+        } => CatalogRuleLifecycle::Preview {
+            blocker,
+            promotion_requirements,
+        },
+        RuleLifecycle::Stable {
+            rationale,
+            malicious_case_ids,
+            benign_case_ids,
+            requires_structured_evidence,
+            remediation_reviewed,
+            deterministic_signal_basis,
+        } => CatalogRuleLifecycle::Stable {
+            rationale,
+            malicious_case_ids,
+            benign_case_ids,
+            requires_structured_evidence,
+            remediation_reviewed,
+            deterministic_signal_basis,
+        },
+    }
+}
+
+fn map_native_lifecycle(lifecycle: CatalogRuleLifecycle) -> NativeCatalogRuleLifecycle {
+    match lifecycle {
+        CatalogRuleLifecycle::Preview {
             blocker,
             promotion_requirements,
         } => NativeCatalogRuleLifecycle::Preview {
             blocker,
             promotion_requirements,
         },
-        RuleLifecycle::Stable {
+        CatalogRuleLifecycle::Stable {
             rationale,
             malicious_case_ids,
             benign_case_ids,
@@ -188,12 +246,63 @@ fn map_lifecycle(lifecycle: RuleLifecycle) -> NativeCatalogRuleLifecycle {
     }
 }
 
-fn map_remediation(remediation: RemediationSupport) -> NativeCatalogRemediationSupport {
+fn map_catalog_lifecycle_from_native(
+    lifecycle: NativeCatalogRuleLifecycle,
+) -> CatalogRuleLifecycle {
+    match lifecycle {
+        NativeCatalogRuleLifecycle::Preview {
+            blocker,
+            promotion_requirements,
+        } => CatalogRuleLifecycle::Preview {
+            blocker,
+            promotion_requirements,
+        },
+        NativeCatalogRuleLifecycle::Stable {
+            rationale,
+            malicious_case_ids,
+            benign_case_ids,
+            requires_structured_evidence,
+            remediation_reviewed,
+            deterministic_signal_basis,
+        } => CatalogRuleLifecycle::Stable {
+            rationale,
+            malicious_case_ids,
+            benign_case_ids,
+            requires_structured_evidence,
+            remediation_reviewed,
+            deterministic_signal_basis,
+        },
+    }
+}
+
+fn map_catalog_remediation(remediation: RemediationSupport) -> CatalogRemediationSupport {
     match remediation {
-        RemediationSupport::SafeFix => NativeCatalogRemediationSupport::SafeFix,
-        RemediationSupport::Suggestion => NativeCatalogRemediationSupport::Suggestion,
-        RemediationSupport::MessageOnly => NativeCatalogRemediationSupport::MessageOnly,
-        RemediationSupport::None => NativeCatalogRemediationSupport::None,
+        RemediationSupport::SafeFix => CatalogRemediationSupport::SafeFix,
+        RemediationSupport::Suggestion => CatalogRemediationSupport::Suggestion,
+        RemediationSupport::MessageOnly => CatalogRemediationSupport::MessageOnly,
+        RemediationSupport::None => CatalogRemediationSupport::None,
+    }
+}
+
+fn map_native_remediation(
+    remediation: CatalogRemediationSupport,
+) -> NativeCatalogRemediationSupport {
+    match remediation {
+        CatalogRemediationSupport::SafeFix => NativeCatalogRemediationSupport::SafeFix,
+        CatalogRemediationSupport::Suggestion => NativeCatalogRemediationSupport::Suggestion,
+        CatalogRemediationSupport::MessageOnly => NativeCatalogRemediationSupport::MessageOnly,
+        CatalogRemediationSupport::None => NativeCatalogRemediationSupport::None,
+    }
+}
+
+fn map_catalog_remediation_from_native(
+    remediation: NativeCatalogRemediationSupport,
+) -> CatalogRemediationSupport {
+    match remediation {
+        NativeCatalogRemediationSupport::SafeFix => CatalogRemediationSupport::SafeFix,
+        NativeCatalogRemediationSupport::Suggestion => CatalogRemediationSupport::Suggestion,
+        NativeCatalogRemediationSupport::MessageOnly => CatalogRemediationSupport::MessageOnly,
+        NativeCatalogRemediationSupport::None => CatalogRemediationSupport::None,
     }
 }
 
@@ -206,7 +315,8 @@ mod tests {
 
     use super::{
         NativeCatalogDetectionClass, NativeCatalogRemediationSupport, NativeCatalogRuleLifecycle,
-        NativeCatalogSurface, native_rule_catalog_entries,
+        NativeCatalogSurface, NativeRuleCatalogEntry, ai_security_rule_catalog_entries,
+        native_rule_catalog_entries,
     };
 
     #[test]
@@ -298,6 +408,17 @@ mod tests {
                     entry.metadata.code
                 ),
             }
+        }
+    }
+
+    #[test]
+    fn shared_catalog_entries_stay_in_sync_with_native_catalog_entries() {
+        let shared = ai_security_rule_catalog_entries();
+        let native = native_rule_catalog_entries();
+        assert_eq!(shared.len(), native.len());
+
+        for (shared_entry, native_entry) in shared.into_iter().zip(native) {
+            assert_eq!(NativeRuleCatalogEntry::from(shared_entry), native_entry);
         }
     }
 }

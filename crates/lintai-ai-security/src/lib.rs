@@ -24,7 +24,8 @@ mod tests;
 
 pub use native_catalog::{
     NativeCatalogDetectionClass, NativeCatalogRemediationSupport, NativeCatalogRuleLifecycle,
-    NativeCatalogSurface, NativeRuleCatalogEntry, native_rule_catalog_entries,
+    NativeCatalogSurface, NativeRuleCatalogEntry, ai_security_rule_catalog_entries,
+    native_rule_catalog_entries,
 };
 pub use provider::AiSecurityProvider;
 #[doc(hidden)]
