@@ -5,8 +5,8 @@ use lintai_api::{
     CatalogDetectionClassKind, CatalogLifecycleClass, CatalogRuleIdentity,
     validate_rule_identities, validate_rule_presets, validate_rule_quality_contract,
 };
-use lintai_dep_vulns::dep_vuln_rule_catalog_entries;
-use lintai_policy::policy_rule_catalog_entries;
+use lintai_dep_vulns::dep_vuln_shared_rule_catalog_entries;
+use lintai_policy::policy_shared_rule_catalog_entries;
 
 pub use lintai_api::{
     CatalogDetectionClass as BuiltinCatalogDetectionClass,
@@ -18,18 +18,8 @@ pub use lintai_api::{
 
 pub fn builtin_rule_catalog_entries() -> Vec<BuiltinRuleCatalogEntry> {
     let mut entries = ai_security_rule_catalog_entries();
-    entries.extend(
-        policy_rule_catalog_entries()
-            .iter()
-            .copied()
-            .map(BuiltinRuleCatalogEntry::from),
-    );
-    entries.extend(
-        dep_vuln_rule_catalog_entries()
-            .iter()
-            .copied()
-            .map(BuiltinRuleCatalogEntry::from),
-    );
+    entries.extend(policy_shared_rule_catalog_entries().iter().copied());
+    entries.extend(dep_vuln_shared_rule_catalog_entries().iter().copied());
     validate_builtin_rule_catalog_entries(&entries);
     entries
 }

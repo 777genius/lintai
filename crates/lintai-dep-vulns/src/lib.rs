@@ -8,6 +8,7 @@ mod tests;
 pub use catalog::{
     DepVulnDetectionClass, DepVulnRemediationSupport, DepVulnRuleCatalogEntry,
     DepVulnRuleLifecycle, DepVulnSurface, dep_vuln_rule_catalog_entries,
+    dep_vuln_shared_rule_catalog_entries,
 };
 pub use provider::{DependencyVulnProvider, PROVIDER_ID};
 pub use snapshot::{

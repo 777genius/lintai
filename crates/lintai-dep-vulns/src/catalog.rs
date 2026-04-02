@@ -55,21 +55,88 @@ declare_rule! {
     }
 }
 
-const DEP_VULN_RULE_CATALOG_ENTRIES: [DepVulnRuleCatalogEntry; 1] = [DepVulnRuleCatalogEntry {
+const DEP_VULN_RULE_CATALOG_ENTRIES: [CatalogRuleEntry; 1] = [CatalogRuleEntry {
     metadata: InstalledVulnerableDependencyRule::METADATA,
     provider_id: PROVIDER_ID,
-    surface: DepVulnSurface::Workspace,
+    scope: CatalogRuleScope::Workspace,
+    surface: CatalogSurface::Workspace,
     default_presets: ADVISORY_PRESETS,
-    detection_class: DepVulnDetectionClass::Structural,
-    lifecycle: DepVulnRuleLifecycle::Preview {
+    detection_class: CatalogDetectionClass::Structural,
+    lifecycle: CatalogRuleLifecycle::Preview {
         blocker: "Initial advisory snapshot coverage is intentionally small in the first release and needs broader snapshot discipline before Stable.",
         promotion_requirements: WORKSPACE_PREVIEW_REQUIREMENTS,
     },
-    remediation_support: DepVulnRemediationSupport::Suggestion,
+    remediation_support: CatalogRemediationSupport::Suggestion,
 }];
 
-pub fn dep_vuln_rule_catalog_entries() -> &'static [DepVulnRuleCatalogEntry] {
+pub fn dep_vuln_shared_rule_catalog_entries() -> &'static [CatalogRuleEntry] {
     &DEP_VULN_RULE_CATALOG_ENTRIES
+}
+
+pub fn dep_vuln_rule_catalog_entries() -> &'static [DepVulnRuleCatalogEntry] {
+    use std::sync::OnceLock;
+
+    static ENTRIES: OnceLock<Vec<DepVulnRuleCatalogEntry>> = OnceLock::new();
+
+    ENTRIES
+        .get_or_init(|| {
+            dep_vuln_shared_rule_catalog_entries()
+                .iter()
+                .copied()
+                .map(DepVulnRuleCatalogEntry::from)
+                .collect()
+        })
+        .as_slice()
+}
+
+impl From<CatalogRuleEntry> for DepVulnRuleCatalogEntry {
+    fn from(entry: CatalogRuleEntry) -> Self {
+        assert!(
+            entry.scope == CatalogRuleScope::Workspace,
+            "dependency-vuln shared catalog entry {} unexpectedly declared {:?} scope",
+            entry.metadata.code,
+            entry.scope
+        );
+        Self {
+            metadata: entry.metadata,
+            provider_id: entry.provider_id,
+            surface: match entry.surface {
+                CatalogSurface::Workspace => DepVulnSurface::Workspace,
+                other => panic!(
+                    "dependency-vuln shared catalog entry {} cannot declare surface {:?}",
+                    entry.metadata.code, other
+                ),
+            },
+            default_presets: entry.default_presets,
+            detection_class: match entry.detection_class {
+                CatalogDetectionClass::Structural => DepVulnDetectionClass::Structural,
+                CatalogDetectionClass::Heuristic => panic!(
+                    "dependency-vuln shared catalog entry {} cannot declare heuristic detection",
+                    entry.metadata.code
+                ),
+            },
+            lifecycle: match entry.lifecycle {
+                CatalogRuleLifecycle::Preview {
+                    blocker,
+                    promotion_requirements,
+                } => DepVulnRuleLifecycle::Preview {
+                    blocker,
+                    promotion_requirements,
+                },
+                CatalogRuleLifecycle::Stable { .. } => panic!(
+                    "dependency-vuln shared catalog entry {} cannot declare stable lifecycle",
+                    entry.metadata.code
+                ),
+            },
+            remediation_support: match entry.remediation_support {
+                CatalogRemediationSupport::Suggestion => DepVulnRemediationSupport::Suggestion,
+                other => panic!(
+                    "dependency-vuln shared catalog entry {} cannot declare remediation {:?}",
+                    entry.metadata.code, other
+                ),
+            },
+        }
+    }
 }
 
 impl From<DepVulnRuleCatalogEntry> for CatalogRuleEntry {
@@ -78,13 +145,9 @@ impl From<DepVulnRuleCatalogEntry> for CatalogRuleEntry {
             metadata: entry.metadata,
             provider_id: entry.provider_id,
             scope: CatalogRuleScope::Workspace,
-            surface: match entry.surface {
-                DepVulnSurface::Workspace => CatalogSurface::Workspace,
-            },
+            surface: CatalogSurface::Workspace,
             default_presets: entry.default_presets,
-            detection_class: match entry.detection_class {
-                DepVulnDetectionClass::Structural => CatalogDetectionClass::Structural,
-            },
+            detection_class: CatalogDetectionClass::Structural,
             lifecycle: match entry.lifecycle {
                 DepVulnRuleLifecycle::Preview {
                     blocker,
@@ -94,9 +157,7 @@ impl From<DepVulnRuleCatalogEntry> for CatalogRuleEntry {
                     promotion_requirements,
                 },
             },
-            remediation_support: match entry.remediation_support {
-                DepVulnRemediationSupport::Suggestion => CatalogRemediationSupport::Suggestion,
-            },
+            remediation_support: CatalogRemediationSupport::Suggestion,
         }
     }
 }
@@ -108,7 +169,10 @@ mod tests {
         CatalogRuleScope, CatalogSurface,
     };
 
-    use super::dep_vuln_rule_catalog_entries;
+    use super::{
+        DepVulnRuleCatalogEntry, dep_vuln_rule_catalog_entries,
+        dep_vuln_shared_rule_catalog_entries,
+    };
 
     #[test]
     fn dep_vuln_catalog_entries_convert_to_shared_catalog_entries() {
@@ -143,6 +207,17 @@ mod tests {
                     entry.metadata.code
                 ),
             }
+        }
+    }
+
+    #[test]
+    fn shared_dep_vuln_catalog_entries_stay_in_sync_with_local_catalog_entries() {
+        let shared = dep_vuln_shared_rule_catalog_entries();
+        let local = dep_vuln_rule_catalog_entries();
+        assert_eq!(shared.len(), local.len());
+
+        for (shared_entry, local_entry) in shared.iter().copied().zip(local.iter().copied()) {
+            assert_eq!(DepVulnRuleCatalogEntry::from(shared_entry), local_entry);
         }
     }
 }
