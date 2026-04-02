@@ -17,6 +17,10 @@ fn stdout_string(output: &std::process::Output) -> String {
     String::from_utf8(output.stdout.clone()).expect("stdout should be valid UTF-8")
 }
 
+fn json_output(output: &std::process::Output) -> serde_json::Value {
+    serde_json::from_str(&stdout_string(output)).unwrap()
+}
+
 fn write(path: &Path, content: &str) {
     if let Some(parent) = path.parent() {
         fs::create_dir_all(parent).unwrap();
@@ -655,4 +659,41 @@ fn scan_known_vscode_kiro_and_amazon_q_mcp_configs_emit_findings() {
     assert!(findings.iter().any(|finding| {
         finding["location"]["normalized_path"] == canonical_display(&cwd.join(".amazonq/mcp.json"))
     }));
+}
+
+#[test]
+fn scan_known_exits_two_on_runtime_errors() {
+    let temp_dir = unique_temp_dir("lintai-scan-known-runtime-errors");
+    let cwd = temp_dir.join("project");
+    let home = temp_dir.join("home");
+    let xdg = temp_dir.join("xdg");
+    fs::create_dir_all(&cwd).unwrap();
+    write(
+        &cwd.join("lintai.toml"),
+        "[presets]\nenable = [\"advisory\"]\n",
+    );
+    write(
+        &cwd.join(".agents/skills/demo/package-lock.json"),
+        r#"{
+  "name": "demo",
+  "lockfileVersion": 3,
+  "packages": {
+    "": { "name": "demo", "version": "1.0.0" },
+    "node_modules/lodash": { "version": "" }
+  }
+}"#,
+    );
+
+    let output = run_lintai(&cwd, &home, &xdg, &["scan-known", "--format=json"]);
+    assert_eq!(output.status.code(), Some(2));
+
+    let value = json_output(&output);
+    assert_eq!(value["findings"].as_array().unwrap().len(), 0);
+    assert_eq!(value["runtime_errors"].as_array().unwrap().len(), 1);
+    assert!(
+        value["runtime_errors"][0]["message"]
+            .as_str()
+            .unwrap()
+            .contains("missing a valid installed version")
+    );
 }

@@ -1,7 +1,7 @@
 use std::process::ExitCode;
 
 use crate::args::parse_policy_os_args;
-use crate::execution::{collect_inventory_os, emit_report, exit_code_for_blocking_bool};
+use crate::execution::{collect_inventory_os, emit_report, exit_code_for_inventory_summary};
 use crate::output;
 use crate::policy_os::{evaluate_machine_policy, load_machine_policy};
 
@@ -33,7 +33,8 @@ pub(crate) fn run(args: impl Iterator<Item = String>) -> Result<ExitCode, String
     );
 
     emit_report(&report, output_format)?;
-    Ok(exit_code_for_blocking_bool(
+    Ok(exit_code_for_inventory_summary(
+        &inventory.aggregate,
         inventory.blocking || has_deny_policy_matches(&policy_matches),
     ))
 }

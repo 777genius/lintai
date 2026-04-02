@@ -339,11 +339,6 @@
         "lintai-ai-security:SEC419",
         "lintai-ai-security:SEC420",
         "lintai-ai-security:SEC421",
-        "lintai-ai-security:SEC423",
-        "lintai-ai-security:SEC424",
-        "lintai-ai-security:SEC425",
-        "lintai-ai-security:SEC426",
-        "lintai-ai-security:SEC427",
         "lintai-ai-security:SEC428",
         "lintai-ai-security:SEC429",
         "lintai-ai-security:SEC430",
@@ -494,11 +489,6 @@
         "lintai-ai-security:SEC419",
         "lintai-ai-security:SEC420",
         "lintai-ai-security:SEC421",
-        "lintai-ai-security:SEC423",
-        "lintai-ai-security:SEC424",
-        "lintai-ai-security:SEC425",
-        "lintai-ai-security:SEC426",
-        "lintai-ai-security:SEC427",
         "lintai-ai-security:SEC428",
         "lintai-ai-security:SEC429",
         "lintai-ai-security:SEC430",
@@ -880,13 +870,18 @@
       "id": "governance",
       "kind": "membership",
       "title": "governance",
-      "description": "Opt-in review rules for shared mutation authority and similar workflow-governance decisions that should not read like headline security findings.",
+      "description": "Opt-in review rules for shared mutation authority and broad bare tool grants that should not read like headline security findings.",
       "extends": [],
       "ruleIds": [
         "lintai-ai-security:SEC390",
         "lintai-ai-security:SEC391",
         "lintai-ai-security:SEC392",
         "lintai-ai-security:SEC393",
+        "lintai-ai-security:SEC423",
+        "lintai-ai-security:SEC424",
+        "lintai-ai-security:SEC425",
+        "lintai-ai-security:SEC426",
+        "lintai-ai-security:SEC427",
         "lintai-ai-security:SEC474",
         "lintai-ai-security:SEC494",
         "lintai-ai-security:SEC495",
@@ -949,7 +944,7 @@
       "id": "advisory",
       "kind": "membership",
       "title": "advisory",
-      "description": "Bundled dependency vulnerability checks that match installed lockfile versions against offline advisories.",
+      "description": "Offline dependency vulnerability checks that match installed lockfile versions against the active advisory snapshot.",
       "extends": [],
       "ruleIds": [
         "lintai-dep-vulns:SEC756"
@@ -2205,7 +2200,7 @@
       "lifecycleState": "preview_blocked",
       "lifecycle": {
         "kind": "preview",
-        "blocker": "Secret policy expectations can vary across registry producers, so the first release keeps this as guidance-only.",
+        "blocker": "Secret policy expectations can vary across registry producers, so the first release keeps this as a context-sensitive preview review signal.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
@@ -2527,7 +2522,7 @@
       "lifecycleState": "preview_blocked",
       "lifecycle": {
         "kind": "preview",
-        "blocker": "Metadata-service examples can appear in legitimate security training content, so the first release stays guidance-only.",
+        "blocker": "Metadata-service examples can appear in legitimate security training content, so the first release stays context-sensitive preview rather than claiming universal exploit signal.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
@@ -2979,7 +2974,7 @@
       "lifecycleState": "preview_blocked",
       "lifecycle": {
         "kind": "preview",
-        "blocker": "Mutable MCP launcher examples in markdown can be legitimate setup guidance, so the first release stays guidance-only.",
+        "blocker": "Mutable MCP launcher examples in markdown can be legitimate setup guidance, so the first release stays in the core preview lane while broader field validation continues.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
@@ -3010,7 +3005,7 @@
       "lifecycleState": "preview_blocked",
       "lifecycle": {
         "kind": "preview",
-        "blocker": "Mutable Docker image examples in markdown can be legitimate setup guidance, so the first release stays guidance-only.",
+        "blocker": "Mutable Docker image examples in markdown can be legitimate setup guidance, so the first release stays context-sensitive preview rather than a stronger default posture.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
@@ -3041,7 +3036,7 @@
       "lifecycleState": "preview_blocked",
       "lifecycle": {
         "kind": "preview",
-        "blocker": "Docker host-escape examples in markdown can be legitimate ops guidance, so the first release stays guidance-only.",
+        "blocker": "Docker host-escape examples in markdown can be legitimate ops guidance, so the first release stays context-sensitive preview while domain-specific precision is measured.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
@@ -5619,8 +5614,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -5658,8 +5652,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -5697,8 +5690,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -5736,8 +5728,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -5775,8 +5766,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -18565,7 +18555,7 @@
       "docTitle": "Dependency vulnerability: installed npm package version",
       "slug": "sec756",
       "canonicalPath": "/rules/lintai-dep-vulns/sec756",
-      "summary": "Installed npm dependency version matches a bundled vulnerability advisory",
+      "summary": "Installed npm dependency version matches an offline vulnerability advisory",
       "scope": "workspace",
       "surface": "workspace",
       "tier": "preview",
@@ -18579,7 +18569,7 @@
       "lifecycleState": "preview_blocked",
       "lifecycle": {
         "kind": "preview",
-        "blocker": "Bundled advisory coverage is intentionally small in the first release and needs broader snapshot discipline before Stable.",
+        "blocker": "Initial advisory snapshot coverage is intentionally small in the first release and needs broader snapshot discipline before Stable.",
         "promotionRequirements": "Needs larger advisory snapshot coverage, cross-lockfile corpus proof, and stable review of package/version matching before promotion to Stable."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

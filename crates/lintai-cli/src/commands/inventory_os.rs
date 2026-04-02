@@ -1,7 +1,7 @@
 use std::process::ExitCode;
 
 use crate::args::parse_inventory_os_args;
-use crate::execution::{collect_inventory_os, emit_report, exit_code_for_blocking_bool};
+use crate::execution::{collect_inventory_os, emit_report, exit_code_for_inventory_summary};
 use crate::output;
 
 pub(crate) fn run(args: impl Iterator<Item = String>) -> Result<ExitCode, String> {
@@ -43,5 +43,8 @@ pub(crate) fn run(args: impl Iterator<Item = String>) -> Result<ExitCode, String
         None,
     );
     emit_report(&report, output_format)?;
-    Ok(exit_code_for_blocking_bool(inventory.blocking))
+    Ok(exit_code_for_inventory_summary(
+        &inventory.aggregate,
+        inventory.blocking,
+    ))
 }

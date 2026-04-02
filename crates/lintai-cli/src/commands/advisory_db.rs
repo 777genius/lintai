@@ -11,10 +11,11 @@ pub(crate) fn run(args: impl Iterator<Item = String>) -> Result<ExitCode, String
 
     match command.as_str() {
         "export-bundled" => {
+            let bundled = bundled_snapshot_json_pretty()?;
             if let Some(output) = args.next() {
-                write_file_atomic(PathBuf::from(output), &bundled_snapshot_json_pretty())?;
+                write_file_atomic(PathBuf::from(output), &bundled)?;
             } else {
-                print!("{}", bundled_snapshot_json_pretty());
+                print!("{}", bundled);
             }
             Ok(ExitCode::SUCCESS)
         }
@@ -72,5 +73,5 @@ fn write_file_atomic(path: PathBuf, contents: &str) -> Result<(), String> {
 }
 
 fn usage() -> String {
-    "lintai advisory-db export-bundled [output-file]\nlintai advisory-db update --input FILE --output FILE".to_owned()
+    "lintai advisory-db export-bundled [output-file]\nlintai advisory-db update --input FILE --output FILE\n\nUse LINTAI_ADVISORY_SNAPSHOT=/path/to/advisories.normalized.json lintai scan . to scan with a normalized custom snapshot.".to_owned()
 }

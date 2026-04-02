@@ -24,6 +24,13 @@ fn write(path: &Path, content: &str) {
     fs::write(path, content).unwrap();
 }
 
+fn write_bytes(path: &Path, content: &[u8]) {
+    if let Some(parent) = path.parent() {
+        fs::create_dir_all(parent).unwrap();
+    }
+    fs::write(path, content).unwrap();
+}
+
 fn run_lintai(cwd: &Path, args: &[&str]) -> std::process::Output {
     Command::new(env!("CARGO_BIN_EXE_lintai"))
         .current_dir(cwd)
@@ -442,4 +449,42 @@ clients = ["windsurf"]
             .iter()
             .any(|result| result["ruleId"] == "policy:unapproved-client")
     );
+}
+
+#[test]
+fn policy_os_exits_two_on_runtime_errors() {
+    let temp_dir = unique_temp_dir("lintai-policy-os-runtime-errors");
+    let cwd = temp_dir.join("cwd");
+    let root = temp_dir.join("machine");
+    let policy = temp_dir.join("policy.toml");
+    fs::create_dir_all(&cwd).unwrap();
+
+    write_bytes(&root.join(".cursor/mcp.json"), b"{\n\xff\n}");
+    write_policy(
+        &policy,
+        r#"
+schema_version = 1
+[rules]
+unapproved_client = "off"
+unapproved_base_dir = "off"
+"#,
+    );
+
+    let output = run_lintai(
+        &cwd,
+        &[
+            "policy-os",
+            "--policy",
+            policy.to_str().unwrap(),
+            "--scope=user",
+            "--path-root",
+            root.to_str().unwrap(),
+            "--format=json",
+        ],
+    );
+    assert_eq!(output.status.code(), Some(2));
+
+    let value = json_output(&output);
+    assert_eq!(value["findings"].as_array().unwrap().len(), 0);
+    assert_eq!(value["runtime_errors"].as_array().unwrap().len(), 1);
 }

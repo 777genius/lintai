@@ -5,7 +5,7 @@ use lintai_engine::{EngineConfig, OutputFormat, WorkspaceConfig, load_workspace_
 
 use crate::args::parse_scan_known_args;
 use crate::execution::{
-    build_engine, emit_report, exit_code_for_blocking_bool, exit_code_for_findings,
+    build_engine, emit_report, exit_code_for_findings, exit_code_for_inventory_summary,
 };
 use crate::known_scan::{
     ArtifactMode, DiscoveredRoot, DiscoveryStats, KnownRootScope, absolute_base_for_scan,
@@ -99,5 +99,5 @@ pub(crate) fn run(
         Some(discovery_stats),
     );
     emit_report(&report, output_format)?;
-    Ok(exit_code_for_blocking_bool(blocking))
+    Ok(exit_code_for_inventory_summary(&aggregate, blocking))
 }

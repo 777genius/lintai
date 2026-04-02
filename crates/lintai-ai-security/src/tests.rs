@@ -4429,7 +4429,7 @@ fn ignores_package_install_allowed_tools_on_fixture_like_path() {
 #[test]
 fn finds_unscoped_read_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Read, Write(./artifacts/**)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -4444,8 +4444,23 @@ fn finds_unscoped_read_allowed_tools_in_frontmatter() {
 }
 
 #[test]
-fn ignores_scoped_read_allowed_tools_in_frontmatter() {
+fn unscoped_read_allowed_tools_requires_governance_preset() {
     let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Read, Write(./artifacts/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC423")
+    );
+}
+
+#[test]
+fn ignores_scoped_read_allowed_tools_in_frontmatter() {
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Read(./docs/**), Write(./artifacts/**)\n---\n# Skill\n",
     );
@@ -4460,7 +4475,7 @@ fn ignores_scoped_read_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_unscoped_read_allowed_tools_on_fixture_like_path() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "tests/fixtures/skill/SKILL.md",
         "---\nallowed-tools: Read, Write(./artifacts/**)\n---\n# Fixture skill\n",
     );
@@ -4476,7 +4491,7 @@ fn ignores_unscoped_read_allowed_tools_on_fixture_like_path() {
 #[test]
 fn finds_unscoped_write_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Write, Read(./docs/**)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -4492,7 +4507,7 @@ fn finds_unscoped_write_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_scoped_write_allowed_tools_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Write(./artifacts/**), Read(./docs/**)\n---\n# Skill\n",
     );
@@ -4506,8 +4521,23 @@ fn ignores_scoped_write_allowed_tools_in_frontmatter() {
 }
 
 #[test]
-fn ignores_unscoped_write_allowed_tools_on_fixture_like_path() {
+fn unscoped_write_allowed_tools_requires_governance_preset() {
     let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Write, Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC424")
+    );
+}
+
+#[test]
+fn ignores_unscoped_write_allowed_tools_on_fixture_like_path() {
+    let summary = scan_preview_governance_skill_fixture(
         "tests/fixtures/skill/SKILL.md",
         "---\nallowed-tools: Write, Read(./docs/**)\n---\n# Fixture skill\n",
     );
@@ -4523,7 +4553,7 @@ fn ignores_unscoped_write_allowed_tools_on_fixture_like_path() {
 #[test]
 fn finds_unscoped_edit_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Edit, Read(./docs/**)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -4539,7 +4569,7 @@ fn finds_unscoped_edit_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_scoped_edit_allowed_tools_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Edit(./docs/**), Read(./docs/**)\n---\n# Skill\n",
     );
@@ -4553,8 +4583,23 @@ fn ignores_scoped_edit_allowed_tools_in_frontmatter() {
 }
 
 #[test]
-fn ignores_unscoped_edit_allowed_tools_on_fixture_like_path() {
+fn unscoped_edit_allowed_tools_requires_governance_preset() {
     let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Edit, Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC425")
+    );
+}
+
+#[test]
+fn ignores_unscoped_edit_allowed_tools_on_fixture_like_path() {
+    let summary = scan_preview_governance_skill_fixture(
         "tests/fixtures/skill/SKILL.md",
         "---\nallowed-tools: Edit, Read(./docs/**)\n---\n# Fixture skill\n",
     );
@@ -4570,7 +4615,7 @@ fn ignores_unscoped_edit_allowed_tools_on_fixture_like_path() {
 #[test]
 fn finds_unscoped_glob_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Glob, Read(./docs/**)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -4586,7 +4631,7 @@ fn finds_unscoped_glob_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_scoped_glob_allowed_tools_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Glob(./docs/**), Read(./docs/**)\n---\n# Skill\n",
     );
@@ -4600,8 +4645,23 @@ fn ignores_scoped_glob_allowed_tools_in_frontmatter() {
 }
 
 #[test]
-fn ignores_unscoped_glob_allowed_tools_on_fixture_like_path() {
+fn unscoped_glob_allowed_tools_requires_governance_preset() {
     let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Glob, Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC426")
+    );
+}
+
+#[test]
+fn ignores_unscoped_glob_allowed_tools_on_fixture_like_path() {
+    let summary = scan_preview_governance_skill_fixture(
         "tests/fixtures/skill/SKILL.md",
         "---\nallowed-tools: Glob, Read(./docs/**)\n---\n# Fixture skill\n",
     );
@@ -4617,7 +4677,7 @@ fn ignores_unscoped_glob_allowed_tools_on_fixture_like_path() {
 #[test]
 fn finds_unscoped_grep_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Grep, Read(./docs/**)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -4633,7 +4693,7 @@ fn finds_unscoped_grep_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_scoped_grep_allowed_tools_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Grep(todo:), Read(./docs/**)\n---\n# Skill\n",
     );
@@ -4647,8 +4707,23 @@ fn ignores_scoped_grep_allowed_tools_in_frontmatter() {
 }
 
 #[test]
-fn ignores_unscoped_grep_allowed_tools_on_fixture_like_path() {
+fn unscoped_grep_allowed_tools_requires_governance_preset() {
     let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "---\nallowed-tools: Grep, Read(./docs/**)\n---\n# Skill\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC427")
+    );
+}
+
+#[test]
+fn ignores_unscoped_grep_allowed_tools_on_fixture_like_path() {
+    let summary = scan_preview_governance_skill_fixture(
         "tests/fixtures/skill/SKILL.md",
         "---\nallowed-tools: Grep, Read(./docs/**)\n---\n# Fixture skill\n",
     );

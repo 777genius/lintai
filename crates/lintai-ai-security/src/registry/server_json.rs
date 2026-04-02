@@ -154,7 +154,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
         default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
-            blocker: "Secret policy expectations can vary across registry producers, so the first release keeps this as guidance-only.",
+            blocker: "Secret policy expectations can vary across registry producers, so the first release keeps this as a context-sensitive preview review signal.",
             promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
         },
         check: check_server_json_auth_header_policy_mismatch,

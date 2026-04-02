@@ -32,6 +32,8 @@ jobs:
           toolchain: 1.90.0
       - uses: Swatinem/rust-cache@v2
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - name: Install docs dependencies
         run: npm ci
       - name: Validate docs contracts

@@ -28,6 +28,13 @@ fn write(path: &Path, content: &str) {
     fs::write(path, content).unwrap();
 }
 
+fn write_bytes(path: &Path, content: &[u8]) {
+    if let Some(parent) = path.parent() {
+        fs::create_dir_all(parent).unwrap();
+    }
+    fs::write(path, content).unwrap();
+}
+
 fn write_json(path: &Path, value: &serde_json::Value) {
     if let Some(parent) = path.parent() {
         fs::create_dir_all(parent).unwrap();
@@ -519,4 +526,31 @@ fn inventory_os_diff_rejects_incompatible_schema_version() {
     assert_eq!(output.status.code(), Some(2));
     let stderr = String::from_utf8(output.stderr).unwrap();
     assert!(stderr.contains("unsupported baseline schema_version"));
+}
+
+#[test]
+fn inventory_os_exits_two_on_runtime_errors() {
+    let temp_dir = unique_temp_dir("lintai-inventory-os-runtime-errors");
+    let cwd = temp_dir.join("cwd");
+    let root = temp_dir.join("machine");
+    fs::create_dir_all(&cwd).unwrap();
+
+    write_bytes(&root.join(".cursor/mcp.json"), b"{\n\xff\n}");
+
+    let path_root = root.display().to_string();
+    let output = run_lintai(
+        &cwd,
+        &[
+            "inventory-os",
+            "--scope=user",
+            "--path-root",
+            &path_root,
+            "--format=json",
+        ],
+    );
+    assert_eq!(output.status.code(), Some(2));
+
+    let value = json_output(&output);
+    assert_eq!(value["findings"].as_array().unwrap().len(), 0);
+    assert_eq!(value["runtime_errors"].as_array().unwrap().len(), 1);
 }

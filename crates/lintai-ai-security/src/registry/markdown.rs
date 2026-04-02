@@ -1326,7 +1326,7 @@ declare_rule! {
         code: "SEC423",
         summary: "AI-native markdown frontmatter grants bare `Read` tool access",
         doc_title: "AI markdown: bare Read tool grant",
-        category: Category::Security,
+        category: Category::Hardening,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Stable,
@@ -1338,7 +1338,7 @@ declare_rule! {
         code: "SEC424",
         summary: "AI-native markdown frontmatter grants bare `Write` tool access",
         doc_title: "AI markdown: bare Write tool grant",
-        category: Category::Security,
+        category: Category::Hardening,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Stable,
@@ -1350,7 +1350,7 @@ declare_rule! {
         code: "SEC425",
         summary: "AI-native markdown frontmatter grants bare `Edit` tool access",
         doc_title: "AI markdown: bare Edit tool grant",
-        category: Category::Security,
+        category: Category::Hardening,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Stable,
@@ -1362,7 +1362,7 @@ declare_rule! {
         code: "SEC426",
         summary: "AI-native markdown frontmatter grants bare `Glob` tool access",
         doc_title: "AI markdown: bare Glob tool grant",
-        category: Category::Security,
+        category: Category::Hardening,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Stable,
@@ -1374,7 +1374,7 @@ declare_rule! {
         code: "SEC427",
         summary: "AI-native markdown frontmatter grants bare `Grep` tool access",
         doc_title: "AI markdown: bare Grep tool grant",
-        category: Category::Security,
+        category: Category::Hardening,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Stable,
@@ -1632,7 +1632,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
-            blocker: "Metadata-service examples can appear in legitimate security training content, so the first release stays guidance-only.",
+            blocker: "Metadata-service examples can appear in legitimate security training content, so the first release stays context-sensitive preview rather than claiming universal exploit signal.",
             promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
         },
         check: check_markdown_metadata_service_access,
@@ -1648,7 +1648,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
-            blocker: "Mutable MCP launcher examples in markdown can be legitimate setup guidance, so the first release stays guidance-only.",
+            blocker: "Mutable MCP launcher examples in markdown can be legitimate setup guidance, so the first release stays in the core preview lane while broader field validation continues.",
             promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
         },
         check: check_markdown_mutable_mcp_launcher,
@@ -2106,7 +2106,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
-            blocker: "Mutable Docker image examples in markdown can be legitimate setup guidance, so the first release stays guidance-only.",
+            blocker: "Mutable Docker image examples in markdown can be legitimate setup guidance, so the first release stays context-sensitive preview rather than a stronger default posture.",
             promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
         },
         check: check_markdown_mutable_docker_image,
@@ -2122,7 +2122,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
-            blocker: "Docker host-escape examples in markdown can be legitimate ops guidance, so the first release stays guidance-only.",
+            blocker: "Docker host-escape examples in markdown can be legitimate ops guidance, so the first release stays context-sensitive preview while domain-specific precision is measured.",
             promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
         },
         check: check_markdown_docker_host_escape,
@@ -3471,7 +3471,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: UnscopedReadAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native frontmatter for bare Read grants that omit a reviewed repo-local scope.",
@@ -3484,14 +3484,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         check: check_unscoped_read_allowed_tools,
         safe_fix: None,
         suggestion_message: Some(
-            "replace bare `Read` with a narrower reviewed read pattern or remove broad file-read authority from the shared frontmatter grant",
+            "review whether shared bare `Read` authority is really needed, or replace it with a narrower workflow-specific read scope instead of a default repo-wide grant",
         ),
         suggestion_fix: None,
     },
     NativeRuleSpec {
         metadata: UnscopedWriteAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native frontmatter for bare Write grants that omit a reviewed repo-local scope.",
@@ -3504,14 +3504,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         check: check_unscoped_write_allowed_tools,
         safe_fix: None,
         suggestion_message: Some(
-            "replace bare `Write` with a narrower reviewed write pattern or remove broad file-write authority from the shared frontmatter grant",
+            "review whether shared bare `Write` authority is really needed, or replace it with a narrower workflow-specific write scope instead of a default repo-wide grant",
         ),
         suggestion_fix: None,
     },
     NativeRuleSpec {
         metadata: UnscopedEditAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native frontmatter for bare Edit grants that omit a reviewed repo-local scope.",
@@ -3524,7 +3524,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         check: check_unscoped_edit_allowed_tools,
         safe_fix: None,
         suggestion_message: Some(
-            "replace bare `Edit` with a narrower reviewed edit pattern or remove broad file-edit authority from the shared frontmatter grant",
+            "review whether shared bare `Edit` authority is really needed, or replace it with a narrower workflow-specific edit scope instead of a default repo-wide grant",
         ),
         suggestion_fix: None,
     },
@@ -3611,7 +3611,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: UnscopedGlobAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native frontmatter for bare Glob grants that omit a reviewed repo-local discovery scope.",
@@ -3624,14 +3624,14 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         check: check_unscoped_glob_allowed_tools,
         safe_fix: None,
         suggestion_message: Some(
-            "replace bare `Glob` with narrower reviewed glob patterns or remove broad file-discovery authority from the shared frontmatter grant",
+            "review whether shared bare `Glob` authority is really needed, or replace it with narrower workflow-specific discovery patterns instead of a default repo-wide grant",
         ),
         suggestion_fix: None,
     },
     NativeRuleSpec {
         metadata: UnscopedGrepAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native frontmatter for bare Grep grants that omit a reviewed search scope.",
@@ -3644,7 +3644,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
         check: check_unscoped_grep_allowed_tools,
         safe_fix: None,
         suggestion_message: Some(
-            "replace bare `Grep` with narrower reviewed grep patterns or remove broad content-search authority from the shared frontmatter grant",
+            "review whether shared bare `Grep` authority is really needed, or replace it with narrower workflow-specific search patterns instead of a default repo-wide grant",
         ),
         suggestion_fix: None,
     },

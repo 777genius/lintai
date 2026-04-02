@@ -3,12 +3,12 @@ title: advisory
 layout: doc
 lintaiPage: preset
 presetId: advisory
-description: "Bundled dependency vulnerability checks that match installed lockfile versions against offline advisories."
+description: "Offline dependency vulnerability checks that match installed lockfile versions against the active advisory snapshot."
 ---
 
 ## What This Preset Enables
 
-The `advisory` preset enables offline dependency vulnerability checks driven by committed lockfiles and the bundled advisory snapshot.
+The `advisory` preset enables offline dependency vulnerability checks driven by committed lockfiles and the active advisory snapshot, using the bundled dataset by default.
 
 ## How To Enable It
 
@@ -37,3 +37,13 @@ This lane is intentionally opt-in and currently preview-scoped. It is narrower t
 lintai advisory-db export-bundled
 lintai advisory-db update --input advisories.json --output advisories.normalized.json
 ```
+
+To run the advisory lane against a custom normalized snapshot, set `LINTAI_ADVISORY_SNAPSHOT` when invoking `lintai scan`:
+
+```bash
+LINTAI_ADVISORY_SNAPSHOT=/path/to/advisories.normalized.json lintai scan .
+```
+
+If the snapshot is unreadable or violates the advisory schema contract, `lintai scan` reports a runtime error and exits with code `2` instead of silently falling back to the bundled data.
+
+The same fail-closed behavior applies when a committed lockfile records an advisory-tracked package with an invalid installed version string: `lintai scan` reports a runtime error instead of treating the advisory lane as clean.

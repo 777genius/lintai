@@ -1,5 +1,7 @@
 # lintai
 
+Build your plugin once and easily export it to any AI agent, like Claude, Codex, or Gemini, without duplicating code.
+
 Fast offline security checks for AI agent artifacts in your repo.
 
 `lintai` helps you verify skills, MCP configs, agent rules, hooks, and plugin manifests before you trust them in local workflows or CI.
@@ -98,7 +100,7 @@ lintai scan .
 lintai explain-config lintai.toml
 ```
 
-This lane matches installed versions from committed npm lockfiles against the bundled offline advisory snapshot. It does not guess from `package.json` version ranges and it does not perform live network lookups during scan.
+This lane matches installed versions from committed npm lockfiles against the active offline advisory snapshot, using the bundled dataset by default. It does not guess from `package.json` version ranges and it does not perform live network lookups during scan.
 
 The bundled snapshot can also be inspected or normalized explicitly:
 
@@ -106,6 +108,17 @@ The bundled snapshot can also be inspected or normalized explicitly:
 lintai advisory-db export-bundled
 lintai advisory-db update --input advisories.json --output advisories.normalized.json
 ```
+
+To scan with a custom normalized snapshot instead of the bundled one:
+
+```bash
+cd your-repo
+LINTAI_ADVISORY_SNAPSHOT=/path/to/advisories.normalized.json lintai scan .
+```
+
+If the custom snapshot is unreadable or violates the advisory schema contract, `lintai scan` fails closed: it reports a runtime error and exits with code `2` instead of silently falling back to bundled data.
+
+The advisory lane also fails closed when a committed lockfile records an advisory-tracked package with an invalid installed version string. That prevents false-clean scans when the lockfile data itself is malformed.
 
 ## What It Catches
 
@@ -117,7 +130,7 @@ Current `lintai` rules focus on high-signal repository-local risks such as:
 - credential passthrough and literal secret material
 - dangerous download-and-exec flows
 - mismatches between declared safety claims and actual capabilities
-- opt-in advisory matches between committed npm lockfiles and the bundled offline vulnerability snapshot
+- opt-in advisory matches between committed npm lockfiles and the active offline advisory snapshot
 
 The full shipped rule catalog lives in [`docs/SECURITY_RULES.md`](docs/SECURITY_RULES.md).
 
@@ -176,7 +189,7 @@ Default behavior:
 - `base` means the stable baseline
 - `preview` is explicit opt-in
 - `compat` is explicit opt-in for project policy mismatch rules such as `SEC401`-`SEC403`
-- `governance` is explicit opt-in for workflow-policy review rules that should not read like headline security findings
+- `governance` is explicit opt-in for workflow-policy review rules such as shared mutation authority and broad bare tool grants that should not read like headline security findings
 
 Example:
 
@@ -201,7 +214,7 @@ Builtin preset intent:
 - `mcp`: MCP and tool/server config overlays
 - `claude`: Claude-specific config overlays
 - `guidance`: advice-oriented guidance lane
-- `governance`: opt-in review lane for shared mutation authority and similar workflow-policy decisions
+- `governance`: opt-in review lane for shared mutation authority and broad default bare tool grants in checked-in AI-native frontmatter
 - `supply-chain`: sidecar supply-chain hardening lane
 - `advisory`: opt-in offline dependency vulnerability lane for committed npm lockfiles
 

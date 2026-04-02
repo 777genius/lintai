@@ -5,8 +5,8 @@ use std::sync::Arc;
 
 use lintai_api::{Confidence, Finding, Severity};
 use lintai_engine::{
-    CiPolicy, Engine, FileSuppressions, OutputFormat, ScanSummary, WorkspaceConfig,
-    load_workspace_config,
+    CiPolicy, Engine, FileSuppressions, OutputFormat, ScanRuntimeError, ScanSummary,
+    WorkspaceConfig, load_workspace_config,
 };
 
 use crate::builtin_providers::product_provider_set;
@@ -80,6 +80,22 @@ pub(crate) fn exit_code_for_findings(findings: &[Finding], ci_policy: &CiPolicy)
     }
 }
 
+pub(crate) fn exit_code_for_scan_summary(summary: &ScanSummary, ci_policy: &CiPolicy) -> ExitCode {
+    if has_runtime_errors(&summary.runtime_errors) {
+        ExitCode::from(2)
+    } else {
+        exit_code_for_findings(&summary.findings, ci_policy)
+    }
+}
+
+pub(crate) fn exit_code_for_inventory_summary(summary: &ScanSummary, blocking: bool) -> ExitCode {
+    if has_runtime_errors(&summary.runtime_errors) {
+        ExitCode::from(2)
+    } else {
+        exit_code_for_blocking_bool(blocking)
+    }
+}
+
 pub(crate) fn exit_code_for_blocking_bool(blocking: bool) -> ExitCode {
     if blocking {
         ExitCode::from(1)
@@ -143,6 +159,10 @@ fn has_blocking_findings(findings: &[Finding], ci_policy: &CiPolicy) -> bool {
         .any(|finding| severity_rank(finding.severity) >= severity_rank(ci_policy.fail_on))
 }
 
+fn has_runtime_errors(runtime_errors: &[ScanRuntimeError]) -> bool {
+    !runtime_errors.is_empty()
+}
+
 fn severity_rank(severity: Severity) -> usize {
     match severity {
         Severity::Allow => 0,
@@ -156,5 +176,66 @@ fn confidence_rank(confidence: Confidence) -> usize {
         Confidence::Low => 0,
         Confidence::Medium => 1,
         Confidence::High => 2,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use lintai_engine::{RuntimeErrorKind, ScanRuntimeError};
+
+    #[test]
+    fn scan_summary_runtime_errors_override_blocking_finding_exit_code() {
+        let finding = Finding::new(
+            &lintai_api::RuleMetadata::new(
+                "TEST001",
+                "demo",
+                lintai_api::Category::Security,
+                Severity::Deny,
+                Confidence::High,
+                lintai_api::RuleTier::Preview,
+            ),
+            lintai_api::Location::new("file.txt", lintai_api::Span::new(0, 1)),
+            "demo",
+        );
+        let summary = ScanSummary {
+            findings: vec![finding],
+            runtime_errors: vec![ScanRuntimeError {
+                normalized_path: "file.txt".to_owned(),
+                kind: RuntimeErrorKind::Read,
+                provider_id: Some("demo".to_owned()),
+                phase: None,
+                message: "boom".to_owned(),
+            }],
+            ..ScanSummary::default()
+        };
+
+        assert_eq!(
+            exit_code_for_scan_summary(&summary, &CiPolicy::default()),
+            ExitCode::from(2)
+        );
+    }
+
+    #[test]
+    fn inventory_summary_runtime_errors_override_blocking_flag() {
+        let summary = ScanSummary {
+            runtime_errors: vec![ScanRuntimeError {
+                normalized_path: "file.txt".to_owned(),
+                kind: RuntimeErrorKind::Read,
+                provider_id: Some("demo".to_owned()),
+                phase: None,
+                message: "boom".to_owned(),
+            }],
+            ..ScanSummary::default()
+        };
+
+        assert_eq!(
+            exit_code_for_inventory_summary(&summary, true),
+            ExitCode::from(2)
+        );
+        assert_eq!(
+            exit_code_for_inventory_summary(&summary, false),
+            ExitCode::from(2)
+        );
     }
 }

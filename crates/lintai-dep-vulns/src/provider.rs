@@ -45,16 +45,40 @@ impl WorkspaceRuleProvider for DependencyVulnProvider {
     }
 
     fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
-        let snapshot = snapshot();
+        let snapshot = match snapshot() {
+            Ok(snapshot) => snapshot,
+            Err(message) => {
+                return ProviderScanResult::new(
+                    Vec::new(),
+                    vec![ProviderError::new(PROVIDER_ID, message)],
+                );
+            }
+        };
+        let snapshot = snapshot.as_snapshot();
         let advisories_by_package = advisory_map(snapshot);
         let mut matched = BTreeMap::new();
+        let mut errors = Vec::new();
+        let mut seen_errors = BTreeSet::new();
 
         for artifact in &ctx.artifacts {
+            collect_lockfile_validation_errors(
+                &mut errors,
+                &mut seen_errors,
+                artifact,
+                &advisories_by_package,
+            );
             for instance in extract_package_instances(artifact) {
-                let Some(version) = Version::parse(&instance.version).ok() else {
+                let Some(advisories) = advisories_by_package.get(instance.package.as_str()) else {
                     continue;
                 };
-                let Some(advisories) = advisories_by_package.get(instance.package.as_str()) else {
+                let Ok(version) = Version::parse(&instance.version) else {
+                    record_invalid_version_error(
+                        &mut errors,
+                        &mut seen_errors,
+                        &instance.normalized_path,
+                        &instance.package,
+                        &instance.version,
+                    );
                     continue;
                 };
 
@@ -81,7 +105,7 @@ impl WorkspaceRuleProvider for DependencyVulnProvider {
             })
             .collect();
 
-        ProviderScanResult::new(findings, Vec::new())
+        ProviderScanResult::new(findings, errors)
     }
 }
 
@@ -106,6 +130,26 @@ impl RuleProvider for DependencyVulnProvider {
 
     fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
         WorkspaceRuleProvider::check_workspace_result(self, ctx)
+    }
+}
+
+fn collect_lockfile_validation_errors(
+    errors: &mut Vec<ProviderError>,
+    seen_errors: &mut BTreeSet<(String, String, String)>,
+    artifact: &WorkspaceArtifact,
+    advisories_by_package: &BTreeMap<&str, Vec<&crate::snapshot::Advisory>>,
+) {
+    match artifact.artifact.kind {
+        lintai_api::ArtifactKind::NpmPackageLock | lintai_api::ArtifactKind::NpmShrinkwrap => {
+            collect_npm_lock_validation_errors(errors, seen_errors, artifact, advisories_by_package)
+        }
+        lintai_api::ArtifactKind::PnpmLock => collect_pnpm_lock_validation_errors(
+            errors,
+            seen_errors,
+            artifact,
+            advisories_by_package,
+        ),
+        _ => {}
     }
 }
 
@@ -152,6 +196,178 @@ fn record_match<'a>(
         entry
             .occurrences
             .sort_by(|left, right| left.normalized_path.cmp(&right.normalized_path));
+    }
+}
+
+fn record_invalid_version_error(
+    errors: &mut Vec<ProviderError>,
+    seen_errors: &mut BTreeSet<(String, String, String)>,
+    normalized_path: &str,
+    package: &str,
+    version: &str,
+) {
+    let key = (
+        normalized_path.to_owned(),
+        package.to_owned(),
+        version.to_owned(),
+    );
+    if !seen_errors.insert(key) {
+        return;
+    }
+    errors.push(ProviderError::new(
+        PROVIDER_ID,
+        format!(
+            "cannot evaluate advisory coverage for package `{package}` in `{normalized_path}` because installed version `{version}` is not valid semver"
+        ),
+    ));
+}
+
+fn record_missing_version_error(
+    errors: &mut Vec<ProviderError>,
+    seen_errors: &mut BTreeSet<(String, String, String)>,
+    normalized_path: &str,
+    package: &str,
+) {
+    let key = (
+        normalized_path.to_owned(),
+        package.to_owned(),
+        "<missing>".to_owned(),
+    );
+    if !seen_errors.insert(key) {
+        return;
+    }
+    errors.push(ProviderError::new(
+        PROVIDER_ID,
+        format!(
+            "cannot evaluate advisory coverage for package `{package}` in `{normalized_path}` because the lockfile entry is missing a valid installed version"
+        ),
+    ));
+}
+
+fn collect_npm_lock_validation_errors(
+    errors: &mut Vec<ProviderError>,
+    seen_errors: &mut BTreeSet<(String, String, String)>,
+    artifact: &WorkspaceArtifact,
+    advisories_by_package: &BTreeMap<&str, Vec<&crate::snapshot::Advisory>>,
+) {
+    let Some(semantics) = artifact.semantics.as_ref() else {
+        return;
+    };
+    let Some(JsonSemantics { value, .. }) = semantics.as_json() else {
+        return;
+    };
+
+    if let Some(entries) = value.get("packages").and_then(Value::as_object) {
+        for (path, package_value) in entries {
+            let Some(object) = package_value.as_object() else {
+                continue;
+            };
+            let name = object
+                .get("name")
+                .and_then(Value::as_str)
+                .or_else(|| infer_package_name_from_npm_package_path(path));
+            let Some(name) = name.map(str::trim).filter(|value| !value.is_empty()) else {
+                continue;
+            };
+            if !advisories_by_package.contains_key(name) {
+                continue;
+            }
+            let version = object
+                .get("version")
+                .and_then(Value::as_str)
+                .map(str::trim)
+                .filter(|value| !value.is_empty());
+            if version.is_none() {
+                record_missing_version_error(
+                    errors,
+                    seen_errors,
+                    &artifact.artifact.normalized_path,
+                    name,
+                );
+            }
+        }
+    }
+
+    if let Some(entries) = value.get("dependencies").and_then(Value::as_object) {
+        collect_legacy_npm_dependency_validation_errors(
+            errors,
+            seen_errors,
+            artifact,
+            advisories_by_package,
+            entries,
+        );
+    }
+}
+
+fn collect_legacy_npm_dependency_validation_errors(
+    errors: &mut Vec<ProviderError>,
+    seen_errors: &mut BTreeSet<(String, String, String)>,
+    artifact: &WorkspaceArtifact,
+    advisories_by_package: &BTreeMap<&str, Vec<&crate::snapshot::Advisory>>,
+    deps: &serde_json::Map<String, Value>,
+) {
+    for (name, value) in deps {
+        let Some(object) = value.as_object() else {
+            continue;
+        };
+        if advisories_by_package.contains_key(name.as_str()) {
+            let version = object
+                .get("version")
+                .and_then(Value::as_str)
+                .map(str::trim)
+                .filter(|value| !value.is_empty());
+            if version.is_none() {
+                record_missing_version_error(
+                    errors,
+                    seen_errors,
+                    &artifact.artifact.normalized_path,
+                    name,
+                );
+            }
+        }
+        if let Some(nested) = object.get("dependencies").and_then(Value::as_object) {
+            collect_legacy_npm_dependency_validation_errors(
+                errors,
+                seen_errors,
+                artifact,
+                advisories_by_package,
+                nested,
+            );
+        }
+    }
+}
+
+fn collect_pnpm_lock_validation_errors(
+    errors: &mut Vec<ProviderError>,
+    seen_errors: &mut BTreeSet<(String, String, String)>,
+    artifact: &WorkspaceArtifact,
+    advisories_by_package: &BTreeMap<&str, Vec<&crate::snapshot::Advisory>>,
+) {
+    let Some(semantics) = artifact.semantics.as_ref() else {
+        return;
+    };
+    let Some(YamlSemantics { value, .. }) = semantics.as_yaml() else {
+        return;
+    };
+    let Some(entries) = value.get("packages").and_then(Value::as_object) else {
+        return;
+    };
+
+    for key in entries.keys() {
+        if parse_pnpm_package_key(key).is_some() {
+            continue;
+        }
+        let Some(package) = infer_pnpm_package_name(key) else {
+            continue;
+        };
+        if advisories_by_package.contains_key(package.as_str()) {
+            record_missing_version_error(
+                errors,
+                seen_errors,
+                &artifact.artifact.normalized_path,
+                &package,
+            );
+        }
     }
 }
 
@@ -255,8 +471,8 @@ fn vulnerability_finding(
         Evidence::new(
             EvidenceKind::Claim,
             format!(
-                "bundled advisory `{}` marks this version as affected",
-                advisory.id
+                "advisory `{}` from snapshot `{}` marks this version as affected",
+                advisory.id, snapshot_revision
             ),
             None,
         )
@@ -390,6 +606,21 @@ fn parse_pnpm_package_key(key: &str) -> Option<(String, String)> {
         return None;
     }
     Some((name.to_owned(), version.to_owned()))
+}
+
+fn infer_pnpm_package_name(key: &str) -> Option<String> {
+    let trimmed = key.trim_start_matches('/');
+    let trimmed = trimmed.split('(').next()?.trim();
+    let split = trimmed.rfind('@')?;
+    if split == 0 {
+        return None;
+    }
+    let (name, _) = trimmed.split_at(split);
+    let name = name.trim();
+    if name.is_empty() {
+        return None;
+    }
+    Some(name.to_owned())
 }
 
 fn push_package_instance(

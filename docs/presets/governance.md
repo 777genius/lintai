@@ -7,11 +7,16 @@ presetId: governance
 
 ## What This Preset Enables
 
-The `governance` preset enables opt-in review rules for shared mutation authority and similar workflow-policy decisions that are structurally detectable, but should not be framed as headline security findings by default.
+The `governance` preset enables opt-in review rules for shared authority decisions that are structurally detectable, but should not be framed as headline security findings by default.
+
+This includes both:
+
+- shared mutation authority such as Git publication or repository-changing commands
+- broad default read, write, edit, search, and discovery grants in checked-in AI-native frontmatter
 
 ## When To Use It
 
-Use it when you want `lintai` to review repo-wide defaults such as shared Git mutation authority, especially in teams that care about least privilege and workflow design in checked-in agent instructions.
+Use it when you want `lintai` to review repo-wide defaults such as shared Git mutation authority or broad bare tool grants in `allowed-tools`, especially in teams that care about least privilege and workflow design in checked-in agent instructions.
 
 ## Tradeoffs
 

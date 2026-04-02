@@ -3,7 +3,7 @@ use std::process::ExitCode;
 
 use crate::args::parse_scan_args;
 use crate::execution::{
-    build_engine, emit_report, exit_code_for_findings, load_validated_workspace,
+    build_engine, emit_report, exit_code_for_scan_summary, load_validated_workspace,
 };
 use crate::output;
 
@@ -29,8 +29,8 @@ pub(crate) fn run(
             .unwrap_or(workspace.engine_config.output_format),
     )?;
 
-    Ok(exit_code_for_findings(
-        &summary.findings,
+    Ok(exit_code_for_scan_summary(
+        &summary,
         &workspace.engine_config.ci_policy,
     ))
 }

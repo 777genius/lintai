@@ -169,10 +169,26 @@ fn readme_documents_current_positioning_posture() {
         "README.md should document the advisory preset lane"
     );
     assert!(
+        text.contains("active offline advisory snapshot")
+            && text.contains("bundled dataset by default"),
+        "README.md should document advisory lane snapshot selection semantics"
+    );
+    assert!(
         text.contains("package-lock.json")
             && text.contains("npm-shrinkwrap.json")
             && text.contains("pnpm-lock.yaml"),
         "README.md should document opt-in advisory lockfile surfaces"
+    );
+    assert!(
+        text.contains("LINTAI_ADVISORY_SNAPSHOT")
+            && text.contains("exits with code `2`")
+            && text.contains("silently falling back"),
+        "README.md should document fail-closed custom advisory snapshot behavior"
+    );
+    assert!(
+        text.contains("advisory-tracked package with an invalid installed version string")
+            && text.contains("false-clean scans"),
+        "README.md should document fail-closed malformed lockfile version behavior"
     );
 }
 

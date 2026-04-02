@@ -133,6 +133,85 @@ fn finding_metadata_includes_fixed_versions_and_snapshot_provenance() {
 }
 
 #[test]
+fn invalid_semver_for_advisory_tracked_package_fails_closed() {
+    let summary = run_workspace_scan_many_allowing_runtime_errors(&[(
+        "package-lock.json",
+        r#"{
+          "name": "demo",
+          "lockfileVersion": 3,
+          "packages": {
+            "": { "name": "demo", "version": "1.0.0" },
+            "node_modules/lodash": { "version": "not-a-semver" }
+          }
+        }"#,
+    )]);
+
+    assert!(summary.findings.is_empty());
+    assert_eq!(summary.runtime_errors.len(), 1);
+    assert!(
+        summary.runtime_errors[0]
+            .message
+            .contains("installed version `not-a-semver` is not valid semver")
+    );
+}
+
+#[test]
+fn missing_version_for_advisory_tracked_package_fails_closed() {
+    let summary = run_workspace_scan_many_allowing_runtime_errors(&[(
+        "package-lock.json",
+        r#"{
+          "name": "demo",
+          "lockfileVersion": 3,
+          "packages": {
+            "": { "name": "demo", "version": "1.0.0" },
+            "node_modules/lodash": { "version": "" }
+          }
+        }"#,
+    )]);
+
+    assert!(summary.findings.is_empty());
+    assert_eq!(summary.runtime_errors.len(), 1);
+    assert!(
+        summary.runtime_errors[0]
+            .message
+            .contains("missing a valid installed version")
+    );
+}
+
+#[test]
+fn malformed_pnpm_key_for_advisory_tracked_package_fails_closed() {
+    let summary = run_workspace_scan_many_allowing_runtime_errors(&[(
+        "pnpm-lock.yaml",
+        "lockfileVersion: '9.0'\npackages:\n  lodash@:\n    resolution: {integrity: sha512-demo}\n",
+    )]);
+
+    assert!(summary.findings.is_empty());
+    assert_eq!(summary.runtime_errors.len(), 1);
+    assert!(
+        summary.runtime_errors[0]
+            .message
+            .contains("missing a valid installed version")
+    );
+}
+
+#[test]
+fn invalid_semver_for_non_tracked_package_does_not_fail_scan() {
+    let summary = run_workspace_scan(
+        "package-lock.json",
+        r#"{
+          "name": "demo",
+          "lockfileVersion": 3,
+          "packages": {
+            "": { "name": "demo", "version": "1.0.0" },
+            "node_modules/local-demo": { "version": "workspace:*" }
+          }
+        }"#,
+    );
+
+    assert!(summary.findings.is_empty());
+}
+
+#[test]
 fn dep_vuln_corpus_malicious_cases_trigger_expected_findings() {
     for case_dir in discover_case_dirs(&corpus_root("malicious")).unwrap() {
         let manifest = lintai_testing::CaseManifest::load(&case_dir).unwrap();
@@ -155,6 +234,14 @@ fn run_workspace_scan(entry_name: &str, contents: &str) -> lintai_engine::ScanSu
 }
 
 fn run_workspace_scan_many(entries: &[(&str, &str)]) -> lintai_engine::ScanSummary {
+    let summary = run_workspace_scan_many_allowing_runtime_errors(entries);
+    assert!(summary.runtime_errors.is_empty());
+    summary
+}
+
+fn run_workspace_scan_many_allowing_runtime_errors(
+    entries: &[(&str, &str)],
+) -> lintai_engine::ScanSummary {
     let root = unique_temp_dir("lintai-dep-vulns");
     fs::create_dir_all(&root).unwrap();
     fs::write(
@@ -177,9 +264,7 @@ fn run_workspace_scan_many(entries: &[(&str, &str)]) -> lintai_engine::ScanSumma
             DependencyVulnProvider,
         ))))
         .build();
-    let summary = engine.scan_path(&root).unwrap();
-    assert!(summary.runtime_errors.is_empty());
-    summary
+    engine.scan_path(&root).unwrap()
 }
 
 fn corpus_root(bucket: &str) -> PathBuf {

@@ -43,7 +43,7 @@ const ADVISORY_PRESETS: &[&str] = &["advisory"];
 declare_rule! {
     pub struct InstalledVulnerableDependencyRule {
         code: "SEC756",
-        summary: "Installed npm dependency version matches a bundled vulnerability advisory",
+        summary: "Installed npm dependency version matches an offline vulnerability advisory",
         doc_title: "Dependency vulnerability: installed npm package version",
         category: lintai_api::Category::Security,
         default_severity: lintai_api::Severity::Warn,
@@ -59,7 +59,7 @@ const DEP_VULN_RULE_CATALOG_ENTRIES: [DepVulnRuleCatalogEntry; 1] = [DepVulnRule
     default_presets: ADVISORY_PRESETS,
     detection_class: DepVulnDetectionClass::Structural,
     lifecycle: DepVulnRuleLifecycle::Preview {
-        blocker: "Bundled advisory coverage is intentionally small in the first release and needs broader snapshot discipline before Stable.",
+        blocker: "Initial advisory snapshot coverage is intentionally small in the first release and needs broader snapshot discipline before Stable.",
         promotion_requirements: WORKSPACE_PREVIEW_REQUIREMENTS,
     },
     remediation_support: DepVulnRemediationSupport::Suggestion,

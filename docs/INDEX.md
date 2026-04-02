@@ -2,7 +2,7 @@
 
 <div class="lintai-page-intro">
   <p class="lintai-kicker">Rule Guide</p>
-  <h1>Browse rules and presets with less guesswork.</h1>
+  <h1>Build your plugin once and easily export it to any AI agent, like Claude, Codex, or Gemini, without duplicating code.</h1>
   <p class="lintai-lead">
     This docs site helps you quickly understand what each lintai rule checks, where it applies,
     and which presets enable it.
@@ -48,6 +48,7 @@ the main supporting docs are:
 - [POSITIONING_AND_SCOPE.md](POSITIONING_AND_SCOPE.md)
 - [EXTERNAL_VALIDATION_PLAN.md](EXTERNAL_VALIDATION_PLAN.md)
 - [EXTERNAL_VALIDATION_FIELD_UPDATE_2026-03-30.md](EXTERNAL_VALIDATION_FIELD_UPDATE_2026-03-30.md)
+- [SIGNAL_QUALITY_AUDIT_2026-04-02.md](SIGNAL_QUALITY_AUDIT_2026-04-02.md)
 - [SEC352_STABLE_CANDIDATE_TRACK.md](SEC352_STABLE_CANDIDATE_TRACK.md)
 - [EXTERNAL_VALIDATION_REPORT.md](EXTERNAL_VALIDATION_REPORT.md)
 - [EXTERNAL_VALIDATION_TOOL_JSON_REPORT.md](EXTERNAL_VALIDATION_TOOL_JSON_REPORT.md)

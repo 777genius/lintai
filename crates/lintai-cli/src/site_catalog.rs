@@ -144,7 +144,7 @@ const BUILTIN_PRESETS: [BuiltinPresetSpec; 11] = [
     BuiltinPresetSpec {
         id: "governance",
         kind: SitePresetKind::Membership,
-        description: "Opt-in review rules for shared mutation authority and similar workflow-governance decisions that should not read like headline security findings.",
+        description: "Opt-in review rules for shared mutation authority and broad bare tool grants that should not read like headline security findings.",
         extends: &[],
     },
     BuiltinPresetSpec {
@@ -156,7 +156,7 @@ const BUILTIN_PRESETS: [BuiltinPresetSpec; 11] = [
     BuiltinPresetSpec {
         id: "advisory",
         kind: SitePresetKind::Membership,
-        description: "Bundled dependency vulnerability checks that match installed lockfile versions against offline advisories.",
+        description: "Offline dependency vulnerability checks that match installed lockfile versions against the active advisory snapshot.",
         extends: &[],
     },
     BuiltinPresetSpec {

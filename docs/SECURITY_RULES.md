@@ -142,11 +142,11 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC420 / MD-WGET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(wget:*)` authority | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC421 / MD-GIT-CLONE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git clone:*)` authority | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC422 / MCP-COMMAND-SUDO` | MCP configuration launches the server through `sudo` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC423 / MD-READ-UNSCOPED` | AI-native markdown frontmatter grants bare `Read` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC424 / MD-WRITE-UNSCOPED` | AI-native markdown frontmatter grants bare `Write` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC425 / MD-EDIT-UNSCOPED` | AI-native markdown frontmatter grants bare `Edit` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC426 / MD-GLOB-UNSCOPED` | AI-native markdown frontmatter grants bare `Glob` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC427 / MD-GREP-UNSCOPED` | AI-native markdown frontmatter grants bare `Grep` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC423 / MD-READ-UNSCOPED` | AI-native markdown frontmatter grants bare `Read` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC424 / MD-WRITE-UNSCOPED` | AI-native markdown frontmatter grants bare `Write` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC425 / MD-EDIT-UNSCOPED` | AI-native markdown frontmatter grants bare `Edit` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC426 / MD-GLOB-UNSCOPED` | AI-native markdown frontmatter grants bare `Glob` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC427 / MD-GREP-UNSCOPED` | AI-native markdown frontmatter grants bare `Grep` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC428 / MD-READ-UNSAFE-PATH` | AI-native markdown frontmatter grants `Read(...)` over an unsafe repo-external path | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC429 / MD-WRITE-UNSAFE-PATH` | AI-native markdown frontmatter grants `Write(...)` over an unsafe repo-external path | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC430 / MD-EDIT-UNSAFE-PATH` | AI-native markdown frontmatter grants `Edit(...)` over an unsafe repo-external path | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
@@ -475,7 +475,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC753` | package.json installs a dependency from a direct archive URL source | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC754` | Devcontainer config defines a host-side initializeCommand | Stable | `stable_gated` | Warn | `per_file` | `devcontainer` | `structural` | `message_only` | `supply-chain` |
 | `SEC755` | Devcontainer config bind-mounts sensitive local host material | Stable | `stable_gated` | Warn | `per_file` | `devcontainer` | `structural` | `message_only` | `supply-chain` |
-| `SEC756` | Installed npm dependency version matches a bundled vulnerability advisory | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `suggestion` | `advisory` |
+| `SEC756` | Installed npm dependency version matches an offline vulnerability advisory | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `suggestion` | `advisory` |
 
 ## Builtin preset activation model
 
@@ -488,9 +488,9 @@ All shipped rules now participate in the preset model through a deterministic su
 - `mcp`: all `json`, `tool_json`, and `server_json` surface rules, including preview MCP/config rules
 - `claude`: all `claude_settings` surface rules
 - `guidance`: advice-oriented guidance checks such as Copilot instruction layout and length guidance
-- `governance`: opt-in review rules for shared mutation authority and similar workflow-policy decisions that should stay separate from the main security lane
+- `governance`: opt-in review rules for shared mutation authority and broad bare tool grants that should stay separate from the main security lane
 - `supply-chain`: sidecar supply-chain hardening checks such as GitHub Actions workflow rules
-- `advisory`: bundled dependency vulnerability checks driven by installed lockfile versions
+- `advisory`: offline dependency vulnerability checks driven by installed lockfile versions and the active advisory snapshot
 
 Important behavior:
 
@@ -1171,7 +1171,7 @@ Important behavior:
 - Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
-- Promotion Blocker: Secret policy expectations can vary across registry producers, so the first release keeps this as guidance-only.
+- Promotion Blocker: Secret policy expectations can vary across registry producers, so the first release keeps this as a context-sensitive preview review signal.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
@@ -1348,7 +1348,7 @@ Important behavior:
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
-- Promotion Blocker: Metadata-service examples can appear in legitimate security training content, so the first release stays guidance-only.
+- Promotion Blocker: Metadata-service examples can appear in legitimate security training content, so the first release stays context-sensitive preview rather than claiming universal exploit signal.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
@@ -1592,7 +1592,7 @@ Important behavior:
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
-- Promotion Blocker: Mutable MCP launcher examples in markdown can be legitimate setup guidance, so the first release stays guidance-only.
+- Promotion Blocker: Mutable MCP launcher examples in markdown can be legitimate setup guidance, so the first release stays in the core preview lane while broader field validation continues.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
@@ -1609,7 +1609,7 @@ Important behavior:
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
-- Promotion Blocker: Mutable Docker image examples in markdown can be legitimate setup guidance, so the first release stays guidance-only.
+- Promotion Blocker: Mutable Docker image examples in markdown can be legitimate setup guidance, so the first release stays context-sensitive preview rather than a stronger default posture.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
@@ -1626,7 +1626,7 @@ Important behavior:
 - Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
-- Promotion Blocker: Docker host-escape examples in markdown can be legitimate ops guidance, so the first release stays guidance-only.
+- Promotion Blocker: Docker host-escape examples in markdown can be legitimate ops guidance, so the first release stays context-sensitive preview while domain-specific precision is measured.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
@@ -3026,7 +3026,7 @@ Important behavior:
 - Default Severity: `Warn`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for bare Read grants that omit a reviewed repo-local scope.
@@ -3047,7 +3047,7 @@ Important behavior:
 - Default Severity: `Warn`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for bare Write grants that omit a reviewed repo-local scope.
@@ -3068,7 +3068,7 @@ Important behavior:
 - Default Severity: `Warn`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for bare Edit grants that omit a reviewed repo-local scope.
@@ -3089,7 +3089,7 @@ Important behavior:
 - Default Severity: `Warn`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for bare Glob grants that omit a reviewed repo-local discovery scope.
@@ -3110,7 +3110,7 @@ Important behavior:
 - Default Severity: `Warn`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for bare Grep grants that omit a reviewed search scope.
@@ -10064,7 +10064,7 @@ Important behavior:
 
 ## Provider: `lintai-dep-vulns`
 
-### `SEC756` — Installed npm dependency version matches a bundled vulnerability advisory
+### `SEC756` — Installed npm dependency version matches an offline vulnerability advisory
 
 - Provider: `lintai-dep-vulns`
 - Alias: `none`
@@ -10077,6 +10077,6 @@ Important behavior:
 - Default Presets: `advisory`
 - Remediation: `suggestion`
 - Lifecycle: `preview_blocked`
-- Promotion Blocker: Bundled advisory coverage is intentionally small in the first release and needs broader snapshot discipline before Stable.
+- Promotion Blocker: Initial advisory snapshot coverage is intentionally small in the first release and needs broader snapshot discipline before Stable.
 - Promotion Requirements: Needs larger advisory snapshot coverage, cross-lockfile corpus proof, and stable review of package/version matching before promotion to Stable.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
