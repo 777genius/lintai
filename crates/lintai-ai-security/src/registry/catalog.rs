@@ -1,11 +1,13 @@
-use std::collections::{BTreeMap, BTreeSet};
 use std::sync::OnceLock;
 
 use super::{
     DetectionClass, NativeRuleSpec, RuleLifecycle, claude_settings, devcontainer, docker_compose,
     dockerfile, github_workflow, hooks, json, markdown, server_json, tool_json,
 };
-use lintai_api::{RuleTier, builtin_preset_ids};
+use lintai_api::{
+    CatalogDetectionClassKind, CatalogLifecycleClass, CatalogRuleIdentity, validate_group_ids,
+    validate_rule_identities, validate_rule_presets, validate_rule_quality_contract,
+};
 
 #[derive(Clone, Copy)]
 pub(crate) struct RuleSpecGroup {
@@ -81,52 +83,38 @@ pub(crate) fn rule_specs() -> &'static [NativeRuleSpec] {
 }
 
 fn validate_rule_specs(specs: &[NativeRuleSpec]) {
-    let known_preset_ids = builtin_preset_ids();
-    let mut group_ids = BTreeSet::new();
-    for group in rule_spec_groups() {
-        assert!(
-            group_ids.insert(group.id),
-            "duplicate native rule group id {}",
-            group.id
-        );
-        assert!(
-            !group.specs.is_empty(),
-            "native rule group {} should not be empty",
-            group.id
-        );
-    }
+    validate_group_ids(
+        "native",
+        "rule group",
+        rule_spec_groups()
+            .iter()
+            .map(|group| (group.id, group.specs.is_empty())),
+    );
+    validate_rule_identities(
+        "native",
+        specs.iter().map(|spec| CatalogRuleIdentity {
+            owner: spec.metadata.code,
+            code: spec.metadata.code,
+            doc_title: spec.metadata.doc_title,
+        }),
+    );
 
-    let mut codes = BTreeSet::new();
-    let mut doc_titles = BTreeMap::new();
     for spec in specs {
-        assert!(
-            codes.insert(spec.metadata.code),
-            "duplicate native rule code {}",
-            spec.metadata.code
+        validate_rule_presets("native", spec.metadata.code, spec.default_presets);
+        validate_rule_quality_contract(
+            "native",
+            spec.metadata.code,
+            spec.metadata.tier,
+            match spec.detection_class {
+                DetectionClass::Structural => CatalogDetectionClassKind::Structural,
+                DetectionClass::Heuristic => CatalogDetectionClassKind::Heuristic,
+            },
+            match spec.lifecycle {
+                RuleLifecycle::Preview { .. } => CatalogLifecycleClass::Preview,
+                RuleLifecycle::Stable { .. } => CatalogLifecycleClass::Stable,
+            },
+            spec.default_presets,
         );
-        if let Some(previous_code) = doc_titles.insert(spec.metadata.doc_title, spec.metadata.code)
-        {
-            panic!(
-                "duplicate native rule doc title {:?} used by {} and {}",
-                spec.metadata.doc_title, previous_code, spec.metadata.code
-            );
-        }
-
-        let mut preset_ids = BTreeSet::new();
-        for preset_id in spec.default_presets {
-            assert!(
-                preset_ids.insert(*preset_id),
-                "rule {} repeats preset {}",
-                spec.metadata.code,
-                preset_id
-            );
-            assert!(
-                known_preset_ids.contains(preset_id),
-                "rule {} references unknown preset {}",
-                spec.metadata.code,
-                preset_id
-            );
-        }
 
         match (spec.detection_class, spec.lifecycle) {
             (
@@ -144,12 +132,6 @@ fn validate_rule_specs(specs: &[NativeRuleSpec]) {
                 assert!(
                     !promotion_requirements.is_empty(),
                     "preview heuristic rule {} should declare promotion requirements",
-                    spec.metadata.code
-                );
-                assert_eq!(
-                    spec.metadata.tier,
-                    RuleTier::Preview,
-                    "heuristic rule {} must stay preview",
                     spec.metadata.code
                 );
             }
@@ -174,17 +156,6 @@ fn validate_rule_specs(specs: &[NativeRuleSpec]) {
                 assert!(
                     !promotion_requirements.is_empty(),
                     "preview structural rule {} should declare promotion requirements",
-                    spec.metadata.code
-                );
-                assert_eq!(
-                    spec.metadata.tier,
-                    RuleTier::Preview,
-                    "structural preview rule {} must stay preview",
-                    spec.metadata.code
-                );
-                assert!(
-                    !spec.default_presets.contains(&"base"),
-                    "preview-tier rule {} must not ship in the base preset",
                     spec.metadata.code
                 );
             }
@@ -218,22 +189,12 @@ fn validate_rule_specs(specs: &[NativeRuleSpec]) {
                     "stable structural rule {} should declare signal basis",
                     spec.metadata.code
                 );
-                if spec.metadata.tier == RuleTier::Stable {
-                    assert!(
-                        spec.default_presets.contains(&"base") || !spec.default_presets.is_empty(),
-                        "stable-tier rule {} should stay reachable through a preset lane",
-                        spec.metadata.code
-                    );
-                }
+                assert!(
+                    spec.default_presets.contains(&"base") || !spec.default_presets.is_empty(),
+                    "structural stable-lifecycle rule {} should stay reachable through a preset lane",
+                    spec.metadata.code
+                );
             }
-        }
-
-        if spec.metadata.tier == RuleTier::Stable {
-            assert!(
-                matches!(spec.lifecycle, RuleLifecycle::Stable { .. }),
-                "stable-tier rule {} must declare stable lifecycle",
-                spec.metadata.code
-            );
         }
     }
 }

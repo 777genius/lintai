@@ -1,3 +1,4 @@
+mod catalog_validation;
 mod context;
 mod finding;
 mod parsed;
@@ -7,6 +8,10 @@ mod rule;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
+pub use catalog_validation::{
+    CatalogDetectionClassKind, CatalogLifecycleClass, CatalogRuleIdentity, validate_group_ids,
+    validate_rule_identities, validate_rule_presets, validate_rule_quality_contract,
+};
 pub use context::{
     CapabilityConflictMode, CapabilityProfile, ExecCapability, FileSystemCapability, McpCapability,
     NetworkCapability, ScanContext, SecretCapability, WorkspaceArtifact, WorkspaceScanContext,

@@ -1,10 +1,13 @@
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeSet;
 
 use lintai_ai_security::{
     NativeCatalogDetectionClass, NativeCatalogRemediationSupport, NativeCatalogRuleLifecycle,
     NativeCatalogSurface, native_rule_catalog_entries,
 };
-use lintai_api::{RuleMetadata, RuleTier, builtin_preset_ids};
+use lintai_api::{
+    CatalogDetectionClassKind, CatalogLifecycleClass, CatalogRuleIdentity, RuleMetadata,
+    validate_rule_identities, validate_rule_presets, validate_rule_quality_contract,
+};
 use lintai_dep_vulns::{
     DepVulnDetectionClass, DepVulnRemediationSupport, DepVulnRuleLifecycle, DepVulnSurface,
     dep_vuln_rule_catalog_entries,
@@ -216,10 +219,15 @@ pub fn builtin_rule_codes_for_preset(preset: &str) -> BTreeSet<String> {
 }
 
 fn validate_builtin_rule_catalog_entries(entries: &[BuiltinRuleCatalogEntry]) {
-    let known_preset_ids = builtin_preset_ids();
-    let mut codes = BTreeSet::new();
     let mut provider_rule_ids = BTreeSet::new();
-    let mut doc_titles = BTreeMap::new();
+    validate_rule_identities(
+        "builtin",
+        entries.iter().map(|entry| CatalogRuleIdentity {
+            owner: entry.metadata.code,
+            code: entry.metadata.code,
+            doc_title: entry.metadata.doc_title,
+        }),
+    );
 
     for entry in entries {
         let provider_rule_id = (entry.provider_id, entry.metadata.code);
@@ -229,67 +237,21 @@ fn validate_builtin_rule_catalog_entries(entries: &[BuiltinRuleCatalogEntry]) {
             entry.provider_id,
             entry.metadata.code
         );
-        assert!(
-            codes.insert(entry.metadata.code),
-            "duplicate builtin rule code {}",
-            entry.metadata.code
+        validate_rule_presets("builtin", entry.metadata.code, entry.default_presets);
+        validate_rule_quality_contract(
+            "builtin",
+            entry.metadata.code,
+            entry.metadata.tier,
+            match entry.detection_class {
+                BuiltinCatalogDetectionClass::Structural => CatalogDetectionClassKind::Structural,
+                BuiltinCatalogDetectionClass::Heuristic => CatalogDetectionClassKind::Heuristic,
+            },
+            match entry.lifecycle {
+                BuiltinCatalogRuleLifecycle::Preview { .. } => CatalogLifecycleClass::Preview,
+                BuiltinCatalogRuleLifecycle::Stable { .. } => CatalogLifecycleClass::Stable,
+            },
+            entry.default_presets,
         );
-        if let Some(previous_rule_id) =
-            doc_titles.insert(entry.metadata.doc_title, provider_rule_id)
-        {
-            panic!(
-                "duplicate builtin doc title {:?} used by {}:{} and {}:{}",
-                entry.metadata.doc_title,
-                previous_rule_id.0,
-                previous_rule_id.1,
-                entry.provider_id,
-                entry.metadata.code
-            );
-        }
-
-        let mut preset_ids = BTreeSet::new();
-        for preset_id in entry.default_presets {
-            assert!(
-                preset_ids.insert(*preset_id),
-                "builtin rule {} repeats preset {}",
-                entry.metadata.code,
-                preset_id
-            );
-            assert!(
-                known_preset_ids.contains(preset_id),
-                "builtin rule {} references unknown preset {}",
-                entry.metadata.code,
-                preset_id
-            );
-        }
-
-        if entry.metadata.tier == RuleTier::Stable {
-            assert!(
-                matches!(entry.lifecycle, BuiltinCatalogRuleLifecycle::Stable { .. }),
-                "stable-tier builtin rule {} must declare stable lifecycle",
-                entry.metadata.code
-            );
-        } else {
-            assert!(
-                !entry.default_presets.contains(&"base"),
-                "preview-tier builtin rule {} must not ship in the base preset",
-                entry.metadata.code
-            );
-        }
-
-        if entry.detection_class == BuiltinCatalogDetectionClass::Heuristic {
-            assert_eq!(
-                entry.metadata.tier,
-                RuleTier::Preview,
-                "heuristic builtin rule {} must stay preview",
-                entry.metadata.code
-            );
-            assert!(
-                matches!(entry.lifecycle, BuiltinCatalogRuleLifecycle::Preview { .. }),
-                "heuristic builtin rule {} cannot declare stable lifecycle",
-                entry.metadata.code
-            );
-        }
     }
 }
 
