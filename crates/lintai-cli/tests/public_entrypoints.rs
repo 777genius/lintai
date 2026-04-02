@@ -32,7 +32,9 @@ fn readme_root_cargo_help_command_is_truthful() {
 
     let stdout = String::from_utf8(output.stdout).expect("stdout should be valid UTF-8");
     assert!(
-        stdout.contains("lintai scan [path]") && stdout.contains("lintai config-schema"),
+        stdout.contains("lintai scan [path]")
+            && stdout.contains("lintai config-schema")
+            && stdout.contains("lintai advisory-db export-bundled"),
         "help output missing expected commands: {stdout}"
     );
 }
@@ -54,4 +56,23 @@ fn readme_root_cargo_config_schema_command_is_truthful() {
         value["$schema"], "https://json-schema.org/draft/2020-12/schema",
         "config-schema output should remain a draft 2020-12 schema"
     );
+}
+
+#[test]
+fn advisory_db_export_bundled_command_outputs_snapshot_json() {
+    let output = run_root_cargo(&["run", "--", "advisory-db", "export-bundled"]);
+    assert_eq!(
+        output.status.code(),
+        Some(0),
+        "advisory-db export-bundled command failed:\n{}",
+        stderr_string(&output)
+    );
+
+    let stdout = String::from_utf8(output.stdout).expect("stdout should be valid UTF-8");
+    let value: serde_json::Value =
+        serde_json::from_str(&stdout).expect("advisory-db export-bundled should be valid JSON");
+    assert_eq!(value["ecosystem"], "npm");
+    assert!(value["generated_at"].is_string());
+    assert!(value["source"].is_string());
+    assert!(value["snapshot_revision"].is_string());
 }

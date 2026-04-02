@@ -1,4 +1,7 @@
-use lintai_api::{ProviderScanResult, RuleProvider, ScanContext, WorkspaceScanContext};
+use lintai_api::{
+    ProviderError, ProviderScanResult, RuleProvider, ScanContext, WorkspaceRuleProvider,
+    WorkspaceScanContext,
+};
 
 use crate::analysis::{
     artifact_observes_exec, artifact_observes_network, capabilities_conflict, exec_forbidden,
@@ -13,17 +16,13 @@ pub const PROVIDER_ID: &str = "lintai-policy-mismatch";
 
 pub struct PolicyMismatchProvider;
 
-impl RuleProvider for PolicyMismatchProvider {
+impl WorkspaceRuleProvider for PolicyMismatchProvider {
     fn id(&self) -> &str {
         PROVIDER_ID
     }
 
     fn rules(&self) -> &[lintai_api::RuleMetadata] {
         &POLICY_RULES
-    }
-
-    fn check_result(&self, _ctx: &ScanContext) -> ProviderScanResult {
-        ProviderScanResult::new(Vec::new(), Vec::new())
     }
 
     fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
@@ -64,5 +63,29 @@ impl RuleProvider for PolicyMismatchProvider {
         }
 
         ProviderScanResult::new(findings, Vec::new())
+    }
+}
+
+impl RuleProvider for PolicyMismatchProvider {
+    fn id(&self) -> &str {
+        WorkspaceRuleProvider::id(self)
+    }
+
+    fn rules(&self) -> &[lintai_api::RuleMetadata] {
+        WorkspaceRuleProvider::rules(self)
+    }
+
+    fn check_result(&self, _ctx: &ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(
+            Vec::new(),
+            vec![ProviderError::new(
+                PROVIDER_ID,
+                "workspace provider cannot run in file phase",
+            )],
+        )
+    }
+
+    fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
+        WorkspaceRuleProvider::check_workspace_result(self, ctx)
     }
 }

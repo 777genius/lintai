@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "ecosystem": "npm",
+  "generated_at": "2026-04-02T00:00:00Z",
+  "source": "bundled-curated-snapshot",
+  "snapshot_revision": "npm-advisories.v1",
+  "advisories": [
+    {
+      "id": "LINTAI-OSV-LODASH-1",
+      "package": "lodash",
+      "aliases": ["GHSA-35jh-r3h4-6jhm", "CVE-2021-23337"],
+      "summary": "Command injection in lodash template handling",
+      "references": ["https://github.com/advisories/GHSA-35jh-r3h4-6jhm"],
+      "ranges": [
+        { "introduced": "0.0.0", "fixed": "4.17.21" }
+      ]
+    },
+    {
+      "id": "LINTAI-OSV-MINIMIST-1",
+      "package": "minimist",
+      "aliases": ["GHSA-vh95-rmgr-6w4m", "CVE-2021-44906"],
+      "summary": "Prototype pollution in minimist",
+      "references": ["https://github.com/advisories/GHSA-vh95-rmgr-6w4m"],
+      "ranges": [
+        { "introduced": "1.0.0", "fixed": "1.2.6" }
+      ]
+    },
+    {
+      "id": "LINTAI-OSV-BRACES-1",
+      "package": "braces",
+      "aliases": ["GHSA-grv7-fg5c-xmjg", "CVE-2024-4068"],
+      "summary": "Uncontrolled resource consumption in braces",
+      "references": ["https://github.com/advisories/GHSA-grv7-fg5c-xmjg"],
+      "ranges": [
+        { "introduced": "3.0.0", "fixed": "3.0.3" }
+      ]
+    }
+  ]
+}

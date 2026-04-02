@@ -81,12 +81,13 @@
   detection rules (filename/path/ext + optional content probe) и parse wiring собираются из одного источника истины.
 - Пользователь может override детекцию через `lintai.toml` (для edge cases вроде `SKILL.md` как docs).
 
-## 7) `RuleProvider` contract
+## 7) Provider contracts
 
-- `RuleProvider` is a result-only rule authoring contract.
+- `FileRuleProvider` and `WorkspaceRuleProvider` are the primary rule-authoring contracts.
 - Engine executes providers through explicit backends, not direct raw provider injection.
 - Backend execution mode carries `ScanScope::{PerFile, Workspace}`; the old `requires_full_scan()` path is not part of the contract anymore.
 - Product path executes shipped built-in providers behind an isolated subprocess boundary for truthful hard timeouts.
+- `RuleProvider` remains only as a legacy compatibility bridge for older in-process helpers and tests; new product code should prefer the split provider ports.
 
 ## 8) Workspace (MVP → later)
 
@@ -149,17 +150,19 @@ MVP стартует с **6–7 крейтов**:
 - **Без proc-macro на MVP**: используем `declare_rule!` (macro_rules) для метадаты + `impl Rule`.
 - Причина: compile time и dependency surface (syn/quote/proc-macro2) не окупаются на старте.
 
-## 11) `RuleProvider` trait: result-only rule authoring contract
+## 11) Split provider traits: result-only rule authoring contract
 
-`RuleProvider` фиксируется как rule-authoring contract:
+`FileRuleProvider` / `WorkspaceRuleProvider` фиксируются как rule-authoring contracts:
 
-- `check_result()` обязателен
-- `check_workspace_result()` остаётся default-empty для non-workspace providers
+- `FileRuleProvider::check_result()` обязателен для per-file providers
+- `WorkspaceRuleProvider::check_workspace_result()` обязателен для workspace providers
 - remediation lives on `Finding.fix` / `Suggestion.fix`, not on a provider fix hook
 
 Engine execution model вынесен отдельно в backend layer; lifecycle hooks больше не используются.
 `lintai-engine` владеет orchestration/validation/finalize semantics, а `lintai-runtime` владеет backend execution и subprocess protocol.
-Execution policy belongs to `ProviderBackend`, not to `RuleProvider`, including timeout and scan scope.
+Execution policy belongs to `ProviderBackend`, not to provider authoring traits, including timeout and scan scope.
+
+`RuleProvider` сохраняется только как legacy compatibility bridge, чтобы не ломать старые test helpers и generic in-process paths одномоментно. Новый code path не должен вводить новые зависимости на этот unified trait.
 
 ### Timeout model (current)
 

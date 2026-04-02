@@ -75,6 +75,7 @@ pub(crate) fn provider_sort_key(provider_id: &str) -> usize {
     match provider_id {
         "lintai-ai-security" => 0,
         "lintai-policy-mismatch" => 1,
+        "lintai-dep-vulns" => 2,
         _ => usize::MAX,
     }
 }

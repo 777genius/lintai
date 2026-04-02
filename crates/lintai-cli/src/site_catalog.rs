@@ -98,7 +98,7 @@ struct BuiltinPresetSpec {
     extends: &'static [&'static str],
 }
 
-const BUILTIN_PRESETS: [BuiltinPresetSpec; 10] = [
+const BUILTIN_PRESETS: [BuiltinPresetSpec; 11] = [
     BuiltinPresetSpec {
         id: "base",
         kind: SitePresetKind::Membership,
@@ -151,6 +151,12 @@ const BUILTIN_PRESETS: [BuiltinPresetSpec; 10] = [
         id: "supply-chain",
         kind: SitePresetKind::Membership,
         description: "Sidecar supply-chain hardening rules, including GitHub Actions workflow checks.",
+        extends: &[],
+    },
+    BuiltinPresetSpec {
+        id: "advisory",
+        kind: SitePresetKind::Membership,
+        description: "Bundled dependency vulnerability checks that match installed lockfile versions against offline advisories.",
         extends: &[],
     },
     BuiltinPresetSpec {
@@ -506,11 +512,23 @@ mod tests {
             .expect("SEC390 should exist");
         assert_eq!(sec390.default_presets, vec!["governance"]);
 
+        let sec756 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-dep-vulns:SEC756")
+            .expect("SEC756 should exist");
+        assert_eq!(sec756.default_presets, vec!["advisory"]);
+
         let strict = catalog
             .presets
             .iter()
             .find(|preset| preset.id == "strict")
             .expect("strict preset should exist");
+        let advisory = catalog
+            .presets
+            .iter()
+            .find(|preset| preset.id == "advisory")
+            .expect("advisory preset should exist");
         let governance = catalog
             .presets
             .iter()
@@ -518,7 +536,14 @@ mod tests {
             .expect("governance preset should exist");
         assert!(matches!(strict.kind, super::SitePresetKind::Overlay));
         assert!(strict.rule_ids.is_empty());
+        assert!(matches!(advisory.kind, super::SitePresetKind::Membership));
         assert!(matches!(governance.kind, super::SitePresetKind::Membership));
+        assert!(
+            advisory
+                .rule_ids
+                .iter()
+                .any(|rule_id| rule_id == "lintai-dep-vulns:SEC756")
+        );
         assert!(
             governance
                 .rule_ids
@@ -528,12 +553,17 @@ mod tests {
         assert_eq!(sec101.doc_title, "HTML comment: dangerous instructions");
         assert_eq!(sec340.doc_title, "Claude hook: mutable package launcher");
         assert_eq!(sec401.doc_title, "Policy mismatch: execution");
+        assert_eq!(
+            sec756.doc_title,
+            "Dependency vulnerability: installed npm package version"
+        );
         assert_eq!(sec101.alias.as_deref(), Some("MD-HIDDEN-INSTRUCTIONS"));
         assert_eq!(
             sec340.alias.as_deref(),
             Some("CLAUDE-HOOK-MUTABLE-LAUNCHER")
         );
         assert_eq!(sec401.alias.as_deref(), Some("POLICY-EXEC-MISMATCH"));
+        assert_eq!(sec756.alias.as_deref(), None);
     }
 
     #[test]

@@ -17,7 +17,7 @@ use std::collections::BTreeMap;
 pub struct ProviderHarness;
 
 const PROVIDER_HARNESS_PRESETS_CONFIG: &str = r#"[presets]
-enable = ["base", "preview", "skills", "mcp", "claude", "guidance", "governance", "supply-chain"]
+enable = ["base", "preview", "skills", "mcp", "claude", "guidance", "governance", "supply-chain", "advisory"]
 "#;
 
 impl ProviderHarness {
@@ -719,30 +719,48 @@ fn provider_phase_label(phase: ProviderExecutionPhase) -> &'static str {
 
 fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
     match rule_code {
+        "SEC381" | "SEC382" | "SEC383" | "SEC385" | "SEC386" | "SEC387" | "SEC388" | "SEC389"
+        | "SEC399" | "SEC404" | "SEC406" | "SEC407" | "SEC408" | "SEC409" | "SEC410" | "SEC419"
+        | "SEC420" | "SEC421" | "SEC474" | "SEC478" | "SEC479" | "SEC480" | "SEC481" | "SEC482"
+        | "SEC483" | "SEC484" | "SEC485" | "SEC488" | "SEC489" | "SEC490" | "SEC491" | "SEC492"
+        | "SEC493" | "SEC494" | "SEC495" | "SEC496" | "SEC497" | "SEC498" | "SEC499" | "SEC500"
+        | "SEC501" | "SEC756" => Some(RuleTier::Preview),
         "SEC201" | "SEC202" | "SEC203" | "SEC204" | "SEC205" | "SEC206" | "SEC301" | "SEC302"
         | "SEC303" | "SEC304" | "SEC305" | "SEC309" | "SEC310" | "SEC311" | "SEC312" | "SEC314"
         | "SEC315" | "SEC316" | "SEC317" | "SEC318" | "SEC319" | "SEC320" | "SEC321" | "SEC322"
         | "SEC324" | "SEC326" | "SEC327" | "SEC329" | "SEC330" | "SEC331" | "SEC337" | "SEC338"
         | "SEC339" | "SEC340" | "SEC341" | "SEC342" | "SEC343" | "SEC344" | "SEC345" | "SEC346"
         | "SEC394" | "SEC395" | "SEC396" | "SEC397" | "SEC398" | "SEC411" | "SEC412" | "SEC413"
-        | "SEC414" | "SEC415" | "SEC417" | "SEC418" | "SEC419" | "SEC420" | "SEC421" | "SEC422"
-        | "SEC423" | "SEC424" | "SEC425" | "SEC426" | "SEC427" | "SEC428" | "SEC429" | "SEC430"
-        | "SEC431" | "SEC432" | "SEC433" | "SEC434" | "SEC435" | "SEC436" | "SEC437" | "SEC438"
-        | "SEC439" | "SEC440" | "SEC441" | "SEC442" | "SEC443" | "SEC444" | "SEC445" | "SEC446"
-        | "SEC447" | "SEC448" | "SEC449" | "SEC450" | "SEC451" | "SEC452" | "SEC453" | "SEC454"
-        | "SEC455" | "SEC456" | "SEC457" | "SEC458" | "SEC459" | "SEC460" | "SEC461" | "SEC462"
-        | "SEC352" | "SEC404" | "SEC463" | "SEC464" | "SEC465" | "SEC466" | "SEC467" | "SEC468"
-        | "SEC469" | "SEC470" | "SEC471" | "SEC472" | "SEC473" | "SEC474" | "SEC494" | "SEC495"
-        | "SEC496" | "SEC497" | "SEC498" | "SEC499" | "SEC500" | "SEC501" | "SEC520" | "SEC521"
-        | "SEC522" | "SEC523" | "SEC524" | "SEC525" | "SEC526" | "SEC527" | "SEC362" | "SEC364"
-        | "SEC367" | "SEC369" | "SEC372" | "SEC373" | "SEC374" | "SEC375" | "SEC376" | "SEC384"
-        | "SEC405" | "SEC475" | "SEC476" | "SEC477" | "SEC486" | "SEC487" | "SEC502" | "SEC503"
-        | "SEC504" | "SEC505" | "SEC506" | "SEC507" | "SEC508" | "SEC509" | "SEC510" | "SEC511"
-        | "SEC512" | "SEC513" | "SEC514" | "SEC515" | "SEC516" | "SEC517" | "SEC518" | "SEC519"
-        | "SEC528" | "SEC529" | "SEC530" | "SEC531" | "SEC532" | "SEC533" | "SEC534" | "SEC535"
-        | "SEC536" | "SEC537" | "SEC538" | "SEC539" | "SEC540" | "SEC541" | "SEC542" | "SEC543"
-        | "SEC544" | "SEC545" | "SEC410" | "SEC626" | "SEC627" | "SEC628" | "SEC629" | "SEC630"
-        | "SEC631" | "SEC632" | "SEC743" | "SEC744" | "SEC745" | "SEC746" | "SEC747" | "SEC748"
+        | "SEC414" | "SEC415" | "SEC417" | "SEC418" | "SEC422" | "SEC423" | "SEC424" | "SEC425"
+        | "SEC426" | "SEC427" | "SEC428" | "SEC429" | "SEC430" | "SEC431" | "SEC432" | "SEC433"
+        | "SEC434" | "SEC435" | "SEC436" | "SEC437" | "SEC438" | "SEC439" | "SEC440" | "SEC441"
+        | "SEC442" | "SEC443" | "SEC444" | "SEC445" | "SEC446" | "SEC447" | "SEC448" | "SEC449"
+        | "SEC450" | "SEC451" | "SEC452" | "SEC453" | "SEC454" | "SEC455" | "SEC456" | "SEC457"
+        | "SEC458" | "SEC459" | "SEC460" | "SEC461" | "SEC462" | "SEC352" | "SEC463" | "SEC464"
+        | "SEC465" | "SEC466" | "SEC467" | "SEC468" | "SEC469" | "SEC470" | "SEC471" | "SEC472"
+        | "SEC473" | "SEC520" | "SEC521" | "SEC522" | "SEC523" | "SEC524" | "SEC525" | "SEC526"
+        | "SEC527" | "SEC362" | "SEC364" | "SEC367" | "SEC369" | "SEC372" | "SEC373" | "SEC374"
+        | "SEC375" | "SEC376" | "SEC384" | "SEC405" | "SEC475" | "SEC476" | "SEC477" | "SEC486"
+        | "SEC487" | "SEC502" | "SEC503" | "SEC504" | "SEC505" | "SEC506" | "SEC507" | "SEC508"
+        | "SEC509" | "SEC510" | "SEC511" | "SEC512" | "SEC513" | "SEC514" | "SEC515" | "SEC516"
+        | "SEC517" | "SEC518" | "SEC519" | "SEC528" | "SEC529" | "SEC530" | "SEC531" | "SEC532"
+        | "SEC533" | "SEC534" | "SEC535" | "SEC536" | "SEC537" | "SEC538" | "SEC539" | "SEC540"
+        | "SEC541" | "SEC542" | "SEC543" | "SEC544" | "SEC545" | "SEC626" | "SEC627" | "SEC628"
+        | "SEC629" | "SEC630" | "SEC631" | "SEC632" | "SEC633" | "SEC634" | "SEC635" | "SEC636"
+        | "SEC637" | "SEC638" | "SEC639" | "SEC640" | "SEC641" | "SEC642" | "SEC643" | "SEC644"
+        | "SEC645" | "SEC646" | "SEC647" | "SEC648" | "SEC649" | "SEC650" | "SEC651" | "SEC652"
+        | "SEC653" | "SEC654" | "SEC655" | "SEC656" | "SEC657" | "SEC658" | "SEC659" | "SEC660"
+        | "SEC661" | "SEC662" | "SEC663" | "SEC664" | "SEC665" | "SEC666" | "SEC667" | "SEC668"
+        | "SEC669" | "SEC670" | "SEC671" | "SEC672" | "SEC673" | "SEC674" | "SEC675" | "SEC676"
+        | "SEC677" | "SEC678" | "SEC679" | "SEC680" | "SEC681" | "SEC682" | "SEC683" | "SEC684"
+        | "SEC685" | "SEC686" | "SEC687" | "SEC688" | "SEC689" | "SEC690" | "SEC691" | "SEC692"
+        | "SEC693" | "SEC694" | "SEC695" | "SEC696" | "SEC697" | "SEC698" | "SEC699" | "SEC700"
+        | "SEC701" | "SEC702" | "SEC703" | "SEC704" | "SEC705" | "SEC706" | "SEC707" | "SEC708"
+        | "SEC709" | "SEC710" | "SEC711" | "SEC712" | "SEC713" | "SEC714" | "SEC715" | "SEC716"
+        | "SEC717" | "SEC718" | "SEC719" | "SEC720" | "SEC721" | "SEC722" | "SEC723" | "SEC724"
+        | "SEC725" | "SEC726" | "SEC727" | "SEC728" | "SEC729" | "SEC730" | "SEC731" | "SEC732"
+        | "SEC733" | "SEC734" | "SEC735" | "SEC736" | "SEC737" | "SEC738" | "SEC739" | "SEC740"
+        | "SEC741" | "SEC742" | "SEC743" | "SEC744" | "SEC745" | "SEC746" | "SEC747" | "SEC748"
         | "SEC749" | "SEC750" | "SEC751" | "SEC752" | "SEC753" | "SEC754" | "SEC755" => {
             Some(RuleTier::Stable)
         }
@@ -752,15 +770,12 @@ fn known_rule_tier(rule_code: &str) -> Option<RuleTier> {
         "SEC101" | "SEC102" | "SEC103" | "SEC104" | "SEC105" | "SEC306" | "SEC307" | "SEC308"
         | "SEC313" | "SEC323" | "SEC325" | "SEC328" | "SEC335" | "SEC336" | "SEC347" | "SEC348"
         | "SEC349" | "SEC350" | "SEC351" | "SEC353" | "SEC354" | "SEC355" | "SEC356" | "SEC357"
-        | "SEC358" | "SEC359" | "SEC360" | "SEC370" | "SEC371" | "SEC377" | "SEC378" | "SEC379"
-        | "SEC380" | "SEC381" | "SEC382" | "SEC383" | "SEC390" | "SEC391" | "SEC392" | "SEC393"
-        | "SEC416" | "SEC401" | "SEC402" | "SEC403" => Some(RuleTier::Preview),
-        "SEC389" | "SEC399" | "SEC488" | "SEC489" | "SEC490" | "SEC491" | "SEC492" | "SEC493" => {
-            Some(RuleTier::Stable)
+        | "SEC358" | "SEC359" | "SEC360" | "SEC361" | "SEC363" | "SEC365" | "SEC366" | "SEC368"
+        | "SEC370" | "SEC371" | "SEC377" | "SEC378" | "SEC379" | "SEC380" | "SEC390" | "SEC391"
+        | "SEC392" | "SEC393" | "SEC416" | "SEC401" | "SEC402" | "SEC403" => {
+            Some(RuleTier::Preview)
         }
-        "SEC361" | "SEC363" | "SEC365" | "SEC366" | "SEC368" | "SEC385" | "SEC386" | "SEC387"
-        | "SEC388" | "SEC400" | "SEC406" | "SEC407" | "SEC408" | "SEC409" | "SEC478" | "SEC479"
-        | "SEC480" | "SEC481" | "SEC482" | "SEC483" | "SEC484" | "SEC485" => Some(RuleTier::Stable),
+        "SEC400" => Some(RuleTier::Stable),
         _ => None,
     }
 }
@@ -783,6 +798,8 @@ fn fixture_path_for(artifact_kind: ArtifactKind, format: SourceFormat) -> &'stat
         (ArtifactKind::CursorRules, SourceFormat::Markdown) => Path::new("rules.mdc"),
         (ArtifactKind::McpConfig, SourceFormat::Json) => Path::new("mcp.json"),
         (ArtifactKind::PackageManifest, SourceFormat::Json) => Path::new("package.json"),
+        (ArtifactKind::NpmPackageLock, SourceFormat::Json) => Path::new("package-lock.json"),
+        (ArtifactKind::NpmShrinkwrap, SourceFormat::Json) => Path::new("npm-shrinkwrap.json"),
         (ArtifactKind::DevcontainerConfig, SourceFormat::Json) => {
             Path::new(".devcontainer/devcontainer.json")
         }
@@ -793,6 +810,7 @@ fn fixture_path_for(artifact_kind: ArtifactKind, format: SourceFormat) -> &'stat
         }
         (ArtifactKind::GitHubWorkflow, SourceFormat::Yaml) => Path::new(".github/workflows/ci.yml"),
         (ArtifactKind::DockerCompose, SourceFormat::Yaml) => Path::new("docker-compose.yml"),
+        (ArtifactKind::PnpmLock, SourceFormat::Yaml) => Path::new("pnpm-lock.yaml"),
         (ArtifactKind::CursorPluginManifest, SourceFormat::Json) => {
             Path::new(".cursor-plugin/plugin.json")
         }

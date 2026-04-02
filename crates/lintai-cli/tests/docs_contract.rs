@@ -164,6 +164,16 @@ fn readme_documents_current_positioning_posture() {
         text.contains("Treat `diagnostics` separately from findings"),
         "README.md should explain beta evaluation guidance around diagnostics"
     );
+    assert!(
+        text.contains("`advisory`: opt-in offline dependency vulnerability lane"),
+        "README.md should document the advisory preset lane"
+    );
+    assert!(
+        text.contains("package-lock.json")
+            && text.contains("npm-shrinkwrap.json")
+            && text.contains("pnpm-lock.yaml"),
+        "README.md should document opt-in advisory lockfile surfaces"
+    );
 }
 
 #[test]
@@ -205,6 +215,12 @@ fn architecture_decisions_match_current_provider_backend_model() {
     assert!(
         text.contains("`lintai-parse` (internal)") && text.contains("`lintai-adapters` (internal)"),
         "ARCHITECTURE_DECISIONS.md should document the current parse/adapters split"
+    );
+    assert!(
+        text.contains("`FileRuleProvider`")
+            && text.contains("`WorkspaceRuleProvider`")
+            && text.contains("legacy compatibility bridge"),
+        "ARCHITECTURE_DECISIONS.md should document the split provider ports and legacy bridge honestly"
     );
 }
 

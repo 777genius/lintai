@@ -10,6 +10,8 @@ default-run = "lintai"
 [dependencies]
 lintai-api.workspace = true
 lintai-adapters.workspace = true
+lintai-builtins.workspace = true
+lintai-dep-vulns.workspace = true
 lintai-engine.workspace = true
 lintai-runtime.workspace = true
 lintai-ai-security.workspace = true

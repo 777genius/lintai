@@ -1,8 +1,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 
-use lintai_ai_security::native_rule_catalog_entries;
 use lintai_api::{Category, Severity};
-use lintai_policy::policy_rule_catalog_entries;
+use lintai_builtins::{builtin_known_rule_codes, builtin_rule_codes_for_preset};
 
 use super::ConfigError;
 
@@ -40,7 +39,7 @@ pub(crate) fn resolve_builtin_presets(
             .collect()
     });
     let mut resolved = ResolvedPresetPolicy::default();
-    resolved.known_rules = known_builtin_rules();
+    resolved.known_rules = builtin_known_rule_codes();
     let mut expanded = BTreeSet::new();
     let mut ordered = Vec::new();
 
@@ -140,36 +139,18 @@ fn builtin_preset_spec(name: &str) -> Result<BuiltinPresetSpec, ConfigError> {
             active_rules: rules_for_preset("supply-chain"),
             ..Default::default()
         }),
+        "advisory" => Ok(BuiltinPresetSpec {
+            name: "advisory",
+            extends: &[],
+            active_rules: rules_for_preset("advisory"),
+            ..Default::default()
+        }),
         other => Err(ConfigError::new(format!(
-            "unknown builtin preset `{other}`; expected one of: base, strict, compat, preview, skills, mcp, claude, guidance, governance, supply-chain"
+            "unknown builtin preset `{other}`; expected one of: base, strict, compat, preview, skills, mcp, claude, guidance, governance, supply-chain, advisory"
         ))),
     }
 }
 
 fn rules_for_preset(preset: &str) -> BTreeSet<String> {
-    known_catalog_entries()
-        .into_iter()
-        .filter(|(default_presets, _)| default_presets.contains(&preset))
-        .map(|(_, code)| code)
-        .collect()
-}
-
-fn known_builtin_rules() -> BTreeSet<String> {
-    known_catalog_entries()
-        .into_iter()
-        .map(|(_, code)| code)
-        .collect()
-}
-
-fn known_catalog_entries() -> Vec<(&'static [&'static str], String)> {
-    let mut entries = native_rule_catalog_entries()
-        .into_iter()
-        .map(|entry| (entry.default_presets, entry.metadata.code.to_owned()))
-        .collect::<Vec<_>>();
-    entries.extend(
-        policy_rule_catalog_entries()
-            .iter()
-            .map(|entry| (entry.default_presets, entry.metadata.code.to_owned())),
-    );
-    entries
+    builtin_rule_codes_for_preset(preset)
 }

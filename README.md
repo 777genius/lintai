@@ -3,6 +3,7 @@
 Fast offline security checks for AI agent artifacts in your repo.
 
 `lintai` helps you verify skills, MCP configs, agent rules, hooks, and plugin manifests before you trust them in local workflows or CI.
+It can also run an opt-in advisory lane for committed npm lockfiles.
 
 Public beta release: `v0.1.0-beta.1`
 
@@ -74,6 +75,12 @@ Current `v0.1` supported surfaces focus on files that steer agent behavior or la
 - `.cursor-plugin/commands/**/*.md`
 - `.cursor-plugin/agents/**/*.md`
 
+### Opt-in advisory lockfile surfaces
+
+- `package-lock.json`
+- `npm-shrinkwrap.json`
+- `pnpm-lock.yaml`
+
 ## What It Catches
 
 Current `lintai` rules focus on high-signal repository-local risks such as:
@@ -84,6 +91,7 @@ Current `lintai` rules focus on high-signal repository-local risks such as:
 - credential passthrough and literal secret material
 - dangerous download-and-exec flows
 - mismatches between declared safety claims and actual capabilities
+- opt-in advisory matches between committed npm lockfiles and the bundled offline vulnerability snapshot
 
 The full shipped rule catalog lives in [`docs/SECURITY_RULES.md`](docs/SECURITY_RULES.md).
 
@@ -169,6 +177,7 @@ Builtin preset intent:
 - `guidance`: advice-oriented guidance lane
 - `governance`: opt-in review lane for shared mutation authority and similar workflow-policy decisions
 - `supply-chain`: sidecar supply-chain hardening lane
+- `advisory`: opt-in offline dependency vulnerability lane for committed npm lockfiles
 
 Important merge rules:
 

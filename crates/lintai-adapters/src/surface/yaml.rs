@@ -69,7 +69,18 @@ const GITHUB_WORKFLOW_RULES: &[DetectionRuleSpec] = &[
     },
 ];
 
-pub(super) const SURFACE_SPECS: [SurfaceSpec; 2] = [
+const PNPM_LOCK_RULES: &[DetectionRuleSpec] = &[DetectionRuleSpec {
+    priority: 1,
+    file_name: Some("pnpm-lock.yaml"),
+    file_name_fragment: None,
+    suffix: None,
+    parent_dir: None,
+    path_fragment: None,
+    artifact_kind: ArtifactKind::PnpmLock,
+    format: SourceFormat::Yaml,
+}];
+
+pub(super) const SURFACE_SPECS: [SurfaceSpec; 3] = [
     SurfaceSpec {
         id: "github_workflow_yaml",
         artifact_kind: ArtifactKind::GitHubWorkflow,
@@ -82,6 +93,13 @@ pub(super) const SURFACE_SPECS: [SurfaceSpec; 2] = [
         artifact_kind: ArtifactKind::DockerCompose,
         format: SourceFormat::Yaml,
         detection_rules: DOCKER_COMPOSE_RULES,
+        parse_fn: parse_yaml_surface,
+    },
+    SurfaceSpec {
+        id: "pnpm_lock_yaml",
+        artifact_kind: ArtifactKind::PnpmLock,
+        format: SourceFormat::Yaml,
+        detection_rules: PNPM_LOCK_RULES,
         parse_fn: parse_yaml_surface,
     },
 ];

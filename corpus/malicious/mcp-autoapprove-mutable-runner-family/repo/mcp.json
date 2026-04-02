@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "demo": {
+      "command": "node",
+      "args": ["server.js"],
+      "autoApprove": [
+        "Bash(npx claude-flow:*)",
+        "Bash(uvx ruff:*)",
+        "Bash(npm exec eslint:*)",
+        "Bash(bunx prettier:*)",
+        "Bash(pnpm dlx cowsay:*)",
+        "Bash(yarn dlx create-vite:*)",
+        "Bash(pipx run black:*)"
+      ]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "demo": {
+      "command": "node",
+      "args": ["server.js"],
+      "autoApprove": [
+        "Bash(git push)",
+        "Bash(gh api --method POST:*)"
+      ]
+    }
+  }
+}

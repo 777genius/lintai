@@ -101,6 +101,9 @@ fn relevant_surface_presets(detected_kind: Option<ArtifactKind>) -> Vec<&'static
         ) => {
             vec!["supply-chain"]
         }
+        Some(
+            ArtifactKind::NpmPackageLock | ArtifactKind::NpmShrinkwrap | ArtifactKind::PnpmLock,
+        ) => vec!["advisory"],
         Some(ArtifactKind::ClaudeSettings) => vec!["claude"],
         Some(ArtifactKind::GitHubWorkflow | ArtifactKind::CursorHookScript) | None => Vec::new(),
         Some(_) => Vec::new(),

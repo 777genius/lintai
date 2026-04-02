@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "demo": {
+      "command": "node",
+      "args": ["server.js"],
+      "autoApprove": [
+        "Bash(git status:*)",
+        "Read(./docs/**)",
+        "Write(./artifacts/**)",
+        "Edit(./docs/**)",
+        "Glob(./src/**)",
+        "Grep(todo:)",
+        "WebFetch(domain:docs.example.com)",
+        "WebSearch(site:docs.example.com)"
+      ]
+    }
+  }
+}

@@ -20,8 +20,8 @@ pub use parsed::{
     TextRegion, YamlSemantics,
 };
 pub use rule::{
-    ProviderError, ProviderErrorKind, ProviderScanResult, RuleMetadata, RuleProvider, RuleTier,
-    ScanScope,
+    FileRuleProvider, ProviderError, ProviderErrorKind, ProviderScanResult, RuleMetadata,
+    RuleProvider, RuleTier, ScanScope, WorkspaceRuleProvider,
 };
 
 #[derive(

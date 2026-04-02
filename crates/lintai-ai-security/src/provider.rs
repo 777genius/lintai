@@ -1,4 +1,4 @@
-use lintai_api::{ProviderScanResult, RuleMetadata, RuleProvider, ScanContext};
+use lintai_api::{FileRuleProvider, ProviderScanResult, RuleMetadata, RuleProvider, ScanContext};
 
 use crate::registry::rule_specs;
 use crate::signals::{ArtifactSignals, SignalWorkBudget};
@@ -23,7 +23,7 @@ impl Default for AiSecurityProvider {
     }
 }
 
-impl RuleProvider for AiSecurityProvider {
+impl FileRuleProvider for AiSecurityProvider {
     fn id(&self) -> &str {
         "lintai-ai-security"
     }
@@ -36,6 +36,20 @@ impl RuleProvider for AiSecurityProvider {
         let (findings, _) = scan_rule_specs(ctx);
 
         ProviderScanResult::new(findings, Vec::new())
+    }
+}
+
+impl RuleProvider for AiSecurityProvider {
+    fn id(&self) -> &str {
+        FileRuleProvider::id(self)
+    }
+
+    fn rules(&self) -> &[RuleMetadata] {
+        FileRuleProvider::rules(self)
+    }
+
+    fn check_result(&self, ctx: &ScanContext) -> ProviderScanResult {
+        FileRuleProvider::check_result(self, ctx)
     }
 }
 

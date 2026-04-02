@@ -1,0 +1,7 @@
+{
+  "name": "demo",
+  "lockfileVersion": 2,
+  "dependencies": {
+    "minimist": { "version": "1.2.6" }
+  }
+}

@@ -152,7 +152,7 @@ enable = ["base", "compat"]
 }
 
 #[test]
-fn guidance_preset_can_enable_advisory_lane() {
+fn guidance_preset_can_enable_guidance_lane() {
     let temp_dir = unique_temp_dir("lintai-config-presets-guidance");
     std::fs::create_dir_all(temp_dir.join(".github/instructions")).unwrap();
     std::fs::write(
@@ -181,6 +181,40 @@ enable = ["base", "guidance"]
     );
     assert_eq!(
         resolved.severity_for("SEC353", Category::Quality, Severity::Warn),
+        Severity::Warn
+    );
+}
+
+#[test]
+fn advisory_preset_can_enable_lockfile_lane() {
+    let temp_dir = unique_temp_dir("lintai-config-presets-advisory");
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        r#"
+[presets]
+enable = ["advisory"]
+"#,
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("package-lock.json"),
+        r#"{
+  "name": "demo",
+  "lockfileVersion": 3,
+  "packages": {
+    "": { "name": "demo", "version": "1.0.0" }
+  }
+}"#,
+    )
+    .unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let resolved = explain_file_config(&workspace, &temp_dir.join("package-lock.json"));
+
+    assert_eq!(resolved.enabled_presets, vec!["advisory".to_owned()]);
+    assert_eq!(
+        resolved.severity_for("SEC756", Category::Security, Severity::Warn),
         Severity::Warn
     );
 }

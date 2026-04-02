@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "demo": {
+      "command": "node",
+      "args": ["server.js"],
+      "autoApprove": [
+        "Bash(git add:*)",
+        "Bash(git config:*)",
+        "Bash(git tag:*)",
+        "Bash(git branch:*)",
+        "Bash(gh pr:*)"
+      ]
+    }
+  }
+}

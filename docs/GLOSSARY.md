@@ -34,6 +34,5 @@
 
 - **`lintai-api`**: стабильный контракт (types + traits).
 - **Engine**: оркестратор пайплайна (discovery → parse → check → suppress → aggregate → output).
-- **Provider**: реализация RuleProvider, источник правил (native/YAML/WASM).
+- **Provider**: реализация `FileRuleProvider` или `WorkspaceRuleProvider`, источник правил (native/YAML/WASM). `RuleProvider` остаётся legacy compatibility bridge.
 - **Adapters/Parsers**: FORMAT vs DOMAIN: парсинг форматов отдельно от доменной интерпретации.
-

@@ -125,6 +125,36 @@ fn parses_json_semantics_for_package_manifest() {
 }
 
 #[test]
+fn parses_json_semantics_for_npm_package_lock() {
+    let parsed = parse_document(
+        &Artifact::new(
+            "package-lock.json",
+            ArtifactKind::NpmPackageLock,
+            SourceFormat::Json,
+        ),
+        r#"{"lockfileVersion":3,"packages":{"node_modules/lodash":{"version":"4.17.20"}}}"#,
+    )
+    .unwrap();
+
+    assert!(matches!(parsed.semantics, Some(DocumentSemantics::Json(_))));
+}
+
+#[test]
+fn parses_json_semantics_for_npm_shrinkwrap() {
+    let parsed = parse_document(
+        &Artifact::new(
+            "npm-shrinkwrap.json",
+            ArtifactKind::NpmShrinkwrap,
+            SourceFormat::Json,
+        ),
+        r#"{"dependencies":{"minimist":{"version":"1.2.5"}}}"#,
+    )
+    .unwrap();
+
+    assert!(matches!(parsed.semantics, Some(DocumentSemantics::Json(_))));
+}
+
+#[test]
 fn parses_json_semantics_for_devcontainer_config() {
     let parsed = parse_document(
         &Artifact::new(
@@ -167,6 +197,17 @@ fn parses_json_semantics_for_local_claude_settings() {
     .unwrap();
 
     assert!(matches!(parsed.semantics, Some(DocumentSemantics::Json(_))));
+}
+
+#[test]
+fn parses_yaml_semantics_for_pnpm_lock() {
+    let parsed = parse_document(
+        &Artifact::new("pnpm-lock.yaml", ArtifactKind::PnpmLock, SourceFormat::Yaml),
+        "lockfileVersion: '9.0'\npackages:\n  lodash@4.17.20:\n    resolution: {}\n",
+    )
+    .unwrap();
+
+    assert!(matches!(parsed.semantics, Some(DocumentSemantics::Yaml(_))));
 }
 
 #[test]
@@ -276,6 +317,8 @@ fn surface_specs_assemble_in_fixed_order() {
             "cursor_plugin_agent_markdown",
             "mcp_config_json",
             "package_manifest_json",
+            "npm_package_lock_json",
+            "npm_shrinkwrap_json",
             "devcontainer_config_json",
             "server_registry_json",
             "claude_settings_json",
@@ -284,6 +327,7 @@ fn surface_specs_assemble_in_fixed_order() {
             "tool_descriptor_json",
             "github_workflow_yaml",
             "docker_compose_yaml",
+            "pnpm_lock_yaml",
             "dockerfile_shell",
             "cursor_hook_script_shell",
         ]
@@ -298,12 +342,15 @@ fn artifact_kind_routes_are_unique_for_shipped_surfaces() {
         (ArtifactKind::CursorRules, SourceFormat::Markdown),
         (ArtifactKind::McpConfig, SourceFormat::Json),
         (ArtifactKind::PackageManifest, SourceFormat::Json),
+        (ArtifactKind::NpmPackageLock, SourceFormat::Json),
+        (ArtifactKind::NpmShrinkwrap, SourceFormat::Json),
         (ArtifactKind::DevcontainerConfig, SourceFormat::Json),
         (ArtifactKind::ClaudeSettings, SourceFormat::Json),
         (ArtifactKind::ServerRegistryConfig, SourceFormat::Json),
         (ArtifactKind::ToolDescriptorJson, SourceFormat::Json),
         (ArtifactKind::GitHubWorkflow, SourceFormat::Yaml),
         (ArtifactKind::DockerCompose, SourceFormat::Yaml),
+        (ArtifactKind::PnpmLock, SourceFormat::Yaml),
         (ArtifactKind::Dockerfile, SourceFormat::Shell),
         (ArtifactKind::CursorPluginManifest, SourceFormat::Json),
         (ArtifactKind::CursorPluginHooks, SourceFormat::Json),

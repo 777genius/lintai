@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "demo": {
+      "command": "node",
+      "args": ["server.js"],
+      "autoApprove": [
+        "Bash(git checkout:*)",
+        "Bash(git commit:*)",
+        "Bash(git reset:*)",
+        "Bash(git clean:*)"
+      ]
+    }
+  }
+}

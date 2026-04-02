@@ -18,19 +18,37 @@ pub(crate) fn run_provider_runner(args: impl Iterator<Item = String>) -> Result<
         .map_err(|error| format!("provider runner request decode failed: {error}"))?;
 
     let provider = request.provider.instantiate();
-    let result = match request.phase {
-        RunnerPhase::File => provider.check_result(
+    let result = match (request.phase, provider) {
+        (
+            RunnerPhase::File,
+            crate::builtin_providers::kind::BuiltInProviderInstance::File(provider),
+        ) => provider.check_result(
             request
                 .scan
                 .as_ref()
                 .ok_or_else(|| "provider runner missing file scan context".to_owned())?,
         ),
-        RunnerPhase::Workspace => provider.check_workspace_result(
+        (
+            RunnerPhase::Workspace,
+            crate::builtin_providers::kind::BuiltInProviderInstance::Workspace(provider),
+        ) => provider.check_workspace_result(
             request
                 .workspace
                 .as_ref()
                 .ok_or_else(|| "provider runner missing workspace scan context".to_owned())?,
         ),
+        (
+            RunnerPhase::File,
+            crate::builtin_providers::kind::BuiltInProviderInstance::Workspace(_),
+        ) => {
+            return Err("provider runner received file phase for workspace provider".to_owned());
+        }
+        (
+            RunnerPhase::Workspace,
+            crate::builtin_providers::kind::BuiltInProviderInstance::File(_),
+        ) => {
+            return Err("provider runner received workspace phase for file provider".to_owned());
+        }
     };
     let response = RunnerResponse { result };
     serde_json::to_writer(std::io::stdout(), &response)

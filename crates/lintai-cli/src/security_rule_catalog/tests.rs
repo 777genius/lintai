@@ -6,9 +6,8 @@ use crate::shipped_rules::{
     CatalogDetectionClass, CatalogRuleLifecycle, provider_sort_key, shipped_rule_alias,
     shipped_security_rule_catalog_entries,
 };
-use lintai_ai_security::{NativeCatalogDetectionClass, native_rule_catalog_entries};
 use lintai_api::RuleTier;
-use lintai_policy::policy_rule_catalog_entries;
+use lintai_builtins::{BuiltinCatalogDetectionClass, builtin_rule_catalog_entries};
 
 #[test]
 fn catalog_render_matches_checked_in_markdown() {
@@ -20,14 +19,9 @@ fn catalog_render_matches_checked_in_markdown() {
 fn all_shipped_security_rules_are_documented() {
     let entries = shipped_security_rule_catalog_entries();
     let documented_codes: BTreeSet<_> = entries.iter().map(|entry| entry.metadata.code).collect();
-    let expected_codes: BTreeSet<_> = native_rule_catalog_entries()
-        .iter()
+    let expected_codes: BTreeSet<_> = builtin_rule_catalog_entries()
+        .into_iter()
         .map(|entry| entry.metadata.code)
-        .chain(
-            policy_rule_catalog_entries()
-                .iter()
-                .map(|entry| entry.metadata.code),
-        )
         .collect();
     assert_eq!(documented_codes, expected_codes);
     assert_eq!(entries.len(), expected_codes.len());
@@ -40,14 +34,9 @@ fn catalog_order_is_stable() {
         .iter()
         .map(|entry| (entry.provider_id, entry.metadata.code))
         .collect();
-    let mut expected: Vec<_> = native_rule_catalog_entries()
-        .iter()
+    let mut expected: Vec<_> = builtin_rule_catalog_entries()
+        .into_iter()
         .map(|entry| (entry.provider_id, entry.metadata.code))
-        .chain(
-            policy_rule_catalog_entries()
-                .iter()
-                .map(|entry| (entry.provider_id, entry.metadata.code)),
-        )
         .collect();
     expected.sort_by_key(|(provider_id, code)| (provider_sort_key(provider_id), *code));
     assert_eq!(actual, expected);
@@ -62,9 +51,9 @@ fn heuristic_entries_remain_preview() {
     }
 
     assert!(
-        native_rule_catalog_entries()
-            .iter()
-            .any(|entry| entry.detection_class == NativeCatalogDetectionClass::Heuristic)
+        builtin_rule_catalog_entries()
+            .into_iter()
+            .any(|entry| entry.detection_class == BuiltinCatalogDetectionClass::Heuristic)
     );
 }
 
@@ -139,6 +128,12 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .find(|entry| entry.metadata.code == "SEC401")
         .unwrap();
     assert_eq!(sec401.default_presets(), vec!["compat"]);
+
+    let sec756 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC756")
+        .unwrap();
+    assert_eq!(sec756.default_presets(), vec!["advisory"]);
 }
 
 #[test]

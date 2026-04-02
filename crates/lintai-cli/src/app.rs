@@ -17,6 +17,7 @@ pub fn run() -> Result<ExitCode, String> {
         "scan-known" => commands::scan_known::run(&current_dir, args),
         "inventory-os" => commands::inventory_os::run(args),
         "policy-os" => commands::policy_os::run(args),
+        "advisory-db" => commands::advisory_db::run(args),
         "fix" => commands::fix::run(&current_dir, args),
         "explain-config" => commands::explain_config::run(&current_dir, args),
         "__provider-runner" => run_provider_runner(args),
@@ -42,6 +43,8 @@ fn print_usage() {
     println!("                    [--diff-against FILE] [--format=text|json|sarif]");
     println!("lintai policy-os --policy FILE [--scope=user|system|both] [--client NAME]");
     println!("                    [--path-root DIR] [--format=text|json|sarif]");
+    println!("lintai advisory-db export-bundled [output-file]");
+    println!("lintai advisory-db update --input FILE --output FILE");
     println!("lintai fix [path] [--apply] [--rule CODE]");
     println!("lintai explain-config <file>");
     println!("lintai config-schema");

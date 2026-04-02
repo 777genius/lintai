@@ -1,3 +1,4 @@
+pub(crate) mod advisory_db;
 pub(crate) mod explain_config;
 pub(crate) mod fix;
 pub(crate) mod inventory_os;

@@ -1,7 +1,7 @@
 id = "skill-uvx-dlx-pipx-specific-safe"
 description = "AI-native markdown frontmatter keeps mutable runner authority scoped to specific reviewed commands"
 
-expected_absent = [
+expected_absent_rules = [
   "SEC496",
   "SEC497",
   "SEC498",

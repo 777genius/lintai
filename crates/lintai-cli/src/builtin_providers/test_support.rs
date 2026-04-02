@@ -2,8 +2,8 @@ use std::thread;
 use std::time::Duration;
 
 use lintai_api::{
-    Confidence, Finding, Location, ProviderError, ProviderScanResult, RuleMetadata, RuleProvider,
-    RuleTier, ScanContext, Severity, Span,
+    Confidence, FileRuleProvider, Finding, Location, ProviderError, ProviderScanResult,
+    RuleMetadata, RuleProvider, RuleTier, ScanContext, Severity, Span,
 };
 
 const TEST_RULE: RuleMetadata = RuleMetadata::new(
@@ -17,7 +17,7 @@ const TEST_RULE: RuleMetadata = RuleMetadata::new(
 
 pub(crate) struct TestTimeoutProvider;
 
-impl RuleProvider for TestTimeoutProvider {
+impl FileRuleProvider for TestTimeoutProvider {
     fn id(&self) -> &str {
         "__test-timeout"
     }
@@ -32,9 +32,23 @@ impl RuleProvider for TestTimeoutProvider {
     }
 }
 
+impl RuleProvider for TestTimeoutProvider {
+    fn id(&self) -> &str {
+        FileRuleProvider::id(self)
+    }
+
+    fn rules(&self) -> &[RuleMetadata] {
+        FileRuleProvider::rules(self)
+    }
+
+    fn check_result(&self, ctx: &ScanContext) -> ProviderScanResult {
+        FileRuleProvider::check_result(self, ctx)
+    }
+}
+
 pub(crate) struct TestPanicProvider;
 
-impl RuleProvider for TestPanicProvider {
+impl FileRuleProvider for TestPanicProvider {
     fn id(&self) -> &str {
         "__test-panic"
     }
@@ -48,9 +62,23 @@ impl RuleProvider for TestPanicProvider {
     }
 }
 
+impl RuleProvider for TestPanicProvider {
+    fn id(&self) -> &str {
+        FileRuleProvider::id(self)
+    }
+
+    fn rules(&self) -> &[RuleMetadata] {
+        FileRuleProvider::rules(self)
+    }
+
+    fn check_result(&self, ctx: &ScanContext) -> ProviderScanResult {
+        FileRuleProvider::check_result(self, ctx)
+    }
+}
+
 pub(crate) struct TestPartialErrorProvider;
 
-impl RuleProvider for TestPartialErrorProvider {
+impl FileRuleProvider for TestPartialErrorProvider {
     fn id(&self) -> &str {
         "__test-partial-error"
     }
@@ -67,9 +95,23 @@ impl RuleProvider for TestPartialErrorProvider {
                 "isolated child finding",
             )],
             vec![ProviderError::new(
-                self.id(),
+                FileRuleProvider::id(self),
                 "isolated child execution error",
             )],
         )
+    }
+}
+
+impl RuleProvider for TestPartialErrorProvider {
+    fn id(&self) -> &str {
+        FileRuleProvider::id(self)
+    }
+
+    fn rules(&self) -> &[RuleMetadata] {
+        FileRuleProvider::rules(self)
+    }
+
+    fn check_result(&self, ctx: &ScanContext) -> ProviderScanResult {
+        FileRuleProvider::check_result(self, ctx)
     }
 }

@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "demo": {
+      "command": "node",
+      "args": ["server.js"],
+      "autoApprove": [
+        "Bash(gh issue create:*)",
+        "Bash(gh repo create:*)",
+        "Bash(gh repo delete:*)",
+        "Bash(gh repo edit:*)",
+        "Bash(gh secret set:*)",
+        "Bash(gh variable set:*)",
+        "Bash(gh workflow run:*)"
+      ]
+    }
+  }
+}

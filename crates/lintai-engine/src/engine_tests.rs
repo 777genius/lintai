@@ -5,10 +5,13 @@ use std::time::Duration;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use lintai_api::{
-    Applicability, Finding, Fix, Location, ProviderError, ProviderScanResult, RuleMetadata,
-    RuleTier, ScanScope, Span, WorkspaceScanContext,
+    Applicability, FileRuleProvider, Finding, Fix, Location, ProviderError, ProviderScanResult,
+    RuleMetadata, RuleTier, ScanScope, Span, WorkspaceRuleProvider, WorkspaceScanContext,
 };
-use lintai_runtime::{InProcessProviderBackend, ProviderBackend};
+use lintai_runtime::{
+    InProcessFileProviderBackend, InProcessProviderBackend, InProcessWorkspaceProviderBackend,
+    ProviderBackend,
+};
 
 use crate::artifact_view::ArtifactContextRef;
 use crate::{Engine, EngineBuilder, SuppressionMatcher};
@@ -37,6 +40,18 @@ fn backend_with_timeout(
     ))
 }
 
+fn typed_file_backend(
+    provider: impl lintai_api::FileRuleProvider + 'static,
+) -> Arc<dyn ProviderBackend> {
+    Arc::new(InProcessFileProviderBackend::new(Arc::new(provider)))
+}
+
+fn typed_workspace_backend(
+    provider: impl lintai_api::WorkspaceRuleProvider + 'static,
+) -> Arc<dyn ProviderBackend> {
+    Arc::new(InProcessWorkspaceProviderBackend::new(Arc::new(provider)))
+}
+
 struct EmitFindingProvider;
 
 static EMIT_RULES: [RuleMetadata; 1] = [lintai_api::RuleMetadata::new(
@@ -63,6 +78,71 @@ impl lintai_api::RuleProvider for EmitFindingProvider {
                 &self.rules()[0],
                 Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
                 "test finding",
+            )],
+            Vec::new(),
+        )
+    }
+}
+
+struct TypedFileFindingProvider;
+
+static TYPED_FILE_RULES: [RuleMetadata; 1] = [lintai_api::RuleMetadata::new(
+    "SECFILE",
+    "typed file provider finding",
+    lintai_api::Category::Security,
+    lintai_api::Severity::Warn,
+    lintai_api::Confidence::High,
+    RuleTier::Preview,
+)];
+
+impl FileRuleProvider for TypedFileFindingProvider {
+    fn id(&self) -> &str {
+        "typed-file"
+    }
+
+    fn rules(&self) -> &[RuleMetadata] {
+        &TYPED_FILE_RULES
+    }
+
+    fn check_result(&self, ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(
+            vec![Finding::new(
+                &TYPED_FILE_RULES[0],
+                Location::new(ctx.artifact.normalized_path.clone(), Span::new(0, 1)),
+                "typed file provider finding",
+            )],
+            Vec::new(),
+        )
+    }
+}
+
+struct TypedWorkspaceFindingProvider;
+
+static TYPED_WORKSPACE_RULES: [RuleMetadata; 1] = [lintai_api::RuleMetadata::new(
+    "SECWORK",
+    "typed workspace provider finding",
+    lintai_api::Category::Security,
+    lintai_api::Severity::Warn,
+    lintai_api::Confidence::High,
+    RuleTier::Preview,
+)];
+
+impl WorkspaceRuleProvider for TypedWorkspaceFindingProvider {
+    fn id(&self) -> &str {
+        "typed-workspace"
+    }
+
+    fn rules(&self) -> &[RuleMetadata] {
+        &TYPED_WORKSPACE_RULES
+    }
+
+    fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
+        let artifact = &ctx.artifacts[0];
+        ProviderScanResult::new(
+            vec![Finding::new(
+                &TYPED_WORKSPACE_RULES[0],
+                Location::new(artifact.artifact.normalized_path.clone(), Span::new(0, 1)),
+                "typed workspace provider finding",
             )],
             Vec::new(),
         )
@@ -473,6 +553,46 @@ impl lintai_api::RuleProvider for WorkspaceExecutionErrorProvider {
             )],
         )
     }
+}
+
+#[test]
+fn typed_file_provider_backend_executes_in_engine() {
+    let temp_dir = unique_temp_dir("lintai-typed-file-provider");
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    std::fs::write(temp_dir.join("SKILL.md"), "# demo\n").unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_backend(typed_file_backend(TypedFileFindingProvider))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SECFILE")
+    );
+}
+
+#[test]
+fn typed_workspace_provider_backend_executes_in_engine() {
+    let temp_dir = unique_temp_dir("lintai-typed-workspace-provider");
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    std::fs::write(temp_dir.join("SKILL.md"), "# demo\n").unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_backend(typed_workspace_backend(TypedWorkspaceFindingProvider))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SECWORK")
+    );
 }
 
 #[test]

@@ -119,6 +119,18 @@ impl ProviderScanResult {
     }
 }
 
+pub trait FileRuleProvider: Send + Sync {
+    fn id(&self) -> &str;
+    fn rules(&self) -> &[RuleMetadata];
+    fn check_result(&self, ctx: &ScanContext) -> ProviderScanResult;
+}
+
+pub trait WorkspaceRuleProvider: Send + Sync {
+    fn id(&self) -> &str;
+    fn rules(&self) -> &[RuleMetadata];
+    fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult;
+}
+
 pub trait RuleProvider: Send + Sync {
     fn id(&self) -> &str;
     fn rules(&self) -> &[RuleMetadata];

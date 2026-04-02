@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "demo": {
+      "command": "node",
+      "args": ["server.js"],
+      "autoApprove": [
+        "Bash(chmod:*)",
+        "Bash(chown:*)",
+        "Bash(chgrp:*)",
+        "Bash(su:*)"
+      ]
+    }
+  }
+}

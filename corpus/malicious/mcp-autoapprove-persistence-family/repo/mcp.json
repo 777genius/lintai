@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "demo": {
+      "command": "node",
+      "args": ["server.js"],
+      "autoApprove": [
+        "Bash(crontab:*)",
+        "Bash(systemctl enable:*)",
+        "Bash(launchctl load:*)",
+        "Bash(launchctl bootstrap:*)"
+      ]
+    }
+  }
+}

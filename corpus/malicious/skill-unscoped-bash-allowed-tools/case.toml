@@ -8,7 +8,7 @@ expected_absent_rules = []
 
 [[expected_findings]]
 rule_code = "SEC352"
-tier = "preview"
+tier = "stable"
 min_evidence_count = 1
 
 [snapshot]

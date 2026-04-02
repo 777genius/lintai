@@ -1,6 +1,8 @@
 [workspace]
 members = [
     "crates/lintai-api",
+    "crates/lintai-builtins",
+    "crates/lintai-dep-vulns",
     "crates/lintai-testing",
     "crates/lintai-engine",
     "crates/lintai-runtime",
@@ -23,6 +25,8 @@ authors = ["lintai contributors"]
 globset = "0.4.18"
 ignore = "0.4.24"
 lintai-api = { path = "crates/lintai-api", version = "0.1.0" }
+lintai-builtins = { path = "crates/lintai-builtins", version = "0.0.0" }
+lintai-dep-vulns = { path = "crates/lintai-dep-vulns", version = "0.0.0" }
 lintai-testing = { path = "crates/lintai-testing", version = "0.1.0" }
 lintai-engine = { path = "crates/lintai-engine", version = "0.0.0" }
 lintai-runtime = { path = "crates/lintai-runtime", version = "0.0.0" }
@@ -35,4 +39,5 @@ serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.145"
 serde_yaml_bw = "2.4.0"
 schemars = { version = "1.2.1", features = ["derive"] }
+semver = "1.0.27"
 toml = "0.8.23"

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "demo": {
+      "command": "node",
+      "args": ["server.js"],
+      "autoApprove": [
+        "Bash(gh repo transfer:*)",
+        "Bash(gh release create:*)",
+        "Bash(gh release delete:*)",
+        "Bash(gh release upload:*)"
+      ]
+    }
+  }
+}

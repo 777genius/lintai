@@ -98,6 +98,28 @@ const PACKAGE_MANIFEST_RULES: &[DetectionRuleSpec] = &[DetectionRuleSpec {
     format: SourceFormat::Json,
 }];
 
+const NPM_PACKAGE_LOCK_RULES: &[DetectionRuleSpec] = &[DetectionRuleSpec {
+    priority: 1,
+    file_name: Some("package-lock.json"),
+    file_name_fragment: None,
+    suffix: None,
+    parent_dir: None,
+    path_fragment: None,
+    artifact_kind: ArtifactKind::NpmPackageLock,
+    format: SourceFormat::Json,
+}];
+
+const NPM_SHRINKWRAP_RULES: &[DetectionRuleSpec] = &[DetectionRuleSpec {
+    priority: 1,
+    file_name: Some("npm-shrinkwrap.json"),
+    file_name_fragment: None,
+    suffix: None,
+    parent_dir: None,
+    path_fragment: None,
+    artifact_kind: ArtifactKind::NpmShrinkwrap,
+    format: SourceFormat::Json,
+}];
+
 const DEVCONTAINER_CONFIG_RULES: &[DetectionRuleSpec] = &[
     DetectionRuleSpec {
         priority: 1,
@@ -229,7 +251,7 @@ const TOOL_DESCRIPTOR_RULES: &[DetectionRuleSpec] = &[
     },
 ];
 
-pub(super) const SURFACE_SPECS: [SurfaceSpec; 8] = [
+pub(super) const SURFACE_SPECS: [SurfaceSpec; 10] = [
     SurfaceSpec {
         id: "mcp_config_json",
         artifact_kind: ArtifactKind::McpConfig,
@@ -242,6 +264,20 @@ pub(super) const SURFACE_SPECS: [SurfaceSpec; 8] = [
         artifact_kind: ArtifactKind::PackageManifest,
         format: SourceFormat::Json,
         detection_rules: PACKAGE_MANIFEST_RULES,
+        parse_fn: parse_json_surface,
+    },
+    SurfaceSpec {
+        id: "npm_package_lock_json",
+        artifact_kind: ArtifactKind::NpmPackageLock,
+        format: SourceFormat::Json,
+        detection_rules: NPM_PACKAGE_LOCK_RULES,
+        parse_fn: parse_json_surface,
+    },
+    SurfaceSpec {
+        id: "npm_shrinkwrap_json",
+        artifact_kind: ArtifactKind::NpmShrinkwrap,
+        format: SourceFormat::Json,
+        detection_rules: NPM_SHRINKWRAP_RULES,
         parse_fn: parse_json_surface,
     },
     SurfaceSpec {

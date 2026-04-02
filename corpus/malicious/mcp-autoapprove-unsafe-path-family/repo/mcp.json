@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "demo": {
+      "command": "node",
+      "args": ["server.js"],
+      "autoApprove": [
+        "Read(/etc/**)",
+        "Write(../shared/**)",
+        "Edit(C:\\repo\\outside)",
+        "Glob(/var/**)",
+        "Grep(~/notes/**)"
+      ]
+    }
+  }
+}

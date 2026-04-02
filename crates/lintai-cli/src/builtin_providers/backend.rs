@@ -18,7 +18,7 @@ impl IsolatedBuiltInBackend {
             provider.id().to_owned(),
             provider.rules().to_vec(),
             kind.timeout(),
-            kind.scope(),
+            provider.scope(),
             resolver,
             "__provider-runner",
         ))

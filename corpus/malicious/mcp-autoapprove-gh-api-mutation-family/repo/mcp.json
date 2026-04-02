@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "demo": {
+      "command": "node",
+      "args": ["server.js"],
+      "autoApprove": [
+        "Bash(gh api --method DELETE:*)",
+        "Bash(gh api --method PATCH:*)",
+        "Bash(gh api --method PUT:*)"
+      ]
+    }
+  }
+}

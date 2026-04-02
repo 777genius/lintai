@@ -17,23 +17,14 @@ pub(crate) use model::{
     RuleScope, SecurityRuleCatalogEntry,
 };
 
-use lintai_ai_security::native_rule_catalog_entries;
-use lintai_policy::policy_rule_catalog_entries;
-use map::{native_catalog_entry, policy_catalog_entry};
+use lintai_builtins::builtin_rule_catalog_entries;
+use map::builtin_catalog_entry;
 
 pub(crate) fn shipped_security_rule_catalog_entries() -> Vec<SecurityRuleCatalogEntry> {
-    let mut entries = Vec::new();
-    entries.extend(
-        native_rule_catalog_entries()
-            .into_iter()
-            .map(native_catalog_entry),
-    );
-    entries.extend(
-        policy_rule_catalog_entries()
-            .iter()
-            .copied()
-            .map(policy_catalog_entry),
-    );
+    let mut entries = builtin_rule_catalog_entries()
+        .into_iter()
+        .map(builtin_catalog_entry)
+        .collect::<Vec<_>>();
     entries.sort_by_key(|entry| (provider_sort_key(entry.provider_id), entry.metadata.code));
     entries
 }

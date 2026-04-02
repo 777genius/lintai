@@ -153,6 +153,26 @@ fn detects_v0_1_file_types() {
     assert_eq!(
         detector
             .detect(
+                Path::new("/tmp/project/package-lock.json"),
+                "package-lock.json"
+            )
+            .unwrap()
+            .kind,
+        ArtifactKind::NpmPackageLock
+    );
+    assert_eq!(
+        detector
+            .detect(
+                Path::new("/tmp/project/npm-shrinkwrap.json"),
+                "npm-shrinkwrap.json"
+            )
+            .unwrap()
+            .kind,
+        ArtifactKind::NpmShrinkwrap
+    );
+    assert_eq!(
+        detector
+            .detect(
                 Path::new("/tmp/project/.devcontainer/devcontainer.json"),
                 ".devcontainer/devcontainer.json"
             )
@@ -186,6 +206,13 @@ fn detects_v0_1_file_types() {
             .unwrap()
             .kind,
         ArtifactKind::DockerCompose
+    );
+    assert_eq!(
+        detector
+            .detect(Path::new("/tmp/project/pnpm-lock.yaml"), "pnpm-lock.yaml")
+            .unwrap()
+            .kind,
+        ArtifactKind::PnpmLock
     );
     assert_eq!(
         detector

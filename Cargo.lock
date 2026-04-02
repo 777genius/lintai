@@ -345,6 +345,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "lintai-builtins"
+version = "0.0.0"
+dependencies = [
+ "lintai-ai-security",
+ "lintai-api",
+ "lintai-dep-vulns",
+ "lintai-policy",
+]
+
+[[package]]
 name = "lintai-cli"
 version = "0.0.0"
 dependencies = [
@@ -353,6 +363,8 @@ dependencies = [
  "lintai-adapters",
  "lintai-ai-security",
  "lintai-api",
+ "lintai-builtins",
+ "lintai-dep-vulns",
  "lintai-engine",
  "lintai-fix",
  "lintai-parse",
@@ -366,15 +378,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "lintai-dep-vulns"
+version = "0.0.0"
+dependencies = [
+ "lintai-api",
+ "lintai-engine",
+ "lintai-runtime",
+ "lintai-testing",
+ "semver",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "lintai-engine"
 version = "0.0.0"
 dependencies = [
  "globset",
  "ignore",
  "lintai-adapters",
- "lintai-ai-security",
  "lintai-api",
- "lintai-policy",
+ "lintai-builtins",
  "lintai-runtime",
  "schemars",
  "serde",
@@ -624,6 +648,12 @@ dependencies = [
  "serde_derive_internals",
  "syn",
 ]
+
+[[package]]
+name = "semver"
+version = "1.0.27"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d767eb0aabc880b29956c35734170f26ed551a859dbd361d140cdbeca61ab1e2"
 
 [[package]]
 name = "serde"

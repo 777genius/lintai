@@ -78,11 +78,12 @@ pub(super) fn render_preset_activation_model() -> Vec<String> {
         "- `guidance`: advice-oriented guidance checks such as Copilot instruction layout and length guidance".to_owned(),
         "- `governance`: opt-in review rules for shared mutation authority and similar workflow-policy decisions that should stay separate from the main security lane".to_owned(),
         "- `supply-chain`: sidecar supply-chain hardening checks such as GitHub Actions workflow rules".to_owned(),
+        "- `advisory`: bundled dependency vulnerability checks driven by installed lockfile versions".to_owned(),
         String::new(),
         "Important behavior:".to_owned(),
         String::new(),
         "- `strict` is a severity overlay, not a membership preset: when enabled, active security rules are raised through preset policy instead of silently activating new rules by itself.".to_owned(),
-        "- Dedicated sidecar lanes such as `compat`, `guidance`, `governance`, and `supply-chain` stay opt-in and are not implied by `base` or `preview`.".to_owned(),
+        "- Dedicated sidecar lanes such as `compat`, `guidance`, `governance`, `supply-chain`, and `advisory` stay opt-in and are not implied by `base` or `preview`.".to_owned(),
         "- Category overrides do not activate rules outside the resolved preset set.".to_owned(),
         "- Explicit `[rules] SECxxx = \"...\"` remains the escape hatch for intentional per-rule opt-in outside the default preset set.".to_owned(),
     ]
