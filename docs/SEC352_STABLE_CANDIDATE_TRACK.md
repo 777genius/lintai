@@ -30,8 +30,8 @@ Why this is a strong basis:
 
 Primary implementation references:
 
-- rule spec: [`crates/lintai-ai-security/src/registry/markdown.rs`](../crates/lintai-ai-security/src/registry/markdown.rs)
-- detector coverage: [`crates/lintai-ai-security/src/tests.rs`](../crates/lintai-ai-security/src/tests.rs)
+- rule spec: [`crates/lintai-ai-security/src/registry/markdown.rs`](https://github.com/777genius/lintai/blob/main/crates/lintai-ai-security/src/registry/markdown.rs)
+- detector coverage: [`crates/lintai-ai-security/src/tests.rs`](https://github.com/777genius/lintai/blob/main/crates/lintai-ai-security/src/tests.rs)
 
 ## Evidence Package
 
@@ -39,12 +39,12 @@ Primary implementation references:
 
 Malicious / should-fire corpus:
 
-- [`corpus/malicious/skill-unscoped-bash-allowed-tools/case.toml`](../corpus/malicious/skill-unscoped-bash-allowed-tools/case.toml)
+- [`corpus/malicious/skill-unscoped-bash-allowed-tools/case.toml`](https://github.com/777genius/lintai/blob/main/corpus/malicious/skill-unscoped-bash-allowed-tools/case.toml)
 
 Benign / should-stay-clean corpus:
 
-- [`corpus/benign/skill-scoped-bash-allowed-tools-safe/case.toml`](../corpus/benign/skill-scoped-bash-allowed-tools-safe/case.toml)
-- [`corpus/benign/skill-unscoped-bash-fixture-safe/case.toml`](../corpus/benign/skill-unscoped-bash-fixture-safe/case.toml)
+- [`corpus/benign/skill-scoped-bash-allowed-tools-safe/case.toml`](https://github.com/777genius/lintai/blob/main/corpus/benign/skill-scoped-bash-allowed-tools-safe/case.toml)
+- [`corpus/benign/skill-unscoped-bash-fixture-safe/case.toml`](https://github.com/777genius/lintai/blob/main/corpus/benign/skill-unscoped-bash-fixture-safe/case.toml)
 
 ### Regression coverage
 
@@ -57,7 +57,7 @@ Current targeted tests cover:
 
 Reference block:
 
-- [`crates/lintai-ai-security/src/tests.rs`](../crates/lintai-ai-security/src/tests.rs)
+- [`crates/lintai-ai-security/src/tests.rs`](https://github.com/777genius/lintai/blob/main/crates/lintai-ai-security/src/tests.rs)
 
 ### Field validation
 
