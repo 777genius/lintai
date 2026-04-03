@@ -1,5 +1,7 @@
 use crate::output::model::ReportEnvelope;
-use crate::shipped_rules::{shipped_rule_display_label, shipped_rule_docs_url};
+use crate::shipped_rules::{
+    PublicLane, shipped_rule_display_label, shipped_rule_docs_url, shipped_rule_public_lane,
+};
 
 use super::common::{
     diagnostic_label, error_kind_label, provider_execution_phase_label, severity_label,
@@ -14,6 +16,24 @@ pub(super) fn append_default_summary(output: &mut String, report: &ReportEnvelop
         report.diagnostics.len(),
         report.runtime_errors.len()
     ));
+
+    if !report.findings.is_empty() {
+        let mut recommended = 0usize;
+        let mut preview = 0usize;
+        let mut governance = 0usize;
+
+        for finding in report.findings {
+            match shipped_rule_public_lane(&finding.rule_code).unwrap_or(PublicLane::Preview) {
+                PublicLane::Recommended => recommended += 1,
+                PublicLane::Preview => preview += 1,
+                PublicLane::Governance => governance += 1,
+            }
+        }
+
+        output.push_str(&format!("recommended findings: {recommended}\n"));
+        output.push_str(&format!("deeper review findings: {preview}\n"));
+        output.push_str(&format!("governance review findings: {governance}\n"));
+    }
 }
 
 pub(super) fn append_scan_results(output: &mut String, report: &ReportEnvelope<'_>) {

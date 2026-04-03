@@ -74,7 +74,7 @@ rules = { SEC201 = "deny" }
 }
 
 #[test]
-fn preview_rules_require_explicit_opt_in() {
+fn default_config_uses_recommended_preset_only() {
     let temp_dir = unique_temp_dir("lintai-config-preview-default");
     std::fs::create_dir_all(temp_dir.join("custom")).unwrap();
     std::fs::write(
@@ -90,13 +90,17 @@ security = "deny"
     let workspace = load_workspace_config(&temp_dir).unwrap();
     let resolved = explain_file_config(&workspace, &temp_dir.join("custom/agent.md"));
 
-    assert_eq!(resolved.enabled_presets, vec!["base".to_owned()]);
+    assert_eq!(resolved.enabled_presets, vec!["recommended".to_owned()]);
     assert_eq!(
-        resolved.severity_for("SEC201", Category::Security, Severity::Warn),
+        resolved.severity_for("SEC340", Category::Security, Severity::Warn),
         Severity::Deny
     );
     assert_eq!(
         resolved.severity_for("SEC401", Category::Security, Severity::Warn),
+        Severity::Allow
+    );
+    assert_eq!(
+        resolved.severity_for("SEC101", Category::Security, Severity::Warn),
         Severity::Allow
     );
 }
@@ -148,6 +152,33 @@ enable = ["base", "compat"]
     assert_eq!(
         resolved.severity_for("SEC401", Category::Audit, Severity::Warn),
         Severity::Warn
+    );
+}
+
+#[test]
+fn strict_preset_extends_recommended_default_membership() {
+    let temp_dir = unique_temp_dir("lintai-config-presets-strict");
+    std::fs::create_dir_all(temp_dir.join(".claude")).unwrap();
+    std::fs::write(
+        temp_dir.join("lintai.toml"),
+        r#"
+[presets]
+enable = ["strict"]
+"#,
+    )
+    .unwrap();
+    std::fs::write(temp_dir.join(".claude/settings.json"), "{}\n").unwrap();
+
+    let workspace = load_workspace_config(&temp_dir).unwrap();
+    let resolved = explain_file_config(&workspace, &temp_dir.join(".claude/settings.json"));
+
+    assert_eq!(
+        resolved.enabled_presets,
+        vec!["recommended".to_owned(), "strict".to_owned()]
+    );
+    assert_eq!(
+        resolved.severity_for("SEC340", Category::Security, Severity::Warn),
+        Severity::Deny
     );
 }
 

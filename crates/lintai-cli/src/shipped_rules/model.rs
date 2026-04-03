@@ -1,8 +1,8 @@
-use lintai_api::{CatalogRuleEntry, RuleMetadata, RuleTier};
+use lintai_api::{CatalogRuleEntry, CatalogPublicLane, RuleMetadata, RuleTier};
 
 pub(crate) use lintai_api::{
-    CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleLifecycle,
-    CatalogRuleScope as RuleScope, CatalogSurface,
+    CatalogDetectionClass, CatalogPublicLane as PublicLane, CatalogRemediationSupport,
+    CatalogRuleLifecycle, CatalogRuleScope as RuleScope, CatalogSurface,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -12,6 +12,7 @@ pub(crate) struct SecurityRuleCatalogEntry {
     pub(crate) scope: RuleScope,
     pub(crate) surface: CatalogSurface,
     pub(crate) default_presets: &'static [&'static str],
+    pub(crate) public_lane: PublicLane,
     pub(crate) detection_class: CatalogDetectionClass,
     pub(crate) lifecycle: CatalogRuleLifecycle,
     pub(crate) remediation_support: CatalogRemediationSupport,
@@ -25,6 +26,7 @@ impl From<CatalogRuleEntry> for SecurityRuleCatalogEntry {
             scope: entry.scope,
             surface: entry.surface,
             default_presets: entry.default_presets,
+            public_lane: entry.public_lane,
             detection_class: entry.detection_class,
             lifecycle: entry.lifecycle,
             remediation_support: entry.remediation_support,
@@ -35,6 +37,10 @@ impl From<CatalogRuleEntry> for SecurityRuleCatalogEntry {
 impl SecurityRuleCatalogEntry {
     pub(crate) fn default_presets(self) -> Vec<&'static str> {
         self.default_presets.to_vec()
+    }
+
+    pub(crate) fn public_lane(self) -> CatalogPublicLane {
+        self.public_lane
     }
 
     pub(crate) fn canonical_note(self) -> &'static str {

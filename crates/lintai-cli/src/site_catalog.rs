@@ -55,6 +55,7 @@ struct SiteRule {
     slug: String,
     canonical_path: String,
     summary: String,
+    public_lane: String,
     scope: String,
     surface: String,
     tier: String,
@@ -181,6 +182,7 @@ fn site_rule(
         slug: slug.clone(),
         canonical_path: canonical_rule_path(entry.provider_id, entry.metadata.code),
         summary: entry.metadata.summary.to_owned(),
+        public_lane: entry.public_lane().slug().to_owned(),
         scope: entry.scope.slug().to_owned(),
         surface: entry.surface.slug().to_owned(),
         tier: entry.metadata.tier.slug().to_owned(),
@@ -515,9 +517,10 @@ mod tests {
 
         for rule in &catalog.rules {
             let summary_line = format!(
-                "| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |",
+                "| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |",
                 inline_code(&rule.display_label),
                 escape_markdown_table_cell(&rule.summary),
+                inline_code(&rule.public_lane),
                 tier_label(&rule.tier),
                 inline_code(&rule.lifecycle_state),
                 severity_label(&rule.default_severity),
@@ -550,6 +553,7 @@ mod tests {
                     "- Default Severity: {}",
                     inline_code(severity_label(&rule.default_severity))
                 ),
+                format!("- Public Lane: {}", inline_code(&rule.public_lane)),
                 format!(
                     "- Default Confidence: {}",
                     inline_code(confidence_label(&rule.default_confidence))
@@ -675,7 +679,11 @@ mod tests {
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC340")
             .expect("SEC340 should exist");
-        assert_eq!(sec340.default_presets, vec!["base", "claude"]);
+        assert_eq!(
+            sec340.default_presets,
+            vec!["recommended", "base", "claude"]
+        );
+        assert_eq!(sec340.public_lane, "recommended");
 
         let sec401 = catalog
             .rules
@@ -689,7 +697,8 @@ mod tests {
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC324")
             .expect("SEC324 should exist");
-        assert_eq!(sec324.default_presets, vec!["supply-chain"]);
+        assert_eq!(sec324.default_presets, vec!["recommended", "supply-chain"]);
+        assert_eq!(sec324.public_lane, "recommended");
 
         let sec353 = catalog
             .rules
@@ -704,6 +713,7 @@ mod tests {
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC390")
             .expect("SEC390 should exist");
         assert_eq!(sec390.default_presets, vec!["governance"]);
+        assert_eq!(sec390.public_lane, "governance");
 
         let sec756 = catalog
             .rules
@@ -717,6 +727,11 @@ mod tests {
             .iter()
             .find(|preset| preset.id == "strict")
             .expect("strict preset should exist");
+        let recommended = catalog
+            .presets
+            .iter()
+            .find(|preset| preset.id == "recommended")
+            .expect("recommended preset should exist");
         let advisory = catalog
             .presets
             .iter()
@@ -729,6 +744,13 @@ mod tests {
             .expect("governance preset should exist");
         assert!(matches!(strict.kind, super::SitePresetKind::Overlay));
         assert!(strict.rule_ids.is_empty());
+        assert_eq!(strict.extends, vec!["recommended"]);
+        assert!(matches!(recommended.kind, super::SitePresetKind::Membership));
+        assert!(
+            recommended
+                .rule_ids
+                .contains(&"lintai-ai-security:SEC324".to_owned())
+        );
         assert!(matches!(advisory.kind, super::SitePresetKind::Membership));
         assert!(matches!(governance.kind, super::SitePresetKind::Membership));
         assert!(

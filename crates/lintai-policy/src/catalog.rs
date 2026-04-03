@@ -1,6 +1,7 @@
 use lintai_api::{
-    CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleEntry, CatalogRuleLifecycle,
-    CatalogRuleScope, CatalogSurface, RuleMetadata, RuleTier, declare_rule,
+    CatalogDetectionClass, CatalogPublicLane, CatalogRemediationSupport, CatalogRuleEntry,
+    CatalogRuleLifecycle, CatalogRuleScope, CatalogSurface, RuleMetadata, RuleTier,
+    declare_rule,
 };
 
 use crate::PROVIDER_ID;
@@ -36,6 +37,7 @@ pub struct PolicyRuleCatalogEntry {
     pub provider_id: &'static str,
     pub surface: PolicySurface,
     pub default_presets: &'static [&'static str],
+    pub public_lane: CatalogPublicLane,
     pub detection_class: PolicyDetectionClass,
     pub lifecycle: PolicyRuleLifecycle,
     pub remediation_support: PolicyRemediationSupport,
@@ -92,6 +94,7 @@ const POLICY_RULE_CATALOG_ENTRIES: [CatalogRuleEntry; 3] = [
         scope: CatalogRuleScope::Workspace,
         surface: CatalogSurface::Workspace,
         default_presets: COMPAT_PRESETS,
+        public_lane: CatalogPublicLane::Preview,
         detection_class: CatalogDetectionClass::Structural,
         lifecycle: CatalogRuleLifecycle::Preview {
             blocker: "Needs workspace-level precision review and linked graduation corpus before promotion to Stable.",
@@ -105,6 +108,7 @@ const POLICY_RULE_CATALOG_ENTRIES: [CatalogRuleEntry; 3] = [
         scope: CatalogRuleScope::Workspace,
         surface: CatalogSurface::Workspace,
         default_presets: COMPAT_PRESETS,
+        public_lane: CatalogPublicLane::Preview,
         detection_class: CatalogDetectionClass::Structural,
         lifecycle: CatalogRuleLifecycle::Preview {
             blocker: "Needs workspace-level network precision review and linked graduation corpus before promotion to Stable.",
@@ -118,6 +122,7 @@ const POLICY_RULE_CATALOG_ENTRIES: [CatalogRuleEntry; 3] = [
         scope: CatalogRuleScope::Workspace,
         surface: CatalogSurface::Workspace,
         default_presets: COMPAT_PRESETS,
+        public_lane: CatalogPublicLane::Preview,
         detection_class: CatalogDetectionClass::Structural,
         lifecycle: CatalogRuleLifecycle::Preview {
             blocker: "Needs workspace-level capability-conflict precision review and linked graduation corpus before promotion to Stable.",
@@ -166,6 +171,7 @@ impl From<CatalogRuleEntry> for PolicyRuleCatalogEntry {
                 ),
             },
             default_presets: entry.default_presets,
+            public_lane: entry.public_lane,
             detection_class: match entry.detection_class {
                 CatalogDetectionClass::Structural => PolicyDetectionClass::Structural,
                 CatalogDetectionClass::Heuristic => {
@@ -209,6 +215,7 @@ impl From<PolicyRuleCatalogEntry> for CatalogRuleEntry {
             scope: CatalogRuleScope::Workspace,
             surface: CatalogSurface::Workspace,
             default_presets: entry.default_presets,
+            public_lane: entry.public_lane,
             detection_class: CatalogDetectionClass::Structural,
             lifecycle: match entry.lifecycle {
                 PolicyRuleLifecycle::Preview {

@@ -10,479 +10,480 @@ Canonical catalog for the shipped security rules currently exposed by:
 
 ## Summary
 
-| Code | Summary | Tier | Lifecycle | Severity | Scope | Surface | Detection | Remediation | Presets |
-|---|---|---|---|---|---|---|---|---|---|
-| `SEC101 / MD-HIDDEN-INSTRUCTIONS` | Hidden HTML comment contains dangerous agent instructions | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `safe_fix` | `preview`, `skills` |
-| `SEC102 / MD-DOWNLOAD-EXEC` | Markdown contains remote download-and-execute instruction outside code blocks | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `suggestion` | `preview`, `skills` |
-| `SEC103 / MD-HIDDEN-DOWNLOAD-EXEC` | Hidden HTML comment contains remote download-and-execute instruction | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `safe_fix` | `preview`, `skills` |
-| `SEC104 / MD-BASE64-EXEC` | Markdown contains a base64-decoded executable payload outside code blocks | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC105 / MD-PATH-TRAVERSAL` | Markdown instructions reference parent-directory traversal for file access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC201 / HOOK-DOWNLOAD-EXEC` | Hook script downloads remote code and executes it | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
-| `SEC202 / HOOK-SECRET-EXFIL` | Hook script appears to exfiltrate secrets through a network call | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
-| `SEC203 / HOOK-PLAIN-HTTP-SECRET-EXFIL` | Hook script sends secret material to an insecure http:// endpoint | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
-| `SEC204 / HOOK-TLS-BYPASS` | Hook script disables TLS or certificate verification for a network call | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC205 / HOOK-STATIC-AUTH` | Hook script embeds static authentication material in a network call | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC206 / HOOK-BASE64-EXEC` | Hook script decodes a base64 payload and executes it | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
-| `SEC301 / MCP-SHELL-WRAPPER` | MCP configuration shells out through sh -c or bash -c | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC302 / MCP-PLAIN-HTTP-ENDPOINT` | Configuration contains an insecure http:// endpoint | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `suggestion` | `base`, `mcp` |
-| `SEC303 / MCP-CREDENTIAL-ENV-PASSTHROUGH` | MCP configuration passes through credential environment variables | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC304 / MCP-TLS-BYPASS` | Configuration disables TLS or certificate verification | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC305 / MCP-STATIC-AUTH` | Configuration embeds static authentication material in a connection or auth value | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC306 / MCP-HIDDEN-INSTRUCTIONS` | JSON configuration description contains override-style hidden instructions | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
-| `SEC307 / MCP-SENSITIVE-ENV-REFERENCE` | Configuration forwards sensitive environment variable references | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
-| `SEC308 / MCP-SUSPICIOUS-ENDPOINT` | Configuration points at a suspicious remote endpoint | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
-| `SEC309 / MCP-LITERAL-SECRET` | Configuration commits literal secret material in env, auth, or header values | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC310 / MCP-METADATA-HOST-LITERAL` | Configuration endpoint targets a metadata or private-network host literal | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC311 / PLUGIN-UNSAFE-PATH` | Cursor plugin manifest contains an unsafe absolute or parent-traversing path | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC312 / MD-PRIVATE-KEY` | Markdown contains committed private key material | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `base`, `skills` |
-| `SEC313 / MD-PIPE-SHELL` | Fenced shell example pipes remote content directly into a shell | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC314 / TOOL-MISSING-MACHINE-FIELDS` | MCP-style tool descriptor is missing required machine fields | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC315 / TOOL-DUPLICATE-NAMES` | MCP-style tool descriptor collection contains duplicate tool names | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC316 / OPENAI-STRICT-ADDITIONAL-PROPERTIES` | OpenAI strict tool schema omits recursive additionalProperties: false | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC317 / OPENAI-STRICT-REQUIRED-COVERAGE` | OpenAI strict tool schema does not require every declared property | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC318 / ANTHROPIC-STRICT-ADDITIONAL-PROPERTIES` | Anthropic strict tool input schema omits additionalProperties: false | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC319 / SERVER-REMOTE-URL` | server.json remotes entry uses an insecure or non-public remote URL | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC320 / SERVER-UNDEFINED-URL-VAR` | server.json remotes URL references an undefined template variable | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC321 / SERVER-LITERAL-AUTH-HEADER` | server.json remotes header commits literal authentication material | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC322 / SERVER-UNDEFINED-HEADER-VAR` | server.json remotes header value references an undefined template variable | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC323 / SERVER-AUTH-SECRET-FLAG` | server.json auth header carries material without an explicit secret flag | Preview | `preview_blocked` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC324 / GHA-UNPINNED-ACTION` | GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
-| `SEC325 / GHA-UNTRUSTED-RUN-INTERPOLATION` | GitHub Actions workflow interpolates untrusted expression data directly inside a run command | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
-| `SEC326 / GHA-PR-TARGET-HEAD-CHECKOUT` | GitHub Actions pull_request_target workflow checks out untrusted pull request head content | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
-| `SEC327 / GHA-WRITE-ALL-PERMISSIONS` | GitHub Actions workflow grants GITHUB_TOKEN write-all permissions | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
-| `SEC328 / GHA-WRITE-CAPABLE-THIRD-PARTY-ACTION` | GitHub Actions workflow combines explicit write-capable permissions with a third-party action | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
-| `SEC329 / MCP-MUTABLE-LAUNCHER` | MCP configuration launches tooling through a mutable package runner | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC330 / MCP-DOWNLOAD-EXEC` | MCP configuration command downloads remote content and pipes it into a shell | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC331 / MCP-TLS-BYPASS` | MCP configuration command disables TLS verification in a network-capable execution path | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC335 / MD-METADATA-SERVICE-ACCESS` | AI-native markdown contains a direct cloud metadata-service access example | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC336 / MCP-BROAD-ENVFILE` | Repo-local MCP client config loads a broad dotenv-style envFile | Preview | `preview_blocked` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC337 / MCP-DOCKER-UNPINNED-IMAGE` | MCP configuration launches Docker with an image reference that is not digest-pinned | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC338 / MCP-DOCKER-SENSITIVE-MOUNT` | MCP configuration launches Docker with a bind mount of sensitive host material | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC339 / MCP-DOCKER-HOST-ESCAPE` | MCP configuration launches Docker with a host-escape or privileged runtime flag | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC340 / CLAUDE-HOOK-MUTABLE-LAUNCHER` | Claude settings command hook uses a mutable package launcher | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC341 / CLAUDE-HOOK-DOWNLOAD-EXEC` | Claude settings command hook downloads remote content and pipes it into a shell | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC342 / CLAUDE-HOOK-TLS-BYPASS` | Claude settings command hook disables TLS verification in a network-capable execution path | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC343 / PLUGIN-HOOK-MUTABLE-LAUNCHER` | Plugin hook command uses a mutable package launcher | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC344 / PLUGIN-HOOK-DOWNLOAD-EXEC` | Plugin hook command downloads remote content and pipes it into a shell | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC345 / PLUGIN-HOOK-TLS-BYPASS` | Plugin hook command disables TLS verification in a network-capable execution path | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC346 / MCP-DOCKER-PULL-ALWAYS` | MCP configuration forces Docker to refresh from a mutable registry source | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC347 / MD-MCP-MUTABLE-LAUNCHER` | AI-native markdown example launches MCP through a mutable package runner | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC348 / MD-DOCKER-MUTABLE-IMAGE` | AI-native markdown Docker example uses a mutable registry image | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC349 / MD-DOCKER-HOST-ESCAPE` | AI-native markdown Docker example uses a host-escape or privileged runtime pattern | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC350 / MD-UNTRUSTED-INSTRUCTION-PROMOTION` | Instruction markdown promotes untrusted external content to developer/system-level instructions | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC351 / MD-APPROVAL-BYPASS` | AI-native instruction explicitly disables user approval or confirmation | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC352 / MD-UNSCOPED-BASH` | AI-native markdown frontmatter grants unscoped Bash tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC353 / COPILOT-4K` | GitHub Copilot instruction markdown exceeds the 4000-character guidance limit | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
-| `SEC354 / COPILOT-PATH-APPLYTO` | Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
-| `SEC355 / MD-WILDCARD-TOOLS` | AI-native markdown frontmatter grants wildcard tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC356 / PLUGIN-AGENT-PERMISSIONMODE` | Plugin agent frontmatter sets `permissionMode` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC357 / PLUGIN-AGENT-HOOKS` | Plugin agent frontmatter sets `hooks` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC358 / PLUGIN-AGENT-MCPSERVERS` | Plugin agent frontmatter sets `mcpServers` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC359 / CURSOR-RULE-ALWAYSAPPLY` | Cursor rule frontmatter `alwaysApply` must be boolean | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC360 / CURSOR-RULE-GLOBS` | Cursor rule frontmatter `globs` must be a sequence of patterns | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC361 / CLAUDE-SETTINGS-SCHEMA` | Claude settings file is missing a top-level `$schema` reference | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC362 / CLAUDE-BASH-WILDCARD` | Claude settings permissions allow `Bash(*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC363 / CLAUDE-HOME-HOOK-PATH` | Claude settings hook command uses a home-directory path in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC364 / CLAUDE-BYPASS-PERMISSIONS` | Claude settings set `permissions.defaultMode` to `bypassPermissions` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC365 / CLAUDE-HTTP-HOOK-URL` | Claude settings allow non-HTTPS HTTP hook URLs in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC366 / CLAUDE-HTTP-HOOK-HOST` | Claude settings allow dangerous host literals in `allowedHttpHookUrls` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC367 / CLAUDE-WEBFETCH-WILDCARD` | Claude settings permissions allow `WebFetch(*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC368 / CLAUDE-ABS-HOOK-PATH` | Claude settings hook command uses a repo-external absolute path in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC369 / CLAUDE-WRITE-WILDCARD` | Claude settings permissions allow `Write(*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC370 / COPILOT-PATH-SUFFIX` | Path-specific GitHub Copilot instruction markdown under `.github/instructions/` uses the wrong file suffix | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
-| `SEC371 / COPILOT-APPLYTO-TYPE` | Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` shape | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
-| `SEC372 / CLAUDE-READ-WILDCARD` | Claude settings permissions allow `Read(*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC373 / CLAUDE-EDIT-WILDCARD` | Claude settings permissions allow `Edit(*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC374 / CLAUDE-WEBSEARCH-WILDCARD` | Claude settings permissions allow `WebSearch(*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC375 / CLAUDE-GLOB-WILDCARD` | Claude settings permissions allow `Glob(*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC376 / CLAUDE-GREP-WILDCARD` | Claude settings permissions allow `Grep(*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC377 / COPILOT-APPLYTO-GLOB` | Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` glob pattern | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
-| `SEC378 / CURSOR-ALWAYSAPPLY-GLOBS` | Cursor rule frontmatter should not set `globs` when `alwaysApply` is `true` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC379 / CURSOR-UNKNOWN-FRONTMATTER` | Cursor rule frontmatter contains an unknown key | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC380 / CURSOR-DESCRIPTION` | Cursor rule frontmatter should include `description` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC381 / CLAUDE-HOOK-TIMEOUT` | Claude settings command hook should set `timeout` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC382 / CLAUDE-HOOK-MATCHER-EVENT` | Claude settings should not use `matcher` on unsupported hook events | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC383 / CLAUDE-HOOK-MISSING-MATCHER` | Claude settings should set `matcher` on matcher-capable hook events | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC384 / CLAUDE-WEBSEARCH-UNSCOPED` | Claude settings permissions allow bare `WebSearch` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC385 / CLAUDE-GIT-PUSH-PERMISSION` | Claude settings permissions allow `Bash(git push)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC386 / CLAUDE-GIT-CHECKOUT-PERMISSION` | Claude settings permissions allow `Bash(git checkout:*)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC387 / CLAUDE-GIT-COMMIT-PERMISSION` | Claude settings permissions allow `Bash(git commit:*)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC388 / CLAUDE-GIT-STASH-PERMISSION` | Claude settings permissions allow `Bash(git stash:*)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC389 / MD-WEBSEARCH-UNSCOPED` | AI-native markdown frontmatter grants bare `WebSearch` tool access | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC390 / MD-GIT-PUSH-PERMISSION` | AI-native markdown frontmatter grants `Bash(git push)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC391 / MD-GIT-CHECKOUT-PERMISSION` | AI-native markdown frontmatter grants `Bash(git checkout:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC392 / MD-GIT-COMMIT-PERMISSION` | AI-native markdown frontmatter grants `Bash(git commit:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC393 / MD-GIT-STASH-PERMISSION` | AI-native markdown frontmatter grants `Bash(git stash:*)` tool access | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC394 / MCP-AUTOAPPROVE-WILDCARD` | MCP configuration auto-approves all tools with `autoApprove: ["*"]` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC395 / MCP-AUTOAPPROVE-TOOLS` | MCP configuration auto-approves all tools with `autoApproveTools: true` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC396 / MCP-TRUST-TOOLS` | MCP configuration fully trusts tools with `trustTools: true` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC397 / MCP-SANDBOX-DISABLED` | MCP configuration disables sandboxing with `sandbox: false` or `disableSandbox: true` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC398 / MCP-CAPABILITIES-WILDCARD` | MCP configuration grants all capabilities with `capabilities: ["*"]` or `capabilities: "*"` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC399 / CLAUDE-NPX-PERMISSION` | Claude settings permissions allow `Bash(npx ...)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC400 / CLAUDE-ENABLED-MCPJSON-SERVERS` | Claude settings enable `enabledMcpjsonServers` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC401 / POLICY-EXEC-MISMATCH` | Project policy forbids execution, but repository contains executable behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
-| `SEC402 / POLICY-NETWORK-MISMATCH` | Project policy forbids network access, but repository contains network behavior | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
-| `SEC403 / POLICY-SKILL-CAPABILITIES-MISMATCH` | Skill frontmatter capabilities conflict with project policy | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
-| `SEC404 / MD-WEBFETCH-UNSCOPED` | AI-native markdown frontmatter grants bare `WebFetch` tool access | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC405 / CLAUDE-PACKAGE-INSTALL-PERMISSION` | Claude settings permissions allow package installation commands in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC406 / CLAUDE-GIT-ADD-PERMISSION` | Claude settings permissions allow `Bash(git add:*)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC407 / CLAUDE-GIT-CLONE-PERMISSION` | Claude settings permissions allow `Bash(git clone:*)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC408 / CLAUDE-GH-PR-PERMISSION` | Claude settings permissions allow `Bash(gh pr:*)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC409 / CLAUDE-GIT-FETCH-PERMISSION` | Claude settings permissions allow `Bash(git fetch:*)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC410 / CLAUDE-GIT-LS-REMOTE-PERMISSION` | Claude settings permissions allow `Bash(git ls-remote:*)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC411 / CLAUDE-CURL-PERMISSION` | Claude settings permissions allow `Bash(curl:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC412 / CLAUDE-WGET-PERMISSION` | Claude settings permissions allow `Bash(wget:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC413 / CLAUDE-GIT-CONFIG-PERMISSION` | Claude settings permissions allow `Bash(git config:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC414 / CLAUDE-GIT-TAG-PERMISSION` | Claude settings permissions allow `Bash(git tag:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC415 / CLAUDE-GIT-BRANCH-PERMISSION` | Claude settings permissions allow `Bash(git branch:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC416 / MD-CLAUDE-PIP-INSTALL` | AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC417 / MD-PIP-GIT-UNPINNED` | AI-native markdown installs Python packages from an unpinned `git+https://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC418 / CLAUDE-WEBFETCH-RAW-GITHUB` | Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC419 / MD-CURL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(curl:*)` authority | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC420 / MD-WGET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(wget:*)` authority | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC421 / MD-GIT-CLONE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git clone:*)` authority | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC422 / MCP-COMMAND-SUDO` | MCP configuration launches the server through `sudo` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC423 / MD-READ-UNSCOPED` | AI-native markdown frontmatter grants bare `Read` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC424 / MD-WRITE-UNSCOPED` | AI-native markdown frontmatter grants bare `Write` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC425 / MD-EDIT-UNSCOPED` | AI-native markdown frontmatter grants bare `Edit` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC426 / MD-GLOB-UNSCOPED` | AI-native markdown frontmatter grants bare `Glob` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC427 / MD-GREP-UNSCOPED` | AI-native markdown frontmatter grants bare `Grep` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC428 / MD-READ-UNSAFE-PATH` | AI-native markdown frontmatter grants `Read(...)` over an unsafe repo-external path | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC429 / MD-WRITE-UNSAFE-PATH` | AI-native markdown frontmatter grants `Write(...)` over an unsafe repo-external path | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC430 / MD-EDIT-UNSAFE-PATH` | AI-native markdown frontmatter grants `Edit(...)` over an unsafe repo-external path | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC431 / MD-GLOB-UNSAFE-PATH` | AI-native markdown frontmatter grants `Glob(...)` over an unsafe repo-external path | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC432 / MD-GIT-ADD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git add:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC433 / MD-GIT-FETCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git fetch:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC434 / MD-WEBFETCH-RAW-GITHUB` | AI-native markdown frontmatter grants `WebFetch(domain:raw.githubusercontent.com)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC435 / MD-GIT-CONFIG-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git config:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC436 / MD-GIT-TAG-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git tag:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC437 / MD-GIT-BRANCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git branch:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC438 / MD-GIT-RESET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git reset:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC439 / MD-GIT-CLEAN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git clean:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC440 / MD-GIT-RESTORE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git restore:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC441 / MD-GIT-REBASE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git rebase:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC442 / MD-GIT-MERGE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git merge:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC443 / MD-GIT-CHERRY-PICK-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git cherry-pick:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC444 / MD-GIT-APPLY-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git apply:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC445 / MD-GIT-AM-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git am:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC446 / MCP-ARGS-SUDO` | MCP configuration passes `sudo` as the first launch argument | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC447 / MD-PACKAGE-INSTALL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants package installation authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC448 / MD-PIP-TRUSTED-HOST` | AI-native markdown installs Python packages with `--trusted-host` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC449 / MD-PIP-HTTP-INDEX` | AI-native markdown installs Python packages from an insecure `http://` package index | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC450 / MD-NPM-HTTP-REGISTRY` | AI-native markdown installs JavaScript packages from an insecure `http://` registry | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC451 / MD-CARGO-HTTP-GIT-INSTALL` | AI-native markdown installs Rust packages from an insecure `http://` git source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC452 / MD-CARGO-HTTP-INDEX` | AI-native markdown installs Rust packages from an insecure `http://` index | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC453 / MD-PIP-HTTP-SOURCE` | AI-native markdown installs Python packages from an insecure direct `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC454 / MD-NPM-HTTP-SOURCE` | AI-native markdown installs JavaScript packages from an insecure direct `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC455 / MD-PIP-HTTP-GIT-INSTALL` | AI-native markdown installs Python packages from an insecure `git+http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC456 / MD-PIP-HTTP-FIND-LINKS` | AI-native markdown installs Python packages with insecure `http://` find-links | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC457 / MD-JS-PACKAGE-STRICT-SSL-FALSE` | AI-native markdown disables strict SSL verification for JavaScript package manager config | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC458 / MD-PIP-CONFIG-HTTP-INDEX` | AI-native markdown configures Python package resolution with an insecure `http://` package index | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC459 / MD-JS-PACKAGE-CONFIG-HTTP-REGISTRY` | AI-native markdown configures a JavaScript package manager with an insecure `http://` registry | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC460 / MD-PIP-CONFIG-HTTP-FIND-LINKS` | AI-native markdown configures Python package discovery with insecure `http://` find-links | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC461 / MD-PIP-CONFIG-TRUSTED-HOST` | AI-native markdown configures Python package resolution with `trusted-host` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC462 / MD-NETWORK-TLS-BYPASS` | AI-native markdown disables TLS verification for a network-capable command | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC463 / MD-SUDO-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(sudo:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC464 / MD-GIT-HTTP-CLONE` | AI-native markdown clones a Git repository from an insecure `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC465 / MD-GIT-HTTP-REMOTE` | AI-native markdown configures a Git remote with an insecure `http://` source | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC466 / MD-RM-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(rm:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC467 / MD-CHMOD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chmod:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC468 / MD-CHOWN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chown:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC469 / MD-CHGRP-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chgrp:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC470 / MD-SU-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(su:*)` authority | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC471 / MD-GIT-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `http.sslVerify false` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC472 / MD-GIT-SSL-NO-VERIFY` | AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC473 / MD-GIT-INLINE-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC474 / MD-GH-PR-PERMISSION` | AI-native markdown frontmatter grants `Bash(gh pr:*)` tool access | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC475 / CLAUDE-READ-UNSAFE-PATH` | Claude settings permissions allow `Read(...)` over an unsafe path in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC476 / CLAUDE-WRITE-UNSAFE-PATH` | Claude settings permissions allow `Write(...)` over an unsafe path in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC477 / CLAUDE-EDIT-UNSAFE-PATH` | Claude settings permissions allow `Edit(...)` over an unsafe path in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC478 / CLAUDE-GIT-RESET-PERMISSION` | Claude settings permissions allow `Bash(git reset:*)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC479 / CLAUDE-GIT-CLEAN-PERMISSION` | Claude settings permissions allow `Bash(git clean:*)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC480 / CLAUDE-GIT-RESTORE-PERMISSION` | Claude settings permissions allow `Bash(git restore:*)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC481 / CLAUDE-GIT-REBASE-PERMISSION` | Claude settings permissions allow `Bash(git rebase:*)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC482 / CLAUDE-GIT-MERGE-PERMISSION` | Claude settings permissions allow `Bash(git merge:*)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC483 / CLAUDE-GIT-CHERRY-PICK-PERMISSION` | Claude settings permissions allow `Bash(git cherry-pick:*)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC484 / CLAUDE-GIT-APPLY-PERMISSION` | Claude settings permissions allow `Bash(git apply:*)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC485 / CLAUDE-GIT-AM-PERMISSION` | Claude settings permissions allow `Bash(git am:*)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC486 / CLAUDE-GLOB-UNSAFE-PATH` | Claude settings permissions allow `Glob(...)` over an unsafe path in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC487 / CLAUDE-GREP-UNSAFE-PATH` | Claude settings permissions allow `Grep(...)` over an unsafe path in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC488 / CLAUDE-UVX-PERMISSION` | Claude settings permissions allow `Bash(uvx ...)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC489 / CLAUDE-PNPM-DLX-PERMISSION` | Claude settings permissions allow `Bash(pnpm dlx ...)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC490 / CLAUDE-YARN-DLX-PERMISSION` | Claude settings permissions allow `Bash(yarn dlx ...)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC491 / CLAUDE-PIPX-RUN-PERMISSION` | Claude settings permissions allow `Bash(pipx run ...)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC492 / CLAUDE-NPM-EXEC-PERMISSION` | Claude settings permissions allow `Bash(npm exec ...)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC493 / CLAUDE-BUNX-PERMISSION` | Claude settings permissions allow `Bash(bunx ...)` in a shared committed config | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC494 / MD-NPM-EXEC-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(npm exec:*)` tool access | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC495 / MD-BUNX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(bunx:*)` tool access | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC496 / MD-UVX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(uvx:*)` tool access | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC497 / MD-PNPM-DLX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(pnpm dlx:*)` tool access | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC498 / MD-YARN-DLX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(yarn dlx:*)` tool access | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC499 / MD-PIPX-RUN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(pipx run:*)` tool access | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC500 / MD-NPX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(npx:*)` tool access | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC501 / MD-GIT-LS-REMOTE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git ls-remote:*)` tool access | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC502 / CLAUDE-GH-API-POST-PERMISSION` | Claude settings permissions allow `Bash(gh api --method POST:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC503 / CLAUDE-GH-ISSUE-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh issue create:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC504 / CLAUDE-GH-REPO-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh repo create:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC505 / MD-GH-API-POST-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method POST:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC506 / MD-GH-ISSUE-CREATE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh issue create:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC507 / MD-GH-REPO-CREATE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo create:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC508 / CLAUDE-GH-SECRET-SET-PERMISSION` | Claude settings permissions allow `Bash(gh secret set:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC509 / CLAUDE-GH-VARIABLE-SET-PERMISSION` | Claude settings permissions allow `Bash(gh variable set:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC510 / CLAUDE-GH-WORKFLOW-RUN-PERMISSION` | Claude settings permissions allow `Bash(gh workflow run:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC511 / MD-GH-SECRET-SET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh secret set:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC512 / MD-GH-VARIABLE-SET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh variable set:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC513 / MD-GH-WORKFLOW-RUN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh workflow run:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC514 / CLAUDE-GH-SECRET-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh secret delete:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC515 / CLAUDE-GH-VARIABLE-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh variable delete:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC516 / CLAUDE-GH-WORKFLOW-DISABLE-PERMISSION` | Claude settings permissions allow `Bash(gh workflow disable:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC517 / MD-GH-SECRET-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh secret delete:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC518 / MD-GH-VARIABLE-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh variable delete:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC519 / MD-GH-WORKFLOW-DISABLE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh workflow disable:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC520 / MD-READ-WILDCARD` | AI-native markdown frontmatter grants `Read(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC521 / MD-WRITE-WILDCARD` | AI-native markdown frontmatter grants `Write(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC522 / MD-EDIT-WILDCARD` | AI-native markdown frontmatter grants `Edit(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC523 / MD-GLOB-WILDCARD` | AI-native markdown frontmatter grants `Glob(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC524 / MD-GREP-WILDCARD` | AI-native markdown frontmatter grants `Grep(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC525 / MD-WEBFETCH-WILDCARD` | AI-native markdown frontmatter grants `WebFetch(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC526 / MD-WEBSEARCH-WILDCARD` | AI-native markdown frontmatter grants `WebSearch(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC527 / MD-BASH-WILDCARD` | AI-native markdown frontmatter grants `Bash(*)` wildcard access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC528 / CLAUDE-GH-API-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh api --method DELETE:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC529 / MD-GH-API-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method DELETE:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC530 / CLAUDE-GH-API-PATCH-PERMISSION` | Claude settings permissions allow `Bash(gh api --method PATCH:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC531 / CLAUDE-GH-API-PUT-PERMISSION` | Claude settings permissions allow `Bash(gh api --method PUT:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC532 / MD-GH-API-PATCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method PATCH:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC533 / MD-GH-API-PUT-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method PUT:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC534 / CLAUDE-GH-REPO-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh repo delete:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC535 / MD-GH-REPO-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo delete:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC536 / CLAUDE-GH-RELEASE-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh release delete:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC537 / MD-GH-RELEASE-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh release delete:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC538 / CLAUDE-GH-REPO-EDIT-PERMISSION` | Claude settings permissions allow `Bash(gh repo edit:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC539 / MD-GH-REPO-EDIT-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo edit:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC540 / CLAUDE-GH-RELEASE-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh release create:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC541 / MD-GH-RELEASE-CREATE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh release create:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC542 / CLAUDE-GH-REPO-TRANSFER-PERMISSION` | Claude settings permissions allow `Bash(gh repo transfer:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC543 / MD-GH-REPO-TRANSFER-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo transfer:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC544 / CLAUDE-GH-RELEASE-UPLOAD-PERMISSION` | Claude settings permissions allow `Bash(gh release upload:*)` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC545 / MD-GH-RELEASE-UPLOAD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh release upload:*)` tool access | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC546 / MCP-AUTOAPPROVE-BASH-WILDCARD` | MCP configuration auto-approves blanket shell execution with `autoApprove: ["Bash(*)"]` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC547 / MCP-AUTOAPPROVE-CURL` | MCP configuration auto-approves `Bash(curl:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC548 / MCP-AUTOAPPROVE-WGET` | MCP configuration auto-approves `Bash(wget:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC549 / MCP-AUTOAPPROVE-SUDO` | MCP configuration auto-approves `Bash(sudo:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC550 / MCP-AUTOAPPROVE-RM` | MCP configuration auto-approves `Bash(rm:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC551 / MCP-AUTOAPPROVE-GIT-PUSH` | MCP configuration auto-approves `Bash(git push)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC552 / MCP-AUTOAPPROVE-GH-API-POST` | MCP configuration auto-approves `Bash(gh api --method POST:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC553 / MCP-AUTOAPPROVE-GIT-CHECKOUT` | MCP configuration auto-approves `Bash(git checkout:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC554 / MCP-AUTOAPPROVE-GIT-COMMIT` | MCP configuration auto-approves `Bash(git commit:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC555 / MCP-AUTOAPPROVE-GIT-RESET` | MCP configuration auto-approves `Bash(git reset:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC556 / MCP-AUTOAPPROVE-GIT-CLEAN` | MCP configuration auto-approves `Bash(git clean:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC557 / MCP-AUTOAPPROVE-GH-API-DELETE` | MCP configuration auto-approves `Bash(gh api --method DELETE:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC558 / MCP-AUTOAPPROVE-GH-API-PATCH` | MCP configuration auto-approves `Bash(gh api --method PATCH:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC559 / MCP-AUTOAPPROVE-GH-API-PUT` | MCP configuration auto-approves `Bash(gh api --method PUT:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC560 / MCP-AUTOAPPROVE-GH-ISSUE-CREATE` | MCP configuration auto-approves `Bash(gh issue create:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC561 / MCP-AUTOAPPROVE-GH-REPO-CREATE` | MCP configuration auto-approves `Bash(gh repo create:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC562 / MCP-AUTOAPPROVE-GH-REPO-DELETE` | MCP configuration auto-approves `Bash(gh repo delete:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC563 / MCP-AUTOAPPROVE-GH-REPO-EDIT` | MCP configuration auto-approves `Bash(gh repo edit:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC564 / MCP-AUTOAPPROVE-GH-SECRET-SET` | MCP configuration auto-approves `Bash(gh secret set:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC565 / MCP-AUTOAPPROVE-GH-VARIABLE-SET` | MCP configuration auto-approves `Bash(gh variable set:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC566 / MCP-AUTOAPPROVE-GH-WORKFLOW-RUN` | MCP configuration auto-approves `Bash(gh workflow run:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC567 / MCP-AUTOAPPROVE-READ-WILDCARD` | MCP configuration auto-approves `Read(*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC568 / MCP-AUTOAPPROVE-WRITE-WILDCARD` | MCP configuration auto-approves `Write(*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC569 / MCP-AUTOAPPROVE-EDIT-WILDCARD` | MCP configuration auto-approves `Edit(*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC570 / MCP-AUTOAPPROVE-GLOB-WILDCARD` | MCP configuration auto-approves `Glob(*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC571 / MCP-AUTOAPPROVE-GREP-WILDCARD` | MCP configuration auto-approves `Grep(*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC572 / MCP-AUTOAPPROVE-WEBFETCH-WILDCARD` | MCP configuration auto-approves `WebFetch(*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC573 / MCP-AUTOAPPROVE-WEBSEARCH-WILDCARD` | MCP configuration auto-approves `WebSearch(*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC574 / MCP-AUTOAPPROVE-READ-UNSAFE-PATH` | MCP configuration auto-approves `Read(...)` over an unsafe path through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC575 / MCP-AUTOAPPROVE-WRITE-UNSAFE-PATH` | MCP configuration auto-approves `Write(...)` over an unsafe path through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC576 / MCP-AUTOAPPROVE-EDIT-UNSAFE-PATH` | MCP configuration auto-approves `Edit(...)` over an unsafe path through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC577 / MCP-AUTOAPPROVE-GLOB-UNSAFE-PATH` | MCP configuration auto-approves `Glob(...)` over an unsafe path through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC578 / MCP-AUTOAPPROVE-GREP-UNSAFE-PATH` | MCP configuration auto-approves `Grep(...)` over an unsafe path through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC579 / MCP-AUTOAPPROVE-GH-SECRET-DELETE` | MCP configuration auto-approves `Bash(gh secret delete:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC580 / MCP-AUTOAPPROVE-GH-VARIABLE-DELETE` | MCP configuration auto-approves `Bash(gh variable delete:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC581 / MCP-AUTOAPPROVE-GH-WORKFLOW-DISABLE` | MCP configuration auto-approves `Bash(gh workflow disable:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC582 / MCP-AUTOAPPROVE-GH-REPO-TRANSFER` | MCP configuration auto-approves `Bash(gh repo transfer:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC583 / MCP-AUTOAPPROVE-GH-RELEASE-CREATE` | MCP configuration auto-approves `Bash(gh release create:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC584 / MCP-AUTOAPPROVE-GH-RELEASE-DELETE` | MCP configuration auto-approves `Bash(gh release delete:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC585 / MCP-AUTOAPPROVE-GH-RELEASE-UPLOAD` | MCP configuration auto-approves `Bash(gh release upload:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC586 / MCP-AUTOAPPROVE-NPX` | MCP configuration auto-approves `Bash(npx ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC587 / MCP-AUTOAPPROVE-UVX` | MCP configuration auto-approves `Bash(uvx ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC588 / MCP-AUTOAPPROVE-NPM-EXEC` | MCP configuration auto-approves `Bash(npm exec ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC589 / MCP-AUTOAPPROVE-BUNX` | MCP configuration auto-approves `Bash(bunx ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC590 / MCP-AUTOAPPROVE-PNPM-DLX` | MCP configuration auto-approves `Bash(pnpm dlx ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC591 / MCP-AUTOAPPROVE-YARN-DLX` | MCP configuration auto-approves `Bash(yarn dlx ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC592 / MCP-AUTOAPPROVE-PIPX-RUN` | MCP configuration auto-approves `Bash(pipx run ...)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC593 / MCP-AUTOAPPROVE-PACKAGE-INSTALL` | MCP configuration auto-approves package installation commands through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC594 / MCP-AUTOAPPROVE-GIT-CLONE` | MCP configuration auto-approves `Bash(git clone:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC595 / MCP-AUTOAPPROVE-GIT-FETCH` | MCP configuration auto-approves `Bash(git fetch:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC596 / MCP-AUTOAPPROVE-GIT-LS-REMOTE` | MCP configuration auto-approves `Bash(git ls-remote:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC597 / MCP-AUTOAPPROVE-GIT-ADD` | MCP configuration auto-approves `Bash(git add:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC598 / MCP-AUTOAPPROVE-GIT-CONFIG` | MCP configuration auto-approves `Bash(git config:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC599 / MCP-AUTOAPPROVE-GIT-TAG` | MCP configuration auto-approves `Bash(git tag:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC600 / MCP-AUTOAPPROVE-GIT-BRANCH` | MCP configuration auto-approves `Bash(git branch:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC601 / MCP-AUTOAPPROVE-GH-PR` | MCP configuration auto-approves `Bash(gh pr:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC602 / MCP-AUTOAPPROVE-GIT-STASH` | MCP configuration auto-approves `Bash(git stash:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC603 / MCP-AUTOAPPROVE-GIT-RESTORE` | MCP configuration auto-approves `Bash(git restore:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC604 / MCP-AUTOAPPROVE-GIT-REBASE` | MCP configuration auto-approves `Bash(git rebase:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC605 / MCP-AUTOAPPROVE-GIT-MERGE` | MCP configuration auto-approves `Bash(git merge:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC606 / MCP-AUTOAPPROVE-GIT-CHERRY-PICK` | MCP configuration auto-approves `Bash(git cherry-pick:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC607 / MCP-AUTOAPPROVE-GIT-APPLY` | MCP configuration auto-approves `Bash(git apply:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC608 / MCP-AUTOAPPROVE-GIT-AM` | MCP configuration auto-approves `Bash(git am:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC609 / MCP-AUTOAPPROVE-CRONTAB` | MCP configuration auto-approves `Bash(crontab:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC610 / MCP-AUTOAPPROVE-SYSTEMCTL-ENABLE` | MCP configuration auto-approves `Bash(systemctl enable:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC611 / MCP-AUTOAPPROVE-LAUNCHCTL-LOAD` | MCP configuration auto-approves `Bash(launchctl load:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC612 / MCP-AUTOAPPROVE-LAUNCHCTL-BOOTSTRAP` | MCP configuration auto-approves `Bash(launchctl bootstrap:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC613 / MCP-AUTOAPPROVE-CHMOD` | MCP configuration auto-approves `Bash(chmod:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC614 / MCP-AUTOAPPROVE-CHOWN` | MCP configuration auto-approves `Bash(chown:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC615 / MCP-AUTOAPPROVE-CHGRP` | MCP configuration auto-approves `Bash(chgrp:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC616 / MCP-AUTOAPPROVE-SU` | MCP configuration auto-approves `Bash(su:*)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC617 / MCP-AUTOAPPROVE-WEBFETCH-RAW-GITHUB` | MCP configuration auto-approves `WebFetch(domain:raw.githubusercontent.com)` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC618 / MCP-AUTOAPPROVE-READ` | MCP configuration auto-approves bare `Read` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC619 / MCP-AUTOAPPROVE-WRITE` | MCP configuration auto-approves bare `Write` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC620 / MCP-AUTOAPPROVE-EDIT` | MCP configuration auto-approves bare `Edit` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC621 / MCP-AUTOAPPROVE-GLOB` | MCP configuration auto-approves bare `Glob` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC622 / MCP-AUTOAPPROVE-GREP` | MCP configuration auto-approves bare `Grep` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC623 / MCP-AUTOAPPROVE-WEBFETCH` | MCP configuration auto-approves bare `WebFetch` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC624 / MCP-AUTOAPPROVE-WEBSEARCH` | MCP configuration auto-approves bare `WebSearch` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC625 / MCP-AUTOAPPROVE-BASH` | MCP configuration auto-approves bare `Bash` through `autoApprove` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC626 / CLAUDE-BASH` | Claude settings permissions allow bare `Bash` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC627 / CLAUDE-READ` | Claude settings permissions allow bare `Read` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC628 / CLAUDE-WRITE` | Claude settings permissions allow bare `Write` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC629 / CLAUDE-EDIT` | Claude settings permissions allow bare `Edit` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC630 / CLAUDE-GLOB` | Claude settings permissions allow bare `Glob` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC631 / CLAUDE-GREP` | Claude settings permissions allow bare `Grep` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC632 / CLAUDE-WEBFETCH` | Claude settings permissions allow bare `WebFetch` in a shared committed config | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC633` | Hook script attempts destructive root deletion | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC634` | Hook script accesses a sensitive system password file | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC635` | Hook script writes to a shell profile startup file | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC636` | Hook script writes to SSH authorized_keys | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC637` | MCP configuration command attempts destructive root deletion | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC638` | MCP configuration command accesses a sensitive system password file | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC639` | MCP configuration command writes to a shell profile startup file | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC640` | MCP configuration command writes to SSH authorized_keys | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC641` | Claude settings command hook attempts destructive root deletion | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC642` | Claude settings command hook accesses a sensitive system password file | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC643` | Claude settings command hook writes to a shell profile startup file | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC644` | Claude settings command hook writes to SSH authorized_keys | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC645` | Plugin hook command attempts destructive root deletion | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC646` | Plugin hook command accesses a sensitive system password file | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC647` | Plugin hook command writes to a shell profile startup file | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC648` | Plugin hook command writes to SSH authorized_keys | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC649` | Hook script manipulates cron persistence | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC650` | Hook script registers a systemd service or unit for persistence | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC651` | Hook script registers a launchd plist for persistence | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC652` | MCP configuration command manipulates cron persistence | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC653` | MCP configuration command registers a systemd service or unit for persistence | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC654` | MCP configuration command registers a launchd plist for persistence | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC655` | Claude settings command hook manipulates cron persistence | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC656` | Claude settings command hook registers a systemd service or unit for persistence | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC657` | Claude settings command hook registers a launchd plist for persistence | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC658` | Plugin hook command manipulates cron persistence | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC659` | Plugin hook command registers a systemd service or unit for persistence | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC660` | Plugin hook command registers a launchd plist for persistence | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC661` | Hook script performs an insecure permission change | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC662` | Hook script manipulates setuid or setgid permissions | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC663` | Hook script manipulates Linux capabilities | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC664` | MCP configuration command performs an insecure permission change | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC665` | MCP configuration command manipulates setuid or setgid permissions | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC666` | MCP configuration command manipulates Linux capabilities | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC667` | Claude settings command hook performs an insecure permission change | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC668` | Claude settings command hook manipulates setuid or setgid permissions | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC669` | Claude settings command hook manipulates Linux capabilities | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC670` | Plugin hook command performs an insecure permission change | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC671` | Plugin hook command manipulates setuid or setgid permissions | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC672` | Plugin hook command manipulates Linux capabilities | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC673` | Hook script posts secret material to a webhook endpoint | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC674` | MCP configuration command appears to send secret material over the network | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC675` | MCP configuration command sends secret material to an insecure http:// endpoint | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC676` | MCP configuration command posts secret material to a webhook endpoint | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC677` | Claude settings command hook appears to send secret material over the network | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC678` | Claude settings command hook sends secret material to an insecure http:// endpoint | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC679` | Claude settings command hook posts secret material to a webhook endpoint | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC680` | Plugin hook command appears to send secret material over the network | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC681` | Plugin hook command sends secret material to an insecure http:// endpoint | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC682` | Plugin hook command posts secret material to a webhook endpoint | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC683` | Hook script transfers a sensitive credential file to a remote destination | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC684` | MCP configuration command transfers a sensitive credential file to a remote destination | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC685` | Claude settings command hook transfers a sensitive credential file to a remote destination | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC686` | Plugin hook command transfers a sensitive credential file to a remote destination | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC687` | Hook script reads local clipboard contents | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC688` | Hook script accesses browser credential or cookie stores | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC689` | MCP configuration command reads local clipboard contents | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC690` | MCP configuration command accesses browser credential or cookie stores | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC691` | Claude settings command hook reads local clipboard contents | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC692` | Claude settings command hook accesses browser credential or cookie stores | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC693` | Plugin hook command reads local clipboard contents | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC694` | Plugin hook command accesses browser credential or cookie stores | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC695` | Hook script exfiltrates clipboard contents over the network | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC696` | Hook script exfiltrates browser credential or cookie store data | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC697` | MCP configuration command exfiltrates clipboard contents over the network | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC698` | MCP configuration command exfiltrates browser credential or cookie store data | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC699` | Claude settings command hook exfiltrates clipboard contents over the network | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC700` | Claude settings command hook exfiltrates browser credential or cookie store data | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC701` | Plugin hook command exfiltrates clipboard contents over the network | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC702` | Plugin hook command exfiltrates browser credential or cookie store data | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC703` | Hook script captures a screenshot or desktop image | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC704` | Hook script captures and exfiltrates a screenshot or desktop image | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC705` | MCP configuration command captures a screenshot or desktop image | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC706` | MCP configuration command captures and exfiltrates a screenshot or desktop image | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC707` | Claude settings command hook captures a screenshot or desktop image | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC708` | Claude settings command hook captures and exfiltrates a screenshot or desktop image | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC709` | Plugin hook command captures a screenshot or desktop image | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC710` | Plugin hook command captures and exfiltrates a screenshot or desktop image | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC711` | Hook script captures a camera image or webcam stream | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC712` | Hook script records microphone or audio input | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC713` | Hook script captures and exfiltrates camera or webcam data | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC714` | Hook script records and exfiltrates microphone or audio input | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC715` | MCP configuration command captures a webcam or camera image | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC716` | MCP configuration command captures microphone audio | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC717` | MCP configuration command captures and exfiltrates webcam or camera data | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC718` | MCP configuration command captures and exfiltrates microphone audio | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC719` | Claude settings command hook captures a webcam or camera image | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC720` | Claude settings command hook captures microphone audio | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC721` | Claude settings command hook captures and exfiltrates webcam or camera data | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC722` | Claude settings command hook captures and exfiltrates microphone audio | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC723` | Plugin hook command captures a webcam or camera image | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC724` | Plugin hook command captures microphone audio | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC725` | Plugin hook command captures and exfiltrates webcam or camera data | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC726` | Plugin hook command captures and exfiltrates microphone audio | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC727` | Hook script captures keystrokes or keyboard input | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC728` | Hook script captures and exfiltrates keystrokes or keyboard input | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC729` | MCP configuration command captures keystrokes or keyboard input | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC730` | MCP configuration command captures and exfiltrates keystrokes or keyboard input | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC731` | Claude settings command hook captures keystrokes or keyboard input | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC732` | Claude settings command hook captures and exfiltrates keystrokes or keyboard input | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC733` | Plugin hook command captures keystrokes or keyboard input | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC734` | Plugin hook command captures and exfiltrates keystrokes or keyboard input | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC735` | Hook script dumps environment variables or shell state | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC736` | Hook script dumps and exfiltrates environment variables or shell state | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC737` | MCP configuration command dumps environment variables or shell state | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC738` | MCP configuration command dumps and exfiltrates environment variables or shell state | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC739` | Claude settings command hook dumps environment variables or shell state | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC740` | Claude settings command hook dumps and exfiltrates environment variables or shell state | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC741` | Plugin hook command dumps environment variables or shell state | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC742` | Plugin hook command dumps and exfiltrates environment variables or shell state | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC743` | package.json defines a dangerous install-time lifecycle script | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
-| `SEC744` | package.json installs a dependency from a git or forge shortcut source | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
-| `SEC745` | package.json uses an unbounded dependency version like * or latest | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
-| `SEC746` | Dockerfile RUN downloads remote code and executes it | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
-| `SEC747` | Dockerfile final stage explicitly runs as root | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
-| `SEC748` | Docker Compose service enables privileged container runtime or host namespace access | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
-| `SEC749` | Dockerfile FROM uses a mutable registry image without a digest pin | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
-| `SEC750` | Docker Compose service image uses a mutable registry reference without a digest pin | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
-| `SEC751` | Dockerfile FROM uses a latest or implicit-latest image tag | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
-| `SEC752` | Docker Compose service image uses a latest or implicit-latest tag | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
-| `SEC753` | package.json installs a dependency from a direct archive URL source | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
-| `SEC754` | Devcontainer config defines a host-side initializeCommand | Stable | `stable_gated` | Warn | `per_file` | `devcontainer` | `structural` | `message_only` | `supply-chain` |
-| `SEC755` | Devcontainer config bind-mounts sensitive local host material | Stable | `stable_gated` | Warn | `per_file` | `devcontainer` | `structural` | `message_only` | `supply-chain` |
-| `SEC756` | Installed npm dependency version matches an offline vulnerability advisory | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `suggestion` | `advisory` |
+| Code | Summary | Public Lane | Tier | Lifecycle | Severity | Scope | Surface | Detection | Remediation | Presets |
+|---|---|---|---|---|---|---|---|---|---|---|
+| `SEC101 / MD-HIDDEN-INSTRUCTIONS` | Hidden HTML comment contains dangerous agent instructions | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `safe_fix` | `preview`, `skills` |
+| `SEC102 / MD-DOWNLOAD-EXEC` | Markdown contains remote download-and-execute instruction outside code blocks | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `suggestion` | `preview`, `skills` |
+| `SEC103 / MD-HIDDEN-DOWNLOAD-EXEC` | Hidden HTML comment contains remote download-and-execute instruction | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `safe_fix` | `preview`, `skills` |
+| `SEC104 / MD-BASE64-EXEC` | Markdown contains a base64-decoded executable payload outside code blocks | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
+| `SEC105 / MD-PATH-TRAVERSAL` | Markdown instructions reference parent-directory traversal for file access | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
+| `SEC201 / HOOK-DOWNLOAD-EXEC` | Hook script downloads remote code and executes it | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
+| `SEC202 / HOOK-SECRET-EXFIL` | Hook script appears to exfiltrate secrets through a network call | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
+| `SEC203 / HOOK-PLAIN-HTTP-SECRET-EXFIL` | Hook script sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
+| `SEC204 / HOOK-TLS-BYPASS` | Hook script disables TLS or certificate verification for a network call | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC205 / HOOK-STATIC-AUTH` | Hook script embeds static authentication material in a network call | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC206 / HOOK-BASE64-EXEC` | Hook script decodes a base64 payload and executes it | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
+| `SEC301 / MCP-SHELL-WRAPPER` | MCP configuration shells out through sh -c or bash -c | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC302 / MCP-PLAIN-HTTP-ENDPOINT` | Configuration contains an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `suggestion` | `base`, `mcp` |
+| `SEC303 / MCP-CREDENTIAL-ENV-PASSTHROUGH` | MCP configuration passes through credential environment variables | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC304 / MCP-TLS-BYPASS` | Configuration disables TLS or certificate verification | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC305 / MCP-STATIC-AUTH` | Configuration embeds static authentication material in a connection or auth value | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC306 / MCP-HIDDEN-INSTRUCTIONS` | JSON configuration description contains override-style hidden instructions | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
+| `SEC307 / MCP-SENSITIVE-ENV-REFERENCE` | Configuration forwards sensitive environment variable references | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
+| `SEC308 / MCP-SUSPICIOUS-ENDPOINT` | Configuration points at a suspicious remote endpoint | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
+| `SEC309 / MCP-LITERAL-SECRET` | Configuration commits literal secret material in env, auth, or header values | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC310 / MCP-METADATA-HOST-LITERAL` | Configuration endpoint targets a metadata or private-network host literal | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC311 / PLUGIN-UNSAFE-PATH` | Cursor plugin manifest contains an unsafe absolute or parent-traversing path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC312 / MD-PRIVATE-KEY` | Markdown contains committed private key material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `base`, `skills` |
+| `SEC313 / MD-PIPE-SHELL` | Fenced shell example pipes remote content directly into a shell | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC314 / TOOL-MISSING-MACHINE-FIELDS` | MCP-style tool descriptor is missing required machine fields | `preview` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC315 / TOOL-DUPLICATE-NAMES` | MCP-style tool descriptor collection contains duplicate tool names | `preview` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC316 / OPENAI-STRICT-ADDITIONAL-PROPERTIES` | OpenAI strict tool schema omits recursive additionalProperties: false | `preview` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC317 / OPENAI-STRICT-REQUIRED-COVERAGE` | OpenAI strict tool schema does not require every declared property | `preview` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC318 / ANTHROPIC-STRICT-ADDITIONAL-PROPERTIES` | Anthropic strict tool input schema omits additionalProperties: false | `preview` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC319 / SERVER-REMOTE-URL` | server.json remotes entry uses an insecure or non-public remote URL | `preview` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC320 / SERVER-UNDEFINED-URL-VAR` | server.json remotes URL references an undefined template variable | `preview` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC321 / SERVER-LITERAL-AUTH-HEADER` | server.json remotes header commits literal authentication material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC322 / SERVER-UNDEFINED-HEADER-VAR` | server.json remotes header value references an undefined template variable | `preview` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC323 / SERVER-AUTH-SECRET-FLAG` | server.json auth header carries material without an explicit secret flag | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC324 / GHA-UNPINNED-ACTION` | GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA | `recommended` | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `recommended`, `supply-chain` |
+| `SEC325 / GHA-UNTRUSTED-RUN-INTERPOLATION` | GitHub Actions workflow interpolates untrusted expression data directly inside a run command | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
+| `SEC326 / GHA-PR-TARGET-HEAD-CHECKOUT` | GitHub Actions pull_request_target workflow checks out untrusted pull request head content | `preview` | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
+| `SEC327 / GHA-WRITE-ALL-PERMISSIONS` | GitHub Actions workflow grants GITHUB_TOKEN write-all permissions | `preview` | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
+| `SEC328 / GHA-WRITE-CAPABLE-THIRD-PARTY-ACTION` | GitHub Actions workflow combines explicit write-capable permissions with a third-party action | `recommended` | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `recommended`, `supply-chain` |
+| `SEC329 / MCP-MUTABLE-LAUNCHER` | MCP configuration launches tooling through a mutable package runner | `recommended` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `recommended`, `base`, `mcp` |
+| `SEC330 / MCP-DOWNLOAD-EXEC` | MCP configuration command downloads remote content and pipes it into a shell | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC331 / MCP-TLS-BYPASS` | MCP configuration command disables TLS verification in a network-capable execution path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC335 / MD-METADATA-SERVICE-ACCESS` | AI-native markdown contains a direct cloud metadata-service access example | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC336 / MCP-BROAD-ENVFILE` | Repo-local MCP client config loads a broad dotenv-style envFile | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC337 / MCP-DOCKER-UNPINNED-IMAGE` | MCP configuration launches Docker with an image reference that is not digest-pinned | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC338 / MCP-DOCKER-SENSITIVE-MOUNT` | MCP configuration launches Docker with a bind mount of sensitive host material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC339 / MCP-DOCKER-HOST-ESCAPE` | MCP configuration launches Docker with a host-escape or privileged runtime flag | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC340 / CLAUDE-HOOK-MUTABLE-LAUNCHER` | Claude settings command hook uses a mutable package launcher | `recommended` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `recommended`, `base`, `claude` |
+| `SEC341 / CLAUDE-HOOK-DOWNLOAD-EXEC` | Claude settings command hook downloads remote content and pipes it into a shell | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC342 / CLAUDE-HOOK-TLS-BYPASS` | Claude settings command hook disables TLS verification in a network-capable execution path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC343 / PLUGIN-HOOK-MUTABLE-LAUNCHER` | Plugin hook command uses a mutable package launcher | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC344 / PLUGIN-HOOK-DOWNLOAD-EXEC` | Plugin hook command downloads remote content and pipes it into a shell | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC345 / PLUGIN-HOOK-TLS-BYPASS` | Plugin hook command disables TLS verification in a network-capable execution path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC346 / MCP-DOCKER-PULL-ALWAYS` | MCP configuration forces Docker to refresh from a mutable registry source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC347 / MD-MCP-MUTABLE-LAUNCHER` | AI-native markdown example launches MCP through a mutable package runner | `recommended` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `recommended`, `preview`, `skills` |
+| `SEC348 / MD-DOCKER-MUTABLE-IMAGE` | AI-native markdown Docker example uses a mutable registry image | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC349 / MD-DOCKER-HOST-ESCAPE` | AI-native markdown Docker example uses a host-escape or privileged runtime pattern | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC350 / MD-UNTRUSTED-INSTRUCTION-PROMOTION` | Instruction markdown promotes untrusted external content to developer/system-level instructions | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
+| `SEC351 / MD-APPROVAL-BYPASS` | AI-native instruction explicitly disables user approval or confirmation | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
+| `SEC352 / MD-UNSCOPED-BASH` | AI-native markdown frontmatter grants unscoped Bash tool access | `recommended` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `recommended`, `preview`, `skills` |
+| `SEC353 / COPILOT-4K` | GitHub Copilot instruction markdown exceeds the 4000-character guidance limit | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC354 / COPILOT-PATH-APPLYTO` | Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC355 / MD-WILDCARD-TOOLS` | AI-native markdown frontmatter grants wildcard tool access | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC356 / PLUGIN-AGENT-PERMISSIONMODE` | Plugin agent frontmatter sets `permissionMode` | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC357 / PLUGIN-AGENT-HOOKS` | Plugin agent frontmatter sets `hooks` | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC358 / PLUGIN-AGENT-MCPSERVERS` | Plugin agent frontmatter sets `mcpServers` | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC359 / CURSOR-RULE-ALWAYSAPPLY` | Cursor rule frontmatter `alwaysApply` must be boolean | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC360 / CURSOR-RULE-GLOBS` | Cursor rule frontmatter `globs` must be a sequence of patterns | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC361 / CLAUDE-SETTINGS-SCHEMA` | Claude settings file is missing a top-level `$schema` reference | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC362 / CLAUDE-BASH-WILDCARD` | Claude settings permissions allow `Bash(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC363 / CLAUDE-HOME-HOOK-PATH` | Claude settings hook command uses a home-directory path in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC364 / CLAUDE-BYPASS-PERMISSIONS` | Claude settings set `permissions.defaultMode` to `bypassPermissions` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC365 / CLAUDE-HTTP-HOOK-URL` | Claude settings allow non-HTTPS HTTP hook URLs in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC366 / CLAUDE-HTTP-HOOK-HOST` | Claude settings allow dangerous host literals in `allowedHttpHookUrls` | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC367 / CLAUDE-WEBFETCH-WILDCARD` | Claude settings permissions allow `WebFetch(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC368 / CLAUDE-ABS-HOOK-PATH` | Claude settings hook command uses a repo-external absolute path in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC369 / CLAUDE-WRITE-WILDCARD` | Claude settings permissions allow `Write(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC370 / COPILOT-PATH-SUFFIX` | Path-specific GitHub Copilot instruction markdown under `.github/instructions/` uses the wrong file suffix | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC371 / COPILOT-APPLYTO-TYPE` | Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` shape | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC372 / CLAUDE-READ-WILDCARD` | Claude settings permissions allow `Read(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC373 / CLAUDE-EDIT-WILDCARD` | Claude settings permissions allow `Edit(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC374 / CLAUDE-WEBSEARCH-WILDCARD` | Claude settings permissions allow `WebSearch(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC375 / CLAUDE-GLOB-WILDCARD` | Claude settings permissions allow `Glob(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC376 / CLAUDE-GREP-WILDCARD` | Claude settings permissions allow `Grep(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC377 / COPILOT-APPLYTO-GLOB` | Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` glob pattern | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC378 / CURSOR-ALWAYSAPPLY-GLOBS` | Cursor rule frontmatter should not set `globs` when `alwaysApply` is `true` | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC379 / CURSOR-UNKNOWN-FRONTMATTER` | Cursor rule frontmatter contains an unknown key | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC380 / CURSOR-DESCRIPTION` | Cursor rule frontmatter should include `description` | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC381 / CLAUDE-HOOK-TIMEOUT` | Claude settings command hook should set `timeout` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC382 / CLAUDE-HOOK-MATCHER-EVENT` | Claude settings should not use `matcher` on unsupported hook events | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC383 / CLAUDE-HOOK-MISSING-MATCHER` | Claude settings should set `matcher` on matcher-capable hook events | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC384 / CLAUDE-WEBSEARCH-UNSCOPED` | Claude settings permissions allow bare `WebSearch` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC385 / CLAUDE-GIT-PUSH-PERMISSION` | Claude settings permissions allow `Bash(git push)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC386 / CLAUDE-GIT-CHECKOUT-PERMISSION` | Claude settings permissions allow `Bash(git checkout:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC387 / CLAUDE-GIT-COMMIT-PERMISSION` | Claude settings permissions allow `Bash(git commit:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC388 / CLAUDE-GIT-STASH-PERMISSION` | Claude settings permissions allow `Bash(git stash:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC389 / MD-WEBSEARCH-UNSCOPED` | AI-native markdown frontmatter grants bare `WebSearch` tool access | `preview` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC390 / MD-GIT-PUSH-PERMISSION` | AI-native markdown frontmatter grants `Bash(git push)` tool access | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC391 / MD-GIT-CHECKOUT-PERMISSION` | AI-native markdown frontmatter grants `Bash(git checkout:*)` tool access | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC392 / MD-GIT-COMMIT-PERMISSION` | AI-native markdown frontmatter grants `Bash(git commit:*)` tool access | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC393 / MD-GIT-STASH-PERMISSION` | AI-native markdown frontmatter grants `Bash(git stash:*)` tool access | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC394 / MCP-AUTOAPPROVE-WILDCARD` | MCP configuration auto-approves all tools with `autoApprove: ["*"]` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC395 / MCP-AUTOAPPROVE-TOOLS` | MCP configuration auto-approves all tools with `autoApproveTools: true` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC396 / MCP-TRUST-TOOLS` | MCP configuration fully trusts tools with `trustTools: true` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC397 / MCP-SANDBOX-DISABLED` | MCP configuration disables sandboxing with `sandbox: false` or `disableSandbox: true` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC398 / MCP-CAPABILITIES-WILDCARD` | MCP configuration grants all capabilities with `capabilities: ["*"]` or `capabilities: "*"` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC399 / CLAUDE-NPX-PERMISSION` | Claude settings permissions allow `Bash(npx ...)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC400 / CLAUDE-ENABLED-MCPJSON-SERVERS` | Claude settings enable `enabledMcpjsonServers` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC401 / POLICY-EXEC-MISMATCH` | Project policy forbids execution, but repository contains executable behavior | `preview` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
+| `SEC402 / POLICY-NETWORK-MISMATCH` | Project policy forbids network access, but repository contains network behavior | `preview` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
+| `SEC403 / POLICY-SKILL-CAPABILITIES-MISMATCH` | Skill frontmatter capabilities conflict with project policy | `preview` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
+| `SEC404 / MD-WEBFETCH-UNSCOPED` | AI-native markdown frontmatter grants bare `WebFetch` tool access | `preview` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC405 / CLAUDE-PACKAGE-INSTALL-PERMISSION` | Claude settings permissions allow package installation commands in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC406 / CLAUDE-GIT-ADD-PERMISSION` | Claude settings permissions allow `Bash(git add:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC407 / CLAUDE-GIT-CLONE-PERMISSION` | Claude settings permissions allow `Bash(git clone:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC408 / CLAUDE-GH-PR-PERMISSION` | Claude settings permissions allow `Bash(gh pr:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC409 / CLAUDE-GIT-FETCH-PERMISSION` | Claude settings permissions allow `Bash(git fetch:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC410 / CLAUDE-GIT-LS-REMOTE-PERMISSION` | Claude settings permissions allow `Bash(git ls-remote:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC411 / CLAUDE-CURL-PERMISSION` | Claude settings permissions allow `Bash(curl:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC412 / CLAUDE-WGET-PERMISSION` | Claude settings permissions allow `Bash(wget:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC413 / CLAUDE-GIT-CONFIG-PERMISSION` | Claude settings permissions allow `Bash(git config:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC414 / CLAUDE-GIT-TAG-PERMISSION` | Claude settings permissions allow `Bash(git tag:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC415 / CLAUDE-GIT-BRANCH-PERMISSION` | Claude settings permissions allow `Bash(git branch:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC416 / MD-CLAUDE-PIP-INSTALL` | AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
+| `SEC417 / MD-PIP-GIT-UNPINNED` | AI-native markdown installs Python packages from an unpinned `git+https://` source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC418 / CLAUDE-WEBFETCH-RAW-GITHUB` | Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC419 / MD-CURL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(curl:*)` authority | `preview` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC420 / MD-WGET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(wget:*)` authority | `preview` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC421 / MD-GIT-CLONE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git clone:*)` authority | `preview` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC422 / MCP-COMMAND-SUDO` | MCP configuration launches the server through `sudo` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC423 / MD-READ-UNSCOPED` | AI-native markdown frontmatter grants bare `Read` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC424 / MD-WRITE-UNSCOPED` | AI-native markdown frontmatter grants bare `Write` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC425 / MD-EDIT-UNSCOPED` | AI-native markdown frontmatter grants bare `Edit` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC426 / MD-GLOB-UNSCOPED` | AI-native markdown frontmatter grants bare `Glob` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC427 / MD-GREP-UNSCOPED` | AI-native markdown frontmatter grants bare `Grep` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC428 / MD-READ-UNSAFE-PATH` | AI-native markdown frontmatter grants `Read(...)` over an unsafe repo-external path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC429 / MD-WRITE-UNSAFE-PATH` | AI-native markdown frontmatter grants `Write(...)` over an unsafe repo-external path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC430 / MD-EDIT-UNSAFE-PATH` | AI-native markdown frontmatter grants `Edit(...)` over an unsafe repo-external path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC431 / MD-GLOB-UNSAFE-PATH` | AI-native markdown frontmatter grants `Glob(...)` over an unsafe repo-external path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC432 / MD-GIT-ADD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git add:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC433 / MD-GIT-FETCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git fetch:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC434 / MD-WEBFETCH-RAW-GITHUB` | AI-native markdown frontmatter grants `WebFetch(domain:raw.githubusercontent.com)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC435 / MD-GIT-CONFIG-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git config:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC436 / MD-GIT-TAG-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git tag:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC437 / MD-GIT-BRANCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git branch:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC438 / MD-GIT-RESET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git reset:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC439 / MD-GIT-CLEAN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git clean:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC440 / MD-GIT-RESTORE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git restore:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC441 / MD-GIT-REBASE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git rebase:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC442 / MD-GIT-MERGE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git merge:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC443 / MD-GIT-CHERRY-PICK-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git cherry-pick:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC444 / MD-GIT-APPLY-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git apply:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC445 / MD-GIT-AM-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git am:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC446 / MCP-ARGS-SUDO` | MCP configuration passes `sudo` as the first launch argument | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC447 / MD-PACKAGE-INSTALL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants package installation authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC448 / MD-PIP-TRUSTED-HOST` | AI-native markdown installs Python packages with `--trusted-host` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC449 / MD-PIP-HTTP-INDEX` | AI-native markdown installs Python packages from an insecure `http://` package index | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC450 / MD-NPM-HTTP-REGISTRY` | AI-native markdown installs JavaScript packages from an insecure `http://` registry | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC451 / MD-CARGO-HTTP-GIT-INSTALL` | AI-native markdown installs Rust packages from an insecure `http://` git source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC452 / MD-CARGO-HTTP-INDEX` | AI-native markdown installs Rust packages from an insecure `http://` index | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC453 / MD-PIP-HTTP-SOURCE` | AI-native markdown installs Python packages from an insecure direct `http://` source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC454 / MD-NPM-HTTP-SOURCE` | AI-native markdown installs JavaScript packages from an insecure direct `http://` source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC455 / MD-PIP-HTTP-GIT-INSTALL` | AI-native markdown installs Python packages from an insecure `git+http://` source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC456 / MD-PIP-HTTP-FIND-LINKS` | AI-native markdown installs Python packages with insecure `http://` find-links | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC457 / MD-JS-PACKAGE-STRICT-SSL-FALSE` | AI-native markdown disables strict SSL verification for JavaScript package manager config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC458 / MD-PIP-CONFIG-HTTP-INDEX` | AI-native markdown configures Python package resolution with an insecure `http://` package index | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC459 / MD-JS-PACKAGE-CONFIG-HTTP-REGISTRY` | AI-native markdown configures a JavaScript package manager with an insecure `http://` registry | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC460 / MD-PIP-CONFIG-HTTP-FIND-LINKS` | AI-native markdown configures Python package discovery with insecure `http://` find-links | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC461 / MD-PIP-CONFIG-TRUSTED-HOST` | AI-native markdown configures Python package resolution with `trusted-host` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC462 / MD-NETWORK-TLS-BYPASS` | AI-native markdown disables TLS verification for a network-capable command | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC463 / MD-SUDO-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(sudo:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC464 / MD-GIT-HTTP-CLONE` | AI-native markdown clones a Git repository from an insecure `http://` source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC465 / MD-GIT-HTTP-REMOTE` | AI-native markdown configures a Git remote with an insecure `http://` source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC466 / MD-RM-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(rm:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC467 / MD-CHMOD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chmod:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC468 / MD-CHOWN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chown:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC469 / MD-CHGRP-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chgrp:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC470 / MD-SU-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(su:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC471 / MD-GIT-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `http.sslVerify false` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC472 / MD-GIT-SSL-NO-VERIFY` | AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC473 / MD-GIT-INLINE-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC474 / MD-GH-PR-PERMISSION` | AI-native markdown frontmatter grants `Bash(gh pr:*)` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC475 / CLAUDE-READ-UNSAFE-PATH` | Claude settings permissions allow `Read(...)` over an unsafe path in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC476 / CLAUDE-WRITE-UNSAFE-PATH` | Claude settings permissions allow `Write(...)` over an unsafe path in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC477 / CLAUDE-EDIT-UNSAFE-PATH` | Claude settings permissions allow `Edit(...)` over an unsafe path in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC478 / CLAUDE-GIT-RESET-PERMISSION` | Claude settings permissions allow `Bash(git reset:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC479 / CLAUDE-GIT-CLEAN-PERMISSION` | Claude settings permissions allow `Bash(git clean:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC480 / CLAUDE-GIT-RESTORE-PERMISSION` | Claude settings permissions allow `Bash(git restore:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC481 / CLAUDE-GIT-REBASE-PERMISSION` | Claude settings permissions allow `Bash(git rebase:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC482 / CLAUDE-GIT-MERGE-PERMISSION` | Claude settings permissions allow `Bash(git merge:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC483 / CLAUDE-GIT-CHERRY-PICK-PERMISSION` | Claude settings permissions allow `Bash(git cherry-pick:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC484 / CLAUDE-GIT-APPLY-PERMISSION` | Claude settings permissions allow `Bash(git apply:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC485 / CLAUDE-GIT-AM-PERMISSION` | Claude settings permissions allow `Bash(git am:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC486 / CLAUDE-GLOB-UNSAFE-PATH` | Claude settings permissions allow `Glob(...)` over an unsafe path in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC487 / CLAUDE-GREP-UNSAFE-PATH` | Claude settings permissions allow `Grep(...)` over an unsafe path in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC488 / CLAUDE-UVX-PERMISSION` | Claude settings permissions allow `Bash(uvx ...)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC489 / CLAUDE-PNPM-DLX-PERMISSION` | Claude settings permissions allow `Bash(pnpm dlx ...)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC490 / CLAUDE-YARN-DLX-PERMISSION` | Claude settings permissions allow `Bash(yarn dlx ...)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC491 / CLAUDE-PIPX-RUN-PERMISSION` | Claude settings permissions allow `Bash(pipx run ...)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC492 / CLAUDE-NPM-EXEC-PERMISSION` | Claude settings permissions allow `Bash(npm exec ...)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC493 / CLAUDE-BUNX-PERMISSION` | Claude settings permissions allow `Bash(bunx ...)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC494 / MD-NPM-EXEC-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(npm exec:*)` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC495 / MD-BUNX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(bunx:*)` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC496 / MD-UVX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(uvx:*)` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC497 / MD-PNPM-DLX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(pnpm dlx:*)` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC498 / MD-YARN-DLX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(yarn dlx:*)` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC499 / MD-PIPX-RUN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(pipx run:*)` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC500 / MD-NPX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(npx:*)` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC501 / MD-GIT-LS-REMOTE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git ls-remote:*)` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC502 / CLAUDE-GH-API-POST-PERMISSION` | Claude settings permissions allow `Bash(gh api --method POST:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC503 / CLAUDE-GH-ISSUE-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh issue create:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC504 / CLAUDE-GH-REPO-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh repo create:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC505 / MD-GH-API-POST-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method POST:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC506 / MD-GH-ISSUE-CREATE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh issue create:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC507 / MD-GH-REPO-CREATE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo create:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC508 / CLAUDE-GH-SECRET-SET-PERMISSION` | Claude settings permissions allow `Bash(gh secret set:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC509 / CLAUDE-GH-VARIABLE-SET-PERMISSION` | Claude settings permissions allow `Bash(gh variable set:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC510 / CLAUDE-GH-WORKFLOW-RUN-PERMISSION` | Claude settings permissions allow `Bash(gh workflow run:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC511 / MD-GH-SECRET-SET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh secret set:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC512 / MD-GH-VARIABLE-SET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh variable set:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC513 / MD-GH-WORKFLOW-RUN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh workflow run:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC514 / CLAUDE-GH-SECRET-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh secret delete:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC515 / CLAUDE-GH-VARIABLE-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh variable delete:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC516 / CLAUDE-GH-WORKFLOW-DISABLE-PERMISSION` | Claude settings permissions allow `Bash(gh workflow disable:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC517 / MD-GH-SECRET-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh secret delete:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC518 / MD-GH-VARIABLE-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh variable delete:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC519 / MD-GH-WORKFLOW-DISABLE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh workflow disable:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC520 / MD-READ-WILDCARD` | AI-native markdown frontmatter grants `Read(*)` wildcard access | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC521 / MD-WRITE-WILDCARD` | AI-native markdown frontmatter grants `Write(*)` wildcard access | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC522 / MD-EDIT-WILDCARD` | AI-native markdown frontmatter grants `Edit(*)` wildcard access | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC523 / MD-GLOB-WILDCARD` | AI-native markdown frontmatter grants `Glob(*)` wildcard access | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC524 / MD-GREP-WILDCARD` | AI-native markdown frontmatter grants `Grep(*)` wildcard access | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC525 / MD-WEBFETCH-WILDCARD` | AI-native markdown frontmatter grants `WebFetch(*)` wildcard access | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC526 / MD-WEBSEARCH-WILDCARD` | AI-native markdown frontmatter grants `WebSearch(*)` wildcard access | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC527 / MD-BASH-WILDCARD` | AI-native markdown frontmatter grants `Bash(*)` wildcard access | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC528 / CLAUDE-GH-API-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh api --method DELETE:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC529 / MD-GH-API-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method DELETE:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC530 / CLAUDE-GH-API-PATCH-PERMISSION` | Claude settings permissions allow `Bash(gh api --method PATCH:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC531 / CLAUDE-GH-API-PUT-PERMISSION` | Claude settings permissions allow `Bash(gh api --method PUT:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC532 / MD-GH-API-PATCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method PATCH:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC533 / MD-GH-API-PUT-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method PUT:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC534 / CLAUDE-GH-REPO-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh repo delete:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC535 / MD-GH-REPO-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo delete:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC536 / CLAUDE-GH-RELEASE-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh release delete:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC537 / MD-GH-RELEASE-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh release delete:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC538 / CLAUDE-GH-REPO-EDIT-PERMISSION` | Claude settings permissions allow `Bash(gh repo edit:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC539 / MD-GH-REPO-EDIT-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo edit:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC540 / CLAUDE-GH-RELEASE-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh release create:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC541 / MD-GH-RELEASE-CREATE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh release create:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC542 / CLAUDE-GH-REPO-TRANSFER-PERMISSION` | Claude settings permissions allow `Bash(gh repo transfer:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC543 / MD-GH-REPO-TRANSFER-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo transfer:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC544 / CLAUDE-GH-RELEASE-UPLOAD-PERMISSION` | Claude settings permissions allow `Bash(gh release upload:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC545 / MD-GH-RELEASE-UPLOAD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh release upload:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC546 / MCP-AUTOAPPROVE-BASH-WILDCARD` | MCP configuration auto-approves blanket shell execution with `autoApprove: ["Bash(*)"]` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC547 / MCP-AUTOAPPROVE-CURL` | MCP configuration auto-approves `Bash(curl:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC548 / MCP-AUTOAPPROVE-WGET` | MCP configuration auto-approves `Bash(wget:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC549 / MCP-AUTOAPPROVE-SUDO` | MCP configuration auto-approves `Bash(sudo:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC550 / MCP-AUTOAPPROVE-RM` | MCP configuration auto-approves `Bash(rm:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC551 / MCP-AUTOAPPROVE-GIT-PUSH` | MCP configuration auto-approves `Bash(git push)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC552 / MCP-AUTOAPPROVE-GH-API-POST` | MCP configuration auto-approves `Bash(gh api --method POST:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC553 / MCP-AUTOAPPROVE-GIT-CHECKOUT` | MCP configuration auto-approves `Bash(git checkout:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC554 / MCP-AUTOAPPROVE-GIT-COMMIT` | MCP configuration auto-approves `Bash(git commit:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC555 / MCP-AUTOAPPROVE-GIT-RESET` | MCP configuration auto-approves `Bash(git reset:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC556 / MCP-AUTOAPPROVE-GIT-CLEAN` | MCP configuration auto-approves `Bash(git clean:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC557 / MCP-AUTOAPPROVE-GH-API-DELETE` | MCP configuration auto-approves `Bash(gh api --method DELETE:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC558 / MCP-AUTOAPPROVE-GH-API-PATCH` | MCP configuration auto-approves `Bash(gh api --method PATCH:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC559 / MCP-AUTOAPPROVE-GH-API-PUT` | MCP configuration auto-approves `Bash(gh api --method PUT:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC560 / MCP-AUTOAPPROVE-GH-ISSUE-CREATE` | MCP configuration auto-approves `Bash(gh issue create:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC561 / MCP-AUTOAPPROVE-GH-REPO-CREATE` | MCP configuration auto-approves `Bash(gh repo create:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC562 / MCP-AUTOAPPROVE-GH-REPO-DELETE` | MCP configuration auto-approves `Bash(gh repo delete:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC563 / MCP-AUTOAPPROVE-GH-REPO-EDIT` | MCP configuration auto-approves `Bash(gh repo edit:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC564 / MCP-AUTOAPPROVE-GH-SECRET-SET` | MCP configuration auto-approves `Bash(gh secret set:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC565 / MCP-AUTOAPPROVE-GH-VARIABLE-SET` | MCP configuration auto-approves `Bash(gh variable set:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC566 / MCP-AUTOAPPROVE-GH-WORKFLOW-RUN` | MCP configuration auto-approves `Bash(gh workflow run:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC567 / MCP-AUTOAPPROVE-READ-WILDCARD` | MCP configuration auto-approves `Read(*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC568 / MCP-AUTOAPPROVE-WRITE-WILDCARD` | MCP configuration auto-approves `Write(*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC569 / MCP-AUTOAPPROVE-EDIT-WILDCARD` | MCP configuration auto-approves `Edit(*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC570 / MCP-AUTOAPPROVE-GLOB-WILDCARD` | MCP configuration auto-approves `Glob(*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC571 / MCP-AUTOAPPROVE-GREP-WILDCARD` | MCP configuration auto-approves `Grep(*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC572 / MCP-AUTOAPPROVE-WEBFETCH-WILDCARD` | MCP configuration auto-approves `WebFetch(*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC573 / MCP-AUTOAPPROVE-WEBSEARCH-WILDCARD` | MCP configuration auto-approves `WebSearch(*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC574 / MCP-AUTOAPPROVE-READ-UNSAFE-PATH` | MCP configuration auto-approves `Read(...)` over an unsafe path through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC575 / MCP-AUTOAPPROVE-WRITE-UNSAFE-PATH` | MCP configuration auto-approves `Write(...)` over an unsafe path through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC576 / MCP-AUTOAPPROVE-EDIT-UNSAFE-PATH` | MCP configuration auto-approves `Edit(...)` over an unsafe path through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC577 / MCP-AUTOAPPROVE-GLOB-UNSAFE-PATH` | MCP configuration auto-approves `Glob(...)` over an unsafe path through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC578 / MCP-AUTOAPPROVE-GREP-UNSAFE-PATH` | MCP configuration auto-approves `Grep(...)` over an unsafe path through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC579 / MCP-AUTOAPPROVE-GH-SECRET-DELETE` | MCP configuration auto-approves `Bash(gh secret delete:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC580 / MCP-AUTOAPPROVE-GH-VARIABLE-DELETE` | MCP configuration auto-approves `Bash(gh variable delete:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC581 / MCP-AUTOAPPROVE-GH-WORKFLOW-DISABLE` | MCP configuration auto-approves `Bash(gh workflow disable:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC582 / MCP-AUTOAPPROVE-GH-REPO-TRANSFER` | MCP configuration auto-approves `Bash(gh repo transfer:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC583 / MCP-AUTOAPPROVE-GH-RELEASE-CREATE` | MCP configuration auto-approves `Bash(gh release create:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC584 / MCP-AUTOAPPROVE-GH-RELEASE-DELETE` | MCP configuration auto-approves `Bash(gh release delete:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC585 / MCP-AUTOAPPROVE-GH-RELEASE-UPLOAD` | MCP configuration auto-approves `Bash(gh release upload:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC586 / MCP-AUTOAPPROVE-NPX` | MCP configuration auto-approves `Bash(npx ...)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC587 / MCP-AUTOAPPROVE-UVX` | MCP configuration auto-approves `Bash(uvx ...)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC588 / MCP-AUTOAPPROVE-NPM-EXEC` | MCP configuration auto-approves `Bash(npm exec ...)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC589 / MCP-AUTOAPPROVE-BUNX` | MCP configuration auto-approves `Bash(bunx ...)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC590 / MCP-AUTOAPPROVE-PNPM-DLX` | MCP configuration auto-approves `Bash(pnpm dlx ...)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC591 / MCP-AUTOAPPROVE-YARN-DLX` | MCP configuration auto-approves `Bash(yarn dlx ...)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC592 / MCP-AUTOAPPROVE-PIPX-RUN` | MCP configuration auto-approves `Bash(pipx run ...)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC593 / MCP-AUTOAPPROVE-PACKAGE-INSTALL` | MCP configuration auto-approves package installation commands through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC594 / MCP-AUTOAPPROVE-GIT-CLONE` | MCP configuration auto-approves `Bash(git clone:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC595 / MCP-AUTOAPPROVE-GIT-FETCH` | MCP configuration auto-approves `Bash(git fetch:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC596 / MCP-AUTOAPPROVE-GIT-LS-REMOTE` | MCP configuration auto-approves `Bash(git ls-remote:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC597 / MCP-AUTOAPPROVE-GIT-ADD` | MCP configuration auto-approves `Bash(git add:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC598 / MCP-AUTOAPPROVE-GIT-CONFIG` | MCP configuration auto-approves `Bash(git config:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC599 / MCP-AUTOAPPROVE-GIT-TAG` | MCP configuration auto-approves `Bash(git tag:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC600 / MCP-AUTOAPPROVE-GIT-BRANCH` | MCP configuration auto-approves `Bash(git branch:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC601 / MCP-AUTOAPPROVE-GH-PR` | MCP configuration auto-approves `Bash(gh pr:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC602 / MCP-AUTOAPPROVE-GIT-STASH` | MCP configuration auto-approves `Bash(git stash:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC603 / MCP-AUTOAPPROVE-GIT-RESTORE` | MCP configuration auto-approves `Bash(git restore:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC604 / MCP-AUTOAPPROVE-GIT-REBASE` | MCP configuration auto-approves `Bash(git rebase:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC605 / MCP-AUTOAPPROVE-GIT-MERGE` | MCP configuration auto-approves `Bash(git merge:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC606 / MCP-AUTOAPPROVE-GIT-CHERRY-PICK` | MCP configuration auto-approves `Bash(git cherry-pick:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC607 / MCP-AUTOAPPROVE-GIT-APPLY` | MCP configuration auto-approves `Bash(git apply:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC608 / MCP-AUTOAPPROVE-GIT-AM` | MCP configuration auto-approves `Bash(git am:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC609 / MCP-AUTOAPPROVE-CRONTAB` | MCP configuration auto-approves `Bash(crontab:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC610 / MCP-AUTOAPPROVE-SYSTEMCTL-ENABLE` | MCP configuration auto-approves `Bash(systemctl enable:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC611 / MCP-AUTOAPPROVE-LAUNCHCTL-LOAD` | MCP configuration auto-approves `Bash(launchctl load:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC612 / MCP-AUTOAPPROVE-LAUNCHCTL-BOOTSTRAP` | MCP configuration auto-approves `Bash(launchctl bootstrap:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC613 / MCP-AUTOAPPROVE-CHMOD` | MCP configuration auto-approves `Bash(chmod:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC614 / MCP-AUTOAPPROVE-CHOWN` | MCP configuration auto-approves `Bash(chown:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC615 / MCP-AUTOAPPROVE-CHGRP` | MCP configuration auto-approves `Bash(chgrp:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC616 / MCP-AUTOAPPROVE-SU` | MCP configuration auto-approves `Bash(su:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC617 / MCP-AUTOAPPROVE-WEBFETCH-RAW-GITHUB` | MCP configuration auto-approves `WebFetch(domain:raw.githubusercontent.com)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC618 / MCP-AUTOAPPROVE-READ` | MCP configuration auto-approves bare `Read` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC619 / MCP-AUTOAPPROVE-WRITE` | MCP configuration auto-approves bare `Write` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC620 / MCP-AUTOAPPROVE-EDIT` | MCP configuration auto-approves bare `Edit` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC621 / MCP-AUTOAPPROVE-GLOB` | MCP configuration auto-approves bare `Glob` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC622 / MCP-AUTOAPPROVE-GREP` | MCP configuration auto-approves bare `Grep` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC623 / MCP-AUTOAPPROVE-WEBFETCH` | MCP configuration auto-approves bare `WebFetch` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC624 / MCP-AUTOAPPROVE-WEBSEARCH` | MCP configuration auto-approves bare `WebSearch` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC625 / MCP-AUTOAPPROVE-BASH` | MCP configuration auto-approves bare `Bash` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC626 / CLAUDE-BASH` | Claude settings permissions allow bare `Bash` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC627 / CLAUDE-READ` | Claude settings permissions allow bare `Read` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC628 / CLAUDE-WRITE` | Claude settings permissions allow bare `Write` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC629 / CLAUDE-EDIT` | Claude settings permissions allow bare `Edit` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC630 / CLAUDE-GLOB` | Claude settings permissions allow bare `Glob` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC631 / CLAUDE-GREP` | Claude settings permissions allow bare `Grep` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC632 / CLAUDE-WEBFETCH` | Claude settings permissions allow bare `WebFetch` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC633` | Hook script attempts destructive root deletion | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC634` | Hook script accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC635` | Hook script writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC636` | Hook script writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC637` | MCP configuration command attempts destructive root deletion | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC638` | MCP configuration command accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC639` | MCP configuration command writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC640` | MCP configuration command writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC641` | Claude settings command hook attempts destructive root deletion | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC642` | Claude settings command hook accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC643` | Claude settings command hook writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC644` | Claude settings command hook writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC645` | Plugin hook command attempts destructive root deletion | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC646` | Plugin hook command accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC647` | Plugin hook command writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC648` | Plugin hook command writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC649` | Hook script manipulates cron persistence | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC650` | Hook script registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC651` | Hook script registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC652` | MCP configuration command manipulates cron persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC653` | MCP configuration command registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC654` | MCP configuration command registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC655` | Claude settings command hook manipulates cron persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC656` | Claude settings command hook registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC657` | Claude settings command hook registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC658` | Plugin hook command manipulates cron persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC659` | Plugin hook command registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC660` | Plugin hook command registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC661` | Hook script performs an insecure permission change | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC662` | Hook script manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC663` | Hook script manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC664` | MCP configuration command performs an insecure permission change | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC665` | MCP configuration command manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC666` | MCP configuration command manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC667` | Claude settings command hook performs an insecure permission change | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC668` | Claude settings command hook manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC669` | Claude settings command hook manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC670` | Plugin hook command performs an insecure permission change | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC671` | Plugin hook command manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC672` | Plugin hook command manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC673` | Hook script posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC674` | MCP configuration command appears to send secret material over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC675` | MCP configuration command sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC676` | MCP configuration command posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC677` | Claude settings command hook appears to send secret material over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC678` | Claude settings command hook sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC679` | Claude settings command hook posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC680` | Plugin hook command appears to send secret material over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC681` | Plugin hook command sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC682` | Plugin hook command posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC683` | Hook script transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC684` | MCP configuration command transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC685` | Claude settings command hook transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC686` | Plugin hook command transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC687` | Hook script reads local clipboard contents | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC688` | Hook script accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC689` | MCP configuration command reads local clipboard contents | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC690` | MCP configuration command accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC691` | Claude settings command hook reads local clipboard contents | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC692` | Claude settings command hook accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC693` | Plugin hook command reads local clipboard contents | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC694` | Plugin hook command accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC695` | Hook script exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC696` | Hook script exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC697` | MCP configuration command exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC698` | MCP configuration command exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC699` | Claude settings command hook exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC700` | Claude settings command hook exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC701` | Plugin hook command exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC702` | Plugin hook command exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC703` | Hook script captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC704` | Hook script captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC705` | MCP configuration command captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC706` | MCP configuration command captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC707` | Claude settings command hook captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC708` | Claude settings command hook captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC709` | Plugin hook command captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC710` | Plugin hook command captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC711` | Hook script captures a camera image or webcam stream | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC712` | Hook script records microphone or audio input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC713` | Hook script captures and exfiltrates camera or webcam data | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC714` | Hook script records and exfiltrates microphone or audio input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC715` | MCP configuration command captures a webcam or camera image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC716` | MCP configuration command captures microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC717` | MCP configuration command captures and exfiltrates webcam or camera data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC718` | MCP configuration command captures and exfiltrates microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC719` | Claude settings command hook captures a webcam or camera image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC720` | Claude settings command hook captures microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC721` | Claude settings command hook captures and exfiltrates webcam or camera data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC722` | Claude settings command hook captures and exfiltrates microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC723` | Plugin hook command captures a webcam or camera image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC724` | Plugin hook command captures microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC725` | Plugin hook command captures and exfiltrates webcam or camera data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC726` | Plugin hook command captures and exfiltrates microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC727` | Hook script captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC728` | Hook script captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC729` | MCP configuration command captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC730` | MCP configuration command captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC731` | Claude settings command hook captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC732` | Claude settings command hook captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC733` | Plugin hook command captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC734` | Plugin hook command captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC735` | Hook script dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC736` | Hook script dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC737` | MCP configuration command dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC738` | MCP configuration command dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC739` | Claude settings command hook dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC740` | Claude settings command hook dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC741` | Plugin hook command dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC742` | Plugin hook command dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC743` | package.json defines a dangerous install-time lifecycle script | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
+| `SEC744` | package.json installs a dependency from a git or forge shortcut source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
+| `SEC745` | package.json uses an unbounded dependency version like * or latest | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
+| `SEC746` | Dockerfile RUN downloads remote code and executes it | `preview` | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
+| `SEC747` | Dockerfile final stage explicitly runs as root | `preview` | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
+| `SEC748` | Docker Compose service enables privileged container runtime or host namespace access | `preview` | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
+| `SEC749` | Dockerfile FROM uses a mutable registry image without a digest pin | `preview` | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
+| `SEC750` | Docker Compose service image uses a mutable registry reference without a digest pin | `preview` | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
+| `SEC751` | Dockerfile FROM uses a latest or implicit-latest image tag | `preview` | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
+| `SEC752` | Docker Compose service image uses a latest or implicit-latest tag | `preview` | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
+| `SEC753` | package.json installs a dependency from a direct archive URL source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
+| `SEC754` | Devcontainer config defines a host-side initializeCommand | `preview` | Stable | `stable_gated` | Warn | `per_file` | `devcontainer` | `structural` | `message_only` | `supply-chain` |
+| `SEC755` | Devcontainer config bind-mounts sensitive local host material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `devcontainer` | `structural` | `message_only` | `supply-chain` |
+| `SEC756` | Installed npm dependency version matches an offline vulnerability advisory | `preview` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `suggestion` | `advisory` |
 
 ## Builtin preset activation model
 
 All shipped rules now participate in the preset model through a deterministic surface-and-tier mapping:
 
-- `base`: the core shipped stable rule set for repo-local agent artifacts
-- `preview`: core preview rules that expand the main artifact-security lane without enabling separate sidecar lanes
+- `recommended`: the quiet practical default for most teams, composed from curated high-signal shipped rules
+- `base`: the minimal stable baseline kept for explicit compatibility-focused setups
+- `preview`: deeper-review rules that expand coverage beyond the recommended default and include context-sensitive shipped preview checks
 - `compat`: workspace policy mismatch rules (`SEC401`-`SEC403`) kept as a separate policy lane
 - `skills`: markdown-surface rules for the core instruction/skills lane
 - `mcp`: all `json`, `tool_json`, and `server_json` surface rules, including preview MCP/config rules
@@ -495,6 +496,7 @@ All shipped rules now participate in the preset model through a deterministic su
 Important behavior:
 
 - `strict` is a severity overlay, not a membership preset: when enabled, active security rules are raised through preset policy instead of silently activating new rules by itself.
+- if `[presets]` is omitted, `lintai` enables `recommended` by default.
 - Dedicated sidecar lanes such as `compat`, `guidance`, `governance`, `supply-chain`, and `advisory` stay opt-in and are not implied by `base` or `preview`.
 - Category overrides do not activate rules outside the resolved preset set.
 - Explicit `[rules] SECxxx = "..."` remains the escape hatch for intentional per-rule opt-in outside the default preset set.
@@ -509,6 +511,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `heuristic`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -526,6 +529,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `heuristic`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -543,6 +547,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `heuristic`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -560,6 +565,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `heuristic`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -577,6 +583,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `heuristic`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -594,6 +601,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -615,6 +623,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -636,6 +645,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -657,6 +667,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -678,6 +689,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -699,6 +711,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -720,6 +733,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -741,6 +755,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -762,6 +777,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -783,6 +799,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -804,6 +821,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -825,6 +843,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `heuristic`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `mcp`
@@ -842,6 +861,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `heuristic`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `mcp`
@@ -859,6 +879,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `heuristic`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `mcp`
@@ -876,6 +897,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -897,6 +919,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -918,6 +941,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -939,6 +963,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `skills`
@@ -960,6 +985,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -977,6 +1003,7 @@ Important behavior:
 - Surface: `tool_json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -998,6 +1025,7 @@ Important behavior:
 - Surface: `tool_json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -1019,6 +1047,7 @@ Important behavior:
 - Surface: `tool_json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -1040,6 +1069,7 @@ Important behavior:
 - Surface: `tool_json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -1061,6 +1091,7 @@ Important behavior:
 - Surface: `tool_json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -1082,6 +1113,7 @@ Important behavior:
 - Surface: `server_json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -1103,6 +1135,7 @@ Important behavior:
 - Surface: `server_json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -1124,6 +1157,7 @@ Important behavior:
 - Surface: `server_json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -1145,6 +1179,7 @@ Important behavior:
 - Surface: `server_json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -1166,6 +1201,7 @@ Important behavior:
 - Surface: `server_json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `mcp`
@@ -1183,9 +1219,10 @@ Important behavior:
 - Surface: `github_workflow`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `recommended`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `supply-chain`
+- Default Presets: `recommended`, `supply-chain`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks workflow uses: entries for third-party actions that rely on mutable refs instead of immutable commit SHAs; positioned as a supply-chain hardening control rather than a direct exploit claim.
@@ -1204,6 +1241,7 @@ Important behavior:
 - Surface: `github_workflow`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `supply-chain`
@@ -1221,6 +1259,7 @@ Important behavior:
 - Surface: `github_workflow`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -1242,6 +1281,7 @@ Important behavior:
 - Surface: `github_workflow`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -1263,9 +1303,10 @@ Important behavior:
 - Surface: `github_workflow`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `recommended`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `supply-chain`
+- Default Presets: `recommended`, `supply-chain`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Write-capable token scopes and third-party action usage are compositional and need more corpus-backed precision review before a stable launch.
@@ -1280,9 +1321,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `recommended`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `recommended`, `base`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP config command launchers for mutable package-runner forms such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.
@@ -1301,6 +1343,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -1322,6 +1365,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -1343,6 +1387,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -1360,6 +1405,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `mcp`
@@ -1377,6 +1423,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -1398,6 +1445,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -1419,6 +1467,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -1440,9 +1489,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `recommended`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `recommended`, `base`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for mutable package launcher forms such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.
@@ -1461,6 +1511,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -1482,6 +1533,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -1503,6 +1555,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -1524,6 +1577,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -1545,6 +1599,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -1566,6 +1621,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -1587,9 +1643,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `recommended`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `recommended`, `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Mutable MCP launcher examples in markdown can be legitimate setup guidance, so the first release stays in the core preview lane while broader field validation continues.
@@ -1604,6 +1661,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -1621,6 +1679,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -1638,6 +1697,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `heuristic`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -1655,6 +1715,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `heuristic`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -1672,9 +1733,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `recommended`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `recommended`, `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for exact bare `Bash` grants that expose unconstrained shell authority as shared default policy.
@@ -1693,6 +1755,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `guidance`
@@ -1710,6 +1773,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `guidance`
@@ -1727,6 +1791,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -1744,6 +1809,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -1761,6 +1827,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -1778,6 +1845,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -1795,6 +1863,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -1812,6 +1881,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -1829,6 +1899,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -1850,6 +1921,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -1871,6 +1943,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -1892,6 +1965,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -1913,6 +1987,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -1934,6 +2009,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -1955,6 +2031,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -1976,6 +2053,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -1997,6 +2075,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -2018,6 +2097,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `guidance`
@@ -2035,6 +2115,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `guidance`
@@ -2052,6 +2133,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -2073,6 +2155,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -2094,6 +2177,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -2115,6 +2199,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -2136,6 +2221,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -2157,6 +2243,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `guidance`
@@ -2174,6 +2261,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -2191,6 +2279,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -2208,6 +2297,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -2225,6 +2315,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -2246,6 +2337,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -2267,6 +2359,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -2288,6 +2381,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -2309,6 +2403,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -2330,6 +2425,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -2351,6 +2447,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -2372,6 +2469,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -2393,6 +2491,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -2414,6 +2513,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `governance`
@@ -2431,6 +2531,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `governance`
@@ -2448,6 +2549,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `governance`
@@ -2465,6 +2567,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `governance`
@@ -2482,6 +2585,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -2503,6 +2607,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -2524,6 +2629,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -2545,6 +2651,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -2566,6 +2673,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -2587,6 +2695,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -2594,7 +2703,7 @@ Important behavior:
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(npx ...)` mutable package-runner authority.
 - Deterministic Signal Basis: ClaudeSettingsSignals exact permission detection for `Bash(npx ...)` entries inside permissions.allow.
-- Malicious Corpus: `claude-settings-mutable-runner-permissions`
+- Malicious Corpus: `claude-settings-npx-permission`
 - Benign Corpus: `claude-settings-npx-specific-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
@@ -2608,6 +2717,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -2629,6 +2739,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -2650,6 +2761,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -2671,6 +2783,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -2692,6 +2805,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -2713,6 +2827,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -2734,6 +2849,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -2755,6 +2871,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -2776,6 +2893,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -2797,6 +2915,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -2818,6 +2937,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -2839,6 +2959,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -2860,6 +2981,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -2881,6 +3003,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `heuristic`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -2898,6 +3021,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -2919,6 +3043,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -2940,6 +3065,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -2961,6 +3087,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -2982,6 +3109,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `skills`
@@ -3003,6 +3131,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -3024,6 +3153,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -3045,6 +3175,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -3066,6 +3197,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -3087,6 +3219,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -3108,6 +3241,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -3129,6 +3263,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3150,6 +3285,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3171,6 +3307,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3192,6 +3329,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3213,6 +3351,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3234,6 +3373,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3255,6 +3395,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3276,6 +3417,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3297,6 +3439,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3318,6 +3461,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3339,6 +3483,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3360,6 +3505,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3381,6 +3527,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3402,6 +3549,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3423,6 +3571,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3444,6 +3593,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3465,6 +3615,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3486,6 +3637,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3507,6 +3659,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -3528,6 +3681,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3549,6 +3703,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3570,6 +3725,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3591,6 +3747,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3612,6 +3769,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3633,6 +3791,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3654,6 +3813,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3675,6 +3835,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3696,6 +3857,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3717,6 +3879,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3738,6 +3901,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3759,6 +3923,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3780,6 +3945,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3801,6 +3967,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3822,6 +3989,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3843,6 +4011,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3864,6 +4033,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3885,6 +4055,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3906,6 +4077,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3927,6 +4099,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3948,6 +4121,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3969,6 +4143,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -3990,6 +4165,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -4011,6 +4187,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -4032,6 +4209,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -4053,6 +4231,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -4074,6 +4253,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -4095,6 +4275,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `governance`
@@ -4116,6 +4297,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -4137,6 +4319,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -4158,6 +4341,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -4179,6 +4363,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -4200,6 +4385,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -4221,6 +4407,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -4242,6 +4429,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -4263,6 +4451,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -4284,6 +4473,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -4305,6 +4495,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -4326,6 +4517,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -4347,6 +4539,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -4368,6 +4561,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -4389,6 +4583,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -4410,6 +4605,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -4431,6 +4627,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -4452,6 +4649,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -4473,6 +4671,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -4494,6 +4693,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `preview`, `claude`
@@ -4515,6 +4715,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `governance`
@@ -4536,6 +4737,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `governance`
@@ -4557,6 +4759,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `governance`
@@ -4578,6 +4781,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `governance`
@@ -4599,6 +4803,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `governance`
@@ -4620,6 +4825,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `governance`
@@ -4641,6 +4847,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `governance`
@@ -4662,6 +4869,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `governance`
@@ -4683,6 +4891,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -4704,6 +4913,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -4725,6 +4935,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -4746,6 +4957,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -4767,6 +4979,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -4788,6 +5001,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -4809,6 +5023,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -4830,6 +5045,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -4851,6 +5067,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -4872,6 +5089,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -4893,6 +5111,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -4914,6 +5133,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -4935,6 +5155,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -4956,6 +5177,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -4977,6 +5199,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -4998,6 +5221,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -5019,6 +5243,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -5040,6 +5265,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -5061,6 +5287,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -5082,6 +5309,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -5103,6 +5331,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -5124,6 +5353,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -5145,6 +5375,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -5166,6 +5397,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -5187,6 +5419,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -5208,6 +5441,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `skills`
@@ -5229,6 +5463,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -5250,6 +5485,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -5271,6 +5507,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -5292,6 +5529,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -5313,6 +5551,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -5334,6 +5573,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -5355,6 +5595,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -5376,6 +5617,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -5397,6 +5639,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -5418,6 +5661,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -5439,6 +5683,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -5460,6 +5705,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -5481,6 +5727,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -5502,6 +5749,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -5523,6 +5771,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -5544,6 +5793,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -5565,6 +5815,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -5586,6 +5837,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `governance`
@@ -5607,6 +5859,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5628,6 +5881,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5649,6 +5903,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5670,6 +5925,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5691,6 +5947,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5712,6 +5969,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5733,6 +5991,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5754,6 +6013,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5775,6 +6035,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5796,6 +6057,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5817,6 +6079,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5838,6 +6101,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5859,6 +6123,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5880,6 +6145,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5901,6 +6167,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5922,6 +6189,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5943,6 +6211,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5964,6 +6233,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -5985,6 +6255,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6006,6 +6277,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6027,6 +6299,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6048,6 +6321,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6069,6 +6343,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6090,6 +6365,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6111,6 +6387,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6132,6 +6409,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6153,6 +6431,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6174,6 +6453,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6195,6 +6475,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6216,6 +6497,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6237,6 +6519,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6258,6 +6541,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6279,6 +6563,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6300,6 +6585,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6321,6 +6607,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6342,6 +6629,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6363,6 +6651,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6384,6 +6673,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6405,6 +6695,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6426,6 +6717,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6447,6 +6739,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6468,6 +6761,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6489,6 +6783,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6510,6 +6805,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6531,6 +6827,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6552,6 +6849,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6573,6 +6871,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6594,6 +6893,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6615,6 +6915,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6636,6 +6937,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6657,6 +6959,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6678,6 +6981,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6699,6 +7003,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6720,6 +7025,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6741,6 +7047,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6762,6 +7069,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6783,6 +7091,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6804,6 +7113,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6825,6 +7135,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6846,6 +7157,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6867,6 +7179,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6888,6 +7201,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6909,6 +7223,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6930,6 +7245,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6951,6 +7267,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6972,6 +7289,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -6993,6 +7311,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7014,6 +7333,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7035,6 +7355,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7056,6 +7377,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7077,6 +7399,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7098,6 +7421,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7119,6 +7443,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7140,6 +7465,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7161,6 +7487,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7182,6 +7509,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7203,6 +7531,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7224,6 +7553,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7245,6 +7575,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7266,6 +7597,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7287,6 +7619,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -7308,6 +7641,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -7329,6 +7663,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -7350,6 +7685,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -7371,6 +7707,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -7392,6 +7729,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -7413,6 +7751,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `preview`, `claude`
@@ -7434,6 +7773,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -7455,6 +7795,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -7476,6 +7817,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -7497,6 +7839,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -7518,6 +7861,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7539,6 +7883,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7560,6 +7905,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7581,6 +7927,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7602,6 +7949,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -7623,6 +7971,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -7644,6 +7993,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -7665,6 +8015,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -7686,6 +8037,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7707,6 +8059,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7728,6 +8081,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7749,6 +8103,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7770,6 +8125,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -7791,6 +8147,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -7812,6 +8169,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -7833,6 +8191,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7854,6 +8213,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7875,6 +8235,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7896,6 +8257,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -7917,6 +8279,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -7938,6 +8301,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -7959,6 +8323,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -7980,6 +8345,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8001,6 +8367,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8022,6 +8389,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -8043,6 +8411,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -8064,6 +8433,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -8085,6 +8455,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8106,6 +8477,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8127,6 +8499,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8148,6 +8521,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -8169,6 +8543,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -8190,6 +8565,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -8211,6 +8587,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8232,6 +8609,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8253,6 +8631,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8274,6 +8653,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -8295,6 +8675,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8316,6 +8697,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8337,6 +8719,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8358,6 +8741,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -8379,6 +8763,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -8400,6 +8785,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -8421,6 +8807,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8442,6 +8829,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8463,6 +8851,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8484,6 +8873,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -8505,6 +8895,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8526,6 +8917,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -8547,6 +8939,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8568,6 +8961,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -8589,6 +8983,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -8610,6 +9005,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8631,6 +9027,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8652,6 +9049,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -8673,6 +9071,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -8694,6 +9093,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8715,6 +9115,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8736,6 +9137,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -8757,6 +9159,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -8778,6 +9181,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8799,6 +9203,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8820,6 +9225,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -8841,6 +9247,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -8862,6 +9269,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8883,6 +9291,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8904,6 +9313,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -8925,6 +9335,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -8946,6 +9357,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8967,6 +9379,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -8988,6 +9401,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -9009,6 +9423,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -9030,6 +9445,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9051,6 +9467,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9072,6 +9489,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -9093,6 +9511,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -9114,6 +9533,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -9135,6 +9555,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -9156,6 +9577,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9177,6 +9599,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9198,6 +9621,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9219,6 +9643,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9240,6 +9665,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -9261,6 +9687,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -9282,6 +9709,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -9303,6 +9731,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -9324,6 +9753,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9345,6 +9775,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9366,6 +9797,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9387,6 +9819,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9408,6 +9841,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -9429,6 +9863,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -9450,6 +9885,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9471,6 +9907,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9492,6 +9929,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -9513,6 +9951,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -9534,6 +9973,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9555,6 +9995,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9576,6 +10017,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -9597,6 +10039,7 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`
@@ -9618,6 +10061,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9639,6 +10083,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9660,6 +10105,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -9681,6 +10127,7 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `claude`
@@ -9702,6 +10149,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9723,6 +10171,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `base`, `mcp`
@@ -9744,6 +10193,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -9765,6 +10215,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -9786,6 +10237,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -9807,6 +10259,7 @@ Important behavior:
 - Surface: `dockerfile`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -9828,6 +10281,7 @@ Important behavior:
 - Surface: `dockerfile`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -9849,6 +10303,7 @@ Important behavior:
 - Surface: `docker-compose`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -9870,6 +10325,7 @@ Important behavior:
 - Surface: `dockerfile`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -9891,6 +10347,7 @@ Important behavior:
 - Surface: `docker-compose`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -9912,6 +10369,7 @@ Important behavior:
 - Surface: `dockerfile`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -9933,6 +10391,7 @@ Important behavior:
 - Surface: `docker-compose`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -9954,6 +10413,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -9975,6 +10435,7 @@ Important behavior:
 - Surface: `devcontainer`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -9996,6 +10457,7 @@ Important behavior:
 - Surface: `devcontainer`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -10019,6 +10481,7 @@ Important behavior:
 - Surface: `workspace`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `compat`
@@ -10036,6 +10499,7 @@ Important behavior:
 - Surface: `workspace`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `compat`
@@ -10053,6 +10517,7 @@ Important behavior:
 - Surface: `workspace`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `compat`
@@ -10072,6 +10537,7 @@ Important behavior:
 - Surface: `workspace`
 - Detection: `structural`
 - Default Severity: `Warn`
+- Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `advisory`

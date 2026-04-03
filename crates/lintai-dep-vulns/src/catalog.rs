@@ -1,6 +1,7 @@
 use lintai_api::{
-    CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleEntry, CatalogRuleLifecycle,
-    CatalogRuleScope, CatalogSurface, RuleMetadata, RuleTier, declare_rule,
+    CatalogDetectionClass, CatalogPublicLane, CatalogRemediationSupport, CatalogRuleEntry,
+    CatalogRuleLifecycle, CatalogRuleScope, CatalogSurface, RuleMetadata, RuleTier,
+    declare_rule,
 };
 
 use crate::PROVIDER_ID;
@@ -36,6 +37,7 @@ pub struct DepVulnRuleCatalogEntry {
     pub provider_id: &'static str,
     pub surface: DepVulnSurface,
     pub default_presets: &'static [&'static str],
+    pub public_lane: CatalogPublicLane,
     pub detection_class: DepVulnDetectionClass,
     pub lifecycle: DepVulnRuleLifecycle,
     pub remediation_support: DepVulnRemediationSupport,
@@ -61,6 +63,7 @@ const DEP_VULN_RULE_CATALOG_ENTRIES: [CatalogRuleEntry; 1] = [CatalogRuleEntry {
     scope: CatalogRuleScope::Workspace,
     surface: CatalogSurface::Workspace,
     default_presets: ADVISORY_PRESETS,
+    public_lane: CatalogPublicLane::Preview,
     detection_class: CatalogDetectionClass::Structural,
     lifecycle: CatalogRuleLifecycle::Preview {
         blocker: "Initial advisory snapshot coverage is intentionally small in the first release and needs broader snapshot discipline before Stable.",
@@ -108,6 +111,7 @@ impl From<CatalogRuleEntry> for DepVulnRuleCatalogEntry {
                 ),
             },
             default_presets: entry.default_presets,
+            public_lane: entry.public_lane,
             detection_class: match entry.detection_class {
                 CatalogDetectionClass::Structural => DepVulnDetectionClass::Structural,
                 CatalogDetectionClass::Heuristic => panic!(
@@ -147,6 +151,7 @@ impl From<DepVulnRuleCatalogEntry> for CatalogRuleEntry {
             scope: CatalogRuleScope::Workspace,
             surface: CatalogSurface::Workspace,
             default_presets: entry.default_presets,
+            public_lane: entry.public_lane,
             detection_class: CatalogDetectionClass::Structural,
             lifecycle: match entry.lifecycle {
                 DepVulnRuleLifecycle::Preview {

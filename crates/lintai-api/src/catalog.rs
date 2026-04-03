@@ -99,12 +99,30 @@ impl CatalogRemediationSupport {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum CatalogPublicLane {
+    Recommended,
+    Preview,
+    Governance,
+}
+
+impl CatalogPublicLane {
+    pub const fn slug(self) -> &'static str {
+        match self {
+            Self::Recommended => "recommended",
+            Self::Preview => "preview",
+            Self::Governance => "governance",
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct CatalogRuleEntry {
     pub metadata: RuleMetadata,
     pub provider_id: &'static str,
     pub scope: CatalogRuleScope,
     pub surface: CatalogSurface,
     pub default_presets: &'static [&'static str],
+    pub public_lane: CatalogPublicLane,
     pub detection_class: CatalogDetectionClass,
     pub lifecycle: CatalogRuleLifecycle,
     pub remediation_support: CatalogRemediationSupport,
@@ -113,7 +131,8 @@ pub struct CatalogRuleEntry {
 #[cfg(test)]
 mod tests {
     use super::{
-        CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleScope, CatalogSurface,
+        CatalogDetectionClass, CatalogPublicLane, CatalogRemediationSupport, CatalogRuleScope,
+        CatalogSurface,
     };
 
     #[test]
@@ -122,6 +141,7 @@ mod tests {
         assert_eq!(CatalogRuleScope::Workspace.slug(), "workspace");
         assert_eq!(CatalogSurface::GithubWorkflow.slug(), "github_workflow");
         assert_eq!(CatalogDetectionClass::Heuristic.slug(), "heuristic");
+        assert_eq!(CatalogPublicLane::Governance.slug(), "governance");
         assert_eq!(
             CatalogRemediationSupport::MessageOnly.slug(),
             "message_only"

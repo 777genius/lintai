@@ -1,6 +1,6 @@
 use lintai_api::{
-    CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleEntry, CatalogRuleLifecycle,
-    CatalogRuleScope, CatalogSurface, RuleMetadata,
+    CatalogDetectionClass, CatalogPublicLane, CatalogRemediationSupport, CatalogRuleEntry,
+    CatalogRuleLifecycle, CatalogRuleScope, CatalogSurface, RuleMetadata,
 };
 
 use crate::registry::{
@@ -57,6 +57,7 @@ pub struct NativeRuleCatalogEntry {
     pub provider_id: &'static str,
     pub surface: NativeCatalogSurface,
     pub default_presets: &'static [&'static str],
+    pub public_lane: CatalogPublicLane,
     pub detection_class: NativeCatalogDetectionClass,
     pub lifecycle: NativeCatalogRuleLifecycle,
     pub remediation_support: NativeCatalogRemediationSupport,
@@ -71,6 +72,7 @@ pub fn ai_security_rule_catalog_entries() -> Vec<CatalogRuleEntry> {
             scope: CatalogRuleScope::PerFile,
             surface: map_catalog_surface(spec.surface),
             default_presets: spec.default_presets,
+            public_lane: public_lane_for_presets(spec.default_presets),
             detection_class: map_catalog_detection_class(spec.detection_class),
             lifecycle: map_catalog_lifecycle(spec.lifecycle),
             remediation_support: map_catalog_remediation(spec.remediation_support()),
@@ -98,6 +100,7 @@ impl From<CatalogRuleEntry> for NativeRuleCatalogEntry {
             provider_id: entry.provider_id,
             surface: map_native_surface(entry.surface),
             default_presets: entry.default_presets,
+            public_lane: entry.public_lane,
             detection_class: map_native_detection_class(entry.detection_class),
             lifecycle: map_native_lifecycle(entry.lifecycle),
             remediation_support: map_native_remediation(entry.remediation_support),
@@ -113,10 +116,21 @@ impl From<NativeRuleCatalogEntry> for CatalogRuleEntry {
             scope: CatalogRuleScope::PerFile,
             surface: map_catalog_surface_from_native(entry.surface),
             default_presets: entry.default_presets,
+            public_lane: entry.public_lane,
             detection_class: map_catalog_detection_class_from_native(entry.detection_class),
             lifecycle: map_catalog_lifecycle_from_native(entry.lifecycle),
             remediation_support: map_catalog_remediation_from_native(entry.remediation_support),
         }
+    }
+}
+
+fn public_lane_for_presets(default_presets: &'static [&'static str]) -> CatalogPublicLane {
+    if default_presets.contains(&"governance") {
+        CatalogPublicLane::Governance
+    } else if default_presets.contains(&"recommended") {
+        CatalogPublicLane::Recommended
+    } else {
+        CatalogPublicLane::Preview
     }
 }
 

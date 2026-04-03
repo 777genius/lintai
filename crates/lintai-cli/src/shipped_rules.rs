@@ -8,11 +8,11 @@ mod model;
 pub(crate) use aliases::{shipped_rule_alias, shipped_rule_display_label};
 pub(crate) use index::{
     canonical_rule_path, provider_slug, provider_sort_key, rule_slug, shipped_rule_doc_title,
-    shipped_rule_docs_url, shipped_rule_tiers,
+    shipped_rule_docs_url, shipped_rule_public_lane, shipped_rule_tiers,
 };
 pub(crate) use model::{
     CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleLifecycle, CatalogSurface,
-    RuleScope, SecurityRuleCatalogEntry,
+    PublicLane, RuleScope, SecurityRuleCatalogEntry,
 };
 
 use lintai_builtins::builtin_rule_catalog_entries;

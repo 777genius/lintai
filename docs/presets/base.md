@@ -7,12 +7,12 @@ presetId: base
 
 ## What This Preset Enables
 
-The `base` preset enables the core shipped stable rule set for repo-local agent artifacts.
+The `base` preset enables the minimal stable baseline for repo-local agent artifacts.
 
 ## When To Use It
 
-Use this as the default baseline when you want high-signal agent-artifact checks without preview or sidecar lanes.
+Use this when you explicitly want the old narrow baseline or need a compatibility-oriented starting point instead of the broader `recommended` default.
 
 ## Tradeoffs
 
-You get conservative coverage and minimal surprise, but preview, policy, guidance, and supply-chain sidecar checks stay out unless you opt in separately.
+You get conservative coverage and minimal surprise, but you also miss the curated practical checks that now ship in `recommended`.

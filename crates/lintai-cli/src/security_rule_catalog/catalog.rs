@@ -1,7 +1,8 @@
 use crate::security_rule_catalog::format::{
     escape_markdown_table_cell, escape_markdown_text, format_bool, format_case_ids,
-    format_confidence, format_detection, format_presets, format_remediation, format_scope,
-    format_severity, format_surface, format_tier, render_inline_code,
+    format_confidence, format_detection, format_presets, format_public_lane,
+    format_remediation, format_scope, format_severity, format_surface, format_tier,
+    render_inline_code,
 };
 use crate::shipped_rules::{CatalogRuleLifecycle, SecurityRuleCatalogEntry, shipped_rule_alias};
 
@@ -37,17 +38,18 @@ pub(super) fn render_summary(entries: &[SecurityRuleCatalogEntry]) -> Vec<String
         String::new(),
         "## Summary".to_owned(),
         String::new(),
-        "| Code | Summary | Tier | Lifecycle | Severity | Scope | Surface | Detection | Remediation | Presets |".to_owned(),
-        "|---|---|---|---|---|---|---|---|---|---|".to_owned(),
+        "| Code | Summary | Public Lane | Tier | Lifecycle | Severity | Scope | Surface | Detection | Remediation | Presets |".to_owned(),
+        "|---|---|---|---|---|---|---|---|---|---|---|".to_owned(),
     ];
 
     let mut summary_entries = entries.to_vec();
     summary_entries.sort_by_key(|entry| entry.metadata.code);
     for entry in summary_entries {
         lines.push(format!(
-            "| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |",
+            "| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |",
             render_rule_identity(entry.metadata.code),
             escape_markdown_table_cell(entry.metadata.summary),
+            render_inline_code(format_public_lane(entry.public_lane())),
             format_tier(entry.metadata.tier),
             render_inline_code(entry.lifecycle_state()),
             format_severity(entry.metadata),
@@ -69,8 +71,9 @@ pub(super) fn render_preset_activation_model() -> Vec<String> {
         String::new(),
         "All shipped rules now participate in the preset model through a deterministic surface-and-tier mapping:".to_owned(),
         String::new(),
-        "- `base`: the core shipped stable rule set for repo-local agent artifacts".to_owned(),
-        "- `preview`: core preview rules that expand the main artifact-security lane without enabling separate sidecar lanes".to_owned(),
+        "- `recommended`: the quiet practical default for most teams, composed from curated high-signal shipped rules".to_owned(),
+        "- `base`: the minimal stable baseline kept for explicit compatibility-focused setups".to_owned(),
+        "- `preview`: deeper-review rules that expand coverage beyond the recommended default and include context-sensitive shipped preview checks".to_owned(),
         "- `compat`: workspace policy mismatch rules (`SEC401`-`SEC403`) kept as a separate policy lane".to_owned(),
         "- `skills`: markdown-surface rules for the core instruction/skills lane".to_owned(),
         "- `mcp`: all `json`, `tool_json`, and `server_json` surface rules, including preview MCP/config rules".to_owned(),
@@ -83,6 +86,7 @@ pub(super) fn render_preset_activation_model() -> Vec<String> {
         "Important behavior:".to_owned(),
         String::new(),
         "- `strict` is a severity overlay, not a membership preset: when enabled, active security rules are raised through preset policy instead of silently activating new rules by itself.".to_owned(),
+        "- if `[presets]` is omitted, `lintai` enables `recommended` by default.".to_owned(),
         "- Dedicated sidecar lanes such as `compat`, `guidance`, `governance`, `supply-chain`, and `advisory` stay opt-in and are not implied by `base` or `preview`.".to_owned(),
         "- Category overrides do not activate rules outside the resolved preset set.".to_owned(),
         "- Explicit `[rules] SECxxx = \"...\"` remains the escape hatch for intentional per-rule opt-in outside the default preset set.".to_owned(),
@@ -139,6 +143,10 @@ fn render_detail_section(entry: SecurityRuleCatalogEntry) -> Vec<String> {
         format!(
             "- Default Severity: {}",
             render_inline_code(format_severity(entry.metadata))
+        ),
+        format!(
+            "- Public Lane: {}",
+            render_inline_code(format_public_lane(entry.public_lane()))
         ),
         format!(
             "- Default Confidence: {}",

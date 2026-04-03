@@ -54,17 +54,12 @@ fn run_lintai(
 }
 
 #[test]
-fn scan_known_global_discovers_roots_and_emits_findings() {
+fn scan_known_global_discovers_roots_and_stays_quiet_by_default() {
     let temp_dir = unique_temp_dir("lintai-scan-known-global");
     let cwd = temp_dir.join("cwd");
     let home = temp_dir.join("home");
     let xdg = temp_dir.join("xdg");
     fs::create_dir_all(&cwd).unwrap();
-    write(
-        &cwd.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\"]\n",
-    );
-
     write(
         &home.join(".claude/skills/demo/SKILL.md"),
         PRIVATE_KEY_MARKDOWN,
@@ -84,12 +79,11 @@ fn scan_known_global_discovers_roots_and_emits_findings() {
     assert!(stdout.contains("root [global lintable] claude-code skills"));
     assert!(stdout.contains("root [global lintable] cursor mcp"));
     assert!(stdout.contains("discovery counters:"));
-    assert!(stdout.contains("SEC312"));
-    assert!(stdout.contains("SEC301"));
+    assert!(stdout.contains("found 0 finding(s)"));
     assert!(
         stdout.contains(
             &home
-                .join(".claude/skills/demo/SKILL.md")
+                .join(".claude/skills")
                 .display()
                 .to_string()
         )
@@ -380,23 +374,7 @@ fn scan_known_goose_and_windsurf_aliases_are_lintable() {
     assert_eq!(value["discovery_stats"]["supported_artifacts_scanned"], 2);
 
     let findings = value["findings"].as_array().unwrap();
-    assert!(
-        findings
-            .iter()
-            .any(|finding| finding["rule_code"] == "SEC312")
-    );
-    assert!(
-        findings
-            .iter()
-            .any(|finding| finding["rule_code"] == "SEC301")
-    );
-    assert!(findings.iter().any(|finding| {
-        finding["location"]["normalized_path"] == canonical_display(&cwd.join(".goosehints"))
-    }));
-    assert!(findings.iter().any(|finding| {
-        finding["location"]["normalized_path"]
-            == canonical_display(&home.join(".codeium/windsurf/mcp_config.json"))
-    }));
+    assert!(findings.is_empty());
 }
 
 #[test]
@@ -432,23 +410,7 @@ fn scan_known_directory_based_markdown_roots_are_lintable() {
     assert_eq!(value["discovery_stats"]["lintable_roots"], 3);
     assert_eq!(value["discovery_stats"]["supported_artifacts_scanned"], 3);
     let findings = value["findings"].as_array().unwrap();
-    assert!(
-        findings
-            .iter()
-            .any(|finding| finding["rule_code"] == "SEC312")
-    );
-    assert!(findings.iter().any(|finding| {
-        finding["location"]["normalized_path"]
-            == canonical_display(&cwd.join(".roo/rules/security.md"))
-    }));
-    assert!(findings.iter().any(|finding| {
-        finding["location"]["normalized_path"]
-            == canonical_display(&cwd.join(".junie/agents/reviewer.md"))
-    }));
-    assert!(findings.iter().any(|finding| {
-        finding["location"]["normalized_path"]
-            == canonical_display(&home.join(".continue/rules/guardrails.md"))
-    }));
+    assert!(findings.is_empty());
 }
 
 #[test]
@@ -536,16 +498,7 @@ fn scan_known_claude_desktop_and_copilot_cli_configs_are_lintable() {
             && root["mode"] == "lintable"
     }));
     let findings = value["findings"].as_array().unwrap();
-    assert!(findings.iter().any(|finding| {
-        finding["location"]["normalized_path"]
-            == canonical_display(
-                &home.join("Library/Application Support/Claude/claude_desktop_config.json"),
-            )
-    }));
-    assert!(findings.iter().any(|finding| {
-        finding["location"]["normalized_path"]
-            == canonical_display(&home.join(".copilot/mcp-config.json"))
-    }));
+    assert!(findings.is_empty());
 }
 
 #[test]
@@ -580,14 +533,11 @@ fn scan_known_continue_mcp_servers_directory_is_lintable() {
     assert_eq!(roots[0]["mode"], "lintable");
     assert_eq!(value["discovery_stats"]["lintable_roots"], 1);
     assert_eq!(value["discovery_stats"]["supported_artifacts_scanned"], 1);
-    assert!(value["findings"].as_array().unwrap().iter().any(|finding| {
-        finding["location"]["normalized_path"]
-            == canonical_display(&home.join(".continue/mcpServers/docker.json"))
-    }));
+    assert!(value["findings"].as_array().unwrap().is_empty());
 }
 
 #[test]
-fn scan_known_vscode_kiro_and_amazon_q_mcp_configs_emit_findings() {
+fn scan_known_vscode_kiro_and_amazon_q_mcp_configs_are_lintable() {
     let temp_dir = unique_temp_dir("lintai-scan-known-project-mcp-clients");
     let cwd = temp_dir.join("project");
     let home = temp_dir.join("home");
@@ -648,17 +598,7 @@ fn scan_known_vscode_kiro_and_amazon_q_mcp_configs_emit_findings() {
             && root["surface"] == "project-mcp"
             && root["mode"] == "lintable"
     }));
-    let findings = value["findings"].as_array().unwrap();
-    assert!(findings.iter().any(|finding| {
-        finding["location"]["normalized_path"] == canonical_display(&cwd.join(".vscode/mcp.json"))
-    }));
-    assert!(findings.iter().any(|finding| {
-        finding["location"]["normalized_path"]
-            == canonical_display(&cwd.join(".kiro/settings/mcp.json"))
-    }));
-    assert!(findings.iter().any(|finding| {
-        finding["location"]["normalized_path"] == canonical_display(&cwd.join(".amazonq/mcp.json"))
-    }));
+    assert!(value["findings"].as_array().unwrap().is_empty());
 }
 
 #[test]

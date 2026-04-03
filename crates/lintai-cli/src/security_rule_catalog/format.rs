@@ -1,5 +1,5 @@
 use crate::shipped_rules::{
-    CatalogDetectionClass, CatalogRemediationSupport, CatalogSurface, RuleScope,
+    CatalogDetectionClass, CatalogRemediationSupport, CatalogSurface, PublicLane, RuleScope,
 };
 use lintai_api::{RuleMetadata, RuleTier};
 
@@ -17,6 +17,10 @@ pub(super) fn format_detection(detection_class: CatalogDetectionClass) -> &'stat
 
 pub(super) fn format_remediation(remediation_support: CatalogRemediationSupport) -> &'static str {
     remediation_support.slug()
+}
+
+pub(super) fn format_public_lane(public_lane: PublicLane) -> &'static str {
+    public_lane.slug()
 }
 
 pub(super) fn format_tier(tier: RuleTier) -> &'static str {

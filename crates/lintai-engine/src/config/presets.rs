@@ -5,7 +5,7 @@ use lintai_builtins::{builtin_known_rule_codes, builtin_rule_codes_for_preset};
 
 use super::ConfigError;
 
-pub(crate) const DEFAULT_ENABLED_PRESETS: &[&str] = &["base"];
+pub(crate) const DEFAULT_ENABLED_PRESETS: &[&str] = &["recommended"];
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct BuiltinPresetSpec {
@@ -79,6 +79,12 @@ fn expand_preset(
 
 fn builtin_preset_spec(name: &str) -> Result<BuiltinPresetSpec, ConfigError> {
     match name {
+        "recommended" => Ok(BuiltinPresetSpec {
+            name: "recommended",
+            extends: &[],
+            active_rules: rules_for_preset("recommended"),
+            ..Default::default()
+        }),
         "base" => Ok(BuiltinPresetSpec {
             name: "base",
             extends: &[],
@@ -87,7 +93,7 @@ fn builtin_preset_spec(name: &str) -> Result<BuiltinPresetSpec, ConfigError> {
         }),
         "strict" => Ok(BuiltinPresetSpec {
             name: "strict",
-            extends: &["base"],
+            extends: &["recommended"],
             category_overrides: BTreeMap::from([(Category::Security, Severity::Deny)]),
             ..Default::default()
         }),
@@ -146,7 +152,7 @@ fn builtin_preset_spec(name: &str) -> Result<BuiltinPresetSpec, ConfigError> {
             ..Default::default()
         }),
         other => Err(ConfigError::new(format!(
-            "unknown builtin preset `{other}`; expected one of: base, strict, compat, preview, skills, mcp, claude, guidance, governance, supply-chain, advisory"
+            "unknown builtin preset `{other}`; expected one of: recommended, base, strict, compat, preview, skills, mcp, claude, guidance, governance, supply-chain, advisory"
         ))),
     }
 }

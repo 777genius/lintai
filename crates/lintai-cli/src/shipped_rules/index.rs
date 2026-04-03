@@ -1,7 +1,7 @@
 use std::collections::BTreeMap;
 use std::sync::LazyLock;
 
-use lintai_api::RuleTier;
+use lintai_api::{CatalogPublicLane, RuleTier};
 
 use super::shipped_security_rule_catalog_entries;
 
@@ -11,6 +11,7 @@ const DOCS_SITE_URL: &str = "https://777genius.github.io/lintai";
 struct ShippedRuleDocIndexEntry {
     provider_id: &'static str,
     doc_title: &'static str,
+    public_lane: CatalogPublicLane,
 }
 
 static SHIPPED_RULE_DOCS_INDEX: LazyLock<BTreeMap<&'static str, ShippedRuleDocIndexEntry>> =
@@ -22,6 +23,7 @@ static SHIPPED_RULE_DOCS_INDEX: LazyLock<BTreeMap<&'static str, ShippedRuleDocIn
                 ShippedRuleDocIndexEntry {
                     provider_id: entry.provider_id,
                     doc_title: entry.metadata.doc_title,
+                    public_lane: entry.public_lane(),
                 },
             );
         }
@@ -69,6 +71,12 @@ pub(crate) fn shipped_rule_docs_url(rule_code: &str) -> Option<String> {
             canonical_rule_path(entry.provider_id, rule_code)
         )
     })
+}
+
+pub(crate) fn shipped_rule_public_lane(rule_code: &str) -> Option<CatalogPublicLane> {
+    SHIPPED_RULE_DOCS_INDEX
+        .get(rule_code)
+        .map(|entry| entry.public_lane)
 }
 
 pub(crate) fn provider_sort_key(provider_id: &str) -> usize {

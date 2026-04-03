@@ -88,7 +88,7 @@ fn baseline_snapshot(
 }
 
 #[test]
-fn inventory_os_user_scope_reports_provenance_and_findings() {
+fn inventory_os_user_scope_reports_provenance_and_quiet_recommended_default() {
     let temp_dir = unique_temp_dir("lintai-inventory-os-user");
     let cwd = temp_dir.join("cwd");
     let root = temp_dir.join("machine");
@@ -154,19 +154,9 @@ fn inventory_os_user_scope_reports_provenance_and_findings() {
 
     let findings = value["findings"].as_array().unwrap();
     assert!(
-        findings
-            .iter()
-            .any(|finding| finding["rule_code"] == "SEC301")
+        findings.is_empty(),
+        "recommended default should keep inventory-os output quiet unless the operator opts into broader lanes"
     );
-    assert!(
-        findings
-            .iter()
-            .any(|finding| finding["rule_code"] == "SEC302")
-    );
-    assert!(findings.iter().any(|finding| {
-        finding["location"]["normalized_path"]
-            == canonical_display(&root.join(".codeium/windsurf/mcp_config.json"))
-    }));
 }
 
 #[test]
@@ -273,7 +263,10 @@ fn inventory_os_write_baseline_persists_snapshot_contract() {
     assert!(snapshot["generated_at"].as_u64().is_some());
     assert_eq!(snapshot["inventory_roots"].as_array().unwrap().len(), 1);
     assert_eq!(snapshot["inventory_stats"]["user_roots"], 1);
-    assert_eq!(snapshot["findings"].as_array().unwrap().len(), 1);
+    assert!(
+        snapshot.get("findings").is_none()
+            || snapshot["findings"].as_array().is_some_and(|findings| findings.is_empty())
+    );
 }
 
 #[test]
@@ -470,10 +463,11 @@ fn inventory_os_diff_reports_changed_roots_newly_lintable_risk_increase_and_new_
         1
     );
     assert!(
-        !value["inventory_diff"]["new_findings"]
+        value["inventory_diff"]["new_findings"]
             .as_array()
             .unwrap()
-            .is_empty()
+            .is_empty(),
+        "recommended default should keep inventory-os diff output quiet unless broader lanes are enabled"
     );
 }
 

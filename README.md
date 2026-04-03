@@ -183,9 +183,10 @@ lintai scan . --format sarif
 
 Default behavior:
 
-- if `[presets]` is omitted, `lintai` enables `["base"]`
-- `base` means the stable baseline
-- `preview` is explicit opt-in
+- if `[presets]` is omitted, `lintai` enables `["recommended"]`
+- `recommended` is the quiet practical default for most teams
+- `base` remains the minimal stable baseline for compatibility-focused setups
+- `preview` is explicit opt-in for deeper review
 - `compat` is explicit opt-in for project policy mismatch rules such as `SEC401`-`SEC403`
 - `governance` is explicit opt-in for workflow-policy review rules such as shared mutation authority and broad bare tool grants that should not read like headline security findings
 
@@ -193,7 +194,7 @@ Example:
 
 ```toml
 [presets]
-enable = ["base", "skills", "mcp"]
+enable = ["recommended", "preview"]
 
 [categories]
 security = "warn"
@@ -204,10 +205,11 @@ SEC201 = "deny"
 
 Builtin preset intent:
 
-- `base`: stable baseline
-- `strict`: `base` plus stricter preset-level hardening
+- `recommended`: quiet practical default for most teams
+- `base`: stable compatibility baseline
+- `strict`: `recommended` plus stricter preset-level hardening
 - `compat`: transition and project-policy mismatch lane
-- `preview`: all shipped preview rules
+- `preview`: deeper review lane with broader and more context-sensitive findings
 - `skills`: instruction and skills markdown overlays
 - `mcp`: MCP and tool/server config overlays
 - `claude`: Claude-specific config overlays
@@ -225,9 +227,10 @@ Important merge rules:
 
 For teams evaluating the beta, a good default is:
 
-1. Gate on blocking `Stable` findings.
-2. Review `Preview` findings separately.
-3. Keep `diagnostics` separate from security findings.
+1. Start with `recommended`.
+2. Add `preview` when you want deeper review.
+3. Add `governance` only when you want shared-authority and least-privilege review.
+4. Keep `diagnostics` separate from security findings.
 
 Treat `diagnostics` separately from findings.
 

@@ -2,8 +2,8 @@
   <p class="lintai-kicker">Activation Surface</p>
   <h1>Preset Reference</h1>
   <p class="lintai-lead">
-    Builtin presets define how shipped rules become active. Membership presets turn rule groups on;
-    overlays change posture after activation.
+    Start with `recommended` for the quiet default, then add `preview` or `governance` only when
+    you want broader review.
   </p>
   <div class="lintai-feature-list">
     <div class="lintai-feature-item">

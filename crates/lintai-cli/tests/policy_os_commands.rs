@@ -180,7 +180,7 @@ base_dirs = ["{}"]
 }
 
 #[test]
-fn policy_os_global_shell_wrapper_mcp_reuses_existing_finding() {
+fn policy_os_global_shell_wrapper_mcp_stays_quiet_without_broader_lanes() {
     let temp_dir = unique_temp_dir("lintai-policy-os-shell-wrapper");
     let cwd = temp_dir.join("cwd");
     let root = temp_dir.join("machine");
@@ -220,18 +220,18 @@ base_dirs = ["{}"]
             "--format=json",
         ],
     );
-    assert_eq!(output.status.code(), Some(1));
+    assert_eq!(output.status.code(), Some(0));
 
     let value = json_output(&output);
-    let matches = value["policy_matches"].as_array().unwrap();
-    assert!(matches.iter().any(|policy_match| {
-        policy_match["policy_id"] == "global-shell-wrapper-mcp"
-            && policy_match["matched_findings"] == serde_json::json!(["SEC301"])
-    }));
+    assert!(
+        value["policy_matches"]
+            .as_array()
+            .is_none_or(|matches| matches.is_empty())
+    );
 }
 
 #[test]
-fn policy_os_plaintext_auth_reuses_existing_finding() {
+fn policy_os_plaintext_auth_stays_quiet_without_broader_lanes() {
     let temp_dir = unique_temp_dir("lintai-policy-os-plaintext-auth");
     let cwd = temp_dir.join("cwd");
     let root = temp_dir.join("machine");
@@ -269,14 +269,14 @@ base_dirs = ["{}"]
             "--format=json",
         ],
     );
-    assert_eq!(output.status.code(), Some(1));
+    assert_eq!(output.status.code(), Some(0));
 
     let value = json_output(&output);
-    let matches = value["policy_matches"].as_array().unwrap();
-    assert!(matches.iter().any(|policy_match| {
-        policy_match["policy_id"] == "plaintext-auth"
-            && policy_match["matched_findings"] == serde_json::json!(["SEC309"])
-    }));
+    assert!(
+        value["policy_matches"]
+            .as_array()
+            .is_none_or(|matches| matches.is_empty())
+    );
 }
 
 #[test]
@@ -321,12 +321,11 @@ base_dirs = ["{}"]
     assert_eq!(output.status.code(), Some(0));
 
     let value = json_output(&output);
-    let matches = value["policy_matches"].as_array().unwrap();
-    assert!(matches.iter().any(|policy_match| {
-        policy_match["policy_id"] == "trust-disable"
-            && policy_match["severity"] == "warn"
-            && policy_match["matched_findings"] == serde_json::json!(["SEC304"])
-    }));
+    assert!(
+        value["policy_matches"]
+            .as_array()
+            .is_none_or(|matches| matches.is_empty())
+    );
 }
 
 #[test]

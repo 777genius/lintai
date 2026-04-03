@@ -3003,7 +3003,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsMutableLauncherRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: RECOMMENDED_BASE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for mutable package launcher forms such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.",

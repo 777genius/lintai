@@ -15,4 +15,4 @@ Use it when you want broader repository hardening beyond the core agent-artifact
 
 ## Tradeoffs
 
-This lane is useful, but intentionally separate from the main product thesis so the default baseline stays focused.
+This lane is useful, but intentionally separate from the quiet `recommended` default so most teams can start with a calmer first pass.

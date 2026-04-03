@@ -14,7 +14,7 @@ pub(crate) use text::format_text;
 
 #[cfg(test)]
 mod tests {
-    use super::{format_json, format_sarif};
+    use super::{format_json, format_sarif, format_text};
     use crate::output::model::{ReportEnvelope, ReportStats, ToolMetadata};
 
     #[test]
@@ -83,5 +83,72 @@ mod tests {
         assert!(!json.contains("discovered_roots"));
         assert!(!json.contains("inventory_roots"));
         assert!(!json.contains("policy_matches"));
+    }
+
+    #[test]
+    fn text_output_groups_findings_by_public_lane() {
+        let recommended = lintai_api::Finding::new(
+            &lintai_api::RuleMetadata::new(
+                "SEC324",
+                "demo recommended",
+                lintai_api::Category::Hardening,
+                lintai_api::Severity::Warn,
+                lintai_api::Confidence::High,
+                lintai_api::RuleTier::Stable,
+            ),
+            lintai_api::Location::new(".github/workflows/ci.yml", lintai_api::Span::new(0, 4)),
+            "demo recommended finding",
+        );
+        let preview = lintai_api::Finding::new(
+            &lintai_api::RuleMetadata::new(
+                "SEC417",
+                "demo preview",
+                lintai_api::Category::Security,
+                lintai_api::Severity::Warn,
+                lintai_api::Confidence::High,
+                lintai_api::RuleTier::Stable,
+            ),
+            lintai_api::Location::new("SKILL.md", lintai_api::Span::new(0, 4)),
+            "demo preview finding",
+        );
+        let governance = lintai_api::Finding::new(
+            &lintai_api::RuleMetadata::new(
+                "SEC423",
+                "demo governance",
+                lintai_api::Category::Hardening,
+                lintai_api::Severity::Warn,
+                lintai_api::Confidence::High,
+                lintai_api::RuleTier::Stable,
+            ),
+            lintai_api::Location::new("SKILL.md", lintai_api::Span::new(5, 9)),
+            "demo governance finding",
+        );
+        let findings = [recommended, preview, governance];
+        let report = ReportEnvelope {
+            schema_version: 1,
+            tool: ToolMetadata { name: "lintai" },
+            config_source: None,
+            project_root: None,
+            discovered_roots: Vec::new(),
+            discovery_stats: None,
+            inventory_roots: Vec::new(),
+            inventory_stats: None,
+            inventory_diff: None,
+            policy_matches: Vec::new(),
+            policy_stats: None,
+            stats: ReportStats {
+                scanned_files: 3,
+                skipped_files: 0,
+            },
+            findings: &findings,
+            diagnostics: &[],
+            runtime_errors: &[],
+        };
+
+        let text = format_text(&report);
+        assert!(text.starts_with("scanned 3 file(s), skipped 0 file(s), found 3 finding(s)"));
+        assert!(text.contains("recommended findings: 1"));
+        assert!(text.contains("deeper review findings: 1"));
+        assert!(text.contains("governance review findings: 1"));
     }
 }

@@ -10,8 +10,8 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 pub use catalog::{
-    CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleEntry, CatalogRuleLifecycle,
-    CatalogRuleScope, CatalogSurface,
+    CatalogDetectionClass, CatalogPublicLane, CatalogRemediationSupport, CatalogRuleEntry,
+    CatalogRuleLifecycle, CatalogRuleScope, CatalogSurface,
 };
 pub use catalog_validation::{
     CatalogDetectionClassKind, CatalogLifecycleClass, CatalogLifecycleDetails, CatalogRuleIdentity,

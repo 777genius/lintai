@@ -14,15 +14,21 @@ pub struct BuiltinPresetSpec {
 
 const BUILTIN_PRESETS: &[BuiltinPresetSpec] = &[
     BuiltinPresetSpec {
+        id: "recommended",
+        kind: BuiltinPresetKind::Membership,
+        description: "Quiet practical default for most teams: curated high-signal checks for AI-native repos.",
+        extends: &[],
+    },
+    BuiltinPresetSpec {
         id: "base",
         kind: BuiltinPresetKind::Membership,
-        description: "Core shipped rules for the default lintai baseline.",
+        description: "Minimal stable baseline for explicit compatibility-focused setups.",
         extends: &[],
     },
     BuiltinPresetSpec {
         id: "preview",
         kind: BuiltinPresetKind::Membership,
-        description: "Preview rules that expand coverage beyond the stable baseline.",
+        description: "Deeper-review rules that expand coverage beyond the recommended default.",
         extends: &[],
     },
     BuiltinPresetSpec {
@@ -76,8 +82,8 @@ const BUILTIN_PRESETS: &[BuiltinPresetSpec] = &[
     BuiltinPresetSpec {
         id: "strict",
         kind: BuiltinPresetKind::Overlay,
-        description: "Severity overlay for active security rules; it does not activate additional rules by itself.",
-        extends: &["base"],
+        description: "Severity overlay for active security rules; paired with the recommended default rather than activating rules by itself.",
+        extends: &["recommended"],
     },
 ];
 
@@ -115,12 +121,13 @@ mod tests {
             .find(|preset| preset.id == "strict")
             .expect("strict preset should exist");
         assert_eq!(strict.kind, BuiltinPresetKind::Overlay);
-        assert_eq!(strict.extends, &["base"]);
+        assert_eq!(strict.extends, &["recommended"]);
     }
 
     #[test]
     fn membership_preset_ids_exclude_overlay_presets() {
         let membership_ids = builtin_membership_preset_ids();
+        assert!(membership_ids.contains(&"recommended"));
         assert!(membership_ids.contains(&"base"));
         assert!(membership_ids.contains(&"compat"));
         assert!(!membership_ids.contains(&"strict"));

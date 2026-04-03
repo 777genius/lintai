@@ -20,4 +20,4 @@ Use it when you want `lintai` to review repo-wide defaults such as shared Git mu
 
 ## Tradeoffs
 
-These checks are intentionally quieter than the core preview lane. They are precise, but some findings can still be legitimate workflow choices that need explicit review rather than automatic escalation.
+These checks are intentionally separate from both `recommended` and `preview`. They are precise, but some findings can still be legitimate workflow choices that need explicit review rather than automatic escalation.
