@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh repo edit:*)",
+      "Bash(gh release create:*)",
+      "Read(*)"
+    ]
+  }
+}

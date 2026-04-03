@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(./docs/**)",
+      "Write(./artifacts/**)",
+      "Edit(./src/**)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}

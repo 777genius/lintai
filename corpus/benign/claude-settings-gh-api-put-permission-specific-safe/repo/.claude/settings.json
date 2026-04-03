@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": ["Bash(gh api --method GET:*)", "Read(*)"]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat | xargs -0 -I {} npx claude-flow@alpha hooks pre-command --command '{}'"
+          }
+        ]
+      }
+    ]
+  }
+}

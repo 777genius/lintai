@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(https://api.example.com/*)",
+      "Read(*)"
+    ]
+  }
+}

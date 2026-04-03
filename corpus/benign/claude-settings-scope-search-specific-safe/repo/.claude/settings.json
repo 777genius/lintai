@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Glob(./docs/**)",
+      "Grep(./docs/**)",
+      "Read(*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}

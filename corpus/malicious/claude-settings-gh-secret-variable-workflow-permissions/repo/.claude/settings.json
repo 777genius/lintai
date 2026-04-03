@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh secret set:*)",
+      "Bash(gh variable set:*)",
+      "Bash(gh workflow run:*)",
+      "Read(*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}

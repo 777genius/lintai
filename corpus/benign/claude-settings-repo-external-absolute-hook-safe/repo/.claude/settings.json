@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/sh -lc \"$CLAUDE_PROJECT_DIR/scripts/audit.sh\""
+          }
+        ]
+      }
+    ]
+  }
+}

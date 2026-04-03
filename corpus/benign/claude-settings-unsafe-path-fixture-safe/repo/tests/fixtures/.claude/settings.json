@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/etc/**)",
+      "Write(../shared/**)",
+      "Edit(~/workspace/**)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}

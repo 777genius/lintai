@@ -462,7 +462,7 @@ impl WorkspaceHarness {
         let mut temp_root = None;
         let workspace = if self.override_config.is_none() {
             let workspace = load_workspace_config(&entry_root)?;
-            if workspace.source_path.is_some() {
+            if workspace.source_path.is_some() || manifest.kind == CaseKind::Compat {
                 workspace
             } else {
                 let generated_root = unique_temp_dir("lintai-case-workspace");

@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git reset:*)",
+      "Bash(git clean:*)",
+      "Bash(git restore:*)",
+      "Bash(git rebase:*)",
+      "Bash(git merge:*)",
+      "Bash(git cherry-pick:*)",
+      "Bash(git apply:*)",
+      "Bash(git am:*)",
+      "Read(*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}

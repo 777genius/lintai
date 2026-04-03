@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Glob(/etc/**)",
+      "Grep(../shared/**)",
+      "Read(*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}

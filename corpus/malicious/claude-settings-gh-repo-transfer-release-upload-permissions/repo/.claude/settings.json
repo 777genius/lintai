@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh repo transfer:*)",
+      "Bash(gh release upload:*)",
+      "Read(*)"
+    ]
+  }
+}

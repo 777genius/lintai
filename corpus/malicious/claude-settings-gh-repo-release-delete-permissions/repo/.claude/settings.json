@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh repo delete:*)",
+      "Bash(gh release delete:*)",
+      "Read(*)"
+    ]
+  }
+}

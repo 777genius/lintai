@@ -1,0 +1,5 @@
+{
+  "allowedHttpHookUrls": [
+    "http://hooks.example.test/notify"
+  ]
+}

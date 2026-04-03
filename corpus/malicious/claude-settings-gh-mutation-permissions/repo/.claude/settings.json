@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh api --method POST:*)",
+      "Bash(gh issue create:*)",
+      "Bash(gh repo create:*)",
+      "Bash(gh secret delete:*)",
+      "Bash(gh variable delete:*)",
+      "Bash(gh workflow disable:*)",
+      "Read(*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}

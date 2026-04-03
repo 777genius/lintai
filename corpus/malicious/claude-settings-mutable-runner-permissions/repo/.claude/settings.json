@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uvx ruff:*)",
+      "Bash(pnpm dlx cowsay:*)",
+      "Bash(yarn dlx create-vite:*)",
+      "Bash(pipx run black:*)",
+      "Read(*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}

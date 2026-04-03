@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git reset --hard HEAD~1)",
+      "Bash(git clean -fd)",
+      "Bash(git restore src/lib.rs)",
+      "Bash(git rebase origin/main)",
+      "Bash(git merge feature/topic)",
+      "Bash(git cherry-pick abc1234)",
+      "Bash(git apply patch.diff)",
+      "Bash(git am series.patch)",
+      "Read(*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo done"
+          }
+        ]
+      }
+    ]
+  }
+}

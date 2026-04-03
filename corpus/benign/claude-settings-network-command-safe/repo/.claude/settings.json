@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl https://internal.test/healthz -o /tmp/healthz"
+          }
+        ]
+      }
+    ]
+  }
+}

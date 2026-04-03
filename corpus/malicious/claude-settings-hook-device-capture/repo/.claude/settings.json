@@ -1,0 +1,20 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "imagesnap /tmp/webcam.jpg",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "arecord -d 5 /tmp/mic.wav",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
