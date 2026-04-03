@@ -6,7 +6,7 @@ use crate::policy_os::PolicyOsArgs;
 
 use super::common::{
     next_flag_value, normalize_client_filter, parse_inventory_scope, parse_output_format,
-    unexpected_extra_argument, unknown_flag,
+    push_preset_id, unexpected_extra_argument, unknown_flag,
 };
 
 pub(crate) fn parse_policy_os_args(
@@ -15,6 +15,7 @@ pub(crate) fn parse_policy_os_args(
     let mut format_override = None;
     let mut scope = InventoryOsScope::Both;
     let mut client_filters = BTreeSet::new();
+    let mut preset_ids = Vec::new();
     let mut path_root = None;
     let mut policy_path = None;
     let mut args = args.peekable();
@@ -30,6 +31,10 @@ pub(crate) fn parse_policy_os_args(
         }
         if let Some(value) = next_flag_value("--client", &arg, &mut args)? {
             client_filters.insert(normalize_client_filter(&value));
+            continue;
+        }
+        if let Some(value) = next_flag_value("--preset", &arg, &mut args)? {
+            push_preset_id(&mut preset_ids, &value);
             continue;
         }
         if let Some(value) = next_flag_value("--path-root", &arg, &mut args)? {
@@ -52,6 +57,7 @@ pub(crate) fn parse_policy_os_args(
         format_override,
         scope,
         client_filters,
+        preset_ids,
         path_root,
         policy_path,
     })

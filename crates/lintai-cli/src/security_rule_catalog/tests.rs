@@ -3,8 +3,8 @@ use std::collections::BTreeSet;
 use super::format::{escape_markdown_table_cell, escape_markdown_text, render_inline_code};
 use super::render_security_rules_markdown;
 use crate::shipped_rules::{
-    CatalogDetectionClass, CatalogRuleLifecycle, PublicLane, provider_sort_key,
-    shipped_rule_alias, shipped_security_rule_catalog_entries,
+    CatalogDetectionClass, CatalogRuleLifecycle, PublicLane, provider_sort_key, shipped_rule_alias,
+    shipped_security_rule_catalog_entries,
 };
 use lintai_api::RuleTier;
 use lintai_builtins::{BuiltinCatalogDetectionClass, builtin_rule_catalog_entries};
@@ -109,14 +109,20 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .iter()
         .find(|entry| entry.metadata.code == "SEC340")
         .unwrap();
-    assert_eq!(sec340.default_presets(), vec!["recommended", "base", "claude"]);
+    assert_eq!(
+        sec340.default_presets(),
+        vec!["recommended", "base", "claude"]
+    );
     assert_eq!(sec340.public_lane(), PublicLane::Recommended);
 
     let sec324 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC324")
         .unwrap();
-    assert_eq!(sec324.default_presets(), vec!["recommended", "supply-chain"]);
+    assert_eq!(
+        sec324.default_presets(),
+        vec!["recommended", "supply-chain"]
+    );
     assert_eq!(sec324.public_lane(), PublicLane::Recommended);
 
     let sec417 = entries

@@ -249,9 +249,15 @@ Examples:
 ```bash
 lintai scan-known --scope=both
 lintai inventory-os --scope=user
+lintai inventory-os --scope=user --preset base --preset mcp --preset claude
 lintai inventory-os --scope=user --write-baseline .lintai-baseline.json
 lintai inventory-os --scope=user --diff-against .lintai-baseline.json
+lintai policy-os --policy machine-policy.toml --scope=user
 ```
+
+`scan-known` and `inventory-os` stay quiet by default and follow the `recommended` lane unless you opt into broader review with repeated `--preset` flags.
+
+`policy-os` keeps a more diagnostic machine-policy default so explicit policy checks still evaluate MCP and Claude machine artifacts even when the main product default stays quiet.
 
 This mode stays inventory-first: it reports what `lintai` can honestly discover and only emits findings for supported surfaces it can actually analyze today.
 

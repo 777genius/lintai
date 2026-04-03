@@ -180,7 +180,7 @@ base_dirs = ["{}"]
 }
 
 #[test]
-fn policy_os_global_shell_wrapper_mcp_stays_quiet_without_broader_lanes() {
+fn policy_os_global_shell_wrapper_mcp_uses_machine_policy_default_scan_profile() {
     let temp_dir = unique_temp_dir("lintai-policy-os-shell-wrapper");
     let cwd = temp_dir.join("cwd");
     let root = temp_dir.join("machine");
@@ -220,18 +220,21 @@ base_dirs = ["{}"]
             "--format=json",
         ],
     );
-    assert_eq!(output.status.code(), Some(0));
+    assert_eq!(output.status.code(), Some(1));
 
     let value = json_output(&output);
-    assert!(
-        value["policy_matches"]
-            .as_array()
-            .is_none_or(|matches| matches.is_empty())
-    );
+    let matches = value["policy_matches"].as_array().unwrap();
+    assert!(matches.iter().any(|policy_match| {
+        policy_match["policy_id"] == "global-shell-wrapper-mcp"
+            && policy_match["severity"] == "deny"
+            && policy_match["matched_findings"]
+                .as_array()
+                .is_some_and(|findings| findings.iter().any(|finding| finding == "SEC301"))
+    }));
 }
 
 #[test]
-fn policy_os_plaintext_auth_stays_quiet_without_broader_lanes() {
+fn policy_os_plaintext_auth_uses_machine_policy_default_scan_profile() {
     let temp_dir = unique_temp_dir("lintai-policy-os-plaintext-auth");
     let cwd = temp_dir.join("cwd");
     let root = temp_dir.join("machine");
@@ -269,14 +272,17 @@ base_dirs = ["{}"]
             "--format=json",
         ],
     );
-    assert_eq!(output.status.code(), Some(0));
+    assert_eq!(output.status.code(), Some(1));
 
     let value = json_output(&output);
-    assert!(
-        value["policy_matches"]
-            .as_array()
-            .is_none_or(|matches| matches.is_empty())
-    );
+    let matches = value["policy_matches"].as_array().unwrap();
+    assert!(matches.iter().any(|policy_match| {
+        policy_match["policy_id"] == "plaintext-auth"
+            && policy_match["severity"] == "deny"
+            && policy_match["matched_findings"]
+                .as_array()
+                .is_some_and(|findings| findings.iter().any(|finding| finding == "SEC309"))
+    }));
 }
 
 #[test]
@@ -312,6 +318,60 @@ base_dirs = ["{}"]
             "policy-os",
             "--policy",
             policy.to_str().unwrap(),
+            "--scope=user",
+            "--path-root",
+            root.to_str().unwrap(),
+            "--format=json",
+        ],
+    );
+    assert_eq!(output.status.code(), Some(0));
+
+    let value = json_output(&output);
+    let matches = value["policy_matches"].as_array().unwrap();
+    assert!(matches.iter().any(|policy_match| {
+        policy_match["policy_id"] == "trust-disable"
+            && policy_match["severity"] == "warn"
+            && policy_match["matched_findings"]
+                .as_array()
+                .is_some_and(|findings| findings.iter().any(|finding| finding == "SEC304"))
+    }));
+}
+
+#[test]
+fn policy_os_explicit_recommended_preset_can_keep_output_quiet() {
+    let temp_dir = unique_temp_dir("lintai-policy-os-explicit-recommended");
+    let cwd = temp_dir.join("cwd");
+    let root = temp_dir.join("machine");
+    let policy = temp_dir.join("policy.toml");
+    fs::create_dir_all(&cwd).unwrap();
+
+    write(
+        &root.join(".cursor/mcp.json"),
+        r#"{"env":{"OPENAI_API_KEY":"sk-test-secret"}}"#,
+    );
+    write_policy(
+        &policy,
+        &format!(
+            r#"
+schema_version = 1
+[rules]
+plaintext_auth = "deny"
+[allow]
+clients = ["cursor"]
+base_dirs = ["{}"]
+"#,
+            root.join(".cursor").display()
+        ),
+    );
+
+    let output = run_lintai(
+        &cwd,
+        &[
+            "policy-os",
+            "--policy",
+            policy.to_str().unwrap(),
+            "--preset",
+            "recommended",
             "--scope=user",
             "--path-root",
             root.to_str().unwrap(),

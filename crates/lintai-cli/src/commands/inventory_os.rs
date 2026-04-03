@@ -1,7 +1,10 @@
 use std::process::ExitCode;
 
 use crate::args::parse_inventory_os_args;
-use crate::execution::{collect_inventory_os, emit_report, exit_code_for_inventory_summary};
+use crate::execution::{
+    collect_inventory_os, default_workspace_for_presets, emit_report,
+    exit_code_for_inventory_summary,
+};
 use crate::output;
 
 pub(crate) fn run(args: impl Iterator<Item = String>) -> Result<ExitCode, String> {
@@ -9,10 +12,12 @@ pub(crate) fn run(args: impl Iterator<Item = String>) -> Result<ExitCode, String
     let output_format = parsed
         .format_override
         .unwrap_or(lintai_engine::OutputFormat::Text);
+    let workspace = default_workspace_for_presets(&parsed.preset_ids)?;
     let inventory = collect_inventory_os(
         parsed.scope,
         &parsed.client_filters,
         parsed.path_root.as_deref(),
+        &workspace,
     )?;
     let snapshot = crate::known_scan::build_inventory_snapshot(
         &inventory.report_roots,

@@ -1,8 +1,7 @@
 use crate::security_rule_catalog::format::{
     escape_markdown_table_cell, escape_markdown_text, format_bool, format_case_ids,
-    format_confidence, format_detection, format_presets, format_public_lane,
-    format_remediation, format_scope, format_severity, format_surface, format_tier,
-    render_inline_code,
+    format_confidence, format_detection, format_presets, format_public_lane, format_remediation,
+    format_scope, format_severity, format_surface, format_tier, render_inline_code,
 };
 use crate::shipped_rules::{CatalogRuleLifecycle, SecurityRuleCatalogEntry, shipped_rule_alias};
 

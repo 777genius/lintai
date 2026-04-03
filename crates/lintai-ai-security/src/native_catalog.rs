@@ -124,7 +124,9 @@ impl From<NativeRuleCatalogEntry> for CatalogRuleEntry {
     }
 }
 
-fn public_lane_for_presets(default_presets: &'static [&'static str]) -> CatalogPublicLane {
+pub(crate) fn public_lane_for_presets(
+    default_presets: &'static [&'static str],
+) -> CatalogPublicLane {
     if default_presets.contains(&"governance") {
         CatalogPublicLane::Governance
     } else if default_presets.contains(&"recommended") {

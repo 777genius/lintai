@@ -35,6 +35,7 @@ pub struct ScanKnownArgs {
     pub format_override: Option<lintai_engine::OutputFormat>,
     pub scope: KnownScope,
     pub client_filters: BTreeSet<String>,
+    pub preset_ids: Vec<String>,
 }
 
 #[derive(Clone, Debug)]
@@ -42,6 +43,7 @@ pub struct InventoryOsArgs {
     pub format_override: Option<lintai_engine::OutputFormat>,
     pub scope: InventoryOsScope,
     pub client_filters: BTreeSet<String>,
+    pub preset_ids: Vec<String>,
     pub path_root: Option<PathBuf>,
     pub write_baseline: Option<PathBuf>,
     pub diff_against: Option<PathBuf>,

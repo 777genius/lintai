@@ -36,12 +36,14 @@ pub fn run() -> Result<ExitCode, String> {
 fn print_usage() {
     println!("lintai scan [path] [--format=text|json]");
     println!("                    [--format=sarif]");
-    println!("lintai scan-known [--scope=project|global|both] [--client NAME]");
+    println!("lintai scan-known [--scope=project|global|both] [--client NAME] [--preset NAME]");
     println!("                    [--format=text|json|sarif]");
-    println!("lintai inventory-os [--scope=user|system|both] [--client NAME]");
+    println!("lintai inventory-os [--scope=user|system|both] [--client NAME] [--preset NAME]");
     println!("                    [--path-root DIR] [--write-baseline FILE]");
     println!("                    [--diff-against FILE] [--format=text|json|sarif]");
-    println!("lintai policy-os --policy FILE [--scope=user|system|both] [--client NAME]");
+    println!(
+        "lintai policy-os --policy FILE [--scope=user|system|both] [--client NAME] [--preset NAME]"
+    );
     println!("                    [--path-root DIR] [--format=text|json|sarif]");
     println!("lintai advisory-db export-bundled [output-file]");
     println!("lintai advisory-db update --input FILE --output FILE");

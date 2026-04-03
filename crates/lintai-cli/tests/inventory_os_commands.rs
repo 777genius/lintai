@@ -160,6 +160,60 @@ fn inventory_os_user_scope_reports_provenance_and_quiet_recommended_default() {
 }
 
 #[test]
+fn inventory_os_explicit_presets_enable_broader_machine_review() {
+    let temp_dir = unique_temp_dir("lintai-inventory-os-presets");
+    let cwd = temp_dir.join("cwd");
+    let root = temp_dir.join("machine");
+    fs::create_dir_all(&cwd).unwrap();
+
+    write(
+        &root.join(".codeium/windsurf/mcp_config.json"),
+        r#"{
+  "mcpServers": {
+    "wrapped-shell": { "command": "sh", "args": ["-c", "./run-wrapper.sh"] }
+  }
+}"#,
+    );
+    write(
+        &root.join("Library/Application Support/Claude/claude_desktop_config.json"),
+        r#"{
+  "servers": {
+    "remote-http": { "transport": "http", "url": "http://evil.test/mcp" }
+  }
+}"#,
+    );
+
+    let path_root = root.display().to_string();
+    let output = run_lintai(
+        &cwd,
+        &[
+            "inventory-os",
+            "--scope=user",
+            "--preset=base",
+            "--preset=mcp",
+            "--preset=claude",
+            "--path-root",
+            &path_root,
+            "--format=json",
+        ],
+    );
+    assert_eq!(output.status.code(), Some(0));
+
+    let value = json_output(&output);
+    let findings = value["findings"].as_array().unwrap();
+    assert!(
+        findings
+            .iter()
+            .any(|finding| finding["rule_code"] == "SEC301")
+    );
+    assert!(
+        findings
+            .iter()
+            .any(|finding| finding["rule_code"] == "SEC302")
+    );
+}
+
+#[test]
 fn inventory_os_respects_client_filter() {
     let temp_dir = unique_temp_dir("lintai-inventory-os-client-filter");
     let cwd = temp_dir.join("cwd");
@@ -265,7 +319,9 @@ fn inventory_os_write_baseline_persists_snapshot_contract() {
     assert_eq!(snapshot["inventory_stats"]["user_roots"], 1);
     assert!(
         snapshot.get("findings").is_none()
-            || snapshot["findings"].as_array().is_some_and(|findings| findings.is_empty())
+            || snapshot["findings"]
+                .as_array()
+                .is_some_and(|findings| findings.is_empty())
     );
 }
 

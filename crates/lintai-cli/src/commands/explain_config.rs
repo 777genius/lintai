@@ -38,6 +38,9 @@ pub(crate) fn format_explain_config(
     output.push_str(&format!("detected_kind={:?}\n", resolved.detected_kind));
     output.push_str(&format!("detected_format={:?}\n", resolved.detected_format));
     output.push_str(&format!("enabled_presets={:?}\n", resolved.enabled_presets));
+    if resolved.enabled_presets == ["recommended"] {
+        output.push_str("preset_note=recommended is the quiet default for most teams; add preview or governance when you want broader review\n");
+    }
     output.push_str(&format!(
         "relevant_surface_presets={:?}\n",
         relevant_surface_presets(resolved.detected_kind)
@@ -107,5 +110,33 @@ fn relevant_surface_presets(detected_kind: Option<ArtifactKind>) -> Vec<&'static
         Some(ArtifactKind::ClaudeSettings) => vec!["claude"],
         Some(ArtifactKind::GitHubWorkflow | ArtifactKind::CursorHookScript) | None => Vec::new(),
         Some(_) => Vec::new(),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::format_explain_config;
+    use lintai_engine::EngineConfig;
+
+    #[test]
+    fn explain_config_mentions_quiet_recommended_default() {
+        let resolved = EngineConfig::default().resolve_for("skills/demo/SKILL.md");
+        let formatted = format_explain_config(None, &resolved);
+
+        assert!(formatted.contains("enabled_presets=[\"recommended\"]"));
+        assert!(formatted.contains(
+            "preset_note=recommended is the quiet default for most teams; add preview or governance when you want broader review"
+        ));
+    }
+
+    #[test]
+    fn explain_config_omits_quiet_default_note_for_explicit_non_recommended_presets() {
+        let config =
+            EngineConfig::from_enabled_presets(&["base".to_owned(), "mcp".to_owned()]).unwrap();
+        let resolved = config.resolve_for(".cursor/mcp.json");
+        let formatted = format_explain_config(None, &resolved);
+
+        assert!(formatted.contains("enabled_presets=[\"base\", \"mcp\"]"));
+        assert!(!formatted.contains("preset_note="));
     }
 }

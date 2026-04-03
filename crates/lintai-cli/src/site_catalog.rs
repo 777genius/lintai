@@ -745,7 +745,10 @@ mod tests {
         assert!(matches!(strict.kind, super::SitePresetKind::Overlay));
         assert!(strict.rule_ids.is_empty());
         assert_eq!(strict.extends, vec!["recommended"]);
-        assert!(matches!(recommended.kind, super::SitePresetKind::Membership));
+        assert!(matches!(
+            recommended.kind,
+            super::SitePresetKind::Membership
+        ));
         assert!(
             recommended
                 .rule_ids

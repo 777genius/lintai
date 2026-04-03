@@ -1,7 +1,6 @@
 use lintai_api::{
     CatalogDetectionClass, CatalogPublicLane, CatalogRemediationSupport, CatalogRuleEntry,
-    CatalogRuleLifecycle, CatalogRuleScope, CatalogSurface, RuleMetadata, RuleTier,
-    declare_rule,
+    CatalogRuleLifecycle, CatalogRuleScope, CatalogSurface, RuleMetadata, RuleTier, declare_rule,
 };
 
 use crate::PROVIDER_ID;

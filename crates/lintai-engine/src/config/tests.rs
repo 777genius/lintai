@@ -183,6 +183,39 @@ enable = ["strict"]
 }
 
 #[test]
+fn engine_config_can_be_built_from_explicit_builtin_presets() {
+    let config = super::EngineConfig::from_enabled_presets(&[
+        "base".to_owned(),
+        "mcp".to_owned(),
+        "claude".to_owned(),
+    ])
+    .unwrap();
+
+    assert_eq!(
+        config.resolve_for(".cursor/mcp.json").enabled_presets,
+        vec!["base".to_owned(), "mcp".to_owned(), "claude".to_owned()]
+    );
+    assert!(
+        config
+            .resolve_for(".cursor/mcp.json")
+            .active_rule_codes
+            .contains("SEC301")
+    );
+    assert!(
+        config
+            .resolve_for("Library/Application Support/Claude/claude_desktop_config.json")
+            .active_rule_codes
+            .contains("SEC340")
+    );
+    assert!(
+        !config
+            .resolve_for("skills/demo/SKILL.md")
+            .active_rule_codes
+            .contains("SEC102")
+    );
+}
+
+#[test]
 fn guidance_preset_can_enable_guidance_lane() {
     let temp_dir = unique_temp_dir("lintai-config-presets-guidance");
     std::fs::create_dir_all(temp_dir.join(".github/instructions")).unwrap();

@@ -29,6 +29,7 @@ pub(crate) struct PolicyOsArgs {
     pub(crate) format_override: Option<lintai_engine::OutputFormat>,
     pub(crate) scope: crate::known_scan::InventoryOsScope,
     pub(crate) client_filters: BTreeSet<String>,
+    pub(crate) preset_ids: Vec<String>,
     pub(crate) path_root: Option<PathBuf>,
     pub(crate) policy_path: PathBuf,
 }

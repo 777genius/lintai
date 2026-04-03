@@ -1,4 +1,4 @@
-use lintai_api::{CatalogRuleEntry, CatalogPublicLane, RuleMetadata, RuleTier};
+use lintai_api::{CatalogPublicLane, CatalogRuleEntry, RuleMetadata, RuleTier};
 
 pub(crate) use lintai_api::{
     CatalogDetectionClass, CatalogPublicLane as PublicLane, CatalogRemediationSupport,

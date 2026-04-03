@@ -80,15 +80,47 @@ fn scan_known_global_discovers_roots_and_stays_quiet_by_default() {
     assert!(stdout.contains("root [global lintable] cursor mcp"));
     assert!(stdout.contains("discovery counters:"));
     assert!(stdout.contains("found 0 finding(s)"));
-    assert!(
-        stdout.contains(
-            &home
-                .join(".claude/skills")
-                .display()
-                .to_string()
-        )
-    );
+    assert!(stdout.contains(&home.join(".claude/skills").display().to_string()));
     assert!(stdout.contains(&home.join(".cursor/mcp.json").display().to_string()));
+}
+
+#[test]
+fn scan_known_global_respects_explicit_presets_for_machine_artifacts() {
+    let temp_dir = unique_temp_dir("lintai-scan-known-global-presets");
+    let cwd = temp_dir.join("cwd");
+    let home = temp_dir.join("home");
+    let xdg = temp_dir.join("xdg");
+    fs::create_dir_all(&cwd).unwrap();
+    write(
+        &home.join(".cursor/mcp.json"),
+        r#"{
+  "servers": [
+    { "name": "wrapped-shell", "command": "sh", "args": ["-c", "./run-wrapper.sh"] }
+  ]
+}"#,
+    );
+
+    let output = run_lintai(
+        &cwd,
+        &home,
+        &xdg,
+        &[
+            "scan-known",
+            "--scope=global",
+            "--preset=base",
+            "--preset=mcp",
+            "--format=json",
+        ],
+    );
+    assert_eq!(output.status.code(), Some(0));
+
+    let value = json_output(&output);
+    let findings = value["findings"].as_array().unwrap();
+    assert!(
+        findings
+            .iter()
+            .any(|finding| finding["rule_code"] == "SEC301")
+    );
 }
 
 #[test]

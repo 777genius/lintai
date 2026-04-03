@@ -5,7 +5,7 @@ use std::sync::Arc;
 
 use lintai_api::{Confidence, Finding, Severity};
 use lintai_engine::{
-    CiPolicy, Engine, FileSuppressions, OutputFormat, ScanRuntimeError, ScanSummary,
+    CiPolicy, Engine, EngineConfig, FileSuppressions, OutputFormat, ScanRuntimeError, ScanSummary,
     WorkspaceConfig, load_workspace_config,
 };
 
@@ -23,6 +23,8 @@ pub(crate) struct InventoryCollection {
     pub(crate) inventory_stats: InventoryStats,
     pub(crate) blocking: bool,
 }
+
+pub(crate) const POLICY_OS_DEFAULT_PRESETS: &[&str] = &["base", "mcp", "claude"];
 
 pub(crate) fn emit_report(
     report: &output::ReportEnvelope<'_>,
@@ -59,6 +61,31 @@ pub(crate) fn load_validated_workspace(
     validate_path_within_project(target, workspace.engine_config.project_root.as_deref())
         .map_err(|error| format!("target validation failed: {error}"))?;
     Ok(workspace)
+}
+
+pub(crate) fn default_workspace_for_presets(
+    preset_ids: &[String],
+) -> Result<WorkspaceConfig, String> {
+    let engine_config = if preset_ids.is_empty() {
+        EngineConfig::default()
+    } else {
+        EngineConfig::from_enabled_presets(preset_ids)
+            .map_err(|error| format!("preset resolution failed: {error}"))?
+    };
+    Ok(WorkspaceConfig {
+        source_path: None,
+        engine_config,
+    })
+}
+
+pub(crate) fn default_workspace_for_builtin_preset_names(
+    preset_ids: &[&str],
+) -> Result<WorkspaceConfig, String> {
+    let preset_ids = preset_ids
+        .iter()
+        .map(|preset| (*preset).to_owned())
+        .collect::<Vec<_>>();
+    default_workspace_for_presets(&preset_ids)
 }
 
 pub(crate) fn build_engine(workspace: &WorkspaceConfig) -> Result<Engine, String> {
@@ -108,12 +135,9 @@ pub(crate) fn collect_inventory_os(
     scope: InventoryOsScope,
     client_filters: &BTreeSet<String>,
     path_root: Option<&Path>,
+    default_workspace: &WorkspaceConfig,
 ) -> Result<InventoryCollection, String> {
     let discovered_roots = discover_inventory_roots(scope, client_filters, path_root)?;
-    let default_workspace = WorkspaceConfig {
-        source_path: None,
-        engine_config: lintai_engine::EngineConfig::default(),
-    };
 
     let mut aggregate = ScanSummary::default();
     let mut report_roots = Vec::<InventoryRoot>::with_capacity(discovered_roots.len());
@@ -127,7 +151,7 @@ pub(crate) fn collect_inventory_os(
             continue;
         }
 
-        let workspace = workspace_for_known_root(&root, &default_workspace)?;
+        let workspace = workspace_for_known_root(&root, default_workspace)?;
         let engine = build_engine(&workspace)?;
         let inventory = inventory_lintable_root(&root, &workspace)
             .map_err(|error| format!("inventory failed for {}: {error}", root.path.display()))?;

@@ -4,7 +4,7 @@ use crate::known_scan::{KnownScope, ScanKnownArgs};
 
 use super::common::{
     next_flag_value, normalize_client_filter, parse_known_scope, parse_output_format,
-    unexpected_extra_argument, unknown_flag,
+    push_preset_id, unexpected_extra_argument, unknown_flag,
 };
 
 pub(crate) fn parse_scan_known_args(
@@ -13,6 +13,7 @@ pub(crate) fn parse_scan_known_args(
     let mut format_override = None;
     let mut scope = KnownScope::Both;
     let mut client_filters = BTreeSet::new();
+    let mut preset_ids = Vec::new();
     let mut args = args.peekable();
 
     while let Some(arg) = args.next() {
@@ -28,6 +29,10 @@ pub(crate) fn parse_scan_known_args(
             client_filters.insert(normalize_client_filter(&value));
             continue;
         }
+        if let Some(value) = next_flag_value("--preset", &arg, &mut args)? {
+            push_preset_id(&mut preset_ids, &value);
+            continue;
+        }
 
         if arg.starts_with('-') {
             return Err(unknown_flag(&arg));
@@ -39,5 +44,6 @@ pub(crate) fn parse_scan_known_args(
         format_override,
         scope,
         client_filters,
+        preset_ids,
     })
 }

@@ -1,6 +1,6 @@
 use std::collections::{BTreeMap, BTreeSet};
 
-use crate::{CatalogRemediationSupport, RuleTier, builtin_preset_ids};
+use crate::{CatalogPublicLane, CatalogRemediationSupport, RuleTier, builtin_preset_ids};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum CatalogDetectionClassKind {
@@ -77,7 +77,12 @@ pub fn validate_rule_identities<'a>(
     }
 }
 
-pub fn validate_rule_presets(catalog_name: &str, rule_code: &str, preset_ids: &[&str]) {
+pub fn validate_rule_presets(
+    catalog_name: &str,
+    rule_code: &str,
+    preset_ids: &[&str],
+    public_lane: CatalogPublicLane,
+) {
     let known_preset_ids = builtin_preset_ids();
     let mut seen = BTreeSet::new();
     for preset_id in preset_ids {
@@ -90,6 +95,20 @@ pub fn validate_rule_presets(catalog_name: &str, rule_code: &str, preset_ids: &[
             "{catalog_name} rule {rule_code} references unknown preset {preset_id}"
         );
     }
+
+    let expected_public_lane = if preset_ids.contains(&"governance") {
+        CatalogPublicLane::Governance
+    } else if preset_ids.contains(&"recommended") {
+        CatalogPublicLane::Recommended
+    } else {
+        CatalogPublicLane::Preview
+    };
+    assert!(
+        public_lane == expected_public_lane,
+        "{catalog_name} rule {rule_code} declares public lane {:?} but presets imply {:?}",
+        public_lane,
+        expected_public_lane
+    );
 }
 
 pub fn validate_rule_quality_contract(
@@ -218,7 +237,7 @@ fn is_valid_case_id(value: &str) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use crate::{CatalogRemediationSupport, RuleTier};
+    use crate::{CatalogPublicLane, CatalogRemediationSupport, RuleTier};
 
     use super::{
         CatalogDetectionClassKind, CatalogLifecycleDetails, CatalogRuleIdentity,
@@ -244,7 +263,12 @@ mod tests {
                 },
             ],
         );
-        validate_rule_presets("demo", "SEC101", &["preview", "skills"]);
+        validate_rule_presets(
+            "demo",
+            "SEC101",
+            &["preview", "skills"],
+            CatalogPublicLane::Preview,
+        );
         validate_rule_quality_contract(
             "demo",
             "SEC101",
@@ -314,6 +338,17 @@ mod tests {
             },
             CatalogRemediationSupport::SafeFix,
             &["base"],
+        );
+    }
+
+    #[test]
+    #[should_panic(expected = "declares public lane Preview but presets imply Recommended")]
+    fn validation_helpers_reject_public_lane_preset_drift() {
+        validate_rule_presets(
+            "demo",
+            "SEC101",
+            &["recommended", "preview"],
+            CatalogPublicLane::Preview,
         );
     }
 }

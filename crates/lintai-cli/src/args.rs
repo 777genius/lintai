@@ -64,6 +64,7 @@ mod tests {
         assert_eq!(parsed.format_override, None);
         assert_eq!(parsed.scope, KnownScope::Both);
         assert!(parsed.client_filters.is_empty());
+        assert!(parsed.preset_ids.is_empty());
     }
 
     #[test]
@@ -72,6 +73,7 @@ mod tests {
         assert_eq!(parsed.format_override, None);
         assert_eq!(parsed.scope, InventoryOsScope::Both);
         assert!(parsed.client_filters.is_empty());
+        assert!(parsed.preset_ids.is_empty());
         assert_eq!(parsed.path_root, None);
         assert_eq!(parsed.write_baseline, None);
         assert_eq!(parsed.diff_against, None);
@@ -91,12 +93,37 @@ mod tests {
     }
 
     #[test]
+    fn scan_known_parses_repeated_presets() {
+        let parsed = parse_scan_known_args(
+            ["--preset", "base", "--preset=mcp", "--preset", "claude"]
+                .into_iter()
+                .map(str::to_owned),
+        )
+        .unwrap();
+        assert_eq!(parsed.preset_ids, vec!["base", "mcp", "claude"]);
+    }
+
+    #[test]
+    fn scan_known_trims_preset_values() {
+        let parsed = parse_scan_known_args(
+            ["--preset", " base ", "--preset= mcp "]
+                .into_iter()
+                .map(str::to_owned),
+        )
+        .unwrap();
+        assert_eq!(parsed.preset_ids, vec!["base", "mcp"]);
+    }
+
+    #[test]
     fn inventory_os_parses_scope_client_and_path_root() {
         let parsed = parse_inventory_os_args(
             [
                 "--scope=user",
                 "--client",
                 "Goose",
+                "--preset=base",
+                "--preset",
+                "mcp",
                 "--path-root=/tmp/lintai-fixture",
                 "--write-baseline=/tmp/baseline.json",
                 "--diff-against",
@@ -108,6 +135,7 @@ mod tests {
         .unwrap();
         assert_eq!(parsed.scope, InventoryOsScope::User);
         assert!(parsed.client_filters.contains("goose"));
+        assert_eq!(parsed.preset_ids, vec!["base", "mcp"]);
         assert_eq!(
             parsed.path_root,
             Some(std::path::PathBuf::from("/tmp/lintai-fixture"))
@@ -123,6 +151,17 @@ mod tests {
     }
 
     #[test]
+    fn inventory_os_parses_repeated_presets() {
+        let parsed = parse_inventory_os_args(
+            ["--preset", "base", "--preset", "mcp", "--preset=claude"]
+                .into_iter()
+                .map(str::to_owned),
+        )
+        .unwrap();
+        assert_eq!(parsed.preset_ids, vec!["base", "mcp", "claude"]);
+    }
+
+    #[test]
     fn policy_os_requires_policy_path() {
         let error = parse_policy_os_args(std::iter::empty()).unwrap_err();
         assert!(error.contains("missing required --policy"));
@@ -135,6 +174,9 @@ mod tests {
                 "--scope=user",
                 "--client",
                 "Cursor",
+                "--preset=base",
+                "--preset",
+                "claude",
                 "--path-root=/tmp/machine",
                 "--policy=/tmp/policy.toml",
             ]
@@ -144,6 +186,7 @@ mod tests {
         .unwrap();
         assert_eq!(parsed.scope, InventoryOsScope::User);
         assert!(parsed.client_filters.contains("cursor"));
+        assert_eq!(parsed.preset_ids, vec!["base", "claude"]);
         assert_eq!(
             parsed.path_root,
             Some(std::path::PathBuf::from("/tmp/machine"))
@@ -152,6 +195,24 @@ mod tests {
             parsed.policy_path,
             std::path::PathBuf::from("/tmp/policy.toml")
         );
+    }
+
+    #[test]
+    fn policy_os_parses_repeated_presets() {
+        let parsed = parse_policy_os_args(
+            [
+                "--policy=/tmp/policy.toml",
+                "--preset",
+                "base",
+                "--preset",
+                "mcp",
+                "--preset=claude",
+            ]
+            .into_iter()
+            .map(str::to_owned),
+        )
+        .unwrap();
+        assert_eq!(parsed.preset_ids, vec!["base", "mcp", "claude"]);
     }
 
     #[test]

@@ -11,8 +11,26 @@ use super::{
 
 impl Default for EngineConfig {
     fn default() -> Self {
-        let preset_policy = super::presets::default_builtin_preset_policy();
-        Self {
+        Self::from_preset_policy(super::presets::default_builtin_preset_policy())
+            .expect("default builtin preset policy should be valid")
+    }
+}
+
+impl EngineConfig {
+    pub fn from_enabled_presets(preset_ids: &[String]) -> Result<Self, super::ConfigError> {
+        let configured = if preset_ids.is_empty() {
+            None
+        } else {
+            Some(preset_ids.to_vec())
+        };
+        let preset_policy = super::presets::resolve_builtin_presets(configured)?;
+        Self::from_preset_policy(preset_policy)
+    }
+
+    fn from_preset_policy(
+        preset_policy: super::presets::ResolvedPresetPolicy,
+    ) -> Result<Self, super::ConfigError> {
+        Ok(Self {
             project_root: None,
             follow_symlinks: false,
             output_format: super::OutputFormat::Text,
@@ -24,14 +42,12 @@ impl Default for EngineConfig {
                 .iter()
                 .map(|pattern| (*pattern).to_owned())
                 .collect(),
-            include_matcher: super::load::compile_globset(DEFAULT_INCLUDE_PATTERNS)
-                .expect("default include"),
+            include_matcher: super::load::compile_globset(DEFAULT_INCLUDE_PATTERNS)?,
             exclude_patterns: DEFAULT_EXCLUDE_PATTERNS
                 .iter()
                 .map(|pattern| (*pattern).to_owned())
                 .collect(),
-            exclude_matcher: super::load::compile_globset(DEFAULT_EXCLUDE_PATTERNS)
-                .expect("default exclude"),
+            exclude_matcher: super::load::compile_globset(DEFAULT_EXCLUDE_PATTERNS)?,
             enabled_presets: preset_policy.enabled_presets,
             known_rule_codes: preset_policy.known_rules,
             active_rule_codes: preset_policy.active_rules,
@@ -41,11 +57,9 @@ impl Default for EngineConfig {
             rule_overrides: Default::default(),
             overrides: Vec::new(),
             detection_overrides: Vec::new(),
-        }
+        })
     }
-}
 
-impl EngineConfig {
     pub fn add_include_patterns(&mut self, patterns: &[String]) -> Result<(), super::ConfigError> {
         let mut changed = false;
         for pattern in patterns {

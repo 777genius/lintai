@@ -58,7 +58,12 @@ fn validate_builtin_rule_catalog_entries(entries: &[BuiltinRuleCatalogEntry]) {
             entry.provider_id,
             entry.metadata.code
         );
-        validate_rule_presets("builtin", entry.metadata.code, entry.default_presets);
+        validate_rule_presets(
+            "builtin",
+            entry.metadata.code,
+            entry.default_presets,
+            entry.public_lane,
+        );
         validate_rule_quality_contract(
             "builtin",
             entry.metadata.code,

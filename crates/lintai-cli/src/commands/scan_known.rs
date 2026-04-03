@@ -1,11 +1,12 @@
 use std::path::Path;
 use std::process::ExitCode;
 
-use lintai_engine::{EngineConfig, OutputFormat, WorkspaceConfig, load_workspace_config};
+use lintai_engine::{OutputFormat, load_workspace_config};
 
 use crate::args::parse_scan_known_args;
 use crate::execution::{
-    build_engine, emit_report, exit_code_for_findings, exit_code_for_inventory_summary,
+    build_engine, default_workspace_for_presets, emit_report, exit_code_for_findings,
+    exit_code_for_inventory_summary,
 };
 use crate::known_scan::{
     ArtifactMode, DiscoveredRoot, DiscoveryStats, KnownRootScope, absolute_base_for_scan,
@@ -19,11 +20,20 @@ pub(crate) fn run(
     args: impl Iterator<Item = String>,
 ) -> Result<ExitCode, String> {
     let parsed = parse_scan_known_args(args)?;
+    let has_explicit_presets = !parsed.preset_ids.is_empty();
     let mut project_workspace = if parsed.scope.includes_project() {
-        Some(
-            load_workspace_config(current_dir)
-                .map_err(|error| format!("config resolution failed: {error}"))?,
-        )
+        if has_explicit_presets {
+            let mut workspace = default_workspace_for_presets(&parsed.preset_ids)?;
+            workspace
+                .engine_config
+                .set_project_root(Some(current_dir.to_path_buf()));
+            Some(workspace)
+        } else {
+            Some(
+                load_workspace_config(current_dir)
+                    .map_err(|error| format!("config resolution failed: {error}"))?,
+            )
+        }
     } else {
         None
     };
@@ -54,10 +64,7 @@ pub(crate) fn run(
     let mut report_roots = Vec::<DiscoveredRoot>::with_capacity(discovered_roots.len());
     let mut discovery_stats = DiscoveryStats::default();
     let mut blocking = false;
-    let default_workspace = WorkspaceConfig {
-        source_path: None,
-        engine_config: EngineConfig::default(),
-    };
+    let default_workspace = default_workspace_for_presets(&parsed.preset_ids)?;
 
     for root in discovered_roots {
         discovery_stats.record_root(root.mode);

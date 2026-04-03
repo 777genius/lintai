@@ -56,6 +56,14 @@ pub(super) fn normalize_client_filter(value: &str) -> String {
     value.trim().to_ascii_lowercase()
 }
 
+pub(super) fn push_preset_id(target: &mut Vec<String>, value: &str) {
+    let preset_id = value.trim();
+    if preset_id.is_empty() {
+        return;
+    }
+    target.push(preset_id.to_owned());
+}
+
 pub(super) fn unknown_flag(value: &str) -> String {
     format!("unknown flag: {value}")
 }

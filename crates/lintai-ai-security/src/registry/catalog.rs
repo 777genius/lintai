@@ -100,7 +100,12 @@ fn validate_rule_specs(specs: &[NativeRuleSpec]) {
     );
 
     for spec in specs {
-        validate_rule_presets("native", spec.metadata.code, spec.default_presets);
+        validate_rule_presets(
+            "native",
+            spec.metadata.code,
+            spec.default_presets,
+            crate::native_catalog::public_lane_for_presets(spec.default_presets),
+        );
         validate_rule_quality_contract(
             "native",
             spec.metadata.code,
