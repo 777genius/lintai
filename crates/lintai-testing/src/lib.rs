@@ -4,9 +4,7 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{SystemTime, UNIX_EPOCH};
 
-use lintai_api::{
-    ArtifactKind, Finding, RuleProvider, RuleTier, SourceFormat, builtin_membership_preset_ids,
-};
+use lintai_api::{ArtifactKind, Finding, RuleProvider, RuleTier, SourceFormat, builtin_membership_preset_ids};
 use lintai_engine::{
     ConfigError, EngineBuilder, EngineConfig, EngineError, FileSuppressions,
     NoopSuppressionMatcher, ProviderExecutionPhase, RuntimeErrorKind, ScanSummary,
@@ -111,6 +109,55 @@ fn provider_harness_presets_config() -> String {
         .collect::<Vec<_>>()
         .join(", ");
     format!("[presets]\nenable = [{enabled}]\n")
+}
+
+fn corpus_fallback_workspace_config(expected_absent_rules: &[String]) -> String {
+    let enabled = builtin_membership_preset_ids()
+        .into_iter()
+        .map(|preset| format!("\"{preset}\""))
+        .collect::<Vec<_>>()
+        .join(", ");
+    let mut config = format!("[presets]\nenable = [{enabled}]\n");
+    if !expected_absent_rules.is_empty() {
+        config.push_str("\n[rules]\n");
+        for rule_code in expected_absent_rules {
+            config.push_str(&format!("{rule_code} = \"allow\"\n"));
+        }
+    }
+    config
+}
+
+fn copy_dir_recursive(source: &Path, destination: &Path) -> Result<(), HarnessError> {
+    std::fs::create_dir_all(destination).map_err(|source_error| {
+        HarnessError::Manifest(ManifestLoadError::Io {
+            path: destination.to_path_buf(),
+            source: source_error,
+        })
+    })?;
+    for entry in std::fs::read_dir(source).map_err(|source_error| {
+        HarnessError::Manifest(ManifestLoadError::Io {
+            path: source.to_path_buf(),
+            source: source_error,
+        })
+    })? {
+        let entry = entry.map_err(|source_error| HarnessError::Manifest(ManifestLoadError::Io {
+            path: source.to_path_buf(),
+            source: source_error,
+        }))?;
+        let source_path = entry.path();
+        let destination_path = destination.join(entry.file_name());
+        if source_path.is_dir() {
+            copy_dir_recursive(&source_path, &destination_path)?;
+        } else {
+            std::fs::copy(&source_path, &destination_path).map_err(|source_error| {
+                HarnessError::Manifest(ManifestLoadError::Io {
+                    path: source_path.clone(),
+                    source: source_error,
+                })
+            })?;
+        }
+    }
+    Ok(())
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
@@ -411,7 +458,30 @@ impl WorkspaceHarness {
             });
         }
 
-        let workspace = load_workspace_config(&entry_root)?;
+        let mut scan_root = entry_root.clone();
+        let mut temp_root = None;
+        let workspace = if self.override_config.is_none() {
+            let workspace = load_workspace_config(&entry_root)?;
+            if workspace.source_path.is_some() {
+                workspace
+            } else {
+                let generated_root = unique_temp_dir("lintai-case-workspace");
+                copy_dir_recursive(&entry_root, &generated_root)?;
+                std::fs::write(
+                    generated_root.join("lintai.toml"),
+                    corpus_fallback_workspace_config(&manifest.expected_absent_rules),
+                )
+                .map_err(|source| HarnessError::Manifest(ManifestLoadError::Io {
+                    path: generated_root.join("lintai.toml"),
+                    source,
+                }))?;
+                scan_root = generated_root.clone();
+                temp_root = Some(generated_root.clone());
+                load_workspace_config(&generated_root)?
+            }
+        } else {
+            load_workspace_config(&entry_root)?
+        };
         let effective_config = self
             .override_config
             .clone()
@@ -430,7 +500,12 @@ impl WorkspaceHarness {
             builder = builder.with_backend(Arc::clone(backend));
         }
 
-        Ok(builder.build().scan_path(&entry_root)?)
+        let mut summary = builder.build().scan_path(&scan_root)?;
+        if temp_root.is_some() && summary.skipped_files > 0 {
+            summary.skipped_files -= 1;
+        }
+        drop(temp_root);
+        Ok(summary)
     }
 }
 

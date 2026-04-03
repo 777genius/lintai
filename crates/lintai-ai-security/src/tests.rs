@@ -1,4 +1,5 @@
 use std::collections::{BTreeMap, BTreeSet};
+use std::path::Path;
 use std::sync::Arc;
 
 use lintai_api::{ArtifactKind, RuleProvider, RuleTier, ScanScope, Severity, SourceFormat};
@@ -13,6 +14,17 @@ use crate::{
     AiSecurityProvider,
     registry::{DetectionClass, RuleLifecycle, rule_spec_groups, rule_specs},
 };
+
+fn config_with_presets(project_root: &Path, presets: &[&str]) -> EngineConfig {
+    let preset_ids = presets
+        .iter()
+        .map(|preset| (*preset).to_owned())
+        .collect::<Vec<_>>();
+    let mut config = EngineConfig::from_enabled_presets(&preset_ids)
+        .expect("test preset configuration should resolve");
+    config.project_root = Some(project_root.to_path_buf());
+    config
+}
 
 #[test]
 fn finds_hidden_html_comment_instruction() {
@@ -13164,8 +13176,7 @@ fn existing_mcp_rules_apply_to_claude_mcp_json_variants() {
     )
     .unwrap();
 
-    let mut config = EngineConfig::default();
-    config.project_root = Some(temp_dir.clone());
+    let config = config_with_presets(&temp_dir, &["base", "mcp"]);
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))
@@ -13193,8 +13204,7 @@ fn existing_mcp_rules_apply_to_vscode_mcp_json_variants() {
     )
     .unwrap();
 
-    let mut config = EngineConfig::default();
-    config.project_root = Some(temp_dir.clone());
+    let config = config_with_presets(&temp_dir, &["base", "mcp"]);
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))
@@ -13222,8 +13232,7 @@ fn fixture_like_expanded_mcp_paths_do_not_emit_mcp_findings() {
     )
     .unwrap();
 
-    let mut config = EngineConfig::default();
-    config.project_root = Some(temp_dir.clone());
+    let config = config_with_presets(&temp_dir, &["base", "mcp"]);
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))
@@ -13276,8 +13285,7 @@ fn existing_mcp_rules_apply_to_gemini_extension_variants() {
     )
     .unwrap();
 
-    let mut config = EngineConfig::default();
-    config.project_root = Some(temp_dir.clone());
+    let config = config_with_presets(&temp_dir, &["base", "mcp"]);
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))
@@ -13305,8 +13313,7 @@ fn fixture_like_gemini_paths_do_not_emit_mcp_findings() {
     )
     .unwrap();
 
-    let mut config = EngineConfig::default();
-    config.project_root = Some(temp_dir.clone());
+    let config = config_with_presets(&temp_dir, &["base", "mcp"]);
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))

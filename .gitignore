@@ -10,3 +10,7 @@ node_modules/
 docs/.vitepress/cache/
 docs/.vitepress/dist/
 .tmp-*.png
+!corpus/malicious/claude-settings-gh-api-delete-permission/repo/.claude/
+!corpus/malicious/claude-settings-gh-api-delete-permission/repo/.claude/settings.json
+!corpus/benign/claude-settings-gh-api-delete-permission-specific-safe/repo/.claude/
+!corpus/benign/claude-settings-gh-api-delete-permission-specific-safe/repo/.claude/settings.json
