@@ -1,7 +1,7 @@
 pub(crate) const SHORTLIST_PATH: &str = "validation/external-repos/repo-shortlist.toml";
 pub(crate) const LEDGER_PATH: &str = "validation/external-repos/ledger.toml";
-pub(crate) const ARCHIVED_WAVE1_LEDGER_PATH: &str =
-    "validation/external-repos/archive/wave1-ledger.toml";
+pub(crate) const ARCHIVED_WAVE2_LEDGER_PATH: &str =
+    "validation/external-repos/archive/wave2-ledger.toml";
 pub(crate) const TOOL_JSON_EXTENSION_SHORTLIST_PATH: &str =
     "validation/external-repos-tool-json/repo-shortlist.toml";
 pub(crate) const TOOL_JSON_EXTENSION_LEDGER_PATH: &str =

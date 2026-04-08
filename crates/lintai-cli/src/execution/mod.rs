@@ -63,6 +63,24 @@ pub(crate) fn load_validated_workspace(
     Ok(workspace)
 }
 
+pub(crate) fn load_validated_workspace_for_scan(
+    current_dir: &Path,
+    target: &Path,
+    preset_ids: &[String],
+) -> Result<WorkspaceConfig, String> {
+    if preset_ids.is_empty() {
+        return load_validated_workspace(current_dir, target);
+    }
+
+    let mut workspace = default_workspace_for_presets(preset_ids)?;
+    workspace
+        .engine_config
+        .set_project_root(Some(current_dir.to_path_buf()));
+    validate_path_within_project(target, workspace.engine_config.project_root.as_deref())
+        .map_err(|error| format!("target validation failed: {error}"))?;
+    Ok(workspace)
+}
+
 pub(crate) fn default_workspace_for_presets(
     preset_ids: &[String],
 ) -> Result<WorkspaceConfig, String> {

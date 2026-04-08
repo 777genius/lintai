@@ -89,10 +89,92 @@ fn readme_root_cargo_help_command_is_truthful() {
 
     let stdout = String::from_utf8(output.stdout).expect("stdout should be valid UTF-8");
     assert!(
-        stdout.contains("lintai scan [path]")
+        stdout.contains("lintai scan [path] [--preset NAME]")
             && stdout.contains("lintai config-schema")
             && stdout.contains("lintai advisory-db export-bundled"),
         "help output missing expected commands: {stdout}"
+    );
+}
+
+#[test]
+fn scan_explicit_presets_ignore_repo_local_preset_activation() {
+    let repo = temp_path("lintai-cli-scan-preset-bypass", "");
+    fs::create_dir_all(&repo).unwrap();
+    write_repo_file(&repo, "lintai.toml", "[presets]\nenable = [\"advisory\"]\n");
+    write_repo_file(
+        &repo,
+        "package-lock.json",
+        r#"{
+          "name": "demo",
+          "lockfileVersion": 3,
+          "packages": {
+            "": { "name": "demo", "version": "1.0.0" },
+            "node_modules/left-pad": { "version": "1.1.3" }
+          }
+        }"#,
+    );
+    let snapshot = advisory_snapshot_fixture_path();
+    let snapshot_arg = snapshot.to_string_lossy().into_owned();
+    let envs = [("LINTAI_ADVISORY_SNAPSHOT", snapshot_arg.as_str())];
+
+    let manifest_path = repo_root().join("Cargo.toml");
+    let manifest_arg = manifest_path.to_string_lossy().into_owned();
+
+    let default_output = run_cargo(
+        repo.clone(),
+        &[
+            "run",
+            "--quiet",
+            "--manifest-path",
+            &manifest_arg,
+            "--",
+            "scan",
+            ".",
+            "--format",
+            "json",
+        ],
+        &envs,
+    );
+    assert_eq!(
+        default_output.status.code(),
+        Some(0),
+        "default scan should honor repo-local preset activation:\n{}",
+        stderr_string(&default_output)
+    );
+    let default_json: serde_json::Value =
+        serde_json::from_slice(&default_output.stdout).expect("default scan output JSON");
+    assert_eq!(default_json["findings"].as_array().unwrap().len(), 1);
+    assert_eq!(default_json["findings"][0]["rule_code"], "SEC756");
+
+    let explicit_output = run_cargo(
+        repo,
+        &[
+            "run",
+            "--quiet",
+            "--manifest-path",
+            &manifest_arg,
+            "--",
+            "scan",
+            ".",
+            "--preset",
+            " base ",
+            "--format",
+            "json",
+        ],
+        &envs,
+    );
+    assert_eq!(
+        explicit_output.status.code(),
+        Some(0),
+        "explicit scan presets should bypass repo-local preset activation:\n{}",
+        stderr_string(&explicit_output)
+    );
+    let explicit_json: serde_json::Value =
+        serde_json::from_slice(&explicit_output.stdout).expect("explicit scan output JSON");
+    assert!(
+        explicit_json["findings"].as_array().unwrap().is_empty(),
+        "base preset should not inherit repo-local advisory activation: {}",
+        String::from_utf8_lossy(&explicit_output.stdout)
     );
 }
 

@@ -176,8 +176,8 @@ impl WorkspaceScanContext {
 mod tests {
     use crate::{
         Artifact, ArtifactKind, CapabilityConflictMode, CapabilityProfile, ExecCapability,
-        FileSystemCapability, FrontmatterFormat, FrontmatterSemantics, JsonSemantics, MarkdownSemantics,
-        Location, ParsedDocument, SecretCapability, SourceFormat, Span, WorkspaceArtifact,
+        FileSystemCapability, FrontmatterFormat, FrontmatterSemantics, JsonSemantics, Location,
+        MarkdownSemantics, ParsedDocument, SecretCapability, SourceFormat, Span, WorkspaceArtifact,
         WorkspaceScanContext, YamlSemantics,
     };
     use serde_json::json;
@@ -186,19 +186,28 @@ mod tests {
 
     #[test]
     fn scan_context_keeps_original_artifact_and_payload() {
-        let artifact = Artifact::new("repo/file.md", ArtifactKind::Instructions, SourceFormat::Markdown);
+        let artifact = Artifact::new(
+            "repo/file.md",
+            ArtifactKind::Instructions,
+            SourceFormat::Markdown,
+        );
         let document = ParsedDocument::new(vec![], None);
         let context = ScanContext::new(
             artifact.clone(),
             "hello",
             document.clone(),
-            Some(DocumentSemantics::Yaml(YamlSemantics::new(json!({"k":"v"})))),
+            Some(DocumentSemantics::Yaml(YamlSemantics::new(
+                json!({"k":"v"}),
+            ))),
         );
 
         assert_eq!(context.artifact, artifact);
         assert_eq!(context.content, "hello");
         assert_eq!(context.document, document);
-        assert!(matches!(context.semantics, Some(DocumentSemantics::Yaml(_))));
+        assert!(matches!(
+            context.semantics,
+            Some(DocumentSemantics::Yaml(_))
+        ));
     }
 
     #[test]
@@ -223,10 +232,16 @@ mod tests {
     #[test]
     fn workspace_artifact_ignores_non_markdown_capabilities() {
         let artifact = WorkspaceArtifact::new(
-            Artifact::new("repo/file.md", ArtifactKind::Instructions, SourceFormat::Markdown),
+            Artifact::new(
+                "repo/file.md",
+                ArtifactKind::Instructions,
+                SourceFormat::Markdown,
+            ),
             "",
             ParsedDocument::new(vec![], None),
-            Some(DocumentSemantics::Json(JsonSemantics::new(json!({"capabilities":{"exec":"none"}})))),
+            Some(DocumentSemantics::Json(JsonSemantics::new(
+                json!({"capabilities":{"exec":"none"}}),
+            ))),
         );
 
         assert!(artifact.capabilities.is_none());
@@ -235,7 +250,11 @@ mod tests {
     #[test]
     fn workspace_artifact_mutators_set_expected_fields() {
         let artifact = WorkspaceArtifact::new(
-            Artifact::new("repo/file.md", ArtifactKind::Instructions, SourceFormat::Markdown),
+            Artifact::new(
+                "repo/file.md",
+                ArtifactKind::Instructions,
+                SourceFormat::Markdown,
+            ),
             "{}",
             ParsedDocument::new(vec![], None),
             None,
@@ -259,7 +278,11 @@ mod tests {
     fn workspace_scan_context_constructor_keeps_values() {
         let project_root = Some("/tmp/project".to_string());
         let artifacts = vec![WorkspaceArtifact::new(
-            Artifact::new("repo/file.md", ArtifactKind::Instructions, SourceFormat::Markdown),
+            Artifact::new(
+                "repo/file.md",
+                ArtifactKind::Instructions,
+                SourceFormat::Markdown,
+            ),
             "",
             ParsedDocument::new(vec![], None),
             None,
@@ -273,8 +296,14 @@ mod tests {
 
         assert_eq!(context.project_root, project_root);
         assert_eq!(context.artifacts.len(), 1);
-        assert_eq!(context.artifacts[0].artifact.normalized_path, "repo/file.md");
+        assert_eq!(
+            context.artifacts[0].artifact.normalized_path,
+            "repo/file.md"
+        );
         assert!(context.project_capabilities.is_some());
-        assert_eq!(context.capability_conflict_mode, CapabilityConflictMode::Deny);
+        assert_eq!(
+            context.capability_conflict_mode,
+            CapabilityConflictMode::Deny
+        );
     }
 }

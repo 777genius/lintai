@@ -34,7 +34,7 @@ pub fn run() -> Result<ExitCode, String> {
 }
 
 fn print_usage() {
-    println!("lintai scan [path] [--format=text|json]");
+    println!("lintai scan [path] [--preset NAME] [--format=text|json]");
     println!("                    [--format=sarif]");
     println!("lintai scan-known [--scope=project|global|both] [--client NAME] [--preset NAME]");
     println!("                    [--format=text|json|sarif]");

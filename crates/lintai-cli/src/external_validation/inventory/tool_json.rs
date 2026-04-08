@@ -122,7 +122,8 @@ mod tests {
         cleanup(&workspace);
         assert_eq!(
             discovered,
-            "no committed non-fixture ToolDescriptorJson paths passed semantic confirmation".to_owned()
+            "no committed non-fixture ToolDescriptorJson paths passed semantic confirmation"
+                .to_owned()
         );
     }
 
@@ -144,10 +145,9 @@ mod tests {
             r#"{"name":"x","function":{"parameters":{"type":"object"}}}"#,
         )
         .unwrap();
-        let indirect = serde_json::from_str::<Value>(
-            r#"{"name":"x","inputSchema":{"type":"object"}}"#,
-        )
-        .unwrap();
+        let indirect =
+            serde_json::from_str::<Value>(r#"{"name":"x","inputSchema":{"type":"object"}}"#)
+                .unwrap();
         let missing = serde_json::from_str::<Value>(r#"{"name":"x","version":"1"}"#).unwrap();
 
         assert!(is_tool_descriptor_shape(&direct));

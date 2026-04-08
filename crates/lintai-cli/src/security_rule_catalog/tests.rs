@@ -119,11 +119,22 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .iter()
         .find(|entry| entry.metadata.code == "SEC324")
         .unwrap();
-    assert_eq!(
-        sec324.default_presets(),
-        vec!["recommended", "supply-chain"]
-    );
-    assert_eq!(sec324.public_lane(), PublicLane::Recommended);
+    assert_eq!(sec324.default_presets(), vec!["supply-chain"]);
+    assert_eq!(sec324.public_lane(), PublicLane::Preview);
+
+    let sec328 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC328")
+        .unwrap();
+    assert_eq!(sec328.default_presets(), vec!["supply-chain"]);
+    assert_eq!(sec328.public_lane(), PublicLane::Preview);
+
+    let sec352 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC352")
+        .unwrap();
+    assert_eq!(sec352.default_presets(), vec!["preview", "skills"]);
+    assert_eq!(sec352.public_lane(), PublicLane::Preview);
 
     let sec417 = entries
         .iter()

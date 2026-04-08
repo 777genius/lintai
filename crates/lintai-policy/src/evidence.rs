@@ -110,10 +110,7 @@ mod tests {
         WorkspaceArtifact,
     };
 
-    fn mk_artifact(
-        kind: ArtifactKind,
-        content: &str,
-    ) -> WorkspaceArtifact {
+    fn mk_artifact(kind: ArtifactKind, content: &str) -> WorkspaceArtifact {
         WorkspaceArtifact::new(
             Artifact::new("repo/file.txt", kind, SourceFormat::Markdown),
             content,
@@ -204,7 +201,10 @@ mod tests {
             CapabilityConflictMode::Warn,
         );
 
-        assert_eq!(finding.location, Location::new("repo/hint.txt", Span::new(2, 4)));
+        assert_eq!(
+            finding.location,
+            Location::new("repo/hint.txt", Span::new(2, 4))
+        );
         assert_eq!(finding.stable_key.normalized_path, "repo/hint.txt");
         assert_eq!(finding.stable_key.span, Span::new(2, 4));
     }

@@ -278,12 +278,14 @@ mod tests {
     #[test]
     fn inprocess_backend_exposes_constructor_overrides() {
         let provider: Arc<dyn RuleProvider> = Arc::new(TestRuleProvider);
-        let default_backend = InProcessProviderBackend::new(Arc::new(TestRuleProvider) as Arc<dyn RuleProvider>);
+        let default_backend =
+            InProcessProviderBackend::new(Arc::new(TestRuleProvider) as Arc<dyn RuleProvider>);
         assert_eq!(default_backend.id(), "test-rule");
         assert_eq!(default_backend.scan_scope(), ScanScope::PerFile);
         assert_eq!(default_backend.timeout(), Duration::from_secs(30));
 
-        let scoped = InProcessProviderBackend::with_scope(Arc::clone(&provider), ScanScope::Workspace);
+        let scoped =
+            InProcessProviderBackend::with_scope(Arc::clone(&provider), ScanScope::Workspace);
         assert_eq!(scoped.scan_scope(), ScanScope::Workspace);
 
         let timeout = Duration::from_secs(5);
@@ -304,8 +306,10 @@ mod tests {
         assert_eq!(file_backend.timeout(), Duration::from_secs(7));
         assert_eq!(file_backend.rules(), &TEST_RULES);
 
-        let workspace_backend =
-            InProcessWorkspaceProviderBackend::with_timeout(Arc::new(TestWorkspaceProvider), Duration::from_secs(9));
+        let workspace_backend = InProcessWorkspaceProviderBackend::with_timeout(
+            Arc::new(TestWorkspaceProvider),
+            Duration::from_secs(9),
+        );
         assert_eq!(workspace_backend.id(), "test-workspace");
         assert_eq!(workspace_backend.scan_scope(), ScanScope::Workspace);
         assert_eq!(workspace_backend.timeout(), Duration::from_secs(9));

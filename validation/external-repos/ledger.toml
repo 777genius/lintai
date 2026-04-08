@@ -1,11 +1,12 @@
 version = 1
-wave = 2
-baseline = "archive/wave1-ledger.toml"
+wave = 3
+baseline = "archive/wave2-ledger.toml"
 
 [[evaluations]]
 repo = "containers/kubernetes-mcp-server"
 url = "https://github.com/containers/kubernetes-mcp-server"
 pinned_ref = "df06f9de9cb98e0aef1008926ab1f5b12e427937"
+ownership = "official"
 category = "mcp"
 subtype = "stress"
 status = "evaluated"
@@ -14,27 +15,87 @@ surfaces_present = [
     "server.json",
     "tool_descriptor_json",
 ]
-stable_findings = 4
+stable_findings = 6
 preview_findings = 3
-stable_rule_codes = ["SEC324"]
+stable_rule_codes = [
+    "SEC324",
+    "SEC749",
+    "SEC751",
+]
 preview_rule_codes = ["SEC328"]
 repo_verdict = "strong_fit"
-stable_precision_notes = "No stable findings observed on first-pass external scan."
-preview_signal_notes = "No preview findings observed on first-pass external scan."
+stable_precision_notes = "Observed `6` stable finding(s) via `SEC324`, `SEC749`, `SEC751`."
+preview_signal_notes = "Observed `3` preview finding(s) via `SEC328`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 6
+preview_findings = 3
+stable_rule_codes = [
+    "SEC324",
+    "SEC749",
+    "SEC751",
+]
+preview_rule_codes = ["SEC328"]
+
 [[evaluations]]
 repo = "microsoft/mcp-for-beginners"
 url = "https://github.com/microsoft/mcp-for-beginners"
 pinned_ref = "123d41278366526870308f412ccdce1710302952"
+ownership = "official"
 category = "mcp"
 subtype = "control"
 status = "evaluated"
-surfaces_present = ["server.json"]
+surfaces_present = []
 stable_findings = 0
 preview_findings = 0
 stable_rule_codes = []
@@ -42,16 +103,68 @@ preview_rule_codes = []
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings observed on first-pass external scan."
 preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
 [[evaluations]]
 repo = "modelcontextprotocol/registry"
 url = "https://github.com/modelcontextprotocol/registry"
 pinned_ref = "c5c4b9e8890dd5754bee889b2f1417f4fe3b5ce5"
+ownership = "official"
 category = "mcp"
 subtype = "control"
 status = "evaluated"
@@ -59,23 +172,81 @@ surfaces_present = [
     ".github/workflows/*.yml",
     "CLAUDE.md",
 ]
-stable_findings = 6
+stable_findings = 7
 preview_findings = 10
-stable_rule_codes = ["SEC324"]
+stable_rule_codes = [
+    "SEC324",
+    "SEC750",
+]
 preview_rule_codes = ["SEC328"]
 repo_verdict = "strong_fit"
-stable_precision_notes = "No stable findings observed on first-pass external scan."
-preview_signal_notes = "No preview findings observed on first-pass external scan."
+stable_precision_notes = "Observed `7` stable finding(s) via `SEC324`, `SEC750`."
+preview_signal_notes = "Observed `10` preview finding(s) via `SEC328`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 7
+preview_findings = 10
+stable_rule_codes = [
+    "SEC324",
+    "SEC750",
+]
+preview_rule_codes = ["SEC328"]
+
 [[evaluations]]
 repo = "mrexodia/ida-pro-mcp"
 url = "https://github.com/mrexodia/ida-pro-mcp"
 pinned_ref = "5bdafa2f20c9b4807a864b4e7999c715da52b05d"
+ownership = "community"
 category = "mcp"
 subtype = "stress"
 status = "evaluated"
@@ -89,18 +260,70 @@ preview_findings = 0
 stable_rule_codes = ["SEC324"]
 preview_rule_codes = []
 repo_verdict = "strong_fit"
-stable_precision_notes = "No stable findings observed on first-pass external scan."
+stable_precision_notes = "Observed `1` stable finding(s) via `SEC324`."
 preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+
 [[evaluations]]
 repo = "supermemoryai/apple-mcp"
 url = "https://github.com/supermemoryai/apple-mcp"
 pinned_ref = "08e2c5315683c00fc9567dfefd70a477caccc60d"
+ownership = "community"
 category = "mcp"
 subtype = "stress"
 status = "evaluated"
@@ -112,16 +335,68 @@ preview_rule_codes = []
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings observed on first-pass external scan."
 preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
 [[evaluations]]
 repo = "blazickjp/arxiv-mcp-server"
 url = "https://github.com/blazickjp/arxiv-mcp-server"
 pinned_ref = "0065f5abb48f3eb4e011a130dd63fc52b381a1d2"
+ownership = "community"
 category = "mcp"
 subtype = "control"
 status = "evaluated"
@@ -129,23 +404,81 @@ surfaces_present = [
     ".github/workflows/*.yml",
     "CLAUDE.md",
 ]
-stable_findings = 1
+stable_findings = 2
 preview_findings = 0
-stable_rule_codes = ["SEC324"]
+stable_rule_codes = [
+    "SEC324",
+    "SEC749",
+]
 preview_rule_codes = []
 repo_verdict = "strong_fit"
-stable_precision_notes = "No stable findings observed on first-pass external scan."
+stable_precision_notes = "Observed `2` stable finding(s) via `SEC324`, `SEC749`."
 preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 2
+preview_findings = 0
+stable_rule_codes = [
+    "SEC324",
+    "SEC749",
+]
+preview_rule_codes = []
+
 [[evaluations]]
 repo = "airmcp-com/mcp-standards"
 url = "https://github.com/airmcp-com/mcp-standards"
 pinned_ref = "5904a55c01f45de48ffacd59d768a85abdd7464a"
+ownership = "community"
 category = "mcp"
 subtype = "control"
 status = "evaluated"
@@ -157,58 +490,289 @@ surfaces_present = [
     "plugin_root_agents/*.md",
     "plugin_root_commands/*.md",
 ]
-stable_findings = 3
-preview_findings = 9
+stable_findings = 8
+preview_findings = 18
 stable_rule_codes = [
     "SEC324",
     "SEC340",
+    "SEC400",
+    "SEC413",
+    "SEC414",
+    "SEC415",
+    "SEC745",
 ]
 preview_rule_codes = [
     "SEC328",
     "SEC347",
+    "SEC361",
+    "SEC381",
+    "SEC382",
+    "SEC385",
+    "SEC386",
+    "SEC387",
+    "SEC388",
+    "SEC399",
+    "SEC406",
 ]
 repo_verdict = "strong_fit"
-stable_precision_notes = "No stable findings observed on first-pass external scan."
-preview_signal_notes = "No preview findings observed on first-pass external scan."
+stable_precision_notes = "Observed `8` stable finding(s) via `SEC324`, `SEC340`, `SEC400`, `SEC413`, `SEC414`, `SEC415`, `SEC745`."
+preview_signal_notes = "Observed `18` preview finding(s) via `SEC328`, `SEC347`, `SEC361`, `SEC381`, `SEC382`, `SEC385`, `SEC386`, `SEC387`, `SEC388`, `SEC399`, `SEC406`."
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 1
+preview_findings = 7
+stable_rule_codes = ["SEC340"]
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC340"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 5
+preview_findings = 9
+stable_rule_codes = [
+    "SEC340",
+    "SEC400",
+    "SEC413",
+    "SEC414",
+    "SEC415",
+]
+preview_rule_codes = [
+    "SEC361",
+    "SEC381",
+    "SEC382",
+    "SEC385",
+    "SEC386",
+    "SEC387",
+    "SEC388",
+    "SEC399",
+    "SEC406",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 7
+stable_rule_codes = []
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 4
+preview_findings = 16
+stable_rule_codes = [
+    "SEC400",
+    "SEC413",
+    "SEC414",
+    "SEC415",
+]
+preview_rule_codes = [
+    "SEC347",
+    "SEC361",
+    "SEC381",
+    "SEC382",
+    "SEC385",
+    "SEC386",
+    "SEC387",
+    "SEC388",
+    "SEC399",
+    "SEC406",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 3
+preview_findings = 2
+stable_rule_codes = [
+    "SEC324",
+    "SEC745",
+]
+preview_rule_codes = ["SEC328"]
+
+[[evaluations.recommended_stable_hits]]
+rule_code = "SEC340"
+normalized_path = ".claude/settings.json"
+
+[evaluations.recommended_stable_hits.stable_key]
+rule_code = "SEC340"
+normalized_path = ".claude/settings.json"
+
+[evaluations.recommended_stable_hits.stable_key.span]
+start_byte = 1825
+end_byte = 1828
+
+[[evaluations.recommended_stable_adjudications]]
+rule_code = "SEC340"
+verdict = "confirmed_issue"
+summary = "committed Claude hook executes through npx"
+reason = "`.claude/settings.json` contains committed command hooks invoking `npx claude-flow@alpha ...`."
+problem = "mutable package launcher in committed Claude hook config"
+
+[evaluations.recommended_stable_adjudications.stable_key]
+rule_code = "SEC340"
+normalized_path = ".claude/settings.json"
+
+[evaluations.recommended_stable_adjudications.stable_key.span]
+start_byte = 1825
+end_byte = 1828
+
 [[evaluations]]
 repo = "centminmod/my-claude-code-setup"
 url = "https://github.com/centminmod/my-claude-code-setup"
 pinned_ref = "204c03f7984180be35c2e52fa9703475cdb2f118"
+ownership = "community"
 category = "mcp"
 subtype = "control"
 status = "evaluated"
 surfaces_present = [
     ".claude/mcp/*.json",
     ".claude/settings.json",
+    ".claude/settings.local.json",
     "CLAUDE.md",
     "SKILL.md",
     "plugin_root_agents/*.md",
     "plugin_root_commands/*.md",
     "tool_descriptor_json",
 ]
-stable_findings = 1
-preview_findings = 0
-stable_rule_codes = ["SEC329"]
-preview_rule_codes = []
+stable_findings = 4
+preview_findings = 5
+stable_rule_codes = [
+    "SEC329",
+    "SEC352",
+    "SEC384",
+    "SEC411",
+]
+preview_rule_codes = [
+    "SEC361",
+    "SEC381",
+    "SEC382",
+    "SEC483",
+]
 repo_verdict = "strong_fit"
-stable_precision_notes = "No stable findings observed on first-pass external scan."
-preview_signal_notes = "No preview findings observed on first-pass external scan."
+stable_precision_notes = "Observed `4` stable finding(s) via `SEC329`, `SEC352`, `SEC384`, `SEC411`."
+preview_signal_notes = "Observed `5` preview finding(s) via `SEC361`, `SEC381`, `SEC382`, `SEC483`."
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 2
+preview_findings = 5
+stable_rule_codes = [
+    "SEC384",
+    "SEC411",
+]
+preview_rule_codes = [
+    "SEC361",
+    "SEC381",
+    "SEC382",
+    "SEC483",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC352"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 3
+preview_findings = 5
+stable_rule_codes = [
+    "SEC352",
+    "SEC384",
+    "SEC411",
+]
+preview_rule_codes = [
+    "SEC361",
+    "SEC381",
+    "SEC382",
+    "SEC483",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.recommended_stable_hits]]
+rule_code = "SEC329"
+normalized_path = ".claude/mcp/chrome-devtools.json"
+
+[evaluations.recommended_stable_hits.stable_key]
+rule_code = "SEC329"
+normalized_path = ".claude/mcp/chrome-devtools.json"
+
+[evaluations.recommended_stable_hits.stable_key.span]
+start_byte = 63
+end_byte = 66
+
+[[evaluations.recommended_stable_adjudications]]
+rule_code = "SEC329"
+verdict = "confirmed_issue"
+summary = "committed MCP config launches through npx"
+reason = '`.claude/mcp/chrome-devtools.json` sets `command: "npx"` with `chrome-devtools-mcp@latest`.'
+problem = "mutable package launcher in committed MCP config"
+
+[evaluations.recommended_stable_adjudications.stable_key]
+rule_code = "SEC329"
+normalized_path = ".claude/mcp/chrome-devtools.json"
+
+[evaluations.recommended_stable_adjudications.stable_key.span]
+start_byte = 63
+end_byte = 66
+
 [[evaluations]]
 repo = "hex-inc/hex-cursor-plugin"
 url = "https://github.com/hex-inc/hex-cursor-plugin"
 pinned_ref = "81413514f3cb7c40600c5a8cbdd89a3cfea94cd1"
+ownership = "official"
 category = "mcp"
 subtype = "stress"
 status = "evaluated"
@@ -223,16 +787,68 @@ preview_rule_codes = []
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings observed on first-pass external scan."
 preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
 [[evaluations]]
 repo = "olostep/olostep-cursor-plugin"
 url = "https://github.com/olostep/olostep-cursor-plugin"
 pinned_ref = "f970811435fe500e6d1c6cc2cd37e1aa4c05c9cc"
+ownership = "community"
 category = "mcp"
 subtype = "stress"
 status = "evaluated"
@@ -247,18 +863,1135 @@ preview_findings = 2
 stable_rule_codes = ["SEC329"]
 preview_rule_codes = ["SEC347"]
 repo_verdict = "strong_fit"
-stable_precision_notes = "No stable findings observed on first-pass external scan."
-preview_signal_notes = "No preview findings observed on first-pass external scan."
+stable_precision_notes = "Observed `1` stable finding(s) via `SEC329`."
+preview_signal_notes = "Observed `2` preview finding(s) via `SEC347`."
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 1
+preview_findings = 2
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 2
+stable_rule_codes = []
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 2
+stable_rule_codes = []
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.recommended_stable_hits]]
+rule_code = "SEC329"
+normalized_path = "mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key]
+rule_code = "SEC329"
+normalized_path = "mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key.span]
+start_byte = 55
+end_byte = 58
+
+[[evaluations.recommended_stable_adjudications]]
+rule_code = "SEC329"
+verdict = "confirmed_issue"
+summary = "committed MCP config launches through npx"
+reason = '`mcp.json` uses `command: "npx"` with `-y olostep-mcp` in committed MCP server config.'
+problem = "mutable package launcher in committed MCP config"
+
+[evaluations.recommended_stable_adjudications.stable_key]
+rule_code = "SEC329"
+normalized_path = "mcp.json"
+
+[evaluations.recommended_stable_adjudications.stable_key.span]
+start_byte = 55
+end_byte = 58
+
+[[evaluations]]
+repo = "cloudflare/mcp-server-cloudflare"
+url = "https://github.com/cloudflare/mcp-server-cloudflare"
+pinned_ref = "162239fd54954337471b5dda401a2020a19286fa"
+ownership = "official"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "server.json",
+    "tool_descriptor_json",
+]
+stable_findings = 2
+preview_findings = 1
+stable_rule_codes = [
+    "SEC324",
+    "SEC751",
+]
+preview_rule_codes = ["SEC328"]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `2` stable finding(s) via `SEC324`, `SEC751`."
+preview_signal_notes = "Observed `1` preview finding(s) via `SEC328`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 2
+preview_findings = 1
+stable_rule_codes = [
+    "SEC324",
+    "SEC751",
+]
+preview_rule_codes = ["SEC328"]
+
+[[evaluations]]
+repo = "googleworkspace/developer-tools"
+url = "https://github.com/googleworkspace/developer-tools"
+pinned_ref = "496529e5392eeaea3a19854a40979a6f57a3f315"
+ownership = "official"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "server.json",
+]
+stable_findings = 6
+preview_findings = 2
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = ["SEC328"]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `6` stable finding(s) via `SEC324`."
+preview_signal_notes = "Observed `2` preview finding(s) via `SEC328`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 6
+preview_findings = 2
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = ["SEC328"]
+
+[[evaluations]]
+repo = "hashicorp/terraform-mcp-server"
+url = "https://github.com/hashicorp/terraform-mcp-server"
+pinned_ref = "1fe0d44bd962e7332366a70bb93da7da4c12b60b"
+ownership = "official"
+category = "mcp"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "docker_mcp_launch",
+    "gemini-extension.json",
+    "server.json",
+]
+stable_findings = 7
+preview_findings = 1
+stable_rule_codes = [
+    "SEC324",
+    "SEC337",
+    "SEC751",
+]
+preview_rule_codes = ["SEC328"]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `7` stable finding(s) via `SEC324`, `SEC337`, `SEC751`."
+preview_signal_notes = "Observed `1` preview finding(s) via `SEC328`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC337"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC337"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 6
+preview_findings = 1
+stable_rule_codes = [
+    "SEC324",
+    "SEC751",
+]
+preview_rule_codes = ["SEC328"]
+
+[[evaluations]]
+repo = "github/github-mcp-server"
+url = "https://github.com/github/github-mcp-server"
+pinned_ref = "95726adfc4b3c0f7c83d143dcfde1a8a9f730644"
+ownership = "official"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "plugin_root_agents/*.md",
+    "server.json",
+]
+stable_findings = 10
+preview_findings = 10
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = [
+    "SEC325",
+    "SEC328",
+]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `10` stable finding(s) via `SEC324`."
+preview_signal_notes = "Observed `10` preview finding(s) via `SEC325`, `SEC328`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 10
+preview_findings = 10
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = [
+    "SEC325",
+    "SEC328",
+]
+
+[[evaluations]]
+repo = "docker/hub-mcp"
+url = "https://github.com/docker/hub-mcp"
+pinned_ref = "3b1a162b12b420443dcf3668534581887d88212b"
+ownership = "official"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "tool_descriptor_json",
+]
+stable_findings = 7
+preview_findings = 6
+stable_rule_codes = [
+    "SEC324",
+    "SEC744",
+]
+preview_rule_codes = ["SEC328"]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `7` stable finding(s) via `SEC324`, `SEC744`."
+preview_signal_notes = "Observed `6` preview finding(s) via `SEC328`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 7
+preview_findings = 6
+stable_rule_codes = [
+    "SEC324",
+    "SEC744",
+]
+preview_rule_codes = ["SEC328"]
+
+[[evaluations]]
+repo = "TencentCloudBase/CloudBase-MCP"
+url = "https://github.com/TencentCloudBase/CloudBase-MCP"
+pinned_ref = "b0f2bec9ffb3220a86bb5bbd2ab03e7d609b7d67"
+ownership = "official"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".claude/settings.local.json",
+    ".github/workflows/*.yml",
+    ".mcp.json",
+    ".mdc",
+    "CLAUDE.md",
+    "SKILL.md",
+    "gemini-extension.json",
+    "gemini.settings.json",
+    "plugin_root_commands/*.md",
+    "tool_descriptor_json",
+]
+stable_findings = 9
+preview_findings = 11
+stable_rule_codes = [
+    "SEC309",
+    "SEC324",
+    "SEC329",
+    "SEC400",
+]
+preview_rule_codes = [
+    "SEC328",
+    "SEC347",
+    "SEC360",
+    "SEC361",
+    "SEC380",
+]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `9` stable finding(s) via `SEC309`, `SEC324`, `SEC329`, `SEC400`."
+preview_signal_notes = "Observed `11` preview finding(s) via `SEC328`, `SEC347`, `SEC360`, `SEC361`, `SEC380`."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 5
+preview_findings = 6
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 6
+preview_findings = 0
+stable_rule_codes = [
+    "SEC309",
+    "SEC329",
+]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 6
+preview_findings = 0
+stable_rule_codes = [
+    "SEC309",
+    "SEC329",
+]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 2
+preview_findings = 2
+stable_rule_codes = ["SEC400"]
+preview_rule_codes = ["SEC361"]
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 8
+stable_rule_codes = []
+preview_rule_codes = [
+    "SEC347",
+    "SEC360",
+    "SEC380",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 2
+preview_findings = 10
+stable_rule_codes = ["SEC400"]
+preview_rule_codes = [
+    "SEC347",
+    "SEC360",
+    "SEC361",
+    "SEC380",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 1
+preview_findings = 1
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = ["SEC328"]
+
+[[evaluations.recommended_stable_hits]]
+rule_code = "SEC329"
+normalized_path = ".mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key]
+rule_code = "SEC329"
+normalized_path = ".mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key.span]
+start_byte = 57
+end_byte = 60
+
+[[evaluations.recommended_stable_hits]]
+rule_code = "SEC329"
+normalized_path = "config/source/editor-config/files/gemini.settings.json"
+
+[evaluations.recommended_stable_hits.stable_key]
+rule_code = "SEC329"
+normalized_path = "config/source/editor-config/files/gemini.settings.json"
+
+[evaluations.recommended_stable_hits.stable_key.span]
+start_byte = 57
+end_byte = 60
+
+[[evaluations.recommended_stable_hits]]
+rule_code = "SEC329"
+normalized_path = "gemini-extension.json"
+
+[evaluations.recommended_stable_hits.stable_key]
+rule_code = "SEC329"
+normalized_path = "gemini-extension.json"
+
+[evaluations.recommended_stable_hits.stable_key.span]
+start_byte = 488
+end_byte = 491
+
+[[evaluations.recommended_stable_hits]]
+rule_code = "SEC329"
+normalized_path = "mcp/.mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key]
+rule_code = "SEC329"
+normalized_path = "mcp/.mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key.span]
+start_byte = 57
+end_byte = 60
+
+[[evaluations.recommended_stable_hits]]
+rule_code = "SEC329"
+normalized_path = "mcp/mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key]
+rule_code = "SEC329"
+normalized_path = "mcp/mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key.span]
+start_byte = 57
+end_byte = 60
+
+[[evaluations.recommended_stable_adjudications]]
+rule_code = "SEC329"
+verdict = "confirmed_issue"
+summary = "committed MCP config launches through npx"
+reason = '`.mcp.json` uses `command: "npx"` with `@cloudbase/cloudbase-mcp@latest` in committed MCP server config.'
+problem = "mutable package launcher in committed MCP config"
+
+[evaluations.recommended_stable_adjudications.stable_key]
+rule_code = "SEC329"
+normalized_path = ".mcp.json"
+
+[evaluations.recommended_stable_adjudications.stable_key.span]
+start_byte = 57
+end_byte = 60
+
+[[evaluations.recommended_stable_adjudications]]
+rule_code = "SEC329"
+verdict = "confirmed_issue"
+summary = "committed MCP config launches through npx"
+reason = '`config/source/editor-config/files/gemini.settings.json` uses `command: "npx"` with mutable `npm-global-exec@latest` and `@cloudbase/cloudbase-mcp@latest`.'
+problem = "mutable package launcher in committed MCP config"
+
+[evaluations.recommended_stable_adjudications.stable_key]
+rule_code = "SEC329"
+normalized_path = "config/source/editor-config/files/gemini.settings.json"
+
+[evaluations.recommended_stable_adjudications.stable_key.span]
+start_byte = 57
+end_byte = 60
+
+[[evaluations.recommended_stable_adjudications]]
+rule_code = "SEC329"
+verdict = "confirmed_issue"
+summary = "committed MCP config launches through npx"
+reason = '`gemini-extension.json` uses `command: "npx"` with mutable `npm-global-exec@latest` and `@cloudbase/cloudbase-mcp@latest`.'
+problem = "mutable package launcher in committed MCP config"
+
+[evaluations.recommended_stable_adjudications.stable_key]
+rule_code = "SEC329"
+normalized_path = "gemini-extension.json"
+
+[evaluations.recommended_stable_adjudications.stable_key.span]
+start_byte = 488
+end_byte = 491
+
+[[evaluations.recommended_stable_adjudications]]
+rule_code = "SEC329"
+verdict = "confirmed_issue"
+summary = "committed MCP config launches through npx"
+reason = '`mcp/.mcp.json` uses `command: "npx"` with mutable `npm-global-exec@latest` and `@cloudbase/cloudbase-mcp@latest`.'
+problem = "mutable package launcher in committed MCP config"
+
+[evaluations.recommended_stable_adjudications.stable_key]
+rule_code = "SEC329"
+normalized_path = "mcp/.mcp.json"
+
+[evaluations.recommended_stable_adjudications.stable_key.span]
+start_byte = 57
+end_byte = 60
+
+[[evaluations.recommended_stable_adjudications]]
+rule_code = "SEC329"
+verdict = "confirmed_issue"
+summary = "committed MCP config launches through npx"
+reason = '`mcp/mcp.json` uses `command: "npx"` with mutable `npm-global-exec@latest` and `@cloudbase/cloudbase-mcp@latest`.'
+problem = "mutable package launcher in committed MCP config"
+
+[evaluations.recommended_stable_adjudications.stable_key]
+rule_code = "SEC329"
+normalized_path = "mcp/mcp.json"
+
+[evaluations.recommended_stable_adjudications.stable_key.span]
+start_byte = 57
+end_byte = 60
+
+[[evaluations.diagnostics]]
+path = "config/source/editor-config/guides/cloudbase-rules.mdc"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: did not find expected alphabetic or numeric character at line 2 column 9, while scanning an alias at line 2 column 8)"
+
+[[evaluations.diagnostics]]
+path = "mcp/AGENTS.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: did not find expected alphabetic or numeric character at line 2 column 9, while scanning an alias at line 2 column 8)"
+
+[[evaluations.diagnostics]]
+path = "mcp/CLAUDE.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: did not find expected alphabetic or numeric character at line 2 column 9, while scanning an alias at line 2 column 8)"
+
+[[evaluations]]
+repo = "gitkraken/MCP-Docs"
+url = "https://github.com/gitkraken/MCP-Docs"
+pinned_ref = "fa8aebcea9bb0973aa2bd113ddec1f40a4cc3fc3"
+ownership = "official"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "tool_descriptor_json",
+]
+stable_findings = 1
+preview_findings = 1
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = ["SEC328"]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `1` stable finding(s) via `SEC324`."
+preview_signal_notes = "Observed `1` preview finding(s) via `SEC328`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 1
+preview_findings = 1
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = ["SEC328"]
+
+[[evaluations]]
+repo = "VictoriaMetrics-Community/mcp-victoriametrics"
+url = "https://github.com/VictoriaMetrics-Community/mcp-victoriametrics"
+pinned_ref = "75110f4f6002ca2a0e895cab7ec613382ae2a49f"
+ownership = "community"
+category = "mcp"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "server.json",
+]
+stable_findings = 7
+preview_findings = 5
+stable_rule_codes = [
+    "SEC324",
+    "SEC751",
+]
+preview_rule_codes = ["SEC328"]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `7` stable finding(s) via `SEC324`, `SEC751`."
+preview_signal_notes = "Observed `5` preview finding(s) via `SEC328`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 7
+preview_findings = 5
+stable_rule_codes = [
+    "SEC324",
+    "SEC751",
+]
+preview_rule_codes = ["SEC328"]
+
+[[evaluations]]
+repo = "OriShmila/alpha-vantage-mcp-server"
+url = "https://github.com/OriShmila/alpha-vantage-mcp-server"
+pinned_ref = "dea305c3190b23c87dc39bb5f209262daedca020"
+ownership = "community"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".cursorrules",
+    "tool_descriptor_json",
+]
+stable_findings = 0
+preview_findings = 1
+stable_rule_codes = []
+preview_rule_codes = ["SEC347"]
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "Observed `1` preview finding(s) via `SEC347`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 1
+stable_rule_codes = []
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 1
+stable_rule_codes = []
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 1
+stable_rule_codes = []
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.runtime_errors]]
+path = "alpha_vantage_mcp_server/tools_new.json"
+kind = "parse"
+message = "invalid JSON document: EOF while parsing a value at line 2270 column 0"
+
+[[evaluations]]
+repo = "blockscout/mcp-server"
+url = "https://github.com/blockscout/mcp-server"
+pinned_ref = "00cc9302d74faa3c880fdf0c1650e7dabecd4ad2"
+ownership = "community"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".claude/settings.json",
+    ".github/workflows/*.yml",
+    ".mdc",
+    "SKILL.md",
+    "server.json",
+]
+stable_findings = 9
+preview_findings = 40
+stable_rule_codes = [
+    "SEC324",
+    "SEC327",
+    "SEC384",
+    "SEC418",
+    "SEC750",
+    "SEC752",
+]
+preview_rule_codes = [
+    "SEC328",
+    "SEC360",
+    "SEC361",
+    "SEC378",
+    "SEC380",
+    "SEC381",
+    "SEC382",
+    "SEC407",
+    "SEC409",
+    "SEC410",
+]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `9` stable finding(s) via `SEC324`, `SEC327`, `SEC384`, `SEC418`, `SEC750`, `SEC752`."
+preview_signal_notes = "Observed `40` preview finding(s) via `SEC328`, `SEC360`, `SEC361`, `SEC378`, `SEC380`, `SEC381`, `SEC382`, `SEC407`, `SEC409`, `SEC410`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 2
+preview_findings = 6
+stable_rule_codes = [
+    "SEC384",
+    "SEC418",
+]
+preview_rule_codes = [
+    "SEC361",
+    "SEC381",
+    "SEC382",
+    "SEC407",
+    "SEC409",
+    "SEC410",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 30
+stable_rule_codes = []
+preview_rule_codes = [
+    "SEC360",
+    "SEC378",
+    "SEC380",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 2
+preview_findings = 36
+stable_rule_codes = [
+    "SEC384",
+    "SEC418",
+]
+preview_rule_codes = [
+    "SEC360",
+    "SEC361",
+    "SEC378",
+    "SEC380",
+    "SEC381",
+    "SEC382",
+    "SEC407",
+    "SEC409",
+    "SEC410",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 7
+preview_findings = 4
+stable_rule_codes = [
+    "SEC324",
+    "SEC327",
+    "SEC750",
+    "SEC752",
+]
+preview_rule_codes = ["SEC328"]
+
+[[evaluations.runtime_errors]]
+path = ".devcontainer/devcontainer.json"
+kind = "parse"
+message = "invalid JSON document: key must be a string at line 11 column 2"
+
 [[evaluations]]
 repo = "cursor/plugins"
 url = "https://github.com/cursor/plugins"
 pinned_ref = "08c2bbe2ae8a022a21dc6c32faf611f14a6e8343"
+ownership = "official"
 category = "cursor_plugin"
 subtype = "stress"
 status = "evaluated"
@@ -275,12 +2008,63 @@ preview_findings = 0
 stable_rule_codes = []
 preview_rule_codes = []
 repo_verdict = "strong_fit"
-stable_precision_notes = "No stable findings observed on wave 2 external scan; one recoverable parse diagnostic was emitted and scanning continued."
-preview_signal_notes = "No preview findings observed on wave 2 external scan."
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
 
 [[evaluations.diagnostics]]
 path = "agent-compatibility/skills/check-agent-compatibility/SKILL.md"
@@ -292,6 +2076,7 @@ message = "frontmatter was ignored because YAML was invalid; markdown body was s
 repo = "datadog-labs/cursor-plugin"
 url = "https://github.com/datadog-labs/cursor-plugin"
 pinned_ref = "fdce3e1db7c99b80939f2ad95c67f525bf0eee50"
+ownership = "official"
 category = "cursor_plugin"
 subtype = "stress"
 status = "evaluated"
@@ -305,18 +2090,70 @@ preview_findings = 0
 stable_rule_codes = []
 preview_rule_codes = []
 repo_verdict = "strong_fit"
-stable_precision_notes = "No stable findings observed on wave 2 external scan."
-preview_signal_notes = "No preview findings observed after the SEC105 precision hardening pass."
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
 [[evaluations]]
 repo = "linear/cursor-plugin"
 url = "https://github.com/linear/cursor-plugin"
 pinned_ref = "c2c4cb2ab23206c9219b0dd31c9571e4c922faeb"
+ownership = "official"
 category = "cursor_plugin"
 subtype = "control"
 status = "evaluated"
@@ -331,16 +2168,68 @@ preview_rule_codes = []
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings observed on first-pass external scan."
 preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
 [[evaluations]]
 repo = "makenotion/cursor-notion-plugin"
 url = "https://github.com/makenotion/cursor-notion-plugin"
 pinned_ref = "cf1324609edba6d617164f1dec138aeb43f26735"
+ownership = "official"
 category = "cursor_plugin"
 subtype = "stress"
 status = "evaluated"
@@ -356,16 +2245,68 @@ preview_rule_codes = []
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings observed on first-pass external scan."
 preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
 [[evaluations]]
 repo = "van-reflect/cursor-plugin"
 url = "https://github.com/van-reflect/cursor-plugin"
 pinned_ref = "15a212718e566b3a964c077cc8426972cced1b85"
+ownership = "community"
 category = "cursor_plugin"
 subtype = "control"
 status = "evaluated"
@@ -380,7 +2321,7 @@ preview_findings = 0
 stable_rule_codes = ["SEC329"]
 preview_rule_codes = []
 repo_verdict = "strong_fit"
-stable_precision_notes = "No stable findings observed on first-pass external scan."
+stable_precision_notes = "Observed `1` stable finding(s) via `SEC329`."
 preview_signal_notes = "No preview findings observed on first-pass external scan."
 false_positive_notes = []
 possible_false_negative_notes = []
@@ -388,10 +2329,87 @@ follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.recommended_stable_hits]]
+rule_code = "SEC329"
+normalized_path = ".mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key]
+rule_code = "SEC329"
+normalized_path = ".mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key.span]
+start_byte = 62
+end_byte = 65
+
+[[evaluations.recommended_stable_adjudications]]
+rule_code = "SEC329"
+verdict = "confirmed_issue"
+summary = "committed MCP config launches through npx"
+reason = '`.mcp.json` uses `command: "npx"` with `-y reflect-memory-mcp` in committed MCP server config.'
+problem = "mutable package launcher in committed MCP config"
+
+[evaluations.recommended_stable_adjudications.stable_key]
+rule_code = "SEC329"
+normalized_path = ".mcp.json"
+
+[evaluations.recommended_stable_adjudications.stable_key.span]
+start_byte = 62
+end_byte = 65
+
 [[evaluations]]
 repo = "vercel-labs/cursor-plugin"
 url = "https://github.com/vercel-labs/cursor-plugin"
 pinned_ref = "95857183947fcc2a478f817c1e5d24ec054b21a9"
+ownership = "official"
 category = "cursor_plugin"
 subtype = "control"
 status = "evaluated"
@@ -406,16 +2424,886 @@ preview_rule_codes = []
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings observed on first-pass external scan."
 preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations]]
+repo = "anthropics/claude-plugins-official"
+url = "https://github.com/anthropics/claude-plugins-official"
+pinned_ref = "104d39be10b7b1380b2ae23a387a11a297b599c3"
+ownership = "official"
+category = "cursor_plugin"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    ".mcp.json",
+    "SKILL.md",
+    "docker_mcp_launch",
+    "plugin_root_agents/*.md",
+    "plugin_root_commands/*.md",
+    "server.json",
+]
+stable_findings = 8
+preview_findings = 1
+stable_rule_codes = [
+    "SEC324",
+    "SEC329",
+    "SEC337",
+    "SEC352",
+]
+preview_rule_codes = ["SEC347"]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `8` stable finding(s) via `SEC324`, `SEC329`, `SEC337`, `SEC352`."
+preview_signal_notes = "Observed `1` preview finding(s) via `SEC347`."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 4
+preview_findings = 1
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 5
+preview_findings = 0
+stable_rule_codes = [
+    "SEC329",
+    "SEC337",
+]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 5
+preview_findings = 0
+stable_rule_codes = [
+    "SEC329",
+    "SEC337",
+]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 1
+preview_findings = 1
+stable_rule_codes = ["SEC352"]
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 1
+preview_findings = 1
+stable_rule_codes = ["SEC352"]
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 2
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+
+[[evaluations.recommended_stable_hits]]
+rule_code = "SEC329"
+normalized_path = "external_plugins/context7/.mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key]
+rule_code = "SEC329"
+normalized_path = "external_plugins/context7/.mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key.span]
+start_byte = 34
+end_byte = 37
+
+[[evaluations.recommended_stable_hits]]
+rule_code = "SEC329"
+normalized_path = "external_plugins/firebase/.mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key]
+rule_code = "SEC329"
+normalized_path = "external_plugins/firebase/.mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key.span]
+start_byte = 34
+end_byte = 37
+
+[[evaluations.recommended_stable_hits]]
+rule_code = "SEC329"
+normalized_path = "external_plugins/playwright/.mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key]
+rule_code = "SEC329"
+normalized_path = "external_plugins/playwright/.mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key.span]
+start_byte = 36
+end_byte = 39
+
+[[evaluations.recommended_stable_hits]]
+rule_code = "SEC329"
+normalized_path = "external_plugins/serena/.mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key]
+rule_code = "SEC329"
+normalized_path = "external_plugins/serena/.mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key.span]
+start_byte = 32
+end_byte = 35
+
+[[evaluations.recommended_stable_adjudications]]
+rule_code = "SEC329"
+verdict = "confirmed_issue"
+summary = "committed MCP config launches through mutable package runner"
+reason = '`external_plugins/context7/.mcp.json` uses `command: "npx"` with `@upstash/context7-mcp` in committed plugin MCP config.'
+problem = "mutable package launcher in committed MCP config"
+
+[evaluations.recommended_stable_adjudications.stable_key]
+rule_code = "SEC329"
+normalized_path = "external_plugins/context7/.mcp.json"
+
+[evaluations.recommended_stable_adjudications.stable_key.span]
+start_byte = 34
+end_byte = 37
+
+[[evaluations.recommended_stable_adjudications]]
+rule_code = "SEC329"
+verdict = "confirmed_issue"
+summary = "committed MCP config launches through mutable package runner"
+reason = '`external_plugins/firebase/.mcp.json` uses `command: "npx"` with mutable `firebase-tools@latest mcp`.'
+problem = "mutable package launcher in committed MCP config"
+
+[evaluations.recommended_stable_adjudications.stable_key]
+rule_code = "SEC329"
+normalized_path = "external_plugins/firebase/.mcp.json"
+
+[evaluations.recommended_stable_adjudications.stable_key.span]
+start_byte = 34
+end_byte = 37
+
+[[evaluations.recommended_stable_adjudications]]
+rule_code = "SEC329"
+verdict = "confirmed_issue"
+summary = "committed MCP config launches through mutable package runner"
+reason = '`external_plugins/playwright/.mcp.json` uses `command: "npx"` with `@playwright/mcp@latest` in committed plugin MCP config.'
+problem = "mutable package launcher in committed MCP config"
+
+[evaluations.recommended_stable_adjudications.stable_key]
+rule_code = "SEC329"
+normalized_path = "external_plugins/playwright/.mcp.json"
+
+[evaluations.recommended_stable_adjudications.stable_key.span]
+start_byte = 36
+end_byte = 39
+
+[[evaluations.recommended_stable_adjudications]]
+rule_code = "SEC329"
+verdict = "confirmed_issue"
+summary = "committed MCP config launches through mutable package runner"
+reason = '`external_plugins/serena/.mcp.json` uses `command: "uvx"` with `git+https://github.com/oraios/serena` in committed plugin MCP config.'
+problem = "mutable package launcher in committed MCP config"
+
+[evaluations.recommended_stable_adjudications.stable_key]
+rule_code = "SEC329"
+normalized_path = "external_plugins/serena/.mcp.json"
+
+[evaluations.recommended_stable_adjudications.stable_key.span]
+start_byte = 32
+end_byte = 35
+
+[[evaluations]]
+repo = "affaan-m/everything-claude-code"
+url = "https://github.com/affaan-m/everything-claude-code"
+pinned_ref = "9d766af0258959d2fe9a74d42568f3b92a655075"
+ownership = "community"
+category = "cursor_plugin"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    ".mcp.json",
+    "CLAUDE.md",
+    "SKILL.md",
+    "plugin_root_agents/*.md",
+    "plugin_root_commands/*.md",
+    "plugin_root_hooks.json",
+    "tool_descriptor_json",
+]
+stable_findings = 7
+preview_findings = 8
+stable_rule_codes = [
+    "SEC324",
+    "SEC329",
+]
+preview_rule_codes = [
+    "SEC313",
+    "SEC328",
+    "SEC347",
+]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `7` stable finding(s) via `SEC324`, `SEC329`."
+preview_signal_notes = "Observed `8` preview finding(s) via `SEC313`, `SEC328`, `SEC347`."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 1
+preview_findings = 5
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 6
+stable_rule_codes = []
+preview_rule_codes = [
+    "SEC313",
+    "SEC347",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 6
+stable_rule_codes = []
+preview_rule_codes = [
+    "SEC313",
+    "SEC347",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 6
+preview_findings = 2
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = ["SEC328"]
+
+[[evaluations.recommended_stable_hits]]
+rule_code = "SEC329"
+normalized_path = ".mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key]
+rule_code = "SEC329"
+normalized_path = ".mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key.span]
+start_byte = 172
+end_byte = 175
+
+[[evaluations.recommended_stable_adjudications]]
+rule_code = "SEC329"
+verdict = "confirmed_issue"
+summary = "committed MCP config launches through npx"
+reason = '`.mcp.json` uses committed `npx` launchers for multiple MCP servers including `@modelcontextprotocol/server-github`, `@upstash/context7-mcp`, and `@playwright/mcp`.'
+problem = "mutable package launcher in committed MCP config"
+
+[evaluations.recommended_stable_adjudications.stable_key]
+rule_code = "SEC329"
+normalized_path = ".mcp.json"
+
+[evaluations.recommended_stable_adjudications.stable_key.span]
+start_byte = 172
+end_byte = 175
+
+[[evaluations.diagnostics]]
+path = "docs/ja-JP/skills/django-verification/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 51)"
+
+[[evaluations.diagnostics]]
+path = "docs/ja-JP/skills/springboot-verification/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 56)"
+
+[[evaluations.diagnostics]]
+path = "docs/tr/skills/laravel-verification/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 52)"
+
+[[evaluations.diagnostics]]
+path = "docs/zh-CN/skills/blueprint/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 187)"
+
+[[evaluations.diagnostics]]
+path = "docs/zh-CN/skills/carrier-relationship-management/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 146)"
+
+[[evaluations.diagnostics]]
+path = "docs/zh-CN/skills/customs-trade-compliance/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 150)"
+
+[[evaluations.diagnostics]]
+path = "docs/zh-CN/skills/energy-procurement/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 162)"
+
+[[evaluations.diagnostics]]
+path = "docs/zh-CN/skills/inventory-demand-planning/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 163)"
+
+[[evaluations.diagnostics]]
+path = "docs/zh-CN/skills/laravel-verification/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 52)"
+
+[[evaluations.diagnostics]]
+path = "docs/zh-CN/skills/logistics-exception-management/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 127)"
+
+[[evaluations.diagnostics]]
+path = "docs/zh-CN/skills/production-scheduling/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 171)"
+
+[[evaluations.diagnostics]]
+path = "docs/zh-CN/skills/quality-nonconformance/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 203)"
+
+[[evaluations.diagnostics]]
+path = "docs/zh-CN/skills/returns-reverse-logistics/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 150)"
+
+[[evaluations]]
+repo = "jeremylongshore/claude-code-plugins-plus-skills"
+url = "https://github.com/jeremylongshore/claude-code-plugins-plus-skills"
+pinned_ref = "70e9fa4044cd8fd573ccee14e288ecb2be18609e"
+ownership = "community"
+category = "cursor_plugin"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    ".mcp.json",
+    "CLAUDE.md",
+    "SKILL.md",
+    "plugin_root_agents/*.md",
+    "plugin_root_commands/*.md",
+    "server.json",
+]
+stable_findings = 752
+preview_findings = 921
+stable_rule_codes = [
+    "SEC312",
+    "SEC324",
+    "SEC352",
+    "SEC466",
+    "SEC467",
+]
+preview_rule_codes = [
+    "SEC102",
+    "SEC105",
+    "SEC313",
+    "SEC328",
+    "SEC347",
+    "SEC348",
+    "SEC351",
+    "SEC389",
+    "SEC404",
+    "SEC419",
+]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `752` stable finding(s) via `SEC312`, `SEC324`, `SEC352`, `SEC466`, `SEC467`."
+preview_signal_notes = "Observed `921` preview finding(s) via `SEC102`, `SEC105`, `SEC313`, `SEC328`, `SEC347`, `SEC348`, `SEC351`, `SEC389`, `SEC404`, `SEC419`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 3
+stable_rule_codes = []
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 2
+preview_findings = 0
+stable_rule_codes = ["SEC312"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 739
+preview_findings = 914
+stable_rule_codes = [
+    "SEC312",
+    "SEC352",
+    "SEC466",
+    "SEC467",
+]
+preview_rule_codes = [
+    "SEC102",
+    "SEC105",
+    "SEC313",
+    "SEC347",
+    "SEC348",
+    "SEC351",
+    "SEC389",
+    "SEC404",
+    "SEC419",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 737
+preview_findings = 914
+stable_rule_codes = [
+    "SEC352",
+    "SEC466",
+    "SEC467",
+]
+preview_rule_codes = [
+    "SEC102",
+    "SEC105",
+    "SEC313",
+    "SEC347",
+    "SEC348",
+    "SEC351",
+    "SEC389",
+    "SEC404",
+    "SEC419",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 13
+preview_findings = 7
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = ["SEC328"]
+
+[[evaluations.diagnostics]]
+path = "backups/skill-structure-cleanup-20251108-073936/plugins/productivity/overnight-dev/skills/overnight-dev/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: block sequence entries are not allowed in this context at line 8 column 16)"
+
+[[evaluations]]
+repo = "get-convex/convex-agent-plugins"
+url = "https://github.com/get-convex/convex-agent-plugins"
+pinned_ref = "f104efb49a787a1ef4a6c84df496d58800ce334a"
+ownership = "official"
+category = "cursor_plugin"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [
+    ".cursor-plugin/plugin.json",
+    ".mdc",
+    "SKILL.md",
+    "mcp.json",
+]
+stable_findings = 1
+preview_findings = 17
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = ["SEC378"]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `1` stable finding(s) via `SEC329`."
+preview_signal_notes = "Observed `17` preview finding(s) via `SEC378`."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 17
+stable_rule_codes = []
+preview_rule_codes = ["SEC378"]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 17
+stable_rule_codes = []
+preview_rule_codes = ["SEC378"]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.recommended_stable_hits]]
+rule_code = "SEC329"
+normalized_path = "mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key]
+rule_code = "SEC329"
+normalized_path = "mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key.span]
+start_byte = 32
+end_byte = 35
+
+[[evaluations.recommended_stable_adjudications]]
+rule_code = "SEC329"
+verdict = "confirmed_issue"
+summary = "committed MCP config launches through npx"
+reason = '`mcp.json` uses `command: "npx"` with `-y convex@latest mcp start` in committed plugin MCP config.'
+problem = "mutable package launcher in committed MCP config"
+
+[evaluations.recommended_stable_adjudications.stable_key]
+rule_code = "SEC329"
+normalized_path = "mcp.json"
+
+[evaluations.recommended_stable_adjudications.stable_key.span]
+start_byte = 32
+end_byte = 35
+
+[[evaluations]]
+repo = "agent-sh/agentsys"
+url = "https://github.com/agent-sh/agentsys"
+pinned_ref = "842976d35c61dcc3eede59ca2f7d67a4832a0f86"
+ownership = "official"
+category = "cursor_plugin"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [
+    ".claude/settings.json",
+    ".github/workflows/*.yml",
+    "CLAUDE.md",
+    "SKILL.md",
+]
+stable_findings = 3
+preview_findings = 6
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = [
+    "SEC102",
+    "SEC328",
+    "SEC351",
+    "SEC361",
+]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `3` stable finding(s) via `SEC324`."
+preview_signal_notes = "Observed `6` preview finding(s) via `SEC102`, `SEC328`, `SEC351`, `SEC361`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 1
+stable_rule_codes = []
+preview_rule_codes = ["SEC361"]
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 2
+stable_rule_codes = []
+preview_rule_codes = [
+    "SEC102",
+    "SEC351",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 3
+stable_rule_codes = []
+preview_rule_codes = [
+    "SEC102",
+    "SEC351",
+    "SEC361",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 3
+preview_findings = 3
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = ["SEC328"]
+
+[[evaluations]]
+repo = "giuseppe-trisciuoglio/developer-kit-claude-code"
+url = "https://github.com/giuseppe-trisciuoglio/developer-kit-claude-code"
+pinned_ref = "55966ee6d77735972f6a4bd9b191904e32e7ac33"
+ownership = "community"
+category = "cursor_plugin"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    ".mcp.json",
+    "SKILL.md",
+    "docker_mcp_launch",
+    "plugin_root_agents/*.md",
+    "plugin_root_commands/*.md",
+]
+stable_findings = 118
+preview_findings = 6
+stable_rule_codes = [
+    "SEC324",
+    "SEC337",
+    "SEC352",
+    "SEC750",
+]
+preview_rule_codes = [
+    "SEC328",
+    "SEC348",
+    "SEC404",
+]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `118` stable finding(s) via `SEC324`, `SEC337`, `SEC352`, `SEC750`."
+preview_signal_notes = "Observed `6` preview finding(s) via `SEC328`, `SEC348`, `SEC404`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC337"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC337"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 114
+preview_findings = 3
+stable_rule_codes = ["SEC352"]
+preview_rule_codes = [
+    "SEC348",
+    "SEC404",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 114
+preview_findings = 3
+stable_rule_codes = ["SEC352"]
+preview_rule_codes = [
+    "SEC348",
+    "SEC404",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 3
+preview_findings = 3
+stable_rule_codes = [
+    "SEC324",
+    "SEC750",
+]
+preview_rule_codes = ["SEC328"]
+
 [[evaluations]]
 repo = "agent-sh/agnix"
 url = "https://github.com/agent-sh/agnix"
 pinned_ref = "342d74123ae898a7c6d1a5ca99f5a81907951306"
+ownership = "community"
 category = "skills"
 subtype = "stress"
 status = "evaluated"
@@ -442,12 +3330,72 @@ preview_rule_codes = [
     "SEC328",
 ]
 repo_verdict = "strong_fit"
-stable_precision_notes = "No stable findings observed on first-pass external scan."
-preview_signal_notes = "No preview findings observed on first-pass external scan."
+stable_precision_notes = "Observed `26` stable finding(s) via `SEC324`."
+preview_signal_notes = "Observed `27` preview finding(s) via `SEC325`, `SEC328`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 26
+preview_findings = 27
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = [
+    "SEC325",
+    "SEC328",
+]
+
+[[evaluations.diagnostics]]
+path = "tests/fixtures/copilot-invalid/.github/instructions/bad-frontmatter.instructions.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: did not find expected ',' or ']' at line 2 column 1, while parsing a flow sequence at line 1 column 10)"
 
 [[evaluations.diagnostics]]
 path = "tests/fixtures/cursor-invalid/.cursor/rules/bad-yaml.mdc"
@@ -459,6 +3407,7 @@ message = "frontmatter was ignored because YAML was invalid; markdown body was s
 repo = "zebbern/claude-code-guide"
 url = "https://github.com/zebbern/claude-code-guide"
 pinned_ref = "4b37743a717209e114f08d53150f3b8dc76eb116"
+ownership = "community"
 category = "skills"
 subtype = "control"
 status = "evaluated"
@@ -477,17 +3426,77 @@ preview_rule_codes = [
 ]
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings observed on first-pass external scan."
-preview_signal_notes = "SEC313 surfaced two fenced curl|sh examples in shipped skills; useful preview signal, not release-blocking."
+preview_signal_notes = "Observed `8` preview finding(s) via `SEC313`, `SEC335`, `SEC348`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "promote_preview_later"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 8
+stable_rule_codes = []
+preview_rule_codes = [
+    "SEC313",
+    "SEC335",
+    "SEC348",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 8
+stable_rule_codes = []
+preview_rule_codes = [
+    "SEC313",
+    "SEC335",
+    "SEC348",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
 [[evaluations]]
 repo = "zechenzhangAGI/AI-research-SKILLs"
 url = "https://github.com/zechenzhangAGI/AI-research-SKILLs"
 pinned_ref = "a7289540d33f78df20dc9b27808fdf096cf1b3a4"
+ownership = "community"
 category = "skills"
 subtype = "stress"
 status = "evaluated"
@@ -496,27 +3505,91 @@ surfaces_present = [
     "CLAUDE.md",
     "SKILL.md",
 ]
-stable_findings = 1
-preview_findings = 5
-stable_rule_codes = ["SEC324"]
+stable_findings = 8
+preview_findings = 8
+stable_rule_codes = [
+    "SEC324",
+    "SEC417",
+]
 preview_rule_codes = [
     "SEC328",
-    "SEC347",
     "SEC348",
+    "SEC349",
+    "SEC351",
 ]
 repo_verdict = "strong_fit"
-stable_precision_notes = "No stable findings observed on first-pass external scan."
-preview_signal_notes = "No preview findings observed on first-pass external scan."
+stable_precision_notes = "Observed `8` stable finding(s) via `SEC324`, `SEC417`."
+preview_signal_notes = "Observed `8` preview finding(s) via `SEC328`, `SEC348`, `SEC349`, `SEC351`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 7
+preview_findings = 7
+stable_rule_codes = ["SEC417"]
+preview_rule_codes = [
+    "SEC348",
+    "SEC349",
+    "SEC351",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 7
+preview_findings = 7
+stable_rule_codes = ["SEC417"]
+preview_rule_codes = [
+    "SEC348",
+    "SEC349",
+    "SEC351",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 1
+preview_findings = 1
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = ["SEC328"]
+
 [[evaluations]]
 repo = "buildingopen/claude-setup"
 url = "https://github.com/buildingopen/claude-setup"
 pinned_ref = "69cc9c8fd0f81782cb90dc51c95dbcbb4d346d5c"
+ownership = "community"
 category = "skills"
 subtype = "control"
 status = "evaluated"
@@ -527,23 +3600,150 @@ surfaces_present = [
     "claude/settings.json",
     "plugin_root_commands/*.md",
 ]
-stable_findings = 1
-preview_findings = 0
-stable_rule_codes = ["SEC329"]
-preview_rule_codes = []
+stable_findings = 11
+preview_findings = 5
+stable_rule_codes = [
+    "SEC329",
+    "SEC362",
+    "SEC367",
+    "SEC369",
+    "SEC372",
+    "SEC373",
+    "SEC374",
+    "SEC375",
+    "SEC376",
+    "SEC746",
+    "SEC752",
+]
+preview_rule_codes = [
+    "SEC351",
+    "SEC361",
+    "SEC363",
+    "SEC381",
+    "SEC382",
+]
 repo_verdict = "strong_fit"
-stable_precision_notes = "No stable findings observed on first-pass external scan."
-preview_signal_notes = "No preview findings observed on first-pass external scan."
+stable_precision_notes = "Observed `11` stable finding(s) via `SEC329`, `SEC362`, `SEC367`, `SEC369`, `SEC372`, `SEC373`, `SEC374`, `SEC375`, `SEC376`, `SEC746`, `SEC752`."
+preview_signal_notes = "Observed `5` preview finding(s) via `SEC351`, `SEC361`, `SEC363`, `SEC381`, `SEC382`."
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 8
+preview_findings = 4
+stable_rule_codes = [
+    "SEC362",
+    "SEC367",
+    "SEC369",
+    "SEC372",
+    "SEC373",
+    "SEC374",
+    "SEC375",
+    "SEC376",
+]
+preview_rule_codes = [
+    "SEC361",
+    "SEC363",
+    "SEC381",
+    "SEC382",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 1
+stable_rule_codes = []
+preview_rule_codes = ["SEC351"]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 8
+preview_findings = 5
+stable_rule_codes = [
+    "SEC362",
+    "SEC367",
+    "SEC369",
+    "SEC372",
+    "SEC373",
+    "SEC374",
+    "SEC375",
+    "SEC376",
+]
+preview_rule_codes = [
+    "SEC351",
+    "SEC361",
+    "SEC363",
+    "SEC381",
+    "SEC382",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 2
+preview_findings = 0
+stable_rule_codes = [
+    "SEC746",
+    "SEC752",
+]
+preview_rule_codes = []
+
+[[evaluations.recommended_stable_hits]]
+rule_code = "SEC329"
+normalized_path = "claude/.mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key]
+rule_code = "SEC329"
+normalized_path = "claude/.mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key.span]
+start_byte = 62
+end_byte = 65
+
+[[evaluations.recommended_stable_adjudications]]
+rule_code = "SEC329"
+verdict = "confirmed_issue"
+summary = "committed MCP config launches through npx"
+reason = '`claude/.mcp.json` uses `command: "npx"` with `-y session-recall --mcp` in committed MCP server config.'
+problem = "mutable package launcher in committed MCP config"
+
+[evaluations.recommended_stable_adjudications.stable_key]
+rule_code = "SEC329"
+normalized_path = "claude/.mcp.json"
+
+[evaluations.recommended_stable_adjudications.stable_key.span]
+start_byte = 62
+end_byte = 65
 
 [[evaluations]]
 repo = "lighthouse-strategy/claude-code-starter"
 url = "https://github.com/lighthouse-strategy/claude-code-starter"
 pinned_ref = "b6cacd4055c26152165e8a8bf0b7ff9209f0c396"
+ownership = "community"
 category = "skills"
 subtype = "control"
 status = "evaluated"
@@ -558,16 +3758,68 @@ preview_rule_codes = []
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings observed on first-pass external scan."
 preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
 
 [[evaluations]]
 repo = "reizam/claude-md-templates"
 url = "https://github.com/reizam/claude-md-templates"
 pinned_ref = "694240a17d550babf4c5392d1ea4b32ce5ca8a62"
+ownership = "community"
 category = "skills"
 subtype = "control"
 status = "evaluated"
@@ -582,16 +3834,68 @@ preview_rule_codes = []
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings observed on first-pass external scan."
 preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
 [[evaluations]]
 repo = "Narwhal-Lab/MagicSkills"
 url = "https://github.com/Narwhal-Lab/MagicSkills"
 pinned_ref = "1ba6ae32b4df4349195ec38c283535b68619a085"
+ownership = "community"
 category = "skills"
 subtype = "stress"
 status = "evaluated"
@@ -606,16 +3910,68 @@ preview_rule_codes = []
 repo_verdict = "strong_fit"
 stable_precision_notes = "No stable findings observed on first-pass external scan."
 preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
 diagnostics = []
 
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
 [[evaluations]]
 repo = "Emmraan/agent-skills"
 url = "https://github.com/Emmraan/agent-skills"
 pinned_ref = "a1582043b95667eea450d37f028e7451ffda02f2"
+ownership = "community"
 category = "skills"
 subtype = "control"
 status = "evaluated"
@@ -625,15 +3981,867 @@ preview_findings = 0
 stable_rule_codes = []
 preview_rule_codes = []
 repo_verdict = "strong_fit"
-stable_precision_notes = "No stable findings observed on wave 2 external scan; one recoverable parse diagnostic was emitted and scanning continued."
-preview_signal_notes = "No preview findings observed on wave 2 external scan."
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
 false_positive_notes = []
 possible_false_negative_notes = []
 follow_up_action = "no_action"
 runtime_errors = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
 
 [[evaluations.diagnostics]]
 path = "skills/seo/SKILL.md"
 severity = "warn"
 code = "parse_recovery"
 message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: could not find expected ':' at line 5 column 1, while scanning a simple key at line 3 column 1)"
+
+[[evaluations]]
+repo = "alirezarezvani/claude-skills"
+url = "https://github.com/alirezarezvani/claude-skills"
+pinned_ref = "43295c15b55fbfc74773d7f4ba32abd1c860624c"
+ownership = "community"
+category = "skills"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    ".mcp.json",
+    "CLAUDE.md",
+    "SKILL.md",
+    "plugin_root_agents/*.md",
+    "plugin_root_commands/*.md",
+]
+stable_findings = 5
+preview_findings = 5
+stable_rule_codes = [
+    "SEC324",
+    "SEC329",
+]
+preview_rule_codes = [
+    "SEC105",
+    "SEC328",
+]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `5` stable finding(s) via `SEC324`, `SEC329`."
+preview_signal_notes = "Observed `5` preview finding(s) via `SEC105`, `SEC328`."
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 1
+preview_findings = 0
+stable_rule_codes = ["SEC329"]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 1
+stable_rule_codes = []
+preview_rule_codes = ["SEC105"]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 1
+stable_rule_codes = []
+preview_rule_codes = ["SEC105"]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 4
+preview_findings = 4
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = ["SEC328"]
+
+[[evaluations.recommended_stable_hits]]
+rule_code = "SEC329"
+normalized_path = "engineering-team/playwright-pro/.mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key]
+rule_code = "SEC329"
+normalized_path = "engineering-team/playwright-pro/.mcp.json"
+
+[evaluations.recommended_stable_hits.stable_key.span]
+start_byte = 387
+end_byte = 390
+
+[[evaluations.recommended_stable_adjudications]]
+rule_code = "SEC329"
+verdict = "confirmed_issue"
+summary = "committed MCP config launches through npx"
+reason = '`engineering-team/playwright-pro/.mcp.json` uses `command: "npx"` to run committed `tsx`-based MCP integrations.'
+problem = "mutable package launcher in committed MCP config"
+
+[evaluations.recommended_stable_adjudications.stable_key]
+rule_code = "SEC329"
+normalized_path = "engineering-team/playwright-pro/.mcp.json"
+
+[evaluations.recommended_stable_adjudications.stable_key.span]
+start_byte = 387
+end_byte = 390
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/changelog/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 91)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/cmd-a11y-audit/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 95)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/cmd-code-to-prd/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 68)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/cmd-focused-fix/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 129)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/competitive-matrix/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 86)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/financial-health/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 113)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/okr/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 83)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/persona/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 90)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/pipeline/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 69)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/prd/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 49)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/project-health/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 72)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/retro/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 88)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/rice/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 83)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/saas-health/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 124)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/sprint-health/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 80)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/sprint-plan/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 45)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/tdd/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 76)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/tech-debt/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 64)"
+
+[[evaluations.diagnostics]]
+path = ".gemini/skills/user-story/SKILL.md"
+severity = "warn"
+code = "parse_recovery"
+message = "frontmatter was ignored because YAML was invalid; markdown body was still scanned and frontmatter semantics were not applied (invalid YAML frontmatter: mapping values are not allowed in this context at line 2 column 87)"
+
+[[evaluations]]
+repo = "trailofbits/skills"
+url = "https://github.com/trailofbits/skills"
+pinned_ref = "d7f76b532d1e4c6e7757e04d25c99ab60dd5e32c"
+ownership = "official"
+category = "skills"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    ".mcp.json",
+    "CLAUDE.md",
+    "SKILL.md",
+    "plugin_root_agents/*.md",
+    "plugin_root_commands/*.md",
+]
+stable_findings = 24
+preview_findings = 9
+stable_rule_codes = [
+    "SEC324",
+    "SEC352",
+    "SEC746",
+]
+preview_rule_codes = [
+    "SEC313",
+    "SEC348",
+    "SEC349",
+    "SEC389",
+    "SEC404",
+    "SEC419",
+]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `24` stable finding(s) via `SEC324`, `SEC352`, `SEC746`."
+preview_signal_notes = "Observed `9` preview finding(s) via `SEC313`, `SEC348`, `SEC349`, `SEC389`, `SEC404`, `SEC419`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 22
+preview_findings = 9
+stable_rule_codes = ["SEC352"]
+preview_rule_codes = [
+    "SEC313",
+    "SEC348",
+    "SEC349",
+    "SEC389",
+    "SEC404",
+    "SEC419",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 22
+preview_findings = 9
+stable_rule_codes = ["SEC352"]
+preview_rule_codes = [
+    "SEC313",
+    "SEC348",
+    "SEC349",
+    "SEC389",
+    "SEC404",
+    "SEC419",
+]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 2
+preview_findings = 0
+stable_rule_codes = [
+    "SEC324",
+    "SEC746",
+]
+preview_rule_codes = []
+
+[[evaluations]]
+repo = "Jeffallan/claude-skills"
+url = "https://github.com/Jeffallan/claude-skills"
+pinned_ref = "5b761018cebd430edcecbeeb46bdde6150d22c65"
+ownership = "community"
+category = "skills"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "CLAUDE.md",
+    "SKILL.md",
+]
+stable_findings = 4
+preview_findings = 2
+stable_rule_codes = [
+    "SEC324",
+    "SEC352",
+]
+preview_rule_codes = [
+    "SEC328",
+    "SEC347",
+]
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `4` stable finding(s) via `SEC324`, `SEC352`."
+preview_signal_notes = "Observed `2` preview finding(s) via `SEC328`, `SEC347`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 1
+stable_rule_codes = []
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 2
+preview_findings = 1
+stable_rule_codes = ["SEC352"]
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 2
+preview_findings = 1
+stable_rule_codes = ["SEC352"]
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 2
+preview_findings = 1
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = ["SEC328"]
+
+[[evaluations]]
+repo = "mrgoonie/claudekit-skills"
+url = "https://github.com/mrgoonie/claudekit-skills"
+pinned_ref = "80113d86bc4407f105af40a2c4ea58194f7c370a"
+ownership = "community"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [
+    "CLAUDE.md",
+    "SKILL.md",
+    "plugin_root_agents/*.md",
+    "plugin_root_commands/*.md",
+    "tool_descriptor_json",
+]
+stable_findings = 2
+preview_findings = 0
+stable_rule_codes = [
+    "SEC352",
+    "SEC417",
+]
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `2` stable finding(s) via `SEC352`, `SEC417`."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 2
+preview_findings = 0
+stable_rule_codes = [
+    "SEC352",
+    "SEC417",
+]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 2
+preview_findings = 0
+stable_rule_codes = [
+    "SEC352",
+    "SEC417",
+]
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations]]
+repo = "coleam00/second-brain-skills"
+url = "https://github.com/coleam00/second-brain-skills"
+pinned_ref = "75e1e9cd60ef46bffbd294fdfe4d0320cee2f563"
+ownership = "community"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md"]
+stable_findings = 0
+preview_findings = 1
+stable_rule_codes = []
+preview_rule_codes = ["SEC347"]
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "Observed `1` preview finding(s) via `SEC347`."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 1
+stable_rule_codes = []
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 1
+stable_rule_codes = []
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 1
+stable_rule_codes = []
+preview_rule_codes = ["SEC347"]
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations]]
+repo = "omkamal/pypict-claude-skill"
+url = "https://github.com/omkamal/pypict-claude-skill"
+pinned_ref = "fbda212bca79dfa7611be12527b102c89cc8faeb"
+ownership = "community"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [
+    ".github/workflows/*.yml",
+    "SKILL.md",
+]
+stable_findings = 2
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "Observed `2` stable finding(s) via `SEC324`."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 2
+preview_findings = 0
+stable_rule_codes = ["SEC324"]
+preview_rule_codes = []
+
+[[evaluations]]
+repo = "simonw/claude-skills"
+url = "https://github.com/simonw/claude-skills"
+pinned_ref = "6e0a1395bb92c10c7d192b99e2af786533235efd"
+ownership = "community"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = []
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations]]
+repo = "czlonkowski/n8n-skills"
+url = "https://github.com/czlonkowski/n8n-skills"
+pinned_ref = "0f0c47316550061751aa8fe66e3ed6a2808a1f0c"
+ownership = "community"
+category = "skills"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [
+    "CLAUDE.md",
+    "SKILL.md",
+]
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+repo_verdict = "strong_fit"
+stable_precision_notes = "No stable findings observed on first-pass external scan."
+preview_signal_notes = "No preview findings observed on first-pass external scan."
+recommended_stable_hits = []
+recommended_stable_adjudications = []
+false_positive_notes = []
+possible_false_negative_notes = []
+follow_up_action = "no_action"
+runtime_errors = []
+diagnostics = []
+
+[[evaluations.lane_summaries]]
+lane_id = "recommended"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "base"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "mcp"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "claude"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "skills"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "preview"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []
+
+[[evaluations.lane_summaries]]
+lane_id = "supply-chain"
+stable_findings = 0
+preview_findings = 0
+stable_rule_codes = []
+preview_rule_codes = []

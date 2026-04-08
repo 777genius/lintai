@@ -4,7 +4,7 @@ fn parse_toml(path: &str) -> toml::Value {
     let text = match path {
         "shortlist" => include_str!("../../../validation/external-repos/repo-shortlist.toml"),
         "ledger" => include_str!("../../../validation/external-repos/ledger.toml"),
-        "archive" => include_str!("../../../validation/external-repos/archive/wave1-ledger.toml"),
+        "archive" => include_str!("../../../validation/external-repos/archive/wave2-ledger.toml"),
         "tool_json_shortlist" => {
             include_str!("../../../validation/external-repos-tool-json/repo-shortlist.toml")
         }
@@ -52,10 +52,10 @@ fn external_validation_shortlist_has_expected_category_mix() {
         *counts.entry(category).or_insert(0usize) += 1;
     }
 
-    assert_eq!(repos.len(), 24, "shortlist should pin 24 repos");
-    assert_eq!(counts.get("mcp"), Some(&10));
-    assert_eq!(counts.get("cursor_plugin"), Some(&6));
-    assert_eq!(counts.get("skills"), Some(&8));
+    assert_eq!(repos.len(), 48, "shortlist should pin 48 repos");
+    assert_eq!(counts.get("mcp"), Some(&20));
+    assert_eq!(counts.get("cursor_plugin"), Some(&12));
+    assert_eq!(counts.get("skills"), Some(&16));
 }
 
 #[test]
@@ -65,11 +65,13 @@ fn external_validation_repos_reference_valid_categories_and_statuses() {
     let valid_categories = BTreeSet::from(["mcp", "cursor_plugin", "skills"]);
     let valid_subtypes = BTreeSet::from(["stress", "control"]);
     let valid_statuses = BTreeSet::from(["evaluated"]);
+    let valid_ownership = BTreeSet::from(["official", "community"]);
 
     for repo in repos {
         assert!(valid_categories.contains(repo["category"].as_str().unwrap()));
         assert!(valid_subtypes.contains(repo["subtype"].as_str().unwrap()));
         assert!(valid_statuses.contains(repo["status"].as_str().unwrap()));
+        assert!(valid_ownership.contains(repo["ownership"].as_str().unwrap()));
     }
 }
 
@@ -112,17 +114,40 @@ fn external_validation_ledger_entries_use_allowed_verdicts() {
         "add_new_structural_rule",
         "no_action",
     ]);
+    let valid_adjudication_verdicts = BTreeSet::from([
+        "confirmed_issue",
+        "false_positive",
+        "accepted_hardening_hit",
+    ]);
 
     assert_eq!(
         entries.len(),
-        24,
+        48,
         "ledger should cover the full external cohort"
     );
 
     for entry in entries {
         assert!(valid_repo_verdicts.contains(entry["repo_verdict"].as_str().unwrap()));
         assert!(valid_follow_up_actions.contains(entry["follow_up_action"].as_str().unwrap()));
+        assert!(matches!(
+            entry["ownership"].as_str(),
+            Some("official" | "community")
+        ));
+        assert!(entry["lane_summaries"].is_array());
+        assert!(entry["recommended_stable_hits"].is_array());
+        assert!(entry["recommended_stable_adjudications"].is_array());
         assert!(entry["diagnostics"].is_array());
+
+        for adjudication in entry["recommended_stable_adjudications"]
+            .as_array()
+            .unwrap()
+        {
+            assert!(valid_adjudication_verdicts.contains(
+                adjudication["verdict"]
+                    .as_str()
+                    .expect("adjudication verdict should be present")
+            ));
+        }
     }
 }
 
@@ -152,8 +177,15 @@ fn external_validation_report_matches_current_ledger_schema() {
 
     assert!(report.contains("## Cohort Composition"));
     assert!(report.contains("## Overall Counts"));
+    assert!(report.contains("## Recommended Counts By Tier"));
+    assert!(report.contains("## Supply-Chain Counts By Tier"));
+    assert!(report.contains("## Remaining Non-Default Lane Totals"));
+    assert!(report.contains("## Cohort Ownership Split"));
+    assert!(report.contains("## Recommended Stable By Ownership"));
+    assert!(report.contains("## Zero-Hit Coverage By Ownership"));
     assert!(report.contains("## Delta From Previous Wave"));
-    assert!(report.contains("## Stable Precision Summary"));
+    assert!(report.contains("## Adjudication Coverage For Recommended Stable"));
+    assert!(report.contains("## Reviewed Recommended Stable Hits"));
     assert!(report.contains("## Preview Usefulness Summary"));
     assert!(report.contains("## Runtime / Diagnostic Notes"));
     assert!(report.contains("## Top FP Clusters"));
@@ -192,12 +224,12 @@ fn external_validation_wave_markers_are_present() {
     let ledger = parse_toml("ledger");
     let archive = parse_toml("archive");
 
-    assert_eq!(ledger["wave"].as_integer(), Some(2));
+    assert_eq!(ledger["wave"].as_integer(), Some(3));
     assert_eq!(
         ledger["baseline"].as_str(),
-        Some("archive/wave1-ledger.toml")
+        Some("archive/wave2-ledger.toml")
     );
-    assert_eq!(archive["wave"].as_integer(), Some(1));
+    assert_eq!(archive["wave"].as_integer(), Some(2));
 }
 
 #[test]

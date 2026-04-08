@@ -7,6 +7,7 @@ fn sample_shortlist() -> RepoShortlist {
             repo: "owner/repo".to_owned(),
             url: "https://github.com/owner/repo".to_owned(),
             pinned_ref: "abc123".to_owned(),
+            ownership: "community".to_owned(),
             category: "skills".to_owned(),
             subtype: "control".to_owned(),
             status: "evaluated".to_owned(),
@@ -14,6 +15,22 @@ fn sample_shortlist() -> RepoShortlist {
             admission_paths: Vec::new(),
             rationale: "demo".to_owned(),
         }],
+    }
+}
+
+fn sample_json_finding(rule_code: &str, normalized_path: &str, start: usize) -> JsonFinding {
+    JsonFinding {
+        rule_code: rule_code.to_owned(),
+        stable_key: lintai_api::StableKey::new(
+            rule_code,
+            normalized_path,
+            lintai_api::Span::new(start, start + 4),
+            None,
+        ),
+        location: lintai_api::Location::new(
+            normalized_path,
+            lintai_api::Span::new(start, start + 4),
+        ),
     }
 }
 
@@ -47,12 +64,8 @@ fn fill_auto_fields_separates_stable_preview_diagnostics_and_runtime_errors() {
     let mut entry = default_entry_from_shortlist(repo);
     let parsed = JsonScanEnvelope {
         findings: vec![
-            JsonFinding {
-                rule_code: "SEC201".to_owned(),
-            },
-            JsonFinding {
-                rule_code: "SEC101".to_owned(),
-            },
+            sample_json_finding("SEC201", "SKILL.md", 0),
+            sample_json_finding("SEC101", "SKILL.md", 10),
         ],
         diagnostics: vec![JsonDiagnostic {
             normalized_path: "SKILL.md".to_owned(),
@@ -71,7 +84,10 @@ fn fill_auto_fields_separates_stable_preview_diagnostics_and_runtime_errors() {
         &mut entry,
         repo,
         vec!["SKILL.md".to_owned()],
-        &parsed,
+        &[ParsedLaneScan {
+            lane_id: "recommended",
+            parsed: &parsed,
+        }],
         &current_rule_tiers(),
     )
     .unwrap();
@@ -80,6 +96,8 @@ fn fill_auto_fields_separates_stable_preview_diagnostics_and_runtime_errors() {
     assert_eq!(entry.preview_findings, 1);
     assert_eq!(entry.stable_rule_codes, vec!["SEC201"]);
     assert_eq!(entry.preview_rule_codes, vec!["SEC101"]);
+    assert_eq!(entry.lane_summaries.len(), 1);
+    assert_eq!(entry.recommended_stable_hits.len(), 1);
     assert_eq!(entry.diagnostics.len(), 1);
     assert_eq!(entry.runtime_errors.len(), 1);
 }
@@ -100,6 +118,95 @@ fn template_map_preserves_manual_fields() {
     let mapped = template_map(&ledger);
     assert_eq!(mapped["owner/repo"].repo_verdict, "useful_but_noisy");
     assert_eq!(mapped["owner/repo"].preview_signal_notes, "carry");
+}
+
+#[test]
+fn recommended_precision_review_tracks_reviewed_and_unadjudicated_hits() {
+    let repo = &sample_shortlist().repos[0];
+    let mut entry = default_entry_from_shortlist(repo);
+    entry.repo = "owner/repo".to_owned();
+    entry.recommended_stable_hits = vec![
+        ObservedFindingRecord {
+            stable_key: lintai_api::StableKey::new(
+                "SEC329",
+                "mcp.json",
+                lintai_api::Span::new(10, 14),
+                None,
+            ),
+            rule_code: "SEC329".to_owned(),
+            normalized_path: "mcp.json".to_owned(),
+        },
+        ObservedFindingRecord {
+            stable_key: lintai_api::StableKey::new(
+                "SEC340",
+                ".claude/settings.json",
+                lintai_api::Span::new(20, 24),
+                None,
+            ),
+            rule_code: "SEC340".to_owned(),
+            normalized_path: ".claude/settings.json".to_owned(),
+        },
+    ];
+    entry.recommended_stable_adjudications = vec![RecommendedStableAdjudication {
+        stable_key: entry.recommended_stable_hits[0].stable_key.clone(),
+        rule_code: "SEC329".to_owned(),
+        verdict: AdjudicationVerdict::ConfirmedIssue,
+        summary: "mutable launcher is active".to_owned(),
+        reason: "committed config executes via npx".to_owned(),
+        problem: None,
+    }];
+
+    let review = recommended_precision_review(&ExternalValidationLedger {
+        version: 1,
+        wave: 2,
+        baseline: None,
+        evaluations: vec![entry],
+    });
+
+    assert_eq!(review.reviewed.len(), 1);
+    assert_eq!(review.unadjudicated.len(), 1);
+    assert!(review.false_positive_hits.is_empty());
+    assert!(review.stale_adjudications.is_empty());
+    assert!(review.invalid_adjudications.is_empty());
+}
+
+#[test]
+fn canonical_precision_contract_rejects_stale_recommended_adjudications() {
+    let repo = &sample_shortlist().repos[0];
+    let mut entry = default_entry_from_shortlist(repo);
+    entry.recommended_stable_hits = vec![ObservedFindingRecord {
+        stable_key: lintai_api::StableKey::new(
+            "SEC329",
+            "mcp.json",
+            lintai_api::Span::new(10, 14),
+            None,
+        ),
+        rule_code: "SEC329".to_owned(),
+        normalized_path: "mcp.json".to_owned(),
+    }];
+    entry.recommended_stable_adjudications = vec![RecommendedStableAdjudication {
+        stable_key: lintai_api::StableKey::new(
+            "SEC340",
+            ".claude/settings.json",
+            lintai_api::Span::new(20, 24),
+            None,
+        ),
+        rule_code: "SEC340".to_owned(),
+        verdict: AdjudicationVerdict::ConfirmedIssue,
+        summary: "stale".to_owned(),
+        reason: "no longer observed".to_owned(),
+        problem: None,
+    }];
+
+    let error = validate_canonical_precision_contract(&ExternalValidationLedger {
+        version: 1,
+        wave: 2,
+        baseline: None,
+        evaluations: vec![entry],
+    })
+    .unwrap_err();
+
+    assert!(error.contains("stale recommended adjudication"));
 }
 
 #[test]
@@ -179,6 +286,11 @@ fn report_renderer_emits_delta_and_phase_targets() {
 
     let markdown = render_report_from_ledgers(&workspace_root().unwrap(), &baseline, &current);
     assert!(markdown.contains("## Hybrid Scope Expansion Results"));
+    assert!(markdown.contains("## Recommended Counts By Tier"));
+    assert!(markdown.contains("## Supply-Chain Counts By Tier"));
+    assert!(markdown.contains("## Remaining Non-Default Lane Totals"));
+    assert!(markdown.contains("## Adjudication Coverage For Recommended Stable"));
+    assert!(markdown.contains("## Reviewed Recommended Stable Hits"));
     assert!(markdown.contains("- repos with root `mcp.json`: `0`"));
     assert!(markdown.contains("- repos with `.mcp.json`: `1`"));
     assert!(markdown.contains("- repos with `.cursor/mcp.json`: `0`"));
@@ -690,6 +802,7 @@ fn tool_json_extension_report_has_required_sections() {
             repo: "owner/tool-json".to_owned(),
             url: "https://github.com/owner/tool-json".to_owned(),
             pinned_ref: "abc123".to_owned(),
+            ownership: "community".to_owned(),
             category: "tool_json".to_owned(),
             subtype: "stress".to_owned(),
             status: "evaluated".to_owned(),
@@ -740,6 +853,7 @@ fn tool_json_extension_report_has_required_sections() {
                 code: Some("parse_recovery".to_owned()),
                 message: "recovered".to_owned(),
             }],
+            ..default_entry_from_shortlist(&sample_shortlist().repos[0])
         }],
     };
 
@@ -766,6 +880,7 @@ fn server_json_extension_report_has_required_sections() {
             repo: "owner/server-json".to_owned(),
             url: "https://github.com/owner/server-json".to_owned(),
             pinned_ref: "abc123".to_owned(),
+            ownership: "community".to_owned(),
             category: "server_json".to_owned(),
             subtype: "stress".to_owned(),
             status: "evaluated".to_owned(),
@@ -807,6 +922,7 @@ fn server_json_extension_report_has_required_sections() {
             follow_up_action: "no_action".to_owned(),
             runtime_errors: Vec::new(),
             diagnostics: Vec::new(),
+            ..default_entry_from_shortlist(&sample_shortlist().repos[0])
         }],
     };
 
@@ -830,6 +946,7 @@ fn github_actions_extension_report_has_required_sections() {
             repo: "owner/workflows".to_owned(),
             url: "https://github.com/owner/workflows".to_owned(),
             pinned_ref: "abc123".to_owned(),
+            ownership: "community".to_owned(),
             category: "github_actions".to_owned(),
             subtype: "stress".to_owned(),
             status: "evaluated".to_owned(),
@@ -862,6 +979,7 @@ fn github_actions_extension_report_has_required_sections() {
             follow_up_action: "no_action".to_owned(),
             runtime_errors: Vec::new(),
             diagnostics: Vec::new(),
+            ..default_entry_from_shortlist(&sample_shortlist().repos[0])
         }],
     };
 
@@ -887,6 +1005,7 @@ fn ai_native_discovery_report_has_required_sections() {
             repo: "owner/ai-native".to_owned(),
             url: "https://github.com/owner/ai-native".to_owned(),
             pinned_ref: "abc123".to_owned(),
+            ownership: "community".to_owned(),
             category: "ai_native".to_owned(),
             subtype: "claude_settings_command".to_owned(),
             status: "evaluated".to_owned(),
@@ -919,6 +1038,7 @@ fn ai_native_discovery_report_has_required_sections() {
             follow_up_action: "no_action".to_owned(),
             runtime_errors: Vec::new(),
             diagnostics: Vec::new(),
+            ..default_entry_from_shortlist(&sample_shortlist().repos[0])
         }],
     };
 

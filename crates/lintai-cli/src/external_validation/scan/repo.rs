@@ -31,10 +31,49 @@ pub(crate) fn materialize_repo(repo: &ShortlistRepo, local_dir: &Path) -> Result
         "https://codeload.github.com/{}/tar.gz/{}",
         repo.repo, repo.pinned_ref
     );
+    let archive_result = download_and_extract_archive(&download_url, &archive_path, local_dir);
+    if let Err(archive_error) = archive_result {
+        let _ = fs::remove_file(&archive_path);
+        fetch_repo_via_git(repo, local_dir).map_err(|git_error| {
+            format!(
+                "failed to materialize {} at {} via archive ({archive_error}) or git fallback ({git_error})",
+                repo.repo, repo.pinned_ref
+            )
+        })?;
+    } else {
+        let _ = fs::remove_file(&archive_path);
+    }
+    fs::write(&marker_path, format!("{}\n", repo.pinned_ref)).map_err(|error| {
+        format!(
+            "failed to write repo materialization marker {}: {error}",
+            marker_path.display()
+        )
+    })?;
+
+    Ok(())
+}
+
+fn download_and_extract_archive(
+    download_url: &str,
+    archive_path: &Path,
+    local_dir: &Path,
+) -> Result<(), String> {
     let curl_output = Command::new("curl")
-        .args(["-L", "--fail", "-o"])
-        .arg(&archive_path)
-        .arg(&download_url)
+        .args([
+            "-L",
+            "--fail",
+            "--connect-timeout",
+            "20",
+            "--max-time",
+            "180",
+            "--retry",
+            "2",
+            "--retry-delay",
+            "1",
+            "-o",
+        ])
+        .arg(archive_path)
+        .arg(download_url)
         .output()
         .map_err(|error| format!("failed to download {download_url}: {error}"))?;
     if !curl_output.status.success() {
@@ -46,7 +85,7 @@ pub(crate) fn materialize_repo(repo: &ShortlistRepo, local_dir: &Path) -> Result
 
     let tar_output = Command::new("tar")
         .arg("-xzf")
-        .arg(&archive_path)
+        .arg(archive_path)
         .arg("--strip-components=1")
         .arg("-C")
         .arg(local_dir)
@@ -65,15 +104,77 @@ pub(crate) fn materialize_repo(repo: &ShortlistRepo, local_dir: &Path) -> Result
         ));
     }
 
-    let _ = fs::remove_file(&archive_path);
-    fs::write(&marker_path, format!("{}\n", repo.pinned_ref)).map_err(|error| {
-        format!(
-            "failed to write repo materialization marker {}: {error}",
-            marker_path.display()
-        )
-    })?;
-
     Ok(())
+}
+
+fn fetch_repo_via_git(repo: &ShortlistRepo, local_dir: &Path) -> Result<(), String> {
+    let git_url = format!("https://github.com/{}.git", repo.repo);
+    run_git(local_dir, ["init"], "failed to initialize git repo cache")?;
+    run_git(
+        local_dir,
+        ["sparse-checkout", "init", "--no-cone"],
+        "failed to initialize sparse checkout for repo cache",
+    )?;
+    run_git(
+        local_dir,
+        [
+            "sparse-checkout",
+            "set",
+            "--no-cone",
+            "/*.md",
+            "/**/*.md",
+            "/**/*.mdc",
+            "/**/*.json",
+            "/**/*.toml",
+            "/**/*.yml",
+            "/**/*.yaml",
+            "/**/Dockerfile",
+            "/**/docker-compose.yml",
+            "/**/docker-compose.yaml",
+            "/**/docker-compose.*.yml",
+            "/**/docker-compose.*.yaml",
+        ],
+        "failed to configure sparse checkout patterns for repo cache",
+    )?;
+    run_git(
+        local_dir,
+        ["remote", "add", "origin", &git_url],
+        "failed to add git remote for repo cache",
+    )?;
+    run_git(
+        local_dir,
+        [
+            "fetch",
+            "--depth",
+            "1",
+            "--filter=blob:none",
+            "origin",
+            &repo.pinned_ref,
+        ],
+        "failed to fetch pinned ref for repo cache",
+    )?;
+    run_git(
+        local_dir,
+        ["checkout", "--force", "FETCH_HEAD"],
+        "failed to checkout pinned ref in repo cache",
+    )?;
+    Ok(())
+}
+
+fn run_git<const N: usize>(local_dir: &Path, args: [&str; N], label: &str) -> Result<(), String> {
+    let output = Command::new("git")
+        .current_dir(local_dir)
+        .args(args)
+        .output()
+        .map_err(|error| format!("{label}: {error}"))?;
+    if output.status.success() {
+        Ok(())
+    } else {
+        Err(format!(
+            "{label}: {}",
+            String::from_utf8_lossy(&output.stderr).trim()
+        ))
+    }
 }
 
 pub(crate) fn repo_dir_name(repo: &str) -> String {
@@ -150,6 +251,7 @@ mod tests {
             repo: "acme/example".to_owned(),
             url: "https://example.com/acme/example".to_owned(),
             pinned_ref: "v1.2.3".to_owned(),
+            ownership: "community".to_owned(),
             category: "tooling".to_owned(),
             subtype: "utility".to_owned(),
             status: "active".to_owned(),
@@ -178,7 +280,7 @@ mod tests {
         write_mock_command(
             &workspace,
             "curl",
-            r#"#!/usr/bin/env sh
+            r#"#!/bin/sh
 set -eu
 while [ "$#" -gt 0 ]; do
   if [ "$1" = "-o" ]; then
@@ -195,36 +297,18 @@ exit 0
         write_mock_command(
             &workspace,
             "tar",
-            r#"#!/usr/bin/env sh
-set -eu
-output_dir=""
-while [ "$#" -gt 0 ]; do
-  if [ "$1" = "-C" ]; then
-    shift
-    output_dir="$1"
-    break
-  fi
-  shift
-done
-mkdir -p "$output_dir"
+            r#"#!/bin/sh
 exit 0
 "#,
         );
 
-        let previous_path = env::var_os("PATH");
-        let path_value = {
-            let base = previous_path.as_deref().map(|path| path.to_string_lossy());
-            match base {
-                Some(base) => format!("{}:{}", workspace.display(), base),
-                None => workspace.to_string_lossy().to_string(),
-            }
-        };
-        let _path_guard = PathEnvGuard::new(&path_value);
+        let _path_guard = PathEnvGuard::new(&workspace.to_string_lossy());
 
         let repo = ShortlistRepo {
             repo: "acme/example".to_owned(),
             url: "https://example.com/acme/example".to_owned(),
             pinned_ref: "v1.2.3".to_owned(),
+            ownership: "community".to_owned(),
             category: "tooling".to_owned(),
             subtype: "utility".to_owned(),
             status: "active".to_owned(),
@@ -235,7 +319,7 @@ exit 0
 
         let result = materialize_repo(&repo, &local_dir);
 
-        assert!(result.is_ok());
+        assert!(result.is_ok(), "{result:?}");
         assert_eq!(fs::read_to_string(marker_path).unwrap(), "v1.2.3\n");
         fs::remove_dir_all(workspace).unwrap();
     }
@@ -245,29 +329,30 @@ exit 0
     fn materialize_repo_propagates_download_error_from_curl() {
         let workspace = unique_temp_dir();
         let local_dir = workspace.join("repo");
-        let previous_path = env::var_os("PATH");
         write_mock_command(
             &workspace,
             "curl",
-            r#"#!/usr/bin/env sh
+            r#"#!/bin/sh
 echo "curl failed" >&2
 exit 1
 "#,
         );
         write_mock_command(&workspace, "tar", "#!/usr/bin/env sh\nexit 0\n");
-        let path_value = {
-            let base = previous_path.as_deref().map(|path| path.to_string_lossy());
-            match base {
-                Some(base) => format!("{}:{}", workspace.display(), base),
-                None => workspace.to_string_lossy().to_string(),
-            }
-        };
-        let _path_guard = PathEnvGuard::new(&path_value);
+        write_mock_command(
+            &workspace,
+            "git",
+            r#"#!/bin/sh
+echo "git fallback failed" >&2
+exit 1
+"#,
+        );
+        let _path_guard = PathEnvGuard::new(&workspace.to_string_lossy());
 
         let repo = ShortlistRepo {
             repo: "acme/example".to_owned(),
             url: "https://example.com/acme/example".to_owned(),
             pinned_ref: "v1.2.3".to_owned(),
+            ownership: "community".to_owned(),
             category: "tooling".to_owned(),
             subtype: "utility".to_owned(),
             status: "active".to_owned(),
@@ -280,10 +365,69 @@ exit 1
 
         let error = result.unwrap_err();
         assert!(
-            error.contains(
-                "failed to download https://codeload.github.com/acme/example/tar.gz/v1.2.3"
-            )
+            error.contains("via archive (failed to download https://codeload.github.com/acme/example/tar.gz/v1.2.3")
         );
+        assert!(error.contains("git fallback failed"));
+        fs::remove_dir_all(workspace).unwrap();
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn materialize_repo_falls_back_to_git_when_archive_download_fails() {
+        let workspace = unique_temp_dir();
+        let local_dir = workspace.join("repo");
+        let marker_path = local_dir.join(".lintai-external-validation-ref");
+        write_mock_command(
+            &workspace,
+            "curl",
+            r#"#!/bin/sh
+echo "curl failed" >&2
+exit 1
+"#,
+        );
+        write_mock_command(&workspace, "tar", "#!/usr/bin/env sh\nexit 1\n");
+        write_mock_command(
+            &workspace,
+            "git",
+            r#"#!/bin/sh
+set -eu
+cmd="$1"
+shift
+case "$cmd" in
+  init)
+    ;;
+  sparse-checkout)
+    ;;
+  remote)
+    ;;
+  fetch)
+    echo "fetched" > FETCH_HEAD
+    ;;
+  checkout)
+    echo "ok" > checked-out.txt
+    ;;
+esac
+exit 0
+"#,
+        );
+        let _path_guard = PathEnvGuard::new(&workspace.to_string_lossy());
+
+        let repo = ShortlistRepo {
+            repo: "acme/example".to_owned(),
+            url: "https://example.com/acme/example".to_owned(),
+            pinned_ref: "v1.2.3".to_owned(),
+            ownership: "community".to_owned(),
+            category: "tooling".to_owned(),
+            subtype: "utility".to_owned(),
+            status: "active".to_owned(),
+            surfaces_present: Vec::new(),
+            admission_paths: Vec::new(),
+            rationale: String::new(),
+        };
+
+        materialize_repo(&repo, &local_dir).unwrap();
+        assert_eq!(fs::read_to_string(marker_path).unwrap(), "v1.2.3\n");
+        assert_eq!(fs::read_to_string(local_dir.join("checked-out.txt")).unwrap(), "ok\n");
         fs::remove_dir_all(workspace).unwrap();
     }
 

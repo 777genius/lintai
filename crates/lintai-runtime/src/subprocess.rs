@@ -251,7 +251,8 @@ mod tests {
     use std::time::Duration;
 
     use lintai_api::{
-        Artifact, ArtifactKind, ParsedDocument, ProviderScanResult, ScanContext, ScanScope, SourceFormat,
+        Artifact, ArtifactKind, ParsedDocument, ProviderScanResult, ScanContext, ScanScope,
+        SourceFormat,
     };
 
     use super::child::{ChildOutput, CompletedChild};
@@ -269,9 +270,7 @@ mod tests {
             "runner",
         );
 
-        let err = backend
-            .resolve_executable_path()
-            .expect_err("should fail");
+        let err = backend.resolve_executable_path().expect_err("should fail");
 
         assert_eq!(err.provider_id, "subprocess-test");
         assert!(err.message.contains("missing binary"));
@@ -289,7 +288,11 @@ mod tests {
             "runner",
         );
         let ctx = ScanContext::new(
-            Artifact::new("repo/file.md", ArtifactKind::Instructions, SourceFormat::Markdown),
+            Artifact::new(
+                "repo/file.md",
+                ArtifactKind::Instructions,
+                SourceFormat::Markdown,
+            ),
             "content",
             ParsedDocument::new(Vec::new(), None),
             None,
@@ -380,7 +383,11 @@ mod tests {
             "runner",
         );
         let ctx = ScanContext::new(
-            Artifact::new("repo/file.md", ArtifactKind::Instructions, SourceFormat::Markdown),
+            Artifact::new(
+                "repo/file.md",
+                ArtifactKind::Instructions,
+                SourceFormat::Markdown,
+            ),
             "content",
             ParsedDocument::new(Vec::new(), None),
             None,

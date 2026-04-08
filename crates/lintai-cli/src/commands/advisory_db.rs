@@ -105,7 +105,8 @@ mod tests {
 
     #[test]
     fn run_update_round_trips_normalized_snapshot() {
-        let dir = std::env::temp_dir().join(format!("lintai-advisory-db-test-{}", std::process::id()));
+        let dir =
+            std::env::temp_dir().join(format!("lintai-advisory-db-test-{}", std::process::id()));
         fs::create_dir_all(&dir).unwrap();
         let input = dir.join("input.json");
         let output = dir.join("output.json");
@@ -138,7 +139,9 @@ mod tests {
             input.to_string_lossy().to_string(),
             "--output".to_string(),
             output.to_string_lossy().to_string(),
-        ].into_iter()).unwrap();
+        ]
+        .into_iter())
+        .unwrap();
 
         assert!(output.exists());
         let text = fs::read_to_string(output).unwrap();

@@ -1,5 +1,12 @@
 use super::*;
 
+#[derive(Clone, Debug)]
+struct LaneScanArtifact {
+    lane_id: String,
+    text: String,
+    parsed: JsonScanEnvelope,
+}
+
 pub(crate) fn run(args: impl Iterator<Item = String>) -> Result<(), String> {
     let raw_args = args.collect::<Vec<_>>();
     let Some(command) = raw_args.first().map(String::as_str) else {
@@ -55,6 +62,7 @@ pub(crate) fn rerun(options: RerunOptions) -> Result<(), String> {
         })?);
     let tier_map = current_rule_tiers();
     let template_entries = template_map(&template);
+    let preset_matrix = package.scan_preset_matrix();
 
     let mut candidate = ExternalValidationLedger {
         version: 1,
@@ -76,28 +84,29 @@ pub(crate) fn rerun(options: RerunOptions) -> Result<(), String> {
             )
         })?;
 
-        let text = run_scan(&lintai_bin, &local_dir, false)?;
-        let json = run_scan(&lintai_bin, &local_dir, true)?;
-        fs::write(repo_raw_root.join("scan.txt"), &text)
-            .map_err(|error| format!("failed to write text scan artifact: {error}"))?;
-        fs::write(repo_raw_root.join("scan.json"), &json)
-            .map_err(|error| format!("failed to write JSON scan artifact: {error}"))?;
+        let lane_artifacts = collect_lane_artifacts(&lintai_bin, &local_dir, preset_matrix)?;
+        write_scan_artifacts(&repo_raw_root, &lane_artifacts)?;
         let inventory_text = toml::to_string_pretty(&inventory)
             .map_err(|error| format!("failed to serialize inventory artifact: {error}"))?;
         fs::write(repo_raw_root.join("inventory.toml"), inventory_text)
             .map_err(|error| format!("failed to write inventory artifact: {error}"))?;
 
-        let parsed: JsonScanEnvelope = serde_json::from_str(&json)
-            .map_err(|error| format!("failed to parse scan JSON for {}: {error}", repo.repo))?;
         let mut entry = template_entries
             .get(&repo.repo)
             .cloned()
             .unwrap_or_else(|| default_entry_from_shortlist(repo));
+        let parsed_lanes = lane_artifacts
+            .iter()
+            .map(|artifact| ParsedLaneScan {
+                lane_id: artifact.lane_id.as_str(),
+                parsed: &artifact.parsed,
+            })
+            .collect::<Vec<_>>();
         fill_auto_fields(
             &mut entry,
             repo,
             inventory.surfaces_present.clone(),
-            &parsed,
+            &parsed_lanes,
             &tier_map,
         )?;
         candidate.evaluations.push(entry);
@@ -121,8 +130,9 @@ pub(crate) fn rerun(options: RerunOptions) -> Result<(), String> {
 pub(crate) fn render_report(options: RenderReportOptions) -> Result<String, String> {
     match options.package {
         ValidationPackage::Canonical => {
-            let baseline = load_ledger(&options.workspace_root.join(ARCHIVED_WAVE1_LEDGER_PATH))?;
+            let baseline = load_ledger(&options.workspace_root.join(ARCHIVED_WAVE2_LEDGER_PATH))?;
             let current = load_ledger(&options.workspace_root.join(LEDGER_PATH))?;
+            validate_canonical_precision_contract(&current)?;
             Ok(render_report_from_ledgers(
                 &options.workspace_root,
                 &baseline,
@@ -170,6 +180,129 @@ pub(crate) fn render_report(options: RenderReportOptions) -> Result<String, Stri
     }
 }
 
+fn collect_lane_artifacts(
+    lintai_bin: &Path,
+    repo_dir: &Path,
+    preset_matrix: &[&str],
+) -> Result<Vec<LaneScanArtifact>, String> {
+    let mut artifacts = Vec::new();
+
+    if preset_matrix.is_empty() {
+        let text = run_scan(lintai_bin, repo_dir, false, &[])?;
+        let json = run_scan(lintai_bin, repo_dir, true, &[])?;
+        let parsed = serde_json::from_str(&json).map_err(|error| {
+            format!(
+                "failed to parse scan JSON for {}: {error}",
+                repo_dir.display()
+            )
+        })?;
+        artifacts.push(LaneScanArtifact {
+            lane_id: "default".to_owned(),
+            text,
+            parsed,
+        });
+        return Ok(artifacts);
+    }
+
+    for preset_id in preset_matrix {
+        let text = run_scan(lintai_bin, repo_dir, false, &[*preset_id])?;
+        let json = run_scan(lintai_bin, repo_dir, true, &[*preset_id])?;
+        let parsed = serde_json::from_str(&json).map_err(|error| {
+            format!(
+                "failed to parse scan JSON for {} preset `{}`: {error}",
+                repo_dir.display(),
+                preset_id
+            )
+        })?;
+        artifacts.push(LaneScanArtifact {
+            lane_id: (*preset_id).to_owned(),
+            text,
+            parsed,
+        });
+    }
+
+    Ok(artifacts)
+}
+
+fn write_scan_artifacts(repo_raw_root: &Path, lane_artifacts: &[LaneScanArtifact]) -> Result<(), String> {
+    let aggregate_json = serde_json::to_string_pretty(&merge_lane_scan_envelope(lane_artifacts))
+        .map_err(|error| format!("failed to serialize aggregated scan artifact: {error}"))?;
+    let aggregate_text = render_aggregate_scan_text(lane_artifacts);
+    fs::write(repo_raw_root.join("scan.txt"), aggregate_text)
+        .map_err(|error| format!("failed to write text scan artifact: {error}"))?;
+    fs::write(repo_raw_root.join("scan.json"), aggregate_json)
+        .map_err(|error| format!("failed to write JSON scan artifact: {error}"))?;
+
+    if lane_artifacts.len() > 1 {
+        for artifact in lane_artifacts {
+            let lane_root = repo_raw_root.join("lanes").join(&artifact.lane_id);
+            fs::create_dir_all(&lane_root).map_err(|error| {
+                format!(
+                    "failed to create lane raw output dir {}: {error}",
+                    lane_root.display()
+                )
+            })?;
+            fs::write(lane_root.join("scan.txt"), &artifact.text)
+                .map_err(|error| format!("failed to write lane text scan artifact: {error}"))?;
+            let lane_json = serde_json::to_string_pretty(&artifact.parsed)
+                .map_err(|error| format!("failed to serialize lane scan artifact: {error}"))?;
+            fs::write(lane_root.join("scan.json"), lane_json)
+                .map_err(|error| format!("failed to write lane JSON scan artifact: {error}"))?;
+        }
+    }
+
+    Ok(())
+}
+
+fn render_aggregate_scan_text(lane_artifacts: &[LaneScanArtifact]) -> String {
+    if let [artifact] = lane_artifacts {
+        return artifact.text.clone();
+    }
+
+    let mut output = String::new();
+    for artifact in lane_artifacts {
+        output.push_str(&format!("== {} ==\n", artifact.lane_id));
+        output.push_str(artifact.text.trim_end());
+        output.push_str("\n\n");
+    }
+    output
+}
+
+fn merge_lane_scan_envelope(lane_artifacts: &[LaneScanArtifact]) -> JsonScanEnvelope {
+    let mut findings = BTreeMap::new();
+    let mut diagnostics = BTreeMap::new();
+    let mut runtime_errors = BTreeMap::new();
+
+    for artifact in lane_artifacts {
+        for finding in &artifact.parsed.findings {
+            findings
+                .entry(stable_key_fingerprint(&finding.stable_key))
+                .or_insert_with(|| finding.clone());
+        }
+        for diagnostic in &artifact.parsed.diagnostics {
+            diagnostics
+                .entry((
+                    diagnostic.normalized_path.clone(),
+                    diagnostic.severity.clone(),
+                    diagnostic.code.clone(),
+                    diagnostic.message.clone(),
+                ))
+                .or_insert_with(|| diagnostic.clone());
+        }
+        for error in &artifact.parsed.runtime_errors {
+            runtime_errors
+                .entry((error.normalized_path.clone(), error.kind.clone(), error.message.clone()))
+                .or_insert_with(|| error.clone());
+        }
+    }
+
+    JsonScanEnvelope {
+        findings: findings.into_values().collect(),
+        diagnostics: diagnostics.into_values().collect(),
+        runtime_errors: runtime_errors.into_values().collect(),
+    }
+}
+
 pub(crate) fn parse_package_flag(args: &[String]) -> Result<ValidationPackage, String> {
     let mut package = ValidationPackage::Canonical;
     for arg in args {
@@ -201,7 +334,10 @@ mod tests {
 
     #[test]
     fn parse_package_flag_ignores_missing_value_but_preserves_default() {
-        assert_eq!(parse_package_flag(&[]).unwrap(), ValidationPackage::Canonical);
+        assert_eq!(
+            parse_package_flag(&[]).unwrap(),
+            ValidationPackage::Canonical
+        );
     }
 
     #[test]

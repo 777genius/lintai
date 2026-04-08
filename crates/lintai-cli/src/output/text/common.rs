@@ -90,8 +90,8 @@ fn option_u64_label(value: Option<u64>) -> String {
 
 #[cfg(test)]
 mod tests {
-    use crate::known_scan::{InventoryChangedRoot, InventoryRoot};
     use super::changed_root_fragment;
+    use crate::known_scan::{InventoryChangedRoot, InventoryRoot};
 
     #[test]
     fn maps_severity_labels() {
@@ -102,7 +102,10 @@ mod tests {
 
     #[test]
     fn maps_diagnostic_and_runtime_error_labels() {
-        assert_eq!(super::diagnostic_label(lintai_engine::DiagnosticSeverity::Info), "info");
+        assert_eq!(
+            super::diagnostic_label(lintai_engine::DiagnosticSeverity::Info),
+            "info"
+        );
         assert_eq!(
             super::diagnostic_label(lintai_engine::DiagnosticSeverity::Warn),
             "warn"
@@ -192,7 +195,10 @@ mod tests {
         };
 
         let roots = vec![root, file];
-        assert_eq!(super::client_for_inventory_finding(&roots, "/tmp/project"), "client");
+        assert_eq!(
+            super::client_for_inventory_finding(&roots, "/tmp/project"),
+            "client"
+        );
         assert_eq!(
             super::client_for_inventory_finding(&roots, "/tmp/project/src/lib.rs"),
             "client"
@@ -201,6 +207,9 @@ mod tests {
             super::client_for_inventory_finding(&roots, "/tmp/other/README.md"),
             "other"
         );
-        assert_eq!(super::client_for_inventory_finding(&roots, "/tmp/other"), "unknown");
+        assert_eq!(
+            super::client_for_inventory_finding(&roots, "/tmp/other"),
+            "unknown"
+        );
     }
 }

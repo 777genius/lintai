@@ -72,7 +72,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: GithubWorkflowUnpinnedThirdPartyActionRule::METADATA,
         surface: Surface::GithubWorkflow,
-        default_presets: RECOMMENDED_SUPPLY_CHAIN_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks workflow uses: entries for third-party actions that rely on mutable refs instead of immutable commit SHAs; positioned as a supply-chain hardening control rather than a direct exploit claim.",
@@ -148,7 +148,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: GithubWorkflowWriteCapableThirdPartyActionRule::METADATA,
         surface: Surface::GithubWorkflow,
-        default_presets: RECOMMENDED_SUPPLY_CHAIN_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Write-capable token scopes and third-party action usage are compositional and need more corpus-backed precision review before a stable launch.",

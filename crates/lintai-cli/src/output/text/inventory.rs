@@ -135,8 +135,8 @@ pub(super) fn append_inventory_sections(output: &mut String, report: &ReportEnve
 #[cfg(test)]
 mod tests {
     use crate::known_scan::{
-        InventoryChangedRoot, InventoryDiff, InventoryOriginScope, InventoryRoot, InventoryStats,
-        InventoryProvenance, InventoryRiskIncrease,
+        InventoryChangedRoot, InventoryDiff, InventoryOriginScope, InventoryProvenance,
+        InventoryRiskIncrease, InventoryRoot, InventoryStats,
     };
     use crate::output::model::{ReportEnvelope, ReportStats, ToolMetadata};
     use lintai_api::{Finding, Location, RuleMetadata, RuleTier, Severity, Span};
@@ -273,7 +273,10 @@ mod tests {
         assert!(output.contains("inventory counters: user=1"));
         assert!(output.contains("new-root [low lintable] client-a surface service/new"));
         assert!(output.contains("changed-root [mode discovered_only->lintable mtime 101->none] client-a surface service/config.json"));
-        assert!(output.contains("risk-increased-root [low->medium] client-a surface service/config.json"));
+        assert!(
+            output
+                .contains("risk-increased-root [low->medium] client-a surface service/config.json")
+        );
         assert!(output.contains("new-finding SEC417 client-a service/config.json"));
     }
 
@@ -308,7 +311,9 @@ mod tests {
         super::append_inventory_sections(&mut output, &envelope);
 
         assert!(did_render);
-        assert!(output.contains("inventory discovered 1 root(s), user 1 root(s), system 1 root(s)"));
+        assert!(
+            output.contains("inventory discovered 1 root(s), user 1 root(s), system 1 root(s)")
+        );
         assert!(output.contains("inventory counters: non_target=7"));
         assert!(output.contains("excluded=8"));
         assert!(output.contains("binary=9"));

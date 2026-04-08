@@ -110,7 +110,9 @@ jobs:
 "#,
         )
         .unwrap();
-        assert!(contains_semantic_github_workflow_yaml(&serde_yaml_bw::to_string(&value).unwrap()));
+        assert!(contains_semantic_github_workflow_yaml(
+            &serde_yaml_bw::to_string(&value).unwrap()
+        ));
         assert!(value_contains_workflow_steps(&value));
     }
 
@@ -137,7 +139,9 @@ jobs:
         fs::write(non_semantic, "name: example\nvalues:\n  - x\n").unwrap();
 
         let discovered = admitted_github_workflow_paths(&repo_root).unwrap();
-        let expected = vec![normalize_rel_path(&PathBuf::from(".github/workflows/ci.yml"))];
+        let expected = vec![normalize_rel_path(&PathBuf::from(
+            ".github/workflows/ci.yml",
+        ))];
         assert_eq!(discovered, expected);
         cleanup(&workspace_root);
     }

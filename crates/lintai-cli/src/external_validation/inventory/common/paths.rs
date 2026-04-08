@@ -64,8 +64,12 @@ mod tests {
 
     #[test]
     fn detects_generic_validation_excluded_paths() {
-        assert!(is_generic_validation_excluded_path("src/fixtures/tool.json"));
-        assert!(is_generic_validation_excluded_path("docs/samples/example.md"));
+        assert!(is_generic_validation_excluded_path(
+            "src/fixtures/tool.json"
+        ));
+        assert!(is_generic_validation_excluded_path(
+            "docs/samples/example.md"
+        ));
         assert!(!is_generic_validation_excluded_path("src/main.rs"));
     }
 

@@ -14,4 +14,3 @@ pub(crate) const RECOMMENDED_BASE_CLAUDE_PRESETS: &[&str] = &["recommended", "ba
 pub(crate) const GUIDANCE_PRESETS: &[&str] = &["guidance"];
 pub(crate) const GOVERNANCE_PRESETS: &[&str] = &["governance"];
 pub(crate) const SUPPLY_CHAIN_PRESETS: &[&str] = &["supply-chain"];
-pub(crate) const RECOMMENDED_SUPPLY_CHAIN_PRESETS: &[&str] = &["recommended", "supply-chain"];

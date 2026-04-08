@@ -48,7 +48,7 @@ pub(super) fn append_policy_sections(output: &mut String, report: &ReportEnvelop
 
 #[cfg(test)]
 mod tests {
-    use crate::known_scan::{InventoryStats, InventoryRoot, InventoryProvenance};
+    use crate::known_scan::{InventoryProvenance, InventoryRoot, InventoryStats};
     use crate::output::model::{ReportEnvelope, ReportStats, ToolMetadata};
     use crate::policy_os::PolicyMatch;
     use crate::policy_os::PolicyStats;
@@ -144,9 +144,15 @@ mod tests {
         let mut output = String::new();
         super::append_policy_sections(&mut output, &envelope);
 
-        assert!(output.contains("policy matched 1 root(s), deny 1, warn 2, inventory roots 1, findings 1"));
+        assert!(
+            output.contains(
+                "policy matched 1 root(s), deny 1, warn 2, inventory roots 1, findings 1"
+            )
+        );
         assert!(output.contains("inventory counters: user=1 system=0 lintable=1 discovered_only=0 high=0 medium=0 low=0 scanned=0 non_target=0 excluded=0 binary=0 unreadable=0 unrecognized=0"));
-        assert!(output.contains("policy [warn] policy_1 client-a surface service/config.json policy message"));
+        assert!(output.contains(
+            "policy [warn] policy_1 client-a surface service/config.json policy message"
+        ));
         assert!(output.contains("  matched: SEC417"));
     }
 
@@ -169,6 +175,8 @@ mod tests {
 
         super::append_policy_sections(&mut output, &envelope);
 
-        assert!(output.contains("policy [warn] policy_1 client-a surface service/config.json policy message"));
+        assert!(output.contains(
+            "policy [warn] policy_1 client-a surface service/config.json policy message"
+        ));
     }
 }

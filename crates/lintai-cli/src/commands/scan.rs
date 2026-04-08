@@ -3,7 +3,7 @@ use std::process::ExitCode;
 
 use crate::args::parse_scan_args;
 use crate::execution::{
-    build_engine, emit_report, exit_code_for_scan_summary, load_validated_workspace,
+    build_engine, emit_report, exit_code_for_scan_summary, load_validated_workspace_for_scan,
 };
 use crate::output;
 
@@ -12,7 +12,8 @@ pub(crate) fn run(
     args: impl Iterator<Item = String>,
 ) -> Result<ExitCode, String> {
     let parsed = parse_scan_args(args)?;
-    let workspace = load_validated_workspace(current_dir, &parsed.target)?;
+    let workspace =
+        load_validated_workspace_for_scan(current_dir, &parsed.target, &parsed.preset_ids)?;
     let summary = build_engine(&workspace)?
         .scan_path(&parsed.target)
         .map_err(|error| format!("scan failed: {error}"))?;

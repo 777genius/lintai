@@ -13,6 +13,7 @@ mod scan;
 pub struct ScanArgs {
     pub target: PathBuf,
     pub format_override: Option<OutputFormat>,
+    pub preset_ids: Vec<String>,
 }
 
 #[derive(Debug)]
@@ -56,6 +57,29 @@ mod tests {
         let parsed = parse_scan_args(std::iter::empty()).unwrap();
         assert_eq!(parsed.target, std::path::PathBuf::from("."));
         assert_eq!(parsed.format_override, None);
+        assert!(parsed.preset_ids.is_empty());
+    }
+
+    #[test]
+    fn scan_parses_repeated_presets() {
+        let parsed = parse_scan_args(
+            ["--preset", "base", "--preset=mcp", "--preset", "claude"]
+                .into_iter()
+                .map(str::to_owned),
+        )
+        .unwrap();
+        assert_eq!(parsed.preset_ids, vec!["base", "mcp", "claude"]);
+    }
+
+    #[test]
+    fn scan_trims_preset_values() {
+        let parsed = parse_scan_args(
+            ["--preset", " base ", "--preset= mcp "]
+                .into_iter()
+                .map(str::to_owned),
+        )
+        .unwrap();
+        assert_eq!(parsed.preset_ids, vec!["base", "mcp"]);
     }
 
     #[test]

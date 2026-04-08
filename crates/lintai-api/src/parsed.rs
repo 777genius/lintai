@@ -218,7 +218,11 @@ mod tests {
 
     #[test]
     fn constructors_roundtrip_common_types() {
-        let artifact = Artifact::new("repo/file.md", ArtifactKind::Instructions, SourceFormat::Markdown);
+        let artifact = Artifact::new(
+            "repo/file.md",
+            ArtifactKind::Instructions,
+            SourceFormat::Markdown,
+        );
         assert_eq!(artifact.normalized_path, "repo/file.md");
         assert_eq!(artifact.kind, ArtifactKind::Instructions);
         assert_eq!(artifact.format, SourceFormat::Markdown);
@@ -234,10 +238,9 @@ mod tests {
 
     #[test]
     fn document_semantics_as_conversions() {
-        let markdown = DocumentSemantics::Markdown(MarkdownSemantics::new(Some(FrontmatterSemantics::new(
-            FrontmatterFormat::Yaml,
-            json!({"capabilities": true}),
-        ))));
+        let markdown = DocumentSemantics::Markdown(MarkdownSemantics::new(Some(
+            FrontmatterSemantics::new(FrontmatterFormat::Yaml, json!({"capabilities": true})),
+        )));
         let json = DocumentSemantics::Json(JsonSemantics::new(json!({"ok": true})));
         let yaml = DocumentSemantics::Yaml(YamlSemantics::new(json!({"ok": false})));
         let shell = DocumentSemantics::Shell(ShellSemantics::new(vec!["echo".into()]));

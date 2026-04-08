@@ -99,12 +99,12 @@ pub(crate) fn workspace_json_semantics(
 
 #[cfg(test)]
 mod tests {
-use super::*;
-use lintai_api::{
-    Artifact, ArtifactKind, CapabilityProfile, DocumentSemantics, ExecCapability, FrontmatterFormat,
-    FrontmatterSemantics, JsonSemantics, MarkdownSemantics, NetworkCapability, ParsedDocument,
-    SourceFormat, WorkspaceArtifact,
-};
+    use super::*;
+    use lintai_api::{
+        Artifact, ArtifactKind, CapabilityProfile, DocumentSemantics, ExecCapability,
+        FrontmatterFormat, FrontmatterSemantics, JsonSemantics, MarkdownSemantics,
+        NetworkCapability, ParsedDocument, SourceFormat, WorkspaceArtifact,
+    };
     use serde_json::json;
 
     fn artifact(
@@ -262,15 +262,21 @@ use lintai_api::{
         assert!(!contains_shell_wrapper(
             &json!({"command":"python","args":["-c","print('ok')"]})
         ));
-        assert!(contains_shell_wrapper(&json!({"outer":{"command":"sh","args":["-c","echo"]}})));
-        assert!(contains_shell_wrapper(&json!(["pre",{"command":"bash","args":["-c","echo"]}])));
+        assert!(contains_shell_wrapper(
+            &json!({"outer":{"command":"sh","args":["-c","echo"]}})
+        ));
+        assert!(contains_shell_wrapper(
+            &json!(["pre",{"command":"bash","args":["-c","echo"]}])
+        ));
     }
 
     #[test]
     fn contains_network_reference_checks_recursive_json_values() {
         assert!(contains_network_reference(&json!("https://example.com")));
         assert!(!contains_network_reference(&json!("ftp://example.com")));
-        assert!(contains_network_reference(&json!({"tool":[{"url":"https://example.com"}]})));
+        assert!(contains_network_reference(
+            &json!({"tool":[{"url":"https://example.com"}]})
+        ));
         assert!(!contains_network_reference(&json!(123)));
     }
 

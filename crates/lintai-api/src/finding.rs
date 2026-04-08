@@ -330,7 +330,10 @@ mod tests {
         assert_eq!(finding.evidence.len(), 1);
         assert_eq!(finding.evidence[0].kind, EvidenceKind::Context);
         assert_eq!(finding.evidence[0].message, "message");
-        assert_eq!(finding.evidence[0].location, Some(Location::new("repo/file.md", span.clone())));
+        assert_eq!(
+            finding.evidence[0].location,
+            Some(Location::new("repo/file.md", span.clone()))
+        );
         assert!(finding.cwe.is_empty());
         assert_eq!(finding.tags, Vec::<String>::new());
         assert_eq!(line.line, 1);
@@ -355,7 +358,12 @@ mod tests {
             "message",
         )
         .with_metadata(json!({"source":"test"}))
-        .with_fix(Fix::new(Span::new(0, 10), "new", Applicability::Safe, Some("fix".into())));
+        .with_fix(Fix::new(
+            Span::new(0, 10),
+            "new",
+            Applicability::Safe,
+            Some("fix".into()),
+        ));
 
         let evidence = Evidence::new(EvidenceKind::ObservedBehavior, "observed", Some(location))
             .with_subject_id("artifact");
@@ -380,8 +388,14 @@ mod tests {
         assert_eq!(finding.evidence.len(), 2);
         assert_eq!(finding.suggestions.len(), 1);
         assert_eq!(finding.related, Vec::<RelatedFinding>::new());
-        assert_eq!(finding.fix.as_ref().expect("fix missing").replacement, "new");
-        assert_eq!(finding.metadata.as_ref().expect("metadata missing")["updated"], true);
+        assert_eq!(
+            finding.fix.as_ref().expect("fix missing").replacement,
+            "new"
+        );
+        assert_eq!(
+            finding.metadata.as_ref().expect("metadata missing")["updated"],
+            true
+        );
     }
 
     #[test]

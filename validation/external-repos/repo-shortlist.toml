@@ -1,16 +1,17 @@
 version = 1
 
 [cohort]
-total = 24
-mcp = 10
-cursor_plugin = 6
-skills = 8
+total = 48
+mcp = 20
+cursor_plugin = 12
+skills = 16
 category_semantics = "category is the primary validation focus for the repo, not an exclusive taxonomy"
 
 [[repos]]
 repo = "containers/kubernetes-mcp-server"
 url = "https://github.com/containers/kubernetes-mcp-server"
 pinned_ref = "df06f9de9cb98e0aef1008926ab1f5b12e427937"
+ownership = "official"
 category = "mcp"
 subtype = "stress"
 status = "evaluated"
@@ -21,6 +22,7 @@ rationale = "Representative MCP server repo with both config and instruction sur
 repo = "microsoft/mcp-for-beginners"
 url = "https://github.com/microsoft/mcp-for-beginners"
 pinned_ref = "123d41278366526870308f412ccdce1710302952"
+ownership = "official"
 category = "mcp"
 subtype = "control"
 status = "evaluated"
@@ -31,6 +33,7 @@ rationale = "Large but directly relevant MCP teaching repo with checked-in confi
 repo = "modelcontextprotocol/registry"
 url = "https://github.com/modelcontextprotocol/registry"
 pinned_ref = "c5c4b9e8890dd5754bee889b2f1417f4fe3b5ce5"
+ownership = "official"
 category = "mcp"
 subtype = "control"
 status = "evaluated"
@@ -41,6 +44,7 @@ rationale = "Official registry repo for MCP ecosystem validation with agent-inst
 repo = "mrexodia/ida-pro-mcp"
 url = "https://github.com/mrexodia/ida-pro-mcp"
 pinned_ref = "5bdafa2f20c9b4807a864b4e7999c715da52b05d"
+ownership = "community"
 category = "mcp"
 subtype = "stress"
 status = "evaluated"
@@ -51,6 +55,7 @@ rationale = "MCP server repo with both skill and Claude instruction surfaces."
 repo = "supermemoryai/apple-mcp"
 url = "https://github.com/supermemoryai/apple-mcp"
 pinned_ref = "08e2c5315683c00fc9567dfefd70a477caccc60d"
+ownership = "community"
 category = "mcp"
 subtype = "stress"
 status = "evaluated"
@@ -61,6 +66,7 @@ rationale = "Active MCP repo with checked-in Claude instruction surface."
 repo = "blazickjp/arxiv-mcp-server"
 url = "https://github.com/blazickjp/arxiv-mcp-server"
 pinned_ref = "0065f5abb48f3eb4e011a130dd63fc52b381a1d2"
+ownership = "community"
 category = "mcp"
 subtype = "control"
 status = "evaluated"
@@ -71,6 +77,7 @@ rationale = "Focused MCP server repo with lightweight instruction surface and no
 repo = "airmcp-com/mcp-standards"
 url = "https://github.com/airmcp-com/mcp-standards"
 pinned_ref = "5904a55c01f45de48ffacd59d768a85abdd7464a"
+ownership = "community"
 category = "mcp"
 subtype = "control"
 status = "evaluated"
@@ -81,6 +88,7 @@ rationale = "MCP-focused standards repo with checked-in Claude instruction file.
 repo = "centminmod/my-claude-code-setup"
 url = "https://github.com/centminmod/my-claude-code-setup"
 pinned_ref = "204c03f7984180be35c2e52fa9703475cdb2f118"
+ownership = "community"
 category = "mcp"
 subtype = "control"
 status = "evaluated"
@@ -91,6 +99,7 @@ rationale = "Claude setup repo that explicitly documents MCP server usage and co
 repo = "hex-inc/hex-cursor-plugin"
 url = "https://github.com/hex-inc/hex-cursor-plugin"
 pinned_ref = "81413514f3cb7c40600c5a8cbdd89a3cfea94cd1"
+ownership = "official"
 category = "mcp"
 subtype = "stress"
 status = "evaluated"
@@ -101,6 +110,7 @@ rationale = "Cursor plugin whose main external-validation target is the embedded
 repo = "olostep/olostep-cursor-plugin"
 url = "https://github.com/olostep/olostep-cursor-plugin"
 pinned_ref = "f970811435fe500e6d1c6cc2cd37e1aa4c05c9cc"
+ownership = "community"
 category = "mcp"
 subtype = "stress"
 status = "evaluated"
@@ -108,9 +118,120 @@ surfaces_present = ["SKILL.md", "mcp.json", ".cursor-plugin/plugin.json"]
 rationale = "Cursor plugin repo with explicit MCP setup workflow and checked-in mcp.json example."
 
 [[repos]]
+repo = "cloudflare/mcp-server-cloudflare"
+url = "https://github.com/cloudflare/mcp-server-cloudflare"
+pinned_ref = "162239fd54954337471b5dda401a2020a19286fa"
+ownership = "official"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+rationale = "Official Cloudflare MCP server with committed registry metadata and operational server surface."
+
+[[repos]]
+repo = "googleworkspace/developer-tools"
+url = "https://github.com/googleworkspace/developer-tools"
+pinned_ref = "496529e5392eeaea3a19854a40979a6f57a3f315"
+ownership = "official"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+rationale = "Official Google Workspace developer tools repo with committed MCP registry metadata."
+
+[[repos]]
+repo = "hashicorp/terraform-mcp-server"
+url = "https://github.com/hashicorp/terraform-mcp-server"
+pinned_ref = "1fe0d44bd962e7332366a70bb93da7da4c12b60b"
+ownership = "official"
+category = "mcp"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["server.json", "gemini-extension.json"]
+rationale = "High-signal HashiCorp MCP repo with committed registry metadata and AI-native execution surface."
+
+[[repos]]
+repo = "github/github-mcp-server"
+url = "https://github.com/github/github-mcp-server"
+pinned_ref = "95726adfc4b3c0f7c83d143dcfde1a8a9f730644"
+ownership = "official"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json"]
+rationale = "Official GitHub MCP server with committed server registry metadata under a real product repo."
+
+[[repos]]
+repo = "docker/hub-mcp"
+url = "https://github.com/docker/hub-mcp"
+pinned_ref = "3b1a162b12b420443dcf3668534581887d88212b"
+ownership = "official"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+rationale = "Official Docker MCP repo with committed operational tool catalog under source control."
+
+[[repos]]
+repo = "TencentCloudBase/CloudBase-MCP"
+url = "https://github.com/TencentCloudBase/CloudBase-MCP"
+pinned_ref = "b0f2bec9ffb3220a86bb5bbd2ab03e7d609b7d67"
+ownership = "official"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+rationale = "Vendor-owned MCP server repo with committed tool catalog and real operational breadth."
+
+[[repos]]
+repo = "gitkraken/MCP-Docs"
+url = "https://github.com/gitkraken/MCP-Docs"
+pinned_ref = "fa8aebcea9bb0973aa2bd113ddec1f40a4cc3fc3"
+ownership = "official"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+rationale = "Vendor-owned public MCP docs repo with committed tool descriptors that broaden external coverage."
+
+[[repos]]
+repo = "VictoriaMetrics-Community/mcp-victoriametrics"
+url = "https://github.com/VictoriaMetrics-Community/mcp-victoriametrics"
+pinned_ref = "75110f4f6002ca2a0e895cab7ec613382ae2a49f"
+ownership = "community"
+category = "mcp"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["server.json"]
+rationale = "Community-run metrics MCP repo with clean registry metadata used as a control."
+
+[[repos]]
+repo = "OriShmila/alpha-vantage-mcp-server"
+url = "https://github.com/OriShmila/alpha-vantage-mcp-server"
+pinned_ref = "dea305c3190b23c87dc39bb5f209262daedca020"
+ownership = "community"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["tool_descriptor_json"]
+rationale = "Public MCP server with committed tool-descriptor JSON and operational example coverage."
+
+[[repos]]
+repo = "blockscout/mcp-server"
+url = "https://github.com/blockscout/mcp-server"
+pinned_ref = "00cc9302d74faa3c880fdf0c1650e7dabecd4ad2"
+ownership = "community"
+category = "mcp"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["server.json", ".claude/settings.json"]
+rationale = "Production-oriented public MCP server with both registry metadata and Claude execution surface."
+
+[[repos]]
 repo = "cursor/plugins"
 url = "https://github.com/cursor/plugins"
 pinned_ref = "08c2bbe2ae8a022a21dc6c32faf611f14a6e8343"
+ownership = "official"
 category = "cursor_plugin"
 subtype = "stress"
 status = "evaluated"
@@ -121,6 +242,7 @@ rationale = "Official Cursor plugin repo with multiple plugin-related surfaces."
 repo = "datadog-labs/cursor-plugin"
 url = "https://github.com/datadog-labs/cursor-plugin"
 pinned_ref = "fdce3e1db7c99b80939f2ad95c67f525bf0eee50"
+ownership = "official"
 category = "cursor_plugin"
 subtype = "stress"
 status = "evaluated"
@@ -131,6 +253,7 @@ rationale = "Plugin repo with setup skill and embedded MCP config; useful for pr
 repo = "linear/cursor-plugin"
 url = "https://github.com/linear/cursor-plugin"
 pinned_ref = "c2c4cb2ab23206c9219b0dd31c9571e4c922faeb"
+ownership = "official"
 category = "cursor_plugin"
 subtype = "control"
 status = "evaluated"
@@ -141,6 +264,7 @@ rationale = "Small plugin repo with minimal checked-in surfaces for clean-contro
 repo = "makenotion/cursor-notion-plugin"
 url = "https://github.com/makenotion/cursor-notion-plugin"
 pinned_ref = "cf1324609edba6d617164f1dec138aeb43f26735"
+ownership = "official"
 category = "cursor_plugin"
 subtype = "stress"
 status = "evaluated"
@@ -151,6 +275,7 @@ rationale = "Plugin repo combining instruction and MCP config surfaces."
 repo = "van-reflect/cursor-plugin"
 url = "https://github.com/van-reflect/cursor-plugin"
 pinned_ref = "15a212718e566b3a964c077cc8426972cced1b85"
+ownership = "community"
 category = "cursor_plugin"
 subtype = "control"
 status = "evaluated"
@@ -161,6 +286,7 @@ rationale = "Compact plugin repo with rules surface and manifest but low overall
 repo = "vercel-labs/cursor-plugin"
 url = "https://github.com/vercel-labs/cursor-plugin"
 pinned_ref = "95857183947fcc2a478f817c1e5d24ec054b21a9"
+ownership = "official"
 category = "cursor_plugin"
 subtype = "control"
 status = "evaluated"
@@ -168,9 +294,76 @@ surfaces_present = ["SKILL.md", ".cursor-plugin/plugin.json"]
 rationale = "Minimal plugin repo for clean-control plugin validation."
 
 [[repos]]
+repo = "anthropics/claude-plugins-official"
+url = "https://github.com/anthropics/claude-plugins-official"
+pinned_ref = "104d39be10b7b1380b2ae23a387a11a297b599c3"
+ownership = "official"
+category = "cursor_plugin"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [".cursor-plugin/plugin.json"]
+rationale = "Official Anthropic plugin repository that broadens vendor-owned plugin coverage beyond the current Cursor cohort."
+
+[[repos]]
+repo = "affaan-m/everything-claude-code"
+url = "https://github.com/affaan-m/everything-claude-code"
+pinned_ref = "9d766af0258959d2fe9a74d42568f3b92a655075"
+ownership = "community"
+category = "cursor_plugin"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [".cursor-plugin/plugin.json", "SKILL.md"]
+rationale = "Large public plugin-and-skills repo that exposes Cursor plugin surfaces in a realistic community setup."
+
+[[repos]]
+repo = "jeremylongshore/claude-code-plugins-plus-skills"
+url = "https://github.com/jeremylongshore/claude-code-plugins-plus-skills"
+pinned_ref = "70e9fa4044cd8fd573ccee14e288ecb2be18609e"
+ownership = "community"
+category = "cursor_plugin"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = [".cursor-plugin/plugin.json", "SKILL.md"]
+rationale = "Public multi-plugin repo with Cursor plugin packaging and a broad skills surface."
+
+[[repos]]
+repo = "get-convex/convex-agent-plugins"
+url = "https://github.com/get-convex/convex-agent-plugins"
+pinned_ref = "f104efb49a787a1ef4a6c84df496d58800ce334a"
+ownership = "official"
+category = "cursor_plugin"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [".cursor-plugin/plugin.json"]
+rationale = "Vendor-owned agent plugin repo that adds another official plugin implementation shape to the cohort."
+
+[[repos]]
+repo = "agent-sh/agentsys"
+url = "https://github.com/agent-sh/agentsys"
+pinned_ref = "842976d35c61dcc3eede59ca2f7d67a4832a0f86"
+ownership = "official"
+category = "cursor_plugin"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [".cursor-plugin/plugin.json", "SKILL.md"]
+rationale = "Agent tooling repo with plugin-style distribution and committed agent surfaces under a vendor-owned org."
+
+[[repos]]
+repo = "giuseppe-trisciuoglio/developer-kit-claude-code"
+url = "https://github.com/giuseppe-trisciuoglio/developer-kit-claude-code"
+pinned_ref = "55966ee6d77735972f6a4bd9b191904e32e7ac33"
+ownership = "community"
+category = "cursor_plugin"
+subtype = "control"
+status = "evaluated"
+surfaces_present = [".cursor-plugin/plugin.json", "SKILL.md"]
+rationale = "Developer kit repo that broadens plugin-distribution patterns in the community plugin slice."
+
+[[repos]]
 repo = "agent-sh/agnix"
 url = "https://github.com/agent-sh/agnix"
 pinned_ref = "342d74123ae898a7c6d1a5ca99f5a81907951306"
+ownership = "community"
 category = "skills"
 subtype = "stress"
 status = "evaluated"
@@ -181,16 +374,18 @@ rationale = "Instruction-heavy repo with multiple target surfaces including Curs
 repo = "zebbern/claude-code-guide"
 url = "https://github.com/zebbern/claude-code-guide"
 pinned_ref = "4b37743a717209e114f08d53150f3b8dc76eb116"
+ownership = "community"
 category = "skills"
 subtype = "control"
 status = "evaluated"
 surfaces_present = ["SKILL.md", "CLAUDE.md"]
-rationale = "Widely shared instruction/template repo with clean target surfaces."
+rationale = "Widely shared instruction template repo with clean target surfaces."
 
 [[repos]]
 repo = "zechenzhangAGI/AI-research-SKILLs"
 url = "https://github.com/zechenzhangAGI/AI-research-SKILLs"
 pinned_ref = "a7289540d33f78df20dc9b27808fdf096cf1b3a4"
+ownership = "community"
 category = "skills"
 subtype = "stress"
 status = "evaluated"
@@ -201,6 +396,7 @@ rationale = "Skill-centric repo with multiple instruction artifacts."
 repo = "buildingopen/claude-setup"
 url = "https://github.com/buildingopen/claude-setup"
 pinned_ref = "69cc9c8fd0f81782cb90dc51c95dbcbb4d346d5c"
+ownership = "community"
 category = "skills"
 subtype = "control"
 status = "evaluated"
@@ -211,6 +407,7 @@ rationale = "Small setup repo with straightforward Claude and skill instructions
 repo = "lighthouse-strategy/claude-code-starter"
 url = "https://github.com/lighthouse-strategy/claude-code-starter"
 pinned_ref = "b6cacd4055c26152165e8a8bf0b7ff9209f0c396"
+ownership = "community"
 category = "skills"
 subtype = "control"
 status = "evaluated"
@@ -221,6 +418,7 @@ rationale = "Starter repo for clean-control instruction validation."
 repo = "reizam/claude-md-templates"
 url = "https://github.com/reizam/claude-md-templates"
 pinned_ref = "694240a17d550babf4c5392d1ea4b32ce5ca8a62"
+ownership = "community"
 category = "skills"
 subtype = "control"
 status = "evaluated"
@@ -231,6 +429,7 @@ rationale = "Template-focused repo with simple checked-in instruction files."
 repo = "Narwhal-Lab/MagicSkills"
 url = "https://github.com/Narwhal-Lab/MagicSkills"
 pinned_ref = "1ba6ae32b4df4349195ec38c283535b68619a085"
+ownership = "community"
 category = "skills"
 subtype = "stress"
 status = "evaluated"
@@ -241,8 +440,97 @@ rationale = "Skill-heavy repo with richer instruction content than a basic templ
 repo = "Emmraan/agent-skills"
 url = "https://github.com/Emmraan/agent-skills"
 pinned_ref = "a1582043b95667eea450d37f028e7451ffda02f2"
+ownership = "community"
 category = "skills"
 subtype = "control"
 status = "evaluated"
 surfaces_present = ["SKILL.md"]
 rationale = "Simple skill repo included as a low-complexity control case."
+
+[[repos]]
+repo = "alirezarezvani/claude-skills"
+url = "https://github.com/alirezarezvani/claude-skills"
+pinned_ref = "43295c15b55fbfc74773d7f4ba32abd1c860624c"
+ownership = "community"
+category = "skills"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md", ".mcp.json"]
+rationale = "Large community skills collection with multiple committed agent surfaces beyond a single template."
+
+[[repos]]
+repo = "trailofbits/skills"
+url = "https://github.com/trailofbits/skills"
+pinned_ref = "d7f76b532d1e4c6e7757e04d25c99ab60dd5e32c"
+ownership = "official"
+category = "skills"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md"]
+rationale = "Vendor-owned security skills repo that raises official coverage for the instruction-heavy slice."
+
+[[repos]]
+repo = "Jeffallan/claude-skills"
+url = "https://github.com/Jeffallan/claude-skills"
+pinned_ref = "5b761018cebd430edcecbeeb46bdde6150d22c65"
+ownership = "community"
+category = "skills"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md", "CLAUDE.md"]
+rationale = "Community skills repo with enough breadth to stress prompt and frontmatter handling."
+
+[[repos]]
+repo = "mrgoonie/claudekit-skills"
+url = "https://github.com/mrgoonie/claudekit-skills"
+pinned_ref = "80113d86bc4407f105af40a2c4ea58194f7c370a"
+ownership = "community"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md"]
+rationale = "Compact skills repo that acts as a cleaner control for skill-frontmatter scanning."
+
+[[repos]]
+repo = "coleam00/second-brain-skills"
+url = "https://github.com/coleam00/second-brain-skills"
+pinned_ref = "75e1e9cd60ef46bffbd294fdfe4d0320cee2f563"
+ownership = "community"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md"]
+rationale = "Smaller focused skills repo that broadens instruction styles without heavy config noise."
+
+[[repos]]
+repo = "omkamal/pypict-claude-skill"
+url = "https://github.com/omkamal/pypict-claude-skill"
+pinned_ref = "fbda212bca79dfa7611be12527b102c89cc8faeb"
+ownership = "community"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md"]
+rationale = "Focused single-skill repository that expands low-noise coverage for committed SKILL.md usage."
+
+[[repos]]
+repo = "simonw/claude-skills"
+url = "https://github.com/simonw/claude-skills"
+pinned_ref = "6e0a1395bb92c10c7d192b99e2af786533235efd"
+ownership = "community"
+category = "skills"
+subtype = "control"
+status = "evaluated"
+surfaces_present = ["SKILL.md"]
+rationale = "Public lightweight skills repo from a high-signal individual maintainer, useful as another clean control."
+
+[[repos]]
+repo = "czlonkowski/n8n-skills"
+url = "https://github.com/czlonkowski/n8n-skills"
+pinned_ref = "0f0c47316550061751aa8fe66e3ed6a2808a1f0c"
+ownership = "community"
+category = "skills"
+subtype = "stress"
+status = "evaluated"
+surfaces_present = ["SKILL.md"]
+rationale = "Operational skills collection that adds broader task-oriented prompt material to the stress cohort."

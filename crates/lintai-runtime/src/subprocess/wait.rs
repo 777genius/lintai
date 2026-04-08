@@ -54,8 +54,8 @@ pub(super) fn wait_for_exit(
 
 #[cfg(test)]
 mod tests {
-    use std::time::Duration;
     use std::process::Command;
+    use std::time::Duration;
 
     use super::*;
 

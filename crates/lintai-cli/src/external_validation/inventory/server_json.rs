@@ -98,7 +98,9 @@ mod tests {
         assert!(!contains_semantic_server_json(
             r#"{"name":"server","version":"1.0.0"}"#
         ));
-        assert!(!contains_semantic_server_json(r#"{"name":"server","remotes":[]}"#));
+        assert!(!contains_semantic_server_json(
+            r#"{"name":"server","remotes":[]}"#
+        ));
         assert!(!contains_semantic_server_json("not-json"));
     }
 
@@ -110,7 +112,11 @@ mod tests {
             r#"{"name":"ok","version":"1.0.0","packages":[]}"#,
         )
         .unwrap();
-        fs::write(workspace.join("other.json"), r#"{"name":"wrong","version":"1.0.0"}"#).unwrap();
+        fs::write(
+            workspace.join("other.json"),
+            r#"{"name":"wrong","version":"1.0.0"}"#,
+        )
+        .unwrap();
 
         let discovered = admitted_server_json_paths(&workspace).unwrap();
         cleanup(&workspace);

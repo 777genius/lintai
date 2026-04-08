@@ -697,8 +697,16 @@ mod tests {
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC324")
             .expect("SEC324 should exist");
-        assert_eq!(sec324.default_presets, vec!["recommended", "supply-chain"]);
-        assert_eq!(sec324.public_lane, "recommended");
+        assert_eq!(sec324.default_presets, vec!["supply-chain"]);
+        assert_eq!(sec324.public_lane, "preview");
+
+        let sec352 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC352")
+            .expect("SEC352 should exist");
+        assert_eq!(sec352.default_presets, vec!["preview", "skills"]);
+        assert_eq!(sec352.public_lane, "preview");
 
         let sec353 = catalog
             .rules
@@ -750,9 +758,33 @@ mod tests {
             super::SitePresetKind::Membership
         ));
         assert!(
-            recommended
+            !recommended
                 .rule_ids
                 .contains(&"lintai-ai-security:SEC324".to_owned())
+        );
+        assert!(
+            !recommended
+                .rule_ids
+                .contains(&"lintai-ai-security:SEC328".to_owned())
+        );
+        let supply_chain = catalog
+            .presets
+            .iter()
+            .find(|preset| preset.id == "supply-chain")
+            .expect("supply-chain preset should exist");
+        assert!(matches!(
+            supply_chain.kind,
+            super::SitePresetKind::Membership
+        ));
+        assert!(
+            supply_chain
+                .rule_ids
+                .contains(&"lintai-ai-security:SEC324".to_owned())
+        );
+        assert!(
+            supply_chain
+                .rule_ids
+                .contains(&"lintai-ai-security:SEC328".to_owned())
         );
         assert!(matches!(advisory.kind, super::SitePresetKind::Membership));
         assert!(matches!(governance.kind, super::SitePresetKind::Membership));

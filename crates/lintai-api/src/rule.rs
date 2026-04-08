@@ -159,8 +159,8 @@ pub trait RuleProvider: Send + Sync {
 
 #[cfg(test)]
 mod tests {
-    use crate::{Artifact, ArtifactKind, CapabilityConflictMode, ParsedDocument, SourceFormat};
     use super::*;
+    use crate::{Artifact, ArtifactKind, CapabilityConflictMode, ParsedDocument, SourceFormat};
     use std::mem;
 
     #[derive(Default)]
@@ -219,7 +219,10 @@ mod tests {
     fn scan_scope_helpers_are_stable() {
         assert!(matches!(ScanScope::PerFile, ScanScope::PerFile));
         assert!(matches!(ScanScope::Workspace, ScanScope::Workspace));
-        assert_ne!(mem::discriminant(&ScanScope::PerFile), mem::discriminant(&ScanScope::Workspace));
+        assert_ne!(
+            mem::discriminant(&ScanScope::PerFile),
+            mem::discriminant(&ScanScope::Workspace)
+        );
         assert_eq!(RuleTier::Stable.label(), "Stable");
         assert_eq!(RuleTier::Preview.label(), "Preview");
     }
@@ -244,7 +247,11 @@ mod tests {
         let provider = TestRuleProvider;
         let empty_document = ParsedDocument::new(Vec::new(), None);
         let ctx = ScanContext::new(
-            Artifact::new("repo/test.md", ArtifactKind::Instructions, SourceFormat::Markdown),
+            Artifact::new(
+                "repo/test.md",
+                ArtifactKind::Instructions,
+                SourceFormat::Markdown,
+            ),
             "content",
             empty_document,
             None,

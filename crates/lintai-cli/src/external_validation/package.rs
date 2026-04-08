@@ -10,6 +10,16 @@ pub(crate) enum ValidationPackage {
 }
 
 impl ValidationPackage {
+    pub(crate) const CANONICAL_SCAN_PRESET_MATRIX: &[&str] = &[
+        "recommended",
+        "base",
+        "mcp",
+        "claude",
+        "skills",
+        "preview",
+        "supply-chain",
+    ];
+
     pub(crate) fn parse(value: &str) -> Result<Self, String> {
         match value {
             "canonical" => Ok(Self::Canonical),
@@ -43,7 +53,7 @@ impl ValidationPackage {
 
     pub(crate) fn baseline_reference(self) -> Option<&'static str> {
         match self {
-            Self::Canonical => Some("archive/wave1-ledger.toml"),
+            Self::Canonical => Some("archive/wave2-ledger.toml"),
             Self::ToolJsonExtension => Some("archive/wave3-ledger.toml"),
             Self::ServerJsonExtension => Some("archive/wave1-ledger.toml"),
             Self::GithubActionsExtension => None,
@@ -53,7 +63,7 @@ impl ValidationPackage {
 
     pub(crate) fn candidate_ledger_path(self) -> &'static str {
         match self {
-            Self::Canonical => "target/external-validation/wave2/candidate-ledger.toml",
+            Self::Canonical => "target/external-validation/wave3/candidate-ledger.toml",
             Self::ToolJsonExtension => {
                 "target/external-validation/tool-json-extension/candidate-ledger.toml"
             }
@@ -71,7 +81,7 @@ impl ValidationPackage {
 
     pub(crate) fn raw_output_root(self) -> &'static str {
         match self {
-            Self::Canonical => "target/external-validation/wave2/raw",
+            Self::Canonical => "target/external-validation/wave3/raw",
             Self::ToolJsonExtension => "target/external-validation/tool-json-extension/raw",
             Self::ServerJsonExtension => "target/external-validation/server-json-extension/raw",
             Self::GithubActionsExtension => {
@@ -82,11 +92,21 @@ impl ValidationPackage {
     }
     pub(crate) fn default_wave(self) -> u32 {
         match self {
-            Self::Canonical => 2,
+            Self::Canonical => 3,
             Self::ToolJsonExtension => 4,
             Self::ServerJsonExtension => 2,
             Self::GithubActionsExtension => 1,
             Self::AiNativeDiscovery => 1,
+        }
+    }
+
+    pub(crate) fn scan_preset_matrix(self) -> &'static [&'static str] {
+        match self {
+            Self::Canonical => Self::CANONICAL_SCAN_PRESET_MATRIX,
+            Self::ToolJsonExtension
+            | Self::ServerJsonExtension
+            | Self::GithubActionsExtension
+            | Self::AiNativeDiscovery => &[],
         }
     }
 }
@@ -100,8 +120,14 @@ mod tests {
         let cases = [
             ("canonical", ValidationPackage::Canonical),
             ("tool-json-extension", ValidationPackage::ToolJsonExtension),
-            ("server-json-extension", ValidationPackage::ServerJsonExtension),
-            ("github-actions-extension", ValidationPackage::GithubActionsExtension),
+            (
+                "server-json-extension",
+                ValidationPackage::ServerJsonExtension,
+            ),
+            (
+                "github-actions-extension",
+                ValidationPackage::GithubActionsExtension,
+            ),
             ("ai-native-discovery", ValidationPackage::AiNativeDiscovery),
         ];
 
@@ -113,7 +139,10 @@ mod tests {
     #[test]
     fn parse_rejects_unknown_package() {
         let error = ValidationPackage::parse("does-not-exist").unwrap_err();
-        assert_eq!(error, "unknown external validation package `does-not-exist`");
+        assert_eq!(
+            error,
+            "unknown external validation package `does-not-exist`"
+        );
     }
 
     #[test]
@@ -123,10 +152,11 @@ mod tests {
                 ValidationPackage::Canonical,
                 SHORTLIST_PATH,
                 LEDGER_PATH,
-                Some("archive/wave1-ledger.toml"),
-                "target/external-validation/wave2/candidate-ledger.toml",
-                "target/external-validation/wave2/raw",
-                2,
+                Some("archive/wave2-ledger.toml"),
+                "target/external-validation/wave3/candidate-ledger.toml",
+                "target/external-validation/wave3/raw",
+                3,
+                ValidationPackage::CANONICAL_SCAN_PRESET_MATRIX,
             ),
             (
                 ValidationPackage::ToolJsonExtension,
@@ -136,6 +166,7 @@ mod tests {
                 "target/external-validation/tool-json-extension/candidate-ledger.toml",
                 "target/external-validation/tool-json-extension/raw",
                 4,
+                &[],
             ),
             (
                 ValidationPackage::ServerJsonExtension,
@@ -145,6 +176,7 @@ mod tests {
                 "target/external-validation/server-json-extension/candidate-ledger.toml",
                 "target/external-validation/server-json-extension/raw",
                 2,
+                &[],
             ),
             (
                 ValidationPackage::GithubActionsExtension,
@@ -154,6 +186,7 @@ mod tests {
                 "target/external-validation/github-actions-extension/candidate-ledger.toml",
                 "target/external-validation/github-actions-extension/raw",
                 1,
+                &[],
             ),
             (
                 ValidationPackage::AiNativeDiscovery,
@@ -163,18 +196,12 @@ mod tests {
                 "target/external-validation/ai-native-discovery/candidate-ledger.toml",
                 "target/external-validation/ai-native-discovery/raw",
                 1,
+                &[],
             ),
         ];
 
-        for (
-            package,
-            shortlist,
-            ledger,
-            baseline,
-            candidate,
-            output_root,
-            wave,
-        ) in cases
+        for (package, shortlist, ledger, baseline, candidate, output_root, wave, preset_matrix) in
+            cases
         {
             assert_eq!(package.shortlist_path(), shortlist);
             assert_eq!(package.ledger_path(), ledger);
@@ -182,6 +209,7 @@ mod tests {
             assert_eq!(package.candidate_ledger_path(), candidate);
             assert_eq!(package.raw_output_root(), output_root);
             assert_eq!(package.default_wave(), wave);
+            assert_eq!(package.scan_preset_matrix(), preset_matrix);
         }
     }
 }
