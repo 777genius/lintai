@@ -4,17 +4,7 @@ use super::*;
 fn finds_unscoped_bash_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash, Read, Write\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);
-
-    let finding = summary
-        .findings
-        .iter()
-        .find(|finding| finding.rule_code == "SEC352")
-        .unwrap();
-    let start = content.find("Bash").unwrap();
-    assert_eq!(
-        finding.location.span,
-        lintai_api::Span::new(start, start + 4)
-    );
+    assert_marker_span(&summary, "SEC352", content, "Bash");
 }
 
 #[test]
@@ -23,13 +13,7 @@ fn finds_unscoped_bash_allowed_tools_in_yaml_list_frontmatter() {
         "AGENTS.md",
         "---\nallowed-tools:\n  - Bash\n  - Read\n---\n# Agent\n",
     );
-
-    assert!(
-        summary
-            .findings
-            .iter()
-            .any(|finding| finding.rule_code == "SEC352")
-    );
+    assert_has_rule(&summary, "SEC352");
 }
 
 #[test]
@@ -38,56 +22,25 @@ fn ignores_scoped_bash_allowed_tools_in_frontmatter() {
         "SKILL.md",
         "---\nallowed-tools: Bash(git:*), Read\n---\n# Skill\n",
     );
-
-    assert!(
-        !summary
-            .findings
-            .iter()
-            .any(|finding| finding.rule_code == "SEC352")
-    );
+    assert_lacks_rule(&summary, "SEC352");
 }
 
 #[test]
 fn ignores_unscoped_bash_allowed_tools_on_fixture_like_path() {
-    let temp_dir = unique_temp_dir("lintai-sec352-fixture-safe");
-    std::fs::create_dir_all(temp_dir.join("tests/fixtures/skill")).unwrap();
-    std::fs::write(
-        temp_dir.join("tests/fixtures/skill/SKILL.md"),
+    let summary = scan_fixture(
+        "tests/fixtures/skill/SKILL.md",
         "---\nallowed-tools: Bash, Read\n---\n# Fixture skill\n",
-    )
-    .unwrap();
-
-    let summary = EngineBuilder::default()
-        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
-            AiSecurityProvider::default(),
-        ))))
-        .build()
-        .scan_path(&temp_dir)
-        .unwrap();
-
-    assert!(
-        !summary
-            .findings
-            .iter()
-            .any(|finding| finding.rule_code == "SEC352")
+        &["base", "preview", "skills", "guidance"],
+        "lintai-sec352-fixture-safe",
     );
+    assert_lacks_rule(&summary, "SEC352");
 }
 
 #[test]
 fn finds_unscoped_websearch_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: WebSearch, Read\n---\n# Skill\n";
     let summary = scan_preview_skill_fixture("SKILL.md", content);
-
-    let finding = summary
-        .findings
-        .iter()
-        .find(|finding| finding.rule_code == "SEC389")
-        .unwrap();
-    let start = content.find("WebSearch").unwrap();
-    assert_eq!(
-        finding.location.span,
-        lintai_api::Span::new(start, start + "WebSearch".len())
-    );
+    assert_marker_span(&summary, "SEC389", content, "WebSearch");
 }
 
 #[test]
@@ -96,98 +49,42 @@ fn ignores_scoped_websearch_allowed_tools_in_frontmatter() {
         "SKILL.md",
         "---\nallowed-tools: WebSearch(site:docs.example.com), Read\n---\n# Skill\n",
     );
-
-    assert!(
-        !summary
-            .findings
-            .iter()
-            .any(|finding| finding.rule_code == "SEC389")
-    );
+    assert_lacks_rule(&summary, "SEC389");
 }
 
 #[test]
 fn finds_git_push_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git push), Read\n---\n# Skill\n";
     let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
-
-    let finding = summary
-        .findings
-        .iter()
-        .find(|finding| finding.rule_code == "SEC390")
-        .unwrap();
-    let start = content.find("Bash(git push)").unwrap();
-    assert_eq!(
-        finding.location.span,
-        lintai_api::Span::new(start, start + "Bash(git push)".len())
-    );
+    assert_marker_span(&summary, "SEC390", content, "Bash(git push)");
 }
 
 #[test]
 fn finds_git_checkout_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git checkout:*), Read\n---\n# Skill\n";
     let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
-
-    let finding = summary
-        .findings
-        .iter()
-        .find(|finding| finding.rule_code == "SEC391")
-        .unwrap();
-    let start = content.find("Bash(git checkout:*)").unwrap();
-    assert_eq!(
-        finding.location.span,
-        lintai_api::Span::new(start, start + "Bash(git checkout:*)".len())
-    );
+    assert_marker_span(&summary, "SEC391", content, "Bash(git checkout:*)");
 }
 
 #[test]
 fn finds_git_commit_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git commit:*), Read\n---\n# Skill\n";
     let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
-
-    let finding = summary
-        .findings
-        .iter()
-        .find(|finding| finding.rule_code == "SEC392")
-        .unwrap();
-    let start = content.find("Bash(git commit:*)").unwrap();
-    assert_eq!(
-        finding.location.span,
-        lintai_api::Span::new(start, start + "Bash(git commit:*)".len())
-    );
+    assert_marker_span(&summary, "SEC392", content, "Bash(git commit:*)");
 }
 
 #[test]
 fn finds_git_stash_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git stash:*), Read\n---\n# Skill\n";
     let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
-
-    let finding = summary
-        .findings
-        .iter()
-        .find(|finding| finding.rule_code == "SEC393")
-        .unwrap();
-    let start = content.find("Bash(git stash:*)").unwrap();
-    assert_eq!(
-        finding.location.span,
-        lintai_api::Span::new(start, start + "Bash(git stash:*)".len())
-    );
+    assert_marker_span(&summary, "SEC393", content, "Bash(git stash:*)");
 }
 
 #[test]
 fn finds_gh_pr_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(gh pr:*), Read\n---\n# Skill\n";
     let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
-
-    let finding = summary
-        .findings
-        .iter()
-        .find(|finding| finding.rule_code == "SEC474")
-        .unwrap();
-    let start = content.find("Bash(gh pr:*)").unwrap();
-    assert_eq!(
-        finding.location.span,
-        lintai_api::Span::new(start, start + "Bash(gh pr:*)".len())
-    );
+    assert_marker_span(&summary, "SEC474", content, "Bash(gh pr:*)");
 }
 
 #[test]
@@ -196,13 +93,7 @@ fn ignores_specific_gh_pr_allowed_tools_in_frontmatter() {
         "SKILL.md",
         "---\nallowed-tools: Bash(gh pr diff:*), Read\n---\n# Skill\n",
     );
-
-    assert!(
-        !summary
-            .findings
-            .iter()
-            .any(|finding| finding.rule_code == "SEC474")
-    );
+    assert_lacks_rule(&summary, "SEC474");
 }
 
 #[test]
@@ -211,13 +102,7 @@ fn ignores_fixture_like_gh_pr_allowed_tools_in_frontmatter() {
         "tests/fixtures/SKILL.md",
         "---\nallowed-tools: Bash(gh pr:*), Read\n---\n# Skill\n",
     );
-
-    assert!(
-        !summary
-            .findings
-            .iter()
-            .any(|finding| finding.rule_code == "SEC474")
-    );
+    assert_lacks_rule(&summary, "SEC474");
 }
 
 #[test]

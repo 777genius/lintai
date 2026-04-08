@@ -15,6 +15,14 @@ use crate::{
     registry::{DetectionClass, RuleLifecycle, rule_spec_groups, rule_specs},
 };
 
+mod family_helpers;
+
+#[allow(unused_imports)]
+use family_helpers::{
+    assert_has_rule, assert_lacks_rule, assert_marker_span, expect_finding, scan_fixture,
+    unique_temp_dir,
+};
+
 fn config_with_presets(project_root: &Path, presets: &[&str]) -> EngineConfig {
     let preset_ids = presets
         .iter()
@@ -2569,97 +2577,36 @@ fn ignores_approval_bypass_in_frontmatter() {
 }
 
 fn scan_preview_skill_fixture(relative_path: &str, content: &str) -> lintai_engine::ScanSummary {
-    let temp_dir = unique_temp_dir("lintai-sec352-preview");
-    let file_path = temp_dir.join(relative_path);
-    std::fs::create_dir_all(file_path.parent().unwrap()).unwrap();
-    std::fs::write(
-        temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"skills\", \"guidance\"]\n",
+    scan_fixture(
+        relative_path,
+        content,
+        &["base", "preview", "skills", "guidance"],
+        "lintai-sec352-preview",
     )
-    .unwrap();
-    std::fs::write(&file_path, content).unwrap();
-
-    let workspace = load_workspace_config(&temp_dir).unwrap();
-    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
-    EngineBuilder::default()
-        .with_config(workspace.engine_config.clone())
-        .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
-            AiSecurityProvider::default(),
-        ))))
-        .build()
-        .scan_path(&temp_dir)
-        .unwrap()
 }
 
 fn scan_preview_governance_skill_fixture(
     relative_path: &str,
     content: &str,
 ) -> lintai_engine::ScanSummary {
-    let temp_dir = unique_temp_dir("lintai-sec390-preview");
-    let file_path = temp_dir.join(relative_path);
-    std::fs::create_dir_all(file_path.parent().unwrap()).unwrap();
-    std::fs::write(
-        temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"skills\", \"guidance\", \"governance\"]\n",
+    scan_fixture(
+        relative_path,
+        content,
+        &["base", "preview", "skills", "guidance", "governance"],
+        "lintai-sec390-preview",
     )
-    .unwrap();
-    std::fs::write(&file_path, content).unwrap();
-
-    let workspace = load_workspace_config(&temp_dir).unwrap();
-    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
-    EngineBuilder::default()
-        .with_config(workspace.engine_config.clone())
-        .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
-            AiSecurityProvider::default(),
-        ))))
-        .build()
-        .scan_path(&temp_dir)
-        .unwrap()
 }
 
 fn scan_preview_claude_settings_fixture(
     relative_path: &str,
     content: &str,
 ) -> lintai_engine::ScanSummary {
-    let temp_dir = unique_temp_dir("lintai-sec361-preview");
-    let file_path = temp_dir.join(relative_path);
-    std::fs::create_dir_all(file_path.parent().unwrap()).unwrap();
-    std::fs::write(
-        temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+    scan_fixture(
+        relative_path,
+        content,
+        &["base", "preview", "claude"],
+        "lintai-sec361-preview",
     )
-    .unwrap();
-    std::fs::write(&file_path, content).unwrap();
-
-    let workspace = load_workspace_config(&temp_dir).unwrap();
-    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
-    EngineBuilder::default()
-        .with_config(workspace.engine_config.clone())
-        .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
-            AiSecurityProvider::default(),
-        ))))
-        .build()
-        .scan_path(&temp_dir)
-        .unwrap()
-}
-
-fn unique_temp_dir(prefix: &str) -> std::path::PathBuf {
-    use std::sync::atomic::{AtomicU64, Ordering};
-    use std::time::{SystemTime, UNIX_EPOCH};
-
-    static NEXT_TEMP_ID: AtomicU64 = AtomicU64::new(0);
-    let nanos = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .unwrap()
-        .as_nanos();
-    let sequence = NEXT_TEMP_ID.fetch_add(1, Ordering::Relaxed);
-    std::env::temp_dir().join(format!(
-        "{prefix}-{}-{nanos}-{sequence}",
-        std::process::id()
-    ))
 }
 
 #[allow(clippy::duplicate_mod)]

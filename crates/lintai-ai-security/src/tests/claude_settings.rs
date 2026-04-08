@@ -4,11 +4,7 @@ use super::*;
 fn finds_claude_settings_missing_schema() {
     let content = r#"{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
-    let finding = summary
-        .findings
-        .iter()
-        .find(|finding| finding.rule_code == "SEC361")
-        .unwrap();
+    let finding = expect_finding(&summary, "SEC361");
     assert_eq!(finding.location.span, lintai_api::Span::new(0, 1));
 }
 
@@ -16,34 +12,14 @@ fn finds_claude_settings_missing_schema() {
 fn finds_claude_settings_insecure_http_hook_url() {
     let content = r#"{"allowedHttpHookUrls":["http://hooks.example.test/notify","https://hooks.example.test/notify"]}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
-
-    let finding = summary
-        .findings
-        .iter()
-        .find(|finding| finding.rule_code == "SEC365")
-        .unwrap();
-    let start = content.find("http://").unwrap();
-    assert_eq!(
-        finding.location.span,
-        lintai_api::Span::new(start, start + "http://".len())
-    );
+    assert_marker_span(&summary, "SEC365", content, "http://");
 }
 
 #[test]
 fn finds_claude_settings_dangerous_http_hook_host() {
     let content = r#"{"allowedHttpHookUrls":["https://169.254.169.254/latest/meta-data","https://hooks.example.test/notify"]}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
-
-    let finding = summary
-        .findings
-        .iter()
-        .find(|finding| finding.rule_code == "SEC366")
-        .unwrap();
-    let start = content.find("169.254.169.254").unwrap();
-    assert_eq!(
-        finding.location.span,
-        lintai_api::Span::new(start, start + "169.254.169.254".len())
-    );
+    assert_marker_span(&summary, "SEC366", content, "169.254.169.254");
 }
 
 #[test]
@@ -52,13 +28,8 @@ fn ignores_claude_settings_https_hook_urls() {
         ".claude/settings.json",
         r#"{"allowedHttpHookUrls":["https://hooks.example.test/notify"]}"#,
     );
-
-    assert!(
-        !summary
-            .findings
-            .iter()
-            .any(|finding| matches!(finding.rule_code.as_str(), "SEC365" | "SEC366"))
-    );
+    assert_lacks_rule(&summary, "SEC365");
+    assert_lacks_rule(&summary, "SEC366");
 }
 
 #[test]
@@ -67,48 +38,20 @@ fn ignores_claude_settings_loopback_http_hook_urls() {
         ".claude/settings.json",
         r#"{"allowedHttpHookUrls":["http://localhost:8899/hook"]}"#,
     );
-
-    assert!(
-        !summary
-            .findings
-            .iter()
-            .any(|finding| matches!(finding.rule_code.as_str(), "SEC365" | "SEC366"))
-    );
+    assert_lacks_rule(&summary, "SEC365");
+    assert_lacks_rule(&summary, "SEC366");
 }
 
 #[test]
 fn ignores_claude_settings_insecure_http_hook_url_on_fixture_like_path() {
-    let temp_dir = unique_temp_dir("lintai-claude-settings-http-hook-fixture");
-    std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
-    std::fs::write(
-        temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
-    )
-    .unwrap();
-    std::fs::write(
-        temp_dir.join("tests/fixtures/.claude/settings.json"),
+    let summary = scan_fixture(
+        "tests/fixtures/.claude/settings.json",
         br#"{"allowedHttpHookUrls":["http://hooks.example.test/notify"]}"#,
-    )
-    .unwrap();
-
-    let workspace = load_workspace_config(&temp_dir).unwrap();
-    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
-    let summary = EngineBuilder::default()
-        .with_config(workspace.engine_config.clone())
-        .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
-            AiSecurityProvider::default(),
-        ))))
-        .build()
-        .scan_path(&temp_dir)
-        .unwrap();
-
-    assert!(
-        !summary
-            .findings
-            .iter()
-            .any(|finding| matches!(finding.rule_code.as_str(), "SEC365" | "SEC366"))
+        &["base", "preview", "claude"],
+        "lintai-claude-settings-http-hook-fixture",
     );
+    assert_lacks_rule(&summary, "SEC365");
+    assert_lacks_rule(&summary, "SEC366");
 }
 
 #[test]
@@ -117,65 +60,25 @@ fn ignores_claude_settings_with_schema() {
         ".claude/settings.json",
         r#"{"$schema":"https://json.schemastore.org/claude-code-settings.json","hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
-
-    assert!(
-        !summary
-            .findings
-            .iter()
-            .any(|finding| finding.rule_code == "SEC361")
-    );
+    assert_lacks_rule(&summary, "SEC361");
 }
 
 #[test]
 fn ignores_claude_settings_missing_schema_on_fixture_like_path() {
-    let temp_dir = unique_temp_dir("lintai-claude-settings-schema-fixture");
-    std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
-    std::fs::write(
-        temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
-    )
-    .unwrap();
-    std::fs::write(
-        temp_dir.join("tests/fixtures/.claude/settings.json"),
+    let summary = scan_fixture(
+        "tests/fixtures/.claude/settings.json",
         br#"{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
-    )
-    .unwrap();
-
-    let workspace = load_workspace_config(&temp_dir).unwrap();
-    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
-    let summary = EngineBuilder::default()
-        .with_config(workspace.engine_config.clone())
-        .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
-            AiSecurityProvider::default(),
-        ))))
-        .build()
-        .scan_path(&temp_dir)
-        .unwrap();
-
-    assert!(
-        !summary
-            .findings
-            .iter()
-            .any(|finding| finding.rule_code == "SEC361")
+        &["base", "preview", "claude"],
+        "lintai-claude-settings-schema-fixture",
     );
+    assert_lacks_rule(&summary, "SEC361");
 }
 
 #[test]
 fn finds_claude_settings_bypass_permissions() {
     let content = r#"{"permissions":{"defaultMode":"bypassPermissions"},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
     let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
-
-    let finding = summary
-        .findings
-        .iter()
-        .find(|finding| finding.rule_code == "SEC364")
-        .unwrap();
-    let start = content.find("bypassPermissions").unwrap();
-    assert_eq!(
-        finding.location.span,
-        lintai_api::Span::new(start, start + "bypassPermissions".len())
-    );
+    assert_marker_span(&summary, "SEC364", content, "bypassPermissions");
 }
 
 #[test]
@@ -184,48 +87,18 @@ fn ignores_claude_settings_non_bypass_default_mode() {
         ".claude/settings.json",
         r#"{"permissions":{"defaultMode":"ask"},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
-
-    assert!(
-        !summary
-            .findings
-            .iter()
-            .any(|finding| finding.rule_code == "SEC364")
-    );
+    assert_lacks_rule(&summary, "SEC364");
 }
 
 #[test]
 fn ignores_claude_settings_bypass_permissions_on_fixture_like_path() {
-    let temp_dir = unique_temp_dir("lintai-claude-settings-bypass-fixture");
-    std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
-    std::fs::write(
-        temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
-    )
-    .unwrap();
-    std::fs::write(
-        temp_dir.join("tests/fixtures/.claude/settings.json"),
+    let summary = scan_fixture(
+        "tests/fixtures/.claude/settings.json",
         br#"{"permissions":{"defaultMode":"bypassPermissions"},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
-    )
-    .unwrap();
-
-    let workspace = load_workspace_config(&temp_dir).unwrap();
-    let suppressions = FileSuppressions::load(&workspace.engine_config).unwrap();
-    let summary = EngineBuilder::default()
-        .with_config(workspace.engine_config.clone())
-        .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
-            AiSecurityProvider::default(),
-        ))))
-        .build()
-        .scan_path(&temp_dir)
-        .unwrap();
-
-    assert!(
-        !summary
-            .findings
-            .iter()
-            .any(|finding| finding.rule_code == "SEC364")
+        &["base", "preview", "claude"],
+        "lintai-claude-settings-bypass-fixture",
     );
+    assert_lacks_rule(&summary, "SEC364");
 }
 
 #[test]
