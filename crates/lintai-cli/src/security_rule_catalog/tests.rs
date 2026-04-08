@@ -120,14 +120,14 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .find(|entry| entry.metadata.code == "SEC324")
         .unwrap();
     assert_eq!(sec324.default_presets(), vec!["supply-chain"]);
-    assert_eq!(sec324.public_lane(), PublicLane::Preview);
+    assert_eq!(sec324.public_lane(), PublicLane::SupplyChain);
 
     let sec328 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC328")
         .unwrap();
     assert_eq!(sec328.default_presets(), vec!["supply-chain"]);
-    assert_eq!(sec328.public_lane(), PublicLane::Preview);
+    assert_eq!(sec328.public_lane(), PublicLane::SupplyChain);
 
     let sec352 = entries
         .iter()
@@ -147,18 +147,21 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .find(|entry| entry.metadata.code == "SEC353")
         .unwrap();
     assert_eq!(sec353.default_presets(), vec!["guidance"]);
+    assert_eq!(sec353.public_lane(), PublicLane::Guidance);
 
     let sec401 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC401")
         .unwrap();
     assert_eq!(sec401.default_presets(), vec!["compat"]);
+    assert_eq!(sec401.public_lane(), PublicLane::Compat);
 
     let sec756 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC756")
         .unwrap();
     assert_eq!(sec756.default_presets(), vec!["advisory"]);
+    assert_eq!(sec756.public_lane(), PublicLane::Advisory);
 
     let sec423 = entries
         .iter()

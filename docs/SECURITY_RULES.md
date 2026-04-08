@@ -46,11 +46,11 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC321 / SERVER-LITERAL-AUTH-HEADER` | server.json remotes header commits literal authentication material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC322 / SERVER-UNDEFINED-HEADER-VAR` | server.json remotes header value references an undefined template variable | `preview` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC323 / SERVER-AUTH-SECRET-FLAG` | server.json auth header carries material without an explicit secret flag | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC324 / GHA-UNPINNED-ACTION` | GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA | `preview` | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
-| `SEC325 / GHA-UNTRUSTED-RUN-INTERPOLATION` | GitHub Actions workflow interpolates untrusted expression data directly inside a run command | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
-| `SEC326 / GHA-PR-TARGET-HEAD-CHECKOUT` | GitHub Actions pull_request_target workflow checks out untrusted pull request head content | `preview` | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
-| `SEC327 / GHA-WRITE-ALL-PERMISSIONS` | GitHub Actions workflow grants GITHUB_TOKEN write-all permissions | `preview` | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
-| `SEC328 / GHA-WRITE-CAPABLE-THIRD-PARTY-ACTION` | GitHub Actions workflow combines explicit write-capable permissions with a third-party action | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
+| `SEC324 / GHA-UNPINNED-ACTION` | GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
+| `SEC325 / GHA-UNTRUSTED-RUN-INTERPOLATION` | GitHub Actions workflow interpolates untrusted expression data directly inside a run command | `supply-chain` | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
+| `SEC326 / GHA-PR-TARGET-HEAD-CHECKOUT` | GitHub Actions pull_request_target workflow checks out untrusted pull request head content | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
+| `SEC327 / GHA-WRITE-ALL-PERMISSIONS` | GitHub Actions workflow grants GITHUB_TOKEN write-all permissions | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
+| `SEC328 / GHA-WRITE-CAPABLE-THIRD-PARTY-ACTION` | GitHub Actions workflow combines explicit write-capable permissions with a third-party action | `supply-chain` | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
 | `SEC329 / MCP-MUTABLE-LAUNCHER` | MCP configuration launches tooling through a mutable package runner | `recommended` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `recommended`, `base`, `mcp` |
 | `SEC330 / MCP-DOWNLOAD-EXEC` | MCP configuration command downloads remote content and pipes it into a shell | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC331 / MCP-TLS-BYPASS` | MCP configuration command disables TLS verification in a network-capable execution path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
@@ -72,8 +72,8 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC350 / MD-UNTRUSTED-INSTRUCTION-PROMOTION` | Instruction markdown promotes untrusted external content to developer/system-level instructions | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
 | `SEC351 / MD-APPROVAL-BYPASS` | AI-native instruction explicitly disables user approval or confirmation | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
 | `SEC352 / MD-UNSCOPED-BASH` | AI-native markdown frontmatter grants unscoped Bash tool access | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC353 / COPILOT-4K` | GitHub Copilot instruction markdown exceeds the 4000-character guidance limit | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
-| `SEC354 / COPILOT-PATH-APPLYTO` | Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC353 / COPILOT-4K` | GitHub Copilot instruction markdown exceeds the 4000-character guidance limit | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC354 / COPILOT-PATH-APPLYTO` | Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC355 / MD-WILDCARD-TOOLS` | AI-native markdown frontmatter grants wildcard tool access | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC356 / PLUGIN-AGENT-PERMISSIONMODE` | Plugin agent frontmatter sets `permissionMode` | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC357 / PLUGIN-AGENT-HOOKS` | Plugin agent frontmatter sets `hooks` | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
@@ -89,14 +89,14 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC367 / CLAUDE-WEBFETCH-WILDCARD` | Claude settings permissions allow `WebFetch(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC368 / CLAUDE-ABS-HOOK-PATH` | Claude settings hook command uses a repo-external absolute path in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC369 / CLAUDE-WRITE-WILDCARD` | Claude settings permissions allow `Write(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC370 / COPILOT-PATH-SUFFIX` | Path-specific GitHub Copilot instruction markdown under `.github/instructions/` uses the wrong file suffix | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
-| `SEC371 / COPILOT-APPLYTO-TYPE` | Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` shape | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC370 / COPILOT-PATH-SUFFIX` | Path-specific GitHub Copilot instruction markdown under `.github/instructions/` uses the wrong file suffix | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC371 / COPILOT-APPLYTO-TYPE` | Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` shape | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC372 / CLAUDE-READ-WILDCARD` | Claude settings permissions allow `Read(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC373 / CLAUDE-EDIT-WILDCARD` | Claude settings permissions allow `Edit(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC374 / CLAUDE-WEBSEARCH-WILDCARD` | Claude settings permissions allow `WebSearch(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC375 / CLAUDE-GLOB-WILDCARD` | Claude settings permissions allow `Glob(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC376 / CLAUDE-GREP-WILDCARD` | Claude settings permissions allow `Grep(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC377 / COPILOT-APPLYTO-GLOB` | Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` glob pattern | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC377 / COPILOT-APPLYTO-GLOB` | Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` glob pattern | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC378 / CURSOR-ALWAYSAPPLY-GLOBS` | Cursor rule frontmatter should not set `globs` when `alwaysApply` is `true` | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC379 / CURSOR-UNKNOWN-FRONTMATTER` | Cursor rule frontmatter contains an unknown key | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC380 / CURSOR-DESCRIPTION` | Cursor rule frontmatter should include `description` | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
@@ -120,9 +120,9 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC398 / MCP-CAPABILITIES-WILDCARD` | MCP configuration grants all capabilities with `capabilities: ["*"]` or `capabilities: "*"` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC399 / CLAUDE-NPX-PERMISSION` | Claude settings permissions allow `Bash(npx ...)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC400 / CLAUDE-ENABLED-MCPJSON-SERVERS` | Claude settings enable `enabledMcpjsonServers` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC401 / POLICY-EXEC-MISMATCH` | Project policy forbids execution, but repository contains executable behavior | `preview` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
-| `SEC402 / POLICY-NETWORK-MISMATCH` | Project policy forbids network access, but repository contains network behavior | `preview` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
-| `SEC403 / POLICY-SKILL-CAPABILITIES-MISMATCH` | Skill frontmatter capabilities conflict with project policy | `preview` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
+| `SEC401 / POLICY-EXEC-MISMATCH` | Project policy forbids execution, but repository contains executable behavior | `compat` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
+| `SEC402 / POLICY-NETWORK-MISMATCH` | Project policy forbids network access, but repository contains network behavior | `compat` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
+| `SEC403 / POLICY-SKILL-CAPABILITIES-MISMATCH` | Skill frontmatter capabilities conflict with project policy | `compat` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC404 / MD-WEBFETCH-UNSCOPED` | AI-native markdown frontmatter grants bare `WebFetch` tool access | `preview` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC405 / CLAUDE-PACKAGE-INSTALL-PERMISSION` | Claude settings permissions allow package installation commands in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC406 / CLAUDE-GIT-ADD-PERMISSION` | Claude settings permissions allow `Bash(git add:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
@@ -462,20 +462,20 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC740` | Claude settings command hook dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
 | `SEC741` | Plugin hook command dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC742` | Plugin hook command dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC743` | package.json defines a dangerous install-time lifecycle script | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
-| `SEC744` | package.json installs a dependency from a git or forge shortcut source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
-| `SEC745` | package.json uses an unbounded dependency version like * or latest | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
-| `SEC746` | Dockerfile RUN downloads remote code and executes it | `preview` | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
-| `SEC747` | Dockerfile final stage explicitly runs as root | `preview` | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
-| `SEC748` | Docker Compose service enables privileged container runtime or host namespace access | `preview` | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
-| `SEC749` | Dockerfile FROM uses a mutable registry image without a digest pin | `preview` | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
-| `SEC750` | Docker Compose service image uses a mutable registry reference without a digest pin | `preview` | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
-| `SEC751` | Dockerfile FROM uses a latest or implicit-latest image tag | `preview` | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
-| `SEC752` | Docker Compose service image uses a latest or implicit-latest tag | `preview` | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
-| `SEC753` | package.json installs a dependency from a direct archive URL source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
-| `SEC754` | Devcontainer config defines a host-side initializeCommand | `preview` | Stable | `stable_gated` | Warn | `per_file` | `devcontainer` | `structural` | `message_only` | `supply-chain` |
-| `SEC755` | Devcontainer config bind-mounts sensitive local host material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `devcontainer` | `structural` | `message_only` | `supply-chain` |
-| `SEC756` | Installed npm dependency version matches an offline vulnerability advisory | `preview` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `suggestion` | `advisory` |
+| `SEC743` | package.json defines a dangerous install-time lifecycle script | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
+| `SEC744` | package.json installs a dependency from a git or forge shortcut source | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
+| `SEC745` | package.json uses an unbounded dependency version like * or latest | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
+| `SEC746` | Dockerfile RUN downloads remote code and executes it | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
+| `SEC747` | Dockerfile final stage explicitly runs as root | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
+| `SEC748` | Docker Compose service enables privileged container runtime or host namespace access | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
+| `SEC749` | Dockerfile FROM uses a mutable registry image without a digest pin | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
+| `SEC750` | Docker Compose service image uses a mutable registry reference without a digest pin | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
+| `SEC751` | Dockerfile FROM uses a latest or implicit-latest image tag | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
+| `SEC752` | Docker Compose service image uses a latest or implicit-latest tag | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
+| `SEC753` | package.json installs a dependency from a direct archive URL source | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
+| `SEC754` | Devcontainer config defines a host-side initializeCommand | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `devcontainer` | `structural` | `message_only` | `supply-chain` |
+| `SEC755` | Devcontainer config bind-mounts sensitive local host material | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `devcontainer` | `structural` | `message_only` | `supply-chain` |
+| `SEC756` | Installed npm dependency version matches an offline vulnerability advisory | `advisory` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `suggestion` | `advisory` |
 
 ## Builtin preset activation model
 
@@ -1219,7 +1219,7 @@ Important behavior:
 - Surface: `github_workflow`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -1241,7 +1241,7 @@ Important behavior:
 - Surface: `github_workflow`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `supply-chain`
@@ -1259,7 +1259,7 @@ Important behavior:
 - Surface: `github_workflow`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -1271,7 +1271,7 @@ Important behavior:
 - Benign Corpus: `github-workflow-pull-request-target-safe-checkout`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC327 / GHA-WRITE-ALL-PERMISSIONS` — GitHub Actions workflow grants GITHUB_TOKEN write-all permissions
 
@@ -1281,7 +1281,7 @@ Important behavior:
 - Surface: `github_workflow`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -1293,7 +1293,7 @@ Important behavior:
 - Benign Corpus: `github-workflow-read-only-permissions`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC328 / GHA-WRITE-CAPABLE-THIRD-PARTY-ACTION` — GitHub Actions workflow combines explicit write-capable permissions with a third-party action
 
@@ -1303,7 +1303,7 @@ Important behavior:
 - Surface: `github_workflow`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `supply-chain`
@@ -1755,7 +1755,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `guidance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `guidance`
@@ -1773,7 +1773,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `guidance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `guidance`
@@ -2097,7 +2097,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `guidance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `guidance`
@@ -2115,7 +2115,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `guidance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `guidance`
@@ -2243,7 +2243,7 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `guidance`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `guidance`
@@ -10193,7 +10193,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -10205,7 +10205,7 @@ Important behavior:
 - Benign Corpus: `package-manifest-safe-lifecycle-script`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC744` — package.json installs a dependency from a git or forge shortcut source
 
@@ -10215,7 +10215,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -10227,7 +10227,7 @@ Important behavior:
 - Benign Corpus: `package-manifest-registry-dependency-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC745` — package.json uses an unbounded dependency version like * or latest
 
@@ -10237,7 +10237,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -10249,7 +10249,7 @@ Important behavior:
 - Benign Corpus: `package-manifest-pinned-dependency-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC746` — Dockerfile RUN downloads remote code and executes it
 
@@ -10259,7 +10259,7 @@ Important behavior:
 - Surface: `dockerfile`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -10271,7 +10271,7 @@ Important behavior:
 - Benign Corpus: `dockerfile-safe-run`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC747` — Dockerfile final stage explicitly runs as root
 
@@ -10281,7 +10281,7 @@ Important behavior:
 - Surface: `dockerfile`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -10293,7 +10293,7 @@ Important behavior:
 - Benign Corpus: `dockerfile-final-stage-nonroot-user`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC748` — Docker Compose service enables privileged container runtime or host namespace access
 
@@ -10303,7 +10303,7 @@ Important behavior:
 - Surface: `docker-compose`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -10315,7 +10315,7 @@ Important behavior:
 - Benign Corpus: `docker-compose-safe-runtime`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC749` — Dockerfile FROM uses a mutable registry image without a digest pin
 
@@ -10325,7 +10325,7 @@ Important behavior:
 - Surface: `dockerfile`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -10337,7 +10337,7 @@ Important behavior:
 - Benign Corpus: `dockerfile-digest-pinned-base-image`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC750` — Docker Compose service image uses a mutable registry reference without a digest pin
 
@@ -10347,7 +10347,7 @@ Important behavior:
 - Surface: `docker-compose`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -10359,7 +10359,7 @@ Important behavior:
 - Benign Corpus: `docker-compose-digest-pinned-image`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC751` — Dockerfile FROM uses a latest or implicit-latest image tag
 
@@ -10369,7 +10369,7 @@ Important behavior:
 - Surface: `dockerfile`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -10381,7 +10381,7 @@ Important behavior:
 - Benign Corpus: `dockerfile-tagged-base-image-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC752` — Docker Compose service image uses a latest or implicit-latest tag
 
@@ -10391,7 +10391,7 @@ Important behavior:
 - Surface: `docker-compose`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -10403,7 +10403,7 @@ Important behavior:
 - Benign Corpus: `docker-compose-tagged-image-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC753` — package.json installs a dependency from a direct archive URL source
 
@@ -10413,7 +10413,7 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -10425,7 +10425,7 @@ Important behavior:
 - Benign Corpus: `package-manifest-registry-archive-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC754` — Devcontainer config defines a host-side initializeCommand
 
@@ -10435,7 +10435,7 @@ Important behavior:
 - Surface: `devcontainer`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -10447,7 +10447,7 @@ Important behavior:
 - Benign Corpus: `devcontainer-no-initialize-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC755` — Devcontainer config bind-mounts sensitive local host material
 
@@ -10457,7 +10457,7 @@ Important behavior:
 - Surface: `devcontainer`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
 - Default Presets: `supply-chain`
@@ -10469,7 +10469,7 @@ Important behavior:
 - Benign Corpus: `devcontainer-safe-workspace-mount`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ## Provider: `lintai-policy-mismatch`
 
@@ -10481,7 +10481,7 @@ Important behavior:
 - Surface: `workspace`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `compat`
@@ -10499,7 +10499,7 @@ Important behavior:
 - Surface: `workspace`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `compat`
@@ -10517,7 +10517,7 @@ Important behavior:
 - Surface: `workspace`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `compat`
@@ -10537,7 +10537,7 @@ Important behavior:
 - Surface: `workspace`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `advisory`
 - Default Confidence: `High`
 - Tier: `Preview`
 - Default Presets: `advisory`

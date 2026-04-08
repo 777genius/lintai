@@ -103,6 +103,10 @@ pub enum CatalogPublicLane {
     Recommended,
     Preview,
     Governance,
+    Guidance,
+    SupplyChain,
+    Compat,
+    Advisory,
 }
 
 impl CatalogPublicLane {
@@ -111,6 +115,10 @@ impl CatalogPublicLane {
             Self::Recommended => "recommended",
             Self::Preview => "preview",
             Self::Governance => "governance",
+            Self::Guidance => "guidance",
+            Self::SupplyChain => "supply-chain",
+            Self::Compat => "compat",
+            Self::Advisory => "advisory",
         }
     }
 }
@@ -142,6 +150,10 @@ mod tests {
         assert_eq!(CatalogSurface::GithubWorkflow.slug(), "github_workflow");
         assert_eq!(CatalogDetectionClass::Heuristic.slug(), "heuristic");
         assert_eq!(CatalogPublicLane::Governance.slug(), "governance");
+        assert_eq!(CatalogPublicLane::Guidance.slug(), "guidance");
+        assert_eq!(CatalogPublicLane::SupplyChain.slug(), "supply-chain");
+        assert_eq!(CatalogPublicLane::Compat.slug(), "compat");
+        assert_eq!(CatalogPublicLane::Advisory.slug(), "advisory");
         assert_eq!(
             CatalogRemediationSupport::MessageOnly.slug(),
             "message_only"

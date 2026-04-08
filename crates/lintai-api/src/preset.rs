@@ -103,11 +103,34 @@ pub fn builtin_membership_preset_ids() -> Vec<&'static str> {
         .collect()
 }
 
+pub fn builtin_public_lane_for_presets(preset_ids: &[&str]) -> CatalogPublicLane {
+    if preset_ids.contains(&"governance") {
+        CatalogPublicLane::Governance
+    } else if preset_ids.contains(&"supply-chain") {
+        CatalogPublicLane::SupplyChain
+    } else if preset_ids.contains(&"advisory") {
+        CatalogPublicLane::Advisory
+    } else if preset_ids.contains(&"compat") {
+        CatalogPublicLane::Compat
+    } else if preset_ids.contains(&"guidance") {
+        CatalogPublicLane::Guidance
+    } else if preset_ids.contains(&"recommended") {
+        CatalogPublicLane::Recommended
+    } else {
+        CatalogPublicLane::Preview
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use std::collections::BTreeSet;
 
-    use super::{BuiltinPresetKind, builtin_membership_preset_ids, builtin_presets};
+    use crate::CatalogPublicLane;
+
+    use super::{
+        BuiltinPresetKind, builtin_membership_preset_ids, builtin_presets,
+        builtin_public_lane_for_presets,
+    };
 
     #[test]
     fn builtin_presets_have_unique_ids_and_known_overlay_shape() {
@@ -132,4 +155,33 @@ mod tests {
         assert!(membership_ids.contains(&"compat"));
         assert!(!membership_ids.contains(&"strict"));
     }
+
+    #[test]
+    fn builtin_public_lane_inference_prefers_explicit_sidecar_lanes() {
+        assert_eq!(
+            builtin_public_lane_for_presets(&["recommended", "preview"]),
+            CatalogPublicLane::Recommended
+        );
+        assert_eq!(
+            builtin_public_lane_for_presets(&["guidance"]),
+            CatalogPublicLane::Guidance
+        );
+        assert_eq!(
+            builtin_public_lane_for_presets(&["supply-chain"]),
+            CatalogPublicLane::SupplyChain
+        );
+        assert_eq!(
+            builtin_public_lane_for_presets(&["compat"]),
+            CatalogPublicLane::Compat
+        );
+        assert_eq!(
+            builtin_public_lane_for_presets(&["advisory"]),
+            CatalogPublicLane::Advisory
+        );
+        assert_eq!(
+            builtin_public_lane_for_presets(&["preview", "skills"]),
+            CatalogPublicLane::Preview
+        );
+    }
 }
+use crate::CatalogPublicLane;

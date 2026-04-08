@@ -1,6 +1,9 @@
 use std::collections::{BTreeMap, BTreeSet};
 
-use crate::{CatalogPublicLane, CatalogRemediationSupport, RuleTier, builtin_preset_ids};
+use crate::{
+    CatalogPublicLane, CatalogRemediationSupport, RuleTier, builtin_preset_ids,
+    builtin_public_lane_for_presets,
+};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum CatalogDetectionClassKind {
@@ -96,13 +99,7 @@ pub fn validate_rule_presets(
         );
     }
 
-    let expected_public_lane = if preset_ids.contains(&"governance") {
-        CatalogPublicLane::Governance
-    } else if preset_ids.contains(&"recommended") {
-        CatalogPublicLane::Recommended
-    } else {
-        CatalogPublicLane::Preview
-    };
+    let expected_public_lane = builtin_public_lane_for_presets(preset_ids);
     assert!(
         public_lane == expected_public_lane,
         "{catalog_name} rule {rule_code} declares public lane {:?} but presets imply {:?}",
@@ -269,6 +266,7 @@ mod tests {
             &["preview", "skills"],
             CatalogPublicLane::Preview,
         );
+        validate_rule_presets("demo", "SEC401", &["compat"], CatalogPublicLane::Compat);
         validate_rule_quality_contract(
             "demo",
             "SEC101",
@@ -350,5 +348,11 @@ mod tests {
             &["recommended", "preview"],
             CatalogPublicLane::Preview,
         );
+    }
+
+    #[test]
+    #[should_panic(expected = "declares public lane Preview but presets imply Advisory")]
+    fn validation_helpers_reject_sidecar_lane_preset_drift() {
+        validate_rule_presets("demo", "SEC756", &["advisory"], CatalogPublicLane::Preview);
     }
 }

@@ -21,18 +21,36 @@ pub(super) fn append_default_summary(output: &mut String, report: &ReportEnvelop
         let mut recommended = 0usize;
         let mut preview = 0usize;
         let mut governance = 0usize;
+        let mut guidance = 0usize;
+        let mut supply_chain = 0usize;
+        let mut compat = 0usize;
+        let mut advisory = 0usize;
 
         for finding in report.findings {
             match shipped_rule_public_lane(&finding.rule_code).unwrap_or(PublicLane::Preview) {
                 PublicLane::Recommended => recommended += 1,
                 PublicLane::Preview => preview += 1,
                 PublicLane::Governance => governance += 1,
+                PublicLane::Guidance => guidance += 1,
+                PublicLane::SupplyChain => supply_chain += 1,
+                PublicLane::Compat => compat += 1,
+                PublicLane::Advisory => advisory += 1,
             }
         }
 
-        output.push_str(&format!("recommended findings: {recommended}\n"));
-        output.push_str(&format!("deeper review findings: {preview}\n"));
-        output.push_str(&format!("governance review findings: {governance}\n"));
+        append_lane_summary(output, "recommended findings", recommended);
+        append_lane_summary(output, "preview findings", preview);
+        append_lane_summary(output, "governance review findings", governance);
+        append_lane_summary(output, "guidance findings", guidance);
+        append_lane_summary(output, "supply-chain findings", supply_chain);
+        append_lane_summary(output, "compat findings", compat);
+        append_lane_summary(output, "advisory findings", advisory);
+    }
+}
+
+fn append_lane_summary(output: &mut String, label: &str, count: usize) {
+    if count > 0 {
+        output.push_str(&format!("{label}: {count}\n"));
     }
 }
 

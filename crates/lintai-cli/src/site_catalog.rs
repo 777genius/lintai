@@ -691,6 +691,7 @@ mod tests {
             .find(|rule| rule.rule_id == "lintai-policy-mismatch:SEC401")
             .expect("SEC401 should exist");
         assert_eq!(sec401.default_presets, vec!["compat"]);
+        assert_eq!(sec401.public_lane, "compat");
 
         let sec324 = catalog
             .rules
@@ -698,7 +699,7 @@ mod tests {
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC324")
             .expect("SEC324 should exist");
         assert_eq!(sec324.default_presets, vec!["supply-chain"]);
-        assert_eq!(sec324.public_lane, "preview");
+        assert_eq!(sec324.public_lane, "supply-chain");
 
         let sec352 = catalog
             .rules
@@ -714,6 +715,7 @@ mod tests {
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC353")
             .expect("SEC353 should exist");
         assert_eq!(sec353.default_presets, vec!["guidance"]);
+        assert_eq!(sec353.public_lane, "guidance");
 
         let sec390 = catalog
             .rules
@@ -729,6 +731,7 @@ mod tests {
             .find(|rule| rule.rule_id == "lintai-dep-vulns:SEC756")
             .expect("SEC756 should exist");
         assert_eq!(sec756.default_presets, vec!["advisory"]);
+        assert_eq!(sec756.public_lane, "advisory");
 
         let strict = catalog
             .presets

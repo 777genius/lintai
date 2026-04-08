@@ -1,3 +1,5 @@
+use std::sync::OnceLock;
+
 use lintai_api::{
     CatalogDetectionClass, CatalogPublicLane, CatalogRemediationSupport, CatalogRuleEntry,
     CatalogRuleLifecycle, CatalogRuleScope, CatalogSurface, RuleMetadata, RuleTier, declare_rule,
@@ -86,98 +88,97 @@ pub const POLICY_RULES: [RuleMetadata; 3] = [
     CapabilityConflictRule::METADATA,
 ];
 
-const POLICY_RULE_CATALOG_ENTRIES: [CatalogRuleEntry; 3] = [
-    CatalogRuleEntry {
+const POLICY_RULE_CATALOG_ENTRIES: [PolicyRuleCatalogEntry; 3] = [
+    PolicyRuleCatalogEntry {
         metadata: ProjectExecMismatchRule::METADATA,
         provider_id: PROVIDER_ID,
-        scope: CatalogRuleScope::Workspace,
-        surface: CatalogSurface::Workspace,
+        surface: PolicySurface::Workspace,
         default_presets: COMPAT_PRESETS,
-        public_lane: CatalogPublicLane::Preview,
-        detection_class: CatalogDetectionClass::Structural,
-        lifecycle: CatalogRuleLifecycle::Preview {
+        public_lane: CatalogPublicLane::Compat,
+        detection_class: PolicyDetectionClass::Structural,
+        lifecycle: PolicyRuleLifecycle::Preview {
             blocker: "Needs workspace-level precision review and linked graduation corpus before promotion to Stable.",
             promotion_requirements: WORKSPACE_PREVIEW_REQUIREMENTS,
         },
-        remediation_support: CatalogRemediationSupport::None,
+        remediation_support: PolicyRemediationSupport::None,
     },
-    CatalogRuleEntry {
+    PolicyRuleCatalogEntry {
         metadata: ProjectNetworkMismatchRule::METADATA,
         provider_id: PROVIDER_ID,
-        scope: CatalogRuleScope::Workspace,
-        surface: CatalogSurface::Workspace,
+        surface: PolicySurface::Workspace,
         default_presets: COMPAT_PRESETS,
-        public_lane: CatalogPublicLane::Preview,
-        detection_class: CatalogDetectionClass::Structural,
-        lifecycle: CatalogRuleLifecycle::Preview {
+        public_lane: CatalogPublicLane::Compat,
+        detection_class: PolicyDetectionClass::Structural,
+        lifecycle: PolicyRuleLifecycle::Preview {
             blocker: "Needs workspace-level network precision review and linked graduation corpus before promotion to Stable.",
             promotion_requirements: WORKSPACE_PREVIEW_REQUIREMENTS,
         },
-        remediation_support: CatalogRemediationSupport::None,
+        remediation_support: PolicyRemediationSupport::None,
     },
-    CatalogRuleEntry {
+    PolicyRuleCatalogEntry {
         metadata: CapabilityConflictRule::METADATA,
         provider_id: PROVIDER_ID,
-        scope: CatalogRuleScope::Workspace,
-        surface: CatalogSurface::Workspace,
+        surface: PolicySurface::Workspace,
         default_presets: COMPAT_PRESETS,
-        public_lane: CatalogPublicLane::Preview,
-        detection_class: CatalogDetectionClass::Structural,
-        lifecycle: CatalogRuleLifecycle::Preview {
+        public_lane: CatalogPublicLane::Compat,
+        detection_class: PolicyDetectionClass::Structural,
+        lifecycle: PolicyRuleLifecycle::Preview {
             blocker: "Needs workspace-level capability-conflict precision review and linked graduation corpus before promotion to Stable.",
             promotion_requirements: WORKSPACE_PREVIEW_REQUIREMENTS,
         },
-        remediation_support: CatalogRemediationSupport::None,
+        remediation_support: PolicyRemediationSupport::None,
     },
 ];
 
 pub fn policy_shared_rule_catalog_entries() -> &'static [CatalogRuleEntry] {
-    &POLICY_RULE_CATALOG_ENTRIES
-}
-
-pub fn policy_rule_catalog_entries() -> &'static [PolicyRuleCatalogEntry] {
-    use std::sync::OnceLock;
-
-    static ENTRIES: OnceLock<Vec<PolicyRuleCatalogEntry>> = OnceLock::new();
+    static ENTRIES: OnceLock<Vec<CatalogRuleEntry>> = OnceLock::new();
 
     ENTRIES
         .get_or_init(|| {
-            policy_shared_rule_catalog_entries()
+            policy_rule_catalog_entries()
                 .iter()
                 .copied()
-                .map(PolicyRuleCatalogEntry::from)
+                .map(CatalogRuleEntry::from)
                 .collect()
         })
         .as_slice()
 }
 
-impl From<CatalogRuleEntry> for PolicyRuleCatalogEntry {
-    fn from(entry: CatalogRuleEntry) -> Self {
-        assert!(
-            entry.scope == CatalogRuleScope::Workspace,
-            "policy shared catalog entry {} unexpectedly declared {:?} scope",
-            entry.metadata.code,
-            entry.scope
-        );
-        Self {
+pub fn policy_rule_catalog_entries() -> &'static [PolicyRuleCatalogEntry] {
+    &POLICY_RULE_CATALOG_ENTRIES
+}
+
+impl TryFrom<CatalogRuleEntry> for PolicyRuleCatalogEntry {
+    type Error = String;
+
+    fn try_from(entry: CatalogRuleEntry) -> Result<Self, Self::Error> {
+        if entry.scope != CatalogRuleScope::Workspace {
+            return Err(format!(
+                "policy shared catalog entry {} unexpectedly declared {:?} scope",
+                entry.metadata.code, entry.scope
+            ));
+        }
+        Ok(Self {
             metadata: entry.metadata,
             provider_id: entry.provider_id,
             surface: match entry.surface {
                 CatalogSurface::Workspace => PolicySurface::Workspace,
-                other => panic!(
-                    "policy shared catalog entry {} cannot declare surface {:?}",
-                    entry.metadata.code, other
-                ),
+                other => {
+                    return Err(format!(
+                        "policy shared catalog entry {} cannot declare surface {:?}",
+                        entry.metadata.code, other
+                    ));
+                }
             },
             default_presets: entry.default_presets,
             public_lane: entry.public_lane,
             detection_class: match entry.detection_class {
                 CatalogDetectionClass::Structural => PolicyDetectionClass::Structural,
                 CatalogDetectionClass::Heuristic => {
-                    panic!(
+                    return Err(format!(
                         "policy shared catalog entry {} cannot declare heuristic detection",
                         entry.metadata.code
-                    )
+                    ));
                 }
             },
             lifecycle: match entry.lifecycle {
@@ -189,20 +190,22 @@ impl From<CatalogRuleEntry> for PolicyRuleCatalogEntry {
                     promotion_requirements,
                 },
                 CatalogRuleLifecycle::Stable { .. } => {
-                    panic!(
+                    return Err(format!(
                         "policy shared catalog entry {} cannot declare stable lifecycle",
                         entry.metadata.code
-                    )
+                    ));
                 }
             },
             remediation_support: match entry.remediation_support {
                 CatalogRemediationSupport::None => PolicyRemediationSupport::None,
-                other => panic!(
-                    "policy shared catalog entry {} cannot declare remediation {:?}",
-                    entry.metadata.code, other
-                ),
+                other => {
+                    return Err(format!(
+                        "policy shared catalog entry {} cannot declare remediation {:?}",
+                        entry.metadata.code, other
+                    ));
+                }
             },
-        }
+        })
     }
 }
 
@@ -233,8 +236,8 @@ impl From<PolicyRuleCatalogEntry> for CatalogRuleEntry {
 #[cfg(test)]
 mod tests {
     use lintai_api::{
-        CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleEntry, CatalogRuleLifecycle,
-        CatalogRuleScope, CatalogSurface,
+        CatalogDetectionClass, CatalogPublicLane, CatalogRemediationSupport, CatalogRuleEntry,
+        CatalogRuleLifecycle, CatalogRuleScope, CatalogSurface,
     };
 
     use super::{
@@ -284,7 +287,31 @@ mod tests {
         assert_eq!(shared.len(), local.len());
 
         for (shared_entry, local_entry) in shared.iter().copied().zip(local.iter().copied()) {
-            assert_eq!(PolicyRuleCatalogEntry::from(shared_entry), local_entry);
+            assert_eq!(
+                PolicyRuleCatalogEntry::try_from(shared_entry).unwrap(),
+                local_entry
+            );
         }
+    }
+
+    #[test]
+    fn invalid_shared_policy_entry_returns_error_instead_of_panicking() {
+        let invalid = CatalogRuleEntry {
+            metadata: super::ProjectExecMismatchRule::METADATA,
+            provider_id: super::PROVIDER_ID,
+            scope: CatalogRuleScope::Workspace,
+            surface: CatalogSurface::Workspace,
+            default_presets: super::COMPAT_PRESETS,
+            public_lane: CatalogPublicLane::Compat,
+            detection_class: CatalogDetectionClass::Heuristic,
+            lifecycle: CatalogRuleLifecycle::Preview {
+                blocker: "x",
+                promotion_requirements: "y",
+            },
+            remediation_support: CatalogRemediationSupport::None,
+        };
+
+        let error = PolicyRuleCatalogEntry::try_from(invalid).unwrap_err();
+        assert!(error.contains("cannot declare heuristic detection"));
     }
 }

@@ -44,10 +44,12 @@ impl SecurityRuleCatalogEntry {
     }
 
     pub(crate) fn canonical_note(self) -> &'static str {
-        if self.metadata.code == "SEC324" {
-            return "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.";
-        }
         match (self.detection_class, self.metadata.tier) {
+            (CatalogDetectionClass::Structural, RuleTier::Stable)
+                if self.public_lane == CatalogPublicLane::SupplyChain =>
+            {
+                "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise."
+            }
             (CatalogDetectionClass::Heuristic, _) => {
                 "Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves."
             }

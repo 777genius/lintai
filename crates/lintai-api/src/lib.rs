@@ -33,7 +33,7 @@ pub use parsed::{
 };
 pub use preset::{
     BuiltinPresetKind, BuiltinPresetSpec, builtin_membership_preset_ids, builtin_preset_ids,
-    builtin_presets,
+    builtin_presets, builtin_public_lane_for_presets,
 };
 pub use rule::{
     FileRuleProvider, ProviderError, ProviderErrorKind, ProviderScanResult, RuleMetadata,

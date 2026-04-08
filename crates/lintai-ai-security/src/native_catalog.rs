@@ -1,6 +1,7 @@
 use lintai_api::{
     CatalogDetectionClass, CatalogPublicLane, CatalogRemediationSupport, CatalogRuleEntry,
     CatalogRuleLifecycle, CatalogRuleScope, CatalogSurface, RuleMetadata,
+    builtin_public_lane_for_presets,
 };
 
 use crate::registry::{
@@ -127,13 +128,7 @@ impl From<NativeRuleCatalogEntry> for CatalogRuleEntry {
 pub(crate) fn public_lane_for_presets(
     default_presets: &'static [&'static str],
 ) -> CatalogPublicLane {
-    if default_presets.contains(&"governance") {
-        CatalogPublicLane::Governance
-    } else if default_presets.contains(&"recommended") {
-        CatalogPublicLane::Recommended
-    } else {
-        CatalogPublicLane::Preview
-    }
+    builtin_public_lane_for_presets(default_presets)
 }
 
 fn map_catalog_surface(surface: Surface) -> CatalogSurface {

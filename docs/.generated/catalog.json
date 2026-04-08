@@ -2264,7 +2264,7 @@
       "slug": "sec324",
       "canonicalPath": "/rules/lintai-ai-security/sec324",
       "summary": "GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "github_workflow",
       "tier": "stable",
@@ -2303,7 +2303,7 @@
       "slug": "sec325",
       "canonicalPath": "/rules/lintai-ai-security/sec325",
       "summary": "GitHub Actions workflow interpolates untrusted expression data directly inside a run command",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "github_workflow",
       "tier": "preview",
@@ -2334,7 +2334,7 @@
       "slug": "sec326",
       "canonicalPath": "/rules/lintai-ai-security/sec326",
       "summary": "GitHub Actions pull_request_target workflow checks out untrusted pull request head content",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "github_workflow",
       "tier": "stable",
@@ -2359,7 +2359,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "GithubWorkflowSignals event gating plus line-level checkout ref extraction for pull_request_target workflows."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -2373,7 +2373,7 @@
       "slug": "sec327",
       "canonicalPath": "/rules/lintai-ai-security/sec327",
       "summary": "GitHub Actions workflow grants GITHUB_TOKEN write-all permissions",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "github_workflow",
       "tier": "stable",
@@ -2398,7 +2398,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "GithubWorkflowSignals line-level permissions extraction for semantically confirmed workflow YAML."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -2412,7 +2412,7 @@
       "slug": "sec328",
       "canonicalPath": "/rules/lintai-ai-security/sec328",
       "summary": "GitHub Actions workflow combines explicit write-capable permissions with a third-party action",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "github_workflow",
       "tier": "preview",
@@ -3230,7 +3230,7 @@
       "slug": "sec353",
       "canonicalPath": "/rules/lintai-ai-security/sec353",
       "summary": "GitHub Copilot instruction markdown exceeds the 4000-character guidance limit",
-      "publicLane": "preview",
+      "publicLane": "guidance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -3261,7 +3261,7 @@
       "slug": "sec354",
       "canonicalPath": "/rules/lintai-ai-security/sec354",
       "summary": "Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter",
-      "publicLane": "preview",
+      "publicLane": "guidance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -3844,7 +3844,7 @@
       "slug": "sec370",
       "canonicalPath": "/rules/lintai-ai-security/sec370",
       "summary": "Path-specific GitHub Copilot instruction markdown under `.github/instructions/` uses the wrong file suffix",
-      "publicLane": "preview",
+      "publicLane": "guidance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -3875,7 +3875,7 @@
       "slug": "sec371",
       "canonicalPath": "/rules/lintai-ai-security/sec371",
       "summary": "Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` shape",
-      "publicLane": "preview",
+      "publicLane": "guidance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -4106,7 +4106,7 @@
       "slug": "sec377",
       "canonicalPath": "/rules/lintai-ai-security/sec377",
       "summary": "Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` glob pattern",
-      "publicLane": "preview",
+      "publicLane": "guidance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -18525,7 +18525,7 @@
       "slug": "sec743",
       "canonicalPath": "/rules/lintai-ai-security/sec743",
       "summary": "package.json defines a dangerous install-time lifecycle script",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -18550,7 +18550,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals package manifest analysis over `scripts.preinstall|install|postinstall|prepare` values for download-exec patterns, `eval`, or `npm explore` shell execution."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -18564,7 +18564,7 @@
       "slug": "sec744",
       "canonicalPath": "/rules/lintai-ai-security/sec744",
       "summary": "package.json installs a dependency from a git or forge shortcut source",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -18589,7 +18589,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals package manifest analysis over dependency sections for specs starting with `git://`, `git+https://`, `git+ssh://`, `github:`, `gitlab:`, or `bitbucket:`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -18603,7 +18603,7 @@
       "slug": "sec745",
       "canonicalPath": "/rules/lintai-ai-security/sec745",
       "summary": "package.json uses an unbounded dependency version like * or latest",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -18628,7 +18628,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals package manifest analysis over dependency sections for exact specs equal to `*` or `latest`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -18642,7 +18642,7 @@
       "slug": "sec746",
       "canonicalPath": "/rules/lintai-ai-security/sec746",
       "summary": "Dockerfile RUN downloads remote code and executes it",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "dockerfile",
       "tier": "stable",
@@ -18667,7 +18667,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "DockerfileSignals line analysis over `RUN` instructions for download-exec patterns such as `curl` or `wget` piped to `sh` or `bash`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -18681,7 +18681,7 @@
       "slug": "sec747",
       "canonicalPath": "/rules/lintai-ai-security/sec747",
       "summary": "Dockerfile final stage explicitly runs as root",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "dockerfile",
       "tier": "stable",
@@ -18706,7 +18706,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "DockerfileSignals tracks `FROM` stage boundaries and the effective explicit `USER` in the final stage, flagging only `root`, `root:*`, `0`, or `0:*` in the last stage."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -18720,7 +18720,7 @@
       "slug": "sec748",
       "canonicalPath": "/rules/lintai-ai-security/sec748",
       "summary": "Docker Compose service enables privileged container runtime or host namespace access",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "docker-compose",
       "tier": "stable",
@@ -18745,7 +18745,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "DockerComposeSignals combines semantic confirmation of a Compose `services` map with indentation-aware line matching for `privileged: true`, `cap_add: [ALL|SYS_ADMIN]`, and `network_mode`/`pid`/`ipc: host` inside service blocks."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -18759,7 +18759,7 @@
       "slug": "sec749",
       "canonicalPath": "/rules/lintai-ai-security/sec749",
       "summary": "Dockerfile FROM uses a mutable registry image without a digest pin",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "dockerfile",
       "tier": "stable",
@@ -18784,7 +18784,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "DockerfileSignals exact `FROM` token analysis with conservative registry-image matching and digest-pin detection on the selected image token."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -18798,7 +18798,7 @@
       "slug": "sec750",
       "canonicalPath": "/rules/lintai-ai-security/sec750",
       "summary": "Docker Compose service image uses a mutable registry reference without a digest pin",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "docker-compose",
       "tier": "stable",
@@ -18823,7 +18823,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "DockerComposeSignals combines semantic confirmation of `services.*.image` values with indentation-aware line matching and conservative registry-image plus digest-pin detection."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -18837,7 +18837,7 @@
       "slug": "sec751",
       "canonicalPath": "/rules/lintai-ai-security/sec751",
       "summary": "Dockerfile FROM uses a latest or implicit-latest image tag",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "dockerfile",
       "tier": "stable",
@@ -18862,7 +18862,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "DockerfileSignals exact `FROM` token analysis with prior-stage alias tracking plus deterministic detection of explicit `:latest` tags or missing tags on non-digest image references."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -18876,7 +18876,7 @@
       "slug": "sec752",
       "canonicalPath": "/rules/lintai-ai-security/sec752",
       "summary": "Docker Compose service image uses a latest or implicit-latest tag",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "docker-compose",
       "tier": "stable",
@@ -18901,7 +18901,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "DockerComposeSignals semantic `services.*.image` detection combined with indentation-aware line matching and deterministic detection of explicit `:latest` tags or missing tags on non-digest image references."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -18915,7 +18915,7 @@
       "slug": "sec753",
       "canonicalPath": "/rules/lintai-ai-security/sec753",
       "summary": "package.json installs a dependency from a direct archive URL source",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -18940,7 +18940,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals package manifest analysis over dependency sections for direct `http://` or `https://` archive-like specs ending in `.tgz`, `.tar.gz`, `.tar`, `.zip`, or containing `/tarball/`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -18954,7 +18954,7 @@
       "slug": "sec754",
       "canonicalPath": "/rules/lintai-ai-security/sec754",
       "summary": "Devcontainer config defines a host-side initializeCommand",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "devcontainer",
       "tier": "stable",
@@ -18979,7 +18979,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "DevcontainerSignals semantic JSON parsing plus exact value-span resolution for a non-empty top-level `initializeCommand` in `.devcontainer.json` or `.devcontainer/devcontainer.json`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -18993,7 +18993,7 @@
       "slug": "sec755",
       "canonicalPath": "/rules/lintai-ai-security/sec755",
       "summary": "Devcontainer config bind-mounts sensitive local host material",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "devcontainer",
       "tier": "stable",
@@ -19018,7 +19018,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "DevcontainerSignals semantic JSON parsing plus exact value-span resolution for sensitive bind mounts in `workspaceMount`, `mounts`, or Docker-style `runArgs` mount flags."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -19032,7 +19032,7 @@
       "slug": "sec756",
       "canonicalPath": "/rules/lintai-dep-vulns/sec756",
       "summary": "Installed npm dependency version matches an offline vulnerability advisory",
-      "publicLane": "preview",
+      "publicLane": "advisory",
       "scope": "workspace",
       "surface": "workspace",
       "tier": "preview",
@@ -19063,7 +19063,7 @@
       "slug": "sec401",
       "canonicalPath": "/rules/lintai-policy-mismatch/sec401",
       "summary": "Project policy forbids execution, but repository contains executable behavior",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "workspace",
       "surface": "workspace",
       "tier": "preview",
@@ -19094,7 +19094,7 @@
       "slug": "sec402",
       "canonicalPath": "/rules/lintai-policy-mismatch/sec402",
       "summary": "Project policy forbids network access, but repository contains network behavior",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "workspace",
       "surface": "workspace",
       "tier": "preview",
@@ -19125,7 +19125,7 @@
       "slug": "sec403",
       "canonicalPath": "/rules/lintai-policy-mismatch/sec403",
       "summary": "Skill frontmatter capabilities conflict with project policy",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "workspace",
       "surface": "workspace",
       "tier": "preview",

@@ -124,7 +124,19 @@ mod tests {
             lintai_api::Location::new("SKILL.md", lintai_api::Span::new(5, 9)),
             "demo governance finding",
         );
-        let findings = [recommended, preview, governance];
+        let supply_chain = lintai_api::Finding::new(
+            &lintai_api::RuleMetadata::new(
+                "SEC324",
+                "demo supply-chain finding",
+                lintai_api::Category::Security,
+                lintai_api::Severity::Warn,
+                lintai_api::Confidence::High,
+                lintai_api::RuleTier::Stable,
+            ),
+            lintai_api::Location::new(".github/workflows/ci.yml", lintai_api::Span::new(5, 9)),
+            "demo supply-chain finding",
+        );
+        let findings = [recommended, preview, governance, supply_chain];
         let report = ReportEnvelope {
             schema_version: 1,
             tool: ToolMetadata { name: "lintai" },
@@ -147,9 +159,10 @@ mod tests {
         };
 
         let text = format_text(&report);
-        assert!(text.starts_with("scanned 3 file(s), skipped 0 file(s), found 3 finding(s)"));
+        assert!(text.starts_with("scanned 3 file(s), skipped 0 file(s), found 4 finding(s)"));
         assert!(text.contains("recommended findings: 1"));
-        assert!(text.contains("deeper review findings: 1"));
+        assert!(text.contains("preview findings: 1"));
         assert!(text.contains("governance review findings: 1"));
+        assert!(text.contains("supply-chain findings: 1"));
     }
 }
