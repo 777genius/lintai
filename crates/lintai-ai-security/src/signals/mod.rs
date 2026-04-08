@@ -10,6 +10,7 @@ mod github_workflow;
 mod hook;
 mod json;
 mod markdown;
+mod markdown_region_scan;
 mod server_json;
 mod shared;
 #[cfg(test)]
