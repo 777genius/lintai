@@ -13,49 +13,49 @@ use lintai_api::{
 pub(crate) struct RuleSpecGroup {
     #[cfg_attr(not(test), allow(dead_code))]
     pub(crate) id: &'static str,
-    pub(crate) specs: &'static [NativeRuleSpec],
+    pub(crate) specs: fn() -> &'static [NativeRuleSpec],
 }
 
 const RULE_SPEC_GROUPS: &[RuleSpecGroup] = &[
     RuleSpecGroup {
         id: "markdown",
-        specs: &markdown::RULE_SPECS,
+        specs: markdown::rule_specs,
     },
     RuleSpecGroup {
         id: "hooks",
-        specs: &hooks::RULE_SPECS,
+        specs: hooks::rule_specs,
     },
     RuleSpecGroup {
         id: "devcontainer",
-        specs: &devcontainer::RULE_SPECS,
+        specs: devcontainer::rule_specs,
     },
     RuleSpecGroup {
         id: "docker-compose",
-        specs: &docker_compose::RULE_SPECS,
+        specs: docker_compose::rule_specs,
     },
     RuleSpecGroup {
         id: "dockerfile",
-        specs: &dockerfile::RULE_SPECS,
+        specs: dockerfile::rule_specs,
     },
     RuleSpecGroup {
         id: "json",
-        specs: &json::RULE_SPECS,
+        specs: json::rule_specs,
     },
     RuleSpecGroup {
         id: "tool-json",
-        specs: &tool_json::RULE_SPECS,
+        specs: tool_json::rule_specs,
     },
     RuleSpecGroup {
         id: "server-json",
-        specs: &server_json::RULE_SPECS,
+        specs: server_json::rule_specs,
     },
     RuleSpecGroup {
         id: "github-workflow",
-        specs: &github_workflow::RULE_SPECS,
+        specs: github_workflow::rule_specs,
     },
     RuleSpecGroup {
         id: "claude-settings",
-        specs: &claude_settings::RULE_SPECS,
+        specs: claude_settings::rule_specs,
     },
 ];
 
@@ -70,11 +70,11 @@ pub(crate) fn rule_specs() -> &'static [NativeRuleSpec] {
         .get_or_init(|| {
             let capacity = rule_spec_groups()
                 .iter()
-                .map(|group| group.specs.len())
+                .map(|group| (group.specs)().len())
                 .sum();
             let mut specs = Vec::with_capacity(capacity);
             for group in rule_spec_groups() {
-                specs.extend_from_slice(group.specs);
+                specs.extend_from_slice((group.specs)());
             }
             validate_rule_specs(&specs);
             specs
@@ -88,7 +88,7 @@ fn validate_rule_specs(specs: &[NativeRuleSpec]) {
         "rule group",
         rule_spec_groups()
             .iter()
-            .map(|group| (group.id, group.specs.is_empty())),
+            .map(|group| (group.id, (group.specs)().is_empty())),
     );
     validate_rule_identities(
         "native",

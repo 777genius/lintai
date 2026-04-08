@@ -5368,17 +5368,18 @@ fn rule_spec_groups_cover_every_rule_once() {
     let mut group_ids = BTreeSet::new();
     let mut grouped_codes = Vec::new();
     for group in groups {
+        let specs = (group.specs)();
         assert!(
             group_ids.insert(group.id),
             "duplicate native rule group id {}",
             group.id
         );
         assert!(
-            !group.specs.is_empty(),
+            !specs.is_empty(),
             "native rule group {} should not be empty",
             group.id
         );
-        grouped_codes.extend(group.specs.iter().map(|spec| spec.metadata.code));
+        grouped_codes.extend(specs.iter().map(|spec| spec.metadata.code));
     }
 
     let flattened_codes: Vec<_> = rule_specs().iter().map(|spec| spec.metadata.code).collect();

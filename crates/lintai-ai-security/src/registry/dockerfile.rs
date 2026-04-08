@@ -136,3 +136,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 4] = [
         suggestion_fix: None,
     },
 ];
+
+pub(crate) fn rule_specs() -> &'static [NativeRuleSpec] {
+    &RULE_SPECS
+}

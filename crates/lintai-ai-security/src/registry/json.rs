@@ -5193,3 +5193,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
         suggestion_fix: None,
     },
 ];
+
+pub(crate) fn rule_specs() -> &'static [NativeRuleSpec] {
+    &RULE_SPECS
+}
