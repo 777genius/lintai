@@ -1,0 +1,94 @@
+name: Coverage Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    name: Build Coverage Report and Deploy Pages
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.90.0
+      - uses: Swatinem/rust-cache@v2
+      - name: Install cargo-llvm-cov
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-llvm-cov
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Install docs dependencies
+        run: npm ci
+      - name: Verify checked-in case manifests stay canonical
+        run: npm run fixtures:check
+      - name: Validate docs contracts
+        run: |
+          cargo test -q -p lintai-cli site_catalog -- --nocapture
+          cargo test -q -p lintai-cli --test docs_contract -- --nocapture
+      - name: Build VitePress docs
+        env:
+          LINTAI_DOCS_BASE: /lintai/
+        run: |
+          npm run docs:build
+          touch docs/.vitepress/dist/.nojekyll
+      - name: Generate coverage summary JSON
+        run: |
+          cargo llvm-cov --workspace --all-features --summary-only --json --output-path target/coverage-summary.json
+      - name: Generate coverage HTML report
+        run: |
+          cargo llvm-cov --workspace --all-features --html --output-dir target/llvm-cov/html
+      - name: Assemble Pages artifact
+        run: |
+          mkdir -p target/coverage-gh-pages
+          rsync -a --delete docs/.vitepress/dist/ target/coverage-gh-pages/
+          mkdir -p target/coverage-gh-pages/coverage
+          cp -R target/llvm-cov/html/* target/coverage-gh-pages/coverage/
+          cp target/coverage-summary.json target/coverage-gh-pages/coverage/coverage-summary.json
+          COVERAGE_LINE=$(jq -r '.data[0].totals.lines.percent' target/coverage-summary.json)
+          COVERAGE_PERCENT=$(printf '%.2f' "${COVERAGE_LINE}")
+          COVERAGE_COLOR=$(awk -v c="${COVERAGE_LINE}" 'BEGIN { if (c >= 90) print "brightgreen"; else if (c >= 80) print "green"; else if (c >= 70) print "yellowgreen"; else if (c >= 60) print "yellow"; else print "red"; }')
+          cat > target/coverage-gh-pages/coverage/coverage-badge.json <<EOF
+          {
+            "schemaVersion": 1,
+            "label": "coverage",
+            "message": "${COVERAGE_PERCENT}%",
+            "color": "${COVERAGE_COLOR}"
+          }
+          EOF
+          echo "coverage=${COVERAGE_PERCENT}%"
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: target/coverage-gh-pages
+
+  deploy:
+    name: Deploy Pages
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

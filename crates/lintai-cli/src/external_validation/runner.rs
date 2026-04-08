@@ -182,3 +182,85 @@ pub(crate) fn parse_package_flag(args: &[String]) -> Result<ValidationPackage, S
     }
     Ok(package)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn run_without_arguments_reports_usage() {
+        let error = run(std::iter::empty()).unwrap_err();
+        assert_eq!(error, "expected one of: rerun, render-report");
+    }
+
+    #[test]
+    fn run_with_unknown_command_reports_unknown_command() {
+        let error = run(vec!["unknown".to_owned()].into_iter()).unwrap_err();
+        assert_eq!(error, "unknown external validation command `unknown`");
+    }
+
+    #[test]
+    fn parse_package_flag_ignores_missing_value_but_preserves_default() {
+        assert_eq!(parse_package_flag(&[]).unwrap(), ValidationPackage::Canonical);
+    }
+
+    #[test]
+    fn parse_package_flag_rejects_invalid_flag() {
+        let error = parse_package_flag(&["--bad-flag".to_owned()]).unwrap_err();
+        assert_eq!(
+            error,
+            "unexpected external validation argument `--bad-flag`; expected only --package=<name>"
+        );
+    }
+
+    #[test]
+    fn parse_package_flag_rejects_unknown_package_name() {
+        let error = parse_package_flag(&["--package=bogus".to_owned()]).unwrap_err();
+        assert_eq!(error, "unknown external validation package `bogus`");
+    }
+
+    #[test]
+    fn parse_package_flag_uses_last_package_flag() {
+        assert_eq!(
+            parse_package_flag(&[
+                "--package=tool-json-extension".to_owned(),
+                "--package=github-actions-extension".to_owned(),
+            ])
+            .unwrap(),
+            ValidationPackage::GithubActionsExtension
+        );
+    }
+
+    #[test]
+    fn run_renders_report_for_known_package() {
+        run(["render-report".to_owned(), "--package=canonical".to_owned()].into_iter()).unwrap();
+    }
+
+    #[test]
+    fn run_renders_reports_for_all_known_packages() {
+        let packages = [
+            "--package=canonical",
+            "--package=tool-json-extension",
+            "--package=server-json-extension",
+            "--package=github-actions-extension",
+            "--package=ai-native-discovery",
+        ];
+
+        for package in packages {
+            run(["render-report".to_owned(), package.to_owned()].into_iter()).unwrap();
+        }
+    }
+
+    #[test]
+    fn parse_package_flag_accepts_the_last_flag() {
+        assert_eq!(
+            parse_package_flag(&[
+                "--package=tool-json-extension".to_owned(),
+                "--package=server-json-extension".to_owned(),
+                "--package=canonical".to_owned(),
+            ])
+            .unwrap(),
+            ValidationPackage::Canonical
+        );
+    }
+}
