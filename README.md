@@ -1,5 +1,7 @@
 # lintai
 
+[![coverage](https://img.shields.io/endpoint?url=https%3A%2F%2F777genius.github.io%2Flintai%2Fcoverage%2Fcoverage-badge.json)](https://777genius.github.io/lintai/coverage/)
+
 Fast offline security checks for AI agent artifacts in your repo.
 
 `lintai` helps you verify skills, MCP configs, agent rules, hooks, and plugin manifests before you trust them in local workflows or CI.
@@ -325,8 +327,8 @@ Canonical docs:
 
 Repo-level orientation:
 
-- [`V0_1_RELEASE_CHARTER.md`](V0_1_RELEASE_CHARTER.md)
+- [`docs/V0_1_RELEASE_CHARTER.md`](docs/V0_1_RELEASE_CHARTER.md)
 - [`PUBLIC_COMPATIBILITY_POLICY.md`](PUBLIC_COMPATIBILITY_POLICY.md)
-- [`ARCH_GAPS.md`](ARCH_GAPS.md)
+- [`docs/ARCH_GAPS.md`](docs/ARCH_GAPS.md)
 
 `lintai-api` remains the only stable publishable crate. The CLI beta does not yet promise Homebrew, npm, or `cargo install` distribution.

@@ -21,7 +21,7 @@ The public beta keeps the existing `v0.1` product contract unchanged:
 - `Preview` findings are useful but non-baseline signals
 - CLI commands, JSON schema, SARIF output, `stable_key`, and current `fix` surface do not expand in this phase
 
-The canonical source of truth for `v0.1` scope remains [../V0_1_RELEASE_CHARTER.md](../V0_1_RELEASE_CHARTER.md).
+The canonical source of truth for `v0.1` scope remains [V0_1_RELEASE_CHARTER.md](V0_1_RELEASE_CHARTER.md).
 
 ## Packaging and Compatibility
 
