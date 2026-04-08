@@ -17,6 +17,8 @@ concurrency:
 
 permissions:
   contents: write
+  attestations: write
+  id-token: write
 
 jobs:
   release_context:
@@ -295,17 +297,63 @@ jobs:
         with:
           name: release-helpers
           path: dist
+      - name: Install Cargo CycloneDX
+        shell: bash
+        run: cargo install --locked cargo-cyclonedx --version 0.5.9
+      - name: Generate SBOM bundle
+        shell: bash
+        run: |
+          tag="${{ needs.release_context.outputs.release_tag }}"
+          bundle_root="lintai-${tag}-sbom"
+          rm -rf "dist/${bundle_root}"
+          cargo cyclonedx --manifest-path Cargo.toml --format json
+          mkdir -p "dist/${bundle_root}"
+          while IFS= read -r bom; do
+            rel="${bom#./}"
+            cp "$bom" "dist/${bundle_root}/${rel//\//__}"
+          done < <(find . -path './target' -prune -o -name bom.json -print | sort)
+          if [[ -z "$(find "dist/${bundle_root}" -maxdepth 1 -type f -print -quit)" ]]; then
+            echo "no CycloneDX SBOM files were generated" >&2
+            exit 1
+          fi
+          tar -C dist -czf "dist/${bundle_root}.tar.gz" "${bundle_root}"
       - name: Generate checksums
         shell: bash
         run: |
           cd dist
           shopt -s nullglob
-          files=( *.tar.gz *.zip )
+          files=( *.tar.gz *.zip lintai-installer.sh lintai-installer.ps1 )
           if [[ ${#files[@]} -eq 0 ]]; then
             echo "no packaged release assets found" >&2
             exit 1
           fi
           sha256sum "${files[@]}" > SHA256SUMS
+      - name: Attest release assets
+        id: attest_release_assets
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: |
+            dist/*.tar.gz
+            dist/*.zip
+            dist/lintai-installer.sh
+            dist/lintai-installer.ps1
+            dist/SHA256SUMS
+      - name: Save provenance bundle
+        shell: bash
+        run: |
+          tag="${{ needs.release_context.outputs.release_tag }}"
+          cp "${{ steps.attest_release_assets.outputs.bundle-path }}" \
+            "dist/lintai-${tag}-provenance.intoto.jsonl"
+      - name: Verify release asset bundle
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          tag="${{ needs.release_context.outputs.release_tag }}"
+          scripts/release/verify-release-assets.sh \
+            --release-dir dist \
+            --repo "${{ github.repository }}" \
+            --bundle "dist/lintai-${tag}-provenance.intoto.jsonl"
       - name: Publish prerelease
         uses: softprops/action-gh-release@v2
         with:
@@ -319,3 +367,5 @@ jobs:
             dist/lintai-installer.sh
             dist/lintai-installer.ps1
             dist/SHA256SUMS
+            dist/*-sbom.tar.gz
+            dist/*-provenance.intoto.jsonl

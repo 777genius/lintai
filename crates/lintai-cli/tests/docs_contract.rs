@@ -327,7 +327,11 @@ fn public_beta_shipping_checklist_is_checked_in() {
     assert!(text.contains("x86_64-unknown-linux-musl"));
     assert!(text.contains("aarch64-apple-darwin"));
     assert!(text.contains("x86_64-pc-windows-msvc"));
+    assert!(text.contains("sbom.tar.gz"));
+    assert!(text.contains("provenance.intoto.jsonl"));
     assert!(text.contains("SHA256SUMS"));
+    assert!(text.contains("verify-release-assets.sh"));
+    assert!(text.contains("gh attestation verify"));
 }
 
 #[test]
@@ -336,7 +340,10 @@ fn workflow_readme_mentions_public_beta_release_workflow() {
 
     assert!(text.contains("public-beta-release.yml"));
     assert!(text.contains("v*-beta.*"));
+    assert!(text.contains("provenance.intoto.jsonl"));
+    assert!(text.contains("sbom.tar.gz"));
     assert!(text.contains("SHA256SUMS"));
+    assert!(text.contains("verify-release-assets.sh"));
 }
 
 #[test]
@@ -347,7 +354,25 @@ fn public_beta_release_workflow_matches_shipping_contract() {
     assert!(text.contains("workflow_dispatch"));
     assert!(text.contains("v*-beta.*"));
     assert!(text.contains("softprops/action-gh-release"));
+    assert!(text.contains("actions/attest-build-provenance"));
     assert!(text.contains("prerelease: true"));
     assert!(text.contains("release_notes_path"));
+    assert!(text.contains("attestations: write"));
+    assert!(text.contains("id-token: write"));
+    assert!(text.contains("cargo-cyclonedx --version 0.5.9"));
+    assert!(text.contains("provenance.intoto.jsonl"));
+    assert!(text.contains("sbom.tar.gz"));
     assert!(text.contains("SHA256SUMS"));
+    assert!(text.contains("Verify release asset bundle"));
+    assert!(text.contains("verify-release-assets.sh"));
+}
+
+#[test]
+fn release_verification_script_matches_trust_chain_contract() {
+    let text = include_str!("../../../scripts/release/verify-release-assets.sh");
+
+    assert!(text.contains("sha256sum -c SHA256SUMS"));
+    assert!(text.contains("gh attestation trusted-root"));
+    assert!(text.contains("gh attestation verify"));
+    assert!(text.contains("--custom-trusted-root"));
 }

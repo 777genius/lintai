@@ -20,9 +20,12 @@ Public beta shipping is tag-driven:
 
 - tag shape: `v*-beta.*`
 - checked-in release note path: `docs/releases/<tag>.md`
+- checked-in verification helper: `scripts/release/verify-release-assets.sh`
 - published assets:
   - `x86_64-unknown-linux-gnu`
   - `x86_64-unknown-linux-musl`
   - `aarch64-apple-darwin`
   - `x86_64-pc-windows-msvc`
+  - `lintai-<tag>-sbom.tar.gz`
+  - `lintai-<tag>-provenance.intoto.jsonl`
   - `SHA256SUMS`

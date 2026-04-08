@@ -289,7 +289,8 @@ The PowerShell installer downloads the tagged archive and `SHA256SUMS`, verifies
 
 1. Download the archive for your target from the GitHub Release.
 2. Download `SHA256SUMS` from the same release and verify the archive checksum.
-3. Extract `lintai` or `lintai.exe` into a directory on your `PATH`.
+3. Optional but recommended: download the provenance bundle and verify it with `gh attestation verify` or [scripts/release/verify-release-assets.sh](scripts/release/verify-release-assets.sh).
+4. Extract `lintai` or `lintai.exe` into a directory on your `PATH`.
 
 ### Post-install verification
 
