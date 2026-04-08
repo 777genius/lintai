@@ -243,3 +243,151 @@ where
         self.timeout
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use std::path::PathBuf;
+    use std::sync::Arc;
+    use std::time::Duration;
+
+    use lintai_api::{
+        Artifact, ArtifactKind, ParsedDocument, ProviderScanResult, ScanContext, ScanScope, SourceFormat,
+    };
+
+    use super::child::{ChildOutput, CompletedChild};
+    use super::*;
+
+    #[test]
+    fn error_when_executable_resolver_fails() {
+        let backend = SubprocessProviderBackend::new(
+            "policy",
+            "subprocess-test",
+            Vec::<lintai_api::RuleMetadata>::new(),
+            Duration::from_millis(10),
+            ScanScope::PerFile,
+            Arc::new(|| Err("missing binary".into())),
+            "runner",
+        );
+
+        let err = backend
+            .resolve_executable_path()
+            .expect_err("should fail");
+
+        assert_eq!(err.provider_id, "subprocess-test");
+        assert!(err.message.contains("missing binary"));
+    }
+
+    #[test]
+    fn prepare_request_includes_json_payload() {
+        let backend = SubprocessProviderBackend::new(
+            "policy",
+            "subprocess-test",
+            Vec::<lintai_api::RuleMetadata>::new(),
+            Duration::from_millis(10),
+            ScanScope::PerFile,
+            Arc::new(|| Ok(PathBuf::from("/bin/true"))),
+            "runner",
+        );
+        let ctx = ScanContext::new(
+            Artifact::new("repo/file.md", ArtifactKind::Instructions, SourceFormat::Markdown),
+            "content",
+            ParsedDocument::new(Vec::new(), None),
+            None,
+        );
+        let request = RunnerRequest {
+            provider: "policy",
+            phase: RunnerPhase::File,
+            scan: Some(ctx),
+            workspace: None,
+        };
+
+        let prepared = backend
+            .prepare_request(&request)
+            .expect("request should prepare");
+        assert_eq!(prepared.executable, PathBuf::from("/bin/true"));
+        assert!(!prepared.request_json.is_empty());
+    }
+
+    #[test]
+    fn decode_response_parses_runner_result() {
+        let backend = SubprocessProviderBackend::new(
+            "policy",
+            "subprocess-test",
+            Vec::<lintai_api::RuleMetadata>::new(),
+            Duration::from_millis(10),
+            ScanScope::PerFile,
+            Arc::new(|| Ok(PathBuf::from("/bin/true"))),
+            "runner",
+        );
+        let status = std::process::Command::new("true")
+            .output()
+            .expect("command should run")
+            .status;
+        let response = RunnerResponse {
+            result: ProviderScanResult::new(Vec::new(), Vec::new()),
+        };
+        let completed = CompletedChild {
+            status,
+            output: ChildOutput {
+                stdout: serde_json::to_string(&response).expect("should encode"),
+                stderr: String::new(),
+            },
+        };
+
+        let result = backend.decode_response(completed);
+        assert!(result.findings.is_empty());
+        assert!(result.errors.is_empty());
+    }
+
+    #[test]
+    fn decode_response_reports_invalid_json() {
+        let backend = SubprocessProviderBackend::new(
+            "policy",
+            "subprocess-test",
+            Vec::<lintai_api::RuleMetadata>::new(),
+            Duration::from_millis(10),
+            ScanScope::PerFile,
+            Arc::new(|| Ok(PathBuf::from("/bin/true"))),
+            "runner",
+        );
+        let status = std::process::Command::new("true")
+            .output()
+            .expect("command should run")
+            .status;
+        let completed = CompletedChild {
+            status,
+            output: ChildOutput {
+                stdout: "not-json".to_string(),
+                stderr: String::new(),
+            },
+        };
+
+        let result = backend.decode_response(completed);
+        assert_eq!(result.errors.len(), 1);
+        assert_eq!(result.findings.len(), 0);
+        assert_eq!(result.errors[0].provider_id, "subprocess-test");
+    }
+
+    #[test]
+    fn run_child_reports_encode_and_resolve_errors() {
+        let backend = SubprocessProviderBackend::new(
+            "policy",
+            "subprocess-test",
+            Vec::<lintai_api::RuleMetadata>::new(),
+            Duration::from_millis(10),
+            ScanScope::PerFile,
+            Arc::new(|| Err("missing binary".into())),
+            "runner",
+        );
+        let ctx = ScanContext::new(
+            Artifact::new("repo/file.md", ArtifactKind::Instructions, SourceFormat::Markdown),
+            "content",
+            ParsedDocument::new(Vec::new(), None),
+            None,
+        );
+        let result = backend.check_result(&ctx);
+
+        assert_eq!(result.errors.len(), 1);
+        assert_eq!(result.errors[0].message, "missing binary");
+    }
+}

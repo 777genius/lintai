@@ -87,3 +87,120 @@ fn option_u64_label(value: Option<u64>) -> String {
         .map(|value| value.to_string())
         .unwrap_or_else(|| "none".to_owned())
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::known_scan::{InventoryChangedRoot, InventoryRoot};
+    use super::changed_root_fragment;
+
+    #[test]
+    fn maps_severity_labels() {
+        assert_eq!(super::severity_label(lintai_api::Severity::Deny), "deny");
+        assert_eq!(super::severity_label(lintai_api::Severity::Warn), "warn");
+        assert_eq!(super::severity_label(lintai_api::Severity::Allow), "allow");
+    }
+
+    #[test]
+    fn maps_diagnostic_and_runtime_error_labels() {
+        assert_eq!(super::diagnostic_label(lintai_engine::DiagnosticSeverity::Info), "info");
+        assert_eq!(
+            super::diagnostic_label(lintai_engine::DiagnosticSeverity::Warn),
+            "warn"
+        );
+        assert_eq!(
+            super::error_kind_label(lintai_engine::RuntimeErrorKind::Read),
+            "read"
+        );
+        assert_eq!(
+            super::error_kind_label(lintai_engine::RuntimeErrorKind::InvalidUtf8),
+            "invalid_utf8"
+        );
+        assert_eq!(
+            super::error_kind_label(lintai_engine::RuntimeErrorKind::Parse),
+            "parse"
+        );
+        assert_eq!(
+            super::error_kind_label(lintai_engine::RuntimeErrorKind::ProviderExecution),
+            "provider_execution"
+        );
+        assert_eq!(
+            super::error_kind_label(lintai_engine::RuntimeErrorKind::ProviderTimeout),
+            "provider_timeout"
+        );
+        assert_eq!(
+            super::provider_execution_phase_label(lintai_engine::ProviderExecutionPhase::File),
+            "file"
+        );
+        assert_eq!(
+            super::provider_execution_phase_label(lintai_engine::ProviderExecutionPhase::Workspace),
+            "workspace"
+        );
+    }
+
+    #[test]
+    fn changed_root_fragment_includes_only_changed_fields() {
+        let changed = InventoryChangedRoot {
+            client: "client".into(),
+            surface: "surface".into(),
+            path: "/tmp".into(),
+            old_mode: "discovered_only".into(),
+            new_mode: "lintable".into(),
+            old_risk_level: "medium".into(),
+            new_risk_level: "medium".into(),
+            old_path_type: "file".into(),
+            new_path_type: "directory".into(),
+            old_mtime_epoch_s: None,
+            new_mtime_epoch_s: Some(1730),
+        };
+
+        let fragment = changed_root_fragment(&changed);
+        assert!(fragment.contains("mode discovered_only->lintable"));
+        assert!(fragment.contains("path_type file->directory"));
+        assert!(fragment.contains("mtime none->1730"));
+        assert!(!fragment.contains("risk"));
+    }
+
+    #[test]
+    fn client_for_inventory_finding_matches_directory_scope() {
+        let root = InventoryRoot {
+            client: "client".into(),
+            surface: "surface".into(),
+            path: "/tmp/project".into(),
+            mode: "lintable".into(),
+            risk_level: "low".into(),
+            provenance: crate::known_scan::InventoryProvenance {
+                origin_scope: "project".into(),
+                path_type: "directory".into(),
+                target_path: None,
+                owner: None,
+                mtime_epoch_s: None,
+            },
+        };
+        let file = InventoryRoot {
+            client: "other".into(),
+            surface: "surface".into(),
+            path: "/tmp/other/README.md".into(),
+            mode: "lintable".into(),
+            risk_level: "low".into(),
+            provenance: crate::known_scan::InventoryProvenance {
+                origin_scope: "project".into(),
+                path_type: "file".into(),
+                target_path: None,
+                owner: None,
+                mtime_epoch_s: None,
+            },
+        };
+
+        let roots = vec![root, file];
+        assert_eq!(super::client_for_inventory_finding(&roots, "/tmp/project"), "client");
+        assert_eq!(
+            super::client_for_inventory_finding(&roots, "/tmp/project/src/lib.rs"),
+            "client"
+        );
+        assert_eq!(
+            super::client_for_inventory_finding(&roots, "/tmp/other/README.md"),
+            "other"
+        );
+        assert_eq!(super::client_for_inventory_finding(&roots, "/tmp/other"), "unknown");
+    }
+}

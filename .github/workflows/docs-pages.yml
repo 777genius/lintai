@@ -13,8 +13,6 @@ concurrency:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 jobs:
   build:
@@ -31,9 +29,6 @@ jobs:
         with:
           toolchain: 1.90.0
       - uses: Swatinem/rust-cache@v2
-      - uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - name: Install docs dependencies
         run: npm ci
       - name: Verify checked-in case manifests stay canonical
@@ -48,21 +43,3 @@ jobs:
         run: |
           npm run docs:build
           touch docs/.vitepress/dist/.nojekyll
-      - name: Upload Pages artifact
-        if: ${{ github.event_name != 'pull_request' }}
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs/.vitepress/dist
-
-  deploy:
-    name: Deploy Docs Site
-    if: ${{ github.event_name != 'pull_request' }}
-    needs:
-      - build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4

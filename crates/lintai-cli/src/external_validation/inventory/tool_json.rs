@@ -74,3 +74,84 @@ pub(crate) fn is_tool_descriptor_shape(value: &Value) -> bool {
         .is_some_and(|function| function.get("parameters").is_some());
     has_name && (has_tool_schema || has_function_parameters)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+    use std::path::PathBuf;
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    fn make_workspace_root() -> PathBuf {
+        let unique_id = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .map(|time| time.as_nanos())
+            .unwrap_or(0);
+        let path = std::env::temp_dir().join(format!(
+            "lintai-tool-json-inventory-tests-{unique_id}-{}",
+            std::process::id()
+        ));
+        fs::create_dir_all(&path).unwrap();
+        path
+    }
+
+    fn cleanup(path: &PathBuf) {
+        let _ = fs::remove_dir_all(path);
+    }
+
+    #[test]
+    fn admits_tool_descriptor_with_semantic_shape() {
+        let workspace = make_workspace_root();
+        fs::write(
+            workspace.join("tools.json"),
+            r#"{"name":"x","inputSchema":{"type":"object"}}"#,
+        )
+        .unwrap();
+
+        let discovered = admitted_tool_descriptor_paths(&workspace).unwrap();
+
+        cleanup(&workspace);
+        assert_eq!(discovered, vec!["tools.json".to_owned()]);
+    }
+
+    #[test]
+    fn rejects_tool_descriptor_without_semantic_shape() {
+        let workspace = make_workspace_root();
+        fs::write(workspace.join("tools.json"), r#"{"not_name":"x"}"#).unwrap();
+        let discovered = admitted_tool_descriptor_paths(&workspace).unwrap_err();
+        cleanup(&workspace);
+        assert_eq!(
+            discovered,
+            "no committed non-fixture ToolDescriptorJson paths passed semantic confirmation".to_owned()
+        );
+    }
+
+    #[test]
+    fn contains_semantic_tool_descriptor_json_matches_object_variants() {
+        assert!(contains_semantic_tool_descriptor_json(
+            r#"{"name":"x","function":{"parameters":{"type":"object"}}}"#
+        ));
+        assert!(contains_semantic_tool_descriptor_json(
+            r#"{"name":"x","input_schema":{"type":"object"}}"#
+        ));
+        assert!(!contains_semantic_tool_descriptor_json(r#"{"name":"x"}"#));
+        assert!(!contains_semantic_tool_descriptor_json("not-json"));
+    }
+
+    #[test]
+    fn is_tool_descriptor_shape_checks_nested_function_parameters() {
+        let direct = serde_json::from_str::<Value>(
+            r#"{"name":"x","function":{"parameters":{"type":"object"}}}"#,
+        )
+        .unwrap();
+        let indirect = serde_json::from_str::<Value>(
+            r#"{"name":"x","inputSchema":{"type":"object"}}"#,
+        )
+        .unwrap();
+        let missing = serde_json::from_str::<Value>(r#"{"name":"x","version":"1"}"#).unwrap();
+
+        assert!(is_tool_descriptor_shape(&direct));
+        assert!(is_tool_descriptor_shape(&indirect));
+        assert!(!is_tool_descriptor_shape(&missing));
+    }
+}

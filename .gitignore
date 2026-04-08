@@ -13,3 +13,5 @@ docs/.vitepress/dist/
 !corpus/**/CLAUDE.md
 !corpus/**/.claude/
 !corpus/**/.claude/settings.json
+/research/
+MEMORY.md

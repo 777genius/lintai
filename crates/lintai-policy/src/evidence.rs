@@ -100,3 +100,154 @@ pub(crate) fn first_match_location(
         lintai_api::Span::new(start, end),
     ))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use lintai_api::{
+        Artifact, ArtifactKind, CapabilityConflictMode, Category, Confidence, EvidenceKind,
+        Location, ParsedDocument, RuleMetadata, RuleTier, Severity, SourceFormat, Span,
+        WorkspaceArtifact,
+    };
+
+    fn mk_artifact(
+        kind: ArtifactKind,
+        content: &str,
+    ) -> WorkspaceArtifact {
+        WorkspaceArtifact::new(
+            Artifact::new("repo/file.txt", kind, SourceFormat::Markdown),
+            content,
+            ParsedDocument::new(Vec::new(), None),
+            None,
+        )
+    }
+
+    fn metadata(code: &'static str) -> RuleMetadata {
+        RuleMetadata::new(
+            code,
+            "summary",
+            Category::Audit,
+            Severity::Warn,
+            Confidence::High,
+            RuleTier::Preview,
+        )
+    }
+
+    #[test]
+    fn observed_message_maps_known_rules() {
+        assert_eq!(
+            observed_message("SEC401"),
+            "artifact contains executable behavior"
+        );
+        assert_eq!(
+            observed_message("SEC402"),
+            "artifact contains network behavior"
+        );
+        assert_eq!(
+            observed_message("SEC403"),
+            "artifact frontmatter capabilities conflict with project policy"
+        );
+        assert_eq!(
+            observed_message("SEC999"),
+            "artifact behavior conflicts with project policy"
+        );
+    }
+
+    #[test]
+    fn first_match_location_returns_the_first_matching_span() {
+        let location = first_match_location("repo/file.txt", "barxxcurl", &["bar", "curl"]);
+        assert_eq!(location.expect("match expected").span, Span::new(0, 3));
+    }
+
+    #[test]
+    fn first_match_location_returns_none_when_no_needle_matches() {
+        assert!(first_match_location("repo/file.txt", "abc", &["curl"]).is_none());
+    }
+
+    #[test]
+    fn observed_location_targets_hook_needles() {
+        let artifact = mk_artifact(
+            ArtifactKind::CursorHookScript,
+            "echo\ncurl https://example.com/file",
+        );
+        let location = observed_location(&artifact).expect("location expected");
+        assert_eq!(location.normalized_path, "repo/file.txt");
+        assert_eq!(location.span.start_byte, 5);
+    }
+
+    #[test]
+    fn observed_location_targets_jsonish_artifact_needles() {
+        let artifact = mk_artifact(
+            ArtifactKind::CursorPluginManifest,
+            r#"{ "command": "python", "args": ["-c"] }"#,
+        );
+        let location = observed_location(&artifact).expect("location expected");
+        assert_eq!(location.normalized_path, "repo/file.txt");
+        assert!(location.span.start_byte > 0);
+    }
+
+    #[test]
+    fn observed_location_defaults_to_capability_keyword_for_other_artifacts() {
+        let artifact = mk_artifact(ArtifactKind::Skill, "some capabilities are set");
+        let location = observed_location(&artifact).expect("location expected");
+        assert_eq!(location.span.start_byte, 5);
+    }
+
+    #[test]
+    fn policy_finding_uses_hint_location_when_present() {
+        let artifact = mk_artifact(ArtifactKind::CursorHookScript, "payload")
+            .with_location_hint(Location::new("repo/hint.txt", Span::new(2, 4)));
+        let finding = policy_finding(
+            &metadata("SEC401"),
+            &artifact,
+            "hook uses exec",
+            CapabilityConflictMode::Warn,
+        );
+
+        assert_eq!(finding.location, Location::new("repo/hint.txt", Span::new(2, 4)));
+        assert_eq!(finding.stable_key.normalized_path, "repo/hint.txt");
+        assert_eq!(finding.stable_key.span, Span::new(2, 4));
+    }
+
+    #[test]
+    fn policy_finding_uses_full_content_span_without_hint() {
+        let artifact = mk_artifact(ArtifactKind::CursorHookScript, "abc");
+        let finding = policy_finding(
+            &metadata("SEC401"),
+            &artifact,
+            "hook uses exec",
+            CapabilityConflictMode::Warn,
+        );
+
+        assert_eq!(finding.location.span, Span::new(0, 3));
+        assert_eq!(finding.stable_key.span, Span::new(0, 3));
+    }
+
+    #[test]
+    fn policy_finding_warn_mode_keeps_default_severity() {
+        let artifact = mk_artifact(ArtifactKind::CursorHookScript, "abc");
+        let finding = policy_finding(
+            &metadata("SEC402"),
+            &artifact,
+            "network",
+            CapabilityConflictMode::Warn,
+        );
+        assert_eq!(finding.severity, Severity::Warn);
+        assert_eq!(finding.evidence.len(), 2);
+        assert_eq!(finding.evidence[0].kind, EvidenceKind::Claim);
+        assert_eq!(finding.evidence[1].kind, EvidenceKind::ObservedBehavior);
+        assert_eq!(finding.evidence[1].message, observed_message("SEC402"));
+    }
+
+    #[test]
+    fn policy_finding_deny_mode_forces_deny_severity() {
+        let artifact = mk_artifact(ArtifactKind::CursorHookScript, "abc");
+        let finding = policy_finding(
+            &metadata("SEC403"),
+            &artifact,
+            "conflict",
+            CapabilityConflictMode::Deny,
+        );
+        assert_eq!(finding.severity, Severity::Deny);
+    }
+}

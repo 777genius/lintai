@@ -171,3 +171,110 @@ impl WorkspaceScanContext {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::{
+        Artifact, ArtifactKind, CapabilityConflictMode, CapabilityProfile, ExecCapability,
+        FileSystemCapability, FrontmatterFormat, FrontmatterSemantics, JsonSemantics, MarkdownSemantics,
+        Location, ParsedDocument, SecretCapability, SourceFormat, Span, WorkspaceArtifact,
+        WorkspaceScanContext, YamlSemantics,
+    };
+    use serde_json::json;
+
+    use super::*;
+
+    #[test]
+    fn scan_context_keeps_original_artifact_and_payload() {
+        let artifact = Artifact::new("repo/file.md", ArtifactKind::Instructions, SourceFormat::Markdown);
+        let document = ParsedDocument::new(vec![], None);
+        let context = ScanContext::new(
+            artifact.clone(),
+            "hello",
+            document.clone(),
+            Some(DocumentSemantics::Yaml(YamlSemantics::new(json!({"k":"v"})))),
+        );
+
+        assert_eq!(context.artifact, artifact);
+        assert_eq!(context.content, "hello");
+        assert_eq!(context.document, document);
+        assert!(matches!(context.semantics, Some(DocumentSemantics::Yaml(_))));
+    }
+
+    #[test]
+    fn workspace_artifact_extracts_capabilities_from_markdown_frontmatter() {
+        let artifact = WorkspaceArtifact::new(
+            Artifact::new("repo/mcp.json", ArtifactKind::McpConfig, SourceFormat::Json),
+            "{}",
+            ParsedDocument::new(vec![], None),
+            Some(DocumentSemantics::Markdown(MarkdownSemantics::new(Some(
+                FrontmatterSemantics::new(
+                    FrontmatterFormat::Yaml,
+                    json!({"capabilities": {"exec":"none","network":"outbound_https"}}),
+                ),
+            )))),
+        );
+
+        let capabilities = artifact.capabilities.expect("expected parsed capabilities");
+        assert_eq!(capabilities.exec, Some(ExecCapability::None));
+        assert_eq!(capabilities.network, Some(NetworkCapability::OutboundHttps));
+    }
+
+    #[test]
+    fn workspace_artifact_ignores_non_markdown_capabilities() {
+        let artifact = WorkspaceArtifact::new(
+            Artifact::new("repo/file.md", ArtifactKind::Instructions, SourceFormat::Markdown),
+            "",
+            ParsedDocument::new(vec![], None),
+            Some(DocumentSemantics::Json(JsonSemantics::new(json!({"capabilities":{"exec":"none"}})))),
+        );
+
+        assert!(artifact.capabilities.is_none());
+    }
+
+    #[test]
+    fn workspace_artifact_mutators_set_expected_fields() {
+        let artifact = WorkspaceArtifact::new(
+            Artifact::new("repo/file.md", ArtifactKind::Instructions, SourceFormat::Markdown),
+            "{}",
+            ParsedDocument::new(vec![], None),
+            None,
+        )
+        .with_location_hint(Location::new("repo/file.md", Span::new(0, 2)))
+        .with_capabilities(Some(CapabilityProfile {
+            exec: Some(ExecCapability::Shell),
+            network: Some(NetworkCapability::Inbound),
+            fs: FileSystemCapability::default(),
+            secrets: SecretCapability::default(),
+            mcp: McpCapability::default(),
+        }))
+        .with_metadata(json!({"foo":"bar"}));
+
+        assert!(artifact.location_hint.is_some());
+        assert!(artifact.capabilities.is_some());
+        assert!(artifact.metadata.is_some());
+    }
+
+    #[test]
+    fn workspace_scan_context_constructor_keeps_values() {
+        let project_root = Some("/tmp/project".to_string());
+        let artifacts = vec![WorkspaceArtifact::new(
+            Artifact::new("repo/file.md", ArtifactKind::Instructions, SourceFormat::Markdown),
+            "",
+            ParsedDocument::new(vec![], None),
+            None,
+        )];
+        let context = WorkspaceScanContext::new(
+            project_root.clone(),
+            artifacts.clone(),
+            Some(CapabilityProfile::default()),
+            CapabilityConflictMode::Deny,
+        );
+
+        assert_eq!(context.project_root, project_root);
+        assert_eq!(context.artifacts.len(), 1);
+        assert_eq!(context.artifacts[0].artifact.normalized_path, "repo/file.md");
+        assert!(context.project_capabilities.is_some());
+        assert_eq!(context.capability_conflict_mode, CapabilityConflictMode::Deny);
+    }
+}

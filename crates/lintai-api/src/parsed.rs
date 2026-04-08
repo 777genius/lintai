@@ -209,3 +209,66 @@ pub enum RegionKind {
     Blockquote,
     HtmlComment,
 }
+
+#[cfg(test)]
+mod tests {
+    use serde_json::json;
+
+    use super::*;
+
+    #[test]
+    fn constructors_roundtrip_common_types() {
+        let artifact = Artifact::new("repo/file.md", ArtifactKind::Instructions, SourceFormat::Markdown);
+        assert_eq!(artifact.normalized_path, "repo/file.md");
+        assert_eq!(artifact.kind, ArtifactKind::Instructions);
+        assert_eq!(artifact.format, SourceFormat::Markdown);
+
+        let region = TextRegion::new(Span::new(1, 2), RegionKind::Heading);
+        assert_eq!(region.span, Span::new(1, 2));
+        assert_eq!(region.kind, RegionKind::Heading);
+
+        let parsed = ParsedDocument::new(vec![region.clone()], Some("front".to_string()));
+        assert_eq!(parsed.regions, vec![region]);
+        assert_eq!(parsed.raw_frontmatter.as_deref(), Some("front"));
+    }
+
+    #[test]
+    fn document_semantics_as_conversions() {
+        let markdown = DocumentSemantics::Markdown(MarkdownSemantics::new(Some(FrontmatterSemantics::new(
+            FrontmatterFormat::Yaml,
+            json!({"capabilities": true}),
+        ))));
+        let json = DocumentSemantics::Json(JsonSemantics::new(json!({"ok": true})));
+        let yaml = DocumentSemantics::Yaml(YamlSemantics::new(json!({"ok": false})));
+        let shell = DocumentSemantics::Shell(ShellSemantics::new(vec!["echo".into()]));
+
+        assert!(markdown.as_markdown().is_some());
+        assert!(json.as_json().is_some());
+        assert!(yaml.as_yaml().is_some());
+        assert!(shell.as_shell().is_some());
+
+        assert!(json.as_markdown().is_none());
+        assert!(shell.as_json().is_none());
+        assert!(markdown.as_yaml().is_none());
+        assert!(yaml.as_shell().is_none());
+    }
+
+    #[test]
+    fn syntax_and_frontmatter_constructors_set_expected_values() {
+        let frontmatter = FrontmatterSemantics::new(FrontmatterFormat::Toml, json!({"rule":"x"}));
+        assert_eq!(frontmatter.format, FrontmatterFormat::Toml);
+        assert_eq!(frontmatter.value, json!({"rule":"x"}));
+
+        let markdown = MarkdownSemantics::new(Some(frontmatter.clone()));
+        assert_eq!(markdown.frontmatter, Some(frontmatter));
+
+        let json = JsonSemantics::new(json!({"a":1}));
+        assert_eq!(json.value["a"], 1);
+
+        let yaml = YamlSemantics::new(json!({"b":2}));
+        assert_eq!(yaml.value["b"], 2);
+
+        let shell = ShellSemantics::new(vec!["cmd".into(), "arg".into()]);
+        assert_eq!(shell.lines, vec!["cmd", "arg"]);
+    }
+}

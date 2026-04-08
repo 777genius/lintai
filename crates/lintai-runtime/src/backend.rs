@@ -178,12 +178,15 @@ impl ProviderBackend for InProcessWorkspaceProviderBackend {
 
 #[cfg(test)]
 mod tests {
+    use std::time::Duration;
+
     use lintai_api::{ParsedDocument, RuleMetadata, RuleTier};
 
     use super::*;
 
     struct TestFileProvider;
     struct TestWorkspaceProvider;
+    struct TestRuleProvider;
 
     static TEST_RULES: [RuleMetadata; 1] = [RuleMetadata::new(
         "TEST001",
@@ -222,6 +225,24 @@ mod tests {
         }
     }
 
+    impl RuleProvider for TestRuleProvider {
+        fn id(&self) -> &str {
+            "test-rule"
+        }
+
+        fn rules(&self) -> &[RuleMetadata] {
+            &TEST_RULES
+        }
+
+        fn check_result(&self, _ctx: &ScanContext) -> ProviderScanResult {
+            ProviderScanResult::new(Vec::new(), Vec::new())
+        }
+
+        fn check_workspace_result(&self, _ctx: &WorkspaceScanContext) -> ProviderScanResult {
+            ProviderScanResult::new(Vec::new(), Vec::new())
+        }
+    }
+
     #[test]
     fn file_backend_reports_workspace_phase_misuse() {
         let backend = InProcessFileProviderBackend::new(Arc::new(TestFileProvider));
@@ -252,5 +273,42 @@ mod tests {
         assert!(result.findings.is_empty());
         assert_eq!(result.errors.len(), 1);
         assert_eq!(result.errors[0].provider_id, "test-workspace");
+    }
+
+    #[test]
+    fn inprocess_backend_exposes_constructor_overrides() {
+        let provider: Arc<dyn RuleProvider> = Arc::new(TestRuleProvider);
+        let default_backend = InProcessProviderBackend::new(Arc::new(TestRuleProvider) as Arc<dyn RuleProvider>);
+        assert_eq!(default_backend.id(), "test-rule");
+        assert_eq!(default_backend.scan_scope(), ScanScope::PerFile);
+        assert_eq!(default_backend.timeout(), Duration::from_secs(30));
+
+        let scoped = InProcessProviderBackend::with_scope(Arc::clone(&provider), ScanScope::Workspace);
+        assert_eq!(scoped.scan_scope(), ScanScope::Workspace);
+
+        let timeout = Duration::from_secs(5);
+        let timed = InProcessProviderBackend::with_timeout(Arc::new(TestRuleProvider), timeout);
+        assert_eq!(timed.timeout(), timeout);
+        assert_eq!(timed.id(), "test-rule");
+        assert_eq!(timed.rules(), &TEST_RULES);
+    }
+
+    #[test]
+    fn file_workspace_backends_keep_metadata_and_scope() {
+        let file_backend = InProcessFileProviderBackend::with_timeout(
+            Arc::new(TestFileProvider),
+            Duration::from_secs(7),
+        );
+        assert_eq!(file_backend.id(), "test-file");
+        assert_eq!(file_backend.scan_scope(), ScanScope::PerFile);
+        assert_eq!(file_backend.timeout(), Duration::from_secs(7));
+        assert_eq!(file_backend.rules(), &TEST_RULES);
+
+        let workspace_backend =
+            InProcessWorkspaceProviderBackend::with_timeout(Arc::new(TestWorkspaceProvider), Duration::from_secs(9));
+        assert_eq!(workspace_backend.id(), "test-workspace");
+        assert_eq!(workspace_backend.scan_scope(), ScanScope::Workspace);
+        assert_eq!(workspace_backend.timeout(), Duration::from_secs(9));
+        assert_eq!(workspace_backend.rules(), &TEST_RULES);
     }
 }

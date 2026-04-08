@@ -90,3 +90,98 @@ impl ValidationPackage {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parse_known_packages() {
+        let cases = [
+            ("canonical", ValidationPackage::Canonical),
+            ("tool-json-extension", ValidationPackage::ToolJsonExtension),
+            ("server-json-extension", ValidationPackage::ServerJsonExtension),
+            ("github-actions-extension", ValidationPackage::GithubActionsExtension),
+            ("ai-native-discovery", ValidationPackage::AiNativeDiscovery),
+        ];
+
+        for (value, expected) in cases {
+            assert_eq!(ValidationPackage::parse(value).unwrap(), expected);
+        }
+    }
+
+    #[test]
+    fn parse_rejects_unknown_package() {
+        let error = ValidationPackage::parse("does-not-exist").unwrap_err();
+        assert_eq!(error, "unknown external validation package `does-not-exist`");
+    }
+
+    #[test]
+    fn shortlist_and_ledger_paths_match_spec() {
+        let cases = [
+            (
+                ValidationPackage::Canonical,
+                SHORTLIST_PATH,
+                LEDGER_PATH,
+                Some("archive/wave1-ledger.toml"),
+                "target/external-validation/wave2/candidate-ledger.toml",
+                "target/external-validation/wave2/raw",
+                2,
+            ),
+            (
+                ValidationPackage::ToolJsonExtension,
+                TOOL_JSON_EXTENSION_SHORTLIST_PATH,
+                TOOL_JSON_EXTENSION_LEDGER_PATH,
+                Some("archive/wave3-ledger.toml"),
+                "target/external-validation/tool-json-extension/candidate-ledger.toml",
+                "target/external-validation/tool-json-extension/raw",
+                4,
+            ),
+            (
+                ValidationPackage::ServerJsonExtension,
+                SERVER_JSON_EXTENSION_SHORTLIST_PATH,
+                SERVER_JSON_EXTENSION_LEDGER_PATH,
+                Some("archive/wave1-ledger.toml"),
+                "target/external-validation/server-json-extension/candidate-ledger.toml",
+                "target/external-validation/server-json-extension/raw",
+                2,
+            ),
+            (
+                ValidationPackage::GithubActionsExtension,
+                GITHUB_ACTIONS_EXTENSION_SHORTLIST_PATH,
+                GITHUB_ACTIONS_EXTENSION_LEDGER_PATH,
+                None,
+                "target/external-validation/github-actions-extension/candidate-ledger.toml",
+                "target/external-validation/github-actions-extension/raw",
+                1,
+            ),
+            (
+                ValidationPackage::AiNativeDiscovery,
+                AI_NATIVE_DISCOVERY_SHORTLIST_PATH,
+                AI_NATIVE_DISCOVERY_LEDGER_PATH,
+                None,
+                "target/external-validation/ai-native-discovery/candidate-ledger.toml",
+                "target/external-validation/ai-native-discovery/raw",
+                1,
+            ),
+        ];
+
+        for (
+            package,
+            shortlist,
+            ledger,
+            baseline,
+            candidate,
+            output_root,
+            wave,
+        ) in cases
+        {
+            assert_eq!(package.shortlist_path(), shortlist);
+            assert_eq!(package.ledger_path(), ledger);
+            assert_eq!(package.baseline_reference(), baseline);
+            assert_eq!(package.candidate_ledger_path(), candidate);
+            assert_eq!(package.raw_output_root(), output_root);
+            assert_eq!(package.default_wave(), wave);
+        }
+    }
+}

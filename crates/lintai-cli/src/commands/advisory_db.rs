@@ -75,3 +75,74 @@ fn write_file_atomic(path: PathBuf, contents: &str) -> Result<(), String> {
 fn usage() -> String {
     "lintai advisory-db export-bundled [output-file]\nlintai advisory-db update --input FILE --output FILE\n\nUse LINTAI_ADVISORY_SNAPSHOT=/path/to/advisories.normalized.json lintai scan . to scan with a normalized custom snapshot.".to_owned()
 }
+
+#[cfg(test)]
+mod tests {
+    use std::fs;
+
+    use super::*;
+
+    #[test]
+    fn run_without_arguments_reports_usage() {
+        let error = run(std::iter::empty()).unwrap_err();
+        assert!(
+            error.starts_with("missing")
+                || error.contains("usage")
+                || error.contains("lintai advisory-db")
+        );
+    }
+
+    #[test]
+    fn run_help_command_is_success() {
+        let exit_code = run(["help".to_string()].into_iter()).unwrap();
+        assert_eq!(exit_code, std::process::ExitCode::SUCCESS);
+    }
+
+    #[test]
+    fn run_export_bundled_is_success() {
+        run(["export-bundled".to_string()].into_iter()).unwrap();
+    }
+
+    #[test]
+    fn run_update_round_trips_normalized_snapshot() {
+        let dir = std::env::temp_dir().join(format!("lintai-advisory-db-test-{}", std::process::id()));
+        fs::create_dir_all(&dir).unwrap();
+        let input = dir.join("input.json");
+        let output = dir.join("output.json");
+        let input_json = r#"{
+  "schema_version": 1,
+  "ecosystem": "npm",
+  "generated_at": "2026-04-08T00:00:00Z",
+  "source": "tests",
+  "snapshot_revision": "x",
+  "advisories": [
+    {
+      "id": "X-1",
+      "package": "left-pad",
+      "aliases": [],
+      "summary": "demo",
+      "references": ["https://example.test/X-1"],
+      "ranges": [
+        {
+          "introduced": "0.0.0",
+          "fixed": "1.0.0"
+        }
+      ]
+    }
+  ]
+}"#;
+        fs::write(&input, input_json).unwrap();
+        run([
+            "update".to_string(),
+            "--input".to_string(),
+            input.to_string_lossy().to_string(),
+            "--output".to_string(),
+            output.to_string_lossy().to_string(),
+        ].into_iter()).unwrap();
+
+        assert!(output.exists());
+        let text = fs::read_to_string(output).unwrap();
+        assert!(text.contains("\"generated_at\""));
+        assert!(text.contains("\"advisories\""));
+    }
+}

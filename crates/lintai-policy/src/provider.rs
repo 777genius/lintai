@@ -89,3 +89,118 @@ impl RuleProvider for PolicyMismatchProvider {
         WorkspaceRuleProvider::check_workspace_result(self, ctx)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::PolicyMismatchProvider;
+    use lintai_api::{
+        Artifact, ArtifactKind, CapabilityProfile, DocumentSemantics, ExecCapability,
+        FrontmatterFormat, FrontmatterSemantics, MarkdownSemantics, ScanContext,
+        NetworkCapability, ParsedDocument, RuleProvider, SourceFormat, WorkspaceArtifact,
+        WorkspaceRuleProvider, WorkspaceScanContext,
+    };
+    use serde_json::json;
+
+    fn workspace_artifact(kind: ArtifactKind, content: &str, semantics: Option<DocumentSemantics>) -> WorkspaceArtifact {
+        WorkspaceArtifact::new(
+            Artifact::new("repo/file", kind, SourceFormat::Markdown),
+            content,
+            ParsedDocument::new(Vec::new(), None),
+            semantics,
+        )
+    }
+
+    #[test]
+    fn workspace_check_no_project_capabilities_reports_no_findings() {
+        let provider = PolicyMismatchProvider;
+        let result = WorkspaceRuleProvider::check_workspace_result(
+            &provider,
+            &WorkspaceScanContext::new(
+                None,
+                vec![workspace_artifact(ArtifactKind::PackageManifest, "", None)],
+                None,
+                lintai_api::CapabilityConflictMode::Warn,
+            ),
+        );
+
+        assert!(result.errors.is_empty());
+        assert!(result.findings.is_empty());
+    }
+
+    #[test]
+    fn workspace_check_flags_exec_and_network_mismatches() {
+        let mut project = CapabilityProfile::default();
+        project.exec = Some(ExecCapability::None);
+        project.network = Some(NetworkCapability::None);
+
+        let exec_artifact = workspace_artifact(ArtifactKind::CursorHookScript, "echo hi", None);
+        let network_artifact =
+            workspace_artifact(ArtifactKind::CursorHookScript, "curl https://example.com", None);
+
+        let result = WorkspaceRuleProvider::check_workspace_result(
+            &PolicyMismatchProvider,
+            &WorkspaceScanContext::new(
+                None,
+                vec![exec_artifact, network_artifact],
+                Some(project),
+                lintai_api::CapabilityConflictMode::Warn,
+            ),
+        );
+
+        assert_eq!(result.findings.len(), 3);
+        let codes = result
+            .findings
+            .iter()
+            .map(|finding| finding.rule_code.as_str())
+            .collect::<std::collections::HashSet<_>>();
+        assert!(codes.contains(&crate::catalog::ProjectExecMismatchRule::METADATA.code));
+        assert!(codes.contains(&crate::catalog::ProjectNetworkMismatchRule::METADATA.code));
+    }
+
+    #[test]
+    fn workspace_check_flags_frontmatter_conflict_when_skill_requests_more_capability() {
+        let mut project = CapabilityProfile::default();
+        project.exec = Some(ExecCapability::None);
+
+        let artifact = workspace_artifact(
+            ArtifactKind::Instructions,
+            "{}",
+            Some(DocumentSemantics::Markdown(MarkdownSemantics::new(Some(
+                FrontmatterSemantics::new(
+                    FrontmatterFormat::Yaml,
+                    json!({"capabilities": {"exec": "shell"}}),
+                ),
+            )))),
+        );
+
+        let result = WorkspaceRuleProvider::check_workspace_result(
+            &PolicyMismatchProvider,
+            &WorkspaceScanContext::new(
+                None,
+                vec![artifact],
+                Some(project),
+                lintai_api::CapabilityConflictMode::Warn,
+            ),
+        );
+
+        assert_eq!(result.findings.len(), 1);
+        assert_eq!(
+            result.findings[0].rule_code,
+            crate::catalog::CapabilityConflictRule::METADATA.code
+        );
+    }
+
+    #[test]
+    fn rule_provider_check_result_reports_workspace_misuse() {
+        let provider = PolicyMismatchProvider;
+        let result = provider.check_result(&ScanContext::new(
+            Artifact::new("repo/file", ArtifactKind::Instructions, SourceFormat::Markdown),
+            "",
+            ParsedDocument::new(Vec::new(), None),
+            None,
+        ));
+
+        assert_eq!(result.errors.len(), 1);
+        assert_eq!(result.errors[0].message, "workspace provider cannot run in file phase");
+    }
+}

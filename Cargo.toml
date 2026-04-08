@@ -41,3 +41,12 @@ serde_yaml_bw = "2.4.0"
 schemars = { version = "1.2.1", features = ["derive"] }
 semver = "1.0.27"
 toml = "0.8.23"
+
+# Profile tuning to keep target/ small.
+# Our code keeps line-level debug info (enough for backtraces and lldb line stepping),
+# dependencies drop debug info entirely — they rarely need stepping through.
+[profile.dev]
+debug = "line-tables-only"
+
+[profile.dev.package."*"]
+debug = false

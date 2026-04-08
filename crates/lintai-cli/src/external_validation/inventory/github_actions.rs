@@ -71,3 +71,90 @@ pub(crate) fn value_contains_workflow_steps(value: &Value) -> bool {
         _ => false,
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::external_validation::normalize_rel_path;
+    use std::env;
+    use std::fs;
+    use std::path::PathBuf;
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    fn make_workspace_root() -> PathBuf {
+        let unique_id = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .map(|time| time.as_nanos())
+            .unwrap_or(0);
+        let workspace = env::temp_dir().join(format!(
+            "lintai-github-actions-tests-{unique_id}-{}",
+            std::process::id()
+        ));
+        fs::create_dir_all(&workspace).unwrap();
+        workspace
+    }
+
+    fn cleanup(workspace: &PathBuf) {
+        let _ = fs::remove_dir_all(workspace);
+    }
+
+    #[test]
+    fn workflow_steps_recognizes_steps_in_nested_objects() {
+        let value: Value = serde_yaml_bw::from_str(
+            r#"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+"#,
+        )
+        .unwrap();
+        assert!(contains_semantic_github_workflow_yaml(&serde_yaml_bw::to_string(&value).unwrap()));
+        assert!(value_contains_workflow_steps(&value));
+    }
+
+    #[test]
+    fn workflow_steps_recognizes_array_containing_runs_step() {
+        let value: Value = serde_yaml_bw::from_str("- {uses: echo}\n").unwrap();
+        assert!(value_contains_workflow_steps(&value));
+    }
+
+    #[test]
+    fn admitted_github_workflow_paths_collects_only_semantic_workflows() {
+        let workspace_root = make_workspace_root();
+        let repo_root = workspace_root.join("repo");
+        let workflow_dir = repo_root.join(".github").join("workflows");
+        fs::create_dir_all(&workflow_dir).unwrap();
+
+        let semantic = workflow_dir.join("ci.yml");
+        let non_semantic = workflow_dir.join("plain.yml");
+        fs::write(
+            semantic,
+            "on: push\njobs:\n  build:\n    runs-on: ubuntu-latest\n",
+        )
+        .unwrap();
+        fs::write(non_semantic, "name: example\nvalues:\n  - x\n").unwrap();
+
+        let discovered = admitted_github_workflow_paths(&repo_root).unwrap();
+        let expected = vec![normalize_rel_path(&PathBuf::from(".github/workflows/ci.yml"))];
+        assert_eq!(discovered, expected);
+        cleanup(&workspace_root);
+    }
+
+    #[test]
+    fn admitted_github_workflow_paths_errors_when_no_admission() {
+        let workspace_root = make_workspace_root();
+        let repo_root = workspace_root.join("repo-empty");
+        let workflow_dir = repo_root.join(".github").join("workflows");
+        fs::create_dir_all(&workflow_dir).unwrap();
+        fs::write(workflow_dir.join("plain.yml"), "name: demo\n").unwrap();
+
+        let error = admitted_github_workflow_paths(&repo_root).unwrap_err();
+        assert_eq!(
+            error,
+            "no semantically confirmed GitHub workflow paths passed admission".to_owned()
+        );
+        cleanup(&workspace_root);
+    }
+}

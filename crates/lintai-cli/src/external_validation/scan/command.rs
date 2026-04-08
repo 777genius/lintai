@@ -22,3 +22,63 @@ pub(crate) fn run_scan(lintai_bin: &Path, repo_dir: &Path, json: bool) -> Result
         stderr.trim()
     ))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::os::unix::fs::PermissionsExt;
+    use std::path::{Path, PathBuf};
+
+    fn existing_unix_command(paths: &[&str]) -> PathBuf {
+        paths
+            .iter()
+            .copied()
+            .find(|path| Path::new(path).is_file())
+            .map(PathBuf::from)
+            .unwrap_or_else(|| PathBuf::from("/bin/echo"))
+    }
+
+    #[cfg(unix)]
+    fn write_failure_script() -> PathBuf {
+        let script = std::env::temp_dir().join(format!("lintai-scan-fail-{}", std::process::id()));
+        let _ = std::fs::remove_file(&script);
+        std::fs::write(
+            &script,
+            "#!/bin/sh\n\
+echo scan .\n\
+exit 2\n",
+        )
+        .unwrap();
+        let mut permissions = std::fs::metadata(&script).unwrap().permissions();
+        permissions.set_mode(0o755);
+        std::fs::set_permissions(&script, permissions).unwrap();
+        script
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn run_scan_with_unix_echo_returns_stdout() {
+        let path = existing_unix_command(&["/usr/bin/echo", "/bin/echo", "/usr/local/bin/echo"]);
+        let text = run_scan(Path::new(&path), Path::new("/"), false).unwrap();
+        assert_eq!(text, "scan .\n");
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn run_scan_with_unix_false_returns_runtime_error() {
+        let path = write_failure_script();
+        let error = run_scan(Path::new(&path), Path::new("/"), false).unwrap_err();
+        let _ = std::fs::remove_file(&path);
+        assert!(error.starts_with("lintai scan failed in / with exit Some(2):"));
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn run_scan_with_missing_binary_returns_spawn_error() {
+        let error = run_scan(Path::new("/does/not/exist"), Path::new("/"), false).unwrap_err();
+        assert!(
+            error.starts_with("failed to run lintai in /:"),
+            "unexpected error: {error}"
+        );
+    }
+}

@@ -298,3 +298,102 @@ impl Finding {
         self
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use serde_json::json;
+
+    use super::*;
+    use crate::{Category, Confidence, Severity};
+
+    #[test]
+    fn constructors_create_expected_values() {
+        let span = Span::new(4, 9);
+        let line = LineColumn::new(1, 2);
+        let location = Location::new("repo/file.md", span.clone());
+        let rule_metadata = crate::RuleMetadata::new(
+            "SEC100",
+            "summary",
+            Category::Security,
+            Severity::Warn,
+            Confidence::High,
+            crate::RuleTier::Preview,
+        );
+        let finding = Finding::new(&rule_metadata, location.clone(), "message");
+
+        assert_eq!(finding.stable_key.rule_code, "SEC100");
+        assert_eq!(finding.rule_code, "SEC100");
+        assert_eq!(finding.category, Category::Security);
+        assert_eq!(finding.severity, Severity::Warn);
+        assert_eq!(finding.confidence, Confidence::High);
+        assert_eq!(finding.location, location);
+        assert_eq!(finding.evidence.len(), 1);
+        assert_eq!(finding.evidence[0].kind, EvidenceKind::Context);
+        assert_eq!(finding.evidence[0].message, "message");
+        assert_eq!(finding.evidence[0].location, Some(Location::new("repo/file.md", span.clone())));
+        assert!(finding.cwe.is_empty());
+        assert_eq!(finding.tags, Vec::<String>::new());
+        assert_eq!(line.line, 1);
+        assert_eq!(line.column, 2);
+    }
+
+    #[test]
+    fn evidence_and_suggestion_helpers_chain() {
+        let mut location = Location::new("repo/file.md", Span::new(0, 10));
+        location.start = Some(LineColumn::new(2, 1));
+        location.end = Some(LineColumn::new(2, 11));
+        let mut finding = Finding::new(
+            &crate::RuleMetadata::new(
+                "SEC200",
+                "summary",
+                Category::Quality,
+                Severity::Deny,
+                Confidence::Medium,
+                crate::RuleTier::Stable,
+            ),
+            location.clone(),
+            "message",
+        )
+        .with_metadata(json!({"source":"test"}))
+        .with_fix(Fix::new(Span::new(0, 10), "new", Applicability::Safe, Some("fix".into())));
+
+        let evidence = Evidence::new(EvidenceKind::ObservedBehavior, "observed", Some(location))
+            .with_subject_id("artifact");
+        finding = finding.with_evidence(evidence.with_metadata(json!({"kind":"probe"})));
+
+        let suggestion = Suggestion::new(
+            "replace command",
+            Some(Fix::new(
+                Span::new(1, 2),
+                "echo safe",
+                Applicability::Suggestion,
+                None,
+            )),
+        );
+        finding = finding
+            .with_suggestion(suggestion)
+            .with_tag("safe")
+            .with_cwe("CWE-79")
+            .with_metadata(json!({"updated":true}));
+
+        assert_eq!(finding.tags, vec!["safe"]);
+        assert_eq!(finding.evidence.len(), 2);
+        assert_eq!(finding.suggestions.len(), 1);
+        assert_eq!(finding.related, Vec::<RelatedFinding>::new());
+        assert_eq!(finding.fix.as_ref().expect("fix missing").replacement, "new");
+        assert_eq!(finding.metadata.as_ref().expect("metadata missing")["updated"], true);
+    }
+
+    #[test]
+    fn related_and_stable_key_constructors_match_inputs() {
+        let span = Span::new(1, 3);
+        let related = RelatedFinding::new("SEC111", "repo/file.rs", span.clone());
+        let stable = StableKey::new("SEC111", "repo/file.rs", span, Some("subj".into()));
+
+        assert_eq!(related.rule_code, "SEC111");
+        assert_eq!(related.normalized_path, "repo/file.rs");
+        assert_eq!(related.span, Span::new(1, 3));
+        assert_eq!(stable.rule_code, "SEC111");
+        assert_eq!(stable.subject_id, Some("subj".to_string()));
+    }
+}

@@ -216,7 +216,7 @@ mod tests {
     use std::sync::atomic::{AtomicU64, Ordering};
     use std::time::{SystemTime, UNIX_EPOCH};
 
-    use super::inventory_surfaces;
+    use super::*;
 
     fn unique_temp_dir(prefix: &str) -> PathBuf {
         static NEXT_TEMP_ID: AtomicU64 = AtomicU64::new(0);
@@ -247,5 +247,44 @@ mod tests {
                 .surfaces_present
                 .contains(&".claude/settings.local.json".to_owned())
         );
+    }
+
+    #[test]
+    fn expands_mcp_variant_surface_for_fixture_like_paths() {
+        let mut surfaces = std::collections::BTreeSet::new();
+        insert_expanded_mcp_variant_surface(
+            &mut surfaces,
+            "fixture/.cursor/mcp.json",
+            ".cursor/mcp.json",
+        );
+        assert!(surfaces.contains(".cursor/mcp.json (fixture-like)"));
+        assert!(surfaces.contains("expanded_mcp_client_variant_fixture_only"));
+    }
+
+    #[test]
+    fn inserts_explicit_mcp_variant_surface_for_non_fixture_path() {
+        let mut surfaces = std::collections::BTreeSet::new();
+        insert_expanded_mcp_variant_surface(
+            &mut surfaces,
+            ".cursor/mcp.json",
+            ".cursor/mcp.json",
+        );
+        assert!(surfaces.contains(".cursor/mcp.json"));
+        assert!(!surfaces.contains("expanded_mcp_client_variant_fixture_only"));
+    }
+
+    #[test]
+    fn inserts_docker_mcp_launch_surface_for_fixture_like_expanded_client() {
+        let mut surfaces = std::collections::BTreeSet::new();
+        insert_docker_mcp_launch_surface(&mut surfaces, "vscode/settings.json");
+        assert!(surfaces.contains("docker_mcp_launch"));
+    }
+
+    #[test]
+    fn inserts_docker_mcp_launch_fixture_surface_when_expanded_variant_is_fixture_like() {
+        let mut surfaces = std::collections::BTreeSet::new();
+        insert_docker_mcp_launch_surface(&mut surfaces, "fixture/.kiro/settings/mcp.json");
+        assert!(surfaces.contains("docker_mcp_launch (fixture-like)"));
+        assert!(surfaces.contains("docker_mcp_launch_fixture_only"));
     }
 }

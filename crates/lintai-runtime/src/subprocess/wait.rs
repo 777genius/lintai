@@ -51,3 +51,52 @@ pub(super) fn wait_for_exit(
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use std::time::Duration;
+    use std::process::Command;
+
+    use super::*;
+
+    #[test]
+    fn wait_policy_persists_timeout_and_interval() {
+        let policy = ChildWaitPolicy::new(Duration::from_millis(25));
+        assert_eq!(policy.timeout, Duration::from_millis(25));
+        assert_eq!(policy.poll_interval, Duration::from_millis(5));
+    }
+
+    #[test]
+    fn wait_for_exit_returns_status_for_fast_exit() {
+        let mut child = Command::new("sh")
+            .arg("-c")
+            .arg("exit 0")
+            .spawn()
+            .expect("should spawn");
+        let status = wait_for_exit(
+            &mut child,
+            ChildWaitPolicy::new(Duration::from_millis(200)),
+            "unit",
+        )
+        .expect("child should finish quickly");
+        assert!(status.success());
+    }
+
+    #[test]
+    fn wait_for_exit_times_out_and_reports_error() {
+        let mut child = Command::new("sh")
+            .arg("-c")
+            .arg("sleep 1")
+            .spawn()
+            .expect("should spawn");
+        let error = wait_for_exit(
+            &mut child,
+            ChildWaitPolicy::new(Duration::from_millis(10)),
+            "unit-timeout",
+        )
+        .expect_err("expected timeout");
+
+        assert_eq!(error.provider_id, "unit-timeout");
+        assert_eq!(error.kind, lintai_api::ProviderErrorKind::Timeout);
+    }
+}

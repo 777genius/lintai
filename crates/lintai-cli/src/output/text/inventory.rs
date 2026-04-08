@@ -131,3 +131,189 @@ pub(super) fn append_inventory_sections(output: &mut String, report: &ReportEnve
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::known_scan::{
+        InventoryChangedRoot, InventoryDiff, InventoryOriginScope, InventoryRoot, InventoryStats,
+        InventoryProvenance, InventoryRiskIncrease,
+    };
+    use crate::output::model::{ReportEnvelope, ReportStats, ToolMetadata};
+    use lintai_api::{Finding, Location, RuleMetadata, RuleTier, Severity, Span};
+
+    fn base_envelope<'a>(findings: &'a [Finding]) -> ReportEnvelope<'a> {
+        ReportEnvelope {
+            schema_version: 1,
+            tool: ToolMetadata { name: "lintai" },
+            config_source: None,
+            project_root: None,
+            discovered_roots: Vec::new(),
+            discovery_stats: None,
+            inventory_roots: Vec::new(),
+            inventory_stats: None,
+            inventory_diff: None,
+            policy_matches: Vec::new(),
+            policy_stats: None,
+            stats: ReportStats {
+                scanned_files: 0,
+                skipped_files: 0,
+            },
+            findings,
+            diagnostics: &[],
+            runtime_errors: &[],
+        }
+    }
+
+    fn inventory_root(
+        path: &str,
+        client: &str,
+        path_type: &str,
+        risk_level: &str,
+        mode: &str,
+    ) -> InventoryRoot {
+        InventoryRoot {
+            client: client.into(),
+            surface: "surface".into(),
+            path: path.into(),
+            mode: mode.into(),
+            risk_level: risk_level.into(),
+            provenance: InventoryProvenance {
+                origin_scope: InventoryOriginScope::Project.as_str().to_string(),
+                path_type: path_type.into(),
+                target_path: None,
+                owner: None,
+                mtime_epoch_s: None,
+            },
+        }
+    }
+
+    #[test]
+    fn appends_inventory_summary_when_diff_present() {
+        let finding = Finding::new(
+            &RuleMetadata::new(
+                "SEC417",
+                "test",
+                lintai_api::Category::Security,
+                Severity::Warn,
+                lintai_api::Confidence::High,
+                RuleTier::Stable,
+            ),
+            Location::new("service/config.json", Span::new(0, 12)),
+            "details",
+        );
+        let finding_for_diff = finding.clone();
+        let mut envelope = base_envelope(std::slice::from_ref(&finding));
+        let inventory_roots = vec![inventory_root(
+            "service",
+            "client-a",
+            "directory",
+            "low",
+            "discovered_only",
+        )];
+        envelope.inventory_stats = Some(InventoryStats {
+            user_roots: 1,
+            discovered_only_roots: 1,
+            high_risk_roots: 2,
+            medium_risk_roots: 1,
+            low_risk_roots: 3,
+            supported_artifacts_scanned: 4,
+            non_target_files_in_lintable_roots: 5,
+            excluded_files: 6,
+            binary_files: 7,
+            unreadable_files: 8,
+            unrecognized_files: 9,
+            system_roots: 2,
+            lintable_roots: 0,
+        });
+        envelope.inventory_roots = inventory_roots;
+        envelope.inventory_diff = Some(InventoryDiff {
+            new_roots: vec![inventory_root(
+                "service/new",
+                "client-a",
+                "file",
+                "low",
+                "lintable",
+            )],
+            removed_roots: Vec::new(),
+            changed_roots: vec![InventoryChangedRoot {
+                client: "client-a".into(),
+                surface: "surface".into(),
+                path: "service/config.json".into(),
+                old_mode: "discovered_only".into(),
+                new_mode: "lintable".into(),
+                old_risk_level: "low".into(),
+                new_risk_level: "low".into(),
+                old_path_type: "file".into(),
+                new_path_type: "file".into(),
+                old_mtime_epoch_s: Some(101),
+                new_mtime_epoch_s: None,
+            }],
+            new_lintable_roots: vec![inventory_root(
+                "service/lintable",
+                "client-a",
+                "directory",
+                "medium",
+                "lintable",
+            )],
+            risk_increased_roots: vec![InventoryRiskIncrease {
+                client: "client-a".into(),
+                surface: "surface".into(),
+                path: "service/config.json".into(),
+                old_risk_level: "low".into(),
+                new_risk_level: "medium".into(),
+            }],
+            new_findings: vec![finding_for_diff],
+        });
+
+        let mut output = String::new();
+        super::append_inventory_summary(&mut output, &envelope);
+        super::append_inventory_sections(&mut output, &envelope);
+
+        assert!(output.contains("inventory diff discovered 1 root(s), new 1 root(s), removed 0 root(s), changed 1 root(s), new lintable 1 root(s), risk increased 1 root(s), new findings 1"));
+        assert!(output.contains("inventory counters: user=1"));
+        assert!(output.contains("new-root [low lintable] client-a surface service/new"));
+        assert!(output.contains("changed-root [mode discovered_only->lintable mtime 101->none] client-a surface service/config.json"));
+        assert!(output.contains("risk-increased-root [low->medium] client-a surface service/config.json"));
+        assert!(output.contains("new-finding SEC417 client-a service/config.json"));
+    }
+
+    #[test]
+    fn appends_inventory_summary_without_diff() {
+        let mut envelope = base_envelope(&[]);
+        envelope.inventory_roots = vec![inventory_root(
+            "service",
+            "client-a",
+            "directory",
+            "low",
+            "lintable",
+        )];
+        envelope.inventory_stats = Some(InventoryStats {
+            user_roots: 1,
+            system_roots: 1,
+            lintable_roots: 1,
+            discovered_only_roots: 2,
+            high_risk_roots: 3,
+            medium_risk_roots: 4,
+            low_risk_roots: 5,
+            supported_artifacts_scanned: 6,
+            non_target_files_in_lintable_roots: 7,
+            excluded_files: 8,
+            binary_files: 9,
+            unreadable_files: 10,
+            unrecognized_files: 11,
+        });
+        let mut output = String::new();
+
+        let did_render = super::append_inventory_summary(&mut output, &envelope);
+        super::append_inventory_sections(&mut output, &envelope);
+
+        assert!(did_render);
+        assert!(output.contains("inventory discovered 1 root(s), user 1 root(s), system 1 root(s)"));
+        assert!(output.contains("inventory counters: non_target=7"));
+        assert!(output.contains("excluded=8"));
+        assert!(output.contains("binary=9"));
+        assert!(output.contains("unreadable=10"));
+        assert!(output.contains("unrecognized=11"));
+        assert!(output.contains("inventory-root [project low lintable] client-a surface service"));
+    }
+}

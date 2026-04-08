@@ -65,3 +65,73 @@ pub(crate) fn contains_semantic_server_json(text: &str) -> bool {
         && (object.get("remotes").and_then(Value::as_array).is_some()
             || object.get("packages").and_then(Value::as_array).is_some())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+    use std::path::PathBuf;
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    fn make_workspace_root() -> PathBuf {
+        let unique_id = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .map(|time| time.as_nanos())
+            .unwrap_or(0);
+        let path = std::env::temp_dir().join(format!(
+            "lintai-server-json-inventory-tests-{unique_id}-{}",
+            std::process::id()
+        ));
+        fs::create_dir_all(&path).unwrap();
+        path
+    }
+
+    fn cleanup(path: &PathBuf) {
+        let _ = fs::remove_dir_all(path);
+    }
+
+    #[test]
+    fn contains_semantic_server_json_requires_name_version_and_manifest() {
+        assert!(contains_semantic_server_json(
+            r#"{"name":"server","version":"1.0.0","packages":[]}"#
+        ));
+        assert!(!contains_semantic_server_json(
+            r#"{"name":"server","version":"1.0.0"}"#
+        ));
+        assert!(!contains_semantic_server_json(r#"{"name":"server","remotes":[]}"#));
+        assert!(!contains_semantic_server_json("not-json"));
+    }
+
+    #[test]
+    fn admitted_server_json_paths_filters_to_semantic_documents() {
+        let workspace = make_workspace_root();
+        fs::write(
+            workspace.join("server.json"),
+            r#"{"name":"ok","version":"1.0.0","packages":[]}"#,
+        )
+        .unwrap();
+        fs::write(workspace.join("other.json"), r#"{"name":"wrong","version":"1.0.0"}"#).unwrap();
+
+        let discovered = admitted_server_json_paths(&workspace).unwrap();
+        cleanup(&workspace);
+        assert_eq!(discovered, vec!["server.json".to_owned()]);
+    }
+
+    #[test]
+    fn admitted_server_json_paths_errors_when_none_semantic() {
+        let workspace = make_workspace_root();
+        fs::create_dir_all(workspace.join("nested")).unwrap();
+        fs::write(
+            workspace.join("nested").join("server.json"),
+            r#"{"name":"server","version":null,"packages":[]}"#,
+        )
+        .unwrap();
+
+        let error = admitted_server_json_paths(&workspace).unwrap_err();
+        cleanup(&workspace);
+        assert_eq!(
+            error,
+            "no committed non-fixture server.json paths passed semantic confirmation".to_owned()
+        );
+    }
+}

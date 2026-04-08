@@ -26,3 +26,23 @@ pub(super) fn terminate_child(child: &mut Child) {
     let _ = child.kill();
     let _ = child.wait();
 }
+
+#[cfg(test)]
+mod tests {
+    use std::process::Command;
+
+    use super::*;
+
+    #[test]
+    fn terminate_child_stops_running_process() {
+        let mut child = Command::new("sh")
+            .arg("-c")
+            .arg("sleep 1")
+            .spawn()
+            .expect("should spawn");
+        terminate_child(&mut child);
+
+        let status = child.wait().expect("child should have been waited");
+        assert!(!status.success());
+    }
+}

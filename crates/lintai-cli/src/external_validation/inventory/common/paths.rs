@@ -51,3 +51,36 @@ fn segment_tokens(segment: &str) -> Vec<&str> {
         .filter(|token| !token.is_empty())
         .collect()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn segment_tokens_splits_by_delimiters_and_camel_case() {
+        let tokens = segment_tokens("fooBar-baz_qux.qux");
+        assert_eq!(tokens, vec!["foo", "Bar", "baz", "qux", "qux"]);
+    }
+
+    #[test]
+    fn detects_generic_validation_excluded_paths() {
+        assert!(is_generic_validation_excluded_path("src/fixtures/tool.json"));
+        assert!(is_generic_validation_excluded_path("docs/samples/example.md"));
+        assert!(!is_generic_validation_excluded_path("src/main.rs"));
+    }
+
+    #[test]
+    fn tool_json_excluded_matches_generic_filter() {
+        assert_eq!(
+            is_tool_json_excluded_path("examples/fixture-data/config.json"),
+            is_generic_validation_excluded_path("examples/fixture-data/config.json")
+        );
+    }
+
+    #[test]
+    fn fixture_like_paths_detect_nested_path_tokens() {
+        assert!(is_fixture_like_path("src/fixture/config.json"));
+        assert!(is_fixture_like_path("examples/testdata/mcptest.json"));
+        assert!(!is_fixture_like_path("src/main/real.json"));
+    }
+}
