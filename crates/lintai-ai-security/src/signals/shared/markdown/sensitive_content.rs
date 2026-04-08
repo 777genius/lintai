@@ -36,9 +36,7 @@ pub(crate) fn find_private_key_relative_span(text: &str) -> Option<Span> {
 
 pub(crate) fn find_fenced_pipe_shell_relative_span(text: &str) -> Option<Span> {
     let mut lines = text.split_inclusive('\n');
-    let Some(opening_line) = lines.next() else {
-        return None;
-    };
+    let opening_line = lines.next()?;
     let opening_trimmed = opening_line.trim();
     if !(opening_trimmed.starts_with("```") || opening_trimmed.starts_with("~~~")) {
         return None;

@@ -45,16 +45,27 @@ pub(crate) fn build_envelope_with_discovery<'a>(
     }
 }
 
+pub(crate) struct InventoryEnvelopeArgs {
+    pub(crate) inventory_roots: Vec<InventoryRoot>,
+    pub(crate) inventory_stats: Option<InventoryStats>,
+    pub(crate) inventory_diff: Option<InventoryDiff>,
+    pub(crate) policy_matches: Vec<PolicyMatch>,
+    pub(crate) policy_stats: Option<PolicyStats>,
+}
+
 pub(crate) fn build_envelope_with_inventory<'a>(
     summary: &'a ScanSummary,
     config_source: Option<&Path>,
     project_root: Option<&Path>,
-    inventory_roots: Vec<InventoryRoot>,
-    inventory_stats: Option<InventoryStats>,
-    inventory_diff: Option<InventoryDiff>,
-    policy_matches: Vec<PolicyMatch>,
-    policy_stats: Option<PolicyStats>,
+    args: InventoryEnvelopeArgs,
 ) -> ReportEnvelope<'a> {
+    let InventoryEnvelopeArgs {
+        inventory_roots,
+        inventory_stats,
+        inventory_diff,
+        policy_matches,
+        policy_stats,
+    } = args;
     ReportEnvelope {
         schema_version: 1,
         tool: ToolMetadata { name: "lintai" },

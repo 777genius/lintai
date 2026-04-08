@@ -141,7 +141,7 @@ pub(crate) fn contains_package_like_arg(args_window: &str, excluded_tokens: &[&s
                 && !token.starts_with("http://")
                 && !token.starts_with("https://")
                 && !is_excluded_mutable_mcp_package_token(token)
-                && !excluded_tokens.iter().any(|excluded| token == *excluded)
+                && !excluded_tokens.contains(&token)
         })
 }
 

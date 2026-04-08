@@ -355,16 +355,16 @@ pub(crate) fn collect_hook_line(
                 offset + relative.start_byte,
                 offset + relative.end_byte,
             ));
-        } else if lowered.contains("curl ") {
-            if let Some(relative) = find_literal_value_after_prefixes_case_insensitive(
+        } else if lowered.contains("curl ")
+            && let Some(relative) = find_literal_value_after_prefixes_case_insensitive(
                 line,
                 &["authorization: bearer ", "authorization: basic "],
-            ) {
-                signals.static_auth_exposure_span = Some(Span::new(
-                    offset + relative.start_byte,
-                    offset + relative.end_byte,
-                ));
-            }
+            )
+        {
+            signals.static_auth_exposure_span = Some(Span::new(
+                offset + relative.start_byte,
+                offset + relative.end_byte,
+            ));
         }
     }
 
@@ -377,33 +377,30 @@ pub(crate) fn collect_hook_line(
                 .iter()
                 .any(|token| token.text.contains("http://") || token.text.contains("https://"));
 
-        if has_curl {
-            if let Some(token) = tokens
+        if has_curl
+            && let Some(token) = tokens
                 .iter()
                 .find(|token| matches!(token.text, "-k" | "--insecure"))
-            {
-                signals.tls_bypass_span = Some(Span::new(offset + token.start, offset + token.end));
-                return;
-            }
+        {
+            signals.tls_bypass_span = Some(Span::new(offset + token.start, offset + token.end));
+            return;
         }
 
-        if has_wget {
-            if let Some(token) = tokens
+        if has_wget
+            && let Some(token) = tokens
                 .iter()
                 .find(|token| token.text == "--no-check-certificate")
-            {
-                signals.tls_bypass_span = Some(Span::new(offset + token.start, offset + token.end));
-                return;
-            }
+        {
+            signals.tls_bypass_span = Some(Span::new(offset + token.start, offset + token.end));
+            return;
         }
 
-        if has_network_context {
-            if let Some(token) = tokens
+        if has_network_context
+            && let Some(token) = tokens
                 .iter()
                 .find(|token| token.text == "NODE_TLS_REJECT_UNAUTHORIZED=0")
-            {
-                signals.tls_bypass_span = Some(Span::new(offset + token.start, offset + token.end));
-            }
+        {
+            signals.tls_bypass_span = Some(Span::new(offset + token.start, offset + token.end));
         }
     }
 }

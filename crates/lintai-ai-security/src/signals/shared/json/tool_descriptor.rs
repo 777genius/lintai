@@ -248,9 +248,9 @@ pub(crate) fn find_mcp_missing_machine_field_span(
     None
 }
 
-pub(crate) fn openai_function_object<'a>(
-    object: &'a serde_json::Map<String, Value>,
-) -> Option<&'a serde_json::Map<String, Value>> {
+pub(crate) fn openai_function_object(
+    object: &serde_json::Map<String, Value>,
+) -> Option<&serde_json::Map<String, Value>> {
     (object.get("type").and_then(Value::as_str) == Some("function"))
         .then(|| object.get("function").and_then(Value::as_object))
         .flatten()

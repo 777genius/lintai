@@ -35,10 +35,10 @@ pub(crate) fn resolve_named_binary(
     let mut candidates = Vec::new();
     if let Some(parent) = current.parent() {
         candidates.push(parent.join(&binary_name));
-        if parent.file_name().is_some_and(|name| name == "deps") {
-            if let Some(grandparent) = parent.parent() {
-                candidates.push(grandparent.join(&binary_name));
-            }
+        if parent.file_name().is_some_and(|name| name == "deps")
+            && let Some(grandparent) = parent.parent()
+        {
+            candidates.push(grandparent.join(&binary_name));
         }
     }
 

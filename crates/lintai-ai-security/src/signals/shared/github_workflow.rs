@@ -197,9 +197,7 @@ pub(crate) fn is_checkout_action_reference(value: &str) -> bool {
 
 pub(crate) fn find_third_party_unpinned_action_relative_span(value: &str) -> Option<Span> {
     let normalized = normalize_yaml_scalar(value);
-    let Some((owner, _, reference)) = parse_github_action_reference(normalized) else {
-        return None;
-    };
+    let (owner, _, reference) = parse_github_action_reference(normalized)?;
     if owner.eq_ignore_ascii_case("actions") {
         return None;
     }

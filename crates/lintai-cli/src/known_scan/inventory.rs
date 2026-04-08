@@ -277,18 +277,12 @@ pub(crate) fn risk_rank(value: &str) -> u8 {
 }
 
 pub(crate) fn sort_inventory_diff(diff: &mut InventoryDiff) {
-    diff.new_roots
-        .sort_by(|left, right| inventory_root_identity(left).cmp(&inventory_root_identity(right)));
-    diff.removed_roots
-        .sort_by(|left, right| inventory_root_identity(left).cmp(&inventory_root_identity(right)));
-    diff.new_lintable_roots
-        .sort_by(|left, right| inventory_root_identity(left).cmp(&inventory_root_identity(right)));
-    diff.changed_roots.sort_by(|left, right| {
-        (&left.client, &left.surface, &left.path).cmp(&(&right.client, &right.surface, &right.path))
-    });
-    diff.risk_increased_roots.sort_by(|left, right| {
-        (&left.client, &left.surface, &left.path).cmp(&(&right.client, &right.surface, &right.path))
-    });
-    diff.new_findings
-        .sort_by(|left, right| finding_identity(left).cmp(&finding_identity(right)));
+    diff.new_roots.sort_by_key(inventory_root_identity);
+    diff.removed_roots.sort_by_key(inventory_root_identity);
+    diff.new_lintable_roots.sort_by_key(inventory_root_identity);
+    diff.changed_roots
+        .sort_by_key(|root| (root.client.clone(), root.surface.clone(), root.path.clone()));
+    diff.risk_increased_roots
+        .sort_by_key(|root| (root.client.clone(), root.surface.clone(), root.path.clone()));
+    diff.new_findings.sort_by_key(finding_identity);
 }

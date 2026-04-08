@@ -3155,17 +3155,16 @@ impl MarkdownSignals {
                         .is_some_and(|(_, value)| !value.trim().is_empty())
             });
 
-            if parsed_frontmatter
+            if (parsed_frontmatter
                 .and_then(|frontmatter| frontmatter.value.get("globs"))
                 .is_some_and(cursor_rule_globs_requires_sequence)
-                || (parsed_frontmatter.is_none() && inline_globs_scalar)
+                || (parsed_frontmatter.is_none() && inline_globs_scalar))
+                && let Some(relative) = find_frontmatter_key_relative_span(snippet, "globs")
             {
-                if let Some(relative) = find_frontmatter_key_relative_span(snippet, "globs") {
-                    signals.cursor_rule_globs_type_spans.push(Span::new(
-                        region.span.start_byte + relative.start_byte,
-                        region.span.start_byte + relative.end_byte,
-                    ));
-                }
+                signals.cursor_rule_globs_type_spans.push(Span::new(
+                    region.span.start_byte + relative.start_byte,
+                    region.span.start_byte + relative.end_byte,
+                ));
             }
 
             if let Some(frontmatter) = parsed_frontmatter
@@ -3185,9 +3184,9 @@ impl MarkdownSignals {
             if let Some(frontmatter) = parsed_frontmatter
                 && let Some(mapping) = frontmatter.value.as_object()
             {
-                if !mapping
+                if mapping
                     .get("description")
-                    .is_some_and(|value| value.as_str().is_some_and(|text| !text.trim().is_empty()))
+                    .is_none_or(|value| value.as_str().is_none_or(|text| text.trim().is_empty()))
                 {
                     signals
                         .cursor_rule_missing_description_spans

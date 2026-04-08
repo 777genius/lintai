@@ -101,10 +101,10 @@ mod tests {
     use super::*;
     use std::env;
     use std::ffi::OsString;
-    use std::process;
     use std::path::Path;
-    use std::sync::atomic::{AtomicU64, Ordering};
+    use std::process;
     use std::sync::Mutex;
+    use std::sync::atomic::{AtomicU64, Ordering};
 
     #[cfg(unix)]
     use std::os::unix::fs::PermissionsExt;
@@ -120,10 +120,7 @@ mod tests {
 
     #[test]
     fn normalize_rel_path_keeps_relative_components() {
-        assert_eq!(
-            normalize_rel_path(Path::new("a/../b")),
-            "a/../b".to_owned()
-        );
+        assert_eq!(normalize_rel_path(Path::new("a/../b")), "a/../b".to_owned());
     }
 
     #[test]
@@ -178,7 +175,10 @@ mod tests {
         fs::create_dir_all(&local_dir).unwrap();
         fs::write(&marker_path, "old\n").unwrap();
 
-        write_mock_command(&workspace, "curl", r#"#!/usr/bin/env sh
+        write_mock_command(
+            &workspace,
+            "curl",
+            r#"#!/usr/bin/env sh
 set -eu
 while [ "$#" -gt 0 ]; do
   if [ "$1" = "-o" ]; then
@@ -189,9 +189,13 @@ while [ "$#" -gt 0 ]; do
   shift
 done
 exit 0
-"#);
+"#,
+        );
 
-        write_mock_command(&workspace, "tar", r#"#!/usr/bin/env sh
+        write_mock_command(
+            &workspace,
+            "tar",
+            r#"#!/usr/bin/env sh
 set -eu
 output_dir=""
 while [ "$#" -gt 0 ]; do
@@ -204,7 +208,8 @@ while [ "$#" -gt 0 ]; do
 done
 mkdir -p "$output_dir"
 exit 0
-"#);
+"#,
+        );
 
         let previous_path = env::var_os("PATH");
         let path_value = {
@@ -241,10 +246,14 @@ exit 0
         let workspace = unique_temp_dir();
         let local_dir = workspace.join("repo");
         let previous_path = env::var_os("PATH");
-        write_mock_command(&workspace, "curl", r#"#!/usr/bin/env sh
+        write_mock_command(
+            &workspace,
+            "curl",
+            r#"#!/usr/bin/env sh
 echo "curl failed" >&2
 exit 1
-"#);
+"#,
+        );
         write_mock_command(&workspace, "tar", "#!/usr/bin/env sh\nexit 0\n");
         let path_value = {
             let base = previous_path.as_deref().map(|path| path.to_string_lossy());
@@ -270,7 +279,11 @@ exit 1
         let result = materialize_repo(&repo, &local_dir);
 
         let error = result.unwrap_err();
-        assert!(error.contains("failed to download https://codeload.github.com/acme/example/tar.gz/v1.2.3"));
+        assert!(
+            error.contains(
+                "failed to download https://codeload.github.com/acme/example/tar.gz/v1.2.3"
+            )
+        );
         fs::remove_dir_all(workspace).unwrap();
     }
 
@@ -285,7 +298,7 @@ exit 1
     fn unique_temp_dir() -> PathBuf {
         static DIR_SEQUENCE: AtomicU64 = AtomicU64::new(0);
         let sequence = DIR_SEQUENCE.fetch_add(1, Ordering::SeqCst);
-        let dir = PathBuf::from(env::temp_dir()).join(format!(
+        let dir = env::temp_dir().join(format!(
             "lintai-materialize-repo-{}-{}",
             process::id(),
             sequence

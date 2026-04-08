@@ -34,11 +34,13 @@ pub(crate) fn run(args: impl Iterator<Item = String>) -> Result<ExitCode, String
         &inventory.aggregate,
         Some(&parsed.policy_path),
         None,
-        inventory.report_roots,
-        Some(inventory.inventory_stats),
-        None,
-        policy_matches.clone(),
-        Some(policy_stats),
+        output::InventoryEnvelopeArgs {
+            inventory_roots: inventory.report_roots,
+            inventory_stats: Some(inventory.inventory_stats),
+            inventory_diff: None,
+            policy_matches: policy_matches.clone(),
+            policy_stats: Some(policy_stats),
+        },
     );
 
     emit_report(&report, output_format)?;

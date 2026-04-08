@@ -12,9 +12,7 @@ impl GithubWorkflowSignals {
         }
 
         let value = &yaml_semantics(ctx)?.value;
-        let Some(root) = value.as_object() else {
-            return None;
-        };
+        let root = value.as_object()?;
         if !is_semantic_github_workflow(root) {
             return None;
         }

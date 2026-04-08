@@ -41,11 +41,13 @@ pub(crate) fn run(args: impl Iterator<Item = String>) -> Result<ExitCode, String
         &inventory.aggregate,
         None,
         None,
-        inventory.report_roots,
-        Some(inventory.inventory_stats),
-        inventory_diff,
-        Vec::new(),
-        None,
+        output::InventoryEnvelopeArgs {
+            inventory_roots: inventory.report_roots,
+            inventory_stats: Some(inventory.inventory_stats),
+            inventory_diff,
+            policy_matches: Vec::new(),
+            policy_stats: None,
+        },
     );
     emit_report(&report, output_format)?;
     Ok(exit_code_for_inventory_summary(

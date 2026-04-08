@@ -52,13 +52,15 @@ pub(crate) fn render_report_from_ledgers(
     );
     cohort::append_preview_runtime_and_recommendation(
         &mut output,
-        &current_counts,
-        datadog_status,
-        cursor_plugins_status,
-        emmraan_status,
-        preview_signal_repos,
-        &fp_clusters,
-        &fn_clusters,
+        cohort::PreviewRecommendationArgs {
+            current_counts: &current_counts,
+            datadog_status,
+            cursor_plugins_status,
+            emmraan_status,
+            preview_signal_repos,
+            fp_clusters: &fp_clusters,
+            fn_clusters: &fn_clusters,
+        },
     );
     output
 }

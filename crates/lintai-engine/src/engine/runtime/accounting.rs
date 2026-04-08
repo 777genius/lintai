@@ -78,21 +78,9 @@ impl Engine {
 
     pub(in crate::engine) fn record_provider_metric(
         &self,
-        normalized_path: &str,
-        provider_id: &str,
-        phase: ProviderExecutionPhase,
-        elapsed: std::time::Duration,
-        findings_emitted: usize,
-        errors_emitted: usize,
+        metric: ProviderExecutionMetric,
         summary: &mut ScanSummary,
     ) {
-        summary.provider_metrics.push(ProviderExecutionMetric {
-            normalized_path: normalized_path.to_owned(),
-            provider_id: provider_id.to_owned(),
-            phase,
-            elapsed_us: elapsed.as_micros(),
-            findings_emitted,
-            errors_emitted,
-        });
+        summary.provider_metrics.push(metric);
     }
 }

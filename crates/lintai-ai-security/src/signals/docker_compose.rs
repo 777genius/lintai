@@ -17,9 +17,7 @@ impl DockerComposeSignals {
         }
 
         let value = &yaml_semantics(ctx)?.value;
-        let Some(root) = value.as_object() else {
-            return None;
-        };
+        let root = value.as_object()?;
         let services = root.get("services")?.as_object()?;
         let has_privileged_runtime = services_have_privileged_runtime(services);
         let has_mutable_images = services_have_mutable_images(services);

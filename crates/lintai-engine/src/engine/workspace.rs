@@ -67,12 +67,17 @@ impl Engine {
                 );
             }
             self.record_provider_metric(
-                workspace.project_root.as_deref().unwrap_or("."),
-                provider.id(),
-                ProviderExecutionPhase::Workspace,
-                elapsed,
-                result.findings.len(),
-                result.errors.len(),
+                crate::ProviderExecutionMetric {
+                    normalized_path: workspace
+                        .project_root
+                        .clone()
+                        .unwrap_or_else(|| ".".to_owned()),
+                    provider_id: provider.id().to_owned(),
+                    phase: ProviderExecutionPhase::Workspace,
+                    elapsed_us: elapsed.as_micros(),
+                    findings_emitted: result.findings.len(),
+                    errors_emitted: result.errors.len(),
+                },
                 summary,
             );
             self.record_provider_execution_errors(

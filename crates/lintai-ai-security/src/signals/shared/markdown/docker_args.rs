@@ -12,7 +12,7 @@ pub(crate) struct DockerRunAnalysis {
     pub(crate) dangerous_flag_arg_index: Option<usize>,
 }
 
-pub(crate) fn analyze_docker_run_args(args: &Vec<Value>) -> Option<DockerRunAnalysis> {
+pub(crate) fn analyze_docker_run_args(args: &[Value]) -> Option<DockerRunAnalysis> {
     let first_arg = args.first().and_then(Value::as_str)?;
     if !first_arg.eq_ignore_ascii_case("run") {
         return None;
@@ -39,38 +39,7 @@ pub(crate) fn analyze_docker_run_args(args: &Vec<Value>) -> Option<DockerRunAnal
         }
 
         if analysis.sensitive_mount_arg_index.is_none() {
-            if matches!(text, "-v" | "--volume")
-                && let Some(spec) = args.get(index + 1).and_then(Value::as_str)
-                && is_sensitive_docker_volume_spec(spec)
-            {
-                analysis.sensitive_mount_arg_index = Some(index + 1);
-            } else if text.starts_with("--volume=")
-                && is_sensitive_docker_volume_spec(
-                    text.split_once('=')
-                        .map(|(_, value)| value)
-                        .unwrap_or_default(),
-                )
-            {
-                analysis.sensitive_mount_arg_index = Some(index);
-            } else if text.starts_with("-v")
-                && text.len() > 2
-                && is_sensitive_docker_volume_spec(&text[2..])
-            {
-                analysis.sensitive_mount_arg_index = Some(index);
-            } else if matches!(text, "--mount")
-                && let Some(spec) = args.get(index + 1).and_then(Value::as_str)
-                && is_sensitive_docker_mount_spec(spec)
-            {
-                analysis.sensitive_mount_arg_index = Some(index + 1);
-            } else if text.starts_with("--mount=")
-                && is_sensitive_docker_mount_spec(
-                    text.split_once('=')
-                        .map(|(_, value)| value)
-                        .unwrap_or_default(),
-                )
-            {
-                analysis.sensitive_mount_arg_index = Some(index);
-            }
+            analysis.sensitive_mount_arg_index = sensitive_mount_arg_index(args, index, text);
         }
 
         if !text.starts_with('-') {
@@ -88,6 +57,43 @@ pub(crate) fn analyze_docker_run_args(args: &Vec<Value>) -> Option<DockerRunAnal
     }
 
     Some(analysis)
+}
+
+fn sensitive_mount_arg_index(args: &[Value], index: usize, text: &str) -> Option<usize> {
+    if matches!(text, "-v" | "--volume") {
+        return args
+            .get(index + 1)
+            .and_then(Value::as_str)
+            .filter(|spec| is_sensitive_docker_volume_spec(spec))
+            .map(|_| index + 1);
+    }
+
+    if (text.starts_with("--volume=")
+        && is_sensitive_docker_volume_spec(
+            text.split_once('=')
+                .map(|(_, value)| value)
+                .unwrap_or_default(),
+        ))
+        || (text.starts_with("-v") && text.len() > 2 && is_sensitive_docker_volume_spec(&text[2..]))
+        || (text.starts_with("--mount=")
+            && is_sensitive_docker_mount_spec(
+                text.split_once('=')
+                    .map(|(_, value)| value)
+                    .unwrap_or_default(),
+            ))
+    {
+        return Some(index);
+    }
+
+    if matches!(text, "--mount") {
+        return args
+            .get(index + 1)
+            .and_then(Value::as_str)
+            .filter(|spec| is_sensitive_docker_mount_spec(spec))
+            .map(|_| index + 1);
+    }
+
+    None
 }
 
 pub(crate) fn docker_option_consumed_len(text: &str, args: &[Value], index: usize) -> usize {

@@ -464,9 +464,7 @@ pub(crate) fn find_git_inline_sslverify_false_relative_span(text: &str) -> Optio
 
 fn find_claude_bare_pip_install_in_line(line: &str) -> Option<Span> {
     let lowered = line.to_ascii_lowercase();
-    let Some(claude_start) = lowered.find("claude:") else {
-        return None;
-    };
+    let claude_start = lowered.find("claude:")?;
     if lowered[claude_start..].contains("uv pip install") {
         return None;
     }
@@ -491,14 +489,10 @@ fn find_unpinned_pip_git_install_in_line(line: &str) -> Option<Span> {
             break;
         }
     }
-    let Some(search_start) = install_start else {
-        return None;
-    };
+    let search_start = install_start?;
 
     let search_slice = &lowered[search_start..];
-    let Some(relative_git) = search_slice.find("git+https://") else {
-        return None;
-    };
+    let relative_git = search_slice.find("git+https://")?;
     let url_start = search_start + relative_git;
     let url_end = line[url_start..]
         .find(|ch: char| ch.is_whitespace() || matches!(ch, '"' | '\'' | '`' | ')' | '>'))
@@ -522,9 +516,7 @@ fn find_pip_http_git_install_in_line(line: &str) -> Option<Span> {
             break;
         }
     }
-    let Some(search_start) = install_start else {
-        return None;
-    };
+    let search_start = install_start?;
 
     let search_slice = &lowered[search_start..];
     let relative_http = search_slice.find("git+http://")?;
@@ -541,9 +533,7 @@ fn find_pip_trusted_host_in_line(line: &str) -> Option<Span> {
             break;
         }
     }
-    let Some(search_start) = install_start else {
-        return None;
-    };
+    let search_start = install_start?;
 
     let search_slice = &lowered[search_start..];
     let relative_flag = search_slice.find("--trusted-host")?;
@@ -560,9 +550,7 @@ fn find_pip_http_index_in_line(line: &str) -> Option<Span> {
             break;
         }
     }
-    let Some(search_start) = install_start else {
-        return None;
-    };
+    let search_start = install_start?;
 
     let search_slice = &lowered[search_start..];
     for marker in [
@@ -590,9 +578,7 @@ fn find_pip_http_source_in_line(line: &str) -> Option<Span> {
             break;
         }
     }
-    let Some(search_start) = install_start else {
-        return None;
-    };
+    let search_start = install_start?;
 
     let search_slice = &lowered[search_start..];
     let relative_http = search_slice.find("http://")?;
@@ -626,9 +612,7 @@ fn find_pip_http_find_links_in_line(line: &str) -> Option<Span> {
             break;
         }
     }
-    let Some(search_start) = install_start else {
-        return None;
-    };
+    let search_start = install_start?;
 
     let search_slice = &lowered[search_start..];
     for marker in ["--find-links http://", "--find-links=http://", "-f http://"] {
@@ -650,9 +634,7 @@ fn find_pip_config_http_index_in_line(line: &str) -> Option<Span> {
             break;
         }
     }
-    let Some(search_start) = command_start else {
-        return None;
-    };
+    let search_start = command_start?;
 
     let search_slice = &lowered[search_start..];
     for marker in [
@@ -679,9 +661,7 @@ fn find_pip_config_http_find_links_in_line(line: &str) -> Option<Span> {
             break;
         }
     }
-    let Some(search_start) = command_start else {
-        return None;
-    };
+    let search_start = command_start?;
 
     let search_slice = &lowered[search_start..];
     for marker in ["global.find-links http://", "global.find-links=http://"] {
@@ -703,9 +683,7 @@ fn find_pip_config_trusted_host_in_line(line: &str) -> Option<Span> {
             break;
         }
     }
-    let Some(search_start) = command_start else {
-        return None;
-    };
+    let search_start = command_start?;
 
     let search_slice = &lowered[search_start..];
     for marker in ["global.trusted-host ", "global.trusted-host="] {
@@ -758,9 +736,7 @@ fn find_npm_http_registry_in_line(line: &str) -> Option<Span> {
             break;
         }
     }
-    let Some(search_start) = install_start else {
-        return None;
-    };
+    let search_start = install_start?;
 
     let search_slice = &lowered[search_start..];
     for marker in ["--registry http://", "--registry=http://"] {
@@ -782,9 +758,7 @@ fn find_js_package_config_http_registry_in_line(line: &str) -> Option<Span> {
             break;
         }
     }
-    let Some(search_start) = command_start else {
-        return None;
-    };
+    let search_start = command_start?;
 
     let search_slice = &lowered[search_start..];
     for marker in ["registry http://", "registry=http://"] {
@@ -806,9 +780,7 @@ fn find_npm_http_source_in_line(line: &str) -> Option<Span> {
             break;
         }
     }
-    let Some(search_start) = install_start else {
-        return None;
-    };
+    let search_start = install_start?;
 
     let search_slice = &lowered[search_start..];
     let relative_http = search_slice.find("http://")?;
@@ -836,9 +808,7 @@ fn find_js_package_strict_ssl_false_in_line(line: &str) -> Option<Span> {
             break;
         }
     }
-    let Some(search_start) = command_start else {
-        return None;
-    };
+    let search_start = command_start?;
 
     let search_slice = &lowered[search_start..];
     for marker in ["strict-ssl false", "strict-ssl=false"] {
@@ -860,9 +830,7 @@ fn find_cargo_http_git_install_in_line(line: &str) -> Option<Span> {
             break;
         }
     }
-    let Some(search_start) = install_start else {
-        return None;
-    };
+    let search_start = install_start?;
 
     let search_slice = &lowered[search_start..];
     for marker in ["--git http://", "--git=http://"] {
@@ -884,9 +852,7 @@ fn find_cargo_http_index_in_line(line: &str) -> Option<Span> {
             break;
         }
     }
-    let Some(search_start) = install_start else {
-        return None;
-    };
+    let search_start = install_start?;
 
     let search_slice = &lowered[search_start..];
     for marker in ["--index http://", "--index=http://"] {
@@ -908,9 +874,7 @@ fn find_git_http_clone_in_line(line: &str) -> Option<Span> {
             break;
         }
     }
-    let Some(search_start) = clone_start else {
-        return None;
-    };
+    let search_start = clone_start?;
 
     let search_slice = &lowered[search_start..];
     let relative_http = search_slice.find("http://")?;
@@ -927,9 +891,7 @@ fn find_git_http_remote_in_line(line: &str) -> Option<Span> {
             break;
         }
     }
-    let Some(search_start) = command_start else {
-        return None;
-    };
+    let search_start = command_start?;
 
     let search_slice = &lowered[search_start..];
     let relative_http = search_slice.find("http://")?;
@@ -946,9 +908,7 @@ fn find_git_sslverify_false_in_line(line: &str) -> Option<Span> {
         return None;
     }
 
-    let Some(command_start) = lowered.find("git config") else {
-        return None;
-    };
+    let command_start = lowered.find("git config")?;
 
     let search_slice = &lowered[command_start + "git config".len()..];
     for marker in ["http.sslverify false", "http.sslverify=false"] {
@@ -991,9 +951,7 @@ fn find_git_inline_sslverify_false_in_line(line: &str) -> Option<Span> {
         return None;
     }
 
-    let Some(git_start) = lowered.find("git ") else {
-        return None;
-    };
+    let git_start = lowered.find("git ")?;
     let search_slice = &lowered[git_start + "git ".len()..];
     let marker = "-c http.sslverify=false";
     let relative_marker = search_slice.find(marker)?;

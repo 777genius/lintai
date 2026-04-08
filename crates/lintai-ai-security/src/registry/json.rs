@@ -2110,7 +2110,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 169] = [
+pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,

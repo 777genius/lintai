@@ -214,9 +214,7 @@ fn default_case_output_formats() -> Vec<HarnessOutputFormat> {
 }
 
 fn default_case_entry_path(case_dir: &Path, raw_entry: Option<PathBuf>) -> PathBuf {
-    if case_dir.join("repo").is_dir() {
-        PathBuf::from("repo")
-    } else if raw_entry.as_deref() == Some(Path::new("repo")) {
+    if case_dir.join("repo").is_dir() || raw_entry.as_deref() == Some(Path::new("repo")) {
         PathBuf::from("repo")
     } else {
         PathBuf::from(".")
@@ -259,15 +257,15 @@ fn normalize_bucket_expected_findings(
                     .collect(),
             );
         }
-        if let Some(rule_code) = single_rule {
-            if expected_count.unwrap_or(0) > 0 {
-                return Some(vec![ExpectedFinding {
-                    tier: None,
-                    rule_code: rule_code.to_owned(),
-                    stable_key: None,
-                    min_evidence_count: Some(1),
-                }]);
-            }
+        if let Some(rule_code) = single_rule
+            && expected_count.unwrap_or(0) > 0
+        {
+            return Some(vec![ExpectedFinding {
+                tier: None,
+                rule_code: rule_code.to_owned(),
+                stable_key: None,
+                min_evidence_count: Some(1),
+            }]);
         }
         return Some(
             expected_rules
@@ -344,10 +342,11 @@ fn normalize_bucket_expected_absent_rules(
     expected_count: Option<usize>,
 ) -> Vec<String> {
     let mut absent_rules = expected_absent_rules.unwrap_or_default();
-    if absent_rules.is_empty() && expected_count == Some(0) {
-        if let Some(rule_code) = single_rule {
-            absent_rules.push(rule_code.to_owned());
-        }
+    if absent_rules.is_empty()
+        && expected_count == Some(0)
+        && let Some(rule_code) = single_rule
+    {
+        absent_rules.push(rule_code.to_owned());
     }
     absent_rules
 }

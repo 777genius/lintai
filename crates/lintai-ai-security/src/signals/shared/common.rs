@@ -849,10 +849,9 @@ pub(crate) fn find_linux_capability_manipulation_relative_span(text: &str) -> Op
 
         if command_name_eq(token.text, "capsh")
             && tokens.iter().any(|t| is_linux_capability_token(t.text))
+            && let Some(cap_token) = tokens.iter().find(|t| is_linux_capability_token(t.text))
         {
-            if let Some(cap_token) = tokens.iter().find(|t| is_linux_capability_token(t.text)) {
-                return Some(Span::new(cap_token.start, cap_token.end));
-            }
+            return Some(Span::new(cap_token.start, cap_token.end));
         }
     }
 

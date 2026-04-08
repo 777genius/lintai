@@ -356,7 +356,7 @@ impl ClaudeSettingsSignals {
             resolve_invalid_hook_matcher_event_span(value, locator_ref.as_ref());
         signals.missing_required_hook_matcher_span =
             resolve_missing_required_hook_matcher_span(value, locator_ref.as_ref());
-        if value.is_object() && !value.get("$schema").is_some() {
+        if value.is_object() && value.get("$schema").is_none() {
             signals.missing_schema_span = leading_json_file_relative_span(&ctx.content);
         }
         signals.unscoped_bash_span =

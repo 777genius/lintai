@@ -142,7 +142,7 @@ pub(crate) fn render_tool_json_extension_report(
         for (repo, count, rule_codes) in &stable_hit_repos {
             output.push_str(&format!(
                 "- `{repo}`: `{count}` stable finding(s) via {}\n",
-                format_rule_codes(&rule_codes)
+                format_rule_codes(rule_codes)
             ));
         }
     }

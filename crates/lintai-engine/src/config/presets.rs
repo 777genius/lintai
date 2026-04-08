@@ -38,8 +38,10 @@ pub(crate) fn resolve_builtin_presets(
             .map(|preset| (*preset).to_owned())
             .collect()
     });
-    let mut resolved = ResolvedPresetPolicy::default();
-    resolved.known_rules = builtin_known_rule_codes();
+    let mut resolved = ResolvedPresetPolicy {
+        known_rules: builtin_known_rule_codes(),
+        ..ResolvedPresetPolicy::default()
+    };
     let mut expanded = BTreeSet::new();
     let mut ordered = Vec::new();
 

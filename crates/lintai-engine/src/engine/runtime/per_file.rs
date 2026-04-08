@@ -33,12 +33,14 @@ impl Engine {
                 );
             }
             self.record_provider_metric(
-                &scanned.context.artifact.normalized_path,
-                provider.id(),
-                ProviderExecutionPhase::File,
-                elapsed,
-                result.findings.len(),
-                result.errors.len(),
+                crate::ProviderExecutionMetric {
+                    normalized_path: scanned.context.artifact.normalized_path.clone(),
+                    provider_id: provider.id().to_owned(),
+                    phase: ProviderExecutionPhase::File,
+                    elapsed_us: elapsed.as_micros(),
+                    findings_emitted: result.findings.len(),
+                    errors_emitted: result.errors.len(),
+                },
                 summary,
             );
             self.record_provider_execution_errors(

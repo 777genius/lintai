@@ -125,8 +125,7 @@ pub(crate) fn validate_path_template(template: &str) -> Result<(), String> {
     }
 
     for placeholder in ["{project_root}", "{home}", "{xdg_config_home}"] {
-        if template.starts_with(placeholder) {
-            let suffix = &template[placeholder.len()..];
+        if let Some(suffix) = template.strip_prefix(placeholder) {
             if suffix.contains('{') || suffix.contains('}') {
                 return Err("path_template may only contain one leading placeholder".to_owned());
             }

@@ -146,31 +146,27 @@ fn collect_run_args_signal(
                 .and_then(Value::as_str)
                 .filter(|spec| is_sensitive_docker_volume_spec(spec))
                 .map(|_| index + 1)
-        } else if text.starts_with("--volume=")
-            && is_sensitive_docker_volume_spec(
-                text.split_once('=')
-                    .map(|(_, value)| value)
-                    .unwrap_or_default(),
-            )
-        {
-            Some(index)
-        } else if text.starts_with("-v")
-            && text.len() > 2
-            && is_sensitive_docker_volume_spec(&text[2..])
-        {
-            Some(index)
         } else if text == "--mount" {
             run_args
                 .get(index + 1)
                 .and_then(Value::as_str)
                 .filter(|spec| is_sensitive_docker_mount_spec(spec))
                 .map(|_| index + 1)
-        } else if text.starts_with("--mount=")
-            && is_sensitive_docker_mount_spec(
+        } else if (text.starts_with("--volume=")
+            && is_sensitive_docker_volume_spec(
                 text.split_once('=')
                     .map(|(_, value)| value)
                     .unwrap_or_default(),
-            )
+            ))
+            || (text.starts_with("-v")
+                && text.len() > 2
+                && is_sensitive_docker_volume_spec(&text[2..]))
+            || (text.starts_with("--mount=")
+                && is_sensitive_docker_mount_spec(
+                    text.split_once('=')
+                        .map(|(_, value)| value)
+                        .unwrap_or_default(),
+                ))
         {
             Some(index)
         } else {

@@ -65,16 +65,15 @@ pub(crate) fn inventory_surfaces(repo_root: &Path) -> Result<InventoryArtifact, 
                 ".kiro/settings/mcp.json",
             );
         }
-        if is_ai_native_docker_config_path(&normalized) {
-            if let Ok(text) = std::fs::read_to_string(entry.path()) {
-                if contains_semantic_gemini_mcp_config(&text) {
-                    insert_expanded_mcp_variant_surface(
-                        &mut surfaces,
-                        &normalized,
-                        gemini_surface_label(&normalized),
-                    );
-                }
-            }
+        if is_ai_native_docker_config_path(&normalized)
+            && let Ok(text) = std::fs::read_to_string(entry.path())
+            && contains_semantic_gemini_mcp_config(&text)
+        {
+            insert_expanded_mcp_variant_surface(
+                &mut surfaces,
+                &normalized,
+                gemini_surface_label(&normalized),
+            );
         }
         if normalized.contains(".claude/mcp/") && normalized.ends_with(".json") {
             surfaces.insert(".claude/mcp/*.json".to_owned());
@@ -82,12 +81,11 @@ pub(crate) fn inventory_surfaces(repo_root: &Path) -> Result<InventoryArtifact, 
         if is_claude_settings_path(&normalized) {
             surfaces.insert(normalized.clone());
         }
-        if is_mcp_config_path(&normalized) {
-            if let Ok(text) = std::fs::read_to_string(entry.path()) {
-                if contains_semantic_docker_mcp_launch(&text) {
-                    insert_docker_mcp_launch_surface(&mut surfaces, &normalized);
-                }
-            }
+        if is_mcp_config_path(&normalized)
+            && let Ok(text) = std::fs::read_to_string(entry.path())
+            && contains_semantic_docker_mcp_launch(&text)
+        {
+            insert_docker_mcp_launch_surface(&mut surfaces, &normalized);
         }
         if normalized.ends_with("server.json") {
             surfaces.insert("server.json".to_owned());
@@ -112,12 +110,12 @@ pub(crate) fn inventory_surfaces(repo_root: &Path) -> Result<InventoryArtifact, 
         if normalized.ends_with(".cursor-plugin/hooks.json") {
             surfaces.insert(".cursor-plugin/hooks.json".to_owned());
         }
-        if normalized.ends_with("/hooks.json") && !normalized.contains("/.cursor-plugin/") {
-            if let Ok(text) = std::fs::read_to_string(entry.path()) {
-                if contains_semantic_plugin_hook_commands(&text) {
-                    surfaces.insert("plugin_root_hooks.json".to_owned());
-                }
-            }
+        if normalized.ends_with("/hooks.json")
+            && !normalized.contains("/.cursor-plugin/")
+            && let Ok(text) = std::fs::read_to_string(entry.path())
+            && contains_semantic_plugin_hook_commands(&text)
+        {
+            surfaces.insert("plugin_root_hooks.json".to_owned());
         }
         if normalized.contains(".cursor-plugin/hooks/") && normalized.ends_with(".sh") {
             surfaces.insert(".cursor-plugin/hooks/**/*.sh".to_owned());
@@ -264,11 +262,7 @@ mod tests {
     #[test]
     fn inserts_explicit_mcp_variant_surface_for_non_fixture_path() {
         let mut surfaces = std::collections::BTreeSet::new();
-        insert_expanded_mcp_variant_surface(
-            &mut surfaces,
-            ".cursor/mcp.json",
-            ".cursor/mcp.json",
-        );
+        insert_expanded_mcp_variant_surface(&mut surfaces, ".cursor/mcp.json", ".cursor/mcp.json");
         assert!(surfaces.contains(".cursor/mcp.json"));
         assert!(!surfaces.contains("expanded_mcp_client_variant_fixture_only"));
     }

@@ -51,7 +51,7 @@ impl WorkspaceRuleProvider for PolicyMismatchProvider {
             }
 
             if let Some(frontmatter_caps) = artifact.capabilities.as_ref()
-                && capabilities_conflict(project_capabilities, &frontmatter_caps)
+                && capabilities_conflict(project_capabilities, frontmatter_caps)
             {
                 findings.push(policy_finding(
                     &CapabilityConflictRule::METADATA,
@@ -95,13 +95,17 @@ mod tests {
     use super::PolicyMismatchProvider;
     use lintai_api::{
         Artifact, ArtifactKind, CapabilityProfile, DocumentSemantics, ExecCapability,
-        FrontmatterFormat, FrontmatterSemantics, MarkdownSemantics, ScanContext,
-        NetworkCapability, ParsedDocument, RuleProvider, SourceFormat, WorkspaceArtifact,
+        FrontmatterFormat, FrontmatterSemantics, MarkdownSemantics, NetworkCapability,
+        ParsedDocument, RuleProvider, ScanContext, SourceFormat, WorkspaceArtifact,
         WorkspaceRuleProvider, WorkspaceScanContext,
     };
     use serde_json::json;
 
-    fn workspace_artifact(kind: ArtifactKind, content: &str, semantics: Option<DocumentSemantics>) -> WorkspaceArtifact {
+    fn workspace_artifact(
+        kind: ArtifactKind,
+        content: &str,
+        semantics: Option<DocumentSemantics>,
+    ) -> WorkspaceArtifact {
         WorkspaceArtifact::new(
             Artifact::new("repo/file", kind, SourceFormat::Markdown),
             content,
@@ -134,8 +138,11 @@ mod tests {
         project.network = Some(NetworkCapability::None);
 
         let exec_artifact = workspace_artifact(ArtifactKind::CursorHookScript, "echo hi", None);
-        let network_artifact =
-            workspace_artifact(ArtifactKind::CursorHookScript, "curl https://example.com", None);
+        let network_artifact = workspace_artifact(
+            ArtifactKind::CursorHookScript,
+            "curl https://example.com",
+            None,
+        );
 
         let result = WorkspaceRuleProvider::check_workspace_result(
             &PolicyMismatchProvider,
@@ -194,13 +201,20 @@ mod tests {
     fn rule_provider_check_result_reports_workspace_misuse() {
         let provider = PolicyMismatchProvider;
         let result = provider.check_result(&ScanContext::new(
-            Artifact::new("repo/file", ArtifactKind::Instructions, SourceFormat::Markdown),
+            Artifact::new(
+                "repo/file",
+                ArtifactKind::Instructions,
+                SourceFormat::Markdown,
+            ),
             "",
             ParsedDocument::new(Vec::new(), None),
             None,
         ));
 
         assert_eq!(result.errors.len(), 1);
-        assert_eq!(result.errors[0].message, "workspace provider cannot run in file phase");
+        assert_eq!(
+            result.errors[0].message,
+            "workspace provider cannot run in file phase"
+        );
     }
 }

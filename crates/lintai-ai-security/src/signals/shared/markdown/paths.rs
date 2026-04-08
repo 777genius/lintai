@@ -35,9 +35,7 @@ pub(crate) fn has_path_traversal_access(
 
 pub(crate) fn extract_path_traversal_candidate(snippet: &str) -> Option<&str> {
     snippet.split_whitespace().find_map(|token| {
-        let Some(start) = token.find("../").or_else(|| token.find("..\\")) else {
-            return None;
-        };
+        let start = token.find("../").or_else(|| token.find("..\\"))?;
 
         let candidate = trim_path_token(&token[start..]);
         if candidate.contains("../") || candidate.contains("..\\") {

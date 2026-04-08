@@ -1549,7 +1549,7 @@ declare_rule! {
     }
 }
 
-pub(crate) const RULE_SPECS: [NativeRuleSpec; 124] = [
+pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,

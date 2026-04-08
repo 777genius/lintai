@@ -1,5 +1,15 @@
 use crate::external_validation::*;
 
+pub(super) struct PreviewRecommendationArgs<'a> {
+    pub(super) current_counts: &'a AggregateCounts,
+    pub(super) datadog_status: PhaseTargetStatus,
+    pub(super) cursor_plugins_status: PhaseTargetStatus,
+    pub(super) emmraan_status: PhaseTargetStatus,
+    pub(super) preview_signal_repos: Vec<(String, usize, Vec<String>)>,
+    pub(super) fp_clusters: &'a [(String, usize)],
+    pub(super) fn_clusters: &'a [(String, usize)],
+}
+
 pub(super) fn append_header_and_cohort(output: &mut String, current: &ExternalValidationLedger) {
     output.push_str("# External Validation Report\n\n");
     output.push_str("> Second checked-in external validation summary for `lintai` after Phase 1 precision hardening.\n");
@@ -107,14 +117,17 @@ pub(super) fn append_delta_and_precision_summary(
 
 pub(super) fn append_preview_runtime_and_recommendation(
     output: &mut String,
-    current_counts: &AggregateCounts,
-    datadog_status: PhaseTargetStatus,
-    cursor_plugins_status: PhaseTargetStatus,
-    emmraan_status: PhaseTargetStatus,
-    preview_signal_repos: Vec<(String, usize, Vec<String>)>,
-    fp_clusters: &[(String, usize)],
-    fn_clusters: &[(String, usize)],
+    args: PreviewRecommendationArgs<'_>,
 ) {
+    let PreviewRecommendationArgs {
+        current_counts,
+        datadog_status,
+        cursor_plugins_status,
+        emmraan_status,
+        preview_signal_repos,
+        fp_clusters,
+        fn_clusters,
+    } = args;
     output.push_str("## Preview Usefulness Summary\n\n");
     output.push_str(&format!(
         "Wave 2 produced `{}` preview finding(s).\n\n",

@@ -5,7 +5,8 @@ mod sarif;
 mod text;
 
 pub(crate) use build::{
-    build_envelope, build_envelope_with_discovery, build_envelope_with_inventory,
+    InventoryEnvelopeArgs, build_envelope, build_envelope_with_discovery,
+    build_envelope_with_inventory,
 };
 pub(crate) use json::format_json;
 pub(crate) use model::ReportEnvelope;
@@ -89,7 +90,7 @@ mod tests {
     fn text_output_groups_findings_by_public_lane() {
         let recommended = lintai_api::Finding::new(
             &lintai_api::RuleMetadata::new(
-                "SEC324",
+                "SEC329",
                 "demo recommended",
                 lintai_api::Category::Hardening,
                 lintai_api::Severity::Warn,

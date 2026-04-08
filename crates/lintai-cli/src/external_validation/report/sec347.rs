@@ -130,12 +130,11 @@ pub(crate) fn sec347_primary_driver_label(counts: Sec347SubtypeCounts) -> &'stat
 
 fn has_sec347_cli_form(region: &str) -> bool {
     for line in region.lines() {
-        if line.contains("claude mcp add") {
-            if let Some((start, token_len)) = sec347_mutable_launcher_token(line) {
-                if !has_sec347_safety_context(line, start, token_len) {
-                    return true;
-                }
-            }
+        if line.contains("claude mcp add")
+            && let Some((start, token_len)) = sec347_mutable_launcher_token(line)
+            && !has_sec347_safety_context(line, start, token_len)
+        {
+            return true;
         }
     }
 
@@ -234,7 +233,7 @@ fn sec347_is_package_like_token(token: &str, excluded_tokens: &[&str]) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::external_validation::{repo_dir_name, ExternalValidationLedger, EvaluationEntry};
+    use crate::external_validation::{EvaluationEntry, ExternalValidationLedger, repo_dir_name};
     use std::env;
     use std::fs;
     use std::path::PathBuf;
@@ -245,7 +244,10 @@ mod tests {
             .duration_since(UNIX_EPOCH)
             .map(|time| time.as_nanos())
             .unwrap_or(0);
-        let workspace = env::temp_dir().join(format!("lintai-sec347-tests-{unique_id}-{}", std::process::id()));
+        let workspace = env::temp_dir().join(format!(
+            "lintai-sec347-tests-{unique_id}-{}",
+            std::process::id()
+        ));
         fs::create_dir_all(&workspace).unwrap();
         workspace
     }
@@ -284,10 +286,7 @@ mod tests {
             cli_form_repos: 1,
             config_snippet_repos: 3,
         };
-        assert_eq!(
-            sec347_primary_driver_label(counts),
-            "MCP config snippets"
-        );
+        assert_eq!(sec347_primary_driver_label(counts), "MCP config snippets");
     }
 
     #[test]
@@ -324,9 +323,18 @@ mod tests {
 
     #[test]
     fn sec347_contains_package_like_args_skips_negated_tokens() {
-        assert!(sec347_contains_package_like_arg(" -y demo@1", &["-y", "--yes"]));
-        assert!(!sec347_contains_package_like_arg(" -y --yes", &["-y", "--yes"]));
-        assert!(!sec347_contains_package_like_arg(" -y -d", &["-y", "--yes"]));
+        assert!(sec347_contains_package_like_arg(
+            " -y demo@1",
+            &["-y", "--yes"]
+        ));
+        assert!(!sec347_contains_package_like_arg(
+            " -y --yes",
+            &["-y", "--yes"]
+        ));
+        assert!(!sec347_contains_package_like_arg(
+            " -y -d",
+            &["-y", "--yes"]
+        ));
     }
 
     #[test]

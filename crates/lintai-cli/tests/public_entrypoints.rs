@@ -1,5 +1,5 @@
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -65,7 +65,7 @@ fn advisory_snapshot_fixture_path() -> PathBuf {
     path
 }
 
-fn write_repo_file(repo: &PathBuf, relative_path: &str, contents: &str) {
+fn write_repo_file(repo: &Path, relative_path: &str, contents: &str) {
     let path = repo.join(relative_path);
     if let Some(parent) = path.parent() {
         fs::create_dir_all(parent).unwrap();

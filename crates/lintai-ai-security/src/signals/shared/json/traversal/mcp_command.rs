@@ -727,16 +727,18 @@ pub(crate) fn find_mcp_command_signal_span(
             spans.secret_exfil = secret_exfil_candidate.clone();
         }
 
-        if spans.plain_http_secret_exfil.is_none() && has_exfil_network_context {
-            if secret_exfil_candidate.is_some() {
-                spans.plain_http_secret_exfil = plain_http_secret_exfil_candidate.clone();
-            }
+        if spans.plain_http_secret_exfil.is_none()
+            && has_exfil_network_context
+            && secret_exfil_candidate.is_some()
+        {
+            spans.plain_http_secret_exfil = plain_http_secret_exfil_candidate.clone();
         }
 
-        if spans.webhook_secret_exfil.is_none() && has_exfil_network_context {
-            if secret_exfil_candidate.is_some() {
-                spans.webhook_secret_exfil = webhook_secret_exfil_candidate.clone();
-            }
+        if spans.webhook_secret_exfil.is_none()
+            && has_exfil_network_context
+            && secret_exfil_candidate.is_some()
+        {
+            spans.webhook_secret_exfil = webhook_secret_exfil_candidate.clone();
         }
     }
 
