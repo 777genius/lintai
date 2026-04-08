@@ -12,7 +12,7 @@ fn ignores_repo_local_parent_relative_mcp_reference_in_nested_skill() {
     .unwrap();
 
     let summary = EngineBuilder::default()
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -46,7 +46,7 @@ fn invalid_yaml_frontmatter_still_allows_markdown_security_findings() {
     let workspace = load_workspace_config(&temp_dir).unwrap();
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config)
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()

@@ -2,8 +2,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use lintai_api::{
     Evidence, EvidenceKind, Finding, JsonSemantics, Location, ProviderError, ProviderScanResult,
-    RuleProvider, ScanContext, WorkspaceArtifact, WorkspaceRuleProvider, WorkspaceScanContext,
-    YamlSemantics,
+    WorkspaceArtifact, WorkspaceRuleProvider, WorkspaceScanContext, YamlSemantics,
 };
 use semver::Version;
 use serde_json::{Value, json};
@@ -106,30 +105,6 @@ impl WorkspaceRuleProvider for DependencyVulnProvider {
             .collect();
 
         ProviderScanResult::new(findings, errors)
-    }
-}
-
-impl RuleProvider for DependencyVulnProvider {
-    fn id(&self) -> &str {
-        WorkspaceRuleProvider::id(self)
-    }
-
-    fn rules(&self) -> &[lintai_api::RuleMetadata] {
-        WorkspaceRuleProvider::rules(self)
-    }
-
-    fn check_result(&self, _ctx: &ScanContext) -> ProviderScanResult {
-        ProviderScanResult::new(
-            Vec::new(),
-            vec![ProviderError::new(
-                PROVIDER_ID,
-                "workspace provider cannot run in file phase",
-            )],
-        )
-    }
-
-    fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
-        WorkspaceRuleProvider::check_workspace_result(self, ctx)
     }
 }
 

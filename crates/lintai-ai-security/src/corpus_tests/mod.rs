@@ -3,9 +3,10 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{SystemTime, UNIX_EPOCH};
 
-use lintai_api::ScanScope;
 use lintai_policy::PolicyMismatchProvider;
-use lintai_runtime::{InProcessProviderBackend, ProviderBackend};
+use lintai_runtime::{
+    InProcessFileProviderBackend, InProcessWorkspaceProviderBackend, ProviderBackend,
+};
 use lintai_testing::{CaseManifest, WorkspaceHarness};
 
 use crate::AiSecurityProvider;
@@ -16,13 +17,12 @@ mod malicious;
 
 fn provider_set() -> Vec<Arc<dyn ProviderBackend>> {
     vec![
-        Arc::new(InProcessProviderBackend::new(Arc::new(
+        Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))),
-        Arc::new(InProcessProviderBackend::with_scope(
-            Arc::new(PolicyMismatchProvider),
-            ScanScope::Workspace,
-        )),
+        Arc::new(InProcessWorkspaceProviderBackend::new(Arc::new(
+            PolicyMismatchProvider,
+        ))),
     ]
 }
 

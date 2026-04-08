@@ -96,7 +96,7 @@ fn ignores_claude_settings_insecure_http_hook_url_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -146,7 +146,7 @@ fn ignores_claude_settings_missing_schema_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -213,7 +213,7 @@ fn ignores_claude_settings_bypass_permissions_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -1774,7 +1774,7 @@ fn ignores_claude_settings_package_install_permission_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2364,7 +2364,7 @@ fn ignores_claude_settings_enabled_mcpjson_servers_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2399,7 +2399,7 @@ fn ignores_claude_settings_npx_permission_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2434,7 +2434,7 @@ fn ignores_claude_settings_curl_permission_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2469,7 +2469,7 @@ fn ignores_claude_settings_wget_permission_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2504,7 +2504,7 @@ fn ignores_claude_settings_git_config_permission_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2539,7 +2539,7 @@ fn ignores_claude_settings_git_tag_permission_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2574,7 +2574,7 @@ fn ignores_claude_settings_git_branch_permission_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2609,7 +2609,7 @@ fn ignores_claude_settings_unscoped_websearch_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2644,7 +2644,7 @@ fn ignores_claude_settings_unscoped_tool_family_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2679,7 +2679,7 @@ fn ignores_claude_settings_git_push_permission_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2714,7 +2714,7 @@ fn ignores_claude_settings_git_add_permission_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2749,7 +2749,7 @@ fn ignores_claude_settings_git_clone_permission_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2784,7 +2784,7 @@ fn ignores_claude_settings_gh_pr_permission_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2819,7 +2819,7 @@ fn ignores_claude_settings_git_fetch_permission_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2854,7 +2854,7 @@ fn ignores_claude_settings_git_ls_remote_permission_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2889,7 +2889,7 @@ fn ignores_claude_settings_git_checkout_permission_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2924,7 +2924,7 @@ fn ignores_claude_settings_git_commit_permission_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2959,7 +2959,7 @@ fn ignores_claude_settings_git_stash_permission_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -3069,7 +3069,7 @@ fn ignores_claude_settings_edit_wildcard_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -3104,7 +3104,7 @@ fn ignores_claude_settings_websearch_wildcard_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -3139,7 +3139,7 @@ fn ignores_claude_settings_glob_wildcard_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -3174,7 +3174,7 @@ fn ignores_claude_settings_grep_wildcard_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -3209,7 +3209,7 @@ fn ignores_claude_settings_webfetch_wildcard_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -3244,7 +3244,7 @@ fn ignores_claude_settings_write_wildcard_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -3279,7 +3279,7 @@ fn ignores_claude_settings_read_wildcard_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -3329,7 +3329,7 @@ fn ignores_claude_settings_bash_wildcard_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -3396,7 +3396,7 @@ fn ignores_claude_settings_missing_hook_timeout_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -3491,7 +3491,7 @@ fn ignores_claude_settings_invalid_hook_matcher_event_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -3586,7 +3586,7 @@ fn ignores_claude_settings_missing_required_hook_matcher_on_fixture_like_path() 
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -3700,7 +3700,7 @@ fn ignores_claude_settings_external_absolute_hook_command_on_fixture_like_path()
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -3735,7 +3735,7 @@ fn ignores_claude_settings_home_directory_hook_command_on_fixture_like_path() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -3861,7 +3861,7 @@ fn finds_broad_env_file_in_expanded_mcp_client_config() {
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build();
@@ -3894,7 +3894,7 @@ fn ignores_non_dotenv_env_file_in_expanded_mcp_client_config() {
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build();
@@ -3927,7 +3927,7 @@ fn ignores_placeholder_env_file_in_expanded_mcp_client_config() {
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build();
@@ -4553,7 +4553,7 @@ fn existing_mcp_rules_apply_to_claude_mcp_json_variants() {
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build();
@@ -4581,7 +4581,7 @@ fn existing_mcp_rules_apply_to_vscode_mcp_json_variants() {
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build();
@@ -4609,7 +4609,7 @@ fn fixture_like_expanded_mcp_paths_do_not_emit_mcp_findings() {
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build();
@@ -4662,7 +4662,7 @@ fn existing_mcp_rules_apply_to_gemini_extension_variants() {
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build();
@@ -4690,7 +4690,7 @@ fn fixture_like_gemini_paths_do_not_emit_mcp_findings() {
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build();
@@ -4754,7 +4754,7 @@ fn fixture_like_tool_json_paths_do_not_emit_tool_descriptor_findings() {
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build();
@@ -5371,13 +5371,12 @@ capability_conflicts = "deny"
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
-        .with_backend(Arc::new(InProcessProviderBackend::with_scope(
-            Arc::new(PolicyMismatchProvider),
-            ScanScope::Workspace,
-        )))
+        .with_backend(Arc::new(InProcessWorkspaceProviderBackend::new(Arc::new(
+            PolicyMismatchProvider,
+        ))))
         .build()
         .scan_path(&temp_dir)
         .unwrap();
@@ -5448,10 +5447,9 @@ capabilities:
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::with_scope(
-            Arc::new(PolicyMismatchProvider),
-            ScanScope::Workspace,
-        )))
+        .with_backend(Arc::new(InProcessWorkspaceProviderBackend::new(Arc::new(
+            PolicyMismatchProvider,
+        ))))
         .build()
         .scan_path(&temp_dir)
         .unwrap();

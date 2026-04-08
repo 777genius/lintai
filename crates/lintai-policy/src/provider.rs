@@ -1,7 +1,4 @@
-use lintai_api::{
-    ProviderError, ProviderScanResult, RuleProvider, ScanContext, WorkspaceRuleProvider,
-    WorkspaceScanContext,
-};
+use lintai_api::{ProviderScanResult, WorkspaceRuleProvider, WorkspaceScanContext};
 
 use crate::analysis::{
     artifact_observes_exec, artifact_observes_network, capabilities_conflict, exec_forbidden,
@@ -66,38 +63,14 @@ impl WorkspaceRuleProvider for PolicyMismatchProvider {
     }
 }
 
-impl RuleProvider for PolicyMismatchProvider {
-    fn id(&self) -> &str {
-        WorkspaceRuleProvider::id(self)
-    }
-
-    fn rules(&self) -> &[lintai_api::RuleMetadata] {
-        WorkspaceRuleProvider::rules(self)
-    }
-
-    fn check_result(&self, _ctx: &ScanContext) -> ProviderScanResult {
-        ProviderScanResult::new(
-            Vec::new(),
-            vec![ProviderError::new(
-                PROVIDER_ID,
-                "workspace provider cannot run in file phase",
-            )],
-        )
-    }
-
-    fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
-        WorkspaceRuleProvider::check_workspace_result(self, ctx)
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::PolicyMismatchProvider;
     use lintai_api::{
         Artifact, ArtifactKind, CapabilityProfile, DocumentSemantics, ExecCapability,
         FrontmatterFormat, FrontmatterSemantics, MarkdownSemantics, NetworkCapability,
-        ParsedDocument, RuleProvider, ScanContext, SourceFormat, WorkspaceArtifact,
-        WorkspaceRuleProvider, WorkspaceScanContext,
+        ParsedDocument, SourceFormat, WorkspaceArtifact, WorkspaceRuleProvider,
+        WorkspaceScanContext,
     };
     use serde_json::json;
 
@@ -194,27 +167,6 @@ mod tests {
         assert_eq!(
             result.findings[0].rule_code,
             crate::catalog::CapabilityConflictRule::METADATA.code
-        );
-    }
-
-    #[test]
-    fn rule_provider_check_result_reports_workspace_misuse() {
-        let provider = PolicyMismatchProvider;
-        let result = provider.check_result(&ScanContext::new(
-            Artifact::new(
-                "repo/file",
-                ArtifactKind::Instructions,
-                SourceFormat::Markdown,
-            ),
-            "",
-            ParsedDocument::new(Vec::new(), None),
-            None,
-        ));
-
-        assert_eq!(result.errors.len(), 1);
-        assert_eq!(
-            result.errors[0].message,
-            "workspace provider cannot run in file phase"
         );
     }
 }

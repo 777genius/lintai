@@ -25,9 +25,8 @@ fn json_value_strategy() -> impl Strategy<Value = Value> {
     leaf.prop_recursive(4, 256, 8, |inner| {
         prop_oneof![
             proptest::collection::vec(inner.clone(), 0..4).prop_map(Value::Array),
-            proptest::collection::btree_map(json_string_strategy(16), inner, 0..4).prop_map(
-                |entries| Value::Object(Map::from_iter(entries))
-            ),
+            proptest::collection::btree_map(json_string_strategy(16), inner, 0..4)
+                .prop_map(|entries| Value::Object(Map::from_iter(entries))),
         ]
     })
 }

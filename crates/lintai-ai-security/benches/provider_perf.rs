@@ -3,20 +3,18 @@ use std::sync::Arc;
 
 use criterion::{Criterion, criterion_group, criterion_main};
 use lintai_ai_security::AiSecurityProvider;
-use lintai_api::ScanScope;
 use lintai_policy::PolicyMismatchProvider;
-use lintai_runtime::InProcessProviderBackend;
+use lintai_runtime::{InProcessFileProviderBackend, InProcessWorkspaceProviderBackend};
 use lintai_testing::{WorkspaceHarness, discover_case_dirs};
 
 fn criterion_benchmark(c: &mut Criterion) {
     let harness = WorkspaceHarness::builder()
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
-        .with_backend(Arc::new(InProcessProviderBackend::with_scope(
-            Arc::new(PolicyMismatchProvider),
-            ScanScope::Workspace,
-        )))
+        .with_backend(Arc::new(InProcessWorkspaceProviderBackend::new(Arc::new(
+            PolicyMismatchProvider,
+        ))))
         .build();
 
     for case_dir in discover_case_dirs(&sample_repos_root()).unwrap() {

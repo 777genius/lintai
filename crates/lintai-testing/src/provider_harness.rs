@@ -2,19 +2,19 @@ use std::path::Path;
 use std::sync::Arc;
 
 use lintai_api::{
-    ArtifactKind, Finding, RuleProvider, SourceFormat, builtin_membership_preset_ids,
+    ArtifactKind, FileRuleProvider, Finding, SourceFormat, builtin_membership_preset_ids,
 };
 use lintai_engine::{
     EngineBuilder, EngineConfig, NoopSuppressionMatcher, ScanSummary, SuppressionMatcher,
     load_workspace_config,
 };
-use lintai_runtime::{InProcessProviderBackend, ProviderBackend};
+use lintai_runtime::{InProcessFileProviderBackend, ProviderBackend};
 
 pub struct ProviderHarness;
 
 impl ProviderHarness {
     pub fn run(
-        provider: Arc<dyn RuleProvider>,
+        provider: Arc<dyn FileRuleProvider>,
         artifact_kind: ArtifactKind,
         format: SourceFormat,
         content: impl Into<String>,
@@ -23,16 +23,13 @@ impl ProviderHarness {
     }
 
     pub fn run_summary(
-        provider: Arc<dyn RuleProvider>,
+        provider: Arc<dyn FileRuleProvider>,
         artifact_kind: ArtifactKind,
         format: SourceFormat,
         content: impl Into<String>,
     ) -> ScanSummary {
-        ProviderHarnessBuilder::new(Arc::new(InProcessProviderBackend::new(provider))).run_summary(
-            artifact_kind,
-            format,
-            content,
-        )
+        ProviderHarnessBuilder::new(Arc::new(InProcessFileProviderBackend::new(provider)))
+            .run_summary(artifact_kind, format, content)
     }
 }
 

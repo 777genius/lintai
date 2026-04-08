@@ -58,7 +58,7 @@ fn ignores_unscoped_bash_allowed_tools_on_fixture_like_path() {
     .unwrap();
 
     let summary = EngineBuilder::default()
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2560,7 +2560,7 @@ fn ignores_wildcard_tool_access_on_fixture_like_path() {
     .unwrap();
 
     let summary = EngineBuilder::default()
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -3262,7 +3262,7 @@ fn manifest_backed_plugin_command_markdown_uses_existing_markdown_rules() {
     let workspace = load_workspace_config(&temp_dir).unwrap();
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config)
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()

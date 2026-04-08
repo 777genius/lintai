@@ -2,12 +2,12 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::path::Path;
 use std::sync::Arc;
 
-use lintai_api::{ArtifactKind, RuleProvider, RuleTier, ScanScope, Severity, SourceFormat};
+use lintai_api::{ArtifactKind, FileRuleProvider, RuleTier, Severity, SourceFormat};
 use lintai_engine::{
     EngineBuilder, EngineConfig, FileSuppressions, NoopSuppressionMatcher, load_workspace_config,
 };
 use lintai_policy::PolicyMismatchProvider;
-use lintai_runtime::InProcessProviderBackend;
+use lintai_runtime::{InProcessFileProviderBackend, InProcessWorkspaceProviderBackend};
 use lintai_testing::ProviderHarness;
 
 use crate::{
@@ -471,7 +471,7 @@ fn ignores_repo_local_markdown_link_reference() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -512,7 +512,7 @@ fn ignores_repo_local_reference_markdown_in_sibling_skill() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -548,7 +548,7 @@ fn ignores_repo_local_assets_directory_reference_in_sibling_skill() {
     let summary = EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2584,7 +2584,7 @@ fn scan_preview_skill_fixture(relative_path: &str, content: &str) -> lintai_engi
     EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2611,7 +2611,7 @@ fn scan_preview_governance_skill_fixture(
     EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()
@@ -2638,7 +2638,7 @@ fn scan_preview_claude_settings_fixture(
     EngineBuilder::default()
         .with_config(workspace.engine_config.clone())
         .with_suppressions(Arc::new(suppressions))
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
         .build()

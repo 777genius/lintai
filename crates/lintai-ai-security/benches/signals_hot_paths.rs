@@ -1,7 +1,7 @@
 use criterion::{BenchmarkId, Criterion, Throughput, criterion_group, criterion_main};
 use lintai_adapters::parse_document;
 use lintai_ai_security::{AiSecurityProvider, profile_scan_context};
-use lintai_api::{Artifact, ArtifactKind, RuleProvider, ScanContext, SourceFormat};
+use lintai_api::{Artifact, ArtifactKind, FileRuleProvider, ScanContext, SourceFormat};
 
 fn criterion_benchmark(c: &mut Criterion) {
     let markdown = markdown_hot_path_context();

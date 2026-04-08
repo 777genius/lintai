@@ -7,11 +7,11 @@ use std::time::Instant;
 use lintai_adapters::parse_document;
 use lintai_api::{
     Artifact, ArtifactKind, DocumentSemantics, JsonSemantics, ParsedDocument, RegionKind,
-    ScanContext, ScanScope, SourceFormat, Span, TextRegion,
+    ScanContext, SourceFormat, Span, TextRegion,
 };
 use lintai_engine::{FileTypeDetector, ProviderExecutionPhase, normalize_path_string};
 use lintai_policy::PolicyMismatchProvider;
-use lintai_runtime::InProcessProviderBackend;
+use lintai_runtime::{InProcessFileProviderBackend, InProcessWorkspaceProviderBackend};
 use lintai_testing::{OutputHarness, WorkspaceHarness, discover_case_dirs};
 use serde::Deserialize;
 use serde_json::json;
@@ -290,13 +290,12 @@ fn sample_repo_perf_smoke_benchmark_reports_real_workloads() {
 
 fn sample_repo_harness() -> WorkspaceHarness {
     WorkspaceHarness::builder()
-        .with_backend(Arc::new(InProcessProviderBackend::new(Arc::new(
+        .with_backend(Arc::new(InProcessFileProviderBackend::new(Arc::new(
             AiSecurityProvider::default(),
         ))))
-        .with_backend(Arc::new(InProcessProviderBackend::with_scope(
-            Arc::new(PolicyMismatchProvider),
-            ScanScope::Workspace,
-        )))
+        .with_backend(Arc::new(InProcessWorkspaceProviderBackend::new(Arc::new(
+            PolicyMismatchProvider,
+        ))))
         .build()
 }
 
