@@ -142,11 +142,13 @@ fn external_validation_ledger_entries_use_allowed_verdicts() {
             .as_array()
             .unwrap()
         {
-            assert!(valid_adjudication_verdicts.contains(
-                adjudication["verdict"]
-                    .as_str()
-                    .expect("adjudication verdict should be present")
-            ));
+            assert!(
+                valid_adjudication_verdicts.contains(
+                    adjudication["verdict"]
+                        .as_str()
+                        .expect("adjudication verdict should be present")
+                )
+            );
         }
     }
 }

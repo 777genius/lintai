@@ -91,8 +91,7 @@ exit 2\n",
     #[cfg(unix)]
     #[test]
     fn run_scan_with_missing_binary_returns_spawn_error() {
-        let error = run_scan(Path::new("/does/not/exist"), Path::new("/"), false, &[])
-            .unwrap_err();
+        let error = run_scan(Path::new("/does/not/exist"), Path::new("/"), false, &[]).unwrap_err();
         assert!(
             error.starts_with("failed to run lintai in /:"),
             "unexpected error: {error}"

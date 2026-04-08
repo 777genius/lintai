@@ -85,7 +85,8 @@ pub(crate) fn fill_auto_fields(
     entry.preview_rule_codes = preview.into_iter().collect();
     entry.stable_precision_notes =
         stable_precision_note(entry.stable_findings, &entry.stable_rule_codes);
-    entry.preview_signal_notes = preview_signal_note(entry.preview_findings, &entry.preview_rule_codes);
+    entry.preview_signal_notes =
+        preview_signal_note(entry.preview_findings, &entry.preview_rule_codes);
     entry.lane_summaries = lane_summaries;
     entry.recommended_stable_hits = recommended_stable_hits;
     entry.runtime_errors = merge_runtime_errors(lane_scans);
@@ -204,7 +205,11 @@ fn merge_runtime_errors(lane_scans: &[ParsedLaneScan<'_>]) -> Vec<RuntimeErrorRe
     for lane in lane_scans {
         for error in &lane.parsed.runtime_errors {
             merged
-                .entry((error.normalized_path.clone(), error.kind.clone(), error.message.clone()))
+                .entry((
+                    error.normalized_path.clone(),
+                    error.kind.clone(),
+                    error.message.clone(),
+                ))
                 .or_insert_with(|| RuntimeErrorRecord {
                     path: error.normalized_path.clone(),
                     kind: error.kind.clone(),
@@ -258,9 +263,7 @@ fn validate_finding_identity(finding: &JsonFinding) -> Result<(), String> {
     if finding.stable_key.normalized_path != finding.location.normalized_path {
         return Err(format!(
             "stable key path `{}` did not match finding path `{}` for `{}`",
-            finding.stable_key.normalized_path,
-            finding.location.normalized_path,
-            finding.rule_code
+            finding.stable_key.normalized_path, finding.location.normalized_path, finding.rule_code
         ));
     }
     Ok(())

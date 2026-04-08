@@ -9,8 +9,6 @@ use lintai_engine::FileTypeDetector;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-use crate::internal_bin::resolve_lintai_driver_path;
-
 mod inventory;
 mod model;
 mod package;

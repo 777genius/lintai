@@ -1,4 +1,7 @@
 use super::*;
+use crate::internal_bin::{
+    BinaryResolutionSource, ResolvedBinary, resolve_lintai_driver_path_with_source,
+};
 
 #[derive(Clone, Debug)]
 struct LaneScanArtifact {
@@ -7,22 +10,29 @@ struct LaneScanArtifact {
     parsed: JsonScanEnvelope,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct ParsedRerunFlags {
+    package: ValidationPackage,
+    lintai_bin: Option<PathBuf>,
+}
+
 pub(crate) fn run(args: impl Iterator<Item = String>) -> Result<(), String> {
     let raw_args = args.collect::<Vec<_>>();
     let Some(command) = raw_args.first().map(String::as_str) else {
         return Err("expected one of: rerun, render-report".to_owned());
     };
-    let package = parse_package_flag(&raw_args[1..])?;
     match command {
         "rerun" => {
+            let flags = parse_rerun_flags(&raw_args[1..])?;
             rerun(RerunOptions {
                 workspace_root: workspace_root()?,
-                package,
-                lintai_bin: None,
+                package: flags.package,
+                lintai_bin: flags.lintai_bin,
             })?;
             Ok(())
         }
         "render-report" => {
+            let package = parse_package_flag(&raw_args[1..])?;
             let markdown = render_report(RenderReportOptions {
                 workspace_root: workspace_root()?,
                 package,
@@ -55,11 +65,7 @@ pub(crate) fn rerun(options: RerunOptions) -> Result<(), String> {
         )
     })?;
 
-    let lintai_bin = options
-        .lintai_bin
-        .unwrap_or(resolve_lintai_driver_path().map_err(|error| {
-            format!("failed to resolve lintai binary for external validation rerun: {error}")
-        })?);
+    let lintai_driver = resolve_rerun_lintai_driver(&options)?;
     let tier_map = current_rule_tiers();
     let template_entries = template_map(&template);
     let preset_matrix = package.scan_preset_matrix();
@@ -84,7 +90,8 @@ pub(crate) fn rerun(options: RerunOptions) -> Result<(), String> {
             )
         })?;
 
-        let lane_artifacts = collect_lane_artifacts(&lintai_bin, &local_dir, preset_matrix)?;
+        let lane_artifacts =
+            collect_lane_artifacts(&lintai_driver.path, &local_dir, preset_matrix)?;
         write_scan_artifacts(&repo_raw_root, &lane_artifacts)?;
         let inventory_text = toml::to_string_pretty(&inventory)
             .map_err(|error| format!("failed to serialize inventory artifact: {error}"))?;
@@ -180,6 +187,52 @@ pub(crate) fn render_report(options: RenderReportOptions) -> Result<String, Stri
     }
 }
 
+fn resolve_rerun_lintai_driver(options: &RerunOptions) -> Result<ResolvedBinary, String> {
+    let resolved = if let Some(path) = &options.lintai_bin {
+        if !path.exists() {
+            return Err(format!(
+                "external validation rerun received --lintai-bin={}, but that path does not exist",
+                path.display()
+            ));
+        }
+        ResolvedBinary {
+            path: path.clone(),
+            source: BinaryResolutionSource::PreferredEnv,
+        }
+    } else {
+        resolve_lintai_driver_path_with_source().map_err(|error| {
+            format!("failed to resolve lintai binary for external validation rerun: {error}")
+        })?
+    };
+
+    validate_rerun_driver_contract(&options.workspace_root, &resolved)?;
+    Ok(resolved)
+}
+
+fn validate_rerun_driver_contract(
+    workspace_root: &Path,
+    lintai_driver: &ResolvedBinary,
+) -> Result<(), String> {
+    let current = std::env::current_exe()
+        .map_err(|error| format!("failed to resolve current executable: {error}"))?;
+    if requires_explicit_rerun_driver(workspace_root, &current, lintai_driver.source) {
+        return Err(format!(
+            "external validation rerun refuses implicit sibling driver resolution from {}; pass --lintai-bin=/absolute/path/to/lintai or set LINTAI_SELF_EXE to avoid stale scan evidence",
+            lintai_driver.path.display()
+        ));
+    }
+    Ok(())
+}
+
+fn requires_explicit_rerun_driver(
+    workspace_root: &Path,
+    current_exe: &Path,
+    source: BinaryResolutionSource,
+) -> bool {
+    matches!(source, BinaryResolutionSource::SiblingCandidate)
+        && current_exe.starts_with(workspace_root.join("target"))
+}
+
 fn collect_lane_artifacts(
     lintai_bin: &Path,
     repo_dir: &Path,
@@ -224,7 +277,10 @@ fn collect_lane_artifacts(
     Ok(artifacts)
 }
 
-fn write_scan_artifacts(repo_raw_root: &Path, lane_artifacts: &[LaneScanArtifact]) -> Result<(), String> {
+fn write_scan_artifacts(
+    repo_raw_root: &Path,
+    lane_artifacts: &[LaneScanArtifact],
+) -> Result<(), String> {
     let aggregate_json = serde_json::to_string_pretty(&merge_lane_scan_envelope(lane_artifacts))
         .map_err(|error| format!("failed to serialize aggregated scan artifact: {error}"))?;
     let aggregate_text = render_aggregate_scan_text(lane_artifacts);
@@ -291,7 +347,11 @@ fn merge_lane_scan_envelope(lane_artifacts: &[LaneScanArtifact]) -> JsonScanEnve
         }
         for error in &artifact.parsed.runtime_errors {
             runtime_errors
-                .entry((error.normalized_path.clone(), error.kind.clone(), error.message.clone()))
+                .entry((
+                    error.normalized_path.clone(),
+                    error.kind.clone(),
+                    error.message.clone(),
+                ))
                 .or_insert_with(|| error.clone());
         }
     }
@@ -314,6 +374,37 @@ pub(crate) fn parse_package_flag(args: &[String]) -> Result<ValidationPackage, S
         package = ValidationPackage::parse(value)?;
     }
     Ok(package)
+}
+
+fn parse_rerun_flags(args: &[String]) -> Result<ParsedRerunFlags, String> {
+    let mut package = ValidationPackage::Canonical;
+    let mut lintai_bin = None;
+
+    for arg in args {
+        if let Some(value) = arg.strip_prefix("--package=") {
+            package = ValidationPackage::parse(value)?;
+            continue;
+        }
+        if let Some(value) = arg.strip_prefix("--lintai-bin=") {
+            let trimmed = value.trim();
+            if trimmed.is_empty() {
+                return Err(
+                    "unexpected external validation argument `--lintai-bin=`; expected a non-empty path"
+                        .to_owned(),
+                );
+            }
+            lintai_bin = Some(PathBuf::from(trimmed));
+            continue;
+        }
+        return Err(format!(
+            "unexpected external validation argument `{arg}`; expected only --package=<name> or --lintai-bin=<path>"
+        ));
+    }
+
+    Ok(ParsedRerunFlags {
+        package,
+        lintai_bin,
+    })
 }
 
 #[cfg(test)]
@@ -398,5 +489,69 @@ mod tests {
             .unwrap(),
             ValidationPackage::Canonical
         );
+    }
+
+    #[test]
+    fn parse_rerun_flags_defaults_to_canonical_without_explicit_binary() {
+        assert_eq!(
+            parse_rerun_flags(&[]).unwrap(),
+            ParsedRerunFlags {
+                package: ValidationPackage::Canonical,
+                lintai_bin: None,
+            }
+        );
+    }
+
+    #[test]
+    fn parse_rerun_flags_accepts_lintai_bin_and_last_package() {
+        assert_eq!(
+            parse_rerun_flags(&[
+                "--package=tool-json-extension".to_owned(),
+                "--lintai-bin=/tmp/lintai".to_owned(),
+                "--package=canonical".to_owned(),
+            ])
+            .unwrap(),
+            ParsedRerunFlags {
+                package: ValidationPackage::Canonical,
+                lintai_bin: Some(PathBuf::from("/tmp/lintai")),
+            }
+        );
+    }
+
+    #[test]
+    fn parse_rerun_flags_rejects_empty_lintai_bin() {
+        let error = parse_rerun_flags(&["--lintai-bin=".to_owned()]).unwrap_err();
+        assert_eq!(
+            error,
+            "unexpected external validation argument `--lintai-bin=`; expected a non-empty path"
+        );
+    }
+
+    #[test]
+    fn parse_package_flag_rejects_rerun_only_lintai_bin_flag() {
+        let error = parse_package_flag(&["--lintai-bin=/tmp/lintai".to_owned()]).unwrap_err();
+        assert_eq!(
+            error,
+            "unexpected external validation argument `--lintai-bin=/tmp/lintai`; expected only --package=<name>"
+        );
+    }
+
+    #[test]
+    fn rerun_driver_contract_requires_explicit_driver_for_workspace_target_sibling_resolution() {
+        assert!(requires_explicit_rerun_driver(
+            Path::new("/workspace"),
+            Path::new("/workspace/target/debug/lintai-external-validation"),
+            BinaryResolutionSource::SiblingCandidate,
+        ));
+        assert!(!requires_explicit_rerun_driver(
+            Path::new("/workspace"),
+            Path::new("/workspace/target/debug/lintai-external-validation"),
+            BinaryResolutionSource::PreferredEnv,
+        ));
+        assert!(!requires_explicit_rerun_driver(
+            Path::new("/workspace"),
+            Path::new("/usr/local/bin/lintai-external-validation"),
+            BinaryResolutionSource::SiblingCandidate,
+        ));
     }
 }

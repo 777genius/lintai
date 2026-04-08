@@ -364,9 +364,9 @@ exit 1
         let result = materialize_repo(&repo, &local_dir);
 
         let error = result.unwrap_err();
-        assert!(
-            error.contains("via archive (failed to download https://codeload.github.com/acme/example/tar.gz/v1.2.3")
-        );
+        assert!(error.contains(
+            "via archive (failed to download https://codeload.github.com/acme/example/tar.gz/v1.2.3"
+        ));
         assert!(error.contains("git fallback failed"));
         fs::remove_dir_all(workspace).unwrap();
     }
@@ -427,7 +427,10 @@ exit 0
 
         materialize_repo(&repo, &local_dir).unwrap();
         assert_eq!(fs::read_to_string(marker_path).unwrap(), "v1.2.3\n");
-        assert_eq!(fs::read_to_string(local_dir.join("checked-out.txt")).unwrap(), "ok\n");
+        assert_eq!(
+            fs::read_to_string(local_dir.join("checked-out.txt")).unwrap(),
+            "ok\n"
+        );
         fs::remove_dir_all(workspace).unwrap();
     }
 

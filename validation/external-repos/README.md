@@ -23,7 +23,8 @@ Conventions:
 
 Internal rerun flow:
 
-- `cargo run -p lintai-cli --bin lintai-external-validation -- rerun`
+- `cargo build -q -p lintai-cli --bin lintai --bin lintai-external-validation`
+- `cargo run -p lintai-cli --bin lintai-external-validation -- rerun --lintai-bin="$(pwd)/target/debug/lintai"`
 - review `target/external-validation/wave3/candidate-ledger.toml`
 - `cargo run -p lintai-cli --bin lintai-external-validation -- render-report`
 

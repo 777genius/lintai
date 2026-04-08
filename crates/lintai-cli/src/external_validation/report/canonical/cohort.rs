@@ -182,14 +182,19 @@ pub(super) fn append_delta_and_precision_summary(
         output.push('\n');
     }
 
-    if !precision_review.stale_adjudications.is_empty() || !precision_review.invalid_adjudications.is_empty()
+    if !precision_review.stale_adjudications.is_empty()
+        || !precision_review.invalid_adjudications.is_empty()
     {
         output.push_str("Validation warnings:\n\n");
         if !precision_review.stale_adjudications.is_empty() {
-            output.push_str("- stale adjudications are present and should fail contract validation\n");
+            output.push_str(
+                "- stale adjudications are present and should fail contract validation\n",
+            );
         }
         if !precision_review.invalid_adjudications.is_empty() {
-            output.push_str("- invalid adjudications are present and should fail contract validation\n");
+            output.push_str(
+                "- invalid adjudications are present and should fail contract validation\n",
+            );
         }
         output.push('\n');
     }
@@ -313,7 +318,8 @@ fn recommended_next_step(
     cohort_size: usize,
     ownership_counts: OwnershipCounts,
 ) -> &'static str {
-    if !precision_review.unadjudicated.is_empty() || !precision_review.false_positive_hits.is_empty()
+    if !precision_review.unadjudicated.is_empty()
+        || !precision_review.false_positive_hits.is_empty()
     {
         return "precision hardening";
     }

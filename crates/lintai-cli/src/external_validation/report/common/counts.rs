@@ -102,7 +102,11 @@ pub(crate) fn aggregate_lane_counts(
     let mut counts = LaneAggregateCounts::default();
 
     for entry in &ledger.evaluations {
-        if let Some(lane) = entry.lane_summaries.iter().find(|lane| lane.lane_id == lane_id) {
+        if let Some(lane) = entry
+            .lane_summaries
+            .iter()
+            .find(|lane| lane.lane_id == lane_id)
+        {
             counts.stable_findings += lane.stable_findings;
             counts.preview_findings += lane.preview_findings;
         }
@@ -115,10 +119,7 @@ pub(crate) fn aggregate_remaining_lane_counts(
     ledger: &ExternalValidationLedger,
     excluded_lane_ids: &[&str],
 ) -> Vec<(String, LaneAggregateCounts)> {
-    let excluded = excluded_lane_ids
-        .iter()
-        .copied()
-        .collect::<BTreeSet<_>>();
+    let excluded = excluded_lane_ids.iter().copied().collect::<BTreeSet<_>>();
     let mut counts = BTreeMap::<String, LaneAggregateCounts>::new();
 
     for entry in &ledger.evaluations {

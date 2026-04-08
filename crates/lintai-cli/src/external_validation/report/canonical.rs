@@ -233,7 +233,10 @@ pub(crate) fn recommended_precision_review(
                 ));
                 continue;
             }
-            if matches!(adjudication.verdict, AdjudicationVerdict::AcceptedHardeningHit) {
+            if matches!(
+                adjudication.verdict,
+                AdjudicationVerdict::AcceptedHardeningHit
+            ) {
                 review.invalid_adjudications.push((
                     entry.repo.clone(),
                     format!(
@@ -243,7 +246,10 @@ pub(crate) fn recommended_precision_review(
                 ));
                 continue;
             }
-            if adjudicated.insert(fingerprint.clone(), adjudication).is_some() {
+            if adjudicated
+                .insert(fingerprint.clone(), adjudication)
+                .is_some()
+            {
                 review.invalid_adjudications.push((
                     entry.repo.clone(),
                     format!(
@@ -288,9 +294,7 @@ pub(crate) fn recommended_precision_review(
         for hit in &entry.recommended_stable_hits {
             let fingerprint = stable_key_fingerprint(&hit.stable_key);
             if !adjudicated.contains_key(&fingerprint) {
-                review
-                    .unadjudicated
-                    .push((entry.repo.clone(), hit.clone()));
+                review.unadjudicated.push((entry.repo.clone(), hit.clone()));
             }
         }
     }
@@ -324,6 +328,8 @@ pub(crate) fn recommended_precision_review(
                     .cmp(&right.1.stable_key.normalized_path)
             })
     });
-    review.invalid_adjudications.sort_by(|left, right| left.0.cmp(&right.0));
+    review
+        .invalid_adjudications
+        .sort_by(|left, right| left.0.cmp(&right.0));
     review
 }
