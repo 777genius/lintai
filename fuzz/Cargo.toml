@@ -1,0 +1,25 @@
+[package]
+name = "lintai-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2024"
+rust-version = "1.90"
+license = "MIT OR Apache-2.0"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4.12"
+lintai-parse = { path = "../crates/lintai-parse" }
+lintai-api = { path = "../crates/lintai-api" }
+
+[[bin]]
+name = "parse_documents"
+path = "fuzz_targets/parse_documents.rs"
+test = false
+doc = false
+bench = false
+
+[workspace]
+members = ["."]

@@ -11,5 +11,8 @@ lintai-api.workspace = true
 serde_json.workspace = true
 serde_yaml_bw.workspace = true
 
+[dev-dependencies]
+proptest = "1.11.0"
+
 [lib]
 path = "src/lib.rs"

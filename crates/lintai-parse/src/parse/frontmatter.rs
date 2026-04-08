@@ -1,5 +1,6 @@
 use serde_json::Value;
 
+use crate::limits::{ensure_document_byte_limit, ensure_value_shape_limits};
 use crate::{ParseDiagnostic, ParseError};
 
 const MAX_FRONTMATTER_BYTES: usize = 64 * 1024;
@@ -44,9 +45,12 @@ pub fn extract(input: &str) -> Result<Extraction, ParseError> {
 }
 
 pub fn parse_yaml(raw: &str) -> Result<Value, ParseError> {
-    serde_yaml_bw::from_str::<Value>(raw).map_err(|error| ParseError {
+    ensure_document_byte_limit(raw, "frontmatter")?;
+    let value = serde_yaml_bw::from_str::<Value>(raw).map_err(|error| ParseError {
         message: format!("invalid YAML frontmatter: {error}"),
-    })
+    })?;
+    ensure_value_shape_limits(&value, "frontmatter")?;
+    Ok(value)
 }
 
 pub fn recovery_diagnostic(error: &ParseError) -> ParseDiagnostic {
