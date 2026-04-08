@@ -80,228 +80,185 @@ pub(crate) fn find_mcp_command_signal_span(
         if has_network_context
             && let Some(relative) = find_command_tls_bypass_relative_span(command)
         {
-            spans.network_tls_bypass = Some(resolve_child_relative_value_span(
+            spans.network_tls_bypass = Some(resolve_command_relative_span(
                 path,
-                "command",
-                "command",
                 relative,
                 locator,
                 fallback_len,
             ));
         }
-        if let Some(relative) = find_destructive_root_delete_relative_span(command) {
-            spans.root_delete = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_sensitive_password_file_relative_span(command) {
-            spans.password_file_access = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_shell_profile_write_relative_span(command) {
-            spans.shell_profile_write = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_authorized_keys_write_relative_span(command) {
-            spans.authorized_keys_write = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_sensitive_secret_file_relative_span(command) {
-            sensitive_file_exfil_candidate = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_clipboard_read_relative_span(command) {
-            spans.clipboard_read = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_browser_secret_store_access_relative_span(command) {
-            spans.browser_secret_store_access = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_screen_capture_relative_span(command) {
-            spans.screen_capture = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_camera_capture_relative_span(command) {
-            spans.camera_capture = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_microphone_capture_relative_span(command) {
-            spans.microphone_capture = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_keylogging_relative_span(command) {
-            spans.keylogging = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_environment_dump_relative_span(command) {
-            spans.environment_dump = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_secret_reference_relative_span(command) {
-            secret_exfil_candidate = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_plain_http_relative_span(command) {
-            plain_http_secret_exfil_candidate = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_webhook_endpoint_relative_span(command) {
-            webhook_secret_exfil_candidate = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_crontab_persistence_relative_span(command) {
-            spans.cron_persistence = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_systemd_service_registration_relative_span(command) {
-            spans.systemd_service_registration = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_launchd_registration_relative_span(command) {
-            spans.launchd_registration = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_insecure_permission_change_relative_span(command) {
-            spans.insecure_permission_change = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_setuid_setgid_relative_span(command) {
-            spans.setuid_setgid = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
-        if let Some(relative) = find_linux_capability_manipulation_relative_span(command) {
-            spans.linux_capability_manipulation = Some(resolve_child_relative_value_span(
-                path,
-                "command",
-                "command",
-                relative,
-                locator,
-                fallback_len,
-            ));
-        }
+        assign_command_relative_signal(
+            &mut spans.root_delete,
+            path,
+            command,
+            find_destructive_root_delete_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut spans.password_file_access,
+            path,
+            command,
+            find_sensitive_password_file_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut spans.shell_profile_write,
+            path,
+            command,
+            find_shell_profile_write_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut spans.authorized_keys_write,
+            path,
+            command,
+            find_authorized_keys_write_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut sensitive_file_exfil_candidate,
+            path,
+            command,
+            find_sensitive_secret_file_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut spans.clipboard_read,
+            path,
+            command,
+            find_clipboard_read_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut spans.browser_secret_store_access,
+            path,
+            command,
+            find_browser_secret_store_access_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut spans.screen_capture,
+            path,
+            command,
+            find_screen_capture_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut spans.camera_capture,
+            path,
+            command,
+            find_camera_capture_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut spans.microphone_capture,
+            path,
+            command,
+            find_microphone_capture_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut spans.keylogging,
+            path,
+            command,
+            find_keylogging_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut spans.environment_dump,
+            path,
+            command,
+            find_environment_dump_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut secret_exfil_candidate,
+            path,
+            command,
+            find_secret_reference_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut plain_http_secret_exfil_candidate,
+            path,
+            command,
+            find_plain_http_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut webhook_secret_exfil_candidate,
+            path,
+            command,
+            find_webhook_endpoint_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut spans.cron_persistence,
+            path,
+            command,
+            find_crontab_persistence_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut spans.systemd_service_registration,
+            path,
+            command,
+            find_systemd_service_registration_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut spans.launchd_registration,
+            path,
+            command,
+            find_launchd_registration_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut spans.insecure_permission_change,
+            path,
+            command,
+            find_insecure_permission_change_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut spans.setuid_setgid,
+            path,
+            command,
+            find_setuid_setgid_relative_span,
+            locator,
+            fallback_len,
+        );
+        assign_command_relative_signal(
+            &mut spans.linux_capability_manipulation,
+            path,
+            command,
+            find_linux_capability_manipulation_relative_span,
+            locator,
+            fallback_len,
+        );
     }
 
     if let Some(args) = args {
+        let args_path = with_child_key(path, "args");
         let command_is_rm = command_matches(command, "rm");
         let command_is_tee = command_matches(command, "tee");
         let command_is_crontab = command_matches(command, "crontab");
@@ -318,22 +275,22 @@ pub(crate) fn find_mcp_command_signal_span(
             && let Some(docker) = analyze_docker_run_args(args)
         {
             if let Some(index) = docker.mutable_image_arg_index {
-                let arg_path = with_child_index(&with_child_key(path, "args"), index);
+                let arg_path = with_child_index(&args_path, index);
                 spans.mutable_docker_image =
                     Some(resolve_value_span(&arg_path, locator, fallback_len));
             }
             if let Some(index) = docker.mutable_pull_arg_index {
-                let arg_path = with_child_index(&with_child_key(path, "args"), index);
+                let arg_path = with_child_index(&args_path, index);
                 spans.mutable_docker_pull =
                     Some(resolve_value_span(&arg_path, locator, fallback_len));
             }
             if let Some(index) = docker.sensitive_mount_arg_index {
-                let arg_path = with_child_index(&with_child_key(path, "args"), index);
+                let arg_path = with_child_index(&args_path, index);
                 spans.sensitive_docker_mount =
                     Some(resolve_value_span(&arg_path, locator, fallback_len));
             }
             if let Some(index) = docker.dangerous_flag_arg_index {
-                let arg_path = with_child_index(&with_child_key(path, "args"), index);
+                let arg_path = with_child_index(&args_path, index);
                 spans.dangerous_docker_flag =
                     Some(resolve_value_span(&arg_path, locator, fallback_len));
             }
@@ -344,7 +301,7 @@ pub(crate) fn find_mcp_command_signal_span(
                 continue;
             };
             let lowered = text.to_ascii_lowercase();
-            let arg_path = with_child_index(&with_child_key(path, "args"), index);
+            let arg_path = with_child_index(&args_path, index);
 
             if spans.inline_download_exec.is_none() && has_inline_download_pipe_exec(&lowered) {
                 spans.inline_download_exec =
@@ -1450,6 +1407,33 @@ fn command_matches(command: Option<&str>, expected: &str) -> bool {
                 .next()
                 .is_some_and(|component| component.eq_ignore_ascii_case(expected))
     })
+}
+
+fn resolve_command_relative_span(
+    path: &[JsonPathSegment],
+    relative: lintai_api::Span,
+    locator: Option<&JsonLocationMap>,
+    fallback_len: usize,
+) -> lintai_api::Span {
+    resolve_child_relative_value_span(path, "command", "command", relative, locator, fallback_len)
+}
+
+fn assign_command_relative_signal(
+    target: &mut Option<lintai_api::Span>,
+    path: &[JsonPathSegment],
+    command: &str,
+    detector: fn(&str) -> Option<lintai_api::Span>,
+    locator: Option<&JsonLocationMap>,
+    fallback_len: usize,
+) {
+    if let Some(relative) = detector(command) {
+        *target = Some(resolve_command_relative_span(
+            path,
+            relative,
+            locator,
+            fallback_len,
+        ));
+    }
 }
 
 fn build_combined_command_text(command: Option<&str>, args: Option<&Vec<Value>>) -> String {
