@@ -47,7 +47,8 @@ impl Engine {
             workspace_artifacts,
             self.config.capability_profile.clone(),
             self.config.capability_conflict_mode,
-        );
+        )
+        .with_active_rule_codes(self.config.active_rule_codes.clone());
 
         for provider in providers.workspace() {
             let started = Instant::now();

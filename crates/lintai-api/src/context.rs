@@ -1,3 +1,5 @@
+use std::collections::BTreeSet;
+
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -11,6 +13,8 @@ pub struct ScanContext {
     pub content: String,
     pub document: ParsedDocument,
     pub semantics: Option<DocumentSemantics>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub active_rule_codes: Option<BTreeSet<String>>,
 }
 
 impl ScanContext {
@@ -25,7 +29,13 @@ impl ScanContext {
             content: content.into(),
             document,
             semantics,
+            active_rule_codes: None,
         }
+    }
+
+    pub fn with_active_rule_codes(mut self, active_rule_codes: BTreeSet<String>) -> Self {
+        self.active_rule_codes = Some(active_rule_codes);
+        self
     }
 }
 
@@ -154,6 +164,8 @@ pub struct WorkspaceScanContext {
     pub artifacts: Vec<WorkspaceArtifact>,
     pub project_capabilities: Option<CapabilityProfile>,
     pub capability_conflict_mode: CapabilityConflictMode,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub active_rule_codes: Option<BTreeSet<String>>,
 }
 
 impl WorkspaceScanContext {
@@ -168,7 +180,13 @@ impl WorkspaceScanContext {
             artifacts,
             project_capabilities,
             capability_conflict_mode,
+            active_rule_codes: None,
         }
+    }
+
+    pub fn with_active_rule_codes(mut self, active_rule_codes: BTreeSet<String>) -> Self {
+        self.active_rule_codes = Some(active_rule_codes);
+        self
     }
 }
 
@@ -208,6 +226,7 @@ mod tests {
             context.semantics,
             Some(DocumentSemantics::Yaml(_))
         ));
+        assert!(context.active_rule_codes.is_none());
     }
 
     #[test]
@@ -304,6 +323,43 @@ mod tests {
         assert_eq!(
             context.capability_conflict_mode,
             CapabilityConflictMode::Deny
+        );
+        assert!(context.active_rule_codes.is_none());
+    }
+
+    #[test]
+    fn scan_context_can_attach_active_rule_codes() {
+        let context = ScanContext::new(
+            Artifact::new(
+                "repo/file.md",
+                ArtifactKind::Instructions,
+                SourceFormat::Markdown,
+            ),
+            "",
+            ParsedDocument::new(vec![], None),
+            None,
+        )
+        .with_active_rule_codes(BTreeSet::from(["SEC101".to_owned(), "SEC352".to_owned()]));
+
+        assert_eq!(
+            context.active_rule_codes,
+            Some(BTreeSet::from(["SEC101".to_owned(), "SEC352".to_owned()]))
+        );
+    }
+
+    #[test]
+    fn workspace_scan_context_can_attach_active_rule_codes() {
+        let context = WorkspaceScanContext::new(
+            Some("/tmp/project".to_owned()),
+            Vec::new(),
+            None,
+            CapabilityConflictMode::Warn,
+        )
+        .with_active_rule_codes(BTreeSet::from(["SEC401".to_owned()]));
+
+        assert_eq!(
+            context.active_rule_codes,
+            Some(BTreeSet::from(["SEC401".to_owned()]))
         );
     }
 }

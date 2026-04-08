@@ -23,13 +23,28 @@ impl WorkspaceRuleProvider for PolicyMismatchProvider {
     }
 
     fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
+        let active_rule_codes = ctx.active_rule_codes.as_ref();
+        let exec_rule_active =
+            is_rule_active(active_rule_codes, ProjectExecMismatchRule::METADATA.code);
+        let network_rule_active =
+            is_rule_active(active_rule_codes, ProjectNetworkMismatchRule::METADATA.code);
+        let capability_rule_active =
+            is_rule_active(active_rule_codes, CapabilityConflictRule::METADATA.code);
+
+        if !(exec_rule_active || network_rule_active || capability_rule_active) {
+            return ProviderScanResult::new(Vec::new(), Vec::new());
+        }
+
         let Some(project_capabilities) = ctx.project_capabilities.as_ref() else {
             return ProviderScanResult::new(Vec::new(), Vec::new());
         };
 
         let mut findings = Vec::new();
         for artifact in &ctx.artifacts {
-            if exec_forbidden(project_capabilities) && artifact_observes_exec(artifact) {
+            if exec_rule_active
+                && exec_forbidden(project_capabilities)
+                && artifact_observes_exec(artifact)
+            {
                 findings.push(policy_finding(
                     &ProjectExecMismatchRule::METADATA,
                     artifact,
@@ -38,7 +53,10 @@ impl WorkspaceRuleProvider for PolicyMismatchProvider {
                 ));
             }
 
-            if network_forbidden(project_capabilities) && artifact_observes_network(artifact) {
+            if network_rule_active
+                && network_forbidden(project_capabilities)
+                && artifact_observes_network(artifact)
+            {
                 findings.push(policy_finding(
                     &ProjectNetworkMismatchRule::METADATA,
                     artifact,
@@ -47,7 +65,8 @@ impl WorkspaceRuleProvider for PolicyMismatchProvider {
                 ));
             }
 
-            if let Some(frontmatter_caps) = artifact.capabilities.as_ref()
+            if capability_rule_active
+                && let Some(frontmatter_caps) = artifact.capabilities.as_ref()
                 && capabilities_conflict(project_capabilities, frontmatter_caps)
             {
                 findings.push(policy_finding(
@@ -61,6 +80,13 @@ impl WorkspaceRuleProvider for PolicyMismatchProvider {
 
         ProviderScanResult::new(findings, Vec::new())
     }
+}
+
+fn is_rule_active(
+    active_rule_codes: Option<&std::collections::BTreeSet<String>>,
+    rule_code: &str,
+) -> bool {
+    active_rule_codes.is_none_or(|active| active.contains(rule_code))
 }
 
 #[cfg(test)]
@@ -102,6 +128,62 @@ mod tests {
 
         assert!(result.errors.is_empty());
         assert!(result.findings.is_empty());
+    }
+
+    #[test]
+    fn workspace_check_skips_when_policy_rules_are_inactive() {
+        let mut project = CapabilityProfile::default();
+        project.exec = Some(ExecCapability::None);
+
+        let result = WorkspaceRuleProvider::check_workspace_result(
+            &PolicyMismatchProvider,
+            &WorkspaceScanContext::new(
+                None,
+                vec![workspace_artifact(
+                    ArtifactKind::CursorHookScript,
+                    "echo hi",
+                    None,
+                )],
+                Some(project),
+                lintai_api::CapabilityConflictMode::Warn,
+            )
+            .with_active_rule_codes(std::collections::BTreeSet::from(["SEC101".to_owned()])),
+        );
+
+        assert!(result.errors.is_empty());
+        assert!(result.findings.is_empty());
+    }
+
+    #[test]
+    fn workspace_check_only_reports_active_policy_rule_codes() {
+        let mut project = CapabilityProfile::default();
+        project.exec = Some(ExecCapability::None);
+        project.network = Some(NetworkCapability::None);
+
+        let result = WorkspaceRuleProvider::check_workspace_result(
+            &PolicyMismatchProvider,
+            &WorkspaceScanContext::new(
+                None,
+                vec![workspace_artifact(
+                    ArtifactKind::CursorHookScript,
+                    "curl https://example.com",
+                    None,
+                )],
+                Some(project),
+                lintai_api::CapabilityConflictMode::Warn,
+            )
+            .with_active_rule_codes(std::collections::BTreeSet::from([
+                crate::catalog::ProjectNetworkMismatchRule::METADATA
+                    .code
+                    .to_owned(),
+            ])),
+        );
+
+        assert_eq!(result.findings.len(), 1);
+        assert_eq!(
+            result.findings[0].rule_code,
+            crate::catalog::ProjectNetworkMismatchRule::METADATA.code
+        );
     }
 
     #[test]

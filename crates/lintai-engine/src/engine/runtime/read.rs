@@ -119,7 +119,8 @@ impl Engine {
                     }),
             );
 
-        let context = ScanContext::new(artifact, content, parsed.document, parsed.semantics);
+        let context = ScanContext::new(artifact, content, parsed.document, parsed.semantics)
+            .with_active_rule_codes(file_config.active_rule_codes.clone());
 
         summary.scanned_files += 1;
         Some(ScannedArtifact {

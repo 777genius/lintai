@@ -46,9 +46,16 @@ pub fn profile_scan_context(ctx: &ScanContext) -> ProviderPerfProfile {
 
 fn scan_rule_specs(ctx: &ScanContext) -> (Vec<lintai_api::Finding>, ProviderPerfProfile) {
     let signals = ArtifactSignals::from_context(ctx);
+    let active_rule_codes = ctx.active_rule_codes.as_ref();
     let applicable_specs = rule_specs()
         .iter()
-        .filter(|spec| spec.surface.matches(ctx.artifact.kind))
+        .filter(|spec| {
+            spec.surface.matches(ctx.artifact.kind)
+                && match active_rule_codes {
+                    Some(active) => active.contains(spec.metadata.code),
+                    None => true,
+                }
+        })
         .copied()
         .collect::<Vec<_>>();
     let findings = applicable_specs
@@ -66,4 +73,27 @@ fn scan_rule_specs(ctx: &ScanContext) -> (Vec<lintai_api::Finding>, ProviderPerf
     };
 
     (findings, profile)
+}
+
+#[cfg(test)]
+mod tests {
+    use std::collections::BTreeSet;
+
+    use lintai_api::{Artifact, ArtifactKind, ParsedDocument, ScanContext, SourceFormat};
+
+    use super::profile_scan_context;
+
+    #[test]
+    fn provider_profile_respects_active_rule_codes() {
+        let context = ScanContext::new(
+            Artifact::new("SKILL.md", ArtifactKind::Skill, SourceFormat::Markdown),
+            "# title\n",
+            ParsedDocument::new(Vec::new(), None),
+            None,
+        )
+        .with_active_rule_codes(BTreeSet::from(["SEC101".to_owned()]));
+
+        let profile = profile_scan_context(&context);
+        assert_eq!(profile.applicable_rules, 1);
+    }
 }

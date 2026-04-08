@@ -44,6 +44,12 @@ impl WorkspaceRuleProvider for DependencyVulnProvider {
     }
 
     fn check_workspace_result(&self, ctx: &WorkspaceScanContext) -> ProviderScanResult {
+        if let Some(active_rule_codes) = ctx.active_rule_codes.as_ref()
+            && !active_rule_codes.contains(InstalledVulnerableDependencyRule::METADATA.code)
+        {
+            return ProviderScanResult::new(Vec::new(), Vec::new());
+        }
+
         let snapshot = match snapshot() {
             Ok(snapshot) => snapshot,
             Err(message) => {
@@ -621,4 +627,42 @@ fn push_package_instance(
         package: package.to_owned(),
         version: version.to_owned(),
     });
+}
+
+#[cfg(test)]
+mod tests {
+    use std::collections::BTreeSet;
+
+    use lintai_api::{
+        Artifact, ArtifactKind, CapabilityConflictMode, ParsedDocument, SourceFormat,
+        WorkspaceArtifact, WorkspaceRuleProvider, WorkspaceScanContext,
+    };
+
+    use super::DependencyVulnProvider;
+
+    #[test]
+    fn workspace_check_skips_when_advisory_rule_is_inactive() {
+        let result = WorkspaceRuleProvider::check_workspace_result(
+            &DependencyVulnProvider,
+            &WorkspaceScanContext::new(
+                Some("repo".to_owned()),
+                vec![WorkspaceArtifact::new(
+                    Artifact::new(
+                        "package-lock.json",
+                        ArtifactKind::NpmPackageLock,
+                        SourceFormat::Json,
+                    ),
+                    "{}",
+                    ParsedDocument::new(Vec::new(), None),
+                    None,
+                )],
+                None,
+                CapabilityConflictMode::Warn,
+            )
+            .with_active_rule_codes(BTreeSet::from(["SEC101".to_owned()])),
+        );
+
+        assert!(result.errors.is_empty());
+        assert!(result.findings.is_empty());
+    }
 }
