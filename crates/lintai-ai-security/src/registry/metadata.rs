@@ -114,3 +114,69 @@ impl NativeRuleSpec {
         }
     }
 }
+
+macro_rules! stable_native_message_rule_spec {
+    (
+        metadata: $metadata:expr,
+        surface: $surface:expr,
+        default_presets: $default_presets:expr,
+        detection_class: $detection_class:expr,
+        rationale: $rationale:expr,
+        malicious_case_ids: $malicious_case_ids:expr,
+        benign_case_ids: $benign_case_ids:expr,
+        deterministic_signal_basis: $deterministic_signal_basis:expr,
+        check: $check:expr,
+        suggestion_message: $suggestion_message:expr $(,)?
+    ) => {
+        NativeRuleSpec {
+            metadata: $metadata,
+            surface: $surface,
+            default_presets: $default_presets,
+            detection_class: $detection_class,
+            lifecycle: RuleLifecycle::Stable {
+                rationale: $rationale,
+                malicious_case_ids: $malicious_case_ids,
+                benign_case_ids: $benign_case_ids,
+                requires_structured_evidence: true,
+                remediation_reviewed: true,
+                deterministic_signal_basis: $deterministic_signal_basis,
+            },
+            check: $check,
+            safe_fix: None,
+            suggestion_message: Some($suggestion_message),
+            suggestion_fix: None,
+        }
+    };
+}
+
+pub(crate) use stable_native_message_rule_spec;
+
+macro_rules! preview_native_message_rule_spec {
+    (
+        metadata: $metadata:expr,
+        surface: $surface:expr,
+        default_presets: $default_presets:expr,
+        detection_class: $detection_class:expr,
+        blocker: $blocker:expr,
+        promotion_requirements: $promotion_requirements:expr,
+        check: $check:expr,
+        suggestion_message: $suggestion_message:expr $(,)?
+    ) => {
+        NativeRuleSpec {
+            metadata: $metadata,
+            surface: $surface,
+            default_presets: $default_presets,
+            detection_class: $detection_class,
+            lifecycle: RuleLifecycle::Preview {
+                blocker: $blocker,
+                promotion_requirements: $promotion_requirements,
+            },
+            check: $check,
+            safe_fix: None,
+            suggestion_message: Some($suggestion_message),
+            suggestion_fix: None,
+        }
+    };
+}
+
+pub(crate) use preview_native_message_rule_spec;

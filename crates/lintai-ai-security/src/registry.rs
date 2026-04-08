@@ -19,7 +19,8 @@ pub(crate) use catalog::rule_specs;
 #[allow(unused_imports)]
 pub(crate) use metadata::{
     CheckFn, DetectionClass, NativeRuleSpec, PROVIDER_ID, RemediationSupport, RuleLifecycle,
-    SafeFixFn, SuggestionFixFn, Surface,
+    SafeFixFn, SuggestionFixFn, Surface, preview_native_message_rule_spec,
+    stable_native_message_rule_spec,
 };
 pub(crate) use presets::{
     BASE_CLAUDE_PRESETS, BASE_MCP_PRESETS, BASE_PRESETS, BASE_SKILLS_PRESETS, GOVERNANCE_PRESETS,
