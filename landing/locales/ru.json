@@ -13,11 +13,11 @@
     "docsCta": "Открыть docs",
     "preview": "Превью процесса lintai",
     "latestRelease": "Последний релиз",
-    "kicker": "Repo-local AI security",
+    "kicker": "",
     "factFocusLabel": "Фокус сейчас",
-    "factFocusBody": "Skills markdown, committed MCP wiring, shared Claude settings, Cursor rules и Copilot path contracts.",
+    "factFocusBody": "SKILL.md, mcp.json, shared Claude settings, Cursor rules и Copilot instruction files.",
     "factOutputsLabel": "Что команда получает",
-    "factOutputsBody": "Сначала Stable findings, потом Preview для deeper review, плюс SARIF и JSON с evidence и remediation.",
+    "factOutputsBody": "Сначала Stable findings, затем Preview как дополнительная глубина review, плюс SARIF и JSON с evidence и remediation.",
     "trust": {
       "oneRepo": "Offline-first",
       "validated": "Детерминированные finding'и",
@@ -25,7 +25,7 @@
     },
     "demo": {
       "title": "процесс lintai",
-      "subtitle": "Сканируйте repo-local поверхности, которые реально управляют агентом.",
+      "subtitle": "Сканируйте конфиги и instruction-файлы, которые управляют агентами в вашем репозитории.",
       "scanLabel": "Repo scan",
       "surfaceMap": "Карта поверхностей",
       "signalBoard": "Панель сигналов",
@@ -42,23 +42,23 @@
       "structuredEvidence": "структурированное evidence",
       "steps": {
         "index": {
-          "title": "Сначала карта repo-local поверхностей",
-          "body": "Индексируйте skills, MCP wiring, hook settings и editor contracts до того, как они тихо станут политикой команды."
+          "title": "Найдите файлы, которые управляют агентами",
+          "body": "Индексируйте skills, MCP wiring, hook settings и instruction-файлы до того, как они тихо станут дефолтами команды."
         },
         "scan": {
-          "title": "Сначала самые defendable проверки",
-          "body": "Начинайте со stable сигналов по executable config и shared policy, а не с расплывчатой prose-эвристики."
+          "title": "Сначала самые понятные проверки",
+          "body": "Начинайте со stable сигналов по конфигам и policy, а не с расплывчатых prose-only эвристик."
         },
         "ship": {
           "title": "Дальше evidence в review или CI",
-          "body": "Экспортируйте SARIF или JSON, чтобы один и тот же сигнал был читаем и локально, и в машинных workflow."
+          "body": "Экспортируйте SARIF или JSON, чтобы один и тот же сигнал был читаем в review, CI и downstream tooling."
         }
       },
       "scenarios": {
         "skills": {
           "family": "skills markdown",
           "title": "Широкий Bash grant в shared frontmatter",
-          "summary": "lintai ловит слишком широкую shell-власть, которая всё ещё слишком часто лежит в shared skills и agent markdown.",
+          "summary": "lintai ловит слишком широкую shell-власть, которая всё ещё слишком часто встречается в shared skills и agent markdown.",
           "remediation": "Сузьте Bash(...) под конкретный workflow вместо широкого shell-default."
         },
         "claudeHooks": {
@@ -82,7 +82,7 @@
         "cursor": {
           "family": "Cursor rule contract",
           "title": "Unknown или contradictory Cursor frontmatter",
-          "summary": "lintai относится к shared .mdc routing как к config, а не к prose, и ловит drift в rule-pack до появления tribal knowledge.",
+          "summary": "lintai относится к shared .mdc routing как к config, а не к prose, и ловит drift в rule-pack до того, как он превращается в tribal knowledge.",
           "remediation": "Оставьте только поддерживаемые ключи Cursor и уберите globs из alwaysApply rules."
         },
         "copilot": {
@@ -123,18 +123,18 @@
   },
   "features": {
     "sectionTitle": "Security checks для AI-native поверхностей репозитория",
-    "sectionSubtitle": "lintai специально узкий: offline-first, precision-first и сфокусированный на файлах, которые реально меняют поведение агента."
+    "sectionSubtitle": "lintai намеренно узкий: он проверяет конфиги и instruction-файлы, которые реально меняют поведение AI-агентов."
   },
   "featuredRules": {
     "sectionTitle": "Начните с самых defendable правил",
-    "sectionSubtitle": "Эта подборка покрывает executable config, shared policy и editor instruction contracts - именно те части lintai, которые проще всего защищать в реальном review.",
+    "sectionSubtitle": "Эти правила покрывают executable config, shared policy и editor instructions - те части продукта, которые проще всего объяснить и защитить в реальном review.",
     "openRule": "Открыть правило",
     "whyItMatters": "Почему это важно",
     "evidenceLabel": "Сигнал"
   },
   "faq": {
     "sectionTitle": "Есть вопросы? Вот краткие ответы",
-    "subtitle": "Практическая версия: что именно сканирует lintai, где проходит beta boundary и как оценивать продукт без самообмана.",
+    "subtitle": "Практическая версия: что именно сканирует lintai, где проходит beta boundary и как команды обычно начинают им пользоваться.",
     "labels": {
       "default": "Вопрос",
       "whatIsIt": "Обзор",
@@ -158,7 +158,7 @@
   },
   "comparison": {
     "sectionTitle": "Почему команды пробуют lintai первым",
-    "sectionSubtitle": "Не потому что он сканирует всё подряд, а потому что он жёстче держит границу вокруг AI-native файлов, которые легко пропустить обычным review.",
+    "sectionSubtitle": "Не потому что он сканирует всё подряд, а потому что он фокусируется на AI agent files, которые легко пропустить обычным review.",
     "feature": "Workflow",
     "columns": {
       "lintai": "lintai",
@@ -169,13 +169,13 @@
   },
   "footer": {
     "copyright": "© {year}",
-    "tagline": "Offline-first проверки для AI agent artifacts.",
+    "tagline": "Offline-first проверки для конфигов и instruction-файлов AI-агентов.",
     "github": "GitHub",
     "docs": "Docs"
   },
   "meta": {
     "homeTitle": "lintai | Быстрые offline security checks для AI agent artifacts",
-    "homeDescription": "lintai помогает проверять skills, MCP-конфиги, hook settings, локальные client policy files и соседние AI instruction surfaces с детерминированными finding'ами, evidence и CI-ready output.",
+    "homeDescription": "lintai помогает проверять skills, MCP-конфиги, hook settings, локальные client policy files и AI instruction files с детерминированными finding'ами, evidence и CI-ready output.",
     "downloadTitle": "Старт с lintai | Установка public beta CLI",
     "downloadDescription": "Выберите подходящий install path для lintai, откройте docs и начните с быстрого offline scan по репозиторию."
   },

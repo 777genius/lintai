@@ -1,38 +1,38 @@
 {
   "hero": {
     "title": "lintai",
-    "subtitle": "Offline-first сканирование repo-local поверхностей, которые реально управляют AI-агентами. lintai проверяет skills, MCP wiring, hook settings, shared permissions и editor instruction contracts до того, как они тихо станут политикой команды."
+    "subtitle": "lintai - это offline-first security linter для конфигов и instruction-файлов AI-агентов в вашем репозитории. Он проверяет SKILL.md, mcp.json, Claude settings, Cursor rules и Copilot instructions с детерминированными findings и CI-ready output."
   },
   "features": [
     {
       "id": "offlineFirst",
       "title": "Offline-first по умолчанию",
-      "description": "lintai рассчитан на локальные прогоны, CI-gate и приватные репозитории, где не нужен cloud upload только ради review agent artifacts."
+      "description": "Запускайте локально или в CI без отправки repo instructions и agent config в hosted scanning service."
     },
     {
       "id": "deterministic",
       "title": "Детерминированные finding'и с evidence",
-      "description": "Stable rule id, структурированное evidence и предсказуемые exit code делают lintai удобнее для повторяемого локального и CI workflow."
+      "description": "Один и тот же репозиторий даёт одни и те же rule id, evidence и exit code, поэтому review и автоматизация становятся предсказуемее."
     },
     {
       "id": "repoSurfaces",
       "title": "Целится в файлы, которые реально управляют агентом",
-      "description": "Skills, MCP configs, Claude и Cursor settings, hooks и соседние repository-local policy files составляют основной scope текущей beta."
+      "description": "Текущая beta сфокусирована на SKILL.md, mcp.json, Claude и Cursor settings, hooks и соседних instruction-файлах."
     },
     {
       "id": "ciReady",
       "title": "Сразу готов для CI и SARIF",
-      "description": "Text, JSON и SARIF output позволяют заводить lintai в обычный DevSecOps workflow, а не строить отдельный review-процесс вокруг новых tooling."
+      "description": "Text, JSON и SARIF output позволяют ставить проверки в pull request без отдельного workflow только для agent checks."
     },
     {
       "id": "honestBoundary",
       "title": "Честная граница Stable vs Preview",
-      "description": "lintai не делает вид, что все сигналы одинаково зрелые. Stable findings - базовая планка доверия, а Preview остаётся полезным, но явно не-базовым слоем."
+      "description": "Stable findings - базовая планка. Preview findings полезны как дополнительный слой, но это не основной trust bar."
     },
     {
       "id": "installedAudit",
       "title": "Не только repo scans, когда нужно больше",
-      "description": "scan-known, inventory-os и policy-os помогают проверять, что уже настроено в локальных AI clients, не ломая основной repo-scan story."
+      "description": "Когда repo scan недостаточен, scan-known, inventory-os и policy-os помогают проверить, что уже настроено в локальных AI clients."
     }
   ],
   "featuredRules": [
@@ -223,32 +223,32 @@
     {
       "id": "whatIsIt",
       "question": "Что такое lintai?",
-      "answer": "lintai - это offline-first и precision-first security linter для repository-local AI trust surfaces: skills, MCP configs, hook settings, agent rules и соседних client policy files."
+      "answer": "lintai - это offline-first security linter для конфигов и instruction-файлов AI-агентов в вашем репозитории. Он проверяет файлы, которые реально меняют поведение агента, до того как они становятся общими дефолтами команды."
     },
     {
       "id": "whatDoesItScan",
       "question": "Что lintai сканирует в текущей beta?",
-      "answer": "Текущая beta сфокусирована на repository-local trust surfaces вроде <code>SKILL.md</code>, <code>CLAUDE.md</code>, Cursor rules, MCP configs, Claude hook settings, локальных client config files и opt-in advisory lane для committed npm lockfiles."
+      "answer": "Текущая beta сфокусирована на файлах вроде <code>SKILL.md</code>, <code>CLAUDE.md</code>, Cursor rules, MCP configs, Claude hook settings, локальных client config files и opt-in advisory lane для committed npm lockfiles."
     },
     {
       "id": "offlineFirst",
       "question": "lintai действительно offline-first?",
-      "answer": "Да. Базовый repo-scan workflow рассчитан на локальные прогоны и CI без live network lookup во время scan. Даже advisory lane по умолчанию использует bundled offline snapshot, если вы явно не подставили другой normalized dataset."
+      "answer": "Да. Базовый repo-scan workflow рассчитан на локальные прогоны и CI без live network lookup во время scan. Даже advisory lane по умолчанию использует bundled offline snapshot, если вы явно не подставили другой dataset."
     },
     {
       "id": "stablePreview",
       "question": "В чём разница между Stable и Preview findings?",
-      "answer": "<code>Stable</code> findings - это release-quality baseline. <code>Preview</code> findings тоже полезны, но пока не являются дефолтной планкой доверия и должны читаться как более глубокая guidance, а не как основной gating signal."
+      "answer": "<code>Stable</code> findings - это release-quality baseline. <code>Preview</code> findings полезны как дополнительный слой, но пока не являются основным gating signal."
     },
     {
       "id": "fastestStart",
       "question": "Как быстрее всего попробовать lintai?",
-      "answer": "Установите public beta CLI из GitHub Releases, запустите <code>lintai scan .</code> на репозитории, где уже есть поддерживаемые AI-native файлы, а затем разберите отдельно <code>Stable</code> и <code>Preview</code> findings перед тем, как жёстко заводить lintai в CI."
+      "answer": "Установите public beta CLI из GitHub Releases, запустите <code>lintai scan .</code> на репозитории, где уже есть поддерживаемые файлы, а затем отдельно разберите <code>Stable</code> и <code>Preview</code> findings перед тем, как жёстко заводить lintai в CI."
     },
     {
       "id": "cloudVsLintai",
       "question": "Заменяет ли lintai cloud scanners или широкие supply-chain платформы?",
-      "answer": "Нет. Текущая beta намеренно уже. Его лучше понимать как focused repo-local linter для agent trust surfaces, а не как hosted platform для registry reputation, broad ecosystem crawling или всех возможных AI security задач."
+      "answer": "Нет. Текущая beta намеренно уже. Его лучше понимать как focused linter для AI agent files в репозитории, а не как hosted platform для всех security или supply-chain задач."
     }
   ],
   "download": {

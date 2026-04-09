@@ -1,38 +1,38 @@
 {
   "hero": {
     "title": "lintai",
-    "subtitle": "Offline-first scanning for the repo-local surfaces that actually steer AI agents. lintai verifies skills, MCP wiring, hook settings, shared permissions, and editor instruction contracts before they silently become team policy."
+    "subtitle": "lintai is an offline-first security linter for AI agent configs and instructions in your repo. It checks files like SKILL.md, mcp.json, Claude settings, Cursor rules, and Copilot instructions with deterministic findings and CI-ready output."
   },
   "features": [
     {
       "id": "offlineFirst",
       "title": "Offline-first by default",
-      "description": "lintai is built for local runs, CI gates, and private repositories where you do not want a cloud upload path just to review agent artifacts."
+      "description": "Run it locally or in CI without sending repo instructions and agent config to a hosted scanning service."
     },
     {
       "id": "deterministic",
       "title": "Deterministic findings with evidence",
-      "description": "Stable rule ids, structured evidence, and predictable exit codes make lintai easier to trust in repeatable local and CI workflows."
+      "description": "The same repo produces the same rule ids, evidence, and exit codes, which makes review and automation easier to trust."
     },
     {
       "id": "repoSurfaces",
       "title": "Targets the files that actually steer agents",
-      "description": "Skills, MCP configs, Claude and Cursor settings, hooks, and related repository-local policy files are the core scope in the current beta."
+      "description": "The current beta focuses on SKILL.md, mcp.json, Claude and Cursor settings, hooks, and adjacent instruction files."
     },
     {
       "id": "ciReady",
       "title": "Built for CI and SARIF from the start",
-      "description": "Text, JSON, and SARIF output let teams gate pull requests and keep lintai inside normal DevSecOps flows instead of inventing a parallel review loop."
+      "description": "Text, JSON, and SARIF output let teams gate pull requests without building a separate workflow just for agent checks."
     },
     {
       "id": "honestBoundary",
       "title": "Honest Stable vs Preview boundary",
-      "description": "lintai does not pretend every signal is equally mature. Stable findings are the baseline trust bar, while Preview stays useful but explicitly non-baseline."
+      "description": "Stable findings are the default baseline. Preview findings are useful extra guidance, but not the main trust bar."
     },
     {
       "id": "installedAudit",
       "title": "More than repository scans when you need it",
-      "description": "scan-known, inventory-os, and policy-os help audit what local AI clients already have configured, without changing the core repo-scan story."
+      "description": "When repo scan is not enough, scan-known, inventory-os, and policy-os help audit what local AI clients already have configured."
     }
   ],
   "featuredRules": [
@@ -217,32 +217,32 @@
     {
       "id": "whatIsIt",
       "question": "What is lintai?",
-      "answer": "lintai is an offline-first, precision-first security linter for repository-local AI trust surfaces: skills, MCP configs, hook settings, agent rules, and adjacent client policy files."
+      "answer": "lintai is an offline-first security linter for AI agent configs and instruction files in your repo. It checks the files that shape agent behavior before they become shared team defaults."
     },
     {
       "id": "whatDoesItScan",
       "question": "What does lintai scan in the current beta?",
-      "answer": "The current beta focuses on repository-local trust surfaces such as <code>SKILL.md</code>, <code>CLAUDE.md</code>, Cursor rules, MCP configs, Claude hook settings, local client config files, and the opt-in advisory lane for committed npm lockfiles."
+      "answer": "The current beta focuses on files such as <code>SKILL.md</code>, <code>CLAUDE.md</code>, Cursor rules, MCP configs, Claude hook settings, local client config files, and an opt-in advisory lane for committed npm lockfiles."
     },
     {
       "id": "offlineFirst",
       "question": "Is lintai really offline-first?",
-      "answer": "Yes. The core repo-scan workflow is designed for local runs and CI without live network lookups during scan. Even the advisory lane uses the bundled offline snapshot by default unless you explicitly point it at another normalized dataset."
+      "answer": "Yes. The core repo-scan workflow is built for local runs and CI without live network lookups during scan. Even the advisory lane uses a bundled offline snapshot by default unless you explicitly point it at another dataset."
     },
     {
       "id": "stablePreview",
       "question": "What is the difference between Stable and Preview findings?",
-      "answer": "<code>Stable</code> findings are the release-quality baseline. <code>Preview</code> findings are still useful, but they are not yet the default trust bar and should be evaluated as deeper guidance rather than the main gating signal."
+      "answer": "<code>Stable</code> findings are the release-quality baseline. <code>Preview</code> findings are useful extra guidance, but they are not yet the main gating signal."
     },
     {
       "id": "fastestStart",
       "question": "What is the fastest way to try lintai?",
-      "answer": "Install the public beta CLI from GitHub Releases, run <code>lintai scan .</code> on a repo that already contains supported AI-native files, and then compare the <code>Stable</code> vs <code>Preview</code> findings before deciding how hard to gate it in CI."
+      "answer": "Install the public beta CLI from GitHub Releases, run <code>lintai scan .</code> in a repo that already contains supported files, and compare the <code>Stable</code> and <code>Preview</code> findings before deciding how hard to gate it in CI."
     },
     {
       "id": "cloudVsLintai",
       "question": "Does lintai replace cloud scanners or broad supply-chain platforms?",
-      "answer": "No. The current beta is intentionally narrower. Think of it as a focused repo-local linter for agent trust surfaces, not a hosted platform for registry reputation, broad ecosystem crawling, or every possible AI security problem."
+      "answer": "No. The current beta is intentionally narrower. Think of it as a focused linter for AI agent files in your repo, not a hosted platform for every security or supply-chain problem."
     }
   ],
   "download": {

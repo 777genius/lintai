@@ -13,11 +13,11 @@
     "docsCta": "View docs",
     "preview": "lintai scan flow preview",
     "latestRelease": "Latest release",
-    "kicker": "Repo-local AI security",
+    "kicker": "",
     "factFocusLabel": "Focus today",
-    "factFocusBody": "Skills markdown, committed MCP wiring, shared Claude settings, Cursor rules, and Copilot path contracts.",
+    "factFocusBody": "SKILL.md, mcp.json, shared Claude settings, Cursor rules, and Copilot instruction files.",
     "factOutputsLabel": "What teams ship",
-    "factOutputsBody": "Stable findings first, Preview for deeper review, plus SARIF and JSON with evidence and remediation.",
+    "factOutputsBody": "Stable findings first, Preview as extra review depth, plus SARIF and JSON with evidence and remediation.",
     "trust": {
       "oneRepo": "Offline-first",
       "validated": "Deterministic findings",
@@ -25,7 +25,7 @@
     },
     "demo": {
       "title": "lintai flow",
-      "subtitle": "Scan the repo-local surfaces that actually steer agents.",
+      "subtitle": "Scan the config and instruction files that steer agents in your repo.",
       "scanLabel": "Repo scan",
       "surfaceMap": "Surface map",
       "signalBoard": "Signal board",
@@ -42,23 +42,23 @@
       "structuredEvidence": "structured evidence",
       "steps": {
         "index": {
-          "title": "Map repo-local trust surfaces",
-          "body": "Index skills, MCP wiring, hook settings, and editor contracts before they quietly become team policy."
+          "title": "Find the files that steer agents",
+          "body": "Index skills, MCP wiring, hook settings, and instruction files before they quietly become team defaults."
         },
         "scan": {
-          "title": "Run the most defendable checks first",
-          "body": "Start from stable executable-config and policy signals instead of vague prose heuristics."
+          "title": "Run the clearest checks first",
+          "body": "Start from stable config and policy signals instead of vague prose-only heuristics."
         },
         "ship": {
           "title": "Ship evidence into review or CI",
-          "body": "Export SARIF or JSON so the same findings stay readable in local review and machine workflows."
+          "body": "Export SARIF or JSON so the same findings stay readable in review, CI, and downstream tooling."
         }
       },
       "scenarios": {
         "skills": {
           "family": "skills markdown",
           "title": "Unscoped Bash grant in shared frontmatter",
-          "summary": "lintai catches the broad shell grant that is still too common in shared skills and agent markdown.",
+          "summary": "lintai catches the broad shell grant that still shows up too often in shared skills and agent markdown.",
           "remediation": "Scope Bash(...) to the exact workflow instead of shipping a broad shell default."
         },
         "claudeHooks": {
@@ -82,7 +82,7 @@
         "cursor": {
           "family": "Cursor rule contract",
           "title": "Unknown or contradictory Cursor frontmatter",
-          "summary": "lintai treats shared .mdc routing like config, not prose, and catches rule-pack drift before it becomes tribal knowledge.",
+          "summary": "lintai treats shared .mdc routing like config, not prose, and catches rule-pack drift before it turns into tribal knowledge.",
           "remediation": "Keep Cursor rules on supported keys only and remove globs from alwaysApply rules."
         },
         "copilot": {
@@ -123,18 +123,18 @@
   },
   "features": {
     "sectionTitle": "Security checks built for AI-native repo surfaces",
-    "sectionSubtitle": "lintai is narrow on purpose: offline-first, precision-first, and focused on the files that actually steer agent behavior."
+    "sectionSubtitle": "lintai is deliberately narrow: it checks the config and instruction files that actually change how AI agents behave."
   },
   "featuredRules": {
     "sectionTitle": "Start with the most defendable rules first",
-    "sectionSubtitle": "This mix spans executable config, shared policy, and editor instruction contracts - the parts of lintai that are easiest to defend in real review.",
+    "sectionSubtitle": "These rules cover executable config, shared policy, and editor instructions - the parts of the product that are easiest to explain and defend in real review.",
     "openRule": "Open rule docs",
     "whyItMatters": "Why it matters",
     "evidenceLabel": "Signal"
   },
   "faq": {
     "sectionTitle": "Got questions? We've got answers",
-    "subtitle": "The practical version: what lintai scans, where the beta boundary is, and how to evaluate it honestly.",
+    "subtitle": "The practical version: what lintai scans, where the beta boundary is, and how teams usually start using it.",
     "labels": {
       "default": "Question",
       "whatIsIt": "Overview",
@@ -158,7 +158,7 @@
   },
   "comparison": {
     "sectionTitle": "Why teams try lintai first",
-    "sectionSubtitle": "Not because it scans everything. Because it draws a tighter boundary around the AI-native files that are easy to miss in normal review.",
+    "sectionSubtitle": "Not because it scans everything. Because it focuses on the AI agent files that are easy to miss in normal review.",
     "feature": "Workflow",
     "columns": {
       "lintai": "lintai",
@@ -169,13 +169,13 @@
   },
   "footer": {
     "copyright": "© {year}",
-    "tagline": "Offline-first checks for AI agent artifacts.",
+    "tagline": "Offline-first checks for AI agent configs and instructions.",
     "github": "GitHub",
     "docs": "Docs"
   },
   "meta": {
     "homeTitle": "lintai | Fast offline security checks for AI agent artifacts",
-    "homeDescription": "lintai helps teams verify skills, MCP configs, hook settings, local client policy files, and adjacent AI instruction surfaces with deterministic findings, evidence, and CI-ready output.",
+    "homeDescription": "lintai helps teams verify skills, MCP configs, hook settings, local client policy files, and AI instruction files with deterministic findings, evidence, and CI-ready output.",
     "downloadTitle": "Get started with lintai | Install the public beta CLI",
     "downloadDescription": "Choose the right install path for lintai, open the docs, and start with a fast offline scan of your repository."
   },

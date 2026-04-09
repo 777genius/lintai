@@ -358,6 +358,7 @@ onUnmounted(() => {
     rgba(255, 255, 255, 0.02);
   padding: 14px;
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 10%, transparent);
+  min-height: 192px;
 }
 
 .hero-demo__signal-surface,
@@ -372,6 +373,10 @@ onUnmounted(() => {
   line-height: 1.35;
   overflow-wrap: anywhere;
   word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .hero-demo__signal-family {
@@ -390,6 +395,11 @@ onUnmounted(() => {
   line-height: 1.32;
   overflow-wrap: anywhere;
   word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(0.98rem * 1.32 * 2);
 }
 
 .hero-demo__rule-chip {
@@ -406,6 +416,7 @@ onUnmounted(() => {
   gap: 8px;
   margin-top: 10px;
   min-width: 0;
+  min-height: 38px;
 }
 
 .hero-demo__surface-pill--active {
@@ -485,6 +496,10 @@ onUnmounted(() => {
   .hero-demo__footer {
     grid-template-columns: 1fr;
     align-items: flex-start;
+  }
+
+  .hero-demo__signal-card {
+    min-height: 0;
   }
 }
 </style>
