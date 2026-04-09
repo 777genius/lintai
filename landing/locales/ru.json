@@ -104,8 +104,8 @@
     "quickstartTitle": "Рекомендуемый quickstart",
     "quickstartSubtitle": "Это самый короткий поддерживаемый путь от установки до первого показательного прогона lintai.",
     "installTabsLabel": "Выберите install path",
-    "supportTitle": "Текущий product posture",
-    "supportSubtitle": "Честный release view: на что продукт нацелен сейчас и где реально проходит trust boundary.",
+    "supportTitle": "Текущее позиционирование продукта",
+    "supportSubtitle": "Честно о текущем релизе: на что продукт нацелен сейчас и где реально проходит граница доверия.",
     "supportLink": "Открыть релизный контракт"
   },
   "common": {
@@ -134,26 +134,26 @@
   },
   "faq": {
     "sectionTitle": "Есть вопросы? Вот краткие ответы",
-    "subtitle": "Практическая версия: что именно сканирует lintai, где проходит текущая v0.1 boundary и как команды обычно начинают им пользоваться.",
+    "subtitle": "Практическая версия: что именно сканирует lintai, где проходит текущая граница v0.1 и как команды обычно начинают им пользоваться.",
     "labels": {
       "default": "Вопрос",
       "whatIsIt": "Обзор",
-      "whatDoesItScan": "Scope",
-      "offlineFirst": "Trust posture",
-      "stablePreview": "Signal quality",
+      "whatDoesItScan": "Охват",
+      "offlineFirst": "Граница доверия",
+      "stablePreview": "Качество сигнала",
       "fastestStart": "С чего начать",
       "cloudVsLintai": "Позиционирование"
     },
     "quickLinks": {
       "badge": "Старт",
       "title": "Нужен более явный следующий шаг?",
-      "subtitle": "Большинству команд сначала достаточно трёх страниц: индекс docs, positioning note и текущий release contract.",
+      "subtitle": "Большинству команд сначала достаточно трёх страниц: индекса docs, заметки о позиционировании и текущего релизного контракта.",
       "docsTitle": "Открыть индекс docs",
       "docsBody": "Посмотрите rule reference и preset reference без лишней навигации.",
-      "rulesTitle": "Открыть positioning note",
+      "rulesTitle": "Открыть заметку о позиционировании",
       "rulesBody": "Проверьте, для кого lintai сделан, что он ловит и чего пока не обещает.",
-      "releaseTitle": "Проверить release contract",
-      "releaseBody": "Прочитайте текущий релизный контракт перед более широкими обещаниями команде."
+      "releaseTitle": "Открыть релизный контракт",
+      "releaseBody": "Прочитайте текущий релизный контракт, прежде чем обещать команде больше, чем реально поставляет продукт."
     }
   },
   "comparison": {
@@ -176,7 +176,7 @@
   "meta": {
     "homeTitle": "lintai | Быстрые offline security checks для AI agent artifacts",
     "homeDescription": "lintai помогает проверять skills, MCP-конфиги, hook settings, локальные client policy files и AI instruction files с детерминированными finding'ами, evidence и CI-ready output.",
-    "downloadTitle": "Старт с lintai | Установка public release CLI",
+    "downloadTitle": "Старт с lintai | Установка CLI публичного релиза",
     "downloadDescription": "Выберите подходящий install path для lintai, откройте docs и начните с быстрого offline scan по репозиторию."
   },
   "error": {

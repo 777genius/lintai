@@ -17,7 +17,7 @@
     {
       "id": "repoSurfaces",
       "title": "Целится в файлы, которые реально управляют агентом",
-      "description": "Текущий v0.1 scope сфокусирован на SKILL.md, mcp.json, Claude и Cursor settings, hooks и соседних instruction-файлах."
+      "description": "Текущий v0.1 сфокусирован на SKILL.md, mcp.json, Claude и Cursor settings, hooks и соседних instruction-файлах."
     },
     {
       "id": "ciReady",
@@ -227,8 +227,8 @@
     },
     {
       "id": "whatDoesItScan",
-      "question": "Что lintai сканирует в текущем v0.1 scope?",
-      "answer": "Текущий v0.1 scope сфокусирован на файлах вроде <code>SKILL.md</code>, <code>CLAUDE.md</code>, Cursor rules, MCP configs, Claude hook settings, локальных client config files и opt-in advisory lane для committed npm lockfiles."
+      "question": "Что lintai сканирует в текущем v0.1?",
+      "answer": "Текущий v0.1 сфокусирован на файлах вроде <code>SKILL.md</code>, <code>CLAUDE.md</code>, Cursor rules, MCP configs, Claude hook settings, локальных client config files и opt-in advisory lane для committed npm lockfiles."
     },
     {
       "id": "offlineFirst",
@@ -238,17 +238,17 @@
     {
       "id": "stablePreview",
       "question": "В чём разница между Stable и Preview findings?",
-      "answer": "<code>Stable</code> findings - это release-quality baseline. <code>Preview</code> findings полезны как дополнительный слой, но пока не являются основным gating signal."
+      "answer": "<code>Stable</code> findings - это базовый сигнал релизного качества. <code>Preview</code> findings полезны как дополнительный слой, но пока не являются основным сигналом для gating."
     },
     {
       "id": "fastestStart",
       "question": "Как быстрее всего попробовать lintai?",
-      "answer": "Установите public release CLI из GitHub Releases, запустите <code>lintai scan .</code> на репозитории, где уже есть поддерживаемые файлы, а затем отдельно разберите <code>Stable</code> и <code>Preview</code> findings перед тем, как жёстко заводить lintai в CI."
+      "answer": "Установите CLI публичного релиза из GitHub Releases, запустите <code>lintai scan .</code> на репозитории, где уже есть поддерживаемые файлы, а затем отдельно разберите <code>Stable</code> и <code>Preview</code> findings перед тем, как жёстко заводить lintai в CI."
     },
     {
       "id": "cloudVsLintai",
       "question": "Заменяет ли lintai cloud scanners или широкие supply-chain платформы?",
-      "answer": "Нет. Текущий v0.1 release намеренно уже. Его лучше понимать как focused linter для AI agent files в репозитории, а не как hosted platform для всех security или supply-chain задач."
+      "answer": "Нет. Текущий релиз v0.1 намеренно уже. Его лучше понимать как узко сфокусированный линтер для AI agent files в репозитории, а не как хостинговую платформу для всех security или supply-chain задач."
     }
   ],
   "download": {
@@ -259,16 +259,16 @@
     {
       "id": "script",
       "title": "Проверяемый shell installer",
-      "description": "Рекомендуемый release install path для Unix-like систем. Инсталлер скачивает tagged archive плюс SHA256SUMS и проверяет checksum.",
+      "description": "Рекомендуемый путь установки релиза для Unix-like систем. Инсталлер скачивает архив релиза, файл SHA256SUMS и затем проверяет checksum.",
       "href": "https://github.com/777genius/lintai/releases",
-      "note": "Лучший дефолт на macOS и Linux, если нужен поддерживаемый release flow.",
+      "note": "Лучший вариант по умолчанию на macOS и Linux, если нужен поддерживаемый релизный сценарий.",
       "command": "https://github.com/777genius/lintai/releases",
       "recommended": true
     },
     {
       "id": "powershell",
       "title": "PowerShell installer",
-      "description": "Поддерживаемый Windows release path. Скачивает tagged archive плюс SHA256SUMS и ставит бинарь в user-level bin directory.",
+      "description": "Поддерживаемый путь установки на Windows. Скачивает архив релиза плюс SHA256SUMS и ставит бинарь в user-level bin directory.",
       "href": "https://github.com/777genius/lintai/releases",
       "note": "Используйте на Windows, если хотите тот же release-asset flow, что и у Unix installer.",
       "command": "https://github.com/777genius/lintai/releases"
@@ -328,14 +328,14 @@
     {
       "id": "repo-scan",
       "name": "Repository-local scan surface",
-      "status": "Initial public release",
+      "status": "Первый публичный релиз",
       "note": "Текущая продуктовая история строится вокруг repo-local scan path для AI-native файлов вроде skills, MCP configs, hook settings и локальных client policy surfaces."
     },
     {
       "id": "signal-policy",
       "name": "Stable vs Preview policy",
       "status": "Уже задокументировано",
-      "note": "Stable findings - release-quality baseline. Preview остаётся полезным, но явно не-базовым и более context-sensitive слоем."
+      "note": "Stable findings - это базовый сигнал релизного качества. Preview остаётся полезным, но явно не-базовым и более context-sensitive слоем."
     },
     {
       "id": "advisory",
