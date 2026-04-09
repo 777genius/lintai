@@ -1,0 +1,5 @@
+const AppLogo_vue_vue_type_style_index_0_scoped_8a8ac13a_lang = ".app-logo[data-v-8a8ac13a]{align-self:center;color:inherit;font-weight:700;gap:12px;line-height:1;text-decoration:none}.app-logo[data-v-8a8ac13a],.app-logo__mark[data-v-8a8ac13a]{align-items:center;display:inline-flex}.app-logo__mark[data-v-8a8ac13a]{background:linear-gradient(135deg,#00f0ff,#f0f 55%,#39ff14);border-radius:11px;box-shadow:0 8px 24px #00f0ff33;color:#0a0a0f;flex-shrink:0;font-family:JetBrains Mono,monospace;font-size:16px;font-weight:800;height:36px;justify-content:center;width:36px}.app-logo__copy[data-v-8a8ac13a]{display:flex;flex-direction:column;gap:3px}.app-logo__text[data-v-8a8ac13a]{background:linear-gradient(135deg,#fff,#00f0ff);-webkit-background-clip:text;background-clip:text;font-family:JetBrains Mono,monospace;font-size:14px;font-weight:700;letter-spacing:.04em;-webkit-text-fill-color:transparent}.app-logo__subtext[data-v-8a8ac13a]{color:#8892b0;font-size:10px;letter-spacing:.12em;text-transform:uppercase}";
+export {
+  AppLogo_vue_vue_type_style_index_0_scoped_8a8ac13a_lang as default
+};
+//# sourceMappingURL=AppLogo-styles-1.mjs-xJDl3cmO.js.map

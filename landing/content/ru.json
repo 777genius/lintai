@@ -1,0 +1,270 @@
+{
+  "hero": {
+    "title": "lintai",
+    "subtitle": "Быстрые offline security checks для AI agent artifacts в вашем репозитории. lintai помогает проверять skills, MCP-конфиги, agent rules, hooks и plugin manifests до того, как им начнут доверять в локальном workflow или CI."
+  },
+  "features": [
+    {
+      "id": "offlineFirst",
+      "title": "Offline-first по умолчанию",
+      "description": "lintai рассчитан на локальные прогоны, CI-gate и приватные репозитории, где не нужен cloud upload только ради review agent artifacts."
+    },
+    {
+      "id": "deterministic",
+      "title": "Детерминированные finding'и с evidence",
+      "description": "Stable rule id, структурированное evidence и предсказуемые exit code делают lintai удобнее для повторяемого локального и CI workflow."
+    },
+    {
+      "id": "repoSurfaces",
+      "title": "Целится в файлы, которые реально управляют агентом",
+      "description": "Skills, MCP configs, agent rules, hooks, Cursor Plugin surfaces и соседние repository-local файлы составляют основной scope текущей beta."
+    },
+    {
+      "id": "ciReady",
+      "title": "Сразу готов для CI и SARIF",
+      "description": "Text, JSON и SARIF output позволяют заводить lintai в обычный DevSecOps workflow, а не строить отдельный review-процесс вокруг новых tooling."
+    },
+    {
+      "id": "honestBoundary",
+      "title": "Честная граница Stable vs Preview",
+      "description": "lintai не делает вид, что все сигналы одинаково зрелые. Stable findings - базовая планка доверия, а Preview остаётся полезным, но явно не-базовым слоем."
+    },
+    {
+      "id": "installedAudit",
+      "title": "Не только repo scans, когда нужно больше",
+      "description": "scan-known, inventory-os и policy-os помогают проверять, что уже настроено в локальных AI clients, не ломая основной repo-scan story."
+    }
+  ],
+  "featuredRules": [
+    {
+      "id": "sec352",
+      "eyebrow": "Ключевое правило",
+      "code": "SEC352",
+      "title": "Unscoped Bash grant в AI-native frontmatter",
+      "description": "Ловит shared AI-native markdown frontmatter, где tool grant даёт слишком широкую Bash-власть без более узкого reviewed scope.",
+      "whyItMatters": "Сейчас это самый сильный skills-markdown rule для обычных community repos, потому что он ловит реально опасный shell blast radius без расплывчатых prose-эвристик.",
+      "evidence": "Лучший signal/noise по последнему external validation pass.",
+      "href": "https://777genius.github.io/lintai/docs/rules/lintai-ai-security/sec352.html"
+    },
+    {
+      "id": "sec347",
+      "eyebrow": "Ключевое правило",
+      "code": "SEC347",
+      "title": "Mutable MCP launcher в markdown setup docs",
+      "description": "Ловит setup-style markdown, где для MCP tooling предлагаются mutable package launcher path вместо reproducible install flow или pinned path.",
+      "whyItMatters": "Это один из самых понятных operational risks в markdown-heavy agent repos, потому что copy-paste setup легко начинает quietly drift'ить у пользователей.",
+      "evidence": "Один из лучших operational docs rules для MCP setup surfaces.",
+      "href": "https://777genius.github.io/lintai/docs/rules/lintai-ai-security/sec347.html"
+    },
+    {
+      "id": "sec340",
+      "eyebrow": "Ключевое правило",
+      "code": "SEC340",
+      "title": "Mutable package launcher в committed Claude hook settings",
+      "description": "Ловит committed Claude settings, где hook-команды запускают mutable package tooling вместо reviewed и reproducible executable path.",
+      "whyItMatters": "Committed hook settings - это исполняемая policy-поверхность. Mutable launcher там защищается как реальный operational smell лучше, чем многие более широкие markdown-эвристики.",
+      "evidence": "Один из самых сильных committed-config rules в текущем beta-наборе.",
+      "href": "https://777genius.github.io/lintai/docs/rules/lintai-ai-security/sec340.html"
+    },
+    {
+      "id": "sec329",
+      "eyebrow": "Ключевое правило",
+      "code": "SEC329",
+      "title": "Mutable package launcher в committed mcp.json",
+      "description": "Ловит committed MCP client config, где package tooling запускается через mutable execution path вместо reviewed install surface.",
+      "whyItMatters": "Это один из самых чистых config-level rules в продукте, потому что он совпадает с реальным executable trust decision, а не только с языком документации.",
+      "evidence": "High-confidence committed-config rule для MCP wiring.",
+      "href": "https://777genius.github.io/lintai/docs/rules/lintai-ai-security/sec329.html"
+    }
+  ],
+  "comparisonRows": [
+    {
+      "id": "offline",
+      "feature": "Offline-first локальный workflow",
+      "lintai": { "status": "yes", "note": "Сделан под локальные и CI-прогоны" },
+      "manualReview": { "status": "partial", "note": "Зависит от дисциплины reviewer'а" },
+      "scripts": { "status": "partial", "note": "Возможно, но обычно неполно" },
+      "cloudScanners": { "status": "no", "note": "Часто требуют upload или hosted state" }
+    },
+    {
+      "id": "signal",
+      "feature": "Детерминированные finding'и с evidence",
+      "lintai": { "status": "yes", "note": "Stable rule id и структурированное evidence" },
+      "manualReview": {
+        "status": "partial",
+        "note": "Качество review плавает от человека к человеку"
+      },
+      "scripts": { "status": "partial", "note": "Трудно держать консистентно по репозиториям" },
+      "cloudScanners": { "status": "partial", "note": "Могут быть шире, но не всегда объяснимы" }
+    },
+    {
+      "id": "scope",
+      "feature": "Бьёт прямо по AI-native repo surfaces",
+      "lintai": { "status": "yes", "note": "Skills, MCP, hooks, plugins, agent policy files" },
+      "manualReview": { "status": "partial", "note": "Не-кодовые файлы легко пропустить" },
+      "scripts": { "status": "partial", "note": "Обычно закрывают только одно семейство файлов" },
+      "cloudScanners": { "status": "partial", "note": "Часто шире, чем нужно этой нише" }
+    },
+    {
+      "id": "ci",
+      "feature": "CI и SARIF integration",
+      "lintai": { "status": "yes", "note": "Text, JSON и SARIF - first-class output" },
+      "manualReview": { "status": "no", "note": "Нет machine-readable контракта по умолчанию" },
+      "scripts": { "status": "partial", "note": "Обычно требуют custom glue на каждый repo" },
+      "cloudScanners": {
+        "status": "yes",
+        "note": "Часто сильны здесь, но не repo-local по дефолту"
+      }
+    },
+    {
+      "id": "boundary",
+      "feature": "Честная граница Stable vs Preview",
+      "lintai": { "status": "yes", "note": "Задокументирована в shipped product posture" },
+      "manualReview": { "status": "no", "note": "Обычно живёт как tribal knowledge" },
+      "scripts": { "status": "no", "note": "Редко разделяются по maturity lanes" },
+      "cloudScanners": {
+        "status": "partial",
+        "note": "Могут быть широкими, но не всегда честны про noise"
+      }
+    },
+    {
+      "id": "installed",
+      "feature": "Аудит уже установленного локального state",
+      "lintai": { "status": "yes", "note": "scan-known и inventory-os встроены" },
+      "manualReview": { "status": "no", "note": "Скучно и неполно" },
+      "scripts": { "status": "partial", "note": "Возможно, но сильно platform-specific" },
+      "cloudScanners": { "status": "no", "note": "Обычно не рассчитаны на local client state" }
+    }
+  ],
+  "faq": [
+    {
+      "id": "whatIsIt",
+      "question": "Что такое lintai?",
+      "answer": "lintai - это offline-first и precision-first security linter для repository-local AI agent artifacts: skills, MCP configs, agent rules, hooks и связанных plugin surfaces."
+    },
+    {
+      "id": "whatDoesItScan",
+      "question": "Что lintai сканирует в текущей beta?",
+      "answer": "Текущая beta сфокусирована на repository-local trust surfaces вроде <code>SKILL.md</code>, <code>CLAUDE.md</code>, Cursor rules, MCP configs, hooks, Cursor Plugin files и opt-in advisory lane для committed npm lockfiles."
+    },
+    {
+      "id": "offlineFirst",
+      "question": "lintai действительно offline-first?",
+      "answer": "Да. Базовый repo-scan workflow рассчитан на локальные прогоны и CI без live network lookup во время scan. Даже advisory lane по умолчанию использует bundled offline snapshot, если вы явно не подставили другой normalized dataset."
+    },
+    {
+      "id": "stablePreview",
+      "question": "В чём разница между Stable и Preview findings?",
+      "answer": "<code>Stable</code> findings - это release-quality baseline. <code>Preview</code> findings тоже полезны, но пока не являются дефолтной планкой доверия и должны читаться как более глубокая guidance, а не как основной gating signal."
+    },
+    {
+      "id": "fastestStart",
+      "question": "Как быстрее всего попробовать lintai?",
+      "answer": "Установите public beta CLI из GitHub Releases, запустите <code>lintai scan .</code> на репозитории, где уже есть поддерживаемые AI-native файлы, а затем разберите отдельно <code>Stable</code> и <code>Preview</code> findings перед тем, как жёстко заводить lintai в CI."
+    },
+    {
+      "id": "cloudVsLintai",
+      "question": "Заменяет ли lintai cloud scanners или широкие supply-chain платформы?",
+      "answer": "Нет. Текущая beta намеренно уже. Его лучше понимать как focused repo-local linter для agent trust surfaces, а не как hosted platform для registry reputation, broad ecosystem crawling или всех возможных AI security задач."
+    }
+  ],
+  "download": {
+    "title": "Старт",
+    "note": "Выберите install path, откройте docs и начните с быстрого repo-local scan."
+  },
+  "installChannels": [
+    {
+      "id": "script",
+      "title": "Проверяемый shell installer",
+      "description": "Рекомендуемый beta install path для Unix-like систем. Инсталлер скачивает tagged archive плюс SHA256SUMS и проверяет checksum.",
+      "href": "https://github.com/777genius/lintai/releases/latest/download/lintai-installer.sh",
+      "note": "Лучший дефолт на macOS и Linux, если нужен поддерживаемый beta flow.",
+      "command": "curl -fsSLO https://github.com/777genius/lintai/releases/latest/download/lintai-installer.sh\nsh ./lintai-installer.sh",
+      "recommended": true
+    },
+    {
+      "id": "powershell",
+      "title": "PowerShell installer",
+      "description": "Поддерживаемый Windows path для beta. Скачивает tagged archive плюс SHA256SUMS и ставит бинарь в user-level bin directory.",
+      "href": "https://github.com/777genius/lintai/releases/latest/download/lintai-installer.ps1",
+      "note": "Используйте на Windows, если хотите тот же release-asset flow, что и у Unix installer.",
+      "command": "Invoke-WebRequest -Uri https://github.com/777genius/lintai/releases/latest/download/lintai-installer.ps1 -OutFile .\\lintai-installer.ps1\npowershell -ExecutionPolicy Bypass -File .\\lintai-installer.ps1"
+    },
+    {
+      "id": "archive",
+      "title": "Direct archive + verify",
+      "description": "Ручной path, если вам нужны raw release assets и checksum verification без convenience installer.",
+      "href": "https://github.com/777genius/lintai/releases",
+      "note": "Подходит, если вы хотите напрямую работать с release artifacts и сами провести verification.",
+      "command": "TAG=v0.1.0-beta.1\ncurl -fsSLO https://github.com/777genius/lintai/releases/download/$TAG/lintai-$TAG-x86_64-unknown-linux-gnu.tar.gz\ncurl -fsSLO https://github.com/777genius/lintai/releases/download/$TAG/SHA256SUMS"
+    },
+    {
+      "id": "releases",
+      "title": "GitHub Releases",
+      "description": "Смотрите release notes, артефакты и историю версий напрямую.",
+      "href": "https://github.com/777genius/lintai/releases",
+      "note": "Этот путь нужен, когда вы хотите raw release surface.",
+      "command": "https://github.com/777genius/lintai/releases"
+    },
+    {
+      "id": "docs",
+      "title": "Docs index",
+      "description": "Открыть rules, presets и project docs, опубликованные через GitHub Pages.",
+      "href": "https://777genius.github.io/lintai/docs/",
+      "note": "Лучший следующий шаг после установки CLI.",
+      "command": "https://777genius.github.io/lintai/docs/"
+    }
+  ],
+  "quickstartSteps": [
+    {
+      "id": "install",
+      "title": "Установите CLI",
+      "command": "curl -fsSLO https://github.com/777genius/lintai/releases/latest/download/lintai-installer.sh\nsh ./lintai-installer.sh\nlintai version",
+      "note": "Используйте install channel, который подходит вашей машине, а затем проверьте, что CLI виден в PATH."
+    },
+    {
+      "id": "scan",
+      "title": "Запустите первый repo scan",
+      "command": "lintai scan .",
+      "note": "Лучше начинать на репозитории, где уже есть поддерживаемые AI-native файлы, чтобы первый прогон был показательным."
+    },
+    {
+      "id": "sarif",
+      "title": "Выгрузите SARIF для CI или code scanning",
+      "command": "lintai scan . --format sarif",
+      "note": "Используйте SARIF, если хотите тот же scan встроить в CI и downstream tooling."
+    },
+    {
+      "id": "explain",
+      "title": "Разберите resolved policy после добавления config",
+      "command": "lintai explain-config lintai.toml",
+      "note": "Полезно, когда в target repo уже появился локальный lintai policy file и вы хотите проверить активный preset и rule posture."
+    }
+  ],
+  "supportLanes": [
+    {
+      "id": "repo-scan",
+      "name": "Repository-local scan surface",
+      "status": "Public beta",
+      "note": "Текущая продуктовая история строится вокруг repo-local scan path для AI-native файлов вроде skills, MCP configs, hooks и plugin surfaces."
+    },
+    {
+      "id": "signal-policy",
+      "name": "Stable vs Preview policy",
+      "status": "Уже задокументировано",
+      "note": "Stable findings - release-quality baseline. Preview остаётся полезным, но явно не-базовым и более context-sensitive слоем."
+    },
+    {
+      "id": "advisory",
+      "name": "Offline advisory lane",
+      "status": "Opt-in",
+      "note": "Dependency advisory matching сделан намеренно opt-in и ограничен committed npm lockfiles против активного offline snapshot."
+    },
+    {
+      "id": "installed-audit",
+      "name": "Installed artifact audit",
+      "status": "Уже доступно",
+      "note": "scan-known, inventory-os и policy-os расширяют lintai за пределы repo scans, когда нужно проверить, что уже настроено в локальных AI clients."
+    }
+  ]
+}

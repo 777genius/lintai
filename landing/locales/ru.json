@@ -1,0 +1,136 @@
+{
+  "nav": {
+    "features": "Возможности",
+    "featuredRules": "Ключевые правила",
+    "comparison": "Почему lintai",
+    "download": "Старт",
+    "faq": "FAQ",
+    "viewOnGithub": "Открыть GitHub"
+  },
+  "hero": {
+    "primaryCta": "Открыть GitHub",
+    "secondaryCta": "Смотреть ключевые правила",
+    "docsCta": "Открыть docs",
+    "preview": "Превью процесса lintai",
+    "latestRelease": "Последний релиз",
+    "trust": {
+      "oneRepo": "Offline-first",
+      "validated": "Детерминированные finding'и",
+      "openSource": "Open source"
+    },
+    "demo": {
+      "title": "процесс lintai",
+      "subtitle": "Найти артефакты. Просканировать. Проверить. Завести в CI.",
+      "ready": "готово",
+      "waiting": "ожидание",
+      "repo": "repo surfaces",
+      "sourceOfTruth": "какие файлы смотрим",
+      "outputs": "focus files",
+      "supportedAgents": "что покрывается сейчас",
+      "steps": {
+        "inspect": "найти agent artifacts",
+        "scan": "lintai scan .",
+        "review": "разделить stable и preview",
+        "gate": "выгрузить SARIF в CI"
+      },
+      "captions": {
+        "inspect": "Целится в repo-local skills, MCP-конфиги, hooks, plugin manifests и соседние policy-файлы.",
+        "scan": "Делает быстрый offline pass со стабильными rule id и evidence.",
+        "review": "Stable findings считаются базовой планкой, Preview остаётся углублённой подсказкой.",
+        "gate": "Отдаёт text, JSON или SARIF в локальный workflow и CI."
+      }
+    }
+  },
+  "download": {
+    "open": "Открыть",
+    "recommended": "Рекомендуется",
+    "latestRelease": "Последний релиз",
+    "command": "Команда",
+    "copy": "Копировать",
+    "copied": "Скопировано",
+    "quickstartTitle": "Рекомендуемый quickstart",
+    "quickstartSubtitle": "Это самый короткий поддерживаемый путь от установки до первого показательного прогона lintai.",
+    "installTabsLabel": "Выберите install path",
+    "supportTitle": "Текущий product posture",
+    "supportSubtitle": "Честный beta view: на что продукт нацелен сейчас и где реально проходит trust boundary.",
+    "supportLink": "Открыть релизный контракт"
+  },
+  "common": {
+    "previous": "Назад",
+    "next": "Вперёд"
+  },
+  "theme": {
+    "dark": "Тёмная",
+    "light": "Светлая",
+    "toggle": "Переключить тему"
+  },
+  "language": {
+    "label": "Язык",
+    "search": "Найти язык…"
+  },
+  "features": {
+    "sectionTitle": "Security checks для AI-native поверхностей репозитория",
+    "sectionSubtitle": "lintai специально узкий: offline-first, precision-first и сфокусированный на файлах, которые реально меняют поведение агента."
+  },
+  "featuredRules": {
+    "sectionTitle": "Начните с самых defendable правил",
+    "sectionSubtitle": "Эти четыре правила сейчас лучше всего показывают, за что у lintai сильный первый экран: узкий сигнал, понятный remediation и повторяемое объяснение.",
+    "openRule": "Открыть правило",
+    "whyItMatters": "Почему это важно",
+    "evidenceLabel": "Сигнал"
+  },
+  "faq": {
+    "sectionTitle": "Есть вопросы? Вот краткие ответы",
+    "subtitle": "Практическая версия: что именно сканирует lintai, где проходит beta boundary и как оценивать продукт без самообмана.",
+    "labels": {
+      "default": "Вопрос",
+      "whatIsIt": "Обзор",
+      "whatDoesItScan": "Scope",
+      "offlineFirst": "Trust posture",
+      "stablePreview": "Signal quality",
+      "fastestStart": "С чего начать",
+      "cloudVsLintai": "Позиционирование"
+    },
+    "quickLinks": {
+      "badge": "Старт",
+      "title": "Нужен более явный следующий шаг?",
+      "subtitle": "Большинству команд сначала достаточно трёх страниц: индекс docs, positioning note и контракт текущего public beta.",
+      "docsTitle": "Открыть индекс docs",
+      "docsBody": "Посмотрите rule reference и preset reference без лишней навигации.",
+      "rulesTitle": "Открыть positioning note",
+      "rulesBody": "Проверьте, для кого lintai сделан, что он ловит и чего пока не обещает.",
+      "betaTitle": "Проверить beta contract",
+      "betaBody": "Прочитайте текущий релизный контракт перед более широкими обещаниями команде."
+    }
+  },
+  "comparison": {
+    "sectionTitle": "Почему команды пробуют lintai первым",
+    "sectionSubtitle": "Не потому что он сканирует всё подряд, а потому что он жёстче держит границу вокруг AI-native файлов, которые легко пропустить обычным review.",
+    "feature": "Workflow",
+    "columns": {
+      "lintai": "lintai",
+      "manualReview": "Ручной review",
+      "scripts": "Ad hoc scripts",
+      "cloudScanners": "Generic cloud scanners"
+    }
+  },
+  "footer": {
+    "copyright": "© {year}",
+    "tagline": "Offline-first проверки для AI agent artifacts.",
+    "github": "GitHub",
+    "docs": "Docs"
+  },
+  "meta": {
+    "homeTitle": "lintai | Быстрые offline security checks для AI agent artifacts",
+    "homeDescription": "lintai помогает проверять skills, MCP-конфиги, agent rules, hooks и plugin manifests с детерминированными finding'ами, evidence и CI-ready output.",
+    "downloadTitle": "Старт с lintai | Установка public beta CLI",
+    "downloadDescription": "Выберите подходящий install path для lintai, откройте docs и начните с быстрого offline scan по репозиторию."
+  },
+  "error": {
+    "notFoundTitle": "Страница не найдена",
+    "notFoundDescription": "Страница, которую вы ищете, не существует или была перемещена.",
+    "genericTitle": "Что-то пошло не так",
+    "genericDescription": "Произошла непредвиденная ошибка. Попробуйте ещё раз позже.",
+    "goHome": "На главную"
+  }
+}

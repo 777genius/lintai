@@ -1,0 +1,136 @@
+{
+  "nav": {
+    "features": "Features",
+    "featuredRules": "Featured rules",
+    "comparison": "Why lintai",
+    "download": "Get started",
+    "faq": "FAQ",
+    "viewOnGithub": "Open GitHub"
+  },
+  "hero": {
+    "primaryCta": "Open GitHub",
+    "secondaryCta": "See featured rules",
+    "docsCta": "View docs",
+    "preview": "lintai scan flow preview",
+    "latestRelease": "Latest release",
+    "trust": {
+      "oneRepo": "Offline-first",
+      "validated": "Deterministic findings",
+      "openSource": "Open source"
+    },
+    "demo": {
+      "title": "lintai flow",
+      "subtitle": "Inspect. Scan. Review. Gate in CI.",
+      "ready": "ready",
+      "waiting": "waiting",
+      "repo": "repo surfaces",
+      "sourceOfTruth": "checked files",
+      "outputs": "focus files",
+      "supportedAgents": "supported today",
+      "steps": {
+        "inspect": "find agent artifacts",
+        "scan": "lintai scan .",
+        "review": "review stable vs preview",
+        "gate": "export SARIF for CI"
+      },
+      "captions": {
+        "inspect": "Target repo-local skills, MCP configs, hooks, plugin manifests, and related policy files.",
+        "scan": "Run a fast offline pass with stable rule ids and evidence.",
+        "review": "Treat Stable findings as the baseline and Preview as deeper guidance.",
+        "gate": "Ship text, JSON, or SARIF into local workflows and CI."
+      }
+    }
+  },
+  "download": {
+    "open": "Open",
+    "recommended": "Recommended",
+    "latestRelease": "Latest release",
+    "command": "Command",
+    "copy": "Copy",
+    "copied": "Copied",
+    "quickstartTitle": "Recommended quickstart",
+    "quickstartSubtitle": "This is the fastest supported path from install to a representative lintai run.",
+    "installTabsLabel": "Choose install path",
+    "supportTitle": "Current product posture",
+    "supportSubtitle": "The honest beta view: what the product is aimed at today and where the trust boundary really is.",
+    "supportLink": "Read the release posture"
+  },
+  "common": {
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "theme": {
+    "dark": "Dark",
+    "light": "Light",
+    "toggle": "Toggle theme"
+  },
+  "language": {
+    "label": "Language",
+    "search": "Search language…"
+  },
+  "features": {
+    "sectionTitle": "Security checks built for AI-native repo surfaces",
+    "sectionSubtitle": "lintai is narrow on purpose: offline-first, precision-first, and focused on the files that actually steer agent behavior."
+  },
+  "featuredRules": {
+    "sectionTitle": "Start with the most defendable rules first",
+    "sectionSubtitle": "These four rules currently make the strongest first impression for lintai: narrow signal, clear remediation, and repeatable explanation.",
+    "openRule": "Open rule docs",
+    "whyItMatters": "Why it matters",
+    "evidenceLabel": "Signal"
+  },
+  "faq": {
+    "sectionTitle": "Got questions? We've got answers",
+    "subtitle": "The practical version: what lintai scans, where the beta boundary is, and how to evaluate it honestly.",
+    "labels": {
+      "default": "Question",
+      "whatIsIt": "Overview",
+      "whatDoesItScan": "Scope",
+      "offlineFirst": "Trust posture",
+      "stablePreview": "Signal quality",
+      "fastestStart": "Start here",
+      "cloudVsLintai": "Positioning"
+    },
+    "quickLinks": {
+      "badge": "Start here",
+      "title": "Need a clearer next step?",
+      "subtitle": "Most teams only need three pages first: the docs index, the positioning note, and the beta release contract.",
+      "docsTitle": "Open docs index",
+      "docsBody": "Browse the rules and preset reference without leaving the repo context.",
+      "rulesTitle": "Open positioning note",
+      "rulesBody": "See who lintai is for, what it catches, and what it does not promise yet.",
+      "betaTitle": "Check beta contract",
+      "betaBody": "Read the current public beta release posture before promising more than the product ships."
+    }
+  },
+  "comparison": {
+    "sectionTitle": "Why teams try lintai first",
+    "sectionSubtitle": "Not because it scans everything. Because it draws a tighter boundary around the AI-native files that are easy to miss in normal review.",
+    "feature": "Workflow",
+    "columns": {
+      "lintai": "lintai",
+      "manualReview": "Manual review",
+      "scripts": "Ad hoc scripts",
+      "cloudScanners": "Generic cloud scanners"
+    }
+  },
+  "footer": {
+    "copyright": "© {year}",
+    "tagline": "Offline-first checks for AI agent artifacts.",
+    "github": "GitHub",
+    "docs": "Docs"
+  },
+  "meta": {
+    "homeTitle": "lintai | Fast offline security checks for AI agent artifacts",
+    "homeDescription": "lintai helps teams verify skills, MCP configs, agent rules, hooks, and plugin manifests with deterministic findings, evidence, and CI-ready output.",
+    "downloadTitle": "Get started with lintai | Install the public beta CLI",
+    "downloadDescription": "Choose the right install path for lintai, open the docs, and start with a fast offline scan of your repository."
+  },
+  "error": {
+    "notFoundTitle": "Page not found",
+    "notFoundDescription": "The page you are looking for does not exist or has been moved.",
+    "genericTitle": "Something went wrong",
+    "genericDescription": "An unexpected error occurred. Please try again later.",
+    "goHome": "Go to homepage"
+  }
+}

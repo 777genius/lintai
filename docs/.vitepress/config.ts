@@ -3,7 +3,8 @@ import { defineConfig } from 'vitepress'
 import { buildSidebar, loadSiteCatalogData, metadataForPage } from './siteCatalog'
 
 const siteData = loadSiteCatalogData()
-const docsBase = process.env.LINTAI_DOCS_BASE ?? '/'
+const docsBase = process.env.LINTAI_DOCS_BASE ?? '/lintai/docs/'
+const siteUrl = process.env.LINTAI_SITE_URL ?? 'https://777genius.github.io/lintai'
 
 export default defineConfig({
   base: docsBase,
@@ -48,7 +49,7 @@ export default defineConfig({
   },
   themeConfig: {
     nav: [
-      { text: 'Home', link: '/' },
+      { text: 'Home', link: siteUrl },
       { text: 'Rules', link: '/rules/' },
       { text: 'Presets', link: '/presets/' }
     ],

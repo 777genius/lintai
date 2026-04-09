@@ -7,7 +7,7 @@
 
 - Release tag: `v0.1.0-beta.1`
 - Release channel: GitHub Releases with prebuilt binaries
-- Workflow: [../.github/workflows/public-beta-release.yml](../.github/workflows/public-beta-release.yml)
+- Workflow: [`public-beta-release.yml`](https://github.com/777genius/lintai/blob/main/.github/workflows/public-beta-release.yml)
 - Release note: [releases/v0.1.0-beta.1.md](releases/v0.1.0-beta.1.md)
 
 ## Preconditions
@@ -41,7 +41,7 @@ The shipping workflow must publish exactly these asset classes:
 5. Verify the uploaded body matches [releases/v0.1.0-beta.1.md](releases/v0.1.0-beta.1.md).
 6. Verify the release assets, installer scripts, `SHA256SUMS`, SBOM bundle, and provenance bundle are present.
 7. Verify the installer scripts still fetch only tagged GitHub Release assets and perform checksum validation before install.
-8. Verify the workflow runs [../scripts/release/verify-release-assets.sh](../scripts/release/verify-release-assets.sh) against the generated `SHA256SUMS` and provenance bundle before publish.
+8. Verify the workflow runs [`scripts/release/verify-release-assets.sh`](https://github.com/777genius/lintai/blob/main/scripts/release/verify-release-assets.sh) against the generated `SHA256SUMS` and provenance bundle before publish.
 9. Verify the workflow published GitHub artifact attestations for the shipped release assets.
 10. Verify no parallel package-manager or registry publication step was introduced for this beta workflow.
 

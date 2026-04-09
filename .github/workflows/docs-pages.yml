@@ -1,7 +1,6 @@
-name: Docs Pages
+name: Pages
 
 on:
-  pull_request:
   push:
     branches:
       - main
@@ -13,33 +12,66 @@ concurrency:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 jobs:
   build:
-    name: Build Docs Site
+    name: Build Pages Artifact
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 8.15.1
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-version: 22
       - uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: 1.90.0
       - uses: Swatinem/rust-cache@v2
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - name: Install docs dependencies
         run: npm ci
+      - name: Install landing dependencies
+        working-directory: landing
+        run: pnpm install --frozen-lockfile
       - name: Verify checked-in case manifests stay canonical
         run: npm run fixtures:check
       - name: Validate docs contracts
         run: |
           cargo test -q -p lintai-cli site_catalog -- --nocapture
           cargo test -q -p lintai-cli --test docs_contract -- --nocapture
+      - name: Build landing
+        env:
+          NUXT_APP_BASE_URL: /lintai/
+        working-directory: landing
+        run: pnpm generate
       - name: Build VitePress docs for GitHub Pages
         env:
-          LINTAI_DOCS_BASE: /lintai/
+          LINTAI_DOCS_BASE: /lintai/docs/
         run: |
           npm run docs:build
-          touch docs/.vitepress/dist/.nojekyll
+      - name: Assemble Pages artifact
+        working-directory: landing
+        run: pnpm run build:pages
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .pages-dist
+
+  deploy:
+    name: Deploy Pages
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
