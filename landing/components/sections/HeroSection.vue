@@ -116,8 +116,8 @@ const releaseDate = computed(() => {
 
 .hero-section__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(360px, 430px);
-  gap: clamp(24px, 3vw, 48px);
+  grid-template-columns: minmax(0, 0.95fr) minmax(460px, 600px);
+  gap: clamp(20px, 2.4vw, 40px);
   align-items: center;
 }
 
@@ -296,7 +296,7 @@ const releaseDate = computed(() => {
 .hero-section__preview {
   position: relative;
   width: 100%;
-  max-width: 430px;
+  max-width: 600px;
   margin-left: auto;
 }
 
