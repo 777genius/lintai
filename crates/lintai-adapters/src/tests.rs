@@ -16,7 +16,7 @@ fn keeps_frontmatter_as_a_region_and_semantics() {
     assert_eq!(parsed.document.regions.len(), 2);
     assert_eq!(
         parsed.document.raw_frontmatter.as_deref(),
-        Some("name: demo\ncapabilities:\n  exec: shell")
+        Some("name: demo\ncapabilities:\n  exec: shell\n")
     );
     assert_eq!(parsed.document.regions[1].kind, RegionKind::Heading);
     assert!(matches!(
@@ -70,7 +70,7 @@ fn supports_bom_prefixed_frontmatter() {
 
     assert_eq!(
         parsed.document.raw_frontmatter.as_deref(),
-        Some("name: demo")
+        Some("name: demo\n")
     );
 }
 
@@ -84,7 +84,7 @@ fn invalid_yaml_frontmatter_stays_parseable_without_semantics() {
 
     assert_eq!(
         parsed.document.raw_frontmatter.as_deref(),
-        Some("name: demo: bad")
+        Some("name: demo: bad\n")
     );
     assert!(matches!(
         parsed.semantics,

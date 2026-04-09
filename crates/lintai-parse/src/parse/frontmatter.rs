@@ -33,7 +33,7 @@ pub fn extract(input: &str) -> Result<Extraction, ParseError> {
                 });
             }
             return Ok(Extraction {
-                raw: Some(raw.trim_end_matches('\n').to_owned()),
+                raw: Some(raw.to_owned()),
                 body_start: bom_offset + 4 + search_offset,
             });
         }

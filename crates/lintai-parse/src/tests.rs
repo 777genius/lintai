@@ -54,7 +54,7 @@ fn markdown_keeps_frontmatter_as_region_and_raw_value() {
     assert_eq!(parsed.document.regions.len(), 2);
     assert_eq!(
         parsed.raw_frontmatter.as_deref(),
-        Some("name: demo\ncapabilities:\n  exec: shell")
+        Some("name: demo\ncapabilities:\n  exec: shell\n")
     );
     assert_eq!(parsed.document.regions[1].kind, RegionKind::Heading);
     assert!(parsed.frontmatter_value.is_some());
@@ -91,7 +91,7 @@ fn markdown_rejects_unterminated_frontmatter() {
 fn markdown_supports_bom_prefixed_frontmatter() {
     let parsed = parse::markdown::parse("\u{feff}---\nname: demo\n---\n# Heading\n").unwrap();
 
-    assert_eq!(parsed.raw_frontmatter.as_deref(), Some("name: demo"));
+    assert_eq!(parsed.raw_frontmatter.as_deref(), Some("name: demo\n"));
 }
 
 #[test]
@@ -100,7 +100,7 @@ fn markdown_recovers_from_invalid_yaml_frontmatter() {
 
     assert_eq!(parsed.document.regions[0].kind, RegionKind::Frontmatter);
     assert_eq!(parsed.document.regions[1].kind, RegionKind::Normal);
-    assert_eq!(parsed.raw_frontmatter.as_deref(), Some("name: demo: bad"));
+    assert_eq!(parsed.raw_frontmatter.as_deref(), Some("name: demo: bad\n"));
     assert!(parsed.frontmatter_value.is_none());
     assert!(parsed.frontmatter_format.is_none());
     assert_eq!(parsed.diagnostics.len(), 1);
