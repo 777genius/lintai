@@ -19,7 +19,7 @@ pub(crate) fn run_scan(
         .map_err(|error| format!("failed to run lintai in {}: {error}", repo_dir.display()))?;
     let stdout = String::from_utf8(output.stdout)
         .map_err(|error| format!("lintai stdout was not valid UTF-8: {error}"))?;
-    if matches!(output.status.code(), Some(0 | 1 | 2)) {
+    if matches!(output.status.code(), Some(0..=2)) {
         return Ok(stdout);
     }
     let stderr = String::from_utf8_lossy(&output.stderr);

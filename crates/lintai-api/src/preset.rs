@@ -1,3 +1,5 @@
+use crate::CatalogPublicLane;
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum BuiltinPresetKind {
     Membership,
@@ -184,4 +186,3 @@ mod tests {
         );
     }
 }
-use crate::CatalogPublicLane;
