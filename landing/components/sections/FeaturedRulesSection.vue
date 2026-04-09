@@ -4,72 +4,53 @@ import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 
 const { content } = useLandingContent();
 const { t } = useI18n();
+const { width } = useWindowSize();
 
 const sectionRef = ref<HTMLElement | null>(null);
-const trackRef = ref<HTMLElement | null>(null);
-const activeIndex = ref(0);
+const activePage = ref(0);
 const visible = ref(false);
 
-const totalSlides = computed(() => content.value.featuredRules.length);
+const visibleCards = computed(() => {
+  if (width.value >= 1480) return 3;
+  if (width.value >= 960) return 2;
+  return 1;
+});
+
+const pages = computed(() => {
+  const size = visibleCards.value;
+  const rules = content.value.featuredRules;
+  return Array.from({ length: Math.ceil(rules.length / size) }, (_, index) =>
+    rules.slice(index * size, index * size + size),
+  );
+});
+
+const totalPages = computed(() => pages.value.length);
 
 let observer: IntersectionObserver | null = null;
 let autoAdvanceId: ReturnType<typeof setInterval> | null = null;
 
-const normalizeIndex = (index: number) => {
-  const count = totalSlides.value;
+const normalizePage = (index: number) => {
+  const count = totalPages.value;
   if (!count) return 0;
   return (index + count) % count;
 };
 
-const scrollToIndex = (index: number, behavior: ScrollBehavior = 'smooth') => {
-  const track = trackRef.value;
-  if (!track) return;
-
-  const nextIndex = normalizeIndex(index);
-  const slide = track.children.item(nextIndex);
-  if (!(slide instanceof HTMLElement)) return;
-
-  activeIndex.value = nextIndex;
-  track.scrollTo({
-    left: slide.offsetLeft,
-    behavior,
-  });
+const goToPage = (index: number) => {
+  activePage.value = normalizePage(index);
 };
 
-const syncActiveFromScroll = () => {
-  const track = trackRef.value;
-  if (!track) return;
-
-  const children = Array.from(track.children) as HTMLElement[];
-  if (!children.length) return;
-
-  const currentLeft = track.scrollLeft;
-  let bestIndex = 0;
-  let bestDistance = Number.POSITIVE_INFINITY;
-
-  children.forEach((slide, index) => {
-    const distance = Math.abs(slide.offsetLeft - currentLeft);
-    if (distance < bestDistance) {
-      bestDistance = distance;
-      bestIndex = index;
-    }
-  });
-
-  activeIndex.value = bestIndex;
+const nextPage = () => {
+  goToPage(activePage.value + 1);
 };
 
-const nextSlide = () => {
-  scrollToIndex(activeIndex.value + 1);
-};
-
-const prevSlide = () => {
-  scrollToIndex(activeIndex.value - 1);
+const prevPage = () => {
+  goToPage(activePage.value - 1);
 };
 
 const startAutoAdvance = () => {
-  if (autoAdvanceId || totalSlides.value < 2) return;
+  if (autoAdvanceId || totalPages.value < 2) return;
   autoAdvanceId = setInterval(() => {
-    nextSlide();
+    nextPage();
   }, 4800);
 };
 
@@ -84,8 +65,8 @@ watch(visible, (value) => {
   else stopAutoAdvance();
 });
 
-watch(totalSlides, () => {
-  activeIndex.value = 0;
+watch([totalPages, visibleCards], () => {
+  activePage.value = Math.min(activePage.value, Math.max(totalPages.value - 1, 0));
 });
 
 onMounted(() => {
@@ -122,51 +103,61 @@ onUnmounted(() => {
           type="button"
           class="featured-rules__nav featured-rules__nav--prev"
           :aria-label="t('common.previous')"
-          @click="prevSlide"
+          @click="prevPage"
         >
           <v-icon :icon="mdiChevronLeft" size="28" />
         </button>
 
-        <div ref="trackRef" class="featured-rules__track" @scroll.passive="syncActiveFromScroll">
-          <article
-            v-for="rule in content.featuredRules"
-            :key="rule.id"
-            class="featured-rules__slide featured-rules__card"
-          >
-            <div class="featured-rules__eyebrow">{{ rule.eyebrow }}</div>
-            <div class="featured-rules__code">{{ rule.code }}</div>
-            <h3 class="featured-rules__card-title">{{ rule.title }}</h3>
-            <p class="featured-rules__body">{{ rule.description }}</p>
-
-            <div class="featured-rules__panel">
-              <div class="featured-rules__panel-label">{{ t('featuredRules.whyItMatters') }}</div>
-              <p class="featured-rules__panel-copy">{{ rule.whyItMatters }}</p>
-            </div>
-
-            <div class="featured-rules__footer">
-              <span class="featured-rules__signal">
-                <span class="featured-rules__signal-label">{{
-                  t('featuredRules.evidenceLabel')
-                }}</span>
-                <span>{{ rule.evidence }}</span>
-              </span>
-              <a
-                :href="rule.href"
-                class="featured-rules__link"
-                target="_blank"
-                rel="noopener noreferrer"
+        <div class="featured-rules__viewport">
+          <Transition name="featured-rules-page" mode="out-in">
+            <div :key="`${activePage}-${visibleCards}`" class="featured-rules__grid">
+              <article
+                v-for="rule in pages[activePage]"
+                :key="rule.id"
+                class="featured-rules__card"
               >
-                {{ t('featuredRules.openRule') }}
-              </a>
+                <div class="featured-rules__meta">
+                  <div class="featured-rules__eyebrow">{{ rule.eyebrow }}</div>
+                  <span class="featured-rules__lifecycle">{{ rule.lifecycle }}</span>
+                </div>
+                <div class="featured-rules__code">{{ rule.code }}</div>
+                <div class="featured-rules__surface">{{ rule.surface }}</div>
+                <h3 class="featured-rules__card-title">{{ rule.title }}</h3>
+                <p class="featured-rules__body">{{ rule.description }}</p>
+
+                <div class="featured-rules__panel">
+                  <div class="featured-rules__panel-label">
+                    {{ t('featuredRules.whyItMatters') }}
+                  </div>
+                  <p class="featured-rules__panel-copy">{{ rule.whyItMatters }}</p>
+                </div>
+
+                <div class="featured-rules__footer">
+                  <span class="featured-rules__signal">
+                    <span class="featured-rules__signal-label">{{
+                      t('featuredRules.evidenceLabel')
+                    }}</span>
+                    <span>{{ rule.evidence }}</span>
+                  </span>
+                  <a
+                    :href="rule.href"
+                    class="featured-rules__link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {{ t('featuredRules.openRule') }}
+                  </a>
+                </div>
+              </article>
             </div>
-          </article>
+          </Transition>
         </div>
 
         <button
           type="button"
           class="featured-rules__nav featured-rules__nav--next"
           :aria-label="t('common.next')"
-          @click="nextSlide"
+          @click="nextPage"
         >
           <v-icon :icon="mdiChevronRight" size="28" />
         </button>
@@ -174,15 +165,15 @@ onUnmounted(() => {
 
       <div class="featured-rules__pagination" role="tablist" aria-label="Featured rules slides">
         <button
-          v-for="(rule, index) in content.featuredRules"
-          :key="rule.id"
+          v-for="(_, index) in pages"
+          :key="index"
           type="button"
           class="featured-rules__dot"
-          :class="{ 'featured-rules__dot--active': index === activeIndex }"
-          :aria-label="`${rule.code} - ${rule.title}`"
-          :aria-selected="index === activeIndex"
+          :class="{ 'featured-rules__dot--active': index === activePage }"
+          :aria-label="`Featured rules page ${index + 1}`"
+          :aria-selected="index === activePage"
           role="tab"
-          @click="scrollToIndex(index)"
+          @click="goToPage(index)"
         />
       </div>
     </v-container>
@@ -204,22 +195,15 @@ onUnmounted(() => {
   position: relative;
 }
 
-.featured-rules__track {
-  display: flex;
-  gap: 24px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
+.featured-rules__viewport {
   padding: 0 48px 12px;
+  overflow: hidden;
 }
 
-.featured-rules__track::-webkit-scrollbar {
-  display: none;
-}
-
-.featured-rules__slide {
-  flex: 0 0 min(420px, calc(50% - 12px));
-  scroll-snap-align: start;
+.featured-rules__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
 }
 
 .featured-rules__title {
@@ -252,6 +236,13 @@ onUnmounted(() => {
   padding: 24px;
   display: grid;
   gap: 14px;
+}
+
+.featured-rules__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
 
 .featured-rules__nav {
@@ -297,10 +288,30 @@ onUnmounted(() => {
   color: #8fa1c8;
 }
 
+.featured-rules__lifecycle {
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid rgba(0, 240, 255, 0.14);
+  color: #c7f9ff;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+
 .featured-rules__code {
   font-size: 1.2rem;
   font-weight: 800;
   color: #00f0ff;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.featured-rules__surface {
+  color: #7dd3fc;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   font-family: 'JetBrains Mono', monospace;
 }
 
@@ -381,6 +392,19 @@ onUnmounted(() => {
   background: #00f0ff;
 }
 
+.featured-rules-page-enter-active,
+.featured-rules-page-leave-active {
+  transition:
+    opacity 0.24s ease,
+    transform 0.24s ease;
+}
+
+.featured-rules-page-enter-from,
+.featured-rules-page-leave-to {
+  opacity: 0;
+  transform: translateX(18px);
+}
+
 .v-theme--light .featured-rules__title {
   background: linear-gradient(135deg, #1e293b 0%, #0891b2 100%);
   -webkit-background-clip: text;
@@ -403,16 +427,22 @@ onUnmounted(() => {
     font-size: 1.9rem;
   }
 
-  .featured-rules__track {
-    padding-inline: 0;
+  .featured-rules__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .featured-rules__slide {
-    flex-basis: min(380px, 88vw);
+  .featured-rules__viewport {
+    padding-inline: 0;
   }
 
   .featured-rules__nav {
     display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .featured-rules__grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>

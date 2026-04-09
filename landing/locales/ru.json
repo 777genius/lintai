@@ -20,24 +20,57 @@
     },
     "demo": {
       "title": "процесс lintai",
-      "subtitle": "Индексировать. Просканировать. Разобрать. Завести в CI.",
-      "ready": "готово",
-      "waiting": "ожидание",
-      "repo": "repo trust surfaces",
-      "sourceOfTruth": "сканируем в первую очередь",
-      "outputs": "горячие пути",
-      "supportedAgents": "сильный сигнал сейчас",
-      "steps": {
-        "inspect": "индексировать trust surfaces",
-        "scan": "lintai scan .",
-        "review": "сначала Stable, потом Preview",
-        "gate": "выгрузить SARIF или JSON"
-      },
-      "captions": {
-        "inspect": "Сначала находит skills, MCP wiring, hook settings, Cursor rules и локальный lintai policy, чтобы review не уходил в догадки.",
-        "scan": "Делает быстрый offline pass со stable rule id, структурированным evidence и повторяемыми exit code.",
-        "review": "Stable findings остаются базовой планкой, а Preview читается как более глубокая, но явно не-базовая guidance.",
-        "gate": "Отдаёт text, JSON или SARIF в pull request checks и локальный CI без второго параллельного workflow."
+      "subtitle": "Сканируйте repo-local поверхности, которые реально управляют агентом.",
+      "scanLabel": "Repo scan",
+      "surfaceMap": "Карта поверхностей",
+      "signalBoard": "Панель сигналов",
+      "evidenceLabel": "Evidence",
+      "remediationLabel": "Remediation",
+      "outputsLabel": "Выходы",
+      "summaryLabel": "Крутим самые сильные repo-local поверхности",
+      "offline": "Offline-first",
+      "repoLocalOnly": "только repo-local",
+      "stableFirst": "Stable first",
+      "previewDeeper": "Preview deeper",
+      "machineReadable": "SARIF + JSON",
+      "structuredEvidence": "структурированное evidence",
+      "scenarios": {
+        "skills": {
+          "family": "skills markdown",
+          "title": "Широкий Bash grant в shared frontmatter",
+          "summary": "lintai ловит слишком широкую shell-власть, которая всё ещё слишком часто лежит в shared skills и agent markdown.",
+          "remediation": "Сузьте Bash(...) под конкретный workflow вместо широкого shell-default."
+        },
+        "claudeHooks": {
+          "family": "Claude hook settings",
+          "title": "Mutable package launcher в committed hook",
+          "summary": "Shared Claude hooks должны быть reviewed automation, а не runtime package resolution через npx или uvx.",
+          "remediation": "Замените mutable launcher на vendored script или другой reproducible local command."
+        },
+        "mcp": {
+          "family": "MCP client config",
+          "title": "Mutable runner внутри committed mcp.json",
+          "summary": "Committed MCP wiring - это исполняемая настройка. lintai проверяет, что launch path воспроизводим и reviewable.",
+          "remediation": "Перейдите на pinned local wrapper, vendored script или другой reviewed execution path."
+        },
+        "claudePerms": {
+          "family": "Claude shared permissions",
+          "title": "Wildcard shell и write access в shared policy",
+          "summary": "Широкие Claude permissions легко копируются между repo и гораздо хуже защищаются на review, чем узкий allowlist.",
+          "remediation": "Замените Bash(*) и Write(*) на scoped command patterns и path-specific write targets."
+        },
+        "cursor": {
+          "family": "Cursor rule contract",
+          "title": "Unknown или contradictory Cursor frontmatter",
+          "summary": "lintai относится к shared .mdc routing как к config, а не к prose, и ловит drift в rule-pack до появления tribal knowledge.",
+          "remediation": "Оставьте только поддерживаемые ключи Cursor и уберите globs из alwaysApply rules."
+        },
+        "copilot": {
+          "family": "Copilot path targeting",
+          "title": "Невалидный applyTo glob в path-specific instructions",
+          "summary": "Сломанный applyTo может выглядеть нормально на review, но тихо не матчить файлы, которые команда ожидает.",
+          "remediation": "Используйте валидные reviewed glob patterns, чтобы instruction contract оставался testable и явным."
+        }
       }
     }
   },
@@ -74,7 +107,7 @@
   },
   "featuredRules": {
     "sectionTitle": "Начните с самых defendable правил",
-    "sectionSubtitle": "Эти четыре правила лучше всего совпадают с текущим posture lintai: узкая исполняемая trust boundary, понятный remediation и evidence, которое легко защищать на review.",
+    "sectionSubtitle": "Эта подборка покрывает executable config, shared policy и editor instruction contracts - именно те части lintai, которые проще всего защищать в реальном review.",
     "openRule": "Открыть правило",
     "whyItMatters": "Почему это важно",
     "evidenceLabel": "Сигнал"

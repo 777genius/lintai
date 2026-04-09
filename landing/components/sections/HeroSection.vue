@@ -136,7 +136,8 @@ const releaseDate = computed(() => {
   justify-content: center;
   background: linear-gradient(135deg, #00f0ff, #ff00ff 55%, #39ff14);
   color: #0a0a0f;
-  font-size: 1.45rem;
+  font-size: 1.85rem;
+  line-height: 1;
   font-family: 'JetBrains Mono', monospace;
   font-weight: 800;
   box-shadow: 0 10px 30px rgba(0, 240, 255, 0.2);

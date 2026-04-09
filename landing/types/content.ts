@@ -10,6 +10,8 @@ export interface FeaturedRuleCard {
   id: string;
   eyebrow: string;
   code: string;
+  surface: string;
+  lifecycle: string;
   title: string;
   description: string;
   whyItMatters: string;
