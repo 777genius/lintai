@@ -31,13 +31,14 @@ const steps = computed(() => [
   },
 ]);
 
-const outputs = ['SKILL.md', 'mcp.json', 'CLAUDE.md', 'hooks', 'plugin.json'];
+const outputs = ['SKILL.md', 'mcp.json', 'settings.json', 'hooks', 'lintai.toml'];
 const repoFiles = [
   'SKILL.md',
   'CLAUDE.md',
   '.cursor/rules/',
+  '.claude/settings.json',
   'mcp.json',
-  '.cursor-plugin/',
+  '.cursor/mcp.json',
   'lintai.toml',
 ];
 

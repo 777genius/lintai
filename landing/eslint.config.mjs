@@ -16,5 +16,8 @@ export default withNuxt(
         parser: tsParser,
       },
     },
+    rules: {
+      'vue/html-self-closing': 'off',
+    },
   },
 )

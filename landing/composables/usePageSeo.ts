@@ -182,7 +182,7 @@ export const usePageSeo = (
         {
           name: 'keywords',
           content:
-            'lintai, AI agent security, MCP configs, skills, hooks, plugin manifests, SARIF, repo-local scanner',
+            'lintai, AI agent security, MCP configs, skills, hooks, client policy files, SARIF, repo-local scanner',
         },
       ],
       script: jsonLd.map((item) => ({

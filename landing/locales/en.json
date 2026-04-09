@@ -20,24 +20,24 @@
     },
     "demo": {
       "title": "lintai flow",
-      "subtitle": "Inspect. Scan. Review. Gate in CI.",
+      "subtitle": "Index. Scan. Review. Gate in CI.",
       "ready": "ready",
       "waiting": "waiting",
-      "repo": "repo surfaces",
-      "sourceOfTruth": "checked files",
-      "outputs": "focus files",
-      "supportedAgents": "supported today",
+      "repo": "repo trust surfaces",
+      "sourceOfTruth": "scanned first",
+      "outputs": "hot paths",
+      "supportedAgents": "strong signal today",
       "steps": {
-        "inspect": "find agent artifacts",
+        "inspect": "index trust surfaces",
         "scan": "lintai scan .",
-        "review": "review stable vs preview",
-        "gate": "export SARIF for CI"
+        "review": "review Stable before Preview",
+        "gate": "export SARIF or JSON"
       },
       "captions": {
-        "inspect": "Target repo-local skills, MCP configs, hooks, plugin manifests, and related policy files.",
-        "scan": "Run a fast offline pass with stable rule ids and evidence.",
-        "review": "Treat Stable findings as the baseline and Preview as deeper guidance.",
-        "gate": "Ship text, JSON, or SARIF into local workflows and CI."
+        "inspect": "Map skills, MCP wiring, hook settings, Cursor rules, and local lintai policy before review drifts into guesswork.",
+        "scan": "Run a fast offline pass with stable rule ids, structured evidence, and repeatable exit codes.",
+        "review": "Treat Stable findings as the baseline and use Preview as deeper, clearly non-baseline guidance.",
+        "gate": "Ship text, JSON, or SARIF into pull request checks and local CI without inventing a second workflow."
       }
     }
   },
@@ -74,7 +74,7 @@
   },
   "featuredRules": {
     "sectionTitle": "Start with the most defendable rules first",
-    "sectionSubtitle": "These four rules currently make the strongest first impression for lintai: narrow signal, clear remediation, and repeatable explanation.",
+    "sectionSubtitle": "These four rules fit the current lintai posture best: tight executable trust boundaries, clear remediation, and evidence a reviewer can defend.",
     "openRule": "Open rule docs",
     "whyItMatters": "Why it matters",
     "evidenceLabel": "Signal"
@@ -122,7 +122,7 @@
   },
   "meta": {
     "homeTitle": "lintai | Fast offline security checks for AI agent artifacts",
-    "homeDescription": "lintai helps teams verify skills, MCP configs, agent rules, hooks, and plugin manifests with deterministic findings, evidence, and CI-ready output.",
+    "homeDescription": "lintai helps teams verify skills, MCP configs, hook settings, local client policy files, and adjacent AI instruction surfaces with deterministic findings, evidence, and CI-ready output.",
     "downloadTitle": "Get started with lintai | Install the public beta CLI",
     "downloadDescription": "Choose the right install path for lintai, open the docs, and start with a fast offline scan of your repository."
   },

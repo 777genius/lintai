@@ -20,24 +20,24 @@
     },
     "demo": {
       "title": "процесс lintai",
-      "subtitle": "Найти артефакты. Просканировать. Проверить. Завести в CI.",
+      "subtitle": "Индексировать. Просканировать. Разобрать. Завести в CI.",
       "ready": "готово",
       "waiting": "ожидание",
-      "repo": "repo surfaces",
-      "sourceOfTruth": "какие файлы смотрим",
-      "outputs": "focus files",
-      "supportedAgents": "что покрывается сейчас",
+      "repo": "repo trust surfaces",
+      "sourceOfTruth": "сканируем в первую очередь",
+      "outputs": "горячие пути",
+      "supportedAgents": "сильный сигнал сейчас",
       "steps": {
-        "inspect": "найти agent artifacts",
+        "inspect": "индексировать trust surfaces",
         "scan": "lintai scan .",
-        "review": "разделить stable и preview",
-        "gate": "выгрузить SARIF в CI"
+        "review": "сначала Stable, потом Preview",
+        "gate": "выгрузить SARIF или JSON"
       },
       "captions": {
-        "inspect": "Целится в repo-local skills, MCP-конфиги, hooks, plugin manifests и соседние policy-файлы.",
-        "scan": "Делает быстрый offline pass со стабильными rule id и evidence.",
-        "review": "Stable findings считаются базовой планкой, Preview остаётся углублённой подсказкой.",
-        "gate": "Отдаёт text, JSON или SARIF в локальный workflow и CI."
+        "inspect": "Сначала находит skills, MCP wiring, hook settings, Cursor rules и локальный lintai policy, чтобы review не уходил в догадки.",
+        "scan": "Делает быстрый offline pass со stable rule id, структурированным evidence и повторяемыми exit code.",
+        "review": "Stable findings остаются базовой планкой, а Preview читается как более глубокая, но явно не-базовая guidance.",
+        "gate": "Отдаёт text, JSON или SARIF в pull request checks и локальный CI без второго параллельного workflow."
       }
     }
   },
@@ -74,7 +74,7 @@
   },
   "featuredRules": {
     "sectionTitle": "Начните с самых defendable правил",
-    "sectionSubtitle": "Эти четыре правила сейчас лучше всего показывают, за что у lintai сильный первый экран: узкий сигнал, понятный remediation и повторяемое объяснение.",
+    "sectionSubtitle": "Эти четыре правила лучше всего совпадают с текущим posture lintai: узкая исполняемая trust boundary, понятный remediation и evidence, которое легко защищать на review.",
     "openRule": "Открыть правило",
     "whyItMatters": "Почему это важно",
     "evidenceLabel": "Сигнал"
@@ -122,7 +122,7 @@
   },
   "meta": {
     "homeTitle": "lintai | Быстрые offline security checks для AI agent artifacts",
-    "homeDescription": "lintai помогает проверять skills, MCP-конфиги, agent rules, hooks и plugin manifests с детерминированными finding'ами, evidence и CI-ready output.",
+    "homeDescription": "lintai помогает проверять skills, MCP-конфиги, hook settings, локальные client policy files и соседние AI instruction surfaces с детерминированными finding'ами, evidence и CI-ready output.",
     "downloadTitle": "Старт с lintai | Установка public beta CLI",
     "downloadDescription": "Выберите подходящий install path для lintai, откройте docs и начните с быстрого offline scan по репозиторию."
   },

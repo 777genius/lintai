@@ -76,7 +76,7 @@ onMounted(() => {
                   <div style="flex: 1" />
                   <v-btn :icon="mdiClose" variant="text" @click="menuOpen = false" />
                 </div>
-                <hr class="mobile-menu__divider">
+                <hr class="mobile-menu__divider" />
                 <nav class="mobile-menu__list">
                   <a
                     v-for="item in navItems"
@@ -97,7 +97,7 @@ onMounted(() => {
                     {{ t('nav.viewOnGithub') }}
                   </a>
                 </nav>
-                <hr class="mobile-menu__divider">
+                <hr class="mobile-menu__divider" />
                 <div class="mobile-menu__actions">
                   <template v-if="interactiveReady">
                     <LanguageSwitcher compact />

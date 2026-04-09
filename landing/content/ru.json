@@ -1,7 +1,7 @@
 {
   "hero": {
     "title": "lintai",
-    "subtitle": "Быстрые offline security checks для AI agent artifacts в вашем репозитории. lintai помогает проверять skills, MCP-конфиги, agent rules, hooks и plugin manifests до того, как им начнут доверять в локальном workflow или CI."
+    "subtitle": "Быстрые offline checks для repo-local AI instruction и execution surfaces. lintai помогает проверять skills, MCP-конфиги, hook settings, client policy files и соседние trust boundary до того, как им начнут доверять в локальном workflow или CI."
   },
   "features": [
     {
@@ -17,7 +17,7 @@
     {
       "id": "repoSurfaces",
       "title": "Целится в файлы, которые реально управляют агентом",
-      "description": "Skills, MCP configs, agent rules, hooks, Cursor Plugin surfaces и соседние repository-local файлы составляют основной scope текущей beta."
+      "description": "Skills, MCP configs, Claude и Cursor settings, hooks и соседние repository-local policy files составляют основной scope текущей beta."
     },
     {
       "id": "ciReady",
@@ -100,7 +100,10 @@
     {
       "id": "scope",
       "feature": "Бьёт прямо по AI-native repo surfaces",
-      "lintai": { "status": "yes", "note": "Skills, MCP, hooks, plugins, agent policy files" },
+      "lintai": {
+        "status": "yes",
+        "note": "Skills, MCP, hooks, client settings, agent policy files"
+      },
       "manualReview": { "status": "partial", "note": "Не-кодовые файлы легко пропустить" },
       "scripts": { "status": "partial", "note": "Обычно закрывают только одно семейство файлов" },
       "cloudScanners": { "status": "partial", "note": "Часто шире, чем нужно этой нише" }
@@ -140,12 +143,12 @@
     {
       "id": "whatIsIt",
       "question": "Что такое lintai?",
-      "answer": "lintai - это offline-first и precision-first security linter для repository-local AI agent artifacts: skills, MCP configs, agent rules, hooks и связанных plugin surfaces."
+      "answer": "lintai - это offline-first и precision-first security linter для repository-local AI trust surfaces: skills, MCP configs, hook settings, agent rules и соседних client policy files."
     },
     {
       "id": "whatDoesItScan",
       "question": "Что lintai сканирует в текущей beta?",
-      "answer": "Текущая beta сфокусирована на repository-local trust surfaces вроде <code>SKILL.md</code>, <code>CLAUDE.md</code>, Cursor rules, MCP configs, hooks, Cursor Plugin files и opt-in advisory lane для committed npm lockfiles."
+      "answer": "Текущая beta сфокусирована на repository-local trust surfaces вроде <code>SKILL.md</code>, <code>CLAUDE.md</code>, Cursor rules, MCP configs, Claude hook settings, локальных client config files и opt-in advisory lane для committed npm lockfiles."
     },
     {
       "id": "offlineFirst",
@@ -246,7 +249,7 @@
       "id": "repo-scan",
       "name": "Repository-local scan surface",
       "status": "Public beta",
-      "note": "Текущая продуктовая история строится вокруг repo-local scan path для AI-native файлов вроде skills, MCP configs, hooks и plugin surfaces."
+      "note": "Текущая продуктовая история строится вокруг repo-local scan path для AI-native файлов вроде skills, MCP configs, hook settings и локальных client policy surfaces."
     },
     {
       "id": "signal-policy",

@@ -98,7 +98,7 @@ const onChange = async (value: string | LocaleCode) => {
           class="language-switcher__search-input"
           :placeholder="t('language.search')"
           @keydown.esc="iconMenuOpen = false"
-        >
+        />
       </div>
       <v-list density="compact" class="language-switcher__menu-list">
         <v-list-item
