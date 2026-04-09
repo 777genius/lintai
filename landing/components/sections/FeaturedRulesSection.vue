@@ -11,7 +11,7 @@ const activePage = ref(0);
 const visible = ref(false);
 
 const visibleCards = computed(() => {
-  if (width.value >= 1480) return 3;
+  if (width.value >= 1200) return 3;
   if (width.value >= 960) return 2;
   return 1;
 });
@@ -110,7 +110,11 @@ onUnmounted(() => {
 
         <div class="featured-rules__viewport">
           <Transition name="featured-rules-page" mode="out-in">
-            <div :key="`${activePage}-${visibleCards}`" class="featured-rules__grid">
+            <div
+              :key="`${activePage}-${visibleCards}`"
+              class="featured-rules__grid"
+              :style="{ '--cards-per-page': visibleCards }"
+            >
               <article
                 v-for="rule in pages[activePage]"
                 :key="rule.id"
@@ -185,6 +189,10 @@ onUnmounted(() => {
   position: relative;
 }
 
+.featured-rules :deep(.v-container) {
+  max-width: 1440px !important;
+}
+
 .featured-rules__header {
   text-align: center;
   max-width: 760px;
@@ -193,17 +201,19 @@ onUnmounted(() => {
 
 .featured-rules__carousel {
   position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .featured-rules__viewport {
-  padding: 0 48px 12px;
+  padding: 0 40px 12px;
   overflow: hidden;
 }
 
 .featured-rules__grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(var(--cards-per-page), minmax(0, 1fr));
+  gap: 28px;
 }
 
 .featured-rules__title {
@@ -227,6 +237,7 @@ onUnmounted(() => {
 
 .featured-rules__card {
   height: 100%;
+  min-height: 100%;
   border-radius: 24px;
   border: 1px solid rgba(0, 240, 255, 0.12);
   background: linear-gradient(180deg, rgba(11, 15, 25, 0.95), rgba(8, 11, 18, 0.86));
@@ -272,11 +283,11 @@ onUnmounted(() => {
 }
 
 .featured-rules__nav--prev {
-  left: 0;
+  left: -6px;
 }
 
 .featured-rules__nav--next {
-  right: 0;
+  right: -6px;
 }
 
 .featured-rules__eyebrow,
@@ -428,11 +439,11 @@ onUnmounted(() => {
   }
 
   .featured-rules__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--cards-per-page), minmax(0, 1fr));
   }
 
   .featured-rules__viewport {
-    padding-inline: 0;
+    padding-inline: 12px;
   }
 
   .featured-rules__nav {

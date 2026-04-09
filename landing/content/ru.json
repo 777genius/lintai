@@ -1,7 +1,7 @@
 {
   "hero": {
     "title": "lintai",
-    "subtitle": "Быстрые offline checks для repo-local AI instruction и execution surfaces. lintai помогает проверять skills, MCP-конфиги, hook settings, client policy files и соседние trust boundary до того, как им начнут доверять в локальном workflow или CI."
+    "subtitle": "Offline-first сканирование repo-local поверхностей, которые реально управляют AI-агентами. lintai проверяет skills, MCP wiring, hook settings, shared permissions и editor instruction contracts до того, как они тихо станут политикой команды."
   },
   "features": [
     {

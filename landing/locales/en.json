@@ -13,6 +13,11 @@
     "docsCta": "View docs",
     "preview": "lintai scan flow preview",
     "latestRelease": "Latest release",
+    "kicker": "Repo-local AI security",
+    "factFocusLabel": "Focus today",
+    "factFocusBody": "Skills markdown, committed MCP wiring, shared Claude settings, Cursor rules, and Copilot path contracts.",
+    "factOutputsLabel": "What teams ship",
+    "factOutputsBody": "Stable findings first, Preview for deeper review, plus SARIF and JSON with evidence and remediation.",
     "trust": {
       "oneRepo": "Offline-first",
       "validated": "Deterministic findings",
@@ -24,6 +29,7 @@
       "scanLabel": "Repo scan",
       "surfaceMap": "Surface map",
       "signalBoard": "Signal board",
+      "currentSignal": "Current signal",
       "evidenceLabel": "Evidence",
       "remediationLabel": "Remediation",
       "outputsLabel": "Outputs",
@@ -34,6 +40,20 @@
       "previewDeeper": "Preview deeper",
       "machineReadable": "SARIF + JSON",
       "structuredEvidence": "structured evidence",
+      "steps": {
+        "index": {
+          "title": "Map repo-local trust surfaces",
+          "body": "Index skills, MCP wiring, hook settings, and editor contracts before they quietly become team policy."
+        },
+        "scan": {
+          "title": "Run the most defendable checks first",
+          "body": "Start from stable executable-config and policy signals instead of vague prose heuristics."
+        },
+        "ship": {
+          "title": "Ship evidence into review or CI",
+          "body": "Export SARIF or JSON so the same findings stay readable in local review and machine workflows."
+        }
+      },
       "scenarios": {
         "skills": {
           "family": "skills markdown",

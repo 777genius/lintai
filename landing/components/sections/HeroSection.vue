@@ -19,8 +19,8 @@ const releaseDate = computed(() => {
 <template>
   <section id="hero" class="hero-section section anchor-offset">
     <v-container class="hero-section__container">
-      <v-row align="start" justify="space-between">
-        <v-col cols="12" md="6" class="hero-section__content">
+      <div class="hero-section__grid">
+        <div class="hero-section__content">
           <h1 class="hero-section__title">
             <span class="hero-section__logo">L</span>
             {{ content.hero.title }}
@@ -66,26 +66,35 @@ const releaseDate = computed(() => {
               <v-icon size="16" class="hero-section__trust-icon" :icon="mdiRobotOutline" />
               <span>{{ t('hero.trust.oneRepo') }}</span>
             </div>
-            <div class="hero-section__trust-divider" />
             <div class="hero-section__trust-item">
               <v-icon size="16" class="hero-section__trust-icon" :icon="mdiViewDashboardOutline" />
               <span>{{ t('hero.trust.validated') }}</span>
             </div>
-            <div class="hero-section__trust-divider" />
             <div class="hero-section__trust-item">
               <v-icon size="16" class="hero-section__trust-icon" :icon="mdiOpenSourceInitiative" />
               <span>{{ t('hero.trust.openSource') }}</span>
             </div>
           </div>
-        </v-col>
 
-        <v-col cols="12" md="5" class="hero-section__demo-col">
+          <div class="hero-section__fact-grid">
+            <div class="hero-section__fact-card">
+              <span class="hero-section__fact-label">{{ t('hero.factFocusLabel') }}</span>
+              <p class="hero-section__fact-copy">{{ t('hero.factFocusBody') }}</p>
+            </div>
+            <div class="hero-section__fact-card">
+              <span class="hero-section__fact-label">{{ t('hero.factOutputsLabel') }}</span>
+              <p class="hero-section__fact-copy">{{ t('hero.factOutputsBody') }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-section__demo-col">
           <div class="hero-section__preview">
             <div class="hero-section__preview-glow" />
             <LazyHeroDemo />
           </div>
-        </v-col>
-      </v-row>
+        </div>
+      </div>
     </v-container>
   </section>
 </template>
@@ -93,9 +102,11 @@ const releaseDate = computed(() => {
 <style scoped>
 .hero-section {
   position: relative;
-  min-height: 85vh;
+  min-height: min(760px, calc(100svh - 64px));
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  padding-top: 20px;
+  padding-bottom: 40px;
 }
 
 .hero-section__container {
@@ -103,13 +114,21 @@ const releaseDate = computed(() => {
   z-index: 1;
 }
 
+.hero-section__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(360px, 430px);
+  gap: clamp(24px, 3vw, 48px);
+  align-items: center;
+}
+
 .hero-section__content {
-  animation: heroFadeIn 0.8s ease both;
-  align-self: center;
+  position: relative;
+  z-index: 2;
+  max-width: 620px;
 }
 
 .hero-section__title {
-  font-size: 3rem;
+  font-size: clamp(3rem, 5vw, 4.7rem);
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1.1;
@@ -118,8 +137,6 @@ const releaseDate = computed(() => {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: heroFadeIn 0.8s ease both;
-  animation-delay: 0.2s;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -145,23 +162,18 @@ const releaseDate = computed(() => {
 }
 
 .hero-section__subtitle {
-  font-size: 1.2rem;
-  line-height: 1.7;
-  color: #8892b0;
-  opacity: 0.9;
-  max-width: 560px;
-  margin-bottom: 36px;
-  animation: heroFadeIn 0.8s ease both;
-  animation-delay: 0.3s;
+  font-size: 1.08rem;
+  line-height: 1.75;
+  color: #a8b4d1;
+  max-width: 58ch;
+  margin-bottom: 28px;
 }
 
 .hero-section__actions {
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
-  margin-bottom: 16px;
-  animation: heroFadeIn 0.8s ease both;
-  animation-delay: 0.4s;
+  margin-bottom: 18px;
 }
 
 .hero-section__meta-row {
@@ -169,7 +181,7 @@ const releaseDate = computed(() => {
   flex-wrap: wrap;
   align-items: center;
   gap: 14px;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
 .hero-section__release-badge {
@@ -177,8 +189,6 @@ const releaseDate = computed(() => {
   font-weight: 500;
   color: #8892b0;
   font-family: 'JetBrains Mono', monospace;
-  animation: heroFadeIn 0.8s ease both;
-  animation-delay: 0.45s;
 }
 
 .hero-section__btn-primary {
@@ -223,19 +233,22 @@ const releaseDate = computed(() => {
 
 .hero-section__trust {
   display: flex;
-  align-items: center;
-  gap: 16px;
-  animation: heroFadeIn 0.8s ease both;
-  animation-delay: 0.5s;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
 }
 
 .hero-section__trust-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
   font-size: 0.82rem;
   font-weight: 500;
-  color: #8892b0;
+  color: #9aa7c7;
 }
 
 .hero-section__trust-icon {
@@ -243,25 +256,58 @@ const releaseDate = computed(() => {
   opacity: 0.8;
 }
 
-.hero-section__trust-divider {
-  width: 1px;
-  height: 16px;
-  background: rgba(0, 240, 255, 0.2);
+.hero-section__fact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.hero-section__fact-card {
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+    rgba(8, 11, 18, 0.72);
+  padding: 18px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.hero-section__fact-label {
+  display: block;
+  margin-bottom: 10px;
+  color: #8fa1c8;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.hero-section__fact-copy {
+  margin: 0;
+  color: #d7e3ff;
+  line-height: 1.6;
+  font-size: 0.96rem;
+}
+
+.hero-section__demo-col {
+  position: relative;
 }
 
 .hero-section__preview {
   position: relative;
   width: 100%;
-  animation: heroSlideUp 0.9s ease both;
-  animation-delay: 0.3s;
-  align-self: flex-start;
+  max-width: 430px;
+  margin-left: auto;
 }
 
 .hero-section__preview-glow {
   position: absolute;
-  inset: -20px;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.16), transparent 65%);
-  filter: blur(30px);
+  inset: -24px -18px -32px;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(0, 240, 255, 0.16), transparent 36%),
+    radial-gradient(circle at 80% 18%, rgba(255, 0, 255, 0.14), transparent 34%),
+    radial-gradient(circle at 60% 88%, rgba(57, 255, 20, 0.1), transparent 30%);
+  filter: blur(36px);
   pointer-events: none;
 }
 
@@ -310,11 +356,13 @@ const releaseDate = computed(() => {
 @media (max-width: 960px) {
   .hero-section {
     min-height: auto;
-    padding-top: 28px;
+    padding-top: 12px;
+    padding-bottom: 28px;
   }
 
-  .hero-section__content {
-    align-self: flex-start;
+  .hero-section__grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
   }
 
   .hero-section__title {
@@ -327,13 +375,22 @@ const releaseDate = computed(() => {
     margin-bottom: 28px;
   }
 
-  .hero-section__trust {
-    flex-wrap: wrap;
-    gap: 12px;
+  .hero-section__fact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-section__preview {
+    max-width: none;
+    margin-left: 0;
   }
 }
 
 @media (max-width: 600px) {
+  .hero-section {
+    padding-top: 8px;
+    padding-bottom: 20px;
+  }
+
   .hero-section__title {
     font-size: 2rem;
     gap: 12px;
@@ -343,6 +400,10 @@ const releaseDate = computed(() => {
     width: 48px;
     height: 48px;
     font-size: 1.2rem;
+  }
+
+  .hero-section__actions :deep(.v-btn) {
+    width: 100%;
   }
 }
 </style>

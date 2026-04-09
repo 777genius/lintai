@@ -2,6 +2,9 @@
   "name": "lintai-landing",
   "private": true,
   "type": "module",
+  "imports": {
+    "#internal/nuxt/paths": "./internal/nuxt-paths.mjs"
+  },
   "packageManager": "pnpm@8.15.1",
   "scripts": {
     "dev": "nuxt dev",

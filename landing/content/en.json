@@ -1,7 +1,7 @@
 {
   "hero": {
     "title": "lintai",
-    "subtitle": "Fast offline checks for repo-local AI instruction and execution surfaces. lintai helps teams verify skills, MCP configs, hook settings, client policy files, and adjacent trust boundaries before they are trusted in local workflows or CI."
+    "subtitle": "Offline-first scanning for the repo-local surfaces that actually steer AI agents. lintai verifies skills, MCP wiring, hook settings, shared permissions, and editor instruction contracts before they silently become team policy."
   },
   "features": [
     {

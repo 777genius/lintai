@@ -13,6 +13,11 @@
     "docsCta": "Открыть docs",
     "preview": "Превью процесса lintai",
     "latestRelease": "Последний релиз",
+    "kicker": "Repo-local AI security",
+    "factFocusLabel": "Фокус сейчас",
+    "factFocusBody": "Skills markdown, committed MCP wiring, shared Claude settings, Cursor rules и Copilot path contracts.",
+    "factOutputsLabel": "Что команда получает",
+    "factOutputsBody": "Сначала Stable findings, потом Preview для deeper review, плюс SARIF и JSON с evidence и remediation.",
     "trust": {
       "oneRepo": "Offline-first",
       "validated": "Детерминированные finding'и",
@@ -24,6 +29,7 @@
       "scanLabel": "Repo scan",
       "surfaceMap": "Карта поверхностей",
       "signalBoard": "Панель сигналов",
+      "currentSignal": "Текущий сигнал",
       "evidenceLabel": "Evidence",
       "remediationLabel": "Remediation",
       "outputsLabel": "Выходы",
@@ -34,6 +40,20 @@
       "previewDeeper": "Preview deeper",
       "machineReadable": "SARIF + JSON",
       "structuredEvidence": "структурированное evidence",
+      "steps": {
+        "index": {
+          "title": "Сначала карта repo-local поверхностей",
+          "body": "Индексируйте skills, MCP wiring, hook settings и editor contracts до того, как они тихо станут политикой команды."
+        },
+        "scan": {
+          "title": "Сначала самые defendable проверки",
+          "body": "Начинайте со stable сигналов по executable config и shared policy, а не с расплывчатой prose-эвристики."
+        },
+        "ship": {
+          "title": "Дальше evidence в review или CI",
+          "body": "Экспортируйте SARIF или JSON, чтобы один и тот же сигнал был читаем и локально, и в машинных workflow."
+        }
+      },
       "scenarios": {
         "skills": {
           "family": "skills markdown",

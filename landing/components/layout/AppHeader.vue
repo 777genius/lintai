@@ -46,7 +46,6 @@ onMounted(() => {
         <template v-if="interactiveReady">
           <LanguageSwitcher icon-only />
         </template>
-        <div v-else class="app-header__control-fallback" aria-hidden="true" />
         <v-btn
           variant="outlined"
           size="small"
@@ -61,7 +60,6 @@ onMounted(() => {
         <template v-if="interactiveReady">
           <ThemeToggle />
         </template>
-        <div v-else class="app-header__control-fallback" aria-hidden="true" />
       </div>
       <div class="app-header__mobile-actions">
         <v-btn :icon="mdiMenu" variant="text" @click="menuOpen = true" />
@@ -102,13 +100,6 @@ onMounted(() => {
                   <template v-if="interactiveReady">
                     <LanguageSwitcher compact />
                     <ThemeToggle />
-                  </template>
-                  <template v-else>
-                    <div
-                      class="app-header__control-fallback app-header__control-fallback--wide"
-                      aria-hidden="true"
-                    />
-                    <div class="app-header__control-fallback" aria-hidden="true" />
                   </template>
                 </div>
               </div>
@@ -170,24 +161,6 @@ onMounted(() => {
   display: flex;
   gap: 8px;
   align-items: center;
-}
-
-.app-header__control-fallback {
-  width: 40px;
-  height: 36px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.app-header__control-fallback--wide {
-  width: 96px;
-  border-radius: 12px;
-}
-
-.v-theme--light .app-header__control-fallback {
-  background: rgba(15, 23, 42, 0.04);
-  border-color: rgba(15, 23, 42, 0.08);
 }
 
 .app-header__github-btn {
