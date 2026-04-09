@@ -11,6 +11,7 @@ use super::spans::{
 mod claude_settings;
 mod mcp_command;
 mod object_rules;
+mod plugin_hook_rules;
 mod string_rules;
 
 pub(crate) use claude_settings::visit_claude_settings_value;
@@ -48,7 +49,7 @@ pub(crate) fn visit_json_value(
         }
 
         if artifact_kind == ArtifactKind::CursorPluginHooks {
-            mcp_command::apply_plugin_hook_command_rules(
+            plugin_hook_rules::apply_plugin_hook_command_rules(
                 path,
                 locator,
                 fallback_len,
