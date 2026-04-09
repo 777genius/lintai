@@ -1,9 +1,10 @@
 use std::path::PathBuf;
 use std::sync::Arc;
 
-use lintai_api::{Finding, Span};
+use lintai_api::{ArtifactKind, Finding, SourceFormat, Span};
 use lintai_engine::{EngineBuilder, FileSuppressions, ScanSummary, load_workspace_config};
 use lintai_runtime::InProcessFileProviderBackend;
+use lintai_testing::ProviderHarness;
 
 use crate::AiSecurityProvider;
 
@@ -43,6 +44,26 @@ pub(super) fn assert_marker_span(
         Span::new(start, start + marker.len()),
         "unexpected span for {rule_code} at marker {marker:?}",
     );
+}
+
+pub(super) fn scan_provider(
+    artifact_kind: ArtifactKind,
+    source_format: SourceFormat,
+    content: &str,
+) -> Vec<Finding> {
+    ProviderHarness::run(
+        Arc::new(AiSecurityProvider::default()),
+        artifact_kind,
+        source_format,
+        content,
+    )
+}
+
+pub(super) fn expect_provider_finding<'a>(findings: &'a [Finding], rule_code: &str) -> &'a Finding {
+    findings
+        .iter()
+        .find(|finding| finding.rule_code == rule_code)
+        .unwrap_or_else(|| panic!("expected finding {rule_code}, got {findings:?}"))
 }
 
 pub(super) fn scan_fixture(

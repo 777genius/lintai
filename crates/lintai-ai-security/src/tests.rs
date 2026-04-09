@@ -19,8 +19,8 @@ mod family_helpers;
 
 #[allow(unused_imports)]
 use family_helpers::{
-    assert_has_rule, assert_lacks_rule, assert_marker_span, expect_finding, scan_fixture,
-    unique_temp_dir,
+    assert_has_rule, assert_lacks_rule, assert_marker_span, expect_finding,
+    expect_provider_finding, scan_fixture, scan_provider, unique_temp_dir,
 };
 
 fn config_with_presets(project_root: &Path, presets: &[&str]) -> EngineConfig {
