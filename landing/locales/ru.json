@@ -105,7 +105,7 @@
     "quickstartSubtitle": "Это самый короткий поддерживаемый путь от установки до первого показательного прогона lintai.",
     "installTabsLabel": "Выберите install path",
     "supportTitle": "Текущий product posture",
-    "supportSubtitle": "Честный beta view: на что продукт нацелен сейчас и где реально проходит trust boundary.",
+    "supportSubtitle": "Честный release view: на что продукт нацелен сейчас и где реально проходит trust boundary.",
     "supportLink": "Открыть релизный контракт"
   },
   "common": {
@@ -134,7 +134,7 @@
   },
   "faq": {
     "sectionTitle": "Есть вопросы? Вот краткие ответы",
-    "subtitle": "Практическая версия: что именно сканирует lintai, где проходит beta boundary и как команды обычно начинают им пользоваться.",
+    "subtitle": "Практическая версия: что именно сканирует lintai, где проходит текущая v0.1 boundary и как команды обычно начинают им пользоваться.",
     "labels": {
       "default": "Вопрос",
       "whatIsIt": "Обзор",
@@ -147,13 +147,13 @@
     "quickLinks": {
       "badge": "Старт",
       "title": "Нужен более явный следующий шаг?",
-      "subtitle": "Большинству команд сначала достаточно трёх страниц: индекс docs, positioning note и контракт текущего public beta.",
+      "subtitle": "Большинству команд сначала достаточно трёх страниц: индекс docs, positioning note и текущий release contract.",
       "docsTitle": "Открыть индекс docs",
       "docsBody": "Посмотрите rule reference и preset reference без лишней навигации.",
       "rulesTitle": "Открыть positioning note",
       "rulesBody": "Проверьте, для кого lintai сделан, что он ловит и чего пока не обещает.",
-      "betaTitle": "Проверить beta contract",
-      "betaBody": "Прочитайте текущий релизный контракт перед более широкими обещаниями команде."
+      "releaseTitle": "Проверить release contract",
+      "releaseBody": "Прочитайте текущий релизный контракт перед более широкими обещаниями команде."
     }
   },
   "comparison": {
@@ -176,7 +176,7 @@
   "meta": {
     "homeTitle": "lintai | Быстрые offline security checks для AI agent artifacts",
     "homeDescription": "lintai помогает проверять skills, MCP-конфиги, hook settings, локальные client policy files и AI instruction files с детерминированными finding'ами, evidence и CI-ready output.",
-    "downloadTitle": "Старт с lintai | Установка public beta CLI",
+    "downloadTitle": "Старт с lintai | Установка public release CLI",
     "downloadDescription": "Выберите подходящий install path для lintai, откройте docs и начните с быстрого offline scan по репозиторию."
   },
   "error": {

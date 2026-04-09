@@ -105,7 +105,7 @@
     "quickstartSubtitle": "This is the fastest supported path from install to a representative lintai run.",
     "installTabsLabel": "Choose install path",
     "supportTitle": "Current product posture",
-    "supportSubtitle": "The honest beta view: what the product is aimed at today and where the trust boundary really is.",
+    "supportSubtitle": "The honest release view: what the product is aimed at today and where the trust boundary really is.",
     "supportLink": "Read the release posture"
   },
   "common": {
@@ -134,7 +134,7 @@
   },
   "faq": {
     "sectionTitle": "Got questions? We've got answers",
-    "subtitle": "The practical version: what lintai scans, where the beta boundary is, and how teams usually start using it.",
+    "subtitle": "The practical version: what lintai scans, where the current v0.1 boundary is, and how teams usually start using it.",
     "labels": {
       "default": "Question",
       "whatIsIt": "Overview",
@@ -147,13 +147,13 @@
     "quickLinks": {
       "badge": "Start here",
       "title": "Need a clearer next step?",
-      "subtitle": "Most teams only need three pages first: the docs index, the positioning note, and the beta release contract.",
+      "subtitle": "Most teams only need three pages first: the docs index, the positioning note, and the release contract.",
       "docsTitle": "Open docs index",
       "docsBody": "Browse the rules and preset reference without leaving the repo context.",
       "rulesTitle": "Open positioning note",
       "rulesBody": "See who lintai is for, what it catches, and what it does not promise yet.",
-      "betaTitle": "Check beta contract",
-      "betaBody": "Read the current public beta release posture before promising more than the product ships."
+      "releaseTitle": "Check release contract",
+      "releaseBody": "Read the current public release posture before promising more than the product ships."
     }
   },
   "comparison": {
@@ -176,7 +176,7 @@
   "meta": {
     "homeTitle": "lintai | Fast offline security checks for AI agent artifacts",
     "homeDescription": "lintai helps teams verify skills, MCP configs, hook settings, local client policy files, and AI instruction files with deterministic findings, evidence, and CI-ready output.",
-    "downloadTitle": "Get started with lintai | Install the public beta CLI",
+    "downloadTitle": "Get started with lintai | Install the public release CLI",
     "downloadDescription": "Choose the right install path for lintai, open the docs, and start with a fast offline scan of your repository."
   },
   "error": {

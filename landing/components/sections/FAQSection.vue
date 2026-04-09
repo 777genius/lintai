@@ -36,7 +36,7 @@ const faqIconById: Record<string, string> = {
   cloudVsLintai: mdiCodeTags,
 };
 
-const { docsUrl, supportBoundaryUrl, betaReleaseUrl } = useDocsLinks();
+const { docsUrl, supportBoundaryUrl, releaseUrl } = useDocsLinks();
 
 const faqLabelById = computed<Record<string, string>>(() => ({
   whatIsIt: t('faq.labels.whatIsIt'),
@@ -60,9 +60,9 @@ const faqQuickLinks = computed(() => {
       href: supportBoundaryUrl.value,
     },
     {
-      title: t('faq.quickLinks.betaTitle'),
-      body: t('faq.quickLinks.betaBody'),
-      href: betaReleaseUrl.value,
+      title: t('faq.quickLinks.releaseTitle'),
+      body: t('faq.quickLinks.releaseBody'),
+      href: releaseUrl.value,
     },
   ];
 });

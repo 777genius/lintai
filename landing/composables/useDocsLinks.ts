@@ -10,9 +10,9 @@ export const useDocsLinks = () => {
   const supportBoundaryUrl = computed(
     () => 'https://777genius.github.io/lintai/docs/POSITIONING_AND_SCOPE.html',
   );
-  const betaReleaseUrl = computed(
-    () => 'https://777genius.github.io/lintai/docs/PUBLIC_BETA_RELEASE.html',
+  const releaseUrl = computed(
+    () => 'https://777genius.github.io/lintai/docs/PUBLIC_RELEASE.html',
   );
 
-  return { docsUrl, quickstartUrl, supportBoundaryUrl, betaReleaseUrl };
+  return { docsUrl, quickstartUrl, supportBoundaryUrl, releaseUrl };
 };

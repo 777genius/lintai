@@ -17,7 +17,7 @@
     {
       "id": "repoSurfaces",
       "title": "Целится в файлы, которые реально управляют агентом",
-      "description": "Текущая beta сфокусирована на SKILL.md, mcp.json, Claude и Cursor settings, hooks и соседних instruction-файлах."
+      "description": "Текущий v0.1 scope сфокусирован на SKILL.md, mcp.json, Claude и Cursor settings, hooks и соседних instruction-файлах."
     },
     {
       "id": "ciReady",
@@ -69,7 +69,7 @@
       "title": "Mutable package launcher в committed Claude hook settings",
       "description": "Ловит committed Claude settings, где hook-команды запускают mutable package tooling вместо reviewed и reproducible executable path.",
       "whyItMatters": "Committed hook settings - это исполняемая policy-поверхность. Mutable launcher там защищается как реальный operational smell лучше, чем многие более широкие markdown-эвристики.",
-      "evidence": "Один из самых сильных committed-config rules в текущем beta-наборе.",
+      "evidence": "Один из самых сильных committed-config rules в текущем release-наборе.",
       "href": "https://777genius.github.io/lintai/docs/rules/lintai-ai-security/sec340.html"
     },
     {
@@ -227,8 +227,8 @@
     },
     {
       "id": "whatDoesItScan",
-      "question": "Что lintai сканирует в текущей beta?",
-      "answer": "Текущая beta сфокусирована на файлах вроде <code>SKILL.md</code>, <code>CLAUDE.md</code>, Cursor rules, MCP configs, Claude hook settings, локальных client config files и opt-in advisory lane для committed npm lockfiles."
+      "question": "Что lintai сканирует в текущем v0.1 scope?",
+      "answer": "Текущий v0.1 scope сфокусирован на файлах вроде <code>SKILL.md</code>, <code>CLAUDE.md</code>, Cursor rules, MCP configs, Claude hook settings, локальных client config files и opt-in advisory lane для committed npm lockfiles."
     },
     {
       "id": "offlineFirst",
@@ -243,12 +243,12 @@
     {
       "id": "fastestStart",
       "question": "Как быстрее всего попробовать lintai?",
-      "answer": "Установите public beta CLI из GitHub Releases, запустите <code>lintai scan .</code> на репозитории, где уже есть поддерживаемые файлы, а затем отдельно разберите <code>Stable</code> и <code>Preview</code> findings перед тем, как жёстко заводить lintai в CI."
+      "answer": "Установите public release CLI из GitHub Releases, запустите <code>lintai scan .</code> на репозитории, где уже есть поддерживаемые файлы, а затем отдельно разберите <code>Stable</code> и <code>Preview</code> findings перед тем, как жёстко заводить lintai в CI."
     },
     {
       "id": "cloudVsLintai",
       "question": "Заменяет ли lintai cloud scanners или широкие supply-chain платформы?",
-      "answer": "Нет. Текущая beta намеренно уже. Его лучше понимать как focused linter для AI agent files в репозитории, а не как hosted platform для всех security или supply-chain задач."
+      "answer": "Нет. Текущий v0.1 release намеренно уже. Его лучше понимать как focused linter для AI agent files в репозитории, а не как hosted platform для всех security или supply-chain задач."
     }
   ],
   "download": {
@@ -259,16 +259,16 @@
     {
       "id": "script",
       "title": "Проверяемый shell installer",
-      "description": "Рекомендуемый beta install path для Unix-like систем. Инсталлер скачивает tagged archive плюс SHA256SUMS и проверяет checksum.",
+      "description": "Рекомендуемый release install path для Unix-like систем. Инсталлер скачивает tagged archive плюс SHA256SUMS и проверяет checksum.",
       "href": "https://github.com/777genius/lintai/releases",
-      "note": "Лучший дефолт на macOS и Linux, если нужен поддерживаемый beta flow.",
+      "note": "Лучший дефолт на macOS и Linux, если нужен поддерживаемый release flow.",
       "command": "https://github.com/777genius/lintai/releases",
       "recommended": true
     },
     {
       "id": "powershell",
       "title": "PowerShell installer",
-      "description": "Поддерживаемый Windows path для beta. Скачивает tagged archive плюс SHA256SUMS и ставит бинарь в user-level bin directory.",
+      "description": "Поддерживаемый Windows release path. Скачивает tagged archive плюс SHA256SUMS и ставит бинарь в user-level bin directory.",
       "href": "https://github.com/777genius/lintai/releases",
       "note": "Используйте на Windows, если хотите тот же release-asset flow, что и у Unix installer.",
       "command": "https://github.com/777genius/lintai/releases"
@@ -279,7 +279,7 @@
       "description": "Ручной path, если вам нужны raw release assets и checksum verification без convenience installer.",
       "href": "https://github.com/777genius/lintai/releases",
       "note": "Подходит, если вы хотите напрямую работать с release artifacts и сами провести verification.",
-      "command": "TAG=v0.1.0-beta.1\ncurl -fsSLO https://github.com/777genius/lintai/releases/download/$TAG/lintai-$TAG-x86_64-unknown-linux-gnu.tar.gz\ncurl -fsSLO https://github.com/777genius/lintai/releases/download/$TAG/SHA256SUMS"
+      "command": "TAG=v0.1.0\ncurl -fsSLO https://github.com/777genius/lintai/releases/download/$TAG/lintai-$TAG-x86_64-unknown-linux-gnu.tar.gz\ncurl -fsSLO https://github.com/777genius/lintai/releases/download/$TAG/SHA256SUMS"
     },
     {
       "id": "releases",
@@ -328,7 +328,7 @@
     {
       "id": "repo-scan",
       "name": "Repository-local scan surface",
-      "status": "Public beta",
+      "status": "Initial public release",
       "note": "Текущая продуктовая история строится вокруг repo-local scan path для AI-native файлов вроде skills, MCP configs, hook settings и локальных client policy surfaces."
     },
     {
