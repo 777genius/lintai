@@ -1,0 +1,48 @@
+{
+  "ok": false,
+  "source": "github-releases",
+  "fetchedAt": "1970-01-01T00:00:00.000Z",
+  "tag": null,
+  "version": null,
+  "pubDate": null,
+  "variants": {
+    "installers": {
+      "shell": {
+        "url": null,
+        "platformKey": null,
+        "version": null
+      },
+      "powershell": {
+        "url": null,
+        "platformKey": null,
+        "version": null
+      }
+    },
+    "macos": {
+      "arm64": {
+        "url": null,
+        "platformKey": null,
+        "version": null
+      }
+    },
+    "windows": {
+      "x64": {
+        "url": null,
+        "platformKey": null,
+        "version": null
+      }
+    },
+    "linux": {
+      "x64": {
+        "url": null,
+        "platformKey": null,
+        "version": null
+      },
+      "muslX64": {
+        "url": null,
+        "platformKey": null,
+        "version": null
+      }
+    }
+  }
+}

@@ -40,6 +40,12 @@ jobs:
       - name: Install landing dependencies
         working-directory: landing
         run: pnpm install --frozen-lockfile
+      - name: Refresh release manifest
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          LINTAI_GITHUB_REPO: ${{ github.repository }}
+        working-directory: landing
+        run: pnpm run release:manifest
       - name: Verify checked-in case manifests stay canonical
         run: npm run fixtures:check
       - name: Validate docs contracts

@@ -21,6 +21,7 @@ Public beta shipping is tag-driven:
 - tag shape: `v*-beta.*`
 - checked-in release note path: `docs/releases/<tag>.md`
 - checked-in verification helper: `scripts/release/verify-release-assets.sh`
+- tagged beta release also refreshes the GitHub Pages landing/download metadata after publish
 - published assets:
   - `x86_64-unknown-linux-gnu`
   - `x86_64-unknown-linux-musl`

@@ -25,7 +25,6 @@ export default defineNuxtConfig({
         { rel: 'icon', href: `${baseURL}favicon.ico`, sizes: 'any' },
         { rel: 'icon', type: 'image/png', sizes: '32x32', href: `${baseURL}favicon-32.png` },
         { rel: 'icon', type: 'image/svg+xml', href: `${baseURL}icon.svg` },
-        { rel: 'dns-prefetch', href: 'https://api.github.com' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
@@ -92,9 +91,6 @@ export default defineNuxtConfig({
     name: 'lintai',
   },
   runtimeConfig: {
-    github: {
-      token: process.env.GITHUB_TOKEN,
-    },
     public: {
       siteUrl,
       githubRepo,

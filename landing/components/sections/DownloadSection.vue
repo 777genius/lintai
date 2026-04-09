@@ -1,7 +1,16 @@
 <script setup lang="ts">
 const { content } = useLandingContent();
 const { t, locale } = useI18n();
-const { data: releaseData, fallbackUrl } = useReleaseDownloads();
+const {
+  data: releaseData,
+  fallbackUrl,
+  releasePageUrl,
+  shellInstallerUrl,
+  powerShellInstallerUrl,
+  shellInstallCommand,
+  powerShellInstallCommand,
+  archiveCommand,
+} = useReleaseDownloads();
 const { quickstartUrl, supportBoundaryUrl } = useDocsLinks();
 const copiedCommandId = ref<string | null>(null);
 const selectedInstallId = ref<string | null>(null);
@@ -26,9 +35,41 @@ const releaseDate = computed(() => {
 const supportAccent = ['#39ff14', '#00f0ff', '#ffb703', '#f472b6', '#94a3b8'];
 
 const installChannels = computed(() =>
-  content.value.installChannels.map((channel) =>
-    channel.id === 'docs' ? { ...channel, href: quickstartUrl.value } : channel,
-  ),
+  content.value.installChannels.map((channel) => {
+    if (channel.id === 'docs') {
+      return { ...channel, href: quickstartUrl.value, command: quickstartUrl.value };
+    }
+
+    if (channel.id === 'script') {
+      return {
+        ...channel,
+        href: shellInstallerUrl || fallbackUrl,
+        command: shellInstallCommand || releasePageUrl,
+      };
+    }
+
+    if (channel.id === 'powershell') {
+      return {
+        ...channel,
+        href: powerShellInstallerUrl || fallbackUrl,
+        command: powerShellInstallCommand || releasePageUrl,
+      };
+    }
+
+    if (channel.id === 'archive') {
+      return {
+        ...channel,
+        href: fallbackUrl,
+        command: archiveCommand || releasePageUrl,
+      };
+    }
+
+    if (channel.id === 'releases') {
+      return { ...channel, href: releasePageUrl, command: releasePageUrl };
+    }
+
+    return channel;
+  }),
 );
 
 const quickstartInstallChannels = computed(() =>
@@ -64,9 +105,12 @@ const quickstartSteps = computed(() =>
       return step;
     }
 
+    const installCommand = selectedInstallChannel.value.command.trim();
+    const isExecutableInstallCommand = !/^https?:\/\//.test(installCommand);
+
     return {
       ...step,
-      command: `${selectedInstallChannel.value.command}\nlintai version`,
+      command: isExecutableInstallCommand ? `${installCommand}\nlintai version` : installCommand,
       note: selectedInstallChannel.value.note,
     };
   }),

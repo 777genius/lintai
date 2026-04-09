@@ -254,18 +254,18 @@
       "id": "script",
       "title": "Verified shell installer",
       "description": "Recommended Unix-like install path for the public beta. The installer downloads the tagged archive plus SHA256SUMS and verifies the checksum.",
-      "href": "https://github.com/777genius/lintai/releases/latest/download/lintai-installer.sh",
+      "href": "https://github.com/777genius/lintai/releases",
       "note": "Best default on macOS and Linux when you want the supported beta flow.",
-      "command": "curl -fsSLO https://github.com/777genius/lintai/releases/latest/download/lintai-installer.sh\nsh ./lintai-installer.sh",
+      "command": "https://github.com/777genius/lintai/releases",
       "recommended": true
     },
     {
       "id": "powershell",
       "title": "PowerShell installer",
       "description": "Supported Windows beta path. Downloads the tagged archive plus SHA256SUMS and installs into a user-level bin directory.",
-      "href": "https://github.com/777genius/lintai/releases/latest/download/lintai-installer.ps1",
+      "href": "https://github.com/777genius/lintai/releases",
       "note": "Use this on Windows when you want the same release-asset flow as the Unix installer.",
-      "command": "Invoke-WebRequest -Uri https://github.com/777genius/lintai/releases/latest/download/lintai-installer.ps1 -OutFile .\\lintai-installer.ps1\npowershell -ExecutionPolicy Bypass -File .\\lintai-installer.ps1"
+      "command": "https://github.com/777genius/lintai/releases"
     },
     {
       "id": "archive",
@@ -296,7 +296,7 @@
     {
       "id": "install",
       "title": "Install the CLI",
-      "command": "curl -fsSLO https://github.com/777genius/lintai/releases/latest/download/lintai-installer.sh\nsh ./lintai-installer.sh\nlintai version",
+      "command": "https://github.com/777genius/lintai/releases",
       "note": "Use the install channel that matches your machine, then confirm the CLI is on PATH."
     },
     {

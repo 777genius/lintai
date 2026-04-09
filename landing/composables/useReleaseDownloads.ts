@@ -1,77 +1,33 @@
-import { emptyDownloadsResponse } from '~/utils/releaseDownloads';
+import latestRelease from '~/data/release-latest.json';
+import {
+  buildArchiveCommand,
+  buildPowerShellInstallerCommand,
+  buildShellInstallerCommand,
+  getReleasePageUrl,
+  getTaggedReleaseUrl,
+  normalizeDownloadsResponse,
+} from '~/utils/releaseDownloads';
 import type { DownloadArch, DownloadsApiResponse, DownloadOs } from '~/utils/releaseDownloads';
 
 type ResolveResult = { url: string; version: string | null } | null;
 
-const CACHE_KEY = 'lintai_release_meta';
-const CACHE_TTL = 10 * 60 * 1000;
-
-function isClient(): boolean {
-  return typeof window !== 'undefined';
-}
-
-function readCache(): DownloadsApiResponse | null {
-  if (!isClient()) {
-    return null;
-  }
-
-  try {
-    const raw = window.sessionStorage.getItem(CACHE_KEY);
-    if (!raw) {
-      return null;
-    }
-
-    const parsed = JSON.parse(raw) as { ts: number; data: DownloadsApiResponse };
-    if (Date.now() - parsed.ts > CACHE_TTL) {
-      return null;
-    }
-
-    return parsed.data;
-  } catch {
-    return null;
-  }
-}
-
-function writeCache(data: DownloadsApiResponse): void {
-  if (!isClient()) {
-    return;
-  }
-
-  try {
-    window.sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
-  } catch {
-    // Ignore unavailable session storage.
-  }
-}
+const staticReleaseData = normalizeDownloadsResponse(
+  latestRelease as Partial<DownloadsApiResponse>,
+);
 
 export const useReleaseDownloads = () => {
   const config = useRuntimeConfig();
   const githubRepo = config.public.githubRepo || '777genius/lintai';
-  const fallbackUrl =
-    config.public.githubReleasesUrl || `https://github.com/${githubRepo}/releases`;
-
-  const { data, pending, error } = useAsyncData<DownloadsApiResponse>(
-    'lintai-releases',
-    async () => {
-      const cached = readCache();
-      if (cached) {
-        return cached;
-      }
-
-      try {
-        const parsed = await $fetch<DownloadsApiResponse>('/api/releases/latest');
-        writeCache(parsed);
-        return parsed;
-      } catch {
-        return emptyDownloadsResponse();
-      }
-    },
-    {
-      server: true,
-      lazy: false,
-      default: () => emptyDownloadsResponse(),
-    },
-  );
+  const data = ref<DownloadsApiResponse>(staticReleaseData);
+  const pending = ref(false);
+  const error = ref<Error | null>(null);
+  const releasePageUrl = config.public.githubReleasesUrl || getReleasePageUrl(githubRepo);
+  const fallbackUrl = getTaggedReleaseUrl(githubRepo, data.value.tag);
+  const shellInstallerUrl = data.value.variants.installers.shell.url;
+  const powerShellInstallerUrl = data.value.variants.installers.powershell.url;
+  const shellInstallCommand = buildShellInstallerCommand(shellInstallerUrl);
+  const powerShellInstallCommand = buildPowerShellInstallerCommand(powerShellInstallerUrl);
+  const archiveCommand = buildArchiveCommand(githubRepo, data.value.tag);
 
   const resolve = (os: DownloadOs, arch: DownloadArch | 'unknown'): ResolveResult => {
     const api = data.value;
@@ -110,5 +66,18 @@ export const useReleaseDownloads = () => {
   const resolveUrlOrFallback = (os: DownloadOs, arch: DownloadArch | 'unknown'): string =>
     resolve(os, arch)?.url || fallbackUrl;
 
-  return { data, pending, error, fallbackUrl, resolve, resolveUrlOrFallback };
+  return {
+    data,
+    pending,
+    error,
+    releasePageUrl,
+    fallbackUrl,
+    shellInstallerUrl,
+    powerShellInstallerUrl,
+    shellInstallCommand,
+    powerShellInstallCommand,
+    archiveCommand,
+    resolve,
+    resolveUrlOrFallback,
+  };
 };
