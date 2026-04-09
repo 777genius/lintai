@@ -13,7 +13,7 @@ Checks:
 
 Examples:
   verify-release-assets.sh --release-dir dist
-  verify-release-assets.sh --release-dir dist --repo 777genius/lintai --bundle dist/lintai-v0.1.0-beta.1-provenance.intoto.jsonl
+  verify-release-assets.sh --release-dir dist --repo 777genius/lintai --bundle dist/lintai-v0.1.0-provenance.intoto.jsonl
 EOF
 }
 

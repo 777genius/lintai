@@ -1,20 +1,20 @@
-# lintai Public Beta Release
+# lintai Public Release
 
-> Canonical release contract for the first public beta.
-> This document turns the Phase 3 roadmap into a concrete release posture for `lintai`.
+> Canonical release contract for `lintai v0.1.0`.
+> This document turns the public `v0.1` scope into a concrete release posture for `lintai`.
 
 ## Release Identity
 
-- Release name: `lintai v0.1.0-beta.1`
-- Release posture: public beta
-- Audience: security-minded early adopters and CI trials
+- Release name: `lintai v0.1.0`
+- Release posture: initial public release
+- Audience: security-minded teams and early users running real repository trials
 - Distribution channel: GitHub Releases with prebuilt binaries only
 
 `lintai` is **not** positioned as `1.0` in this release.
 
 ## Product Contract
 
-The public beta keeps the existing `v0.1` product contract unchanged:
+The initial public release keeps the existing `v0.1` product contract unchanged:
 
 - supported surfaces are exactly the current `v0.1` scope
 - `Stable` findings are the release-quality baseline
@@ -25,9 +25,9 @@ The canonical source of truth for `v0.1` scope remains [V0_1_RELEASE_CHARTER.md]
 
 ## Packaging and Compatibility
 
-- The CLI is distributed through GitHub binary artifacts only in this beta.
+- The CLI is distributed through GitHub binary artifacts only in this release.
 - GitHub Release assets may include convenience installer scripts such as `lintai-installer.sh` and `lintai-installer.ps1`; they remain part of the same release-asset channel, not a parallel package-manager channel.
-- GitHub Release assets also carry release-verification artifacts for this beta: `SHA256SUMS`, a CycloneDX SBOM bundle, and a provenance attestation bundle for the published files.
+- GitHub Release assets also carry release-verification artifacts for this release: `SHA256SUMS`, a CycloneDX SBOM bundle, and a provenance attestation bundle for the published files.
 - The canonical in-repo verification flow is [`scripts/release/verify-release-assets.sh`](https://github.com/777genius/lintai/blob/main/scripts/release/verify-release-assets.sh), which checks `SHA256SUMS` and can verify the provenance bundle with `gh attestation verify`.
 - The release promise for this phase is intentionally limited to those GitHub Release assets; users should not assume a parallel installer channel exists unless it is explicitly announced in a later release note.
 - This phase does **not** promise Homebrew, npm, or `cargo install` support for the CLI.
@@ -38,7 +38,7 @@ The compatibility contract remains anchored in [../PUBLIC_COMPATIBILITY_POLICY.m
 
 ## Evaluation and Trust Posture
 
-Users evaluating the beta should:
+Users evaluating this release should:
 
 1. run it on real repositories with supported surfaces
 2. separate `Stable` from `Preview` findings
@@ -47,10 +47,10 @@ Users evaluating the beta should:
 
 The checked-in evidence for this release posture is [EXTERNAL_VALIDATION_REPORT.md](EXTERNAL_VALIDATION_REPORT.md).
 
-## Beta Release Note
+## Release Note
 
-The canonical checked-in release note for this beta is [releases/v0.1.0-beta.1.md](releases/v0.1.0-beta.1.md).
+The canonical checked-in release note for this release is [releases/v0.1.0.md](releases/v0.1.0.md).
 
 ## Shipping Checklist
 
-The canonical workflow and asset checklist for this beta lives in [PUBLIC_BETA_SHIPPING_CHECKLIST.md](PUBLIC_BETA_SHIPPING_CHECKLIST.md).
+The canonical workflow and asset checklist for this release lives in [PUBLIC_RELEASE_SHIPPING_CHECKLIST.md](PUBLIC_RELEASE_SHIPPING_CHECKLIST.md).

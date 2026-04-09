@@ -1,4 +1,4 @@
-# lintai — Beta to `1.0` Roadmap
+# lintai — `v0.1` to `1.0` Roadmap
 
 > Canonical post-`v0.1` roadmap.
 > `docs/ROADMAP_V0_1.md` remains the closed delivery record for the original `v0.1` scope; this document tracks what comes next.
@@ -14,13 +14,13 @@
   - `1` preview finding
   - `2` parser/runtime rough edges
 
-That means the next roadmap is **precision-first beta hardening**, not broad feature sprawl.
+That means the next roadmap is **precision-first public-release hardening**, not broad feature sprawl.
 
 ## Phase 1 — Precision Hardening Sprint
 
 ### Goal
 
-Remove the only concrete noise signal from the first external wave and reduce parser/runtime roughness so public beta feels deliberate rather than fragile.
+Remove the only concrete noise signal from the first external wave and reduce parser/runtime roughness so the initial public release feels deliberate rather than fragile.
 
 ### Work
 
@@ -60,21 +60,21 @@ Re-run external validation after Phase 1 and turn the current one-off wave into 
 
 ### Decision Policy
 
-- If `Stable` remains clean and preview noise drops: proceed to public beta.
+- If `Stable` remains clean and preview noise drops: proceed to the initial public release.
 - If `Stable` produces clear false positives: stop and fix precision before release.
-- If parser/runtime roughness is still visible: do one more hardening pass before beta.
-- If the wave is still mostly silent but clean: that is acceptable for beta because the product is precision-first.
+- If parser/runtime roughness is still visible: do one more hardening pass before release.
+- If the wave is still mostly silent but clean: that is acceptable for the initial public release because the product is precision-first.
 
-## Phase 3 — Public Beta Release
+## Phase 3 — Initial Public Release
 
 ### Goal
 
-Ship `lintai` publicly with honest positioning: narrow, precision-first, offline-first, strong beta, not inflated “AI security platform” messaging.
+Ship `lintai` publicly with honest positioning: narrow, precision-first, offline-first, strong `0.x` release, not inflated “AI security platform” messaging.
 
 ### Work
 
-- Freeze the current `v0.1` product contract and present the release as `public beta`.
-- Freeze distribution posture for the beta itself: ship through GitHub Release assets only and avoid implying that Homebrew, npm, or `cargo install` are part of the current release contract.
+- Freeze the current `v0.1` product contract and present the release as the initial public release.
+- Freeze distribution posture for the release itself: ship through GitHub Release assets only and avoid implying that Homebrew, npm, or `cargo install` are part of the current release contract.
 - Tighten public docs around:
   - who it is for
   - what surfaces it supports
@@ -85,21 +85,21 @@ Ship `lintai` publicly with honest positioning: narrow, precision-first, offline
   - run on real repos
   - separate `Stable` from `Preview`
   - expect conservative behavior
-- Add a beta release note that cites the external validation wave directly.
+- Add a public release note that cites the external validation wave directly.
 - Make external validation part of the release story, not an internal-only artifact.
 
 ### Compatibility Constraints
 
-- Do not widen the public API surface for beta.
+- Do not widen the public API surface for this release.
 - Keep `lintai-api` as the only stable publishable contract crate.
 - Keep the current CLI contract, JSON schema, SARIF, stable key, and fix surface unchanged unless a narrow bug fix forces an adjustment.
-- Treat additional installer channels as post-beta follow-up work, not beta-ship blockers or implied commitments.
+- Treat additional installer channels as post-`v0.1` follow-up work, not release blockers or implied commitments.
 
-## Phase 4 — Structural Rule Expansion After Beta
+## Phase 4 — Structural Rule Expansion After The Initial Public Release
 
 ### Goal
 
-Grow detection power without breaking the precision-first reputation established in beta.
+Grow detection power without breaking the precision-first reputation established in the initial public release.
 
 ### Rule Strategy
 
@@ -117,7 +117,7 @@ Prioritized next areas:
 - conservative skills/instructions expansion where signals stay deterministic enough for `Preview`
 - workspace policy mismatches with stronger evidence
 - parser-aware instruction misuse that can stay in `Preview` until validated
-- keep GitHub Actions shipped as sidecar evidence, but do not use it as the main post-beta expansion track until AI-native usefulness is stronger
+- keep GitHub Actions shipped as sidecar evidence, but do not use it as the main post-`v0.1` expansion track until AI-native usefulness is stronger
 
 ### Governance
 
@@ -135,19 +135,19 @@ Do not call the product `1.0` until all are true:
 - at least two external validation waves completed
 - no recurring `Stable` false-positive cluster
 - parser/runtime rough edges are rare and clearly messaged
-- beta users have exercised the tool outside the author’s own repos
+- `v0.1` users have exercised the tool outside the author’s own repos
 - positioning is stable and honest
 - release and compatibility policy have survived at least one public cycle without churn
 
 ### `v0.2+` Themes
 
-Only after the beta loop is stable:
+Only after the initial public release loop is stable:
 
 - widen structural rule coverage
 - consider broader ecosystem surfaces
 - revisit adapter split and deferred architecture items in `ARCH_GAPS.md`
 - consider broader fix coverage once rule/fix safety evidence supports it
-- evaluate whether extra distribution channels are worth the maintenance surface after at least one public beta cycle proves the binary-release flow is sufficient
+- evaluate whether extra distribution channels are worth the maintenance surface after at least one public `v0.1` cycle proves the binary-release flow is sufficient
 
 ## Operating Rules
 

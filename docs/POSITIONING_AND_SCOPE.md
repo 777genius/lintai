@@ -14,7 +14,7 @@
 - teams that keep agent instructions, MCP configs, or plugin surfaces in git and want deterministic CI checks
 - security-conscious repositories that prefer offline scanning over cloud upload
 - maintainers who want structured findings, SARIF, stable rule ids, and explicit remediation support
-- early adopters willing to use a narrow but disciplined ruleset instead of a broad speculative scanner
+- early users willing to use a narrow but disciplined ruleset instead of a broad speculative scanner
 
 ## Who It Is Not For
 
@@ -64,8 +64,8 @@ For the canonical rule-quality policy, see [RULE_QUALITY_POLICY.md](RULE_QUALITY
 
 The honest release posture for the current state is:
 
-- public beta now: `v0.1.0-beta.1`
-- strong early-adopter tool for real repository trials now
+- initial public release now: `v0.1.0`
+- practical `0.x` tool for real repository trials now
 - distributed through GitHub Releases with prebuilt binaries only in this phase
 - not yet positioned as a broad `1.0` security platform for the whole AI ecosystem
 

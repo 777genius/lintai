@@ -75,60 +75,60 @@ fn index_links_positioning_and_scope_doc() {
 }
 
 #[test]
-fn index_links_public_beta_release_doc() {
+fn index_links_public_release_doc() {
     let text = include_str!("../../../docs/INDEX.md");
 
     assert!(
-        text.contains("[PUBLIC_BETA_RELEASE.md](PUBLIC_BETA_RELEASE.md)"),
-        "INDEX.md should link the canonical public beta release doc"
+        text.contains("[PUBLIC_RELEASE.md](PUBLIC_RELEASE.md)"),
+        "index.md should link the canonical public release doc"
     );
 }
 
 #[test]
-fn index_links_public_beta_shipping_checklist() {
+fn index_links_public_release_shipping_checklist() {
     let text = include_str!("../../../docs/INDEX.md");
 
     assert!(
-        text.contains("[PUBLIC_BETA_SHIPPING_CHECKLIST.md](PUBLIC_BETA_SHIPPING_CHECKLIST.md)"),
-        "INDEX.md should link the canonical public beta shipping checklist"
+        text.contains("[PUBLIC_RELEASE_SHIPPING_CHECKLIST.md](PUBLIC_RELEASE_SHIPPING_CHECKLIST.md)"),
+        "index.md should link the canonical public release shipping checklist"
     );
 }
 
 #[test]
-fn index_links_beta_to_1_0_roadmap() {
+fn index_links_v0_1_to_1_0_roadmap() {
     let text = include_str!("../../../docs/INDEX.md");
 
     assert!(
-        text.contains("[BETA_TO_1_0_ROADMAP.md](BETA_TO_1_0_ROADMAP.md)"),
-        "INDEX.md should link the canonical post-v0.1 roadmap"
+        text.contains("[V0_1_TO_1_0_ROADMAP.md](V0_1_TO_1_0_ROADMAP.md)"),
+        "index.md should link the canonical post-v0.1 roadmap"
     );
 }
 
 #[test]
-fn beta_to_1_0_roadmap_documents_precision_first_sequence() {
-    let text = include_str!("../../../docs/BETA_TO_1_0_ROADMAP.md");
+fn v0_1_to_1_0_roadmap_documents_precision_first_sequence() {
+    let text = include_str!("../../../docs/V0_1_TO_1_0_ROADMAP.md");
 
     assert!(
         text.contains("Phase 1 — Precision Hardening Sprint"),
-        "BETA_TO_1_0_ROADMAP.md should start with a precision-hardening first phase"
+        "V0_1_TO_1_0_ROADMAP.md should start with a precision-hardening first phase"
     );
     assert!(
         text.contains("Phase 2 — External Validation Wave 2"),
-        "BETA_TO_1_0_ROADMAP.md should document the second external validation wave"
+        "V0_1_TO_1_0_ROADMAP.md should document the second external validation wave"
     );
     assert!(
-        text.contains("Phase 3 — Public Beta Release"),
-        "BETA_TO_1_0_ROADMAP.md should document the public beta milestone"
+        text.contains("Phase 3 — Initial Public Release"),
+        "V0_1_TO_1_0_ROADMAP.md should document the initial public release milestone"
     );
     assert!(
         text.contains("Phase 5 — `1.0` Gate and `v0.2+`"),
-        "BETA_TO_1_0_ROADMAP.md should document the explicit 1.0 gate"
+        "V0_1_TO_1_0_ROADMAP.md should document the explicit 1.0 gate"
     );
     assert!(
         text.contains(
             "Immediate default priority: **Phase 1 first, not new broad rule expansion**."
         ),
-        "BETA_TO_1_0_ROADMAP.md should lock the precision-first execution priority"
+        "V0_1_TO_1_0_ROADMAP.md should lock the precision-first execution priority"
     );
 }
 
@@ -137,7 +137,7 @@ fn readme_documents_current_positioning_posture() {
     let text = include_str!("../../../README.md");
 
     assert!(
-        text.contains("strong public beta / early-adopter tool"),
+        text.contains("initial public release / precision-first `0.x` tool"),
         "README.md should document the current release posture honestly"
     );
     assert!(
@@ -149,20 +149,20 @@ fn readme_documents_current_positioning_posture() {
         "README.md should link the canonical positioning doc"
     );
     assert!(
-        text.contains("Public beta release: `v0.1.0-beta.1`"),
-        "README.md should expose the current beta release name"
+        text.contains("Initial public release: `v0.1.0`"),
+        "README.md should expose the current release name"
     );
     assert!(
         text.contains("GitHub Releases"),
-        "README.md should document GitHub-binaries-only beta distribution"
+        "README.md should document GitHub-binaries-only release distribution"
     );
     assert!(
         text.contains("does not yet promise Homebrew, npm, or `cargo install`"),
-        "README.md should explicitly document unsupported beta packaging channels"
+        "README.md should explicitly document unsupported release packaging channels"
     );
     assert!(
         text.contains("Treat `diagnostics` separately from findings"),
-        "README.md should explain beta evaluation guidance around diagnostics"
+        "README.md should explain release evaluation guidance around diagnostics"
     );
     assert!(
         text.contains("`advisory`: opt-in offline dependency vulnerability lane"),
@@ -241,11 +241,11 @@ fn architecture_decisions_match_current_provider_backend_model() {
 }
 
 #[test]
-fn public_beta_release_doc_exists_and_matches_current_posture() {
-    let text = include_str!("../../../docs/PUBLIC_BETA_RELEASE.md");
+fn public_release_doc_exists_and_matches_current_posture() {
+    let text = include_str!("../../../docs/PUBLIC_RELEASE.md");
 
-    assert!(text.contains("v0.1.0-beta.1"));
-    assert!(text.contains("public beta"));
+    assert!(text.contains("v0.1.0"));
+    assert!(text.contains("initial public release"));
     assert!(text.contains("GitHub Releases with prebuilt binaries only"));
     assert!(text.contains("lintai-installer.sh"));
     assert!(text.contains("lintai-installer.ps1"));
@@ -254,45 +254,45 @@ fn public_beta_release_doc_exists_and_matches_current_posture() {
     assert!(text.contains("EXTERNAL_VALIDATION_REPORT.md"));
     assert!(text.contains("does **not** promise Homebrew, npm, or `cargo install`"));
     assert!(text.contains("positioned as `1.0`"));
-    assert!(text.contains("PUBLIC_BETA_SHIPPING_CHECKLIST.md"));
+    assert!(text.contains("PUBLIC_RELEASE_SHIPPING_CHECKLIST.md"));
 }
 
 #[test]
-fn beta_roadmap_and_shipping_checklist_lock_release_only_distribution() {
-    let roadmap = include_str!("../../../docs/BETA_TO_1_0_ROADMAP.md");
-    let checklist = include_str!("../../../docs/PUBLIC_BETA_SHIPPING_CHECKLIST.md");
+fn release_roadmap_and_shipping_checklist_lock_release_only_distribution() {
+    let roadmap = include_str!("../../../docs/V0_1_TO_1_0_ROADMAP.md");
+    let checklist = include_str!("../../../docs/PUBLIC_RELEASE_SHIPPING_CHECKLIST.md");
     let index = include_str!("../../../docs/INDEX.md");
 
     assert!(
         roadmap.contains("ship through GitHub Release assets only"),
-        "BETA_TO_1_0_ROADMAP.md should treat GitHub Release assets as the explicit beta distribution posture"
+        "V0_1_TO_1_0_ROADMAP.md should treat GitHub Release assets as the explicit release distribution posture"
     );
     assert!(
-        roadmap.contains("additional installer channels as post-beta follow-up work"),
-        "BETA_TO_1_0_ROADMAP.md should defer installer channels until after the beta loop"
+        roadmap.contains("additional installer channels as post-`v0.1` follow-up work"),
+        "V0_1_TO_1_0_ROADMAP.md should defer installer channels until after the initial public release cycle"
     );
     assert!(
         checklist.contains("no parallel package-manager or registry publication step"),
-        "PUBLIC_BETA_SHIPPING_CHECKLIST.md should forbid parallel package-manager publication outside the GitHub Release asset set"
+        "PUBLIC_RELEASE_SHIPPING_CHECKLIST.md should forbid parallel package-manager publication outside the GitHub Release asset set"
     );
     assert!(
         checklist.contains("alternative installation channel beyond downloading the published GitHub Release assets"),
-        "PUBLIC_BETA_SHIPPING_CHECKLIST.md should keep the release-assets-only truth check explicit"
+        "PUBLIC_RELEASE_SHIPPING_CHECKLIST.md should keep the release-assets-only truth check explicit"
     );
     assert!(
         index.contains("GitHub Release assets only"),
-        "INDEX.md should summarize the release-only beta distribution decision"
+        "index.md should summarize the release-only distribution decision"
     );
     assert!(
         checklist.contains("lintai-installer.sh") && checklist.contains("lintai-installer.ps1"),
-        "PUBLIC_BETA_SHIPPING_CHECKLIST.md should list the installer assets"
+        "PUBLIC_RELEASE_SHIPPING_CHECKLIST.md should list the installer assets"
     );
 }
 
 #[test]
 fn readme_and_release_note_document_download_then_run_installers() {
     let readme = include_str!("../../../README.md");
-    let release_note = include_str!("../../../docs/releases/v0.1.0-beta.1.md");
+    let release_note = include_str!("../../../docs/releases/v0.1.0.md");
 
     assert!(readme.contains("lintai-installer.sh"));
     assert!(readme.contains("lintai-installer.ps1"));
@@ -304,10 +304,10 @@ fn readme_and_release_note_document_download_then_run_installers() {
 }
 
 #[test]
-fn beta_release_note_is_checked_in_and_grounded_in_wave_two() {
-    let text = include_str!("../../../docs/releases/v0.1.0-beta.1.md");
+fn release_note_is_checked_in_and_grounded_in_wave_two() {
+    let text = include_str!("../../../docs/releases/v0.1.0.md");
 
-    assert!(text.contains("`v0.1.0-beta.1`"));
+    assert!(text.contains("`v0.1.0`"));
     assert!(text.contains("`0` stable findings"));
     assert!(text.contains("`0` preview findings"));
     assert!(text.contains("`0` runtime parser errors"));
@@ -318,11 +318,11 @@ fn beta_release_note_is_checked_in_and_grounded_in_wave_two() {
 }
 
 #[test]
-fn public_beta_shipping_checklist_is_checked_in() {
-    let text = include_str!("../../../docs/PUBLIC_BETA_SHIPPING_CHECKLIST.md");
+fn public_release_shipping_checklist_is_checked_in() {
+    let text = include_str!("../../../docs/PUBLIC_RELEASE_SHIPPING_CHECKLIST.md");
 
-    assert!(text.contains("`v0.1.0-beta.1`"));
-    assert!(text.contains("public-beta-release.yml"));
+    assert!(text.contains("`v0.1.0`"));
+    assert!(text.contains("public-release.yml"));
     assert!(text.contains("x86_64-unknown-linux-gnu"));
     assert!(text.contains("x86_64-unknown-linux-musl"));
     assert!(text.contains("aarch64-apple-darwin"));
@@ -335,11 +335,11 @@ fn public_beta_shipping_checklist_is_checked_in() {
 }
 
 #[test]
-fn workflow_readme_mentions_public_beta_release_workflow() {
+fn workflow_readme_mentions_public_release_workflow() {
     let text = include_str!("../../../.github/workflows/README.md");
 
-    assert!(text.contains("public-beta-release.yml"));
-    assert!(text.contains("v*-beta.*"));
+    assert!(text.contains("public-release.yml"));
+    assert!(text.contains("v*"));
     assert!(text.contains("provenance.intoto.jsonl"));
     assert!(text.contains("sbom.tar.gz"));
     assert!(text.contains("SHA256SUMS"));
@@ -347,15 +347,15 @@ fn workflow_readme_mentions_public_beta_release_workflow() {
 }
 
 #[test]
-fn public_beta_release_workflow_matches_shipping_contract() {
-    let text = include_str!("../../../.github/workflows/public-beta-release.yml");
+fn public_release_workflow_matches_shipping_contract() {
+    let text = include_str!("../../../.github/workflows/public-release.yml");
 
-    assert!(text.contains("name: Public Beta Release"));
+    assert!(text.contains("name: Public Release"));
     assert!(text.contains("workflow_dispatch"));
-    assert!(text.contains("v*-beta.*"));
+    assert!(text.contains("v*"));
     assert!(text.contains("softprops/action-gh-release"));
     assert!(text.contains("actions/attest-build-provenance"));
-    assert!(text.contains("prerelease: true"));
+    assert!(text.contains("prerelease: false"));
     assert!(text.contains("release_notes_path"));
     assert!(text.contains("attestations: write"));
     assert!(text.contains("id-token: write"));

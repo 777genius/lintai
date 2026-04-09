@@ -7,7 +7,7 @@ The release barrier is split into:
 - `release-barrier.yml` for the Linux blocking suites
 - `cross-platform-smoke.yml` for native smoke and Linux musl build smoke
 - `docs-command.yml` for the executable docs contract
-- `public-beta-release.yml` for tagged public beta asset builds and GitHub Release publishing
+- `public-release.yml` for tagged public release asset builds and GitHub Release publishing
 
 Required aggregate checks for `v0.1` release certification:
 
@@ -16,12 +16,12 @@ Required aggregate checks for `v0.1` release certification:
 - `Docs Gate`
 - checked-in fixture canonicalization gate via `normalize-case-manifests --check`
 
-Public beta shipping is tag-driven:
+Public release shipping is tag-driven:
 
-- tag shape: `v*-beta.*`
+- tag shape: `v*`
 - checked-in release note path: `docs/releases/<tag>.md`
 - checked-in verification helper: `scripts/release/verify-release-assets.sh`
-- tagged beta release also refreshes the GitHub Pages landing/download metadata after publish
+- tagged public release also refreshes the GitHub Pages landing/download metadata after publish
 - published assets:
   - `x86_64-unknown-linux-gnu`
   - `x86_64-unknown-linux-musl`

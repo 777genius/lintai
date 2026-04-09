@@ -2,7 +2,7 @@
 
 This file is the repo-owned checklist for the first `v0.1` dry release and the eventual release candidate.
 
-For the post-certification public beta shipping workflow, use [PUBLIC_BETA_SHIPPING_CHECKLIST.md](PUBLIC_BETA_SHIPPING_CHECKLIST.md).
+For the post-certification public release shipping workflow, use [PUBLIC_RELEASE_SHIPPING_CHECKLIST.md](PUBLIC_RELEASE_SHIPPING_CHECKLIST.md).
 
 ## Candidate
 

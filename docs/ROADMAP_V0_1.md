@@ -1,7 +1,7 @@
 # lintai v0.1 Delivery Roadmap
 
 > This document is the **closed delivery record** for the original `v0.1` scope.
-> The active post-`v0.1` roadmap now lives in [BETA_TO_1_0_ROADMAP.md](BETA_TO_1_0_ROADMAP.md).
+> The active post-`v0.1` roadmap now lives in [V0_1_TO_1_0_ROADMAP.md](V0_1_TO_1_0_ROADMAP.md).
 
 ## Goal
 

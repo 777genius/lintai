@@ -1,6 +1,6 @@
 # lintai Public Compatibility Policy
 
-This file defines the compatibility promises for the public beta `v0.1` core line.
+This file defines the compatibility promises for the initial public `v0.1` core line.
 
 ## Stable Surface
 
@@ -8,11 +8,11 @@ This file defines the compatibility promises for the public beta `v0.1` core lin
 - `lintai-testing` is intentionally internal during `v0.1` because it still depends on unpublished engine internals.
 - All other crates in `lintai/` are internal-only.
 - The `lintai` CLI is public product surface, but machine-readable stability promises still attach to `scan`, `config`, JSON, and SARIF first.
-- The current public beta CLI distribution channel is GitHub Releases with prebuilt binaries only.
+- The current public CLI distribution channel is GitHub Releases with prebuilt binaries only.
 
 ## `lintai-api`
 
-- During the public beta, changes are additive-only during the `v0.1` line unless a beta release contract explicitly says otherwise.
+- During the initial public `v0.1` line, changes are additive-only unless a release contract explicitly says otherwise.
 - `RuleProvider`, `Finding`, `StableKey`, `ScanContext`, `WorkspaceScanContext`, and `RuleMetadata` do not change shape without a new charter decision.
 - Shipped built-in providers execute behind an internal isolated backend.
 - Provider backend composition and internal runner protocol details are not public compatibility surface.

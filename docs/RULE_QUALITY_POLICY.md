@@ -41,7 +41,7 @@
 
 ## Product presentation lanes
 
-Для сайта, beta narrative и "первого экрана" rules делим ещё и по product роли:
+Для сайта, release narrative и "первого экрана" rules делим ещё и по product роли:
 
 - **Flagship rules**:
   - правила с лучшим signal/noise на реальных community cohort

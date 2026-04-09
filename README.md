@@ -7,7 +7,7 @@ Fast offline security checks for AI agent artifacts in your repo.
 `lintai` helps you verify skills, MCP configs, agent rules, hooks, and plugin manifests before you trust them in local workflows or CI.
 It can also run an opt-in advisory lane for committed npm lockfiles.
 
-Public beta release: `v0.1.0-beta.1`
+Initial public release: `v0.1.0`
 
 - Fast local and CI checks
 - Deterministic findings with evidence
@@ -25,10 +25,10 @@ Think of it as a Ruff/Biome-style workflow for agent artifact security: fast, de
 
 ## Quick Start
 
-Install the public beta CLI from GitHub Releases:
+Install `lintai v0.1.0` from GitHub Releases:
 
 ```bash
-curl -fsSLO https://github.com/777genius/lintai/releases/download/v0.1.0-beta.1/lintai-installer.sh
+curl -fsSLO https://github.com/777genius/lintai/releases/download/v0.1.0/lintai-installer.sh
 sh ./lintai-installer.sh
 ```
 
@@ -227,7 +227,7 @@ Important merge rules:
 - explicit `[rules] SECxxx = "..."` can opt a specific rule in on purpose
 - shipped rule catalogs carry preset membership as source-of-truth metadata, so docs, engine resolution, and explainability stay aligned
 
-For teams evaluating the beta, a good default is:
+For teams evaluating `v0.1`, a good default is:
 
 1. Start with `recommended`.
 2. Add `preview` when you want deeper review.
@@ -265,12 +265,12 @@ This mode stays inventory-first: it reports what `lintai` can honestly discover 
 
 ## Install Details
 
-The current public beta is distributed through GitHub Releases with prebuilt binaries.
+The current public release is distributed through GitHub Releases with prebuilt binaries.
 
 ### macOS / Linux
 
 ```bash
-curl -fsSLO https://github.com/777genius/lintai/releases/download/v0.1.0-beta.1/lintai-installer.sh
+curl -fsSLO https://github.com/777genius/lintai/releases/download/v0.1.0/lintai-installer.sh
 sh ./lintai-installer.sh
 ```
 
@@ -279,7 +279,7 @@ The installer downloads the tagged archive and `SHA256SUMS`, verifies the checks
 ### Windows PowerShell
 
 ```powershell
-Invoke-WebRequest -Uri https://github.com/777genius/lintai/releases/download/v0.1.0-beta.1/lintai-installer.ps1 -OutFile .\lintai-installer.ps1
+Invoke-WebRequest -Uri https://github.com/777genius/lintai/releases/download/v0.1.0/lintai-installer.ps1 -OutFile .\lintai-installer.ps1
 powershell -ExecutionPolicy Bypass -File .\lintai-installer.ps1
 ```
 
@@ -304,11 +304,11 @@ lintai scan .
 
 Current status:
 
-- Public beta: `v0.1.0-beta.1`
+- Initial public release: `v0.1.0`
 - Precision-first security checks for supported agent artifact surfaces
 - Best evaluated on real repositories that already contain those surfaces
 - `Stable` findings are the current trust baseline
-- Honest posture: strong public beta / early-adopter tool, not yet a broad `1.0` ecosystem platform
+- Honest posture: initial public release / precision-first `0.x` tool, not yet a broad `1.0` ecosystem platform
 
 ## Current Non-Goals
 
@@ -322,8 +322,8 @@ Not the goal in `v0.1`:
 Canonical docs:
 
 - [`docs/POSITIONING_AND_SCOPE.md`](docs/POSITIONING_AND_SCOPE.md): product positioning and non-goals
-- [`docs/PUBLIC_BETA_RELEASE.md`](docs/PUBLIC_BETA_RELEASE.md): current beta contract
-- [`docs/EXTERNAL_VALIDATION_REPORT.md`](docs/EXTERNAL_VALIDATION_REPORT.md): checked-in beta evidence base
+- [`docs/PUBLIC_RELEASE.md`](docs/PUBLIC_RELEASE.md): current release contract
+- [`docs/EXTERNAL_VALIDATION_REPORT.md`](docs/EXTERNAL_VALIDATION_REPORT.md): checked-in release evidence base
 - [`docs/INDEX.md`](docs/INDEX.md): full project doc index
 
 Repo-level orientation:
@@ -332,4 +332,4 @@ Repo-level orientation:
 - [`PUBLIC_COMPATIBILITY_POLICY.md`](PUBLIC_COMPATIBILITY_POLICY.md)
 - [`docs/ARCH_GAPS.md`](docs/ARCH_GAPS.md)
 
-`lintai-api` remains the only stable publishable crate. The CLI beta does not yet promise Homebrew, npm, or `cargo install` distribution.
+`lintai-api` remains the only stable publishable crate. The CLI release does not yet promise Homebrew, npm, or `cargo install` distribution.
