@@ -758,6 +758,36 @@ fn finds_markdown_mutable_mcp_launcher_config_example() {
 }
 
 #[test]
+fn markdown_mutable_mcp_launcher_requires_supply_chain_preset() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "claude mcp add claude-flow npx claude-flow@alpha mcp start\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC347")
+    );
+}
+
+#[test]
+fn finds_markdown_mutable_mcp_launcher_with_supply_chain_preset() {
+    let summary = scan_preview_supply_chain_skill_fixture(
+        "SKILL.md",
+        "claude mcp add claude-flow npx claude-flow@alpha mcp start\n",
+    );
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC347")
+    );
+}
+
+#[test]
 fn ignores_markdown_remote_bridge_uvx_cli_example() {
     let provider = AiSecurityProvider::default();
     let content = "claude mcp add exa uvx mcp-remote https://mcp.exa.ai/mcp\n";
@@ -918,6 +948,36 @@ fn finds_markdown_mutable_multiline_docker_registry_image_example() {
     );
 
     assert!(findings.iter().any(|finding| finding.rule_code == "SEC348"));
+}
+
+#[test]
+fn markdown_mutable_docker_image_requires_supply_chain_preset() {
+    let summary = scan_preview_skill_fixture(
+        "SKILL.md",
+        "Use `docker run -p 6333:6333 qdrant/qdrant` to start the service.\n",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC348")
+    );
+}
+
+#[test]
+fn finds_markdown_mutable_docker_image_with_supply_chain_preset() {
+    let summary = scan_preview_supply_chain_skill_fixture(
+        "SKILL.md",
+        "Use `docker run -p 6333:6333 qdrant/qdrant` to start the service.\n",
+    );
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC348")
+    );
 }
 
 #[test]

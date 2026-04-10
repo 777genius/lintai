@@ -293,8 +293,6 @@
         "lintai-ai-security:SEC323",
         "lintai-ai-security:SEC335",
         "lintai-ai-security:SEC336",
-        "lintai-ai-security:SEC347",
-        "lintai-ai-security:SEC348",
         "lintai-ai-security:SEC349",
         "lintai-ai-security:SEC350",
         "lintai-ai-security:SEC351",
@@ -338,8 +336,6 @@
         "lintai-ai-security:SEC312",
         "lintai-ai-security:SEC313",
         "lintai-ai-security:SEC335",
-        "lintai-ai-security:SEC347",
-        "lintai-ai-security:SEC348",
         "lintai-ai-security:SEC349",
         "lintai-ai-security:SEC350",
         "lintai-ai-security:SEC351"
@@ -845,6 +841,8 @@
         "lintai-ai-security:SEC326",
         "lintai-ai-security:SEC327",
         "lintai-ai-security:SEC328",
+        "lintai-ai-security:SEC347",
+        "lintai-ai-security:SEC348",
         "lintai-ai-security:SEC417",
         "lintai-ai-security:SEC448",
         "lintai-ai-security:SEC449",
@@ -2958,7 +2956,7 @@
       "slug": "sec347",
       "canonicalPath": "/rules/lintai-ai-security/sec347",
       "summary": "AI-native markdown example launches MCP through a mutable package runner",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -2967,13 +2965,12 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "supply-chain"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
         "kind": "preview",
-        "blocker": "Mutable MCP launcher examples in markdown can be legitimate setup guidance, so the first release stays in the core preview lane while broader field validation continues.",
+        "blocker": "Mutable MCP launcher examples in markdown can be legitimate setup guidance, so the first release stays in the explicit supply-chain lane while broader field validation continues.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
@@ -2990,7 +2987,7 @@
       "slug": "sec348",
       "canonicalPath": "/rules/lintai-ai-security/sec348",
       "summary": "AI-native markdown Docker example uses a mutable registry image",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -2999,13 +2996,12 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "supply-chain"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
         "kind": "preview",
-        "blocker": "Mutable Docker image examples in markdown can be legitimate setup guidance, so the first release stays context-sensitive preview rather than a stronger default posture.",
+        "blocker": "Mutable Docker image examples in markdown can be legitimate setup guidance, so the first release stays in the explicit supply-chain lane rather than a stronger default posture.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

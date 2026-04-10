@@ -1645,10 +1645,10 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownMutableMcpLauncherRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
-            blocker: "Mutable MCP launcher examples in markdown can be legitimate setup guidance, so the first release stays in the core preview lane while broader field validation continues.",
+            blocker: "Mutable MCP launcher examples in markdown can be legitimate setup guidance, so the first release stays in the explicit supply-chain lane while broader field validation continues.",
             promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
         },
         check: check_markdown_mutable_mcp_launcher,
@@ -2103,10 +2103,10 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownMutableDockerImageRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
-            blocker: "Mutable Docker image examples in markdown can be legitimate setup guidance, so the first release stays context-sensitive preview rather than a stronger default posture.",
+            blocker: "Mutable Docker image examples in markdown can be legitimate setup guidance, so the first release stays in the explicit supply-chain lane rather than a stronger default posture.",
             promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
         },
         check: check_markdown_mutable_docker_image,

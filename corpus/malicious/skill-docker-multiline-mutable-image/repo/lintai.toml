@@ -1,2 +1,2 @@
 [presets]
-enable = ["base", "preview", "skills"]
+enable = ["base", "preview", "skills", "supply-chain"]

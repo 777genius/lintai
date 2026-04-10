@@ -154,8 +154,15 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .iter()
         .find(|entry| entry.metadata.code == "SEC347")
         .unwrap();
-    assert_eq!(sec347.default_presets(), vec!["preview", "skills"]);
-    assert_eq!(sec347.public_lane(), PublicLane::Preview);
+    assert_eq!(sec347.default_presets(), vec!["supply-chain"]);
+    assert_eq!(sec347.public_lane(), PublicLane::SupplyChain);
+
+    let sec348 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC348")
+        .unwrap();
+    assert_eq!(sec348.default_presets(), vec!["supply-chain"]);
+    assert_eq!(sec348.public_lane(), PublicLane::SupplyChain);
 
     let sec417 = entries
         .iter()
