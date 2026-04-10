@@ -58,6 +58,20 @@ fn heuristic_entries_remain_preview() {
 }
 
 #[test]
+fn heuristic_entries_do_not_use_security_category() {
+    for entry in shipped_security_rule_catalog_entries() {
+        if entry.detection_class == CatalogDetectionClass::Heuristic {
+            assert_ne!(
+                entry.metadata.category,
+                Category::Security,
+                "heuristic entry {} should not use security category",
+                entry.metadata.code
+            );
+        }
+    }
+}
+
+#[test]
 fn governance_entries_do_not_use_security_category() {
     for entry in shipped_security_rule_catalog_entries() {
         if entry.public_lane() == PublicLane::Governance {
