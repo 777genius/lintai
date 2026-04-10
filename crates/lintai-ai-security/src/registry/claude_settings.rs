@@ -3065,7 +3065,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsRootDeleteRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit `rm`-style destructive root deletion payloads.",
@@ -3085,7 +3085,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsPasswordFileAccessRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for direct access to sensitive password and sudo policy files.",
@@ -3105,7 +3105,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsShellProfileWriteRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit writes to shell startup profile files.",
@@ -3125,7 +3125,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsAuthorizedKeysWriteRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit writes to SSH `authorized_keys`.",
@@ -3145,7 +3145,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsCronPersistenceRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit cron persistence setup.",
@@ -3165,7 +3165,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsSystemdServiceRegistrationRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit systemd service registration or unit-file writes.",
@@ -3185,7 +3185,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsLaunchdRegistrationRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.",
@@ -3205,7 +3205,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInsecurePermissionChangeRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit insecure chmod payloads.",
@@ -3225,7 +3225,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsSetuidSetgidRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit setuid or setgid chmod payloads.",
@@ -3245,7 +3245,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsLinuxCapabilityManipulationRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit Linux capability manipulation payloads.",
@@ -3265,7 +3265,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsSecretExfilRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit secret-bearing network exfil payloads.",
@@ -3285,7 +3285,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsPlainHttpSecretExfilRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for secret-bearing exfil over insecure HTTP.",
@@ -3305,7 +3305,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsWebhookSecretExfilRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for secret-bearing posts to webhook endpoints.",
@@ -3325,7 +3325,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsSensitiveFileExfilRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit transfer of sensitive credential files to remote destinations.",
@@ -3348,7 +3348,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsClipboardReadRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for clipboard-reading behavior that can extract local user data.",
@@ -3366,7 +3366,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsBrowserSecretStoreAccessRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for direct access to browser credential or cookie storage files.",
@@ -3386,7 +3386,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsClipboardExfilRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for clipboard-reading behavior that also transmits captured data to remote destinations.",
@@ -3406,7 +3406,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsBrowserSecretStoreExfilRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for direct access to browser credential or cookie storage files combined with remote transfer behavior.",
@@ -3426,7 +3426,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsScreenCaptureRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit screen capture utilities.",
@@ -3449,7 +3449,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsScreenCaptureExfilRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit screen capture utilities combined with remote transfer behavior.",
@@ -3469,7 +3469,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsCameraCaptureRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit webcam or camera capture utilities.",
@@ -3492,7 +3492,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsMicrophoneCaptureRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit microphone recording utilities.",
@@ -3515,7 +3515,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsCameraCaptureExfilRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit webcam or camera capture utilities combined with remote transfer behavior.",
@@ -3535,7 +3535,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsMicrophoneCaptureExfilRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit microphone recording utilities combined with remote transfer behavior.",
@@ -3555,7 +3555,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsKeyloggingRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit keystroke capture utilities or keylogger markers.",
@@ -3578,7 +3578,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsKeyloggingExfilRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.",
@@ -3598,7 +3598,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsEnvironmentDumpRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit environment or shell-state enumeration commands.",
@@ -3622,7 +3622,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsEnvironmentDumpExfilRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: PREVIEW_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",

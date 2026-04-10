@@ -403,6 +403,90 @@ fn shipped_rules_have_expected_default_preset_mapping() {
     assert_eq!(sec446.default_presets(), vec!["preview", "mcp"]);
     assert_eq!(sec446.public_lane(), PublicLane::Preview);
 
+    let sec637 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC637")
+        .unwrap();
+    assert_eq!(sec637.default_presets(), vec!["preview", "mcp"]);
+    assert_eq!(sec637.public_lane(), PublicLane::Preview);
+
+    let sec652 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC652")
+        .unwrap();
+    assert_eq!(sec652.default_presets(), vec!["preview", "mcp"]);
+    assert_eq!(sec652.public_lane(), PublicLane::Preview);
+
+    let sec674 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC674")
+        .unwrap();
+    assert_eq!(sec674.default_presets(), vec!["preview", "mcp"]);
+    assert_eq!(sec674.public_lane(), PublicLane::Preview);
+
+    let sec705 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC705")
+        .unwrap();
+    assert_eq!(sec705.default_presets(), vec!["preview", "mcp"]);
+    assert_eq!(sec705.public_lane(), PublicLane::Preview);
+
+    let sec729 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC729")
+        .unwrap();
+    assert_eq!(sec729.default_presets(), vec!["preview", "mcp"]);
+    assert_eq!(sec729.public_lane(), PublicLane::Preview);
+
+    let sec737 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC737")
+        .unwrap();
+    assert_eq!(sec737.default_presets(), vec!["preview", "mcp"]);
+    assert_eq!(sec737.public_lane(), PublicLane::Preview);
+
+    let sec641 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC641")
+        .unwrap();
+    assert_eq!(sec641.default_presets(), vec!["preview", "claude"]);
+    assert_eq!(sec641.public_lane(), PublicLane::Preview);
+
+    let sec655 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC655")
+        .unwrap();
+    assert_eq!(sec655.default_presets(), vec!["preview", "claude"]);
+    assert_eq!(sec655.public_lane(), PublicLane::Preview);
+
+    let sec677 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC677")
+        .unwrap();
+    assert_eq!(sec677.default_presets(), vec!["preview", "claude"]);
+    assert_eq!(sec677.public_lane(), PublicLane::Preview);
+
+    let sec707 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC707")
+        .unwrap();
+    assert_eq!(sec707.default_presets(), vec!["preview", "claude"]);
+    assert_eq!(sec707.public_lane(), PublicLane::Preview);
+
+    let sec731 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC731")
+        .unwrap();
+    assert_eq!(sec731.default_presets(), vec!["preview", "claude"]);
+    assert_eq!(sec731.public_lane(), PublicLane::Preview);
+
+    let sec739 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC739")
+        .unwrap();
+    assert_eq!(sec739.default_presets(), vec!["preview", "claude"]);
+    assert_eq!(sec739.public_lane(), PublicLane::Preview);
+
     let sec355 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC355")

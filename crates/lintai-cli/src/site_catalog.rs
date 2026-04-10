@@ -509,6 +509,54 @@ mod tests {
         assert_eq!(sec366.default_presets, vec!["supply-chain", "claude"]);
         assert_eq!(sec366.public_lane, "supply-chain");
 
+        let sec637 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC637")
+            .expect("SEC637 should exist");
+        assert_eq!(sec637.default_presets, vec!["preview", "mcp"]);
+        assert_eq!(sec637.public_lane, "preview");
+
+        let sec674 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC674")
+            .expect("SEC674 should exist");
+        assert_eq!(sec674.default_presets, vec!["preview", "mcp"]);
+        assert_eq!(sec674.public_lane, "preview");
+
+        let sec705 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC705")
+            .expect("SEC705 should exist");
+        assert_eq!(sec705.default_presets, vec!["preview", "mcp"]);
+        assert_eq!(sec705.public_lane, "preview");
+
+        let sec641 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC641")
+            .expect("SEC641 should exist");
+        assert_eq!(sec641.default_presets, vec!["preview", "claude"]);
+        assert_eq!(sec641.public_lane, "preview");
+
+        let sec677 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC677")
+            .expect("SEC677 should exist");
+        assert_eq!(sec677.default_presets, vec!["preview", "claude"]);
+        assert_eq!(sec677.public_lane, "preview");
+
+        let sec739 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC739")
+            .expect("SEC739 should exist");
+        assert_eq!(sec739.default_presets, vec!["preview", "claude"]);
+        assert_eq!(sec739.public_lane, "preview");
+
         let sec352 = catalog
             .rules
             .iter()

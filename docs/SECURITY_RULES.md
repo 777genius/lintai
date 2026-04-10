@@ -27,11 +27,11 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC302 / MCP-PLAIN-HTTP-ENDPOINT` | Configuration contains an insecure http:// endpoint | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `suggestion` | `supply-chain` |
 | `SEC303 / MCP-CREDENTIAL-ENV-PASSTHROUGH` | MCP configuration passes through credential environment variables | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
 | `SEC304 / MCP-TLS-BYPASS` | Configuration disables TLS or certificate verification | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
-| `SEC305 / MCP-STATIC-AUTH` | Configuration embeds static authentication material in a connection or auth value | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC305 / MCP-STATIC-AUTH` | Configuration embeds static authentication material in a connection or auth value | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC306 / MCP-HIDDEN-INSTRUCTIONS` | JSON configuration description contains override-style hidden instructions | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
 | `SEC307 / MCP-SENSITIVE-ENV-REFERENCE` | Configuration forwards sensitive environment variable references | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `governance`, `mcp` |
 | `SEC308 / MCP-SUSPICIOUS-ENDPOINT` | Configuration points at a suspicious remote endpoint | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
-| `SEC309 / MCP-LITERAL-SECRET` | Configuration commits literal secret material in env, auth, or header values | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC309 / MCP-LITERAL-SECRET` | Configuration commits literal secret material in env, auth, or header values | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC310 / MCP-METADATA-HOST-LITERAL` | Configuration endpoint targets a metadata or private-network host literal | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC311 / PLUGIN-UNSAFE-PATH` | Cursor plugin manifest contains an unsafe absolute or parent-traversing path | `compat` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC312 / MD-PRIVATE-KEY` | Markdown contains committed private key material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `base`, `skills` |
@@ -356,112 +356,112 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC634` | Hook script accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC635` | Hook script writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC636` | Hook script writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC637` | MCP configuration command attempts destructive root deletion | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC638` | MCP configuration command accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC639` | MCP configuration command writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC640` | MCP configuration command writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC641` | Claude settings command hook attempts destructive root deletion | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC642` | Claude settings command hook accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC643` | Claude settings command hook writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC644` | Claude settings command hook writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC645` | Plugin hook command attempts destructive root deletion | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC646` | Plugin hook command accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC647` | Plugin hook command writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC648` | Plugin hook command writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC637` | MCP configuration command attempts destructive root deletion | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC638` | MCP configuration command accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC639` | MCP configuration command writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC640` | MCP configuration command writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC641` | Claude settings command hook attempts destructive root deletion | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC642` | Claude settings command hook accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC643` | Claude settings command hook writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC644` | Claude settings command hook writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC645` | Plugin hook command attempts destructive root deletion | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC646` | Plugin hook command accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC647` | Plugin hook command writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC648` | Plugin hook command writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC649` | Hook script manipulates cron persistence | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC650` | Hook script registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC651` | Hook script registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC652` | MCP configuration command manipulates cron persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC653` | MCP configuration command registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC654` | MCP configuration command registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC655` | Claude settings command hook manipulates cron persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC656` | Claude settings command hook registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC657` | Claude settings command hook registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC658` | Plugin hook command manipulates cron persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC659` | Plugin hook command registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC660` | Plugin hook command registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC652` | MCP configuration command manipulates cron persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC653` | MCP configuration command registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC654` | MCP configuration command registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC655` | Claude settings command hook manipulates cron persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC656` | Claude settings command hook registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC657` | Claude settings command hook registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC658` | Plugin hook command manipulates cron persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC659` | Plugin hook command registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC660` | Plugin hook command registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC661` | Hook script performs an insecure permission change | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC662` | Hook script manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC663` | Hook script manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC664` | MCP configuration command performs an insecure permission change | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC665` | MCP configuration command manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC666` | MCP configuration command manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC667` | Claude settings command hook performs an insecure permission change | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC668` | Claude settings command hook manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC669` | Claude settings command hook manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC670` | Plugin hook command performs an insecure permission change | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC671` | Plugin hook command manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC672` | Plugin hook command manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC664` | MCP configuration command performs an insecure permission change | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC665` | MCP configuration command manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC666` | MCP configuration command manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC667` | Claude settings command hook performs an insecure permission change | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC668` | Claude settings command hook manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC669` | Claude settings command hook manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC670` | Plugin hook command performs an insecure permission change | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC671` | Plugin hook command manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC672` | Plugin hook command manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC673` | Hook script posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC674` | MCP configuration command appears to send secret material over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC675` | MCP configuration command sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC676` | MCP configuration command posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC677` | Claude settings command hook appears to send secret material over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC678` | Claude settings command hook sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC679` | Claude settings command hook posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC680` | Plugin hook command appears to send secret material over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC681` | Plugin hook command sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC682` | Plugin hook command posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC674` | MCP configuration command appears to send secret material over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC675` | MCP configuration command sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC676` | MCP configuration command posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC677` | Claude settings command hook appears to send secret material over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC678` | Claude settings command hook sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC679` | Claude settings command hook posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC680` | Plugin hook command appears to send secret material over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC681` | Plugin hook command sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC682` | Plugin hook command posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC683` | Hook script transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC684` | MCP configuration command transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC685` | Claude settings command hook transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC686` | Plugin hook command transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC684` | MCP configuration command transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC685` | Claude settings command hook transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC686` | Plugin hook command transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC687` | Hook script reads local clipboard contents | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC688` | Hook script accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC689` | MCP configuration command reads local clipboard contents | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC690` | MCP configuration command accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC691` | Claude settings command hook reads local clipboard contents | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC692` | Claude settings command hook accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC693` | Plugin hook command reads local clipboard contents | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC694` | Plugin hook command accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC689` | MCP configuration command reads local clipboard contents | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC690` | MCP configuration command accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC691` | Claude settings command hook reads local clipboard contents | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC692` | Claude settings command hook accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC693` | Plugin hook command reads local clipboard contents | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC694` | Plugin hook command accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC695` | Hook script exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC696` | Hook script exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC697` | MCP configuration command exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC698` | MCP configuration command exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC699` | Claude settings command hook exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC700` | Claude settings command hook exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC701` | Plugin hook command exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC702` | Plugin hook command exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC697` | MCP configuration command exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC698` | MCP configuration command exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC699` | Claude settings command hook exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC700` | Claude settings command hook exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC701` | Plugin hook command exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC702` | Plugin hook command exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC703` | Hook script captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC704` | Hook script captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC705` | MCP configuration command captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC706` | MCP configuration command captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC707` | Claude settings command hook captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC708` | Claude settings command hook captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC709` | Plugin hook command captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC710` | Plugin hook command captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC705` | MCP configuration command captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC706` | MCP configuration command captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC707` | Claude settings command hook captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC708` | Claude settings command hook captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC709` | Plugin hook command captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC710` | Plugin hook command captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC711` | Hook script captures a camera image or webcam stream | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC712` | Hook script records microphone or audio input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC713` | Hook script captures and exfiltrates camera or webcam data | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC714` | Hook script records and exfiltrates microphone or audio input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC715` | MCP configuration command captures a webcam or camera image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC716` | MCP configuration command captures microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC717` | MCP configuration command captures and exfiltrates webcam or camera data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC718` | MCP configuration command captures and exfiltrates microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC719` | Claude settings command hook captures a webcam or camera image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC720` | Claude settings command hook captures microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC721` | Claude settings command hook captures and exfiltrates webcam or camera data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC722` | Claude settings command hook captures and exfiltrates microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC723` | Plugin hook command captures a webcam or camera image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC724` | Plugin hook command captures microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC725` | Plugin hook command captures and exfiltrates webcam or camera data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC726` | Plugin hook command captures and exfiltrates microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC715` | MCP configuration command captures a webcam or camera image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC716` | MCP configuration command captures microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC717` | MCP configuration command captures and exfiltrates webcam or camera data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC718` | MCP configuration command captures and exfiltrates microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC719` | Claude settings command hook captures a webcam or camera image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC720` | Claude settings command hook captures microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC721` | Claude settings command hook captures and exfiltrates webcam or camera data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC722` | Claude settings command hook captures and exfiltrates microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC723` | Plugin hook command captures a webcam or camera image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC724` | Plugin hook command captures microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC725` | Plugin hook command captures and exfiltrates webcam or camera data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC726` | Plugin hook command captures and exfiltrates microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC727` | Hook script captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC728` | Hook script captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC729` | MCP configuration command captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC730` | MCP configuration command captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC731` | Claude settings command hook captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC732` | Claude settings command hook captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC733` | Plugin hook command captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC734` | Plugin hook command captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC729` | MCP configuration command captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC730` | MCP configuration command captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC731` | Claude settings command hook captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC732` | Claude settings command hook captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC733` | Plugin hook command captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC734` | Plugin hook command captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC735` | Hook script dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC736` | Hook script dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC737` | MCP configuration command dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC738` | MCP configuration command dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC739` | Claude settings command hook dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC740` | Claude settings command hook dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC741` | Plugin hook command dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC742` | Plugin hook command dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC737` | MCP configuration command dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC738` | MCP configuration command dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC739` | Claude settings command hook dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC740` | Claude settings command hook dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC741` | Plugin hook command dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC742` | Plugin hook command dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC743` | package.json defines a dangerous install-time lifecycle script | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC744` | package.json installs a dependency from a git or forge shortcut source | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC745` | package.json uses an unbounded dependency version like * or latest | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
@@ -824,7 +824,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches literal static auth material embedded directly in configuration values.
@@ -900,7 +900,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches literal secret material committed into env, header, or auth-like JSON fields.
@@ -7864,7 +7864,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit `rm`-style destructive root deletion payloads.
@@ -7886,7 +7886,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for direct access to sensitive password and sudo policy files.
@@ -7908,7 +7908,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit writes to shell startup profile files.
@@ -7930,7 +7930,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit writes to SSH `authorized_keys`.
@@ -7952,7 +7952,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit `rm`-style destructive root deletion payloads.
@@ -7974,7 +7974,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for direct access to sensitive password and sudo policy files.
@@ -7996,7 +7996,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit writes to shell startup profile files.
@@ -8018,7 +8018,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit writes to SSH `authorized_keys`.
@@ -8040,7 +8040,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit `rm`-style destructive root deletion payloads.
@@ -8062,7 +8062,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for direct access to sensitive password and sudo policy files.
@@ -8084,7 +8084,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit writes to shell startup profile files.
@@ -8106,7 +8106,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit writes to SSH `authorized_keys`.
@@ -8194,7 +8194,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit cron persistence setup.
@@ -8216,7 +8216,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit systemd service registration or unit-file writes.
@@ -8238,7 +8238,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.
@@ -8260,7 +8260,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit cron persistence setup.
@@ -8282,7 +8282,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit systemd service registration or unit-file writes.
@@ -8304,7 +8304,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.
@@ -8326,7 +8326,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit cron persistence setup.
@@ -8348,7 +8348,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit systemd service registration or unit-file writes.
@@ -8370,7 +8370,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.
@@ -8458,7 +8458,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit insecure chmod payloads.
@@ -8480,7 +8480,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit setuid or setgid chmod payloads.
@@ -8502,7 +8502,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit Linux capability manipulation payloads.
@@ -8524,7 +8524,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit insecure chmod payloads.
@@ -8546,7 +8546,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit setuid or setgid chmod payloads.
@@ -8568,7 +8568,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit Linux capability manipulation payloads.
@@ -8590,7 +8590,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit insecure chmod payloads.
@@ -8612,7 +8612,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit setuid or setgid chmod payloads.
@@ -8634,7 +8634,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit Linux capability manipulation payloads.
@@ -8678,7 +8678,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit secret-bearing network exfil payloads.
@@ -8700,7 +8700,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for secret-bearing exfil over insecure HTTP.
@@ -8722,7 +8722,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for secret-bearing posts to webhook endpoints.
@@ -8744,7 +8744,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit secret-bearing network exfil payloads.
@@ -8766,7 +8766,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for secret-bearing exfil over insecure HTTP.
@@ -8788,7 +8788,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for secret-bearing posts to webhook endpoints.
@@ -8810,7 +8810,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit secret-bearing network exfil payloads.
@@ -8832,7 +8832,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for secret-bearing exfil over insecure HTTP.
@@ -8854,7 +8854,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for secret-bearing posts to webhook endpoints.
@@ -8898,7 +8898,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit transfer of sensitive credential files to remote destinations.
@@ -8920,7 +8920,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit transfer of sensitive credential files to remote destinations.
@@ -8942,7 +8942,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit transfer of sensitive credential files to remote destinations.
@@ -9008,7 +9008,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for clipboard-reading commands that can extract local user data.
@@ -9030,7 +9030,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for direct access to browser credential or cookie storage files.
@@ -9052,7 +9052,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for clipboard-reading behavior that can extract local user data.
@@ -9074,7 +9074,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for direct access to browser credential or cookie storage files.
@@ -9096,7 +9096,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for clipboard-reading behavior that can extract local user data.
@@ -9118,7 +9118,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for direct access to browser credential or cookie storage files.
@@ -9184,7 +9184,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for clipboard-reading commands that also transmit captured data to remote destinations.
@@ -9206,7 +9206,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for direct access to browser credential or cookie storage files combined with remote transfer behavior.
@@ -9228,7 +9228,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for clipboard-reading behavior that also transmits captured data to remote destinations.
@@ -9250,7 +9250,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for direct access to browser credential or cookie storage files combined with remote transfer behavior.
@@ -9272,7 +9272,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for clipboard reads that also transmit captured data to remote destinations.
@@ -9294,7 +9294,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for direct access to browser credential or cookie storage files combined with remote transfer behavior.
@@ -9360,7 +9360,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit screen capture utilities.
@@ -9382,7 +9382,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit screen capture utilities combined with remote transfer behavior.
@@ -9404,7 +9404,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit screen capture utilities.
@@ -9426,7 +9426,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit screen capture utilities combined with remote transfer behavior.
@@ -9448,7 +9448,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit screen capture utilities.
@@ -9470,7 +9470,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit screen capture utilities combined with remote transfer behavior.
@@ -9580,7 +9580,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit webcam or camera capture utilities.
@@ -9602,7 +9602,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit microphone recording utilities.
@@ -9624,7 +9624,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit webcam or camera capture utilities combined with remote transfer behavior.
@@ -9646,7 +9646,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit microphone recording utilities combined with remote transfer behavior.
@@ -9668,7 +9668,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit webcam or camera capture utilities.
@@ -9690,7 +9690,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit microphone recording utilities.
@@ -9712,7 +9712,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit webcam or camera capture utilities combined with remote transfer behavior.
@@ -9734,7 +9734,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit microphone recording utilities combined with remote transfer behavior.
@@ -9756,7 +9756,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit webcam or camera capture utilities.
@@ -9778,7 +9778,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit microphone recording utilities.
@@ -9800,7 +9800,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit webcam or camera capture utilities combined with remote transfer behavior.
@@ -9822,7 +9822,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit microphone recording utilities combined with remote transfer behavior.
@@ -9888,7 +9888,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit keystroke capture utilities or keylogger markers.
@@ -9910,7 +9910,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.
@@ -9932,7 +9932,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit keystroke capture utilities or keylogger markers.
@@ -9954,7 +9954,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.
@@ -9976,7 +9976,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit keystroke capture utilities or keylogger markers.
@@ -9998,7 +9998,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.
@@ -10064,7 +10064,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit environment or shell-state enumeration commands.
@@ -10086,7 +10086,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit environment or shell-state enumeration commands combined with remote transfer behavior.
@@ -10108,7 +10108,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit environment or shell-state enumeration commands.
@@ -10130,7 +10130,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `preview`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit environment or shell-state enumeration commands combined with remote transfer behavior.
@@ -10152,7 +10152,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit environment or shell-state enumeration commands.
@@ -10174,7 +10174,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit environment or shell-state enumeration commands combined with remote transfer behavior.

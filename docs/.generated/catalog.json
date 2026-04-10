@@ -43,8 +43,6 @@
         "lintai-ai-security:SEC204",
         "lintai-ai-security:SEC205",
         "lintai-ai-security:SEC206",
-        "lintai-ai-security:SEC305",
-        "lintai-ai-security:SEC309",
         "lintai-ai-security:SEC312",
         "lintai-ai-security:SEC321",
         "lintai-ai-security:SEC329",
@@ -53,112 +51,28 @@
         "lintai-ai-security:SEC634",
         "lintai-ai-security:SEC635",
         "lintai-ai-security:SEC636",
-        "lintai-ai-security:SEC637",
-        "lintai-ai-security:SEC638",
-        "lintai-ai-security:SEC639",
-        "lintai-ai-security:SEC640",
-        "lintai-ai-security:SEC641",
-        "lintai-ai-security:SEC642",
-        "lintai-ai-security:SEC643",
-        "lintai-ai-security:SEC644",
-        "lintai-ai-security:SEC645",
-        "lintai-ai-security:SEC646",
-        "lintai-ai-security:SEC647",
-        "lintai-ai-security:SEC648",
         "lintai-ai-security:SEC649",
         "lintai-ai-security:SEC650",
         "lintai-ai-security:SEC651",
-        "lintai-ai-security:SEC652",
-        "lintai-ai-security:SEC653",
-        "lintai-ai-security:SEC654",
-        "lintai-ai-security:SEC655",
-        "lintai-ai-security:SEC656",
-        "lintai-ai-security:SEC657",
-        "lintai-ai-security:SEC658",
-        "lintai-ai-security:SEC659",
-        "lintai-ai-security:SEC660",
         "lintai-ai-security:SEC661",
         "lintai-ai-security:SEC662",
         "lintai-ai-security:SEC663",
-        "lintai-ai-security:SEC664",
-        "lintai-ai-security:SEC665",
-        "lintai-ai-security:SEC666",
-        "lintai-ai-security:SEC667",
-        "lintai-ai-security:SEC668",
-        "lintai-ai-security:SEC669",
-        "lintai-ai-security:SEC670",
-        "lintai-ai-security:SEC671",
-        "lintai-ai-security:SEC672",
         "lintai-ai-security:SEC673",
-        "lintai-ai-security:SEC674",
-        "lintai-ai-security:SEC675",
-        "lintai-ai-security:SEC676",
-        "lintai-ai-security:SEC677",
-        "lintai-ai-security:SEC678",
-        "lintai-ai-security:SEC679",
-        "lintai-ai-security:SEC680",
-        "lintai-ai-security:SEC681",
-        "lintai-ai-security:SEC682",
         "lintai-ai-security:SEC683",
-        "lintai-ai-security:SEC684",
-        "lintai-ai-security:SEC685",
-        "lintai-ai-security:SEC686",
         "lintai-ai-security:SEC687",
         "lintai-ai-security:SEC688",
-        "lintai-ai-security:SEC689",
-        "lintai-ai-security:SEC690",
-        "lintai-ai-security:SEC691",
-        "lintai-ai-security:SEC692",
-        "lintai-ai-security:SEC693",
-        "lintai-ai-security:SEC694",
         "lintai-ai-security:SEC695",
         "lintai-ai-security:SEC696",
-        "lintai-ai-security:SEC697",
-        "lintai-ai-security:SEC698",
-        "lintai-ai-security:SEC699",
-        "lintai-ai-security:SEC700",
-        "lintai-ai-security:SEC701",
-        "lintai-ai-security:SEC702",
         "lintai-ai-security:SEC703",
         "lintai-ai-security:SEC704",
-        "lintai-ai-security:SEC705",
-        "lintai-ai-security:SEC706",
-        "lintai-ai-security:SEC707",
-        "lintai-ai-security:SEC708",
-        "lintai-ai-security:SEC709",
-        "lintai-ai-security:SEC710",
         "lintai-ai-security:SEC711",
         "lintai-ai-security:SEC712",
         "lintai-ai-security:SEC713",
         "lintai-ai-security:SEC714",
-        "lintai-ai-security:SEC715",
-        "lintai-ai-security:SEC716",
-        "lintai-ai-security:SEC717",
-        "lintai-ai-security:SEC718",
-        "lintai-ai-security:SEC719",
-        "lintai-ai-security:SEC720",
-        "lintai-ai-security:SEC721",
-        "lintai-ai-security:SEC722",
-        "lintai-ai-security:SEC723",
-        "lintai-ai-security:SEC724",
-        "lintai-ai-security:SEC725",
-        "lintai-ai-security:SEC726",
         "lintai-ai-security:SEC727",
         "lintai-ai-security:SEC728",
-        "lintai-ai-security:SEC729",
-        "lintai-ai-security:SEC730",
-        "lintai-ai-security:SEC731",
-        "lintai-ai-security:SEC732",
-        "lintai-ai-security:SEC733",
-        "lintai-ai-security:SEC734",
         "lintai-ai-security:SEC735",
-        "lintai-ai-security:SEC736",
-        "lintai-ai-security:SEC737",
-        "lintai-ai-security:SEC738",
-        "lintai-ai-security:SEC739",
-        "lintai-ai-security:SEC740",
-        "lintai-ai-security:SEC741",
-        "lintai-ai-security:SEC742"
+        "lintai-ai-security:SEC736"
       ],
       "canonicalPath": "/presets/base"
     },
@@ -175,8 +89,10 @@
         "lintai-ai-security:SEC104",
         "lintai-ai-security:SEC105",
         "lintai-ai-security:SEC301",
+        "lintai-ai-security:SEC305",
         "lintai-ai-security:SEC306",
         "lintai-ai-security:SEC308",
+        "lintai-ai-security:SEC309",
         "lintai-ai-security:SEC310",
         "lintai-ai-security:SEC313",
         "lintai-ai-security:SEC335",
@@ -186,7 +102,91 @@
         "lintai-ai-security:SEC350",
         "lintai-ai-security:SEC351",
         "lintai-ai-security:SEC422",
-        "lintai-ai-security:SEC446"
+        "lintai-ai-security:SEC446",
+        "lintai-ai-security:SEC637",
+        "lintai-ai-security:SEC638",
+        "lintai-ai-security:SEC639",
+        "lintai-ai-security:SEC640",
+        "lintai-ai-security:SEC641",
+        "lintai-ai-security:SEC642",
+        "lintai-ai-security:SEC643",
+        "lintai-ai-security:SEC644",
+        "lintai-ai-security:SEC645",
+        "lintai-ai-security:SEC646",
+        "lintai-ai-security:SEC647",
+        "lintai-ai-security:SEC648",
+        "lintai-ai-security:SEC652",
+        "lintai-ai-security:SEC653",
+        "lintai-ai-security:SEC654",
+        "lintai-ai-security:SEC655",
+        "lintai-ai-security:SEC656",
+        "lintai-ai-security:SEC657",
+        "lintai-ai-security:SEC658",
+        "lintai-ai-security:SEC659",
+        "lintai-ai-security:SEC660",
+        "lintai-ai-security:SEC664",
+        "lintai-ai-security:SEC665",
+        "lintai-ai-security:SEC666",
+        "lintai-ai-security:SEC667",
+        "lintai-ai-security:SEC668",
+        "lintai-ai-security:SEC669",
+        "lintai-ai-security:SEC670",
+        "lintai-ai-security:SEC671",
+        "lintai-ai-security:SEC672",
+        "lintai-ai-security:SEC674",
+        "lintai-ai-security:SEC675",
+        "lintai-ai-security:SEC676",
+        "lintai-ai-security:SEC677",
+        "lintai-ai-security:SEC678",
+        "lintai-ai-security:SEC679",
+        "lintai-ai-security:SEC680",
+        "lintai-ai-security:SEC681",
+        "lintai-ai-security:SEC682",
+        "lintai-ai-security:SEC684",
+        "lintai-ai-security:SEC685",
+        "lintai-ai-security:SEC686",
+        "lintai-ai-security:SEC689",
+        "lintai-ai-security:SEC690",
+        "lintai-ai-security:SEC691",
+        "lintai-ai-security:SEC692",
+        "lintai-ai-security:SEC693",
+        "lintai-ai-security:SEC694",
+        "lintai-ai-security:SEC697",
+        "lintai-ai-security:SEC698",
+        "lintai-ai-security:SEC699",
+        "lintai-ai-security:SEC700",
+        "lintai-ai-security:SEC701",
+        "lintai-ai-security:SEC702",
+        "lintai-ai-security:SEC705",
+        "lintai-ai-security:SEC706",
+        "lintai-ai-security:SEC707",
+        "lintai-ai-security:SEC708",
+        "lintai-ai-security:SEC709",
+        "lintai-ai-security:SEC710",
+        "lintai-ai-security:SEC715",
+        "lintai-ai-security:SEC716",
+        "lintai-ai-security:SEC717",
+        "lintai-ai-security:SEC718",
+        "lintai-ai-security:SEC719",
+        "lintai-ai-security:SEC720",
+        "lintai-ai-security:SEC721",
+        "lintai-ai-security:SEC722",
+        "lintai-ai-security:SEC723",
+        "lintai-ai-security:SEC724",
+        "lintai-ai-security:SEC725",
+        "lintai-ai-security:SEC726",
+        "lintai-ai-security:SEC729",
+        "lintai-ai-security:SEC730",
+        "lintai-ai-security:SEC731",
+        "lintai-ai-security:SEC732",
+        "lintai-ai-security:SEC733",
+        "lintai-ai-security:SEC734",
+        "lintai-ai-security:SEC737",
+        "lintai-ai-security:SEC738",
+        "lintai-ai-security:SEC739",
+        "lintai-ai-security:SEC740",
+        "lintai-ai-security:SEC741",
+        "lintai-ai-security:SEC742"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -1471,7 +1471,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -1607,7 +1607,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14124,7 +14124,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14164,7 +14164,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14204,7 +14204,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14244,7 +14244,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14284,7 +14284,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -14324,7 +14324,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -14364,7 +14364,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -14404,7 +14404,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -14444,7 +14444,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14484,7 +14484,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14524,7 +14524,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14564,7 +14564,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14721,7 +14721,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14761,7 +14761,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14801,7 +14801,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14841,7 +14841,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -14881,7 +14881,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -14921,7 +14921,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -14961,7 +14961,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15001,7 +15001,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15041,7 +15041,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15198,7 +15198,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15238,7 +15238,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15278,7 +15278,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15318,7 +15318,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -15358,7 +15358,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -15398,7 +15398,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -15438,7 +15438,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15478,7 +15478,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15518,7 +15518,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15597,7 +15597,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15637,7 +15637,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15677,7 +15677,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15717,7 +15717,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -15757,7 +15757,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -15797,7 +15797,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -15837,7 +15837,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15877,7 +15877,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15917,7 +15917,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15997,7 +15997,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16038,7 +16038,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -16079,7 +16079,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16198,7 +16198,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16238,7 +16238,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16278,7 +16278,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -16318,7 +16318,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -16358,7 +16358,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16398,7 +16398,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16516,7 +16516,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16556,7 +16556,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16596,7 +16596,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -16636,7 +16636,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -16676,7 +16676,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16716,7 +16716,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16835,7 +16835,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16876,7 +16876,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16916,7 +16916,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -16957,7 +16957,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -16997,7 +16997,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17038,7 +17038,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17236,7 +17236,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17277,7 +17277,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17318,7 +17318,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17358,7 +17358,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17398,7 +17398,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -17439,7 +17439,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -17480,7 +17480,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -17520,7 +17520,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -17560,7 +17560,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17601,7 +17601,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17642,7 +17642,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17682,7 +17682,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17801,7 +17801,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17842,7 +17842,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17882,7 +17882,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -17923,7 +17923,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -17963,7 +17963,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -18004,7 +18004,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -18125,7 +18125,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -18167,7 +18167,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -18208,7 +18208,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -18250,7 +18250,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -18291,7 +18291,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -18333,7 +18333,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",

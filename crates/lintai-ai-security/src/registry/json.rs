@@ -2194,7 +2194,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: StaticAuthExposureConfigRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches literal static auth material embedded directly in configuration values.",
@@ -2262,7 +2262,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: JsonLiteralSecretRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches literal secret material committed into env, header, or auth-like JSON fields.",
@@ -3958,7 +3958,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpRootDeleteRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit `rm`-style destructive root deletion payloads.",
@@ -3978,7 +3978,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpPasswordFileAccessRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for direct access to sensitive password and sudo policy files.",
@@ -3998,7 +3998,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpShellProfileWriteRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit writes to shell startup profile files.",
@@ -4018,7 +4018,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAuthorizedKeysWriteRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit writes to SSH `authorized_keys`.",
@@ -4038,7 +4038,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookRootDeleteRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit `rm`-style destructive root deletion payloads.",
@@ -4058,7 +4058,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookPasswordFileAccessRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for direct access to sensitive password and sudo policy files.",
@@ -4078,7 +4078,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookShellProfileWriteRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit writes to shell startup profile files.",
@@ -4098,7 +4098,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookAuthorizedKeysWriteRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit writes to SSH `authorized_keys`.",
@@ -4118,7 +4118,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpCronPersistenceRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit cron persistence setup.",
@@ -4138,7 +4138,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpSystemdServiceRegistrationRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit systemd service registration or unit-file writes.",
@@ -4158,7 +4158,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpLaunchdRegistrationRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.",
@@ -4178,7 +4178,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookCronPersistenceRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit cron persistence setup.",
@@ -4198,7 +4198,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookSystemdServiceRegistrationRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit systemd service registration or unit-file writes.",
@@ -4218,7 +4218,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookLaunchdRegistrationRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.",
@@ -4238,7 +4238,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpInsecurePermissionChangeRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit insecure chmod payloads.",
@@ -4258,7 +4258,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpSetuidSetgidRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit setuid or setgid chmod payloads.",
@@ -4278,7 +4278,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpLinuxCapabilityManipulationRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit Linux capability manipulation payloads.",
@@ -4298,7 +4298,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookInsecurePermissionChangeRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit insecure chmod payloads.",
@@ -4318,7 +4318,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookSetuidSetgidRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit setuid or setgid chmod payloads.",
@@ -4338,7 +4338,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookLinuxCapabilityManipulationRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit Linux capability manipulation payloads.",
@@ -4358,7 +4358,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpSecretExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit secret-bearing network exfil payloads.",
@@ -4378,7 +4378,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpPlainHttpSecretExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for secret-bearing exfil over insecure HTTP.",
@@ -4398,7 +4398,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpWebhookSecretExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for secret-bearing posts to webhook endpoints.",
@@ -4418,7 +4418,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookSecretExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit secret-bearing network exfil payloads.",
@@ -4438,7 +4438,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookPlainHttpSecretExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for secret-bearing exfil over insecure HTTP.",
@@ -4458,7 +4458,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookWebhookSecretExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for secret-bearing posts to webhook endpoints.",
@@ -4478,7 +4478,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpSensitiveFileExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit transfer of sensitive credential files to remote destinations.",
@@ -4501,7 +4501,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookSensitiveFileExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit transfer of sensitive credential files to remote destinations.",
@@ -4524,7 +4524,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpClipboardReadRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for clipboard-reading commands that can extract local user data.",
@@ -4542,7 +4542,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpBrowserSecretStoreAccessRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for direct access to browser credential or cookie storage files.",
@@ -4562,7 +4562,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookClipboardReadRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for clipboard-reading behavior that can extract local user data.",
@@ -4580,7 +4580,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookBrowserSecretStoreAccessRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for direct access to browser credential or cookie storage files.",
@@ -4600,7 +4600,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpClipboardExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for clipboard-reading commands that also transmit captured data to remote destinations.",
@@ -4620,7 +4620,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpBrowserSecretStoreExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for direct access to browser credential or cookie storage files combined with remote transfer behavior.",
@@ -4640,7 +4640,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookClipboardExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for clipboard reads that also transmit captured data to remote destinations.",
@@ -4660,7 +4660,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookBrowserSecretStoreExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for direct access to browser credential or cookie storage files combined with remote transfer behavior.",
@@ -4680,7 +4680,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpScreenCaptureRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit screen capture utilities.",
@@ -4703,7 +4703,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpScreenCaptureExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit screen capture utilities combined with remote transfer behavior.",
@@ -4723,7 +4723,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookScreenCaptureRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit screen capture utilities.",
@@ -4746,7 +4746,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookScreenCaptureExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit screen capture utilities combined with remote transfer behavior.",
@@ -4766,7 +4766,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpCameraCaptureRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit webcam or camera capture utilities.",
@@ -4789,7 +4789,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpMicrophoneCaptureRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit microphone recording utilities.",
@@ -4812,7 +4812,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpCameraCaptureExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit webcam or camera capture utilities combined with remote transfer behavior.",
@@ -4832,7 +4832,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpMicrophoneCaptureExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit microphone recording utilities combined with remote transfer behavior.",
@@ -4852,7 +4852,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookCameraCaptureRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit webcam or camera capture utilities.",
@@ -4875,7 +4875,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookMicrophoneCaptureRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit microphone recording utilities.",
@@ -4898,7 +4898,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookCameraCaptureExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit webcam or camera capture utilities combined with remote transfer behavior.",
@@ -4918,7 +4918,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookMicrophoneCaptureExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit microphone recording utilities combined with remote transfer behavior.",
@@ -4938,7 +4938,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpKeyloggingRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit keystroke capture utilities or keylogger markers.",
@@ -4958,7 +4958,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpKeyloggingExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.",
@@ -4978,7 +4978,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookKeyloggingRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit keystroke capture utilities or keylogger markers.",
@@ -5001,7 +5001,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookKeyloggingExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.",
@@ -5021,7 +5021,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpEnvironmentDumpRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit environment or shell-state enumeration commands.",
@@ -5045,7 +5045,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpEnvironmentDumpExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP launch paths for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
@@ -5068,7 +5068,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookEnvironmentDumpRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit environment or shell-state enumeration commands.",
@@ -5092,7 +5092,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookEnvironmentDumpExfilRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
