@@ -852,6 +852,102 @@ fn finds_mcp_sandbox_disabled_with_governance_preset() {
 }
 
 #[test]
+fn mcp_plain_http_endpoint_requires_supply_chain_preset() {
+    let summary = scan_fixture(
+        "mcp.json",
+        "{\"endpoint\":\"http://example.test/mcp\"}",
+        &["base", "preview"],
+        "lintai-sec302-preview",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC302")
+    );
+}
+
+#[test]
+fn finds_mcp_plain_http_endpoint_with_supply_chain_preset() {
+    let summary = scan_preview_supply_chain_json_fixture(
+        "mcp.json",
+        "{\"endpoint\":\"http://example.test/mcp\"}",
+    );
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC302")
+    );
+}
+
+#[test]
+fn mcp_unpinned_docker_image_requires_supply_chain_preset() {
+    let summary = scan_fixture(
+        "mcp.json",
+        "{\"command\":\"docker\",\"args\":[\"run\",\"ghcr.io/acme/mcp-server:1.2.3\"]}",
+        &["base", "preview"],
+        "lintai-sec337-preview",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC337")
+    );
+}
+
+#[test]
+fn finds_mcp_unpinned_docker_image_with_supply_chain_preset() {
+    let summary = scan_preview_supply_chain_json_fixture(
+        "mcp.json",
+        "{\"command\":\"docker\",\"args\":[\"run\",\"ghcr.io/acme/mcp-server:1.2.3\"]}",
+    );
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC337")
+    );
+}
+
+#[test]
+fn plugin_hook_mutable_launcher_requires_supply_chain_preset() {
+    let summary = scan_fixture(
+        ".cursor-plugin/hooks.json",
+        "{\"hooks\":{\"stop\":[{\"command\":\"npx @acme/plugin-hook\"}]}}",
+        &["base", "preview"],
+        "lintai-sec343-preview",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC343")
+    );
+}
+
+#[test]
+fn finds_plugin_hook_mutable_launcher_with_supply_chain_preset() {
+    let summary = scan_preview_supply_chain_json_fixture(
+        ".cursor-plugin/hooks.json",
+        "{\"hooks\":{\"stop\":[{\"command\":\"npx @acme/plugin-hook\"}]}}",
+    );
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC343")
+    );
+}
+
+#[test]
 fn ignores_markdown_remote_bridge_uvx_cli_example() {
     let provider = AiSecurityProvider::default();
     let content = "claude mcp add exa uvx mcp-remote https://mcp.exa.ai/mcp\n";
@@ -2730,6 +2826,18 @@ fn scan_preview_governance_mcp_fixture(
         content,
         &["base", "preview", "governance"],
         "lintai-sec394-preview",
+    )
+}
+
+fn scan_preview_supply_chain_json_fixture(
+    relative_path: &str,
+    content: &str,
+) -> lintai_engine::ScanSummary {
+    scan_fixture(
+        relative_path,
+        content,
+        &["base", "preview", "supply-chain"],
+        "lintai-sec302-preview",
     )
 }
 

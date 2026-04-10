@@ -122,6 +122,27 @@ fn shipped_rules_have_expected_default_preset_mapping() {
     assert_eq!(sec324.default_presets(), vec!["supply-chain"]);
     assert_eq!(sec324.public_lane(), PublicLane::SupplyChain);
 
+    let sec302 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC302")
+        .unwrap();
+    assert_eq!(sec302.default_presets(), vec!["supply-chain"]);
+    assert_eq!(sec302.public_lane(), PublicLane::SupplyChain);
+
+    let sec304 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC304")
+        .unwrap();
+    assert_eq!(sec304.default_presets(), vec!["supply-chain"]);
+    assert_eq!(sec304.public_lane(), PublicLane::SupplyChain);
+
+    let sec331 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC331")
+        .unwrap();
+    assert_eq!(sec331.default_presets(), vec!["supply-chain"]);
+    assert_eq!(sec331.public_lane(), PublicLane::SupplyChain);
+
     let sec328 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC328")
@@ -156,6 +177,34 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec347.default_presets(), vec!["supply-chain"]);
     assert_eq!(sec347.public_lane(), PublicLane::SupplyChain);
+
+    let sec337 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC337")
+        .unwrap();
+    assert_eq!(sec337.default_presets(), vec!["supply-chain"]);
+    assert_eq!(sec337.public_lane(), PublicLane::SupplyChain);
+
+    let sec343 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC343")
+        .unwrap();
+    assert_eq!(sec343.default_presets(), vec!["supply-chain"]);
+    assert_eq!(sec343.public_lane(), PublicLane::SupplyChain);
+
+    let sec345 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC345")
+        .unwrap();
+    assert_eq!(sec345.default_presets(), vec!["supply-chain"]);
+    assert_eq!(sec345.public_lane(), PublicLane::SupplyChain);
+
+    let sec346 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC346")
+        .unwrap();
+    assert_eq!(sec346.default_presets(), vec!["supply-chain"]);
+    assert_eq!(sec346.public_lane(), PublicLane::SupplyChain);
 
     let sec348 = entries
         .iter()

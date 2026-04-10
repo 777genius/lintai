@@ -44,9 +44,7 @@
         "lintai-ai-security:SEC205",
         "lintai-ai-security:SEC206",
         "lintai-ai-security:SEC301",
-        "lintai-ai-security:SEC302",
         "lintai-ai-security:SEC303",
-        "lintai-ai-security:SEC304",
         "lintai-ai-security:SEC305",
         "lintai-ai-security:SEC309",
         "lintai-ai-security:SEC310",
@@ -63,17 +61,12 @@
         "lintai-ai-security:SEC322",
         "lintai-ai-security:SEC329",
         "lintai-ai-security:SEC330",
-        "lintai-ai-security:SEC331",
-        "lintai-ai-security:SEC337",
         "lintai-ai-security:SEC338",
         "lintai-ai-security:SEC339",
         "lintai-ai-security:SEC340",
         "lintai-ai-security:SEC341",
         "lintai-ai-security:SEC342",
-        "lintai-ai-security:SEC343",
         "lintai-ai-security:SEC344",
-        "lintai-ai-security:SEC345",
-        "lintai-ai-security:SEC346",
         "lintai-ai-security:SEC422",
         "lintai-ai-security:SEC446",
         "lintai-ai-security:SEC633",
@@ -265,9 +258,7 @@
       "extends": [],
       "ruleIds": [
         "lintai-ai-security:SEC301",
-        "lintai-ai-security:SEC302",
         "lintai-ai-security:SEC303",
-        "lintai-ai-security:SEC304",
         "lintai-ai-security:SEC305",
         "lintai-ai-security:SEC306",
         "lintai-ai-security:SEC307",
@@ -287,15 +278,10 @@
         "lintai-ai-security:SEC323",
         "lintai-ai-security:SEC329",
         "lintai-ai-security:SEC330",
-        "lintai-ai-security:SEC331",
         "lintai-ai-security:SEC336",
-        "lintai-ai-security:SEC337",
         "lintai-ai-security:SEC338",
         "lintai-ai-security:SEC339",
-        "lintai-ai-security:SEC343",
         "lintai-ai-security:SEC344",
-        "lintai-ai-security:SEC345",
-        "lintai-ai-security:SEC346",
         "lintai-ai-security:SEC394",
         "lintai-ai-security:SEC395",
         "lintai-ai-security:SEC396",
@@ -836,11 +822,18 @@
       "description": "Sidecar supply-chain hardening rules, including GitHub Actions workflow checks.",
       "extends": [],
       "ruleIds": [
+        "lintai-ai-security:SEC302",
+        "lintai-ai-security:SEC304",
         "lintai-ai-security:SEC324",
         "lintai-ai-security:SEC325",
         "lintai-ai-security:SEC326",
         "lintai-ai-security:SEC327",
         "lintai-ai-security:SEC328",
+        "lintai-ai-security:SEC331",
+        "lintai-ai-security:SEC337",
+        "lintai-ai-security:SEC343",
+        "lintai-ai-security:SEC345",
+        "lintai-ai-security:SEC346",
         "lintai-ai-security:SEC347",
         "lintai-ai-security:SEC348",
         "lintai-ai-security:SEC417",
@@ -1351,7 +1344,7 @@
       "slug": "sec302",
       "canonicalPath": "/rules/lintai-ai-security/sec302",
       "summary": "Configuration contains an insecure http:// endpoint",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -1360,8 +1353,7 @@
       "detectionClass": "structural",
       "remediationSupport": "suggestion",
       "defaultPresets": [
-        "base",
-        "mcp"
+        "supply-chain"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -1377,7 +1369,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals precise http:// endpoint span resolution from parsed JSON location map."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -1431,7 +1423,7 @@
       "slug": "sec304",
       "canonicalPath": "/rules/lintai-ai-security/sec304",
       "summary": "Configuration disables TLS or certificate verification",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -1440,8 +1432,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
-        "mcp"
+        "supply-chain"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -1457,7 +1448,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals boolean and key observation for trust-verification disable settings."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -2451,7 +2442,7 @@
       "slug": "sec331",
       "canonicalPath": "/rules/lintai-ai-security/sec331",
       "summary": "MCP configuration command disables TLS verification in a network-capable execution path",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -2460,8 +2451,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
-        "mcp"
+        "supply-chain"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -2477,7 +2467,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command/args string analysis over ArtifactKind::McpConfig objects gated by network markers plus TLS-bypass tokens."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -2555,7 +2545,7 @@
       "slug": "sec337",
       "canonicalPath": "/rules/lintai-ai-security/sec337",
       "summary": "MCP configuration launches Docker with an image reference that is not digest-pinned",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -2564,8 +2554,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
-        "mcp"
+        "supply-chain"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -2581,7 +2570,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals docker run argument analysis over ArtifactKind::McpConfig objects, limited to command == docker plus args beginning with run."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -2796,7 +2785,7 @@
       "slug": "sec343",
       "canonicalPath": "/rules/lintai-ai-security/sec343",
       "summary": "Plugin hook command uses a mutable package launcher",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -2805,8 +2794,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
-        "mcp"
+        "supply-chain"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -2822,7 +2810,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks objects limited to actual hook command values."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -2876,7 +2864,7 @@
       "slug": "sec345",
       "canonicalPath": "/rules/lintai-ai-security/sec345",
       "summary": "Plugin hook command disables TLS verification in a network-capable execution path",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -2885,8 +2873,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
-        "mcp"
+        "supply-chain"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -2902,7 +2889,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks objects gated by network markers plus TLS-bypass tokens."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -2916,7 +2903,7 @@
       "slug": "sec346",
       "canonicalPath": "/rules/lintai-ai-security/sec346",
       "summary": "MCP configuration forces Docker to refresh from a mutable registry source",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -2925,8 +2912,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
-        "mcp"
+        "supply-chain"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -2942,7 +2928,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals docker run argument analysis over ArtifactKind::McpConfig objects, limited to explicit --pull=always or --pull always forms."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {

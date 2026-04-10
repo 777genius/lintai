@@ -4422,7 +4422,7 @@ fn existing_mcp_rules_apply_to_claude_mcp_json_variants() {
     )
     .unwrap();
 
-    let config = config_with_presets(&temp_dir, &["base", "mcp"]);
+    let config = config_with_presets(&temp_dir, &["base", "mcp", "supply-chain"]);
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))
@@ -4450,7 +4450,7 @@ fn existing_mcp_rules_apply_to_vscode_mcp_json_variants() {
     )
     .unwrap();
 
-    let config = config_with_presets(&temp_dir, &["base", "mcp"]);
+    let config = config_with_presets(&temp_dir, &["base", "mcp", "supply-chain"]);
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))
@@ -4478,7 +4478,7 @@ fn fixture_like_expanded_mcp_paths_do_not_emit_mcp_findings() {
     )
     .unwrap();
 
-    let config = config_with_presets(&temp_dir, &["base", "mcp"]);
+    let config = config_with_presets(&temp_dir, &["base", "mcp", "supply-chain"]);
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))
@@ -4531,7 +4531,7 @@ fn existing_mcp_rules_apply_to_gemini_extension_variants() {
     )
     .unwrap();
 
-    let config = config_with_presets(&temp_dir, &["base", "mcp"]);
+    let config = config_with_presets(&temp_dir, &["base", "mcp", "supply-chain"]);
     let engine = EngineBuilder::default()
         .with_config(config)
         .with_suppressions(Arc::new(NoopSuppressionMatcher))

@@ -24,9 +24,9 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC205 / HOOK-STATIC-AUTH` | Hook script embeds static authentication material in a network call | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC206 / HOOK-BASE64-EXEC` | Hook script decodes a base64 payload and executes it | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
 | `SEC301 / MCP-SHELL-WRAPPER` | MCP configuration shells out through sh -c or bash -c | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC302 / MCP-PLAIN-HTTP-ENDPOINT` | Configuration contains an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `suggestion` | `base`, `mcp` |
+| `SEC302 / MCP-PLAIN-HTTP-ENDPOINT` | Configuration contains an insecure http:// endpoint | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `suggestion` | `supply-chain` |
 | `SEC303 / MCP-CREDENTIAL-ENV-PASSTHROUGH` | MCP configuration passes through credential environment variables | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC304 / MCP-TLS-BYPASS` | Configuration disables TLS or certificate verification | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC304 / MCP-TLS-BYPASS` | Configuration disables TLS or certificate verification | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC305 / MCP-STATIC-AUTH` | Configuration embeds static authentication material in a connection or auth value | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC306 / MCP-HIDDEN-INSTRUCTIONS` | JSON configuration description contains override-style hidden instructions | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
 | `SEC307 / MCP-SENSITIVE-ENV-REFERENCE` | Configuration forwards sensitive environment variable references | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
@@ -53,19 +53,19 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC328 / GHA-WRITE-CAPABLE-THIRD-PARTY-ACTION` | GitHub Actions workflow combines explicit write-capable permissions with a third-party action | `supply-chain` | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
 | `SEC329 / MCP-MUTABLE-LAUNCHER` | MCP configuration launches tooling through a mutable package runner | `recommended` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `recommended`, `base`, `mcp` |
 | `SEC330 / MCP-DOWNLOAD-EXEC` | MCP configuration command downloads remote content and pipes it into a shell | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC331 / MCP-TLS-BYPASS` | MCP configuration command disables TLS verification in a network-capable execution path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC331 / MCP-TLS-BYPASS` | MCP configuration command disables TLS verification in a network-capable execution path | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC335 / MD-METADATA-SERVICE-ACCESS` | AI-native markdown contains a direct cloud metadata-service access example | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC336 / MCP-BROAD-ENVFILE` | Repo-local MCP client config loads a broad dotenv-style envFile | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC337 / MCP-DOCKER-UNPINNED-IMAGE` | MCP configuration launches Docker with an image reference that is not digest-pinned | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC337 / MCP-DOCKER-UNPINNED-IMAGE` | MCP configuration launches Docker with an image reference that is not digest-pinned | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC338 / MCP-DOCKER-SENSITIVE-MOUNT` | MCP configuration launches Docker with a bind mount of sensitive host material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC339 / MCP-DOCKER-HOST-ESCAPE` | MCP configuration launches Docker with a host-escape or privileged runtime flag | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC340 / CLAUDE-HOOK-MUTABLE-LAUNCHER` | Claude settings command hook uses a mutable package launcher | `recommended` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `recommended`, `base`, `claude` |
 | `SEC341 / CLAUDE-HOOK-DOWNLOAD-EXEC` | Claude settings command hook downloads remote content and pipes it into a shell | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
 | `SEC342 / CLAUDE-HOOK-TLS-BYPASS` | Claude settings command hook disables TLS verification in a network-capable execution path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC343 / PLUGIN-HOOK-MUTABLE-LAUNCHER` | Plugin hook command uses a mutable package launcher | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC343 / PLUGIN-HOOK-MUTABLE-LAUNCHER` | Plugin hook command uses a mutable package launcher | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC344 / PLUGIN-HOOK-DOWNLOAD-EXEC` | Plugin hook command downloads remote content and pipes it into a shell | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC345 / PLUGIN-HOOK-TLS-BYPASS` | Plugin hook command disables TLS verification in a network-capable execution path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC346 / MCP-DOCKER-PULL-ALWAYS` | MCP configuration forces Docker to refresh from a mutable registry source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC345 / PLUGIN-HOOK-TLS-BYPASS` | Plugin hook command disables TLS verification in a network-capable execution path | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
+| `SEC346 / MCP-DOCKER-PULL-ALWAYS` | MCP configuration forces Docker to refresh from a mutable registry source | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC347 / MD-MCP-MUTABLE-LAUNCHER` | AI-native markdown example launches MCP through a mutable package runner | `supply-chain` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `supply-chain` |
 | `SEC348 / MD-DOCKER-MUTABLE-IMAGE` | AI-native markdown Docker example uses a mutable registry image | `supply-chain` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `supply-chain` |
 | `SEC349 / MD-DOCKER-HOST-ESCAPE` | AI-native markdown Docker example uses a host-escape or privileged runtime pattern | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
@@ -755,10 +755,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `supply-chain`
 - Remediation: `suggestion`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit insecure http:// endpoints in configuration values.
@@ -767,7 +767,7 @@ Important behavior:
 - Benign Corpus: `mcp-trusted-endpoint-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC303 / MCP-CREDENTIAL-ENV-PASSTHROUGH` — MCP configuration passes through credential environment variables
 
@@ -799,10 +799,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `supply-chain`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit TLS or certificate verification disable flags in configuration.
@@ -811,7 +811,7 @@ Important behavior:
 - Benign Corpus: `mcp-trust-verified-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC305 / MCP-STATIC-AUTH` — Configuration embeds static authentication material in a connection or auth value
 
@@ -1365,10 +1365,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `supply-chain`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP config command and args values for explicit TLS-bypass tokens in a network-capable execution context.
@@ -1377,7 +1377,7 @@ Important behavior:
 - Benign Corpus: `mcp-network-tls-verified-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC335 / MD-METADATA-SERVICE-ACCESS` — AI-native markdown contains a direct cloud metadata-service access example
 
@@ -1423,10 +1423,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `supply-chain`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP config Docker launch paths for image references that are not pinned by digest, including tag-only refs such as :latest or :1.2.3.
@@ -1435,7 +1435,7 @@ Important behavior:
 - Benign Corpus: `mcp-docker-digest-pinned-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC338 / MCP-DOCKER-SENSITIVE-MOUNT` — MCP configuration launches Docker with a bind mount of sensitive host material
 
@@ -1555,10 +1555,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `supply-chain`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for mutable package launchers such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.
@@ -1567,7 +1567,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC344 / PLUGIN-HOOK-DOWNLOAD-EXEC` — Plugin hook command downloads remote content and pipes it into a shell
 
@@ -1599,10 +1599,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `supply-chain`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit TLS-bypass tokens in a network-capable execution context.
@@ -1611,7 +1611,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC346 / MCP-DOCKER-PULL-ALWAYS` — MCP configuration forces Docker to refresh from a mutable registry source
 
@@ -1621,10 +1621,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `supply-chain`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP config Docker launch paths for explicit --pull always refresh policies that force a mutable registry fetch at runtime.
@@ -1633,7 +1633,7 @@ Important behavior:
 - Benign Corpus: `gemini-mcp-docker-digest-pinned-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC347 / MD-MCP-MUTABLE-LAUNCHER` — AI-native markdown example launches MCP through a mutable package runner
 

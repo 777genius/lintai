@@ -2134,7 +2134,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PlainHttpConfigRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit insecure http:// endpoints in configuration values.",
@@ -2174,7 +2174,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: TrustVerificationDisabledConfigRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit TLS or certificate verification disable flags in configuration.",
@@ -2362,7 +2362,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpNetworkTlsBypassCommandRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP config command and args values for explicit TLS-bypass tokens in a network-capable execution context.",
@@ -3818,7 +3818,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpUnpinnedDockerImageRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP config Docker launch paths for image references that are not pinned by digest, including tag-only refs such as :latest or :1.2.3.",
@@ -3878,7 +3878,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpMutableDockerPullRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP config Docker launch paths for explicit --pull always refresh policies that force a mutable registry fetch at runtime.",
@@ -3898,7 +3898,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookMutableLauncherRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for mutable package launchers such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.",
@@ -3938,7 +3938,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: PluginHookNetworkTlsBypassRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed plugin hook command values for explicit TLS-bypass tokens in a network-capable execution context.",

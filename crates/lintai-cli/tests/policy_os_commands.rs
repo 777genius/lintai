@@ -319,6 +319,7 @@ base_dirs = ["{}"]
             "--policy",
             policy.to_str().unwrap(),
             "--scope=user",
+            "--preset=supply-chain",
             "--path-root",
             root.to_str().unwrap(),
             "--format=json",
