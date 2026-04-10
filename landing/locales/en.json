@@ -17,7 +17,7 @@
     "factFocusLabel": "Focus today",
     "factFocusBody": "SKILL.md, mcp.json, shared Claude settings, Cursor rules, and Copilot instruction files.",
     "factOutputsLabel": "What teams ship",
-    "factOutputsBody": "Stable findings first, Preview as extra review depth, plus SARIF and JSON with evidence and remediation.",
+    "factOutputsBody": "Stable findings first, Preview for deeper review, plus explicit compatibility and supply-chain lanes when teams want more than the quiet default.",
     "trust": {
       "oneRepo": "Offline-first",
       "validated": "Deterministic findings",
@@ -158,7 +158,7 @@
   },
   "comparison": {
     "sectionTitle": "Why teams try lintai first",
-    "sectionSubtitle": "Not because it scans everything. Because it focuses on the AI agent files that are easy to miss in normal review.",
+    "sectionSubtitle": "So risky defaults do not quietly spread, and teams can keep default checks separate from deeper review lanes.",
     "feature": "Workflow",
     "columns": {
       "lintai": "lintai",

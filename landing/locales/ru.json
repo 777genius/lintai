@@ -17,7 +17,7 @@
     "factFocusLabel": "Фокус сейчас",
     "factFocusBody": "SKILL.md, mcp.json, shared Claude settings, Cursor rules и Copilot instruction files.",
     "factOutputsLabel": "Что команда получает",
-    "factOutputsBody": "Сначала Stable findings, затем Preview как дополнительная глубина review, плюс SARIF и JSON с evidence и remediation.",
+    "factOutputsBody": "Сначала Stable findings, затем Preview для более глубокого review, плюс отдельные compatibility и supply-chain lanes, когда команде нужно больше, чем тихий дефолт.",
     "trust": {
       "oneRepo": "Offline-first",
       "validated": "Детерминированные finding'и",
@@ -158,7 +158,7 @@
   },
   "comparison": {
     "sectionTitle": "Почему команды пробуют lintai первым",
-    "sectionSubtitle": "Не потому что он сканирует всё подряд, а потому что он фокусируется на AI agent files, которые легко пропустить обычным review.",
+    "sectionSubtitle": "Чтобы рискованные дефолты не расползались по репозиторию, а default checks оставались отдельно от более глубоких review lanes.",
     "feature": "Workflow",
     "columns": {
       "lintai": "lintai",
