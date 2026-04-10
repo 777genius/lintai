@@ -86,6 +86,34 @@ fn governance_entries_do_not_use_security_category() {
 }
 
 #[test]
+fn compat_entries_do_not_use_security_category() {
+    for entry in shipped_security_rule_catalog_entries() {
+        if entry.public_lane() == PublicLane::Compat {
+            assert_ne!(
+                entry.metadata.category,
+                Category::Security,
+                "compat entry {} should not use security category",
+                entry.metadata.code
+            );
+        }
+    }
+}
+
+#[test]
+fn guidance_entries_do_not_use_security_category() {
+    for entry in shipped_security_rule_catalog_entries() {
+        if entry.public_lane() == PublicLane::Guidance {
+            assert_ne!(
+                entry.metadata.category,
+                Category::Security,
+                "guidance entry {} should not use security category",
+                entry.metadata.code
+            );
+        }
+    }
+}
+
+#[test]
 fn stable_entries_have_completed_metadata() {
     for entry in shipped_security_rule_catalog_entries() {
         if entry.metadata.tier != RuleTier::Stable {
