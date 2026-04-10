@@ -138,7 +138,7 @@ fn finds_claude_settings_bash_wildcard() {
 #[test]
 fn finds_claude_settings_webfetch_wildcard() {
     let content = r#"{"permissions":{"allow":["WebFetch(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -190,7 +190,7 @@ fn ignores_claude_settings_webfetch_specific_safe_domain() {
 #[test]
 fn finds_claude_settings_write_wildcard() {
     let content = r#"{"permissions":{"allow":["Write(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -207,7 +207,7 @@ fn finds_claude_settings_write_wildcard() {
 #[test]
 fn finds_claude_settings_read_wildcard() {
     let content = r#"{"permissions":{"allow":["Read(*)","Bash(git status)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -224,7 +224,7 @@ fn finds_claude_settings_read_wildcard() {
 #[test]
 fn finds_claude_settings_edit_wildcard() {
     let content = r#"{"permissions":{"allow":["Edit(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -428,7 +428,7 @@ fn finds_claude_settings_unscoped_webfetch() {
 #[test]
 fn finds_claude_settings_websearch_wildcard() {
     let content = r#"{"permissions":{"allow":["WebSearch(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1566,7 +1566,7 @@ fn finds_claude_settings_git_am_permission() {
 #[test]
 fn finds_claude_settings_glob_wildcard() {
     let content = r#"{"permissions":{"allow":["Glob(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1583,7 +1583,7 @@ fn finds_claude_settings_glob_wildcard() {
 #[test]
 fn finds_claude_settings_grep_wildcard() {
     let content = r#"{"permissions":{"allow":["Grep(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -2879,7 +2879,7 @@ fn ignores_claude_settings_specific_grep_permissions() {
 
 #[test]
 fn ignores_claude_settings_specific_write_permissions() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Write(./artifacts/**)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2894,7 +2894,7 @@ fn ignores_claude_settings_specific_write_permissions() {
 
 #[test]
 fn ignores_claude_settings_specific_edit_permissions() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Edit(./docs/**)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2909,7 +2909,7 @@ fn ignores_claude_settings_specific_edit_permissions() {
 
 #[test]
 fn ignores_claude_settings_specific_read_permissions() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Read(./docs/**)","Bash(git status)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2928,7 +2928,7 @@ fn ignores_claude_settings_edit_wildcard_on_fixture_like_path() {
     std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
     std::fs::write(
         temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\", \"governance\"]\n",
     )
     .unwrap();
     std::fs::write(
@@ -2963,7 +2963,7 @@ fn ignores_claude_settings_websearch_wildcard_on_fixture_like_path() {
     std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
     std::fs::write(
         temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\", \"governance\"]\n",
     )
     .unwrap();
     std::fs::write(
@@ -2998,7 +2998,7 @@ fn ignores_claude_settings_glob_wildcard_on_fixture_like_path() {
     std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
     std::fs::write(
         temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\", \"governance\"]\n",
     )
     .unwrap();
     std::fs::write(
@@ -3033,7 +3033,7 @@ fn ignores_claude_settings_grep_wildcard_on_fixture_like_path() {
     std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
     std::fs::write(
         temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\", \"governance\"]\n",
     )
     .unwrap();
     std::fs::write(
@@ -3068,7 +3068,7 @@ fn ignores_claude_settings_webfetch_wildcard_on_fixture_like_path() {
     std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
     std::fs::write(
         temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\", \"governance\"]\n",
     )
     .unwrap();
     std::fs::write(
@@ -3103,7 +3103,7 @@ fn ignores_claude_settings_write_wildcard_on_fixture_like_path() {
     std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
     std::fs::write(
         temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\", \"governance\"]\n",
     )
     .unwrap();
     std::fs::write(
@@ -3138,7 +3138,7 @@ fn ignores_claude_settings_read_wildcard_on_fixture_like_path() {
     std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
     std::fs::write(
         temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\", \"governance\"]\n",
     )
     .unwrap();
     std::fs::write(

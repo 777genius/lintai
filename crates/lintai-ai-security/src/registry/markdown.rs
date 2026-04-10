@@ -2571,7 +2571,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: WildcardReadAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for exact `Read(*)` grants that expose unconstrained reading as shared default policy.",
         malicious_case_ids: &["skill-core-wildcard-allowed-tools"],
@@ -2595,7 +2595,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: WildcardWriteAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for exact `Write(*)` grants that expose unconstrained mutation as shared default policy.",
         malicious_case_ids: &["skill-core-wildcard-allowed-tools"],
@@ -2607,7 +2607,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: WildcardEditAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for exact `Edit(*)` grants that expose unconstrained editing as shared default policy.",
         malicious_case_ids: &["skill-core-wildcard-allowed-tools"],
@@ -2619,7 +2619,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: WildcardGlobAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for exact `Glob(*)` grants that expose unconstrained file discovery as shared default policy.",
         malicious_case_ids: &["skill-core-wildcard-allowed-tools"],
@@ -2631,7 +2631,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: WildcardGrepAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for exact `Grep(*)` grants that expose unconstrained content search as shared default policy.",
         malicious_case_ids: &["skill-core-wildcard-allowed-tools"],
@@ -2643,7 +2643,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: WildcardWebFetchAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for exact `WebFetch(*)` grants that expose unconstrained remote fetch authority as shared default policy.",
         malicious_case_ids: &["skill-core-wildcard-allowed-tools"],
@@ -2655,7 +2655,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: WildcardWebSearchAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for exact `WebSearch(*)` grants that expose unconstrained search authority as shared default policy.",
         malicious_case_ids: &["skill-core-wildcard-allowed-tools"],

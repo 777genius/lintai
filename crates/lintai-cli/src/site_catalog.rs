@@ -445,6 +445,14 @@ mod tests {
         assert_eq!(sec466.default_presets, vec!["governance"]);
         assert_eq!(sec466.public_lane, "governance");
 
+        let sec520 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC520")
+            .expect("SEC520 should exist");
+        assert_eq!(sec520.default_presets, vec!["governance"]);
+        assert_eq!(sec520.public_lane, "governance");
+
         let sec390 = catalog
             .rules
             .iter()
@@ -468,6 +476,14 @@ mod tests {
             .expect("SEC399 should exist");
         assert_eq!(sec399.default_presets, vec!["governance", "claude"]);
         assert_eq!(sec399.public_lane, "governance");
+
+        let sec369 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC369")
+            .expect("SEC369 should exist");
+        assert_eq!(sec369.default_presets, vec!["governance", "claude"]);
+        assert_eq!(sec369.public_lane, "governance");
 
         let sec756 = catalog
             .rules

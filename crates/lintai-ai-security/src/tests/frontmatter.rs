@@ -1991,7 +1991,7 @@ fn ignores_unscoped_grep_allowed_tools_on_fixture_like_path() {
 #[test]
 fn finds_wildcard_read_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Read(*), Write(./artifacts/**)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2054,7 +2054,7 @@ fn ignores_wildcard_bash_allowed_tools_on_fixture_like_path() {
 
 #[test]
 fn ignores_scoped_read_allowed_tools_wildcard_rule_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Read(./docs/**), Write(./artifacts/**)\n---\n# Skill\n",
     );
@@ -2070,7 +2070,7 @@ fn ignores_scoped_read_allowed_tools_wildcard_rule_in_frontmatter() {
 #[test]
 fn finds_wildcard_write_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Write(*), Read(./docs/**)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2086,7 +2086,7 @@ fn finds_wildcard_write_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_scoped_write_allowed_tools_wildcard_rule_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Write(./artifacts/**), Read(./docs/**)\n---\n# Skill\n",
     );
@@ -2102,7 +2102,7 @@ fn ignores_scoped_write_allowed_tools_wildcard_rule_in_frontmatter() {
 #[test]
 fn finds_wildcard_edit_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Edit(*), Read(./docs/**)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2118,7 +2118,7 @@ fn finds_wildcard_edit_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_scoped_edit_allowed_tools_wildcard_rule_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Edit(./docs/**), Read(./docs/**)\n---\n# Skill\n",
     );
@@ -2134,7 +2134,7 @@ fn ignores_scoped_edit_allowed_tools_wildcard_rule_in_frontmatter() {
 #[test]
 fn finds_wildcard_glob_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Glob(*), Read(./docs/**)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2150,7 +2150,7 @@ fn finds_wildcard_glob_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_scoped_glob_allowed_tools_wildcard_rule_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Glob(./docs/**), Read(./docs/**)\n---\n# Skill\n",
     );
@@ -2166,7 +2166,7 @@ fn ignores_scoped_glob_allowed_tools_wildcard_rule_in_frontmatter() {
 #[test]
 fn finds_wildcard_grep_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Grep(*), Read(./docs/**)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2182,7 +2182,7 @@ fn finds_wildcard_grep_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_scoped_grep_allowed_tools_wildcard_rule_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Grep(todo:), Read(./docs/**)\n---\n# Skill\n",
     );
@@ -2198,7 +2198,7 @@ fn ignores_scoped_grep_allowed_tools_wildcard_rule_in_frontmatter() {
 #[test]
 fn finds_wildcard_webfetch_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: WebFetch(*), Read(./docs/**)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2214,7 +2214,7 @@ fn finds_wildcard_webfetch_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_scoped_webfetch_allowed_tools_wildcard_rule_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: WebFetch(domain:docs.example.com), Read(./docs/**)\n---\n# Skill\n",
     );
@@ -2230,7 +2230,7 @@ fn ignores_scoped_webfetch_allowed_tools_wildcard_rule_in_frontmatter() {
 #[test]
 fn finds_wildcard_websearch_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: WebSearch(*), Read(./docs/**)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2246,7 +2246,7 @@ fn finds_wildcard_websearch_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_scoped_websearch_allowed_tools_wildcard_rule_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: WebSearch(site:docs.example.com), Read(./docs/**)\n---\n# Skill\n",
     );

@@ -303,13 +303,6 @@
         "lintai-ai-security:SEC364",
         "lintai-ai-security:SEC365",
         "lintai-ai-security:SEC366",
-        "lintai-ai-security:SEC367",
-        "lintai-ai-security:SEC369",
-        "lintai-ai-security:SEC372",
-        "lintai-ai-security:SEC373",
-        "lintai-ai-security:SEC374",
-        "lintai-ai-security:SEC375",
-        "lintai-ai-security:SEC376",
         "lintai-ai-security:SEC400",
         "lintai-ai-security:SEC405",
         "lintai-ai-security:SEC417",
@@ -343,13 +336,6 @@
         "lintai-ai-security:SEC477",
         "lintai-ai-security:SEC486",
         "lintai-ai-security:SEC487",
-        "lintai-ai-security:SEC520",
-        "lintai-ai-security:SEC521",
-        "lintai-ai-security:SEC522",
-        "lintai-ai-security:SEC523",
-        "lintai-ai-security:SEC524",
-        "lintai-ai-security:SEC525",
-        "lintai-ai-security:SEC526",
         "lintai-ai-security:SEC527",
         "lintai-ai-security:SEC626",
         "lintai-ai-security:SEC627",
@@ -426,13 +412,6 @@
         "lintai-ai-security:SEC471",
         "lintai-ai-security:SEC472",
         "lintai-ai-security:SEC473",
-        "lintai-ai-security:SEC520",
-        "lintai-ai-security:SEC521",
-        "lintai-ai-security:SEC522",
-        "lintai-ai-security:SEC523",
-        "lintai-ai-security:SEC524",
-        "lintai-ai-security:SEC525",
-        "lintai-ai-security:SEC526",
         "lintai-ai-security:SEC527"
       ],
       "canonicalPath": "/presets/skills"
@@ -775,6 +754,13 @@
       "description": "Opt-in review rules for shared mutation authority and broad bare tool grants that should not read like headline security findings.",
       "extends": [],
       "ruleIds": [
+        "lintai-ai-security:SEC367",
+        "lintai-ai-security:SEC369",
+        "lintai-ai-security:SEC372",
+        "lintai-ai-security:SEC373",
+        "lintai-ai-security:SEC374",
+        "lintai-ai-security:SEC375",
+        "lintai-ai-security:SEC376",
         "lintai-ai-security:SEC384",
         "lintai-ai-security:SEC385",
         "lintai-ai-security:SEC386",
@@ -867,6 +853,13 @@
         "lintai-ai-security:SEC517",
         "lintai-ai-security:SEC518",
         "lintai-ai-security:SEC519",
+        "lintai-ai-security:SEC520",
+        "lintai-ai-security:SEC521",
+        "lintai-ai-security:SEC522",
+        "lintai-ai-security:SEC523",
+        "lintai-ai-security:SEC524",
+        "lintai-ai-security:SEC525",
+        "lintai-ai-security:SEC526",
         "lintai-ai-security:SEC528",
         "lintai-ai-security:SEC529",
         "lintai-ai-security:SEC530",
@@ -3681,7 +3674,7 @@
       "slug": "sec367",
       "canonicalPath": "/rules/lintai-ai-security/sec367",
       "summary": "Claude settings permissions allow `WebFetch(*)` in a shared committed config",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -3690,7 +3683,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "governance",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -3761,7 +3754,7 @@
       "slug": "sec369",
       "canonicalPath": "/rules/lintai-ai-security/sec369",
       "summary": "Claude settings permissions allow `Write(*)` in a shared committed config",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -3770,7 +3763,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "governance",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -3863,7 +3856,7 @@
       "slug": "sec372",
       "canonicalPath": "/rules/lintai-ai-security/sec372",
       "summary": "Claude settings permissions allow `Read(*)` in a shared committed config",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -3872,7 +3865,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "governance",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -3903,7 +3896,7 @@
       "slug": "sec373",
       "canonicalPath": "/rules/lintai-ai-security/sec373",
       "summary": "Claude settings permissions allow `Edit(*)` in a shared committed config",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -3912,7 +3905,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "governance",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -3943,7 +3936,7 @@
       "slug": "sec374",
       "canonicalPath": "/rules/lintai-ai-security/sec374",
       "summary": "Claude settings permissions allow `WebSearch(*)` in a shared committed config",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -3952,7 +3945,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "governance",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -3983,7 +3976,7 @@
       "slug": "sec375",
       "canonicalPath": "/rules/lintai-ai-security/sec375",
       "summary": "Claude settings permissions allow `Glob(*)` in a shared committed config",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -3992,7 +3985,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "governance",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -4023,7 +4016,7 @@
       "slug": "sec376",
       "canonicalPath": "/rules/lintai-ai-security/sec376",
       "summary": "Claude settings permissions allow `Grep(*)` in a shared committed config",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -4032,7 +4025,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "governance",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -9536,7 +9529,7 @@
       "slug": "sec520",
       "canonicalPath": "/rules/lintai-ai-security/sec520",
       "summary": "AI-native markdown frontmatter grants `Read(*)` wildcard access",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -9545,8 +9538,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -9576,7 +9568,7 @@
       "slug": "sec521",
       "canonicalPath": "/rules/lintai-ai-security/sec521",
       "summary": "AI-native markdown frontmatter grants `Write(*)` wildcard access",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -9585,8 +9577,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -9616,7 +9607,7 @@
       "slug": "sec522",
       "canonicalPath": "/rules/lintai-ai-security/sec522",
       "summary": "AI-native markdown frontmatter grants `Edit(*)` wildcard access",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -9625,8 +9616,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -9656,7 +9646,7 @@
       "slug": "sec523",
       "canonicalPath": "/rules/lintai-ai-security/sec523",
       "summary": "AI-native markdown frontmatter grants `Glob(*)` wildcard access",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -9665,8 +9655,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -9696,7 +9685,7 @@
       "slug": "sec524",
       "canonicalPath": "/rules/lintai-ai-security/sec524",
       "summary": "AI-native markdown frontmatter grants `Grep(*)` wildcard access",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -9705,8 +9694,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -9736,7 +9724,7 @@
       "slug": "sec525",
       "canonicalPath": "/rules/lintai-ai-security/sec525",
       "summary": "AI-native markdown frontmatter grants `WebFetch(*)` wildcard access",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -9745,8 +9733,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -9776,7 +9763,7 @@
       "slug": "sec526",
       "canonicalPath": "/rules/lintai-ai-security/sec526",
       "summary": "AI-native markdown frontmatter grants `WebSearch(*)` wildcard access",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -9785,8 +9772,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
