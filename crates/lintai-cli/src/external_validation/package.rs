@@ -17,6 +17,9 @@ impl ValidationPackage {
         "claude",
         "skills",
         "preview",
+        "compat",
+        "governance",
+        "guidance",
         "supply-chain",
     ];
 

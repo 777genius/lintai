@@ -36,11 +36,11 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC311 / PLUGIN-UNSAFE-PATH` | Cursor plugin manifest contains an unsafe absolute or parent-traversing path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC312 / MD-PRIVATE-KEY` | Markdown contains committed private key material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `base`, `skills` |
 | `SEC313 / MD-PIPE-SHELL` | Fenced shell example pipes remote content directly into a shell | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC314 / TOOL-MISSING-MACHINE-FIELDS` | MCP-style tool descriptor is missing required machine fields | `preview` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC315 / TOOL-DUPLICATE-NAMES` | MCP-style tool descriptor collection contains duplicate tool names | `preview` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC316 / OPENAI-STRICT-ADDITIONAL-PROPERTIES` | OpenAI strict tool schema omits recursive additionalProperties: false | `preview` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC317 / OPENAI-STRICT-REQUIRED-COVERAGE` | OpenAI strict tool schema does not require every declared property | `preview` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC318 / ANTHROPIC-STRICT-ADDITIONAL-PROPERTIES` | Anthropic strict tool input schema omits additionalProperties: false | `preview` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC314 / TOOL-MISSING-MACHINE-FIELDS` | MCP-style tool descriptor is missing required machine fields | `compat` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `compat`, `mcp` |
+| `SEC315 / TOOL-DUPLICATE-NAMES` | MCP-style tool descriptor collection contains duplicate tool names | `compat` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `compat`, `mcp` |
+| `SEC316 / OPENAI-STRICT-ADDITIONAL-PROPERTIES` | OpenAI strict tool schema omits recursive additionalProperties: false | `compat` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `compat`, `mcp` |
+| `SEC317 / OPENAI-STRICT-REQUIRED-COVERAGE` | OpenAI strict tool schema does not require every declared property | `compat` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `compat`, `mcp` |
+| `SEC318 / ANTHROPIC-STRICT-ADDITIONAL-PROPERTIES` | Anthropic strict tool input schema omits additionalProperties: false | `compat` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC319 / SERVER-REMOTE-URL` | server.json remotes entry uses an insecure or non-public remote URL | `preview` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC320 / SERVER-UNDEFINED-URL-VAR` | server.json remotes URL references an undefined template variable | `preview` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC321 / SERVER-LITERAL-AUTH-HEADER` | server.json remotes header commits literal authentication material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
@@ -1003,10 +1003,10 @@ Important behavior:
 - Surface: `tool_json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `compat`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks unambiguous MCP-style tool descriptors for missing machine fields instead of relying on prose heuristics.
@@ -1025,10 +1025,10 @@ Important behavior:
 - Surface: `tool_json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `compat`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks structured MCP-style tool collections for duplicate names that can shadow one another.
@@ -1047,10 +1047,10 @@ Important behavior:
 - Surface: `tool_json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `compat`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks OpenAI strict tool schemas for recursive object locking with additionalProperties: false.
@@ -1069,10 +1069,10 @@ Important behavior:
 - Surface: `tool_json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `compat`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks OpenAI strict tool schemas for full required coverage of declared properties.
@@ -1091,10 +1091,10 @@ Important behavior:
 - Surface: `tool_json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `compat`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks Anthropic strict tool input_schema objects for explicit additionalProperties: false.

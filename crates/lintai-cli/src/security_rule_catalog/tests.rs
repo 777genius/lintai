@@ -105,6 +105,41 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec323.default_presets(), vec!["preview", "mcp"]);
 
+    let sec314 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC314")
+        .unwrap();
+    assert_eq!(sec314.default_presets(), vec!["compat", "mcp"]);
+    assert_eq!(sec314.public_lane(), PublicLane::Compat);
+
+    let sec315 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC315")
+        .unwrap();
+    assert_eq!(sec315.default_presets(), vec!["compat", "mcp"]);
+    assert_eq!(sec315.public_lane(), PublicLane::Compat);
+
+    let sec316 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC316")
+        .unwrap();
+    assert_eq!(sec316.default_presets(), vec!["compat", "mcp"]);
+    assert_eq!(sec316.public_lane(), PublicLane::Compat);
+
+    let sec317 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC317")
+        .unwrap();
+    assert_eq!(sec317.default_presets(), vec!["compat", "mcp"]);
+    assert_eq!(sec317.public_lane(), PublicLane::Compat);
+
+    let sec318 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC318")
+        .unwrap();
+    assert_eq!(sec318.default_presets(), vec!["compat", "mcp"]);
+    assert_eq!(sec318.public_lane(), PublicLane::Compat);
+
     let sec340 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC340")

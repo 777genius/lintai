@@ -389,6 +389,46 @@ mod tests {
         assert_eq!(sec302.default_presets, vec!["supply-chain"]);
         assert_eq!(sec302.public_lane, "supply-chain");
 
+        let sec314 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC314")
+            .expect("SEC314 should exist");
+        assert_eq!(sec314.default_presets, vec!["compat", "mcp"]);
+        assert_eq!(sec314.public_lane, "compat");
+
+        let sec315 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC315")
+            .expect("SEC315 should exist");
+        assert_eq!(sec315.default_presets, vec!["compat", "mcp"]);
+        assert_eq!(sec315.public_lane, "compat");
+
+        let sec316 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC316")
+            .expect("SEC316 should exist");
+        assert_eq!(sec316.default_presets, vec!["compat", "mcp"]);
+        assert_eq!(sec316.public_lane, "compat");
+
+        let sec317 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC317")
+            .expect("SEC317 should exist");
+        assert_eq!(sec317.default_presets, vec!["compat", "mcp"]);
+        assert_eq!(sec317.public_lane, "compat");
+
+        let sec318 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC318")
+            .expect("SEC318 should exist");
+        assert_eq!(sec318.default_presets, vec!["compat", "mcp"]);
+        assert_eq!(sec318.public_lane, "compat");
+
         let sec304 = catalog
             .rules
             .iter()

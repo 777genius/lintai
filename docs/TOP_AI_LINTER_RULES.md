@@ -151,42 +151,42 @@
   - надёжность: `9.5/10`
   - почему важно: даёт понятный quality contract для shared `.claude/settings.json`, улучшает editor validation и делает командные Claude settings проще для ревью и поддержки
 - `SEC362` — Claude settings permissions allow `Bash(*)` in a shared committed config
-  - статус: `Preview`
+  - статус: `Governance`
   - community usefulness сейчас: `9/10`
   - надёжность: `9/10`
   - почему важно: ловит прямой overly-broad shell grant в shared Claude settings; для AI infra это более practically actionable signal, чем broad prose guidance
 - `SEC363` — Claude settings hook command uses a home-directory path in a shared committed config
-  - статус: `Preview`
+  - статус: `Compat`
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9/10`
   - почему важно: ловит не-portable shared Claude hook wiring; для AI команд это понятный config smell, который легко чинится переходом на `$CLAUDE_PROJECT_DIR`
 - `SEC364` — Claude settings set `permissions.defaultMode` to `bypassPermissions` in a shared committed config
-  - статус: `Preview`
+  - статус: `Governance`
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9/10`
   - почему важно: это очень явный over-agency smell в shared Claude policy; сообществу легко объяснить, почему committed bypass default хуже, чем явные reviewed allowlists
 - `SEC365` — Claude settings allow non-HTTPS `allowedHttpHookUrls` in a shared committed config
-  - статус: `Preview`
+  - статус: `Supply-chain`
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9/10`
   - почему важно: это прямой transport-policy smell для shared Claude hook allowlist; `https://` проще защищать и публично отстаивать как командный стандарт
 - `SEC366` — Claude settings allow dangerous host literals in `allowedHttpHookUrls`
-  - статус: `Preview`
+  - статус: `Supply-chain`
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9/10`
   - почему важно: metadata/private-network hook hosts в shared config выглядят как очень понятный SSRF/exfil policy smell и хорошо объясняются сообществу
 - `SEC367` — Claude settings permissions allow `WebFetch(*)` in a shared committed config
-  - статус: `Preview`
+  - статус: `Governance`
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9/10`
   - почему важно: даёт очень понятный least-privilege signal для shared Claude network access; wildcard fetch grant легче всего оспорить в code review и легко сузить до reviewed endpoints
 - `SEC368` — Claude settings hook command uses a repo-external absolute path in a shared committed config
-  - статус: `Preview`
+  - статус: `Compat`
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9/10`
   - почему важно: ловит team-facing Claude hook wiring, которое жёстко привязано к внешнему filesystem path; community-friendly remediation очевиден — перейти на `$CLAUDE_PROJECT_DIR`
 - `SEC369` — Claude settings permissions allow `Write(*)` in a shared committed config
-  - статус: `Preview`
+  - статус: `Governance`
   - community usefulness сейчас: `9/10`
   - надёжность: `9/10`
   - почему важно: wildcard write grant в shared AI config сообществу объяснять проще всего; это очень явный least-privilege smell с очевидным remediation path

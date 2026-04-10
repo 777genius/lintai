@@ -50,11 +50,6 @@
         "lintai-ai-security:SEC310",
         "lintai-ai-security:SEC311",
         "lintai-ai-security:SEC312",
-        "lintai-ai-security:SEC314",
-        "lintai-ai-security:SEC315",
-        "lintai-ai-security:SEC316",
-        "lintai-ai-security:SEC317",
-        "lintai-ai-security:SEC318",
         "lintai-ai-security:SEC319",
         "lintai-ai-security:SEC320",
         "lintai-ai-security:SEC321",
@@ -213,6 +208,11 @@
       "description": "Policy and compatibility checks that compare declared workspace posture against repository behavior.",
       "extends": [],
       "ruleIds": [
+        "lintai-ai-security:SEC314",
+        "lintai-ai-security:SEC315",
+        "lintai-ai-security:SEC316",
+        "lintai-ai-security:SEC317",
+        "lintai-ai-security:SEC318",
         "lintai-ai-security:SEC361",
         "lintai-ai-security:SEC363",
         "lintai-ai-security:SEC368",
@@ -1790,7 +1790,7 @@
       "slug": "sec314",
       "canonicalPath": "/rules/lintai-ai-security/sec314",
       "summary": "MCP-style tool descriptor is missing required machine fields",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "per_file",
       "surface": "tool_json",
       "tier": "stable",
@@ -1799,7 +1799,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "compat",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -1830,7 +1830,7 @@
       "slug": "sec315",
       "canonicalPath": "/rules/lintai-ai-security/sec315",
       "summary": "MCP-style tool descriptor collection contains duplicate tool names",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "per_file",
       "surface": "tool_json",
       "tier": "stable",
@@ -1839,7 +1839,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "compat",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -1870,7 +1870,7 @@
       "slug": "sec316",
       "canonicalPath": "/rules/lintai-ai-security/sec316",
       "summary": "OpenAI strict tool schema omits recursive additionalProperties: false",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "per_file",
       "surface": "tool_json",
       "tier": "stable",
@@ -1879,7 +1879,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "compat",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -1910,7 +1910,7 @@
       "slug": "sec317",
       "canonicalPath": "/rules/lintai-ai-security/sec317",
       "summary": "OpenAI strict tool schema does not require every declared property",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "per_file",
       "surface": "tool_json",
       "tier": "stable",
@@ -1919,7 +1919,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "compat",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -1950,7 +1950,7 @@
       "slug": "sec318",
       "canonicalPath": "/rules/lintai-ai-security/sec318",
       "summary": "Anthropic strict tool input schema omits additionalProperties: false",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "per_file",
       "surface": "tool_json",
       "tier": "stable",
@@ -1959,7 +1959,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "compat",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
