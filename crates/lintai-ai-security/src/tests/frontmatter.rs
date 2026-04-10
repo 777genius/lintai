@@ -2262,7 +2262,7 @@ fn ignores_scoped_websearch_allowed_tools_wildcard_rule_in_frontmatter() {
 #[test]
 fn finds_read_unsafe_path_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Read(/etc/**), Write(./artifacts/**)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2278,7 +2278,7 @@ fn finds_read_unsafe_path_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_repo_local_read_scope_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Read(./docs/**), Write(./artifacts/**)\n---\n# Skill\n",
     );
@@ -2294,7 +2294,7 @@ fn ignores_repo_local_read_scope_in_frontmatter() {
 #[test]
 fn finds_write_unsafe_path_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Write(../shared/**), Read(./docs/**)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2310,7 +2310,7 @@ fn finds_write_unsafe_path_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_repo_local_write_scope_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Write(./artifacts/**), Read(./docs/**)\n---\n# Skill\n",
     );
@@ -2326,7 +2326,7 @@ fn ignores_repo_local_write_scope_in_frontmatter() {
 #[test]
 fn finds_edit_unsafe_path_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Edit(~/workspace/**), Read(./docs/**)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2342,7 +2342,7 @@ fn finds_edit_unsafe_path_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_repo_local_edit_scope_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Edit(./docs/**), Read(./docs/**)\n---\n# Skill\n",
     );
@@ -2358,7 +2358,7 @@ fn ignores_repo_local_edit_scope_in_frontmatter() {
 #[test]
 fn finds_glob_unsafe_path_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Glob(/var/log/**), Read(./docs/**)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2374,7 +2374,7 @@ fn finds_glob_unsafe_path_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_repo_local_glob_scope_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Glob(./docs/**), Read(./docs/**)\n---\n# Skill\n",
     );

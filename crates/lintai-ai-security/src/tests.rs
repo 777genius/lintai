@@ -1124,7 +1124,7 @@ Claude: pip install pytest
 #[test]
 fn finds_markdown_unpinned_pip_git_install() {
     let content = "pip install git+https://github.com/pytorch/ao.git\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1139,7 +1139,7 @@ fn finds_markdown_unpinned_pip_git_install() {
 #[test]
 fn finds_markdown_branch_pinned_pip_git_install_as_mutable() {
     let content = "pip install -v --no-build-isolation -U git+https://github.com/facebookresearch/xformers.git@main#egg=xformers\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1152,7 +1152,7 @@ fn finds_markdown_branch_pinned_pip_git_install_as_mutable() {
 #[test]
 fn ignores_markdown_commit_pinned_pip_git_install() {
     let content = r#"pip3 install "cut-cross-entropy[transformers] @ git+https://github.com/axolotl-ai-cloud/ml-cross-entropy.git@8a1a0ec""#;
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1165,7 +1165,7 @@ fn ignores_markdown_commit_pinned_pip_git_install() {
 #[test]
 fn finds_markdown_pip_http_git_install() {
     let content = "pip install git+http://git.example.test/demo.git\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1182,7 +1182,7 @@ fn finds_markdown_pip_http_git_install() {
 #[test]
 fn finds_markdown_python_dash_m_pip_http_git_install() {
     let content = "python -m pip install git+http://git.example.test/demo.git\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1195,7 +1195,7 @@ fn finds_markdown_python_dash_m_pip_http_git_install() {
 #[test]
 fn ignores_markdown_pip_https_git_install_for_http_git_rule() {
     let content = "pip install git+https://github.com/pytorch/ao.git\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1208,7 +1208,7 @@ fn ignores_markdown_pip_https_git_install_for_http_git_rule() {
 #[test]
 fn finds_markdown_pip_trusted_host() {
     let content = "pip install --trusted-host pypi.example.test demo\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1225,7 +1225,7 @@ fn finds_markdown_pip_trusted_host() {
 #[test]
 fn finds_markdown_python_dash_m_pip_trusted_host() {
     let content = "python -m pip install --trusted-host pypi.example.test demo\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1238,7 +1238,7 @@ fn finds_markdown_python_dash_m_pip_trusted_host() {
 #[test]
 fn ignores_markdown_pip_without_trusted_host() {
     let content = "pip install --index-url https://pypi.example.test/simple demo\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1251,7 +1251,7 @@ fn ignores_markdown_pip_without_trusted_host() {
 #[test]
 fn finds_markdown_pip_http_index() {
     let content = "pip install --index-url http://pypi.example.test/simple demo\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1268,7 +1268,7 @@ fn finds_markdown_pip_http_index() {
 #[test]
 fn finds_markdown_pip_http_extra_index() {
     let content = "python -m pip install --extra-index-url http://pypi.example.test/simple demo\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1281,7 +1281,7 @@ fn finds_markdown_pip_http_extra_index() {
 #[test]
 fn finds_markdown_pip_http_short_index() {
     let content = "pip install -i http://pypi.example.test/simple demo\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1294,7 +1294,7 @@ fn finds_markdown_pip_http_short_index() {
 #[test]
 fn finds_markdown_pip_http_index_equals_form() {
     let content = "pip install --index-url=http://pypi.example.test/simple demo\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1307,7 +1307,7 @@ fn finds_markdown_pip_http_index_equals_form() {
 #[test]
 fn ignores_markdown_pip_https_index() {
     let content = "pip install --index-url https://pypi.example.test/simple demo\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1320,7 +1320,7 @@ fn ignores_markdown_pip_https_index() {
 #[test]
 fn finds_markdown_pip_http_find_links() {
     let content = "pip install --find-links http://packages.example.test/simple demo\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1337,7 +1337,7 @@ fn finds_markdown_pip_http_find_links() {
 #[test]
 fn finds_markdown_pip_http_find_links_short_flag() {
     let content = "python -m pip install -f http://packages.example.test/simple demo\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1350,7 +1350,7 @@ fn finds_markdown_pip_http_find_links_short_flag() {
 #[test]
 fn finds_markdown_pip_http_find_links_equals_form() {
     let content = "pip install --find-links=http://packages.example.test/simple demo\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1363,7 +1363,7 @@ fn finds_markdown_pip_http_find_links_equals_form() {
 #[test]
 fn ignores_markdown_pip_https_find_links() {
     let content = "pip install --find-links https://packages.example.test/simple demo\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1376,7 +1376,7 @@ fn ignores_markdown_pip_https_find_links() {
 #[test]
 fn finds_markdown_pip_config_http_index() {
     let content = "pip config set global.index-url http://pypi.example.test/simple\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1394,7 +1394,7 @@ fn finds_markdown_pip_config_http_index() {
 fn finds_markdown_python_dash_m_pip_config_http_extra_index_equals_form() {
     let content =
         "python -m pip config set global.extra-index-url=http://pypi.example.test/simple\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1407,7 +1407,7 @@ fn finds_markdown_python_dash_m_pip_config_http_extra_index_equals_form() {
 #[test]
 fn ignores_markdown_pip_config_https_index() {
     let content = "pip config set global.index-url https://pypi.example.test/simple\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1420,7 +1420,7 @@ fn ignores_markdown_pip_config_https_index() {
 #[test]
 fn finds_markdown_pip_config_http_find_links() {
     let content = "pip config set global.find-links http://packages.example.test/simple\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1437,7 +1437,7 @@ fn finds_markdown_pip_config_http_find_links() {
 #[test]
 fn finds_markdown_pip3_config_http_find_links_equals_form() {
     let content = "pip3 config set global.find-links=http://packages.example.test/simple\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1450,7 +1450,7 @@ fn finds_markdown_pip3_config_http_find_links_equals_form() {
 #[test]
 fn ignores_markdown_pip_config_https_find_links() {
     let content = "pip config set global.find-links https://packages.example.test/simple\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1463,7 +1463,7 @@ fn ignores_markdown_pip_config_https_find_links() {
 #[test]
 fn finds_markdown_pip_config_trusted_host() {
     let content = "pip config set global.trusted-host pypi.example.test\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1480,7 +1480,7 @@ fn finds_markdown_pip_config_trusted_host() {
 #[test]
 fn finds_markdown_python_dash_m_pip_config_trusted_host_equals_form() {
     let content = "python -m pip config set global.trusted-host=pypi.example.test\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1493,7 +1493,7 @@ fn finds_markdown_python_dash_m_pip_config_trusted_host_equals_form() {
 #[test]
 fn ignores_markdown_pip_config_unrelated_key() {
     let content = "pip config set global.timeout 60\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1506,7 +1506,7 @@ fn ignores_markdown_pip_config_unrelated_key() {
 #[test]
 fn finds_markdown_network_tls_bypass_with_curl_insecure() {
     let content = "curl --insecure https://internal.test/bootstrap.sh -o bootstrap.sh\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1523,7 +1523,7 @@ fn finds_markdown_network_tls_bypass_with_curl_insecure() {
 #[test]
 fn finds_markdown_network_tls_bypass_with_wget_no_check_certificate() {
     let content = "wget --no-check-certificate https://internal.test/bootstrap.tgz\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1536,7 +1536,7 @@ fn finds_markdown_network_tls_bypass_with_wget_no_check_certificate() {
 #[test]
 fn finds_markdown_network_tls_bypass_with_powershell_skip_certificate_check() {
     let content = "Invoke-WebRequest https://internal.test/bootstrap.ps1 -SkipCertificateCheck\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1553,7 +1553,7 @@ fn finds_markdown_network_tls_bypass_with_powershell_skip_certificate_check() {
 #[test]
 fn ignores_markdown_network_tls_bypass_safety_guidance() {
     let content = "Do not use curl --insecure https://internal.test/bootstrap.sh\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1567,7 +1567,7 @@ fn ignores_markdown_network_tls_bypass_safety_guidance() {
 fn ignores_markdown_network_tls_bypass_powershell_safety_guidance() {
     let content =
         "Avoid Invoke-WebRequest https://internal.test/bootstrap.ps1 -SkipCertificateCheck\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1580,7 +1580,7 @@ fn ignores_markdown_network_tls_bypass_powershell_safety_guidance() {
 #[test]
 fn finds_markdown_pip_http_source() {
     let content = "pip install http://packages.example.test/demo.whl\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1597,7 +1597,7 @@ fn finds_markdown_pip_http_source() {
 #[test]
 fn finds_markdown_python_dash_m_pip_http_source() {
     let content = "python -m pip install http://packages.example.test/demo.whl\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1610,7 +1610,7 @@ fn finds_markdown_python_dash_m_pip_http_source() {
 #[test]
 fn ignores_markdown_pip_https_source() {
     let content = "pip install https://packages.example.test/demo.whl\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1623,7 +1623,7 @@ fn ignores_markdown_pip_https_source() {
 #[test]
 fn ignores_markdown_pip_http_index_for_direct_source_rule() {
     let content = "pip install --index-url http://pypi.example.test/simple demo\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1636,7 +1636,7 @@ fn ignores_markdown_pip_http_index_for_direct_source_rule() {
 #[test]
 fn finds_markdown_npm_http_registry() {
     let content = "npm install demo --registry http://registry.example.test/\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1653,7 +1653,7 @@ fn finds_markdown_npm_http_registry() {
 #[test]
 fn finds_markdown_npm_config_http_registry() {
     let content = "npm config set registry http://registry.example.test/\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1670,7 +1670,7 @@ fn finds_markdown_npm_config_http_registry() {
 #[test]
 fn finds_markdown_yarn_config_http_registry_equals_form() {
     let content = "yarn config set registry=http://registry.example.test/\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1683,7 +1683,7 @@ fn finds_markdown_yarn_config_http_registry_equals_form() {
 #[test]
 fn ignores_markdown_pnpm_config_https_registry() {
     let content = "pnpm config set registry https://registry.example.test/\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1696,7 +1696,7 @@ fn ignores_markdown_pnpm_config_https_registry() {
 #[test]
 fn finds_markdown_npm_strict_ssl_false() {
     let content = "npm config set strict-ssl false\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1713,7 +1713,7 @@ fn finds_markdown_npm_strict_ssl_false() {
 #[test]
 fn finds_markdown_pnpm_strict_ssl_false_equals_form() {
     let content = "pnpm config set strict-ssl=false\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1726,7 +1726,7 @@ fn finds_markdown_pnpm_strict_ssl_false_equals_form() {
 #[test]
 fn finds_markdown_yarn_strict_ssl_false() {
     let content = "yarn config set strict-ssl false\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1739,7 +1739,7 @@ fn finds_markdown_yarn_strict_ssl_false() {
 #[test]
 fn ignores_markdown_npm_strict_ssl_true() {
     let content = "npm config set strict-ssl true\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1752,7 +1752,7 @@ fn ignores_markdown_npm_strict_ssl_true() {
 #[test]
 fn finds_markdown_pnpm_http_registry() {
     let content = "pnpm add demo --registry http://registry.example.test/\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1765,7 +1765,7 @@ fn finds_markdown_pnpm_http_registry() {
 #[test]
 fn finds_markdown_npm_http_registry_equals_form() {
     let content = "yarn add demo --registry=http://registry.example.test/\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1778,7 +1778,7 @@ fn finds_markdown_npm_http_registry_equals_form() {
 #[test]
 fn finds_markdown_yarn_http_registry() {
     let content = "yarn add demo --registry http://registry.example.test/\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1791,7 +1791,7 @@ fn finds_markdown_yarn_http_registry() {
 #[test]
 fn finds_markdown_bun_http_registry() {
     let content = "bun add demo --registry http://registry.example.test/\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1804,7 +1804,7 @@ fn finds_markdown_bun_http_registry() {
 #[test]
 fn ignores_markdown_npm_https_registry() {
     let content = "npm install demo --registry https://registry.example.test/\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1817,7 +1817,7 @@ fn ignores_markdown_npm_https_registry() {
 #[test]
 fn finds_markdown_npm_http_source() {
     let content = "npm install http://registry.example.test/demo.tgz\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1834,7 +1834,7 @@ fn finds_markdown_npm_http_source() {
 #[test]
 fn finds_markdown_pnpm_http_source() {
     let content = "pnpm add http://registry.example.test/demo.tgz\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1847,7 +1847,7 @@ fn finds_markdown_pnpm_http_source() {
 #[test]
 fn finds_markdown_yarn_http_source() {
     let content = "yarn add http://registry.example.test/demo.tgz\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1860,7 +1860,7 @@ fn finds_markdown_yarn_http_source() {
 #[test]
 fn finds_markdown_bun_http_source() {
     let content = "bun add http://registry.example.test/demo.tgz\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1873,7 +1873,7 @@ fn finds_markdown_bun_http_source() {
 #[test]
 fn ignores_markdown_npm_https_source() {
     let content = "npm install https://registry.example.test/demo.tgz\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1886,7 +1886,7 @@ fn ignores_markdown_npm_https_source() {
 #[test]
 fn ignores_markdown_npm_http_registry_for_direct_source_rule() {
     let content = "npm install demo --registry http://registry.example.test/\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1899,7 +1899,7 @@ fn ignores_markdown_npm_http_registry_for_direct_source_rule() {
 #[test]
 fn finds_markdown_cargo_http_git_install() {
     let content = "cargo install --git http://git.example.test/demo.git\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1916,7 +1916,7 @@ fn finds_markdown_cargo_http_git_install() {
 #[test]
 fn finds_markdown_cargo_http_git_install_equals_form() {
     let content = "cargo install --git=http://git.example.test/demo.git\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1929,7 +1929,7 @@ fn finds_markdown_cargo_http_git_install_equals_form() {
 #[test]
 fn ignores_markdown_cargo_https_git_install() {
     let content = "cargo install --git https://git.example.test/demo.git\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1942,7 +1942,7 @@ fn ignores_markdown_cargo_https_git_install() {
 #[test]
 fn finds_markdown_git_http_clone() {
     let content = "git clone http://git.example.test/demo.git\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1959,7 +1959,7 @@ fn finds_markdown_git_http_clone() {
 #[test]
 fn finds_markdown_git_http_clone_with_depth_flag() {
     let content = "git clone --depth 1 http://git.example.test/demo.git\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -1972,7 +1972,7 @@ fn finds_markdown_git_http_clone_with_depth_flag() {
 #[test]
 fn ignores_markdown_git_https_clone() {
     let content = "git clone https://github.com/acme/demo.git\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -1985,7 +1985,7 @@ fn ignores_markdown_git_https_clone() {
 #[test]
 fn finds_markdown_git_http_remote() {
     let content = "git remote add origin http://git.example.test/demo.git\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2002,7 +2002,7 @@ fn finds_markdown_git_http_remote() {
 #[test]
 fn finds_markdown_git_http_remote_with_fetch_flag() {
     let content = "git remote add --fetch origin http://git.example.test/demo.git\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -2015,7 +2015,7 @@ fn finds_markdown_git_http_remote_with_fetch_flag() {
 #[test]
 fn ignores_markdown_git_https_remote() {
     let content = "git remote add origin https://github.com/acme/demo.git\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -2028,7 +2028,7 @@ fn ignores_markdown_git_https_remote() {
 #[test]
 fn finds_markdown_git_sslverify_false() {
     let content = "git config http.sslVerify false\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2045,7 +2045,7 @@ fn finds_markdown_git_sslverify_false() {
 #[test]
 fn finds_markdown_git_sslverify_false_equals_form() {
     let content = "git config --global http.sslVerify=false\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -2058,7 +2058,7 @@ fn finds_markdown_git_sslverify_false_equals_form() {
 #[test]
 fn ignores_markdown_git_sslverify_true() {
     let content = "git config http.sslVerify true\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -2071,7 +2071,7 @@ fn ignores_markdown_git_sslverify_true() {
 #[test]
 fn finds_markdown_git_ssl_no_verify() {
     let content = "GIT_SSL_NO_VERIFY=1 git clone https://github.com/acme/demo.git\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2088,7 +2088,7 @@ fn finds_markdown_git_ssl_no_verify() {
 #[test]
 fn finds_markdown_git_ssl_no_verify_true() {
     let content = "GIT_SSL_NO_VERIFY=true git fetch origin\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -2101,7 +2101,7 @@ fn finds_markdown_git_ssl_no_verify_true() {
 #[test]
 fn ignores_markdown_git_ssl_no_verify_disabled() {
     let content = "GIT_SSL_NO_VERIFY=0 git clone https://github.com/acme/demo.git\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -2114,7 +2114,7 @@ fn ignores_markdown_git_ssl_no_verify_disabled() {
 #[test]
 fn finds_markdown_git_inline_sslverify_false() {
     let content = "git -c http.sslVerify=false clone https://github.com/acme/demo.git\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2131,7 +2131,7 @@ fn finds_markdown_git_inline_sslverify_false() {
 #[test]
 fn finds_markdown_git_inline_sslverify_false_fetch() {
     let content = "git -c http.sslVerify=false fetch origin\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -2144,7 +2144,7 @@ fn finds_markdown_git_inline_sslverify_false_fetch() {
 #[test]
 fn ignores_markdown_git_inline_sslverify_true() {
     let content = "git -c http.sslVerify=true clone https://github.com/acme/demo.git\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -2307,7 +2307,7 @@ fn ignores_su_specific_allowed_tools() {
 #[test]
 fn finds_markdown_cargo_http_index() {
     let content = "cargo install ripgrep --index http://index.example.test/\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2324,7 +2324,7 @@ fn finds_markdown_cargo_http_index() {
 #[test]
 fn finds_markdown_cargo_http_index_equals_form() {
     let content = "cargo install ripgrep --index=http://index.example.test/\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         summary
@@ -2337,7 +2337,7 @@ fn finds_markdown_cargo_http_index_equals_form() {
 #[test]
 fn ignores_markdown_cargo_https_index() {
     let content = "cargo install ripgrep --index https://index.example.test/\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_supply_chain_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -2594,6 +2594,18 @@ fn scan_preview_governance_skill_fixture(
         content,
         &["base", "preview", "skills", "guidance", "governance"],
         "lintai-sec390-preview",
+    )
+}
+
+fn scan_preview_supply_chain_skill_fixture(
+    relative_path: &str,
+    content: &str,
+) -> lintai_engine::ScanSummary {
+    scan_fixture(
+        relative_path,
+        content,
+        &["base", "preview", "skills", "guidance", "supply-chain"],
+        "lintai-sec448-preview",
     )
 }
 

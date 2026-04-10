@@ -102,7 +102,7 @@ mod tests {
         );
         let preview = lintai_api::Finding::new(
             &lintai_api::RuleMetadata::new(
-                "SEC417",
+                "SEC347",
                 "demo preview",
                 lintai_api::Category::Security,
                 lintai_api::Severity::Warn,

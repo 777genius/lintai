@@ -1677,7 +1677,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownUnpinnedPipGitInstallRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for `pip install` examples that pull directly from mutable git+https sources without commit pinning.",
@@ -1697,7 +1697,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownPipHttpGitInstallRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for `pip install` examples that fetch Python packages from an insecure `git+http://` source.",
@@ -1717,7 +1717,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownPipTrustedHostRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for `pip install` examples that disable host trust checks with `--trusted-host`.",
@@ -1737,7 +1737,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownPipHttpIndexRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for `pip install` examples that point package index resolution at `http://` sources.",
@@ -1757,7 +1757,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownPipHttpFindLinksRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for `pip install` examples that point package discovery at `http://` find-links sources.",
@@ -1777,7 +1777,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownPipConfigHttpIndexRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for `pip config set` commands that point package index configuration at `http://` sources.",
@@ -1797,7 +1797,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownPipConfigHttpFindLinksRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for `pip config set` commands that point package discovery configuration at `http://` find-links sources.",
@@ -1817,7 +1817,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownNpmHttpRegistryRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for `npm`, `pnpm`, `yarn`, and `bun` install examples that point dependency resolution at `http://` registries.",
@@ -1837,7 +1837,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownPipConfigTrustedHostRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for `pip config set` commands that configure trusted-host bypass behavior.",
@@ -1857,7 +1857,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownNetworkTlsBypassRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for exact network-command examples that disable TLS verification, including PowerShell certificate-bypass forms.",
@@ -1883,7 +1883,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownJsPackageConfigHttpRegistryRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for JavaScript package-manager config commands that point registry configuration at `http://` sources.",
@@ -1903,7 +1903,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownJsPackageStrictSslFalseRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for JavaScript package-manager config commands that explicitly disable strict SSL verification.",
@@ -1923,7 +1923,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownPipHttpSourceRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for `pip install` examples that fetch a direct package source over `http://`.",
@@ -1943,7 +1943,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownNpmHttpSourceRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for `npm`, `pnpm`, `yarn`, and `bun` install examples that fetch a direct package source over `http://`.",
@@ -1963,7 +1963,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownCargoHttpGitInstallRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for `cargo install` examples that fetch a crate directly from an `http://` git source.",
@@ -1983,7 +1983,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownCargoHttpIndexRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for `cargo install` examples that resolve crates through an `http://` index.",
@@ -2003,7 +2003,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownGitHttpCloneRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for `git clone` examples that fetch repositories directly from an insecure `http://` source.",
@@ -2023,7 +2023,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownGitHttpRemoteRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for `git remote add` examples that configure a repository remote through an insecure `http://` source.",
@@ -2043,7 +2043,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownGitSslVerifyFalseRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for exact `git config` examples that disable Git TLS verification through `http.sslVerify false`.",
@@ -2063,7 +2063,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownGitSslNoVerifyRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for exact Git command examples that disable TLS verification through `GIT_SSL_NO_VERIFY`.",
@@ -2083,7 +2083,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownGitInlineSslVerifyFalseRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: SUPPLY_CHAIN_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native markdown for exact `git -c` examples that disable Git TLS verification inline through `http.sslVerify=false`.",
@@ -3307,7 +3307,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: ReadUnsafePathAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for `Read(...)` grants scoped to absolute, home-relative, drive-letter, or parent-traversing paths outside the repository boundary.",
         malicious_case_ids: &["skill-read-unsafe-path-allowed-tools"],
@@ -3319,7 +3319,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: WriteUnsafePathAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for `Write(...)` grants scoped to absolute, home-relative, drive-letter, or parent-traversing paths outside the repository boundary.",
         malicious_case_ids: &["skill-write-unsafe-path-allowed-tools"],
@@ -3331,7 +3331,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: EditUnsafePathAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for `Edit(...)` grants scoped to absolute, home-relative, drive-letter, or parent-traversing paths outside the repository boundary.",
         malicious_case_ids: &["skill-edit-unsafe-path-allowed-tools"],
@@ -3343,7 +3343,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: GlobUnsafePathAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for `Glob(...)` grants scoped to absolute, home-relative, drive-letter, or parent-traversing paths outside the repository boundary.",
         malicious_case_ids: &["skill-glob-unsafe-path-allowed-tools"],

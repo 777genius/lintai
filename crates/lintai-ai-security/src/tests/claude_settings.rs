@@ -241,7 +241,7 @@ fn finds_claude_settings_edit_wildcard() {
 #[test]
 fn finds_claude_settings_read_unsafe_path() {
     let content = r#"{"permissions":{"allow":["Read(/etc/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -258,7 +258,7 @@ fn finds_claude_settings_read_unsafe_path() {
 #[test]
 fn finds_claude_settings_write_unsafe_path() {
     let content = r#"{"permissions":{"allow":["Write(../shared/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -275,7 +275,7 @@ fn finds_claude_settings_write_unsafe_path() {
 #[test]
 fn finds_claude_settings_edit_unsafe_path() {
     let content = r#"{"permissions":{"allow":["Edit(~/workspace/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -292,7 +292,7 @@ fn finds_claude_settings_edit_unsafe_path() {
 #[test]
 fn finds_claude_settings_glob_unsafe_path() {
     let content = r#"{"permissions":{"allow":["Glob(/etc/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -309,7 +309,7 @@ fn finds_claude_settings_glob_unsafe_path() {
 #[test]
 fn finds_claude_settings_grep_unsafe_path() {
     let content = r#"{"permissions":{"allow":["Grep(../shared/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -326,7 +326,7 @@ fn finds_claude_settings_grep_unsafe_path() {
 #[test]
 fn finds_claude_settings_unscoped_read() {
     let content = r#"{"permissions":{"allow":["Read","Bash(git status)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -343,7 +343,7 @@ fn finds_claude_settings_unscoped_read() {
 #[test]
 fn finds_claude_settings_unscoped_write() {
     let content = r#"{"permissions":{"allow":["Write","Bash(git status)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -360,7 +360,7 @@ fn finds_claude_settings_unscoped_write() {
 #[test]
 fn finds_claude_settings_unscoped_edit() {
     let content = r#"{"permissions":{"allow":["Edit","Bash(git status)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -377,7 +377,7 @@ fn finds_claude_settings_unscoped_edit() {
 #[test]
 fn finds_claude_settings_unscoped_glob() {
     let content = r#"{"permissions":{"allow":["Glob","Bash(git status)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -394,7 +394,7 @@ fn finds_claude_settings_unscoped_glob() {
 #[test]
 fn finds_claude_settings_unscoped_grep() {
     let content = r#"{"permissions":{"allow":["Grep","Bash(git status)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1784,7 +1784,7 @@ fn ignores_claude_settings_gh_pr_permission_when_command_is_more_specific() {
 
 #[test]
 fn ignores_claude_settings_repo_local_read_scope() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Read(./docs/**)","Write(./artifacts/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1799,7 +1799,7 @@ fn ignores_claude_settings_repo_local_read_scope() {
 
 #[test]
 fn ignores_claude_settings_repo_local_write_scope() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Write(./artifacts/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1814,7 +1814,7 @@ fn ignores_claude_settings_repo_local_write_scope() {
 
 #[test]
 fn ignores_claude_settings_repo_local_edit_scope() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Edit(./docs/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1829,7 +1829,7 @@ fn ignores_claude_settings_repo_local_edit_scope() {
 
 #[test]
 fn ignores_claude_settings_repo_local_glob_scope() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Glob(./docs/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1844,7 +1844,7 @@ fn ignores_claude_settings_repo_local_glob_scope() {
 
 #[test]
 fn ignores_claude_settings_repo_local_grep_scope() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Grep(./docs/**)","Read(./docs/**)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2468,7 +2468,7 @@ fn ignores_claude_settings_unscoped_websearch_on_fixture_like_path() {
     std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
     std::fs::write(
         temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\", \"governance\"]\n",
     )
     .unwrap();
     std::fs::write(
@@ -2503,7 +2503,7 @@ fn ignores_claude_settings_unscoped_tool_family_on_fixture_like_path() {
     std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
     std::fs::write(
         temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\", \"governance\"]\n",
     )
     .unwrap();
     std::fs::write(
