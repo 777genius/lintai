@@ -396,6 +396,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec303.default_presets(), vec!["governance", "mcp"]);
     assert_eq!(sec303.public_lane(), PublicLane::Governance);
+    assert_eq!(sec303.metadata.category, Category::Hardening);
 
     let sec307 = entries
         .iter()
@@ -744,6 +745,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec394.default_presets(), vec!["governance", "mcp"]);
     assert_eq!(sec394.public_lane(), PublicLane::Governance);
+    assert_eq!(sec394.metadata.category, Category::Hardening);
 
     let sec397 = entries
         .iter()
@@ -751,6 +753,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec397.default_presets(), vec!["governance", "mcp"]);
     assert_eq!(sec397.public_lane(), PublicLane::Governance);
+    assert_eq!(sec397.metadata.category, Category::Hardening);
 
     let sec546 = entries
         .iter()
@@ -779,6 +782,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec400.default_presets(), vec!["governance", "claude"]);
     assert_eq!(sec400.public_lane(), PublicLane::Governance);
+    assert_eq!(sec400.metadata.category, Category::Hardening);
 
     let sec405 = entries
         .iter()
@@ -786,6 +790,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec405.default_presets(), vec!["governance", "claude"]);
     assert_eq!(sec405.public_lane(), PublicLane::Governance);
+    assert_eq!(sec405.metadata.category, Category::Hardening);
 
     let sec399 = entries
         .iter()
@@ -793,6 +798,31 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec399.default_presets(), vec!["governance", "claude"]);
     assert_eq!(sec399.public_lane(), PublicLane::Governance);
+    assert_eq!(sec399.metadata.category, Category::Hardening);
+
+    let sec364 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC364")
+        .unwrap();
+    assert_eq!(sec364.default_presets(), vec!["governance", "claude"]);
+    assert_eq!(sec364.public_lane(), PublicLane::Governance);
+    assert_eq!(sec364.metadata.category, Category::Hardening);
+
+    let sec367 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC367")
+        .unwrap();
+    assert_eq!(sec367.default_presets(), vec!["governance", "claude"]);
+    assert_eq!(sec367.public_lane(), PublicLane::Governance);
+    assert_eq!(sec367.metadata.category, Category::Hardening);
+
+    let sec375 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC375")
+        .unwrap();
+    assert_eq!(sec375.default_presets(), vec!["governance", "claude"]);
+    assert_eq!(sec375.public_lane(), PublicLane::Governance);
+    assert_eq!(sec375.metadata.category, Category::Hardening);
 
     let sec362 = entries
         .iter()
