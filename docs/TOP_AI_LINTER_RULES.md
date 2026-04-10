@@ -106,42 +106,42 @@
   - надёжность: `9/10`
   - почему важно: после последнего external validation это самый сильный skills-markdown rule по signal/noise; ловит слишком широкий shell grant в AI instruction frontmatter без расплывчатой prose-эвристики
 - `SEC353` — GitHub Copilot instruction markdown exceeds the 4000-character guidance limit
-  - статус: `Preview`
+  - статус: `Guidance`
   - community usefulness сейчас: `8/10`
   - надёжность: `9.5/10`
   - почему важно: привязан к официальному GitHub guidance и ловит structure-level проблему, из-за которой хвост инструкций может перестать реально работать
 - `SEC354` — Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter
-  - статус: `Preview`
+  - статус: `Guidance`
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9.5/10`
   - почему важно: ловит очень понятный structural misconfiguration, из-за которого path-specific Copilot instructions могут просто не применяться как задумано
 - `SEC355` — AI-native markdown frontmatter grants wildcard tool access
-  - статус: `Preview`
+  - статус: `Guidance`
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9.5/10`
   - почему важно: very direct least-privilege rule для skills и shared instructions; wildcard `*` слишком расширяет agency и плохо переживает community review
 - `SEC356` — Plugin agent frontmatter sets `permissionMode`
-  - статус: `Preview`
+  - статус: `Guidance`
   - community usefulness сейчас: `8/10`
   - надёжность: `9.5/10`
   - почему важно: структурно запрещает смешивать permission policy с plugin agent content; это narrow spec-aligned signal, который легко объяснить сообществу
 - `SEC357` — Plugin agent frontmatter sets `hooks`
-  - статус: `Preview`
+  - статус: `Guidance`
   - community usefulness сейчас: `7.5/10`
   - надёжность: `9.5/10`
   - почему важно: не даёт прятать hook execution policy внутрь agent content; остаётся узким и spec-aligned
 - `SEC358` — Plugin agent frontmatter sets `mcpServers`
-  - статус: `Preview`
+  - статус: `Guidance`
   - community usefulness сейчас: `7.5/10`
   - надёжность: `9.5/10`
   - почему важно: отделяет plugin agent docs от client/server wiring; сообществу проще ревьюить такие boundary violations, чем широкие prose rules
 - `SEC359` — Cursor rule frontmatter `alwaysApply` must be boolean
-  - статус: `Preview`
+  - статус: `Guidance`
   - community usefulness сейчас: `8/10`
   - надёжность: `9.5/10`
   - почему важно: ловит очень понятный contract bug в `.mdc` / `.cursorrules`, из-за которого Cursor rules могут применяться не так, как автор ожидал
 - `SEC360` — Cursor rule frontmatter `globs` must be a sequence of patterns
-  - статус: `Preview`
+  - статус: `Guidance`
   - community usefulness сейчас: `8.5/10`
   - надёжность: `9.5/10`
   - почему важно: ловит path-targeting bug в `.mdc` / `.cursorrules`, из-за которого Cursor rule может тихо применяться не к тем файлам или не матчиться как задумано
@@ -226,22 +226,22 @@
   - надёжность: `9/10`
   - почему важно: wildcard content-search grant в shared AI config даёт слишком широкую search surface; это хорошо воспринимается сообществом как точный least-privilege contract check
 - `SEC377` — path-specific GitHub Copilot instruction markdown has an invalid `applyTo` glob pattern
-  - статус: `Preview`
+  - статус: `Guidance`
   - community usefulness сейчас: `9/10`
   - надёжность: `9/10`
   - почему важно: invalid `applyTo` glob выглядит как обычная конфигурация, но silently ломает targeting Copilot instructions; это один из самых defendable community-facing AI config checks
 - `SEC378` — Cursor rule frontmatter should not set `globs` when `alwaysApply` is `true`
-  - статус: `Preview`
+  - статус: `Guidance`
   - community usefulness сейчас: `9/10`
   - надёжность: `9/10`
   - почему важно: global Cursor rule с одновременными `globs` создаёт двусмысленный routing contract; правило structural-only и очень легко принимается сообществом как config hygiene check
 - `SEC379` — Cursor rule frontmatter contains an unknown key
-  - статус: `Preview`
+  - статус: `Guidance`
   - community usefulness сейчас: `9/10`
   - надёжность: `9/10`
   - почему важно: неизвестные ключи в `.mdc` создают ложное ощущение поддерживаемой конфигурации; это точный и практичный contract check для shared AI rule packs
 - `SEC380` — Cursor rule frontmatter should include `description`
-  - статус: `Preview`
+  - статус: `Guidance`
   - community usefulness сейчас: `8.5/10`
   - надёжность: `8.5/10`
   - почему важно: правила без `description` тяжелее ревьюить и поддерживать в shared AI repo packs; remediation очевиден и rule хорошо воспринимается как quality contract

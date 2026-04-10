@@ -397,6 +397,38 @@ mod tests {
         assert_eq!(sec353.default_presets, vec!["guidance"]);
         assert_eq!(sec353.public_lane, "guidance");
 
+        let sec355 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC355")
+            .expect("SEC355 should exist");
+        assert_eq!(sec355.default_presets, vec!["guidance"]);
+        assert_eq!(sec355.public_lane, "guidance");
+
+        let sec359 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC359")
+            .expect("SEC359 should exist");
+        assert_eq!(sec359.default_presets, vec!["guidance"]);
+        assert_eq!(sec359.public_lane, "guidance");
+
+        let sec378 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC378")
+            .expect("SEC378 should exist");
+        assert_eq!(sec378.default_presets, vec!["guidance"]);
+        assert_eq!(sec378.public_lane, "guidance");
+
+        let sec416 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC416")
+            .expect("SEC416 should exist");
+        assert_eq!(sec416.default_presets, vec!["guidance"]);
+        assert_eq!(sec416.public_lane, "guidance");
+
         let sec390 = catalog
             .rules
             .iter()

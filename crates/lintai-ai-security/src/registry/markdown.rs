@@ -1661,7 +1661,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownClaudeBarePipInstallRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GUIDANCE_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "This rule depends on transcript-shaped markdown plus explicit `uv` preference context in the same AI-native document, so the first release stays guidance-only while broader ecosystem usefulness is measured.",
@@ -3355,7 +3355,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: WildcardToolAccessRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GUIDANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Wildcard tool grants in AI-native frontmatter can still appear in convenience-oriented docs, so the first release stays least-privilege guidance-only.",
@@ -3371,7 +3371,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: PluginAgentPermissionModeRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GUIDANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Plugin agent frontmatter can still include unsupported permission policy experiments, so the first release stays spec-guidance-only.",
@@ -3387,7 +3387,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: PluginAgentHooksFrontmatterRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GUIDANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Plugin agent frontmatter can still include unsupported hook experiments, so the first release stays spec-guidance-only.",
@@ -3403,7 +3403,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: PluginAgentMcpServersFrontmatterRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GUIDANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Plugin agent frontmatter can still include unsupported MCP server experiments, so the first release stays spec-guidance-only.",
@@ -3419,7 +3419,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: CursorRuleAlwaysApplyTypeRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GUIDANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Cursor rule frontmatter shape mismatches are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
@@ -3435,7 +3435,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: CursorRuleGlobsTypeRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GUIDANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Cursor rule path-matching shape mismatches are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
@@ -3451,7 +3451,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: CursorRuleRedundantGlobsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GUIDANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Redundant `globs` alongside `alwaysApply: true` is deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
@@ -3467,7 +3467,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: CursorRuleUnknownFrontmatterKeyRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GUIDANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Unknown Cursor rule frontmatter keys are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",
@@ -3483,7 +3483,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: CursorRuleMissingDescriptionRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GUIDANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Missing `description` on Cursor rules is deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.",

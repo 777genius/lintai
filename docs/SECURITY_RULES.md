@@ -74,12 +74,12 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC352 / MD-UNSCOPED-BASH` | AI-native markdown frontmatter grants unscoped Bash tool access | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC353 / COPILOT-4K` | GitHub Copilot instruction markdown exceeds the 4000-character guidance limit | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC354 / COPILOT-PATH-APPLYTO` | Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
-| `SEC355 / MD-WILDCARD-TOOLS` | AI-native markdown frontmatter grants wildcard tool access | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC356 / PLUGIN-AGENT-PERMISSIONMODE` | Plugin agent frontmatter sets `permissionMode` | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC357 / PLUGIN-AGENT-HOOKS` | Plugin agent frontmatter sets `hooks` | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC358 / PLUGIN-AGENT-MCPSERVERS` | Plugin agent frontmatter sets `mcpServers` | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC359 / CURSOR-RULE-ALWAYSAPPLY` | Cursor rule frontmatter `alwaysApply` must be boolean | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC360 / CURSOR-RULE-GLOBS` | Cursor rule frontmatter `globs` must be a sequence of patterns | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC355 / MD-WILDCARD-TOOLS` | AI-native markdown frontmatter grants wildcard tool access | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC356 / PLUGIN-AGENT-PERMISSIONMODE` | Plugin agent frontmatter sets `permissionMode` | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC357 / PLUGIN-AGENT-HOOKS` | Plugin agent frontmatter sets `hooks` | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC358 / PLUGIN-AGENT-MCPSERVERS` | Plugin agent frontmatter sets `mcpServers` | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC359 / CURSOR-RULE-ALWAYSAPPLY` | Cursor rule frontmatter `alwaysApply` must be boolean | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC360 / CURSOR-RULE-GLOBS` | Cursor rule frontmatter `globs` must be a sequence of patterns | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC361 / CLAUDE-SETTINGS-SCHEMA` | Claude settings file is missing a top-level `$schema` reference | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
 | `SEC362 / CLAUDE-BASH-WILDCARD` | Claude settings permissions allow `Bash(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC363 / CLAUDE-HOME-HOOK-PATH` | Claude settings hook command uses a home-directory path in a shared committed config | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
@@ -97,9 +97,9 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC375 / CLAUDE-GLOB-WILDCARD` | Claude settings permissions allow `Glob(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC376 / CLAUDE-GREP-WILDCARD` | Claude settings permissions allow `Grep(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC377 / COPILOT-APPLYTO-GLOB` | Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` glob pattern | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
-| `SEC378 / CURSOR-ALWAYSAPPLY-GLOBS` | Cursor rule frontmatter should not set `globs` when `alwaysApply` is `true` | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC379 / CURSOR-UNKNOWN-FRONTMATTER` | Cursor rule frontmatter contains an unknown key | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC380 / CURSOR-DESCRIPTION` | Cursor rule frontmatter should include `description` | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC378 / CURSOR-ALWAYSAPPLY-GLOBS` | Cursor rule frontmatter should not set `globs` when `alwaysApply` is `true` | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC379 / CURSOR-UNKNOWN-FRONTMATTER` | Cursor rule frontmatter contains an unknown key | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
+| `SEC380 / CURSOR-DESCRIPTION` | Cursor rule frontmatter should include `description` | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC381 / CLAUDE-HOOK-TIMEOUT` | Claude settings command hook should set `timeout` in a shared committed config | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
 | `SEC382 / CLAUDE-HOOK-MATCHER-EVENT` | Claude settings should not use `matcher` on unsupported hook events | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
 | `SEC383 / CLAUDE-HOOK-MISSING-MATCHER` | Claude settings should set `matcher` on matcher-capable hook events | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
@@ -135,7 +135,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC413 / CLAUDE-GIT-CONFIG-PERMISSION` | Claude settings permissions allow `Bash(git config:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC414 / CLAUDE-GIT-TAG-PERMISSION` | Claude settings permissions allow `Bash(git tag:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC415 / CLAUDE-GIT-BRANCH-PERMISSION` | Claude settings permissions allow `Bash(git branch:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC416 / MD-CLAUDE-PIP-INSTALL` | AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
+| `SEC416 / MD-CLAUDE-PIP-INSTALL` | AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `guidance` |
 | `SEC417 / MD-PIP-GIT-UNPINNED` | AI-native markdown installs Python packages from an unpinned `git+https://` source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC418 / CLAUDE-WEBFETCH-RAW-GITHUB` | Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC419 / MD-CURL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(curl:*)` authority | `preview` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
@@ -1791,10 +1791,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `guidance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `guidance`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Wildcard tool grants in AI-native frontmatter can still appear in convenience-oriented docs, so the first release stays least-privilege guidance-only.
@@ -1809,10 +1809,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `guidance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `guidance`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Plugin agent frontmatter can still include unsupported permission policy experiments, so the first release stays spec-guidance-only.
@@ -1827,10 +1827,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `guidance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `guidance`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Plugin agent frontmatter can still include unsupported hook experiments, so the first release stays spec-guidance-only.
@@ -1845,10 +1845,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `guidance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `guidance`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Plugin agent frontmatter can still include unsupported MCP server experiments, so the first release stays spec-guidance-only.
@@ -1863,10 +1863,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `guidance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `guidance`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Cursor rule frontmatter shape mismatches are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
@@ -1881,10 +1881,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `guidance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `guidance`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Cursor rule path-matching shape mismatches are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
@@ -2261,10 +2261,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `guidance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `guidance`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Redundant `globs` alongside `alwaysApply: true` is deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
@@ -2279,10 +2279,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `guidance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `guidance`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Unknown Cursor rule frontmatter keys are deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
@@ -2297,10 +2297,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `guidance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `guidance`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Missing `description` on Cursor rules is deterministic, but the first release stays guidance-only while ecosystem usefulness is measured.
@@ -3003,10 +3003,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `heuristic`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `guidance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `guidance`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: This rule depends on transcript-shaped markdown plus explicit `uv` preference context in the same AI-native document, so the first release stays guidance-only while broader ecosystem usefulness is measured.

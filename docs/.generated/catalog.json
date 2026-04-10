@@ -299,12 +299,6 @@
         "lintai-ai-security:SEC350",
         "lintai-ai-security:SEC351",
         "lintai-ai-security:SEC352",
-        "lintai-ai-security:SEC355",
-        "lintai-ai-security:SEC356",
-        "lintai-ai-security:SEC357",
-        "lintai-ai-security:SEC358",
-        "lintai-ai-security:SEC359",
-        "lintai-ai-security:SEC360",
         "lintai-ai-security:SEC362",
         "lintai-ai-security:SEC364",
         "lintai-ai-security:SEC365",
@@ -316,9 +310,6 @@
         "lintai-ai-security:SEC374",
         "lintai-ai-security:SEC375",
         "lintai-ai-security:SEC376",
-        "lintai-ai-security:SEC378",
-        "lintai-ai-security:SEC379",
-        "lintai-ai-security:SEC380",
         "lintai-ai-security:SEC384",
         "lintai-ai-security:SEC385",
         "lintai-ai-security:SEC386",
@@ -339,7 +330,6 @@
         "lintai-ai-security:SEC413",
         "lintai-ai-security:SEC414",
         "lintai-ai-security:SEC415",
-        "lintai-ai-security:SEC416",
         "lintai-ai-security:SEC417",
         "lintai-ai-security:SEC418",
         "lintai-ai-security:SEC419",
@@ -485,18 +475,8 @@
         "lintai-ai-security:SEC350",
         "lintai-ai-security:SEC351",
         "lintai-ai-security:SEC352",
-        "lintai-ai-security:SEC355",
-        "lintai-ai-security:SEC356",
-        "lintai-ai-security:SEC357",
-        "lintai-ai-security:SEC358",
-        "lintai-ai-security:SEC359",
-        "lintai-ai-security:SEC360",
-        "lintai-ai-security:SEC378",
-        "lintai-ai-security:SEC379",
-        "lintai-ai-security:SEC380",
         "lintai-ai-security:SEC389",
         "lintai-ai-security:SEC404",
-        "lintai-ai-security:SEC416",
         "lintai-ai-security:SEC417",
         "lintai-ai-security:SEC419",
         "lintai-ai-security:SEC420",
@@ -872,9 +852,19 @@
       "ruleIds": [
         "lintai-ai-security:SEC353",
         "lintai-ai-security:SEC354",
+        "lintai-ai-security:SEC355",
+        "lintai-ai-security:SEC356",
+        "lintai-ai-security:SEC357",
+        "lintai-ai-security:SEC358",
+        "lintai-ai-security:SEC359",
+        "lintai-ai-security:SEC360",
         "lintai-ai-security:SEC370",
         "lintai-ai-security:SEC371",
-        "lintai-ai-security:SEC377"
+        "lintai-ai-security:SEC377",
+        "lintai-ai-security:SEC378",
+        "lintai-ai-security:SEC379",
+        "lintai-ai-security:SEC380",
+        "lintai-ai-security:SEC416"
       ],
       "canonicalPath": "/presets/guidance"
     },
@@ -3290,7 +3280,7 @@
       "slug": "sec355",
       "canonicalPath": "/rules/lintai-ai-security/sec355",
       "summary": "AI-native markdown frontmatter grants wildcard tool access",
-      "publicLane": "preview",
+      "publicLane": "guidance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -3299,8 +3289,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "guidance"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
@@ -3322,7 +3311,7 @@
       "slug": "sec356",
       "canonicalPath": "/rules/lintai-ai-security/sec356",
       "summary": "Plugin agent frontmatter sets `permissionMode`",
-      "publicLane": "preview",
+      "publicLane": "guidance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -3331,8 +3320,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "guidance"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
@@ -3354,7 +3342,7 @@
       "slug": "sec357",
       "canonicalPath": "/rules/lintai-ai-security/sec357",
       "summary": "Plugin agent frontmatter sets `hooks`",
-      "publicLane": "preview",
+      "publicLane": "guidance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -3363,8 +3351,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "guidance"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
@@ -3386,7 +3373,7 @@
       "slug": "sec358",
       "canonicalPath": "/rules/lintai-ai-security/sec358",
       "summary": "Plugin agent frontmatter sets `mcpServers`",
-      "publicLane": "preview",
+      "publicLane": "guidance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -3395,8 +3382,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "guidance"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
@@ -3418,7 +3404,7 @@
       "slug": "sec359",
       "canonicalPath": "/rules/lintai-ai-security/sec359",
       "summary": "Cursor rule frontmatter `alwaysApply` must be boolean",
-      "publicLane": "preview",
+      "publicLane": "guidance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -3427,8 +3413,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "guidance"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
@@ -3450,7 +3435,7 @@
       "slug": "sec360",
       "canonicalPath": "/rules/lintai-ai-security/sec360",
       "summary": "Cursor rule frontmatter `globs` must be a sequence of patterns",
-      "publicLane": "preview",
+      "publicLane": "guidance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -3459,8 +3444,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "guidance"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
@@ -4135,7 +4119,7 @@
       "slug": "sec378",
       "canonicalPath": "/rules/lintai-ai-security/sec378",
       "summary": "Cursor rule frontmatter should not set `globs` when `alwaysApply` is `true`",
-      "publicLane": "preview",
+      "publicLane": "guidance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -4144,8 +4128,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "guidance"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
@@ -4167,7 +4150,7 @@
       "slug": "sec379",
       "canonicalPath": "/rules/lintai-ai-security/sec379",
       "summary": "Cursor rule frontmatter contains an unknown key",
-      "publicLane": "preview",
+      "publicLane": "guidance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -4176,8 +4159,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "guidance"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
@@ -4199,7 +4181,7 @@
       "slug": "sec380",
       "canonicalPath": "/rules/lintai-ai-security/sec380",
       "summary": "Cursor rule frontmatter should include `description`",
-      "publicLane": "preview",
+      "publicLane": "guidance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -4208,8 +4190,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "guidance"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
@@ -5475,7 +5456,7 @@
       "slug": "sec416",
       "canonicalPath": "/rules/lintai-ai-security/sec416",
       "summary": "AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance",
-      "publicLane": "preview",
+      "publicLane": "guidance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -5484,8 +5465,7 @@
       "detectionClass": "heuristic",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "guidance"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
