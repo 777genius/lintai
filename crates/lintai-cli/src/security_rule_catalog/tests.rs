@@ -313,6 +313,46 @@ fn shipped_rules_have_expected_default_preset_mapping() {
     assert_eq!(sec417.default_presets(), vec!["supply-chain"]);
     assert_eq!(sec417.public_lane(), PublicLane::SupplyChain);
 
+    let sec747 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC747")
+        .unwrap();
+    assert_eq!(sec747.default_presets(), vec!["supply-chain"]);
+    assert_eq!(sec747.public_lane(), PublicLane::SupplyChain);
+    assert_eq!(sec747.metadata.category, Category::Hardening);
+
+    let sec749 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC749")
+        .unwrap();
+    assert_eq!(sec749.default_presets(), vec!["supply-chain"]);
+    assert_eq!(sec749.public_lane(), PublicLane::SupplyChain);
+    assert_eq!(sec749.metadata.category, Category::Hardening);
+
+    let sec750 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC750")
+        .unwrap();
+    assert_eq!(sec750.default_presets(), vec!["supply-chain"]);
+    assert_eq!(sec750.public_lane(), PublicLane::SupplyChain);
+    assert_eq!(sec750.metadata.category, Category::Hardening);
+
+    let sec751 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC751")
+        .unwrap();
+    assert_eq!(sec751.default_presets(), vec!["supply-chain"]);
+    assert_eq!(sec751.public_lane(), PublicLane::SupplyChain);
+    assert_eq!(sec751.metadata.category, Category::Hardening);
+
+    let sec752 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC752")
+        .unwrap();
+    assert_eq!(sec752.default_presets(), vec!["supply-chain"]);
+    assert_eq!(sec752.public_lane(), PublicLane::SupplyChain);
+    assert_eq!(sec752.metadata.category, Category::Hardening);
+
     let sec353 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC353")
