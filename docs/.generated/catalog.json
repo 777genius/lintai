@@ -44,11 +44,9 @@
         "lintai-ai-security:SEC205",
         "lintai-ai-security:SEC206",
         "lintai-ai-security:SEC301",
-        "lintai-ai-security:SEC303",
         "lintai-ai-security:SEC305",
         "lintai-ai-security:SEC309",
         "lintai-ai-security:SEC310",
-        "lintai-ai-security:SEC311",
         "lintai-ai-security:SEC312",
         "lintai-ai-security:SEC321",
         "lintai-ai-security:SEC329",
@@ -186,11 +184,9 @@
         "lintai-ai-security:SEC104",
         "lintai-ai-security:SEC105",
         "lintai-ai-security:SEC306",
-        "lintai-ai-security:SEC307",
         "lintai-ai-security:SEC308",
         "lintai-ai-security:SEC313",
         "lintai-ai-security:SEC335",
-        "lintai-ai-security:SEC336",
         "lintai-ai-security:SEC349",
         "lintai-ai-security:SEC350",
         "lintai-ai-security:SEC351"
@@ -204,6 +200,7 @@
       "description": "Policy and compatibility checks that compare declared workspace posture against repository behavior.",
       "extends": [],
       "ruleIds": [
+        "lintai-ai-security:SEC311",
         "lintai-ai-security:SEC314",
         "lintai-ai-security:SEC315",
         "lintai-ai-security:SEC316",
@@ -576,6 +573,9 @@
       "description": "Opt-in review rules for shared mutation authority and broad bare tool grants that should not read like headline security findings.",
       "extends": [],
       "ruleIds": [
+        "lintai-ai-security:SEC303",
+        "lintai-ai-security:SEC307",
+        "lintai-ai-security:SEC336",
         "lintai-ai-security:SEC352",
         "lintai-ai-security:SEC362",
         "lintai-ai-security:SEC364",
@@ -1383,7 +1383,7 @@
       "slug": "sec303",
       "canonicalPath": "/rules/lintai-ai-security/sec303",
       "summary": "MCP configuration passes through credential environment variables",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -1392,7 +1392,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "governance",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -1534,7 +1534,7 @@
       "slug": "sec307",
       "canonicalPath": "/rules/lintai-ai-security/sec307",
       "summary": "Configuration forwards sensitive environment variable references",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "json",
       "tier": "preview",
@@ -1543,7 +1543,7 @@
       "detectionClass": "heuristic",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "governance",
         "mcp"
       ],
       "lifecycleState": "preview_blocked",
@@ -1678,7 +1678,7 @@
       "slug": "sec311",
       "canonicalPath": "/rules/lintai-ai-security/sec311",
       "summary": "Cursor plugin manifest contains an unsafe absolute or parent-traversing path",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -1687,7 +1687,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "compat",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -2513,7 +2513,7 @@
       "slug": "sec336",
       "canonicalPath": "/rules/lintai-ai-security/sec336",
       "summary": "Repo-local MCP client config loads a broad dotenv-style envFile",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "json",
       "tier": "preview",
@@ -2522,7 +2522,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "governance",
         "mcp"
       ],
       "lifecycleState": "preview_blocked",

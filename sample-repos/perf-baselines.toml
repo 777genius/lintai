@@ -37,7 +37,7 @@ max_json_locator_builds = 0
 [repo.mcp-heavy]
 max_file_provider_invocations = 2
 max_workspace_provider_invocations = 1
-max_file_findings = 3
+max_file_findings = 2
 max_workspace_findings = 0
 max_signal_builds = 2
 max_markdown_regions_visited = 3

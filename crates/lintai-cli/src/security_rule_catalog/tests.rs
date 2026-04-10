@@ -312,6 +312,34 @@ fn shipped_rules_have_expected_default_preset_mapping() {
     assert_eq!(sec353.default_presets(), vec!["guidance"]);
     assert_eq!(sec353.public_lane(), PublicLane::Guidance);
 
+    let sec303 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC303")
+        .unwrap();
+    assert_eq!(sec303.default_presets(), vec!["governance", "mcp"]);
+    assert_eq!(sec303.public_lane(), PublicLane::Governance);
+
+    let sec307 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC307")
+        .unwrap();
+    assert_eq!(sec307.default_presets(), vec!["governance", "mcp"]);
+    assert_eq!(sec307.public_lane(), PublicLane::Governance);
+
+    let sec311 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC311")
+        .unwrap();
+    assert_eq!(sec311.default_presets(), vec!["compat", "mcp"]);
+    assert_eq!(sec311.public_lane(), PublicLane::Compat);
+
+    let sec336 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC336")
+        .unwrap();
+    assert_eq!(sec336.default_presets(), vec!["governance", "mcp"]);
+    assert_eq!(sec336.public_lane(), PublicLane::Governance);
+
     let sec355 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC355")

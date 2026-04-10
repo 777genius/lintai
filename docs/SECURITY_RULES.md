@@ -25,15 +25,15 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC206 / HOOK-BASE64-EXEC` | Hook script decodes a base64 payload and executes it | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
 | `SEC301 / MCP-SHELL-WRAPPER` | MCP configuration shells out through sh -c or bash -c | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC302 / MCP-PLAIN-HTTP-ENDPOINT` | Configuration contains an insecure http:// endpoint | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `suggestion` | `supply-chain` |
-| `SEC303 / MCP-CREDENTIAL-ENV-PASSTHROUGH` | MCP configuration passes through credential environment variables | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC303 / MCP-CREDENTIAL-ENV-PASSTHROUGH` | MCP configuration passes through credential environment variables | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
 | `SEC304 / MCP-TLS-BYPASS` | Configuration disables TLS or certificate verification | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC305 / MCP-STATIC-AUTH` | Configuration embeds static authentication material in a connection or auth value | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC306 / MCP-HIDDEN-INSTRUCTIONS` | JSON configuration description contains override-style hidden instructions | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
-| `SEC307 / MCP-SENSITIVE-ENV-REFERENCE` | Configuration forwards sensitive environment variable references | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
+| `SEC307 / MCP-SENSITIVE-ENV-REFERENCE` | Configuration forwards sensitive environment variable references | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `governance`, `mcp` |
 | `SEC308 / MCP-SUSPICIOUS-ENDPOINT` | Configuration points at a suspicious remote endpoint | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
 | `SEC309 / MCP-LITERAL-SECRET` | Configuration commits literal secret material in env, auth, or header values | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC310 / MCP-METADATA-HOST-LITERAL` | Configuration endpoint targets a metadata or private-network host literal | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC311 / PLUGIN-UNSAFE-PATH` | Cursor plugin manifest contains an unsafe absolute or parent-traversing path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC311 / PLUGIN-UNSAFE-PATH` | Cursor plugin manifest contains an unsafe absolute or parent-traversing path | `compat` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC312 / MD-PRIVATE-KEY` | Markdown contains committed private key material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `base`, `skills` |
 | `SEC313 / MD-PIPE-SHELL` | Fenced shell example pipes remote content directly into a shell | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC314 / TOOL-MISSING-MACHINE-FIELDS` | MCP-style tool descriptor is missing required machine fields | `compat` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `compat`, `mcp` |
@@ -55,7 +55,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC330 / MCP-DOWNLOAD-EXEC` | MCP configuration command downloads remote content and pipes it into a shell | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC331 / MCP-TLS-BYPASS` | MCP configuration command disables TLS verification in a network-capable execution path | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC335 / MD-METADATA-SERVICE-ACCESS` | AI-native markdown contains a direct cloud metadata-service access example | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC336 / MCP-BROAD-ENVFILE` | Repo-local MCP client config loads a broad dotenv-style envFile | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC336 / MCP-BROAD-ENVFILE` | Repo-local MCP client config loads a broad dotenv-style envFile | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
 | `SEC337 / MCP-DOCKER-UNPINNED-IMAGE` | MCP configuration launches Docker with an image reference that is not digest-pinned | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC338 / MCP-DOCKER-SENSITIVE-MOUNT` | MCP configuration launches Docker with a bind mount of sensitive host material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC339 / MCP-DOCKER-HOST-ESCAPE` | MCP configuration launches Docker with a host-escape or privileged runtime flag | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
@@ -777,10 +777,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit credential env passthrough by key inside configuration env maps.
@@ -861,10 +861,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `heuristic`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Depends on sensitive env-name heuristics in forwarded references.
@@ -941,10 +941,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `compat`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches absolute or parent-traversing paths in committed Cursor plugin manifest path fields.
@@ -1405,10 +1405,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Broad envFile loading is useful review signal, but whether it is materially risky still depends on repo-local review policy and env contents.

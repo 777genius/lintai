@@ -11,11 +11,10 @@ Expected findings:
 
 - `SEC301` shell-wrapper MCP command
 - `SEC302` plain HTTP MCP endpoint
-- `SEC303` credential env passthrough
 
 Expected result:
 
-- findings are expected
+- findings are expected from the quiet default profile
 - findings are non-blocking under the current sample config
 - every documented command exits `0`
 - `fix .` should preview manual remediation suggestions but not plan or apply file changes

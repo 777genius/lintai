@@ -1,2 +1,2 @@
 [presets]
-enable = ["base", "preview", "mcp"]
+enable = ["governance", "mcp"]

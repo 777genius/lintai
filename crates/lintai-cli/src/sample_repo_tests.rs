@@ -193,9 +193,9 @@ fn mcp_heavy_sample_repo_emits_mcp_rule_set() {
     assert_case_summary(&manifest, &summary);
     assert_eq!(
         sample_repo_rule_codes(&summary),
-        BTreeSet::from(["SEC301", "SEC302", "SEC303"])
+        BTreeSet::from(["SEC301", "SEC302"])
     );
-    for rule_code in ["SEC301", "SEC302", "SEC303"] {
+    for rule_code in ["SEC301", "SEC302"] {
         assert!(text.contains(rule_code));
         assert!(text.contains("  suggest:"));
         let finding = summary

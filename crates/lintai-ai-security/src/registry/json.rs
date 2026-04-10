@@ -207,7 +207,7 @@ declare_rule! {
         code: "SEC311",
         summary: "Cursor plugin manifest contains an unsafe absolute or parent-traversing path",
         doc_title: "Cursor plugin: unsafe path traversal",
-        category: Category::Security,
+        category: Category::Quality,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Stable,
@@ -2154,7 +2154,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpCredentialEnvPassthroughRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit credential env passthrough by key inside configuration env maps.",
@@ -2230,7 +2230,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: JsonSensitiveEnvReferenceRule::METADATA,
         surface: Surface::Json,
-        default_presets: PREVIEW_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Depends on sensitive env-name heuristics in forwarded references.",
@@ -2302,7 +2302,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: CursorPluginUnsafePathRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: COMPAT_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches absolute or parent-traversing paths in committed Cursor plugin manifest path fields.",
@@ -2382,7 +2382,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpBroadEnvFileRule::METADATA,
         surface: Surface::Json,
-        default_presets: PREVIEW_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Broad envFile loading is useful review signal, but whether it is materially risky still depends on repo-local review policy and env contents.",
