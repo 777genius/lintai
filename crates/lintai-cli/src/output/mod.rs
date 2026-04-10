@@ -104,7 +104,7 @@ mod tests {
             &lintai_api::RuleMetadata::new(
                 "SEC308",
                 "demo preview",
-                lintai_api::Category::Security,
+                lintai_api::Category::Audit,
                 lintai_api::Severity::Warn,
                 lintai_api::Confidence::High,
                 lintai_api::RuleTier::Stable,

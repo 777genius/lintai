@@ -6,7 +6,7 @@ use crate::shipped_rules::{
     CatalogDetectionClass, CatalogRuleLifecycle, PublicLane, provider_sort_key, shipped_rule_alias,
     shipped_security_rule_catalog_entries,
 };
-use lintai_api::RuleTier;
+use lintai_api::{Category, RuleTier};
 use lintai_builtins::{BuiltinCatalogDetectionClass, builtin_rule_catalog_entries};
 
 #[test]
@@ -333,6 +333,15 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec307.default_presets(), vec!["governance", "mcp"]);
     assert_eq!(sec307.public_lane(), PublicLane::Governance);
+    assert_eq!(sec307.metadata.category, Category::Hardening);
+
+    let sec308 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC308")
+        .unwrap();
+    assert_eq!(sec308.default_presets(), vec!["preview", "mcp"]);
+    assert_eq!(sec308.public_lane(), PublicLane::Preview);
+    assert_eq!(sec308.metadata.category, Category::Audit);
 
     let sec311 = entries
         .iter()
