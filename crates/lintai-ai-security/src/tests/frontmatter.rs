@@ -1617,7 +1617,7 @@ fn ignores_git_am_allowed_tools_when_command_is_more_specific() {
 #[test]
 fn finds_package_install_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(pip install), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1634,7 +1634,7 @@ fn finds_package_install_allowed_tools_in_frontmatter() {
 #[test]
 fn finds_python_dash_m_pip_install_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(python -m pip install), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1650,7 +1650,7 @@ fn finds_python_dash_m_pip_install_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_package_install_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(pip cache purge), Read\n---\n# Skill\n",
     );
@@ -1665,9 +1665,11 @@ fn ignores_package_install_allowed_tools_when_command_is_more_specific() {
 
 #[test]
 fn ignores_package_install_allowed_tools_on_fixture_like_path() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_fixture(
         "tests/fixtures/skill/SKILL.md",
         "---\nallowed-tools: Bash(npm install), Read\n---\n# Fixture skill\n",
+        &["base", "preview", "skills", "guidance", "governance"],
+        "lintai-sec447-fixture-safe",
     );
 
     assert!(

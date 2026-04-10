@@ -1192,7 +1192,7 @@ fn finds_claude_settings_git_branch_permission() {
 #[test]
 fn finds_claude_settings_enabled_mcpjson_servers() {
     let content = r#"{"enabledMcpjsonServers":["claude-flow","ruv-swarm"],"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1328,7 +1328,7 @@ fn finds_claude_settings_pipx_run_permission() {
 #[test]
 fn finds_claude_settings_package_install_permission() {
     let content = r#"{"permissions":{"allow":["Bash(yarn install)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1345,7 +1345,7 @@ fn finds_claude_settings_package_install_permission() {
 #[test]
 fn finds_claude_settings_pip_install_permission() {
     let content = r#"{"permissions":{"allow":["Bash(pip install)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1362,7 +1362,7 @@ fn finds_claude_settings_pip_install_permission() {
 #[test]
 fn finds_claude_settings_python_m_pip_install_permission() {
     let content = r#"{"permissions":{"allow":["Bash(python -m pip install)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1599,7 +1599,7 @@ fn finds_claude_settings_grep_wildcard() {
 
 #[test]
 fn ignores_claude_settings_specific_package_command_without_install() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(yarn test:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1614,7 +1614,7 @@ fn ignores_claude_settings_specific_package_command_without_install() {
 
 #[test]
 fn ignores_claude_settings_empty_enabled_mcpjson_servers() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"enabledMcpjsonServers":[],"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1633,7 +1633,7 @@ fn ignores_claude_settings_package_install_permission_on_fixture_like_path() {
     std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
     std::fs::write(
         temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\", \"governance\"]\n",
     )
     .unwrap();
     std::fs::write(
@@ -2223,7 +2223,7 @@ fn ignores_claude_settings_enabled_mcpjson_servers_on_fixture_like_path() {
     std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
     std::fs::write(
         temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\", \"governance\"]\n",
     )
     .unwrap();
     std::fs::write(

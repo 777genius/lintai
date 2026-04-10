@@ -300,10 +300,7 @@
         "lintai-ai-security:SEC351",
         "lintai-ai-security:SEC364",
         "lintai-ai-security:SEC365",
-        "lintai-ai-security:SEC366",
-        "lintai-ai-security:SEC400",
-        "lintai-ai-security:SEC405",
-        "lintai-ai-security:SEC447"
+        "lintai-ai-security:SEC366"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -345,8 +342,7 @@
         "lintai-ai-security:SEC348",
         "lintai-ai-security:SEC349",
         "lintai-ai-security:SEC350",
-        "lintai-ai-security:SEC351",
-        "lintai-ai-security:SEC447"
+        "lintai-ai-security:SEC351"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -708,7 +704,9 @@
         "lintai-ai-security:SEC392",
         "lintai-ai-security:SEC393",
         "lintai-ai-security:SEC399",
+        "lintai-ai-security:SEC400",
         "lintai-ai-security:SEC404",
+        "lintai-ai-security:SEC405",
         "lintai-ai-security:SEC406",
         "lintai-ai-security:SEC407",
         "lintai-ai-security:SEC408",
@@ -746,6 +744,7 @@
         "lintai-ai-security:SEC443",
         "lintai-ai-security:SEC444",
         "lintai-ai-security:SEC445",
+        "lintai-ai-security:SEC447",
         "lintai-ai-security:SEC463",
         "lintai-ai-security:SEC466",
         "lintai-ai-security:SEC467",
@@ -4875,7 +4874,7 @@
       "slug": "sec400",
       "canonicalPath": "/rules/lintai-ai-security/sec400",
       "summary": "Claude settings enable `enabledMcpjsonServers` in a shared committed config",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -4884,7 +4883,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "governance",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -4954,7 +4953,7 @@
       "slug": "sec405",
       "canonicalPath": "/rules/lintai-ai-security/sec405",
       "summary": "Claude settings permissions allow package installation commands in a shared committed config",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -4963,7 +4962,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "governance",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -6598,7 +6597,7 @@
       "slug": "sec447",
       "canonicalPath": "/rules/lintai-ai-security/sec447",
       "summary": "AI-native markdown frontmatter grants package installation authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -6607,8 +6606,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {

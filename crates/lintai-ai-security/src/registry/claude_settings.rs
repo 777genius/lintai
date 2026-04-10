@@ -2263,7 +2263,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsEnabledMcpjsonServersRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `enabledMcpjsonServers` enablement.",
@@ -2283,7 +2283,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsPackageInstallPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings permissions for broad package installation authority.",
