@@ -2114,10 +2114,10 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
-        default_presets: PREVIEW_MCP_PRESETS,
+        default_presets: THREAT_REVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
-            rationale: "Matches explicit shell-wrapper command structure in JSON config, whether the shell is the command itself or the first launch argument.",
+            rationale: "Matches explicit shell-wrapper command structure in JSON config, whether the shell is the command itself or the first launch argument, and is best reviewed as an overt threat-review signal rather than a softer middle-lane prompt.",
             malicious_case_ids: &["mcp-shell-wrapper", "mcp-shell-wrapper-args0"],
             benign_case_ids: &["mcp-safe-basic", "mcp-shell-wrapper-args-safe"],
             requires_structured_evidence: true,

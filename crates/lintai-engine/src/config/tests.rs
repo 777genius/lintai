@@ -342,7 +342,7 @@ enable = ["base", "mcp"]
         vec!["base".to_owned(), "mcp".to_owned()]
     );
     assert_eq!(
-        resolved.severity_for("SEC301", Category::Security, Severity::Warn),
+        resolved.severity_for("SEC308", Category::Security, Severity::Warn),
         Severity::Warn
     );
 }

@@ -23,7 +23,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC204 / HOOK-TLS-BYPASS` | Hook script disables TLS or certificate verification for a network call | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
 | `SEC205 / HOOK-STATIC-AUTH` | Hook script embeds static authentication material in a network call | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
 | `SEC206 / HOOK-BASE64-EXEC` | Hook script decodes a base64 payload and executes it | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `threat-review` |
-| `SEC301 / MCP-SHELL-WRAPPER` | MCP configuration shells out through sh -c or bash -c | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC301 / MCP-SHELL-WRAPPER` | MCP configuration shells out through sh -c or bash -c | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
 | `SEC302 / MCP-PLAIN-HTTP-ENDPOINT` | Configuration contains an insecure http:// endpoint | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `suggestion` | `supply-chain` |
 | `SEC303 / MCP-CREDENTIAL-ENV-PASSTHROUGH` | MCP configuration passes through credential environment variables | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
 | `SEC304 / MCP-TLS-BYPASS` | Configuration disables TLS or certificate verification | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
@@ -734,19 +734,19 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
-- Graduation Rationale: Matches explicit shell-wrapper command structure in JSON config, whether the shell is the command itself or the first launch argument.
+- Graduation Rationale: Matches explicit shell-wrapper command structure in JSON config, whether the shell is the command itself or the first launch argument, and is best reviewed as an overt threat-review signal rather than a softer middle-lane prompt.
 - Deterministic Signal Basis: JsonSignals command and args structure observation for sh -c or bash -c wrappers, either through `command` or `args[0]`.
 - Malicious Corpus: `mcp-shell-wrapper`, `mcp-shell-wrapper-args0`
 - Benign Corpus: `mcp-safe-basic`, `mcp-shell-wrapper-args-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC302 / MCP-PLAIN-HTTP-ENDPOINT` — Configuration contains an insecure http:// endpoint
 

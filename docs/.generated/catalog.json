@@ -49,7 +49,6 @@
       "description": "Deeper-review rules that expand coverage beyond the recommended default.",
       "extends": [],
       "ruleIds": [
-        "lintai-ai-security:SEC301",
         "lintai-ai-security:SEC308"
       ],
       "canonicalPath": "/presets/preview"
@@ -72,6 +71,7 @@
         "lintai-ai-security:SEC204",
         "lintai-ai-security:SEC205",
         "lintai-ai-security:SEC206",
+        "lintai-ai-security:SEC301",
         "lintai-ai-security:SEC305",
         "lintai-ai-security:SEC306",
         "lintai-ai-security:SEC309",
@@ -1312,7 +1312,7 @@
       "slug": "sec301",
       "canonicalPath": "/rules/lintai-ai-security/sec301",
       "summary": "MCP configuration shells out through sh -c or bash -c",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -1321,13 +1321,13 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
         "kind": "stable",
-        "rationale": "Matches explicit shell-wrapper command structure in JSON config, whether the shell is the command itself or the first launch argument.",
+        "rationale": "Matches explicit shell-wrapper command structure in JSON config, whether the shell is the command itself or the first launch argument, and is best reviewed as an overt threat-review signal rather than a softer middle-lane prompt.",
         "maliciousCaseIds": [
           "mcp-shell-wrapper",
           "mcp-shell-wrapper-args0"
@@ -1340,7 +1340,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command and args structure observation for sh -c or bash -c wrappers, either through `command` or `args[0]`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {

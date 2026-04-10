@@ -730,8 +730,8 @@ mod tests {
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC301")
             .expect("SEC301 should exist");
-        assert_eq!(sec301.default_presets, vec!["preview", "mcp"]);
-        assert_eq!(sec301.public_lane, "preview");
+        assert_eq!(sec301.default_presets, vec!["threat-review", "mcp"]);
+        assert_eq!(sec301.public_lane, "threat-review");
 
         let sec306 = catalog
             .rules

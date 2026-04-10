@@ -180,7 +180,7 @@ base_dirs = ["{}"]
 }
 
 #[test]
-fn policy_os_global_shell_wrapper_mcp_can_opt_into_preview_scan_profile() {
+fn policy_os_global_shell_wrapper_mcp_can_opt_into_threat_review_scan_profile() {
     let temp_dir = unique_temp_dir("lintai-policy-os-shell-wrapper");
     let cwd = temp_dir.join("cwd");
     let root = temp_dir.join("machine");
@@ -215,7 +215,7 @@ base_dirs = ["{}"]
             "--policy",
             policy.to_str().unwrap(),
             "--scope=user",
-            "--preset=preview",
+            "--preset=threat-review",
             "--path-root",
             root.to_str().unwrap(),
             "--format=json",

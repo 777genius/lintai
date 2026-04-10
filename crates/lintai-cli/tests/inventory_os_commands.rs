@@ -194,6 +194,7 @@ fn inventory_os_explicit_presets_enable_broader_machine_review() {
             "--preset=mcp",
             "--preset=claude",
             "--preset=supply-chain",
+            "--preset=threat-review",
             "--path-root",
             &path_root,
             "--format=json",
