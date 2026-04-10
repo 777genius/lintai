@@ -114,6 +114,22 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec101.default_presets(), vec!["threat-review", "skills"]);
 
+    let sec350 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC350")
+        .unwrap();
+    assert_eq!(sec350.default_presets(), vec!["threat-review", "skills"]);
+    assert_eq!(sec350.public_lane(), PublicLane::ThreatReview);
+    assert_eq!(sec350.metadata.category, Category::Audit);
+
+    let sec351 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC351")
+        .unwrap();
+    assert_eq!(sec351.default_presets(), vec!["threat-review", "skills"]);
+    assert_eq!(sec351.public_lane(), PublicLane::ThreatReview);
+    assert_eq!(sec351.metadata.category, Category::Audit);
+
     let sec323 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC323")
@@ -486,6 +502,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec306.default_presets(), vec!["threat-review", "mcp"]);
     assert_eq!(sec306.public_lane(), PublicLane::ThreatReview);
+    assert_eq!(sec306.metadata.category, Category::Audit);
 
     let sec310 = entries
         .iter()

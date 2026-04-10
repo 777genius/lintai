@@ -147,7 +147,7 @@ declare_rule! {
         code: "SEC306",
         summary: "JSON configuration description contains override-style hidden instructions",
         doc_title: "JSON config: hidden override instructions",
-        category: Category::Security,
+        category: Category::Audit,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Preview,
