@@ -340,6 +340,27 @@ fn shipped_rules_have_expected_default_preset_mapping() {
     assert_eq!(sec336.default_presets(), vec!["governance", "mcp"]);
     assert_eq!(sec336.public_lane(), PublicLane::Governance);
 
+    let sec330 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC330")
+        .unwrap();
+    assert_eq!(sec330.default_presets(), vec!["supply-chain", "mcp"]);
+    assert_eq!(sec330.public_lane(), PublicLane::SupplyChain);
+
+    let sec341 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC341")
+        .unwrap();
+    assert_eq!(sec341.default_presets(), vec!["supply-chain", "claude"]);
+    assert_eq!(sec341.public_lane(), PublicLane::SupplyChain);
+
+    let sec344 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC344")
+        .unwrap();
+    assert_eq!(sec344.default_presets(), vec!["supply-chain", "mcp"]);
+    assert_eq!(sec344.public_lane(), PublicLane::SupplyChain);
+
     let sec355 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC355")

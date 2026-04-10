@@ -50,12 +50,9 @@
         "lintai-ai-security:SEC312",
         "lintai-ai-security:SEC321",
         "lintai-ai-security:SEC329",
-        "lintai-ai-security:SEC330",
         "lintai-ai-security:SEC338",
         "lintai-ai-security:SEC339",
         "lintai-ai-security:SEC340",
-        "lintai-ai-security:SEC341",
-        "lintai-ai-security:SEC344",
         "lintai-ai-security:SEC422",
         "lintai-ai-security:SEC446",
         "lintai-ai-security:SEC633",
@@ -826,10 +823,13 @@
         "lintai-ai-security:SEC326",
         "lintai-ai-security:SEC327",
         "lintai-ai-security:SEC328",
+        "lintai-ai-security:SEC330",
         "lintai-ai-security:SEC331",
         "lintai-ai-security:SEC337",
+        "lintai-ai-security:SEC341",
         "lintai-ai-security:SEC342",
         "lintai-ai-security:SEC343",
+        "lintai-ai-security:SEC344",
         "lintai-ai-security:SEC345",
         "lintai-ai-security:SEC346",
         "lintai-ai-security:SEC347",
@@ -2402,7 +2402,7 @@
       "slug": "sec330",
       "canonicalPath": "/rules/lintai-ai-security/sec330",
       "summary": "MCP configuration command downloads remote content and pipes it into a shell",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -2411,7 +2411,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "supply-chain",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -2428,7 +2428,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command/args string analysis over ArtifactKind::McpConfig objects, limited to explicit download-pipe-shell patterns."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -2705,7 +2705,7 @@
       "slug": "sec341",
       "canonicalPath": "/rules/lintai-ai-security/sec341",
       "summary": "Claude settings command hook downloads remote content and pipes it into a shell",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -2714,7 +2714,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "supply-chain",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -2731,7 +2731,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command, limited to explicit download-pipe-shell patterns."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -2824,7 +2824,7 @@
       "slug": "sec344",
       "canonicalPath": "/rules/lintai-ai-security/sec344",
       "summary": "Plugin hook command downloads remote content and pipes it into a shell",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -2833,7 +2833,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "supply-chain",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -2850,7 +2850,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks objects, limited to explicit download-pipe-shell patterns."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {

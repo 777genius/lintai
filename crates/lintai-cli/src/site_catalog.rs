@@ -605,6 +605,30 @@ mod tests {
         assert_eq!(sec336.default_presets, vec!["governance", "mcp"]);
         assert_eq!(sec336.public_lane, "governance");
 
+        let sec330 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC330")
+            .expect("SEC330 should exist");
+        assert_eq!(sec330.default_presets, vec!["supply-chain", "mcp"]);
+        assert_eq!(sec330.public_lane, "supply-chain");
+
+        let sec341 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC341")
+            .expect("SEC341 should exist");
+        assert_eq!(sec341.default_presets, vec!["supply-chain", "claude"]);
+        assert_eq!(sec341.public_lane, "supply-chain");
+
+        let sec344 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC344")
+            .expect("SEC344 should exist");
+        assert_eq!(sec344.default_presets, vec!["supply-chain", "mcp"]);
+        assert_eq!(sec344.public_lane, "supply-chain");
+
         let sec355 = catalog
             .rules
             .iter()

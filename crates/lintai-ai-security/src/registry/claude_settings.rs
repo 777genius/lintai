@@ -3025,7 +3025,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInlineDownloadExecRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: SUPPLY_CHAIN_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit curl|shell or wget|shell execution chains.",
