@@ -651,6 +651,30 @@ fn shipped_rules_have_expected_default_preset_mapping() {
     assert_eq!(sec355.default_presets(), vec!["guidance"]);
     assert_eq!(sec355.public_lane(), PublicLane::Guidance);
 
+    let sec356 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC356")
+        .unwrap();
+    assert_eq!(sec356.default_presets(), vec!["guidance"]);
+    assert_eq!(sec356.public_lane(), PublicLane::Guidance);
+    assert_eq!(sec356.metadata.category, Category::Quality);
+
+    let sec357 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC357")
+        .unwrap();
+    assert_eq!(sec357.default_presets(), vec!["guidance"]);
+    assert_eq!(sec357.public_lane(), PublicLane::Guidance);
+    assert_eq!(sec357.metadata.category, Category::Quality);
+
+    let sec358 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC358")
+        .unwrap();
+    assert_eq!(sec358.default_presets(), vec!["guidance"]);
+    assert_eq!(sec358.public_lane(), PublicLane::Guidance);
+    assert_eq!(sec358.metadata.category, Category::Quality);
+
     let sec359 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC359")
@@ -671,6 +695,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec416.default_presets(), vec!["guidance"]);
     assert_eq!(sec416.public_lane(), PublicLane::Guidance);
+    assert_eq!(sec416.metadata.category, Category::Quality);
 
     let sec419 = entries
         .iter()
