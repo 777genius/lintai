@@ -9,6 +9,7 @@ use lintai_engine::FileTypeDetector;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
+mod application;
 mod inventory;
 mod model;
 mod package;
@@ -19,6 +20,7 @@ mod scan;
 #[cfg(test)]
 mod tests;
 
+pub(crate) use application::*;
 pub(crate) use inventory::*;
 pub(crate) use model::*;
 pub(crate) use package::*;

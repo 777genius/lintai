@@ -7,7 +7,7 @@ mod tool_json;
 use super::*;
 
 pub(crate) use ai_native::{admitted_ai_native_paths, is_ai_native_docker_config_path};
-pub(crate) use common::{inventory_surfaces, is_tool_json_excluded_path};
+pub(crate) use common::{InventoryArtifact, inventory_surfaces, is_tool_json_excluded_path};
 pub(crate) use github_actions::admitted_github_workflow_paths;
 pub(crate) use server_json::admitted_server_json_paths;
 pub(crate) use tool_json::admitted_tool_descriptor_paths;

@@ -169,13 +169,11 @@ pub(crate) struct JsonRuntimeError {
 
 #[derive(Clone, Debug)]
 pub(crate) struct RerunOptions {
-    pub workspace_root: PathBuf,
     pub package: ValidationPackage,
     pub lintai_bin: Option<PathBuf>,
 }
 
 #[derive(Clone, Debug)]
 pub(crate) struct RenderReportOptions {
-    pub workspace_root: PathBuf,
     pub package: ValidationPackage,
 }
