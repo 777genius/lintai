@@ -650,6 +650,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec355.default_presets(), vec!["guidance"]);
     assert_eq!(sec355.public_lane(), PublicLane::Guidance);
+    assert_eq!(sec355.metadata.category, Category::Hardening);
 
     let sec356 = entries
         .iter()
@@ -703,6 +704,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec419.default_presets(), vec!["governance"]);
     assert_eq!(sec419.public_lane(), PublicLane::Governance);
+    assert_eq!(sec419.metadata.category, Category::Hardening);
 
     let sec466 = entries
         .iter()
@@ -710,6 +712,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec466.default_presets(), vec!["governance"]);
     assert_eq!(sec466.public_lane(), PublicLane::Governance);
+    assert_eq!(sec466.metadata.category, Category::Hardening);
 
     let sec520 = entries
         .iter()
@@ -717,6 +720,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec520.default_presets(), vec!["governance"]);
     assert_eq!(sec520.public_lane(), PublicLane::Governance);
+    assert_eq!(sec520.metadata.category, Category::Hardening);
 
     let sec428 = entries
         .iter()
@@ -724,6 +728,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec428.default_presets(), vec!["governance"]);
     assert_eq!(sec428.public_lane(), PublicLane::Governance);
+    assert_eq!(sec428.metadata.category, Category::Hardening);
 
     let sec447 = entries
         .iter()
@@ -731,6 +736,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec447.default_presets(), vec!["governance"]);
     assert_eq!(sec447.public_lane(), PublicLane::Governance);
+    assert_eq!(sec447.metadata.category, Category::Hardening);
 
     let sec394 = entries
         .iter()
