@@ -58,6 +58,20 @@ fn heuristic_entries_remain_preview() {
 }
 
 #[test]
+fn governance_entries_do_not_use_security_category() {
+    for entry in shipped_security_rule_catalog_entries() {
+        if entry.public_lane() == PublicLane::Governance {
+            assert_ne!(
+                entry.metadata.category,
+                Category::Security,
+                "governance entry {} should not use security category",
+                entry.metadata.code
+            );
+        }
+    }
+}
+
+#[test]
 fn stable_entries_have_completed_metadata() {
     for entry in shipped_security_rule_catalog_entries() {
         if entry.metadata.tier != RuleTier::Stable {
