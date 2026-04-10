@@ -21,7 +21,7 @@ Skills, MCP configs, agent rules, hooks, and plugin manifests are not just docs 
 
 `lintai` exists to make those artifacts easier to verify before use, before sharing, and before merge. It is built for fast local runs, repeatable CI checks, and private repositories where offline-first verification matters.
 
-Think of it as a Ruff/Biome-style workflow for agent artifact security: fast, deterministic, and meant to run often.
+Think of it as a Ruff/Biome-style workflow for agent artifact review: fast, deterministic, and meant to run often.
 
 ## Quick Start
 
@@ -47,8 +47,9 @@ Exit codes:
 
 Interpretation:
 
-- `Stable` findings are the release-quality baseline.
-- `Preview` findings are useful signals, but not the baseline trust bar.
+- `Stable` findings are the release-quality baseline behind the quiet `recommended` default.
+- `Preview` findings are useful deeper-review signals, but not the baseline trust bar.
+- explicit sidecar lanes such as `compat`, `governance`, and `supply-chain` stay opt-in on purpose.
 
 ## What It Scans
 
@@ -153,12 +154,13 @@ Not:
 - `guaranteed safe`
 - `fully secure`
 
-## Stable vs Preview
+## Stable, Preview, and Sidecar Lanes
 
 `lintai` is intentionally precision-first.
 
 - `Stable` rules are the current release-quality baseline and are meant to be deterministic, explainable, and low-noise.
 - `Preview` rules are valuable, but they are still under usefulness and precision review.
+- sidecar lanes such as `compat`, `governance`, `supply-chain`, and `advisory` are useful on purpose, but they are not bundled into the quiet default experience.
 - The goal is not maximal heuristic coverage. The goal is trustworthy findings you can run often.
 
 This is especially important for markdown-like agent surfaces, where some security checks are useful but still more text-sensitive than the strongest structural rules.
@@ -232,7 +234,7 @@ For teams evaluating `v0.1`, a good default is:
 1. Start with `recommended`.
 2. Add `preview` when you want deeper review.
 3. Add `governance` only when you want shared-authority and least-privilege review.
-4. Keep `diagnostics` separate from security findings.
+4. Keep `diagnostics` separate from findings.
 
 Treat `diagnostics` separately from findings.
 
