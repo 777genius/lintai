@@ -1,5 +1,5 @@
 [presets]
-enable = ["base", "compat"]
+enable = ["base", "preview", "compat"]
 
 [capabilities]
 exec = "none"

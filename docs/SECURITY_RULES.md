@@ -17,12 +17,12 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC103 / MD-HIDDEN-DOWNLOAD-EXEC` | Hidden HTML comment contains remote download-and-execute instruction | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `safe_fix` | `preview`, `skills` |
 | `SEC104 / MD-BASE64-EXEC` | Markdown contains a base64-decoded executable payload outside code blocks | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
 | `SEC105 / MD-PATH-TRAVERSAL` | Markdown instructions reference parent-directory traversal for file access | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC201 / HOOK-DOWNLOAD-EXEC` | Hook script downloads remote code and executes it | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
-| `SEC202 / HOOK-SECRET-EXFIL` | Hook script appears to exfiltrate secrets through a network call | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
-| `SEC203 / HOOK-PLAIN-HTTP-SECRET-EXFIL` | Hook script sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
-| `SEC204 / HOOK-TLS-BYPASS` | Hook script disables TLS or certificate verification for a network call | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC205 / HOOK-STATIC-AUTH` | Hook script embeds static authentication material in a network call | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC206 / HOOK-BASE64-EXEC` | Hook script decodes a base64 payload and executes it | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
+| `SEC201 / HOOK-DOWNLOAD-EXEC` | Hook script downloads remote code and executes it | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `preview` |
+| `SEC202 / HOOK-SECRET-EXFIL` | Hook script appears to exfiltrate secrets through a network call | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `preview` |
+| `SEC203 / HOOK-PLAIN-HTTP-SECRET-EXFIL` | Hook script sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `preview` |
+| `SEC204 / HOOK-TLS-BYPASS` | Hook script disables TLS or certificate verification for a network call | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
+| `SEC205 / HOOK-STATIC-AUTH` | Hook script embeds static authentication material in a network call | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
+| `SEC206 / HOOK-BASE64-EXEC` | Hook script decodes a base64 payload and executes it | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `preview` |
 | `SEC301 / MCP-SHELL-WRAPPER` | MCP configuration shells out through sh -c or bash -c | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC302 / MCP-PLAIN-HTTP-ENDPOINT` | Configuration contains an insecure http:// endpoint | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `suggestion` | `supply-chain` |
 | `SEC303 / MCP-CREDENTIAL-ENV-PASSTHROUGH` | MCP configuration passes through credential environment variables | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
@@ -352,10 +352,10 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC630 / CLAUDE-GLOB` | Claude settings permissions allow bare `Glob` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC631 / CLAUDE-GREP` | Claude settings permissions allow bare `Grep` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC632 / CLAUDE-WEBFETCH` | Claude settings permissions allow bare `WebFetch` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
-| `SEC633` | Hook script attempts destructive root deletion | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC634` | Hook script accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC635` | Hook script writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC636` | Hook script writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC633` | Hook script attempts destructive root deletion | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
+| `SEC634` | Hook script accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
+| `SEC635` | Hook script writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
+| `SEC636` | Hook script writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
 | `SEC637` | MCP configuration command attempts destructive root deletion | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC638` | MCP configuration command accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC639` | MCP configuration command writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
@@ -368,9 +368,9 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC646` | Plugin hook command accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC647` | Plugin hook command writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC648` | Plugin hook command writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC649` | Hook script manipulates cron persistence | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC650` | Hook script registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC651` | Hook script registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC649` | Hook script manipulates cron persistence | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
+| `SEC650` | Hook script registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
+| `SEC651` | Hook script registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
 | `SEC652` | MCP configuration command manipulates cron persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC653` | MCP configuration command registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC654` | MCP configuration command registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
@@ -380,9 +380,9 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC658` | Plugin hook command manipulates cron persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC659` | Plugin hook command registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC660` | Plugin hook command registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC661` | Hook script performs an insecure permission change | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC662` | Hook script manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC663` | Hook script manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC661` | Hook script performs an insecure permission change | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
+| `SEC662` | Hook script manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
+| `SEC663` | Hook script manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
 | `SEC664` | MCP configuration command performs an insecure permission change | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC665` | MCP configuration command manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC666` | MCP configuration command manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
@@ -392,7 +392,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC670` | Plugin hook command performs an insecure permission change | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC671` | Plugin hook command manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC672` | Plugin hook command manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC673` | Hook script posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC673` | Hook script posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
 | `SEC674` | MCP configuration command appears to send secret material over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC675` | MCP configuration command sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC676` | MCP configuration command posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
@@ -402,38 +402,38 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC680` | Plugin hook command appears to send secret material over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC681` | Plugin hook command sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC682` | Plugin hook command posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC683` | Hook script transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC683` | Hook script transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
 | `SEC684` | MCP configuration command transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC685` | Claude settings command hook transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC686` | Plugin hook command transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC687` | Hook script reads local clipboard contents | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC688` | Hook script accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC687` | Hook script reads local clipboard contents | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
+| `SEC688` | Hook script accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
 | `SEC689` | MCP configuration command reads local clipboard contents | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC690` | MCP configuration command accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC691` | Claude settings command hook reads local clipboard contents | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC692` | Claude settings command hook accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC693` | Plugin hook command reads local clipboard contents | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC694` | Plugin hook command accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC695` | Hook script exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC696` | Hook script exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC695` | Hook script exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
+| `SEC696` | Hook script exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
 | `SEC697` | MCP configuration command exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC698` | MCP configuration command exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC699` | Claude settings command hook exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC700` | Claude settings command hook exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC701` | Plugin hook command exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC702` | Plugin hook command exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC703` | Hook script captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC704` | Hook script captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC703` | Hook script captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
+| `SEC704` | Hook script captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
 | `SEC705` | MCP configuration command captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC706` | MCP configuration command captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC707` | Claude settings command hook captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC708` | Claude settings command hook captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC709` | Plugin hook command captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC710` | Plugin hook command captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC711` | Hook script captures a camera image or webcam stream | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC712` | Hook script records microphone or audio input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC713` | Hook script captures and exfiltrates camera or webcam data | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC714` | Hook script records and exfiltrates microphone or audio input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC711` | Hook script captures a camera image or webcam stream | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
+| `SEC712` | Hook script records microphone or audio input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
+| `SEC713` | Hook script captures and exfiltrates camera or webcam data | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
+| `SEC714` | Hook script records and exfiltrates microphone or audio input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
 | `SEC715` | MCP configuration command captures a webcam or camera image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC716` | MCP configuration command captures microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC717` | MCP configuration command captures and exfiltrates webcam or camera data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
@@ -446,16 +446,16 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC724` | Plugin hook command captures microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC725` | Plugin hook command captures and exfiltrates webcam or camera data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC726` | Plugin hook command captures and exfiltrates microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC727` | Hook script captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC728` | Hook script captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC727` | Hook script captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
+| `SEC728` | Hook script captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
 | `SEC729` | MCP configuration command captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC730` | MCP configuration command captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC731` | Claude settings command hook captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC732` | Claude settings command hook captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC733` | Plugin hook command captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC734` | Plugin hook command captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC735` | Hook script dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
-| `SEC736` | Hook script dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
+| `SEC735` | Hook script dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
+| `SEC736` | Hook script dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
 | `SEC737` | MCP configuration command dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC738` | MCP configuration command dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC739` | Claude settings command hook dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
@@ -604,7 +604,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `suggestion`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit remote download-and-execute behavior in hook shell lines, not prose text.
@@ -626,7 +626,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `suggestion`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches secret-bearing network exfil behavior in executable hook lines.
@@ -648,7 +648,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `suggestion`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches insecure HTTP transport on a secret-bearing hook exfil path.
@@ -670,7 +670,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit TLS verification bypass tokens in executable hook network context.
@@ -692,7 +692,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches literal static auth material in hook URLs or authorization headers.
@@ -714,7 +714,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `suggestion`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit base64 decode-and-execute behavior in executable hook lines.
@@ -7776,7 +7776,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit `rm`-style destructive root deletion payloads in executable hook lines.
@@ -7798,7 +7798,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches direct access to sensitive password and sudo policy files in executable hook lines.
@@ -7820,7 +7820,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit shell startup profile modification in executable hook lines.
@@ -7842,7 +7842,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit writes to SSH `authorized_keys` in executable hook lines.
@@ -8128,7 +8128,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit cron manipulation or cron file writes in executable hook lines.
@@ -8150,7 +8150,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit systemd service registration or unit-file writes in executable hook lines.
@@ -8172,7 +8172,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit launchd registration or LaunchAgents/LaunchDaemons plist writes in executable hook lines.
@@ -8392,7 +8392,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit insecure chmod payloads in executable hook lines.
@@ -8414,7 +8414,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit setuid or setgid chmod payloads in executable hook lines.
@@ -8436,7 +8436,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit Linux capability manipulation payloads in executable hook lines.
@@ -8656,7 +8656,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit secret-bearing posts to well-known webhook endpoints in executable hook lines.
@@ -8876,7 +8876,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit transfer of sensitive credential files to remote network or cloud-storage destinations in executable hook lines.
@@ -8964,7 +8964,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit clipboard-reading commands in executable hook lines.
@@ -8986,7 +8986,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches direct access to browser credential or cookie storage files in executable hook lines.
@@ -9140,7 +9140,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches clipboard-reading commands that also transmit data to remote network endpoints in executable hook lines.
@@ -9162,7 +9162,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches direct access to browser credential or cookie storage files combined with remote transfer behavior in executable hook lines.
@@ -9316,7 +9316,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit screen capture utilities in executable hook lines.
@@ -9338,7 +9338,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit screen capture utilities combined with remote transfer behavior in executable hook lines.
@@ -9492,7 +9492,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit camera or webcam capture utilities in executable hook lines.
@@ -9514,7 +9514,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit microphone or audio-recording utilities in executable hook lines.
@@ -9536,7 +9536,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit camera or webcam capture utilities combined with remote transfer behavior in executable hook lines.
@@ -9558,7 +9558,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit microphone or audio-recording utilities combined with remote transfer behavior in executable hook lines.
@@ -9844,7 +9844,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks hook shell lines for explicit keystroke capture utilities or keylogger markers.
@@ -9866,7 +9866,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks hook shell lines for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.
@@ -10020,7 +10020,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks hook shell lines for explicit environment or shell-state enumeration commands.
@@ -10042,7 +10042,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`
+- Default Presets: `preview`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks hook shell lines for explicit environment or shell-state enumeration commands combined with remote transfer behavior.

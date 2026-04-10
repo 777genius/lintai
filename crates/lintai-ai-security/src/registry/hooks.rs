@@ -405,7 +405,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookDownloadExecRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit remote download-and-execute behavior in hook shell lines, not prose text.",
@@ -425,7 +425,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookSecretExfilRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches secret-bearing network exfil behavior in executable hook lines.",
@@ -445,7 +445,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookPlainHttpExfilRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches insecure HTTP transport on a secret-bearing hook exfil path.",
@@ -465,7 +465,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookTlsBypassRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit TLS verification bypass tokens in executable hook network context.",
@@ -485,7 +485,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookStaticAuthExposureRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches literal static auth material in hook URLs or authorization headers.",
@@ -505,7 +505,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookBase64ExecRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit base64 decode-and-execute behavior in executable hook lines.",
@@ -525,7 +525,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookRootDeleteRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit `rm`-style destructive root deletion payloads in executable hook lines.",
@@ -545,7 +545,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookPasswordFileAccessRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches direct access to sensitive password and sudo policy files in executable hook lines.",
@@ -563,7 +563,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookShellProfileWriteRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit shell startup profile modification in executable hook lines.",
@@ -583,7 +583,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookAuthorizedKeysWriteRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit writes to SSH `authorized_keys` in executable hook lines.",
@@ -603,7 +603,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookCronPersistenceRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit cron manipulation or cron file writes in executable hook lines.",
@@ -623,7 +623,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookSystemdServiceRegistrationRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit systemd service registration or unit-file writes in executable hook lines.",
@@ -643,7 +643,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookLaunchdRegistrationRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit launchd registration or LaunchAgents/LaunchDaemons plist writes in executable hook lines.",
@@ -663,7 +663,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookInsecurePermissionChangeRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit insecure chmod payloads in executable hook lines.",
@@ -683,7 +683,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookSetuidSetgidRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit setuid or setgid chmod payloads in executable hook lines.",
@@ -701,7 +701,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookLinuxCapabilityManipulationRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit Linux capability manipulation payloads in executable hook lines.",
@@ -719,7 +719,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookWebhookSecretExfilRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit secret-bearing posts to well-known webhook endpoints in executable hook lines.",
@@ -739,7 +739,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookSensitiveFileExfilRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit transfer of sensitive credential files to remote network or cloud-storage destinations in executable hook lines.",
@@ -762,7 +762,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookClipboardReadRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit clipboard-reading commands in executable hook lines.",
@@ -780,7 +780,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookBrowserSecretStoreAccessRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches direct access to browser credential or cookie storage files in executable hook lines.",
@@ -800,7 +800,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookClipboardExfilRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches clipboard-reading commands that also transmit data to remote network endpoints in executable hook lines.",
@@ -820,7 +820,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookBrowserSecretStoreExfilRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches direct access to browser credential or cookie storage files combined with remote transfer behavior in executable hook lines.",
@@ -840,7 +840,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookScreenCaptureRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit screen capture utilities in executable hook lines.",
@@ -858,7 +858,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookScreenCaptureExfilRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit screen capture utilities combined with remote transfer behavior in executable hook lines.",
@@ -878,7 +878,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookCameraCaptureRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit camera or webcam capture utilities in executable hook lines.",
@@ -898,7 +898,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookMicrophoneCaptureRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit microphone or audio-recording utilities in executable hook lines.",
@@ -918,7 +918,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookCameraCaptureExfilRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit camera or webcam capture utilities combined with remote transfer behavior in executable hook lines.",
@@ -938,7 +938,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookMicrophoneCaptureExfilRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit microphone or audio-recording utilities combined with remote transfer behavior in executable hook lines.",
@@ -958,7 +958,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookKeyloggingRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks hook shell lines for explicit keystroke capture utilities or keylogger markers.",
@@ -978,7 +978,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookKeyloggingExfilRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks hook shell lines for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.",
@@ -998,7 +998,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookEnvironmentDumpRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks hook shell lines for explicit environment or shell-state enumeration commands.",
@@ -1020,7 +1020,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 32] = [
     NativeRuleSpec {
         metadata: HookEnvironmentDumpExfilRule::METADATA,
         surface: Surface::Hook,
-        default_presets: BASE_PRESETS,
+        default_presets: PREVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks hook shell lines for explicit environment or shell-state enumeration commands combined with remote transfer behavior.",
