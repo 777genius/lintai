@@ -693,7 +693,7 @@ pub(super) fn append_hit_sections(
         "- `SEC519` AI-native markdown shared `gh workflow disable` tool grants: `{}`\n",
         sec519_hits
     ));
-    output.push_str(&format!("- AI-native markdown preview hits by rule code: `SEC313`=`{}`, `SEC335`=`{}`, `SEC347`=`{}`, `SEC348`=`{}`, `SEC349`=`{}`, `SEC350`=`{}`, `SEC351`=`{}`, `SEC352`=`{}`, `SEC353`=`{}`, `SEC354`=`{}`, `SEC355`=`{}`, `SEC356`=`{}`, `SEC357`=`{}`, `SEC358`=`{}`, `SEC359`=`{}`, `SEC360`=`{}`, `SEC370`=`{}`, `SEC371`=`{}`, `SEC377`=`{}`, `SEC378`=`{}`, `SEC379`=`{}`, `SEC380`=`{}`, `SEC416`=`{}`, `SEC417`=`{}`\n", sec313_hits, sec335_hits, sec347_hits, sec348_hits, sec349_hits, sec350_hits, sec351_hits, sec352_hits, sec353_hits, sec354_hits, sec355_hits, sec356_hits, sec357_hits, sec358_hits, sec359_hits, sec360_hits, sec370_hits, sec371_hits, sec377_hits, sec378_hits, sec379_hits, sec380_hits, sec416_hits, sec417_hits));
+    output.push_str(&format!("- AI-native markdown review-lane hits by rule code: `SEC313`=`{}`, `SEC335`=`{}`, `SEC347`=`{}`, `SEC348`=`{}`, `SEC349`=`{}`, `SEC350`=`{}`, `SEC351`=`{}`, `SEC352`=`{}`, `SEC353`=`{}`, `SEC354`=`{}`, `SEC355`=`{}`, `SEC356`=`{}`, `SEC357`=`{}`, `SEC358`=`{}`, `SEC359`=`{}`, `SEC360`=`{}`, `SEC370`=`{}`, `SEC371`=`{}`, `SEC377`=`{}`, `SEC378`=`{}`, `SEC379`=`{}`, `SEC380`=`{}`, `SEC416`=`{}`, `SEC417`=`{}`\n", sec313_hits, sec335_hits, sec347_hits, sec348_hits, sec349_hits, sec350_hits, sec351_hits, sec352_hits, sec353_hits, sec354_hits, sec355_hits, sec356_hits, sec357_hits, sec358_hits, sec359_hits, sec360_hits, sec370_hits, sec371_hits, sec377_hits, sec378_hits, sec379_hits, sec380_hits, sec416_hits, sec417_hits));
     output.push_str(&format!(
         "- `SEC347` subtype repo hits: CLI-form=`{}`, config-snippet-form=`{}`\n",
         sec347_subtypes.cli_form_repos, sec347_subtypes.config_snippet_repos
@@ -827,13 +827,13 @@ pub(super) fn append_hit_sections(
         if repos.is_empty() {
             output.push_str(&format!(
                 "- `{label}` produced no repo-level external {}hits in this wave\n",
-                if is_stable { "stable " } else { "preview " }
+                if is_stable { "stable " } else { "review-lane " }
             ));
         } else {
             for (repo, count, rule_codes) in repos {
                 output.push_str(&format!(
                     "- `{repo}`: `{count}` repo-level {}finding(s) via {}\n",
-                    if is_stable { "stable " } else { "preview " },
+                    if is_stable { "stable " } else { "review-lane " },
                     format_rule_codes(&rule_codes)
                 ));
             }

@@ -1629,10 +1629,10 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownMetadataServiceAccessRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: THREAT_REVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
-            blocker: "Metadata-service examples can appear in legitimate security training content, so the first release stays context-sensitive preview rather than claiming universal exploit signal.",
+            blocker: "Metadata-service access examples are strong threat-review signals, but labs and cloud-security training content can still reference them legitimately.",
             promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
         },
         check: check_markdown_metadata_service_access,
@@ -2119,10 +2119,10 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownDockerHostEscapeRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: THREAT_REVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
-            blocker: "Docker host-escape examples in markdown can be legitimate ops guidance, so the first release stays context-sensitive preview while domain-specific precision is measured.",
+            blocker: "Docker host-escape examples are strong threat-review signals, but infra-debugging and lab material can still document them intentionally.",
             promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
         },
         check: check_markdown_docker_host_escape,

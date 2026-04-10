@@ -54,7 +54,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC329 / MCP-MUTABLE-LAUNCHER` | MCP configuration launches tooling through a mutable package runner | `recommended` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `recommended`, `base`, `mcp` |
 | `SEC330 / MCP-DOWNLOAD-EXEC` | MCP configuration command downloads remote content and pipes it into a shell | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain`, `mcp` |
 | `SEC331 / MCP-TLS-BYPASS` | MCP configuration command disables TLS verification in a network-capable execution path | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
-| `SEC335 / MD-METADATA-SERVICE-ACCESS` | AI-native markdown contains a direct cloud metadata-service access example | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC335 / MD-METADATA-SERVICE-ACCESS` | AI-native markdown contains a direct cloud metadata-service access example | `threat-review` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `threat-review`, `skills` |
 | `SEC336 / MCP-BROAD-ENVFILE` | Repo-local MCP client config loads a broad dotenv-style envFile | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
 | `SEC337 / MCP-DOCKER-UNPINNED-IMAGE` | MCP configuration launches Docker with an image reference that is not digest-pinned | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC338 / MCP-DOCKER-SENSITIVE-MOUNT` | MCP configuration launches Docker with a bind mount of sensitive host material | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
@@ -68,7 +68,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC346 / MCP-DOCKER-PULL-ALWAYS` | MCP configuration forces Docker to refresh from a mutable registry source | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC347 / MD-MCP-MUTABLE-LAUNCHER` | AI-native markdown example launches MCP through a mutable package runner | `supply-chain` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `supply-chain` |
 | `SEC348 / MD-DOCKER-MUTABLE-IMAGE` | AI-native markdown Docker example uses a mutable registry image | `supply-chain` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `supply-chain` |
-| `SEC349 / MD-DOCKER-HOST-ESCAPE` | AI-native markdown Docker example uses a host-escape or privileged runtime pattern | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC349 / MD-DOCKER-HOST-ESCAPE` | AI-native markdown Docker example uses a host-escape or privileged runtime pattern | `threat-review` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `threat-review`, `skills` |
 | `SEC350 / MD-UNTRUSTED-INSTRUCTION-PROMOTION` | Instruction markdown promotes untrusted external content to developer/system-level instructions | `threat-review` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `threat-review`, `skills` |
 | `SEC351 / MD-APPROVAL-BYPASS` | AI-native instruction explicitly disables user approval or confirmation | `threat-review` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `threat-review`, `skills` |
 | `SEC352 / MD-UNSCOPED-BASH` | AI-native markdown frontmatter grants unscoped Bash tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
@@ -1388,13 +1388,13 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `threat-review`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
-- Promotion Blocker: Metadata-service examples can appear in legitimate security training content, so the first release stays context-sensitive preview rather than claiming universal exploit signal.
+- Promotion Blocker: Metadata-service access examples are strong threat-review signals, but labs and cloud-security training content can still reference them legitimately.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
@@ -1680,13 +1680,13 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `threat-review`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
-- Promotion Blocker: Docker host-escape examples in markdown can be legitimate ops guidance, so the first release stays context-sensitive preview while domain-specific precision is measured.
+- Promotion Blocker: Docker host-escape examples are strong threat-review signals, but infra-debugging and lab material can still document them intentionally.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 

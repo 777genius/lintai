@@ -323,26 +323,26 @@ enable = ["base", "supply-chain"]
 #[test]
 fn surface_presets_can_opt_in_preview_rules_for_selected_surface() {
     let temp_dir = unique_temp_dir("lintai-config-surface-preset");
-    std::fs::create_dir_all(temp_dir.join("docs")).unwrap();
+    std::fs::create_dir_all(temp_dir.join(".cursor")).unwrap();
     std::fs::write(
         temp_dir.join("lintai.toml"),
         r#"
 [presets]
-enable = ["base", "skills"]
+enable = ["base", "mcp"]
 "#,
     )
     .unwrap();
-    std::fs::write(temp_dir.join("docs/SKILL.md"), "# skill\n").unwrap();
+    std::fs::write(temp_dir.join(".cursor/mcp.json"), "{}\n").unwrap();
 
     let workspace = load_workspace_config(&temp_dir).unwrap();
-    let resolved = explain_file_config(&workspace, &temp_dir.join("docs/SKILL.md"));
+    let resolved = explain_file_config(&workspace, &temp_dir.join(".cursor/mcp.json"));
 
     assert_eq!(
         resolved.enabled_presets,
-        vec!["base".to_owned(), "skills".to_owned()]
+        vec!["base".to_owned(), "mcp".to_owned()]
     );
     assert_eq!(
-        resolved.severity_for("SEC335", Category::Security, Severity::Warn),
+        resolved.severity_for("SEC301", Category::Security, Severity::Warn),
         Severity::Warn
     );
 }

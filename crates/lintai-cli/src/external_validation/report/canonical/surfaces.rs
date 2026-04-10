@@ -298,13 +298,13 @@ pub(super) fn append_hybrid_scope_expansion(
         "- findings from `SEC337`-`SEC339`, `SEC346`: `{}`\n",
         docker_rule_hits
     ));
-    output.push_str("- AI-native markdown preview findings:\n");
+    output.push_str("- AI-native markdown review-lane findings:\n");
     output.push_str(&format!(
         "  - `SEC313` fenced pipe-to-shell examples: `{}`\n",
         sec313_hits
     ));
     output.push_str(&format!(
-        "  - `SEC335` metadata-service access examples: `{}`\n",
+        "  - `SEC335` metadata-service access examples (`threat-review`): `{}`\n",
         sec335_hits
     ));
     output.push_str(&format!(
@@ -324,7 +324,7 @@ pub(super) fn append_hybrid_scope_expansion(
         sec348_hits
     ));
     output.push_str(&format!(
-        "  - `SEC349` Docker host-escape or privileged runtime examples: `{}`\n",
+        "  - `SEC349` Docker host-escape or privileged runtime examples (`threat-review`): `{}`\n",
         sec349_hits
     ));
     output.push_str(&format!(

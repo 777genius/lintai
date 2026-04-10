@@ -52,9 +52,7 @@
         "lintai-ai-security:SEC301",
         "lintai-ai-security:SEC306",
         "lintai-ai-security:SEC308",
-        "lintai-ai-security:SEC310",
-        "lintai-ai-security:SEC335",
-        "lintai-ai-security:SEC349"
+        "lintai-ai-security:SEC310"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -81,8 +79,10 @@
         "lintai-ai-security:SEC312",
         "lintai-ai-security:SEC313",
         "lintai-ai-security:SEC321",
+        "lintai-ai-security:SEC335",
         "lintai-ai-security:SEC338",
         "lintai-ai-security:SEC339",
+        "lintai-ai-security:SEC349",
         "lintai-ai-security:SEC350",
         "lintai-ai-security:SEC351",
         "lintai-ai-security:SEC422",
@@ -2491,7 +2491,7 @@
       "slug": "sec335",
       "canonicalPath": "/rules/lintai-ai-security/sec335",
       "summary": "AI-native markdown contains a direct cloud metadata-service access example",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -2500,13 +2500,13 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "skills"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
         "kind": "preview",
-        "blocker": "Metadata-service examples can appear in legitimate security training content, so the first release stays context-sensitive preview rather than claiming universal exploit signal.",
+        "blocker": "Metadata-service access examples are strong threat-review signals, but labs and cloud-security training content can still reference them legitimately.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",
@@ -3014,7 +3014,7 @@
       "slug": "sec349",
       "canonicalPath": "/rules/lintai-ai-security/sec349",
       "summary": "AI-native markdown Docker example uses a host-escape or privileged runtime pattern",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -3023,13 +3023,13 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "skills"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
         "kind": "preview",
-        "blocker": "Docker host-escape examples in markdown can be legitimate ops guidance, so the first release stays context-sensitive preview while domain-specific precision is measured.",
+        "blocker": "Docker host-escape examples are strong threat-review signals, but infra-debugging and lab material can still document them intentionally.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

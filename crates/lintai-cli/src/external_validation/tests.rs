@@ -305,14 +305,14 @@ fn report_renderer_emits_delta_and_phase_targets() {
     assert!(markdown.contains("- repos with Docker-based MCP launch configs: `0`"));
     assert!(markdown.contains("- findings from `SEC336`: `0`"));
     assert!(markdown.contains("- findings from `SEC337`-`SEC339`, `SEC346`: `0`"));
-    assert!(markdown.contains("- AI-native markdown preview findings:"));
+    assert!(markdown.contains("- AI-native markdown review-lane findings:"));
     assert!(markdown.contains("`SEC313` fenced pipe-to-shell examples: `1`"));
-    assert!(markdown.contains("`SEC335` metadata-service access examples: `0`"));
+    assert!(markdown.contains("`SEC335` metadata-service access examples (`threat-review`): `0`"));
     assert!(markdown.contains("`SEC347` mutable MCP setup launcher examples: `0`"));
     assert!(markdown.contains("CLI-form repo hits: `0`"));
     assert!(markdown.contains("config-snippet-form repo hits: `0`"));
     assert!(markdown.contains("`SEC348` mutable Docker registry-image examples: `0`"));
-    assert!(markdown.contains("`SEC349` Docker host-escape or privileged runtime examples: `0`"));
+    assert!(markdown.contains("`SEC349` Docker host-escape or privileged runtime examples (`threat-review`): `0`"));
     assert!(markdown.contains("`SEC350` untrusted-input instruction-promotion examples: `0`"));
     assert!(markdown.contains("`SEC351` approval-bypass instruction examples: `0`"));
     assert!(markdown.contains("`SEC352` unscoped Bash tool grants in frontmatter: `0`"));
@@ -489,135 +489,135 @@ fn report_renderer_emits_delta_and_phase_targets() {
         ));
     assert!(
         markdown
-            .contains("- `SEC348` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC348` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC349` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC349` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC350` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC350` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC351` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC351` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC352` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC352` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC353` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC353` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC354` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC354` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC355` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC355` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC356` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC356` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC357` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC357` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC358` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC358` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC359` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC359` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC360` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC360` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC361` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC361` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC362` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC362` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC363` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC363` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC364` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC364` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC365` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC365` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC366` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC366` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC370` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC370` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC371` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC371` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC372` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC372` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC373` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC373` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC374` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC374` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC375` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC375` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC376` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC376` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC377` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC377` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC378` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC378` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC379` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC379` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC380` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC380` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC381` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC381` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC382` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC382` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(
         markdown
-            .contains("- `SEC383` produced no repo-level preview hits yet on the canonical cohort")
+            .contains("- `SEC383` produced no repo-level review-lane hits yet on the canonical cohort")
     );
     assert!(markdown.contains("- `SEC384`"));
     assert!(markdown.contains("- `SEC385`"));
@@ -1053,7 +1053,7 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("## Runtime / Diagnostic Notes"));
     assert!(markdown.contains("## Recommended Next Step"));
     assert!(markdown.contains("plugin-root command markdown admission paths"));
-    assert!(markdown.contains("AI-native markdown preview hits by rule code"));
+    assert!(markdown.contains("AI-native markdown review-lane hits by rule code"));
     assert!(markdown.contains("`SEC347` subtype repo hits: CLI-form=`0`, config-snippet-form=`0`"));
     assert!(markdown.contains("`SEC349`=`0`"));
     assert!(markdown.contains("`SEC350`=`0`"));
@@ -1176,13 +1176,13 @@ fn ai_native_discovery_report_has_required_sections() {
     assert!(markdown.contains("`SEC379`=`0`"));
     assert!(markdown.contains("`SEC380`=`0`"));
     assert!(
-        markdown.contains("`SEC381` produced no repo-level external preview hits in this wave")
+        markdown.contains("`SEC381` produced no repo-level external review-lane hits in this wave")
     );
     assert!(
-        markdown.contains("`SEC382` produced no repo-level external preview hits in this wave")
+        markdown.contains("`SEC382` produced no repo-level external review-lane hits in this wave")
     );
     assert!(
-        markdown.contains("`SEC383` produced no repo-level external preview hits in this wave")
+        markdown.contains("`SEC383` produced no repo-level external review-lane hits in this wave")
     );
     assert!(markdown.contains("`SEC384`"));
     assert!(markdown.contains("`SEC385`"));
