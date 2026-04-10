@@ -50,9 +50,7 @@
       "extends": [],
       "ruleIds": [
         "lintai-ai-security:SEC301",
-        "lintai-ai-security:SEC306",
-        "lintai-ai-security:SEC308",
-        "lintai-ai-security:SEC310"
+        "lintai-ai-security:SEC308"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -75,7 +73,9 @@
         "lintai-ai-security:SEC205",
         "lintai-ai-security:SEC206",
         "lintai-ai-security:SEC305",
+        "lintai-ai-security:SEC306",
         "lintai-ai-security:SEC309",
+        "lintai-ai-security:SEC310",
         "lintai-ai-security:SEC312",
         "lintai-ai-security:SEC313",
         "lintai-ai-security:SEC321",
@@ -1512,7 +1512,7 @@
       "slug": "sec306",
       "canonicalPath": "/rules/lintai-ai-security/sec306",
       "summary": "JSON configuration description contains override-style hidden instructions",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "preview",
@@ -1521,13 +1521,13 @@
       "detectionClass": "heuristic",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
         "kind": "preview",
-        "blocker": "Depends on descriptive-field phrase heuristics in JSON text.",
+        "blocker": "Override-style instructions in config descriptions are useful threat-review signals, but the detector still depends on descriptive-field phrase heuristics in JSON text.",
         "promotionRequirements": "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata."
       },
       "canonicalNote": "Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.",
@@ -1648,7 +1648,7 @@
       "slug": "sec310",
       "canonicalPath": "/rules/lintai-ai-security/sec310",
       "summary": "Configuration endpoint targets a metadata or private-network host literal",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -1657,13 +1657,13 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
         "kind": "stable",
-        "rationale": "Matches explicit metadata-service or private-network host literals in endpoint-like configuration values.",
+        "rationale": "Matches explicit metadata-service or private-network host literals in endpoint-like configuration values and is best reviewed as an overt threat-review signal rather than a softer middle-lane prompt.",
         "maliciousCaseIds": [
           "mcp-metadata-host-literal"
         ],
@@ -1674,7 +1674,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals endpoint-host extraction over URL-like endpoint fields with metadata/private-host classification."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {

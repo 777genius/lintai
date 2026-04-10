@@ -28,11 +28,11 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC303 / MCP-CREDENTIAL-ENV-PASSTHROUGH` | MCP configuration passes through credential environment variables | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
 | `SEC304 / MCP-TLS-BYPASS` | Configuration disables TLS or certificate verification | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC305 / MCP-STATIC-AUTH` | Configuration embeds static authentication material in a connection or auth value | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
-| `SEC306 / MCP-HIDDEN-INSTRUCTIONS` | JSON configuration description contains override-style hidden instructions | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
+| `SEC306 / MCP-HIDDEN-INSTRUCTIONS` | JSON configuration description contains override-style hidden instructions | `threat-review` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `threat-review`, `mcp` |
 | `SEC307 / MCP-SENSITIVE-ENV-REFERENCE` | Configuration forwards sensitive environment variable references | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `governance`, `mcp` |
 | `SEC308 / MCP-SUSPICIOUS-ENDPOINT` | Configuration points at a suspicious remote endpoint | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
 | `SEC309 / MCP-LITERAL-SECRET` | Configuration commits literal secret material in env, auth, or header values | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
-| `SEC310 / MCP-METADATA-HOST-LITERAL` | Configuration endpoint targets a metadata or private-network host literal | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC310 / MCP-METADATA-HOST-LITERAL` | Configuration endpoint targets a metadata or private-network host literal | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
 | `SEC311 / PLUGIN-UNSAFE-PATH` | Cursor plugin manifest contains an unsafe absolute or parent-traversing path | `compat` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC312 / MD-PRIVATE-KEY` | Markdown contains committed private key material | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `threat-review`, `skills` |
 | `SEC313 / MD-PIPE-SHELL` | Fenced shell example pipes remote content directly into a shell | `threat-review` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `threat-review`, `skills` |
@@ -844,13 +844,13 @@ Important behavior:
 - Surface: `json`
 - Detection: `heuristic`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
-- Promotion Blocker: Depends on descriptive-field phrase heuristics in JSON text.
+- Promotion Blocker: Override-style instructions in config descriptions are useful threat-review signals, but the detector still depends on descriptive-field phrase heuristics in JSON text.
 - Promotion Requirements: Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.
 - Canonical Note: Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves.
 
@@ -920,19 +920,19 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
-- Graduation Rationale: Matches explicit metadata-service or private-network host literals in endpoint-like configuration values.
+- Graduation Rationale: Matches explicit metadata-service or private-network host literals in endpoint-like configuration values and is best reviewed as an overt threat-review signal rather than a softer middle-lane prompt.
 - Deterministic Signal Basis: JsonSignals endpoint-host extraction over URL-like endpoint fields with metadata/private-host classification.
 - Malicious Corpus: `mcp-metadata-host-literal`
 - Benign Corpus: `mcp-public-endpoint-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC311 / PLUGIN-UNSAFE-PATH` — Cursor plugin manifest contains an unsafe absolute or parent-traversing path
 

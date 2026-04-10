@@ -733,13 +733,21 @@ mod tests {
         assert_eq!(sec301.default_presets, vec!["preview", "mcp"]);
         assert_eq!(sec301.public_lane, "preview");
 
+        let sec306 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC306")
+            .expect("SEC306 should exist");
+        assert_eq!(sec306.default_presets, vec!["threat-review", "mcp"]);
+        assert_eq!(sec306.public_lane, "threat-review");
+
         let sec310 = catalog
             .rules
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC310")
             .expect("SEC310 should exist");
-        assert_eq!(sec310.default_presets, vec!["preview", "mcp"]);
-        assert_eq!(sec310.public_lane, "preview");
+        assert_eq!(sec310.default_presets, vec!["threat-review", "mcp"]);
+        assert_eq!(sec310.public_lane, "threat-review");
 
         let sec338 = catalog
             .rules

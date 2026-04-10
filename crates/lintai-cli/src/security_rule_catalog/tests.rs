@@ -376,12 +376,19 @@ fn shipped_rules_have_expected_default_preset_mapping() {
     assert_eq!(sec301.default_presets(), vec!["preview", "mcp"]);
     assert_eq!(sec301.public_lane(), PublicLane::Preview);
 
+    let sec306 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC306")
+        .unwrap();
+    assert_eq!(sec306.default_presets(), vec!["threat-review", "mcp"]);
+    assert_eq!(sec306.public_lane(), PublicLane::ThreatReview);
+
     let sec310 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC310")
         .unwrap();
-    assert_eq!(sec310.default_presets(), vec!["preview", "mcp"]);
-    assert_eq!(sec310.public_lane(), PublicLane::Preview);
+    assert_eq!(sec310.default_presets(), vec!["threat-review", "mcp"]);
+    assert_eq!(sec310.public_lane(), PublicLane::ThreatReview);
 
     let sec338 = entries
         .iter()

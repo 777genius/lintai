@@ -2214,10 +2214,10 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: JsonHiddenInstructionRule::METADATA,
         surface: Surface::Json,
-        default_presets: PREVIEW_MCP_PRESETS,
+        default_presets: THREAT_REVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
-            blocker: "Depends on descriptive-field phrase heuristics in JSON text.",
+            blocker: "Override-style instructions in config descriptions are useful threat-review signals, but the detector still depends on descriptive-field phrase heuristics in JSON text.",
             promotion_requirements: HEURISTIC_PREVIEW_REQUIREMENTS,
         },
         check: check_json_hidden_instruction,
@@ -2282,10 +2282,10 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: JsonDangerousEndpointHostRule::METADATA,
         surface: Surface::Json,
-        default_presets: PREVIEW_MCP_PRESETS,
+        default_presets: THREAT_REVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
-            rationale: "Matches explicit metadata-service or private-network host literals in endpoint-like configuration values.",
+            rationale: "Matches explicit metadata-service or private-network host literals in endpoint-like configuration values and is best reviewed as an overt threat-review signal rather than a softer middle-lane prompt.",
             malicious_case_ids: &["mcp-metadata-host-literal"],
             benign_case_ids: &["mcp-public-endpoint-safe"],
             requires_structured_evidence: true,
