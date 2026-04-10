@@ -136,6 +136,13 @@ fn shipped_rules_have_expected_default_preset_mapping() {
     assert_eq!(sec352.default_presets(), vec!["preview", "skills"]);
     assert_eq!(sec352.public_lane(), PublicLane::Preview);
 
+    let sec347 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC347")
+        .unwrap();
+    assert_eq!(sec347.default_presets(), vec!["preview", "skills"]);
+    assert_eq!(sec347.public_lane(), PublicLane::Preview);
+
     let sec417 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC417")

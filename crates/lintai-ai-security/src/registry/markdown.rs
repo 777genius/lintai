@@ -1645,7 +1645,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownMutableMcpLauncherRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: RECOMMENDED_PREVIEW_SKILLS_PRESETS,
+        default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Mutable MCP launcher examples in markdown can be legitimate setup guidance, so the first release stays in the core preview lane while broader field validation continues.",

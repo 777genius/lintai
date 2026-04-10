@@ -26,8 +26,7 @@
       "extends": [],
       "ruleIds": [
         "lintai-ai-security:SEC329",
-        "lintai-ai-security:SEC340",
-        "lintai-ai-security:SEC347"
+        "lintai-ai-security:SEC340"
       ],
       "canonicalPath": "/presets/recommended"
     },
@@ -3029,7 +3028,7 @@
       "slug": "sec347",
       "canonicalPath": "/rules/lintai-ai-security/sec347",
       "summary": "AI-native markdown example launches MCP through a mutable package runner",
-      "publicLane": "recommended",
+      "publicLane": "preview",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -3038,7 +3037,6 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "recommended",
         "preview",
         "skills"
       ],

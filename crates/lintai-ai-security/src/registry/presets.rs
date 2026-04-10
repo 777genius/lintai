@@ -3,8 +3,6 @@ pub(crate) const STRUCTURAL_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed pr
 pub(crate) const BASE_PRESETS: &[&str] = &["base"];
 pub(crate) const BASE_SKILLS_PRESETS: &[&str] = &["base", "skills"];
 pub(crate) const PREVIEW_SKILLS_PRESETS: &[&str] = &["preview", "skills"];
-pub(crate) const RECOMMENDED_PREVIEW_SKILLS_PRESETS: &[&str] =
-    &["recommended", "preview", "skills"];
 pub(crate) const BASE_MCP_PRESETS: &[&str] = &["base", "mcp"];
 pub(crate) const PREVIEW_MCP_PRESETS: &[&str] = &["preview", "mcp"];
 pub(crate) const RECOMMENDED_BASE_MCP_PRESETS: &[&str] = &["recommended", "base", "mcp"];
