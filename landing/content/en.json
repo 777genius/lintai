@@ -50,14 +50,14 @@
     },
     {
       "id": "sec347",
-      "eyebrow": "Operational docs",
+      "eyebrow": "Deeper review",
       "code": "SEC347",
-      "surface": "MCP onboarding",
-      "lifecycle": "Preview",
-      "title": "Mutable MCP launcher in markdown setup docs",
-      "description": "Flags setup-style markdown that teaches mutable package launchers for MCP tooling instead of a reproducible install or pinned path.",
-      "whyItMatters": "It catches copy-paste setup guidance that can silently drift under users, which is one of the clearest operational risks in markdown-heavy agent repositories.",
-      "evidence": "Top operational docs rule for MCP setup surfaces.",
+      "surface": "MCP setup docs",
+      "lifecycle": "Preview lane",
+      "title": "Copy-paste setup that becomes the team norm",
+      "description": "Catches setup docs that normalize launching MCP tooling on the fly instead of a reviewed, reproducible command path.",
+      "whyItMatters": "This is useful hardening guidance, but it is no longer sold as a quiet default signal because setup docs are noisier than committed executable config.",
+      "evidence": "Useful preview signal for MCP setup drift.",
       "href": "https://777genius.github.io/lintai/docs/rules/lintai-ai-security/sec347.html"
     },
     {
@@ -110,14 +110,14 @@
     },
     {
       "id": "sec381",
-      "eyebrow": "Operational contract",
+      "eyebrow": "Compatibility",
       "code": "SEC381",
-      "surface": "Claude hooks",
-      "lifecycle": "Preview",
-      "title": "Claude command hook is missing an explicit timeout",
-      "description": "Flags shared Claude command hooks that declare a command but omit a timeout, leaving the hook execution boundary unbounded.",
-      "whyItMatters": "Timeout-free shared hooks are an operational smell because they can hang unpredictably across machines and make failures harder to review.",
-      "evidence": "One-line remediation with immediate operational payoff.",
+      "surface": "Hook settings",
+      "lifecycle": "Shared contract",
+      "title": "Hook command with no explicit timeout",
+      "description": "Catches shared command hooks that leave execution bounds implicit, which makes the config harder to review and reproduce across machines.",
+      "whyItMatters": "This is a good Claude config contract check, but it belongs in the compatibility lane rather than the headline security story.",
+      "evidence": "Low-ambiguity config-quality signal with an easy fix.",
       "href": "https://777genius.github.io/lintai/docs/rules/lintai-ai-security/sec381.html"
     },
     {
