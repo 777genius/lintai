@@ -65,7 +65,9 @@ use crate::claude_settings_rules::{
     check_claude_settings_wget_permission, check_claude_settings_write_unsafe_path,
     check_claude_settings_write_wildcard, check_claude_settings_yarn_dlx_permission,
 };
-use crate::registry::presets::{GOVERNANCE_CLAUDE_PRESETS, PREVIEW_CLAUDE_PRESETS};
+use crate::registry::presets::{
+    GOVERNANCE_CLAUDE_PRESETS, SUPPLY_CHAIN_CLAUDE_PRESETS,
+};
 
 declare_rule! {
     pub struct ClaudeSettingsMissingHookTimeoutRule {
@@ -2743,7 +2745,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsDangerousHttpHookHostRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: SUPPLY_CHAIN_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for dangerous host literals in `allowedHttpHookUrls`.",
@@ -2763,7 +2765,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInsecureHttpHookUrlRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: SUPPLY_CHAIN_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for non-HTTPS `allowedHttpHookUrls` entries.",
@@ -2783,7 +2785,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsBypassPermissionsRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for explicit `permissions.defaultMode = bypassPermissions`.",
@@ -3043,7 +3045,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsNetworkTlsBypassRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: BASE_CLAUDE_PRESETS,
+        default_presets: SUPPLY_CHAIN_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed Claude settings command hooks for explicit TLS-bypass tokens in a network-capable execution context.",

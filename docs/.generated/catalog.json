@@ -65,7 +65,6 @@
         "lintai-ai-security:SEC339",
         "lintai-ai-security:SEC340",
         "lintai-ai-security:SEC341",
-        "lintai-ai-security:SEC342",
         "lintai-ai-security:SEC344",
         "lintai-ai-security:SEC422",
         "lintai-ai-security:SEC446",
@@ -203,10 +202,7 @@
         "lintai-ai-security:SEC336",
         "lintai-ai-security:SEC349",
         "lintai-ai-security:SEC350",
-        "lintai-ai-security:SEC351",
-        "lintai-ai-security:SEC364",
-        "lintai-ai-security:SEC365",
-        "lintai-ai-security:SEC366"
+        "lintai-ai-security:SEC351"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -583,6 +579,7 @@
       "ruleIds": [
         "lintai-ai-security:SEC352",
         "lintai-ai-security:SEC362",
+        "lintai-ai-security:SEC364",
         "lintai-ai-security:SEC367",
         "lintai-ai-security:SEC369",
         "lintai-ai-security:SEC372",
@@ -831,11 +828,14 @@
         "lintai-ai-security:SEC328",
         "lintai-ai-security:SEC331",
         "lintai-ai-security:SEC337",
+        "lintai-ai-security:SEC342",
         "lintai-ai-security:SEC343",
         "lintai-ai-security:SEC345",
         "lintai-ai-security:SEC346",
         "lintai-ai-security:SEC347",
         "lintai-ai-security:SEC348",
+        "lintai-ai-security:SEC365",
+        "lintai-ai-security:SEC366",
         "lintai-ai-security:SEC417",
         "lintai-ai-security:SEC448",
         "lintai-ai-security:SEC449",
@@ -2745,7 +2745,7 @@
       "slug": "sec342",
       "canonicalPath": "/rules/lintai-ai-security/sec342",
       "summary": "Claude settings command hook disables TLS verification in a network-capable execution path",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -2754,7 +2754,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "supply-chain",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -2771,7 +2771,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command, gated by network markers plus TLS-bypass tokens."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -3507,7 +3507,7 @@
       "slug": "sec364",
       "canonicalPath": "/rules/lintai-ai-security/sec364",
       "summary": "Claude settings set `permissions.defaultMode` to `bypassPermissions` in a shared committed config",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -3516,7 +3516,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "governance",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -3547,7 +3547,7 @@
       "slug": "sec365",
       "canonicalPath": "/rules/lintai-ai-security/sec365",
       "summary": "Claude settings allow non-HTTPS HTTP hook URLs in a shared committed config",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "preview",
@@ -3556,7 +3556,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "supply-chain",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -3587,7 +3587,7 @@
       "slug": "sec366",
       "canonicalPath": "/rules/lintai-ai-security/sec366",
       "summary": "Claude settings allow dangerous host literals in `allowedHttpHookUrls`",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "preview",
@@ -3596,7 +3596,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "supply-chain",
         "claude"
       ],
       "lifecycleState": "stable_gated",

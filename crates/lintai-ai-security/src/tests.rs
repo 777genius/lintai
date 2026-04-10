@@ -2865,6 +2865,18 @@ fn scan_preview_claude_settings_fixture(
     )
 }
 
+fn scan_preview_supply_chain_claude_settings_fixture(
+    relative_path: &str,
+    content: &str,
+) -> lintai_engine::ScanSummary {
+    scan_fixture(
+        relative_path,
+        content,
+        &["base", "preview", "claude", "supply-chain"],
+        "lintai-sec342-preview",
+    )
+}
+
 fn scan_preview_governance_claude_settings_fixture(
     relative_path: &str,
     content: &str,

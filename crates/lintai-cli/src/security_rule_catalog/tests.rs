@@ -143,6 +143,34 @@ fn shipped_rules_have_expected_default_preset_mapping() {
     assert_eq!(sec331.default_presets(), vec!["supply-chain"]);
     assert_eq!(sec331.public_lane(), PublicLane::SupplyChain);
 
+    let sec342 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC342")
+        .unwrap();
+    assert_eq!(sec342.default_presets(), vec!["supply-chain", "claude"]);
+    assert_eq!(sec342.public_lane(), PublicLane::SupplyChain);
+
+    let sec364 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC364")
+        .unwrap();
+    assert_eq!(sec364.default_presets(), vec!["governance", "claude"]);
+    assert_eq!(sec364.public_lane(), PublicLane::Governance);
+
+    let sec365 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC365")
+        .unwrap();
+    assert_eq!(sec365.default_presets(), vec!["supply-chain", "claude"]);
+    assert_eq!(sec365.public_lane(), PublicLane::SupplyChain);
+
+    let sec366 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC366")
+        .unwrap();
+    assert_eq!(sec366.default_presets(), vec!["supply-chain", "claude"]);
+    assert_eq!(sec366.public_lane(), PublicLane::SupplyChain);
+
     let sec328 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC328")

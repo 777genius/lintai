@@ -61,7 +61,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC339 / MCP-DOCKER-HOST-ESCAPE` | MCP configuration launches Docker with a host-escape or privileged runtime flag | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC340 / CLAUDE-HOOK-MUTABLE-LAUNCHER` | Claude settings command hook uses a mutable package launcher | `recommended` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `recommended`, `base`, `claude` |
 | `SEC341 / CLAUDE-HOOK-DOWNLOAD-EXEC` | Claude settings command hook downloads remote content and pipes it into a shell | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
-| `SEC342 / CLAUDE-HOOK-TLS-BYPASS` | Claude settings command hook disables TLS verification in a network-capable execution path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `base`, `claude` |
+| `SEC342 / CLAUDE-HOOK-TLS-BYPASS` | Claude settings command hook disables TLS verification in a network-capable execution path | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `supply-chain`, `claude` |
 | `SEC343 / PLUGIN-HOOK-MUTABLE-LAUNCHER` | Plugin hook command uses a mutable package launcher | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC344 / PLUGIN-HOOK-DOWNLOAD-EXEC` | Plugin hook command downloads remote content and pipes it into a shell | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC345 / PLUGIN-HOOK-TLS-BYPASS` | Plugin hook command disables TLS verification in a network-capable execution path | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
@@ -83,9 +83,9 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC361 / CLAUDE-SETTINGS-SCHEMA` | Claude settings file is missing a top-level `$schema` reference | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
 | `SEC362 / CLAUDE-BASH-WILDCARD` | Claude settings permissions allow `Bash(*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC363 / CLAUDE-HOME-HOOK-PATH` | Claude settings hook command uses a home-directory path in a shared committed config | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
-| `SEC364 / CLAUDE-BYPASS-PERMISSIONS` | Claude settings set `permissions.defaultMode` to `bypassPermissions` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC365 / CLAUDE-HTTP-HOOK-URL` | Claude settings allow non-HTTPS HTTP hook URLs in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC366 / CLAUDE-HTTP-HOOK-HOST` | Claude settings allow dangerous host literals in `allowedHttpHookUrls` | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC364 / CLAUDE-BYPASS-PERMISSIONS` | Claude settings set `permissions.defaultMode` to `bypassPermissions` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC365 / CLAUDE-HTTP-HOOK-URL` | Claude settings allow non-HTTPS HTTP hook URLs in a shared committed config | `supply-chain` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `supply-chain`, `claude` |
+| `SEC366 / CLAUDE-HTTP-HOOK-HOST` | Claude settings allow dangerous host literals in `allowedHttpHookUrls` | `supply-chain` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `supply-chain`, `claude` |
 | `SEC367 / CLAUDE-WEBFETCH-WILDCARD` | Claude settings permissions allow `WebFetch(*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC368 / CLAUDE-ABS-HOOK-PATH` | Claude settings hook command uses a repo-external absolute path in a shared committed config | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
 | `SEC369 / CLAUDE-WRITE-WILDCARD` | Claude settings permissions allow `Write(*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
@@ -1533,10 +1533,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `claude`
+- Default Presets: `supply-chain`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit TLS-bypass tokens in a network-capable execution context.
@@ -1545,7 +1545,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-tls-verified-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC343 / PLUGIN-HOOK-MUTABLE-LAUNCHER` — Plugin hook command uses a mutable package launcher
 
@@ -1965,10 +1965,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for explicit `permissions.defaultMode = bypassPermissions`.
@@ -1987,10 +1987,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `supply-chain`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for non-HTTPS `allowedHttpHookUrls` entries.
@@ -2009,10 +2009,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `supply-chain`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for dangerous host literals in `allowedHttpHookUrls`.

@@ -11,20 +11,22 @@ fn finds_claude_settings_missing_schema() {
 #[test]
 fn finds_claude_settings_insecure_http_hook_url() {
     let content = r#"{"allowedHttpHookUrls":["http://hooks.example.test/notify","https://hooks.example.test/notify"]}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary =
+        scan_preview_supply_chain_claude_settings_fixture(".claude/settings.json", content);
     assert_marker_span(&summary, "SEC365", content, "http://");
 }
 
 #[test]
 fn finds_claude_settings_dangerous_http_hook_host() {
     let content = r#"{"allowedHttpHookUrls":["https://169.254.169.254/latest/meta-data","https://hooks.example.test/notify"]}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary =
+        scan_preview_supply_chain_claude_settings_fixture(".claude/settings.json", content);
     assert_marker_span(&summary, "SEC366", content, "169.254.169.254");
 }
 
 #[test]
 fn ignores_claude_settings_https_hook_urls() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_supply_chain_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"allowedHttpHookUrls":["https://hooks.example.test/notify"]}"#,
     );
@@ -34,7 +36,7 @@ fn ignores_claude_settings_https_hook_urls() {
 
 #[test]
 fn ignores_claude_settings_loopback_http_hook_urls() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_supply_chain_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"allowedHttpHookUrls":["http://localhost:8899/hook"]}"#,
     );
@@ -47,7 +49,7 @@ fn ignores_claude_settings_insecure_http_hook_url_on_fixture_like_path() {
     let summary = scan_fixture(
         "tests/fixtures/.claude/settings.json",
         br#"{"allowedHttpHookUrls":["http://hooks.example.test/notify"]}"#,
-        &["base", "preview", "claude"],
+        &["base", "preview", "claude", "supply-chain"],
         "lintai-claude-settings-http-hook-fixture",
     );
     assert_lacks_rule(&summary, "SEC365");
@@ -77,13 +79,13 @@ fn ignores_claude_settings_missing_schema_on_fixture_like_path() {
 #[test]
 fn finds_claude_settings_bypass_permissions() {
     let content = r#"{"permissions":{"defaultMode":"bypassPermissions"},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
     assert_marker_span(&summary, "SEC364", content, "bypassPermissions");
 }
 
 #[test]
 fn ignores_claude_settings_non_bypass_default_mode() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"defaultMode":"ask"},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -95,7 +97,7 @@ fn ignores_claude_settings_bypass_permissions_on_fixture_like_path() {
     let summary = scan_fixture(
         "tests/fixtures/.claude/settings.json",
         br#"{"permissions":{"defaultMode":"bypassPermissions"},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
-        &["base", "preview", "claude"],
+        &["base", "preview", "claude", "governance"],
         "lintai-claude-settings-bypass-fixture",
     );
     assert_lacks_rule(&summary, "SEC364");
