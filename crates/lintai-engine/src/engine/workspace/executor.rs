@@ -1,12 +1,11 @@
-use std::time::Instant;
-
-use lintai_api::{Finding, ProviderErrorKind};
+use lintai_api::Finding;
 
 use crate::artifact_view::ArtifactContextRef;
 use crate::provider::{ProviderCatalog, ProviderEntry};
 use crate::summary::{ProviderExecutionPhase, ScanSummary};
 
 use super::super::Engine;
+use super::super::runtime::execution::ProviderExecutionRequest;
 use super::projection::WorkspaceProjection;
 
 pub(super) struct WorkspaceProviderExecutor<'engine, 'projection> {
@@ -29,50 +28,21 @@ impl<'engine, 'projection> WorkspaceProviderExecutor<'engine, 'projection> {
     }
 
     fn execute_provider(&self, provider: &ProviderEntry<'_>, summary: &mut ScanSummary) {
-        let started = Instant::now();
-        let result = provider
-            .backend()
-            .check_workspace_result(&self.projection.workspace);
-        let elapsed = started.elapsed();
-        let findings_emitted = result.findings.len();
-        let errors_emitted = result.errors.len();
         let project_root = self.projection.project_root_owned();
-
-        if !result
-            .errors
-            .iter()
-            .any(|error| matches!(error.kind, ProviderErrorKind::Timeout))
-        {
-            self.engine.record_budget_overrun(
-                &project_root,
-                provider.id(),
-                provider.timeout(),
-                elapsed,
-                summary,
-            );
-        }
-
-        self.engine.record_provider_metric(
-            crate::ProviderExecutionMetric {
-                normalized_path: project_root.clone(),
-                provider_id: provider.id().to_owned(),
+        self.engine.execute_provider_with_accounting(
+            ProviderExecutionRequest {
+                normalized_path: &project_root,
+                provider,
                 phase: ProviderExecutionPhase::Workspace,
-                elapsed_us: elapsed.as_micros(),
-                findings_emitted,
-                errors_emitted,
             },
             summary,
+            || {
+                provider
+                    .backend()
+                    .check_workspace_result(&self.projection.workspace)
+            },
+            |finding, summary| self.reconcile_finding(provider, &project_root, finding, summary),
         );
-        self.engine.record_provider_execution_errors(
-            &project_root,
-            ProviderExecutionPhase::Workspace,
-            result.errors,
-            summary,
-        );
-
-        for finding in result.findings {
-            self.reconcile_finding(provider, &project_root, finding, summary);
-        }
     }
 
     fn reconcile_finding(

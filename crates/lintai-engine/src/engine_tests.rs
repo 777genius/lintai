@@ -555,6 +555,32 @@ impl lintai_api::RuleProvider for WorkspaceExecutionErrorProvider {
     }
 }
 
+struct WorkspaceReportedTimeoutProvider;
+
+impl lintai_api::RuleProvider for WorkspaceReportedTimeoutProvider {
+    fn id(&self) -> &str {
+        "workspace-reported-timeout"
+    }
+
+    fn rules(&self) -> &[RuleMetadata] {
+        &[]
+    }
+
+    fn check_result(&self, _ctx: &lintai_api::ScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(Vec::new(), Vec::new())
+    }
+
+    fn check_workspace_result(&self, _ctx: &WorkspaceScanContext) -> ProviderScanResult {
+        ProviderScanResult::new(
+            Vec::new(),
+            vec![ProviderError::timeout(
+                self.id(),
+                "workspace child terminated after timeout",
+            )],
+        )
+    }
+}
+
 #[test]
 fn typed_file_provider_backend_executes_in_engine() {
     let temp_dir = unique_temp_dir("lintai-typed-file-provider");
@@ -955,6 +981,38 @@ fn records_workspace_provider_execution_errors() {
     assert_eq!(
         error.provider_id.as_deref(),
         Some("workspace-execution-error")
+    );
+    assert_eq!(error.phase, Some(crate::ProviderExecutionPhase::Workspace));
+    assert_eq!(error.normalized_path, temp_dir.display().to_string());
+}
+
+#[test]
+fn preserves_workspace_timeout_runtime_kind_when_provider_reports_timeout() {
+    let temp_dir = unique_temp_dir("lintai-workspace-provider-reported-timeout");
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    std::fs::write(temp_dir.join("SKILL.md"), b"# ok\n").unwrap();
+    let config = crate::EngineConfig {
+        project_root: Some(temp_dir.clone()),
+        ..crate::EngineConfig::default()
+    };
+
+    let summary = EngineBuilder::default()
+        .with_config(config)
+        .with_backend(backend_with_scope(
+            WorkspaceReportedTimeoutProvider,
+            ScanScope::Workspace,
+        ))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(summary.findings.is_empty());
+    assert_eq!(summary.runtime_errors.len(), 1);
+    let error = &summary.runtime_errors[0];
+    assert_eq!(error.kind, crate::RuntimeErrorKind::ProviderTimeout);
+    assert_eq!(
+        error.provider_id.as_deref(),
+        Some("workspace-reported-timeout")
     );
     assert_eq!(error.phase, Some(crate::ProviderExecutionPhase::Workspace));
     assert_eq!(error.normalized_path, temp_dir.display().to_string());
