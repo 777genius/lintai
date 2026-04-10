@@ -41,11 +41,11 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC316 / OPENAI-STRICT-ADDITIONAL-PROPERTIES` | OpenAI strict tool schema omits recursive additionalProperties: false | `compat` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC317 / OPENAI-STRICT-REQUIRED-COVERAGE` | OpenAI strict tool schema does not require every declared property | `compat` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC318 / ANTHROPIC-STRICT-ADDITIONAL-PROPERTIES` | Anthropic strict tool input schema omits additionalProperties: false | `compat` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `compat`, `mcp` |
-| `SEC319 / SERVER-REMOTE-URL` | server.json remotes entry uses an insecure or non-public remote URL | `preview` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC320 / SERVER-UNDEFINED-URL-VAR` | server.json remotes URL references an undefined template variable | `preview` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC319 / SERVER-REMOTE-URL` | server.json remotes entry uses an insecure or non-public remote URL | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `supply-chain`, `mcp` |
+| `SEC320 / SERVER-UNDEFINED-URL-VAR` | server.json remotes URL references an undefined template variable | `compat` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC321 / SERVER-LITERAL-AUTH-HEADER` | server.json remotes header commits literal authentication material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC322 / SERVER-UNDEFINED-HEADER-VAR` | server.json remotes header value references an undefined template variable | `preview` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC323 / SERVER-AUTH-SECRET-FLAG` | server.json auth header carries material without an explicit secret flag | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC322 / SERVER-UNDEFINED-HEADER-VAR` | server.json remotes header value references an undefined template variable | `compat` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `compat`, `mcp` |
+| `SEC323 / SERVER-AUTH-SECRET-FLAG` | server.json auth header carries material without an explicit secret flag | `compat` | Preview | `preview_blocked` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC324 / GHA-UNPINNED-ACTION` | GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
 | `SEC325 / GHA-UNTRUSTED-RUN-INTERPOLATION` | GitHub Actions workflow interpolates untrusted expression data directly inside a run command | `supply-chain` | Preview | `preview_blocked` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
 | `SEC326 / GHA-PR-TARGET-HEAD-CHECKOUT` | GitHub Actions pull_request_target workflow checks out untrusted pull request head content | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
@@ -1113,10 +1113,10 @@ Important behavior:
 - Surface: `server_json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `supply-chain`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `supply-chain`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks MCP registry remotes[] URLs for insecure HTTP and non-public host literals without inspecting local package transport URLs.
@@ -1125,7 +1125,7 @@ Important behavior:
 - Benign Corpus: `server-json-loopback-package-transport-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
 
 ### `SEC320 / SERVER-UNDEFINED-URL-VAR` — server.json remotes URL references an undefined template variable
 
@@ -1135,13 +1135,13 @@ Important behavior:
 - Surface: `server_json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `compat`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
-- Graduation Rationale: Checks server.json remotes[] URL templates against variables defined on the same remote entry.
+- Graduation Rationale: Checks server.json remotes[] URL templates for placeholder/variables contract mismatches on the same remote entry.
 - Deterministic Signal Basis: ServerJsonSignals placeholder extraction over remotes[] URLs compared with remotes[].variables keys.
 - Malicious Corpus: `server-json-unresolved-remote-variable`
 - Benign Corpus: `server-json-remote-variable-defined`
@@ -1179,13 +1179,13 @@ Important behavior:
 - Surface: `server_json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `compat`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
-- Graduation Rationale: Checks auth-like remotes[].headers[].value placeholders against variables defined on the same header object.
+- Graduation Rationale: Checks auth-like remotes[].headers[].value placeholders against variables defined on the same header object so registry consumers do not ship broken header templates.
 - Deterministic Signal Basis: ServerJsonSignals placeholder extraction over remotes[].headers[].value compared with headers[].variables keys.
 - Malicious Corpus: `server-json-unresolved-header-variable`
 - Benign Corpus: `server-json-header-variable-defined`
@@ -1201,13 +1201,13 @@ Important behavior:
 - Surface: `server_json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `compat`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
-- Promotion Blocker: Secret policy expectations can vary across registry producers, so the first release keeps this as a context-sensitive preview review signal.
+- Promotion Blocker: Registry producers do not all enforce the same explicit secret-marker contract, so this remains a compatibility review signal until wider producer evidence converges.
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 

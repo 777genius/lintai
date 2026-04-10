@@ -103,7 +103,29 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .iter()
         .find(|entry| entry.metadata.code == "SEC323")
         .unwrap();
-    assert_eq!(sec323.default_presets(), vec!["preview", "mcp"]);
+    assert_eq!(sec323.default_presets(), vec!["compat", "mcp"]);
+    assert_eq!(sec323.public_lane(), PublicLane::Compat);
+
+    let sec319 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC319")
+        .unwrap();
+    assert_eq!(sec319.default_presets(), vec!["supply-chain", "mcp"]);
+    assert_eq!(sec319.public_lane(), PublicLane::SupplyChain);
+
+    let sec320 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC320")
+        .unwrap();
+    assert_eq!(sec320.default_presets(), vec!["compat", "mcp"]);
+    assert_eq!(sec320.public_lane(), PublicLane::Compat);
+
+    let sec322 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC322")
+        .unwrap();
+    assert_eq!(sec322.default_presets(), vec!["compat", "mcp"]);
+    assert_eq!(sec322.public_lane(), PublicLane::Compat);
 
     let sec314 = entries
         .iter()

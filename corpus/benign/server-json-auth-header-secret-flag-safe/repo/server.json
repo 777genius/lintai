@@ -1,0 +1,22 @@
+{
+  "name": "io.github.example/demo",
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://example.com/mcp",
+      "headers": [
+        {
+          "name": "x-api-key",
+          "value": "{API_KEY}",
+          "variables": {
+            "API_KEY": {
+              "description": "API key"
+            }
+          },
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}

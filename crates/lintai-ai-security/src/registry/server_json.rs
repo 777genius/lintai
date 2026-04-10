@@ -24,7 +24,7 @@ declare_rule! {
         code: "SEC320",
         summary: "server.json remotes URL references an undefined template variable",
         doc_title: "server.json remotes: undefined template variable",
-        category: Category::Security,
+        category: Category::Quality,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Stable,
@@ -48,7 +48,7 @@ declare_rule! {
         code: "SEC322",
         summary: "server.json remotes header value references an undefined template variable",
         doc_title: "server.json remotes: undefined header variable",
-        category: Category::Security,
+        category: Category::Quality,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Stable,
@@ -60,7 +60,7 @@ declare_rule! {
         code: "SEC323",
         summary: "server.json auth header carries material without an explicit secret flag",
         doc_title: "server.json auth: missing explicit secret flag",
-        category: Category::Security,
+        category: Category::Quality,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Preview,
@@ -71,7 +71,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: ServerJsonInsecureRemoteUrlRule::METADATA,
         surface: Surface::ServerJson,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: SUPPLY_CHAIN_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks MCP registry remotes[] URLs for insecure HTTP and non-public host literals without inspecting local package transport URLs.",
@@ -91,10 +91,10 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: ServerJsonUnresolvedRemoteVariableRule::METADATA,
         surface: Surface::ServerJson,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: COMPAT_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
-            rationale: "Checks server.json remotes[] URL templates against variables defined on the same remote entry.",
+            rationale: "Checks server.json remotes[] URL templates for placeholder/variables contract mismatches on the same remote entry.",
             malicious_case_ids: &["server-json-unresolved-remote-variable"],
             benign_case_ids: &["server-json-remote-variable-defined"],
             requires_structured_evidence: true,
@@ -131,10 +131,10 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: ServerJsonUnresolvedHeaderVariableRule::METADATA,
         surface: Surface::ServerJson,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: COMPAT_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
-            rationale: "Checks auth-like remotes[].headers[].value placeholders against variables defined on the same header object.",
+            rationale: "Checks auth-like remotes[].headers[].value placeholders against variables defined on the same header object so registry consumers do not ship broken header templates.",
             malicious_case_ids: &["server-json-unresolved-header-variable"],
             benign_case_ids: &["server-json-header-variable-defined"],
             requires_structured_evidence: true,
@@ -151,10 +151,10 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: ServerJsonAuthHeaderPolicyMismatchRule::METADATA,
         surface: Surface::ServerJson,
-        default_presets: PREVIEW_MCP_PRESETS,
+        default_presets: COMPAT_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
-            blocker: "Secret policy expectations can vary across registry producers, so the first release keeps this as a context-sensitive preview review signal.",
+            blocker: "Registry producers do not all enforce the same explicit secret-marker contract, so this remains a compatibility review signal until wider producer evidence converges.",
             promotion_requirements: STRUCTURAL_PREVIEW_REQUIREMENTS,
         },
         check: check_server_json_auth_header_policy_mismatch,

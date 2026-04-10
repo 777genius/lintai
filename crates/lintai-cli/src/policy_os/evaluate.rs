@@ -60,7 +60,7 @@ pub(crate) fn evaluate_machine_policy(
             policy.rules.plaintext_auth,
             root,
             &root_findings,
-            |code| matches!(code, "SEC305" | "SEC309" | "SEC321" | "SEC323"),
+            |code| matches!(code, "SEC305" | "SEC309" | "SEC321"),
             "matched literal auth or secret-material finding",
         );
         push_finding_rule_match(

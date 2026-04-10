@@ -101,7 +101,9 @@ pub(crate) fn render_server_json_extension_report(
 
     output.push_str("## Stable Hits\n\n");
     if stable_hit_repos.is_empty() {
-        output.push_str("- no external `Stable` hits were observed from `SEC319`-`SEC323`\n\n");
+        output.push_str(
+            "- no external `Stable` hits were observed from the current `server.json` stable rule batch\n\n",
+        );
     } else {
         for (repo, count, rule_codes) in &stable_hit_repos {
             output.push_str(&format!(
@@ -144,7 +146,7 @@ pub(crate) fn render_server_json_extension_report(
 
     output.push_str("## Recommended Next Step\n\n");
     if stable_hit_repos.is_empty() {
-        output.push_str("Keep the `server.json` surface and continue discovery; do not weaken `SEC319`-`SEC323` if this wave stays clean but sparse.\n");
+        output.push_str("Keep the `server.json` surface and continue discovery; do not weaken the current transport, secret, or compatibility checks just because this wave stays clean but sparse.\n");
     } else {
         output.push_str("Promote the highest-signal server-json repos into future canonical evidence sets and expand the server-json rule batch conservatively.\n");
     }

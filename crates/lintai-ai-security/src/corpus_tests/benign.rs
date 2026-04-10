@@ -209,6 +209,7 @@ fn benign_corpus_case_dirs_are_discoverable() {
             "plugin-hook-command-safe",
             "policy-truthful-basic",
             "server-json-auth-header-placeholder-safe",
+            "server-json-auth-header-secret-flag-safe",
             "server-json-header-variable-defined",
             "server-json-loopback-package-transport-safe",
             "server-json-remote-variable-defined",

@@ -53,7 +53,7 @@
 
 ## Stable Hits
 
-- no external `Stable` hits were observed from `SEC319`-`SEC323`
+- no external `Stable` hits were observed from the current `server.json` stable rule batch
 
 ## Preview Hits
 
@@ -66,4 +66,4 @@
 
 ## Recommended Next Step
 
-Keep the `server.json` surface and continue discovery; do not weaken `SEC319`-`SEC323` if this wave stays clean but sparse.
+Keep the `server.json` surface and continue discovery; do not weaken the current transport, secret, or compatibility checks just because this wave stays clean but sparse.

@@ -1,0 +1,2 @@
+[presets]
+enable = ["supply-chain", "mcp"]

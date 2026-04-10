@@ -241,6 +241,7 @@ fn malicious_corpus_case_dirs_are_discoverable() {
             "plugin-hook-command-tls-bypass",
             "policy-exec-network-mismatch",
             "policy-frontmatter-conflict",
+            "server-json-auth-header-missing-secret-flag",
             "server-json-insecure-remote-url",
             "server-json-literal-auth-header",
             "server-json-unresolved-header-variable",

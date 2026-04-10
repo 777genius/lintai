@@ -50,10 +50,7 @@
         "lintai-ai-security:SEC310",
         "lintai-ai-security:SEC311",
         "lintai-ai-security:SEC312",
-        "lintai-ai-security:SEC319",
-        "lintai-ai-security:SEC320",
         "lintai-ai-security:SEC321",
-        "lintai-ai-security:SEC322",
         "lintai-ai-security:SEC329",
         "lintai-ai-security:SEC330",
         "lintai-ai-security:SEC338",
@@ -192,7 +189,6 @@
         "lintai-ai-security:SEC307",
         "lintai-ai-security:SEC308",
         "lintai-ai-security:SEC313",
-        "lintai-ai-security:SEC323",
         "lintai-ai-security:SEC335",
         "lintai-ai-security:SEC336",
         "lintai-ai-security:SEC349",
@@ -213,6 +209,9 @@
         "lintai-ai-security:SEC316",
         "lintai-ai-security:SEC317",
         "lintai-ai-security:SEC318",
+        "lintai-ai-security:SEC320",
+        "lintai-ai-security:SEC322",
+        "lintai-ai-security:SEC323",
         "lintai-ai-security:SEC361",
         "lintai-ai-security:SEC363",
         "lintai-ai-security:SEC368",
@@ -821,6 +820,7 @@
       "ruleIds": [
         "lintai-ai-security:SEC302",
         "lintai-ai-security:SEC304",
+        "lintai-ai-security:SEC319",
         "lintai-ai-security:SEC324",
         "lintai-ai-security:SEC325",
         "lintai-ai-security:SEC326",
@@ -1990,7 +1990,7 @@
       "slug": "sec319",
       "canonicalPath": "/rules/lintai-ai-security/sec319",
       "summary": "server.json remotes entry uses an insecure or non-public remote URL",
-      "publicLane": "preview",
+      "publicLane": "supply-chain",
       "scope": "per_file",
       "surface": "server_json",
       "tier": "stable",
@@ -1999,7 +1999,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "supply-chain",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -2016,7 +2016,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ServerJsonSignals remotes[] URL analysis limited to streamable-http and sse entries."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
       "relatedRuleIds": []
     },
     {
@@ -2030,7 +2030,7 @@
       "slug": "sec320",
       "canonicalPath": "/rules/lintai-ai-security/sec320",
       "summary": "server.json remotes URL references an undefined template variable",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "per_file",
       "surface": "server_json",
       "tier": "stable",
@@ -2039,13 +2039,13 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "compat",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
         "kind": "stable",
-        "rationale": "Checks server.json remotes[] URL templates against variables defined on the same remote entry.",
+        "rationale": "Checks server.json remotes[] URL templates for placeholder/variables contract mismatches on the same remote entry.",
         "maliciousCaseIds": [
           "server-json-unresolved-remote-variable"
         ],
@@ -2110,7 +2110,7 @@
       "slug": "sec322",
       "canonicalPath": "/rules/lintai-ai-security/sec322",
       "summary": "server.json remotes header value references an undefined template variable",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "per_file",
       "surface": "server_json",
       "tier": "stable",
@@ -2119,13 +2119,13 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "compat",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
         "kind": "stable",
-        "rationale": "Checks auth-like remotes[].headers[].value placeholders against variables defined on the same header object.",
+        "rationale": "Checks auth-like remotes[].headers[].value placeholders against variables defined on the same header object so registry consumers do not ship broken header templates.",
         "maliciousCaseIds": [
           "server-json-unresolved-header-variable"
         ],
@@ -2150,7 +2150,7 @@
       "slug": "sec323",
       "canonicalPath": "/rules/lintai-ai-security/sec323",
       "summary": "server.json auth header carries material without an explicit secret flag",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "per_file",
       "surface": "server_json",
       "tier": "preview",
@@ -2159,13 +2159,13 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "compat",
         "mcp"
       ],
       "lifecycleState": "preview_blocked",
       "lifecycle": {
         "kind": "preview",
-        "blocker": "Secret policy expectations can vary across registry producers, so the first release keeps this as a context-sensitive preview review signal.",
+        "blocker": "Registry producers do not all enforce the same explicit secret-marker contract, so this remains a compatibility review signal until wider producer evidence converges.",
         "promotionRequirements": "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata."
       },
       "canonicalNote": "Structural preview rule; deterministic today, but the preview contract may still evolve.",

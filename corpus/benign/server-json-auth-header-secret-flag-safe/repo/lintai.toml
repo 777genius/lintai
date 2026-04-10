@@ -1,0 +1,2 @@
+[presets]
+enable = ["compat", "mcp"]
