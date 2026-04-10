@@ -127,6 +127,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec319.default_presets(), vec!["supply-chain", "mcp"]);
     assert_eq!(sec319.public_lane(), PublicLane::SupplyChain);
+    assert_eq!(sec319.metadata.category, Category::Hardening);
 
     let sec321 = entries
         .iter()
@@ -207,6 +208,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec302.default_presets(), vec!["supply-chain"]);
     assert_eq!(sec302.public_lane(), PublicLane::SupplyChain);
+    assert_eq!(sec302.metadata.category, Category::Hardening);
 
     let sec304 = entries
         .iter()
@@ -214,6 +216,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec304.default_presets(), vec!["supply-chain"]);
     assert_eq!(sec304.public_lane(), PublicLane::SupplyChain);
+    assert_eq!(sec304.metadata.category, Category::Hardening);
 
     let sec331 = entries
         .iter()
@@ -221,6 +224,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec331.default_presets(), vec!["supply-chain"]);
     assert_eq!(sec331.public_lane(), PublicLane::SupplyChain);
+    assert_eq!(sec331.metadata.category, Category::Hardening);
 
     let sec342 = entries
         .iter()
@@ -228,6 +232,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec342.default_presets(), vec!["supply-chain", "claude"]);
     assert_eq!(sec342.public_lane(), PublicLane::SupplyChain);
+    assert_eq!(sec342.metadata.category, Category::Hardening);
 
     let sec364 = entries
         .iter()
@@ -242,6 +247,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec365.default_presets(), vec!["supply-chain", "claude"]);
     assert_eq!(sec365.public_lane(), PublicLane::SupplyChain);
+    assert_eq!(sec365.metadata.category, Category::Hardening);
 
     let sec366 = entries
         .iter()
@@ -249,6 +255,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec366.default_presets(), vec!["supply-chain", "claude"]);
     assert_eq!(sec366.public_lane(), PublicLane::SupplyChain);
+    assert_eq!(sec366.metadata.category, Category::Hardening);
 
     let sec328 = entries
         .iter()
@@ -263,6 +270,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec448.default_presets(), vec!["supply-chain"]);
     assert_eq!(sec448.public_lane(), PublicLane::SupplyChain);
+    assert_eq!(sec448.metadata.category, Category::Hardening);
 
     let sec462 = entries
         .iter()
@@ -270,6 +278,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec462.default_presets(), vec!["supply-chain"]);
     assert_eq!(sec462.public_lane(), PublicLane::SupplyChain);
+    assert_eq!(sec462.metadata.category, Category::Hardening);
 
     let sec352 = entries
         .iter()
@@ -308,6 +317,7 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec345.default_presets(), vec!["supply-chain"]);
     assert_eq!(sec345.public_lane(), PublicLane::SupplyChain);
+    assert_eq!(sec345.metadata.category, Category::Hardening);
 
     let sec346 = entries
         .iter()

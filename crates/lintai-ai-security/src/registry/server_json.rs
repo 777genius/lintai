@@ -12,7 +12,7 @@ declare_rule! {
         code: "SEC319",
         summary: "server.json remotes entry uses an insecure or non-public remote URL",
         doc_title: "server.json remotes: insecure or private URL",
-        category: Category::Security,
+        category: Category::Hardening,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
         tier: RuleTier::Stable,
