@@ -360,12 +360,24 @@ fn policy_truthful_workspace_stays_clean() {
 }
 
 #[test]
-fn package_manifest_supply_chain_cases_stay_clean_when_safe() {
+fn container_host_exposure_threat_review_cases_stay_clean_when_safe() {
     for case_name in [
         "devcontainer-no-initialize-command-safe",
         "devcontainer-safe-workspace-mount",
-        "docker-compose-digest-pinned-image",
         "docker-compose-safe-runtime",
+    ] {
+        let case_dir = case_dir("benign", case_name);
+        let manifest = load_case(&case_dir);
+        let summary = harness().scan_case(&case_dir).unwrap();
+        assert_case_summary(&manifest, &summary);
+        assert!(summary.findings.is_empty());
+    }
+}
+
+#[test]
+fn package_manifest_supply_chain_cases_stay_clean_when_safe() {
+    for case_name in [
+        "docker-compose-digest-pinned-image",
         "docker-compose-tagged-image-safe",
         "dockerfile-digest-pinned-base-image",
         "dockerfile-final-stage-nonroot-user",

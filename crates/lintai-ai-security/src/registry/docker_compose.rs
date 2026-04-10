@@ -46,10 +46,10 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 3] = [
     NativeRuleSpec {
         metadata: DockerComposePrivilegedRuntimeRule::METADATA,
         surface: Surface::DockerCompose,
-        default_presets: SUPPLY_CHAIN_PRESETS,
+        default_presets: THREAT_REVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
-            rationale: "Checks committed Docker Compose service definitions for privileged runtime, dangerous capability grants, or host namespace access.",
+            rationale: "Checks committed Docker Compose service definitions for overt host-integrated runtime controls such as privileged mode, dangerous capability grants, or host namespace access.",
             malicious_case_ids: &["docker-compose-privileged-runtime"],
             benign_case_ids: &["docker-compose-safe-runtime"],
             requires_structured_evidence: true,

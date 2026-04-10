@@ -435,13 +435,24 @@ fn policy_frontmatter_conflict_emits_preview_evidence() {
 }
 
 #[test]
-fn package_manifest_supply_chain_cases_trigger_expected_findings() {
+fn container_host_exposure_threat_review_cases_trigger_expected_findings() {
     for case_name in [
         "devcontainer-initialize-command-host",
         "devcontainer-sensitive-bind-mount",
+        "docker-compose-privileged-runtime",
+    ] {
+        let case_dir = case_dir("malicious", case_name);
+        let manifest = load_case(&case_dir);
+        let summary = harness().scan_case(&case_dir).unwrap();
+        assert_case_summary(&manifest, &summary);
+    }
+}
+
+#[test]
+fn package_manifest_supply_chain_cases_trigger_expected_findings() {
+    for case_name in [
         "docker-compose-mutable-image",
         "docker-compose-latest-image",
-        "docker-compose-privileged-runtime",
         "dockerfile-final-stage-root-user",
         "dockerfile-latest-base-image",
         "dockerfile-mutable-base-image",

@@ -467,14 +467,14 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC745` | package.json uses an unbounded dependency version like * or latest | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC746` | Dockerfile RUN downloads remote code and executes it | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
 | `SEC747` | Dockerfile final stage explicitly runs as root | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
-| `SEC748` | Docker Compose service enables privileged container runtime or host namespace access | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
+| `SEC748` | Docker Compose service enables privileged container runtime or host namespace access | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `threat-review` |
 | `SEC749` | Dockerfile FROM uses a mutable registry image without a digest pin | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
 | `SEC750` | Docker Compose service image uses a mutable registry reference without a digest pin | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
 | `SEC751` | Dockerfile FROM uses a latest or implicit-latest image tag | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `dockerfile` | `structural` | `message_only` | `supply-chain` |
 | `SEC752` | Docker Compose service image uses a latest or implicit-latest tag | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `docker-compose` | `structural` | `message_only` | `supply-chain` |
 | `SEC753` | package.json installs a dependency from a direct archive URL source | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
-| `SEC754` | Devcontainer config defines a host-side initializeCommand | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `devcontainer` | `structural` | `message_only` | `supply-chain` |
-| `SEC755` | Devcontainer config bind-mounts sensitive local host material | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `devcontainer` | `structural` | `message_only` | `supply-chain` |
+| `SEC754` | Devcontainer config defines a host-side initializeCommand | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `devcontainer` | `structural` | `message_only` | `threat-review` |
+| `SEC755` | Devcontainer config bind-mounts sensitive local host material | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `devcontainer` | `structural` | `message_only` | `threat-review` |
 | `SEC756` | Installed npm dependency version matches an offline vulnerability advisory | `advisory` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `suggestion` | `advisory` |
 
 ## Builtin preset activation model
@@ -10304,19 +10304,19 @@ Important behavior:
 - Surface: `docker-compose`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `supply-chain`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `supply-chain`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
-- Graduation Rationale: Checks committed Docker Compose service definitions for privileged runtime, dangerous capability grants, or host namespace access.
+- Graduation Rationale: Checks committed Docker Compose service definitions for overt host-integrated runtime controls such as privileged mode, dangerous capability grants, or host namespace access.
 - Deterministic Signal Basis: DockerComposeSignals combines semantic confirmation of a Compose `services` map with indentation-aware line matching for `privileged: true`, `cap_add: [ALL|SYS_ADMIN]`, and `network_mode`/`pid`/`ipc: host` inside service blocks.
 - Malicious Corpus: `docker-compose-privileged-runtime`
 - Benign Corpus: `docker-compose-safe-runtime`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC749` — Dockerfile FROM uses a mutable registry image without a digest pin
 
@@ -10436,19 +10436,19 @@ Important behavior:
 - Surface: `devcontainer`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `supply-chain`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `supply-chain`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
-- Graduation Rationale: Checks committed devcontainer configs for non-empty `initializeCommand`, which executes on the local host before container startup.
+- Graduation Rationale: Checks committed devcontainer configs for explicit host-side execution via non-empty `initializeCommand`, which runs on the local host before container startup.
 - Deterministic Signal Basis: DevcontainerSignals semantic JSON parsing plus exact value-span resolution for a non-empty top-level `initializeCommand` in `.devcontainer.json` or `.devcontainer/devcontainer.json`.
 - Malicious Corpus: `devcontainer-initialize-command-host`
 - Benign Corpus: `devcontainer-no-initialize-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC755` — Devcontainer config bind-mounts sensitive local host material
 
@@ -10458,19 +10458,19 @@ Important behavior:
 - Surface: `devcontainer`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `supply-chain`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `supply-chain`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
-- Graduation Rationale: Checks committed devcontainer configs for bind mounts of sensitive local material such as SSH keys, cloud credentials, kubeconfig, or docker.sock.
+- Graduation Rationale: Checks committed devcontainer configs for explicit host-exposure through bind mounts of sensitive local material such as SSH keys, cloud credentials, kubeconfig, or docker.sock.
 - Deterministic Signal Basis: DevcontainerSignals semantic JSON parsing plus exact value-span resolution for sensitive bind mounts in `workspaceMount`, `mounts`, or Docker-style `runArgs` mount flags.
 - Malicious Corpus: `devcontainer-sensitive-bind-mount`
 - Benign Corpus: `devcontainer-safe-workspace-mount`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ## Provider: `lintai-policy-mismatch`
 

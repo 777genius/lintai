@@ -196,7 +196,10 @@
         "lintai-ai-security:SEC739",
         "lintai-ai-security:SEC740",
         "lintai-ai-security:SEC741",
-        "lintai-ai-security:SEC742"
+        "lintai-ai-security:SEC742",
+        "lintai-ai-security:SEC748",
+        "lintai-ai-security:SEC754",
+        "lintai-ai-security:SEC755"
       ],
       "canonicalPath": "/presets/threat-review"
     },
@@ -872,14 +875,11 @@
         "lintai-ai-security:SEC745",
         "lintai-ai-security:SEC746",
         "lintai-ai-security:SEC747",
-        "lintai-ai-security:SEC748",
         "lintai-ai-security:SEC749",
         "lintai-ai-security:SEC750",
         "lintai-ai-security:SEC751",
         "lintai-ai-security:SEC752",
-        "lintai-ai-security:SEC753",
-        "lintai-ai-security:SEC754",
-        "lintai-ai-security:SEC755"
+        "lintai-ai-security:SEC753"
       ],
       "canonicalPath": "/presets/supply-chain"
     },
@@ -18570,7 +18570,7 @@
       "slug": "sec748",
       "canonicalPath": "/rules/lintai-ai-security/sec748",
       "summary": "Docker Compose service enables privileged container runtime or host namespace access",
-      "publicLane": "supply-chain",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "docker-compose",
       "tier": "stable",
@@ -18579,12 +18579,12 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "supply-chain"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
         "kind": "stable",
-        "rationale": "Checks committed Docker Compose service definitions for privileged runtime, dangerous capability grants, or host namespace access.",
+        "rationale": "Checks committed Docker Compose service definitions for overt host-integrated runtime controls such as privileged mode, dangerous capability grants, or host namespace access.",
         "maliciousCaseIds": [
           "docker-compose-privileged-runtime"
         ],
@@ -18595,7 +18595,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "DockerComposeSignals combines semantic confirmation of a Compose `services` map with indentation-aware line matching for `privileged: true`, `cap_add: [ALL|SYS_ADMIN]`, and `network_mode`/`pid`/`ipc: host` inside service blocks."
       },
-      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -18804,7 +18804,7 @@
       "slug": "sec754",
       "canonicalPath": "/rules/lintai-ai-security/sec754",
       "summary": "Devcontainer config defines a host-side initializeCommand",
-      "publicLane": "supply-chain",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "devcontainer",
       "tier": "stable",
@@ -18813,12 +18813,12 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "supply-chain"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
         "kind": "stable",
-        "rationale": "Checks committed devcontainer configs for non-empty `initializeCommand`, which executes on the local host before container startup.",
+        "rationale": "Checks committed devcontainer configs for explicit host-side execution via non-empty `initializeCommand`, which runs on the local host before container startup.",
         "maliciousCaseIds": [
           "devcontainer-initialize-command-host"
         ],
@@ -18829,7 +18829,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "DevcontainerSignals semantic JSON parsing plus exact value-span resolution for a non-empty top-level `initializeCommand` in `.devcontainer.json` or `.devcontainer/devcontainer.json`."
       },
-      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -18843,7 +18843,7 @@
       "slug": "sec755",
       "canonicalPath": "/rules/lintai-ai-security/sec755",
       "summary": "Devcontainer config bind-mounts sensitive local host material",
-      "publicLane": "supply-chain",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "devcontainer",
       "tier": "stable",
@@ -18852,12 +18852,12 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "supply-chain"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
         "kind": "stable",
-        "rationale": "Checks committed devcontainer configs for bind mounts of sensitive local material such as SSH keys, cloud credentials, kubeconfig, or docker.sock.",
+        "rationale": "Checks committed devcontainer configs for explicit host-exposure through bind mounts of sensitive local material such as SSH keys, cloud credentials, kubeconfig, or docker.sock.",
         "maliciousCaseIds": [
           "devcontainer-sensitive-bind-mount"
         ],
@@ -18868,7 +18868,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "DevcontainerSignals semantic JSON parsing plus exact value-span resolution for sensitive bind mounts in `workspaceMount`, `mounts`, or Docker-style `runArgs` mount flags."
       },
-      "canonicalNote": "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {

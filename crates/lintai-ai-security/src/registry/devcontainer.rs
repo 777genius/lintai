@@ -33,10 +33,10 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 2] = [
     NativeRuleSpec {
         metadata: DevcontainerInitializeCommandRule::METADATA,
         surface: Surface::Devcontainer,
-        default_presets: SUPPLY_CHAIN_PRESETS,
+        default_presets: THREAT_REVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
-            rationale: "Checks committed devcontainer configs for non-empty `initializeCommand`, which executes on the local host before container startup.",
+            rationale: "Checks committed devcontainer configs for explicit host-side execution via non-empty `initializeCommand`, which runs on the local host before container startup.",
             malicious_case_ids: &["devcontainer-initialize-command-host"],
             benign_case_ids: &["devcontainer-no-initialize-command-safe"],
             requires_structured_evidence: true,
@@ -53,10 +53,10 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 2] = [
     NativeRuleSpec {
         metadata: DevcontainerSensitiveBindMountRule::METADATA,
         surface: Surface::Devcontainer,
-        default_presets: SUPPLY_CHAIN_PRESETS,
+        default_presets: THREAT_REVIEW_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
-            rationale: "Checks committed devcontainer configs for bind mounts of sensitive local material such as SSH keys, cloud credentials, kubeconfig, or docker.sock.",
+            rationale: "Checks committed devcontainer configs for explicit host-exposure through bind mounts of sensitive local material such as SSH keys, cloud credentials, kubeconfig, or docker.sock.",
             malicious_case_ids: &["devcontainer-sensitive-bind-mount"],
             benign_case_ids: &["devcontainer-safe-workspace-mount"],
             requires_structured_evidence: true,

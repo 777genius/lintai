@@ -420,6 +420,27 @@ fn shipped_rules_have_expected_default_preset_mapping() {
     assert_eq!(sec422.default_presets(), vec!["threat-review", "mcp"]);
     assert_eq!(sec422.public_lane(), PublicLane::ThreatReview);
 
+    let sec748 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC748")
+        .unwrap();
+    assert_eq!(sec748.default_presets(), vec!["threat-review"]);
+    assert_eq!(sec748.public_lane(), PublicLane::ThreatReview);
+
+    let sec754 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC754")
+        .unwrap();
+    assert_eq!(sec754.default_presets(), vec!["threat-review"]);
+    assert_eq!(sec754.public_lane(), PublicLane::ThreatReview);
+
+    let sec755 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC755")
+        .unwrap();
+    assert_eq!(sec755.default_presets(), vec!["threat-review"]);
+    assert_eq!(sec755.public_lane(), PublicLane::ThreatReview);
+
     let sec312 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC312")
