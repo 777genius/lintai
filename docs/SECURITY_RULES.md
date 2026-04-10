@@ -113,11 +113,11 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC391 / MD-GIT-CHECKOUT-PERMISSION` | AI-native markdown frontmatter grants `Bash(git checkout:*)` tool access | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC392 / MD-GIT-COMMIT-PERMISSION` | AI-native markdown frontmatter grants `Bash(git commit:*)` tool access | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC393 / MD-GIT-STASH-PERMISSION` | AI-native markdown frontmatter grants `Bash(git stash:*)` tool access | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC394 / MCP-AUTOAPPROVE-WILDCARD` | MCP configuration auto-approves all tools with `autoApprove: ["*"]` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC395 / MCP-AUTOAPPROVE-TOOLS` | MCP configuration auto-approves all tools with `autoApproveTools: true` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC396 / MCP-TRUST-TOOLS` | MCP configuration fully trusts tools with `trustTools: true` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC397 / MCP-SANDBOX-DISABLED` | MCP configuration disables sandboxing with `sandbox: false` or `disableSandbox: true` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC398 / MCP-CAPABILITIES-WILDCARD` | MCP configuration grants all capabilities with `capabilities: ["*"]` or `capabilities: "*"` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC394 / MCP-AUTOAPPROVE-WILDCARD` | MCP configuration auto-approves all tools with `autoApprove: ["*"]` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC395 / MCP-AUTOAPPROVE-TOOLS` | MCP configuration auto-approves all tools with `autoApproveTools: true` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC396 / MCP-TRUST-TOOLS` | MCP configuration fully trusts tools with `trustTools: true` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC397 / MCP-SANDBOX-DISABLED` | MCP configuration disables sandboxing with `sandbox: false` or `disableSandbox: true` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC398 / MCP-CAPABILITIES-WILDCARD` | MCP configuration grants all capabilities with `capabilities: ["*"]` or `capabilities: "*"` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
 | `SEC399 / CLAUDE-NPX-PERMISSION` | Claude settings permissions allow `Bash(npx ...)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC400 / CLAUDE-ENABLED-MCPJSON-SERVERS` | Claude settings enable `enabledMcpjsonServers` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC401 / POLICY-EXEC-MISMATCH` | Project policy forbids execution, but repository contains executable behavior | `compat` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
@@ -265,86 +265,86 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC543 / MD-GH-REPO-TRANSFER-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo transfer:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC544 / CLAUDE-GH-RELEASE-UPLOAD-PERMISSION` | Claude settings permissions allow `Bash(gh release upload:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC545 / MD-GH-RELEASE-UPLOAD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh release upload:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC546 / MCP-AUTOAPPROVE-BASH-WILDCARD` | MCP configuration auto-approves blanket shell execution with `autoApprove: ["Bash(*)"]` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC547 / MCP-AUTOAPPROVE-CURL` | MCP configuration auto-approves `Bash(curl:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC548 / MCP-AUTOAPPROVE-WGET` | MCP configuration auto-approves `Bash(wget:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC549 / MCP-AUTOAPPROVE-SUDO` | MCP configuration auto-approves `Bash(sudo:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC550 / MCP-AUTOAPPROVE-RM` | MCP configuration auto-approves `Bash(rm:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC551 / MCP-AUTOAPPROVE-GIT-PUSH` | MCP configuration auto-approves `Bash(git push)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC552 / MCP-AUTOAPPROVE-GH-API-POST` | MCP configuration auto-approves `Bash(gh api --method POST:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC553 / MCP-AUTOAPPROVE-GIT-CHECKOUT` | MCP configuration auto-approves `Bash(git checkout:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC554 / MCP-AUTOAPPROVE-GIT-COMMIT` | MCP configuration auto-approves `Bash(git commit:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC555 / MCP-AUTOAPPROVE-GIT-RESET` | MCP configuration auto-approves `Bash(git reset:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC556 / MCP-AUTOAPPROVE-GIT-CLEAN` | MCP configuration auto-approves `Bash(git clean:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC557 / MCP-AUTOAPPROVE-GH-API-DELETE` | MCP configuration auto-approves `Bash(gh api --method DELETE:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC558 / MCP-AUTOAPPROVE-GH-API-PATCH` | MCP configuration auto-approves `Bash(gh api --method PATCH:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC559 / MCP-AUTOAPPROVE-GH-API-PUT` | MCP configuration auto-approves `Bash(gh api --method PUT:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC560 / MCP-AUTOAPPROVE-GH-ISSUE-CREATE` | MCP configuration auto-approves `Bash(gh issue create:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC561 / MCP-AUTOAPPROVE-GH-REPO-CREATE` | MCP configuration auto-approves `Bash(gh repo create:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC562 / MCP-AUTOAPPROVE-GH-REPO-DELETE` | MCP configuration auto-approves `Bash(gh repo delete:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC563 / MCP-AUTOAPPROVE-GH-REPO-EDIT` | MCP configuration auto-approves `Bash(gh repo edit:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC564 / MCP-AUTOAPPROVE-GH-SECRET-SET` | MCP configuration auto-approves `Bash(gh secret set:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC565 / MCP-AUTOAPPROVE-GH-VARIABLE-SET` | MCP configuration auto-approves `Bash(gh variable set:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC566 / MCP-AUTOAPPROVE-GH-WORKFLOW-RUN` | MCP configuration auto-approves `Bash(gh workflow run:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC567 / MCP-AUTOAPPROVE-READ-WILDCARD` | MCP configuration auto-approves `Read(*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC568 / MCP-AUTOAPPROVE-WRITE-WILDCARD` | MCP configuration auto-approves `Write(*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC569 / MCP-AUTOAPPROVE-EDIT-WILDCARD` | MCP configuration auto-approves `Edit(*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC570 / MCP-AUTOAPPROVE-GLOB-WILDCARD` | MCP configuration auto-approves `Glob(*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC571 / MCP-AUTOAPPROVE-GREP-WILDCARD` | MCP configuration auto-approves `Grep(*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC572 / MCP-AUTOAPPROVE-WEBFETCH-WILDCARD` | MCP configuration auto-approves `WebFetch(*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC573 / MCP-AUTOAPPROVE-WEBSEARCH-WILDCARD` | MCP configuration auto-approves `WebSearch(*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC574 / MCP-AUTOAPPROVE-READ-UNSAFE-PATH` | MCP configuration auto-approves `Read(...)` over an unsafe path through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC575 / MCP-AUTOAPPROVE-WRITE-UNSAFE-PATH` | MCP configuration auto-approves `Write(...)` over an unsafe path through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC576 / MCP-AUTOAPPROVE-EDIT-UNSAFE-PATH` | MCP configuration auto-approves `Edit(...)` over an unsafe path through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC577 / MCP-AUTOAPPROVE-GLOB-UNSAFE-PATH` | MCP configuration auto-approves `Glob(...)` over an unsafe path through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC578 / MCP-AUTOAPPROVE-GREP-UNSAFE-PATH` | MCP configuration auto-approves `Grep(...)` over an unsafe path through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC579 / MCP-AUTOAPPROVE-GH-SECRET-DELETE` | MCP configuration auto-approves `Bash(gh secret delete:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC580 / MCP-AUTOAPPROVE-GH-VARIABLE-DELETE` | MCP configuration auto-approves `Bash(gh variable delete:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC581 / MCP-AUTOAPPROVE-GH-WORKFLOW-DISABLE` | MCP configuration auto-approves `Bash(gh workflow disable:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC582 / MCP-AUTOAPPROVE-GH-REPO-TRANSFER` | MCP configuration auto-approves `Bash(gh repo transfer:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC583 / MCP-AUTOAPPROVE-GH-RELEASE-CREATE` | MCP configuration auto-approves `Bash(gh release create:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC584 / MCP-AUTOAPPROVE-GH-RELEASE-DELETE` | MCP configuration auto-approves `Bash(gh release delete:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC585 / MCP-AUTOAPPROVE-GH-RELEASE-UPLOAD` | MCP configuration auto-approves `Bash(gh release upload:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC586 / MCP-AUTOAPPROVE-NPX` | MCP configuration auto-approves `Bash(npx ...)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC587 / MCP-AUTOAPPROVE-UVX` | MCP configuration auto-approves `Bash(uvx ...)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC588 / MCP-AUTOAPPROVE-NPM-EXEC` | MCP configuration auto-approves `Bash(npm exec ...)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC589 / MCP-AUTOAPPROVE-BUNX` | MCP configuration auto-approves `Bash(bunx ...)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC590 / MCP-AUTOAPPROVE-PNPM-DLX` | MCP configuration auto-approves `Bash(pnpm dlx ...)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC591 / MCP-AUTOAPPROVE-YARN-DLX` | MCP configuration auto-approves `Bash(yarn dlx ...)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC592 / MCP-AUTOAPPROVE-PIPX-RUN` | MCP configuration auto-approves `Bash(pipx run ...)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC593 / MCP-AUTOAPPROVE-PACKAGE-INSTALL` | MCP configuration auto-approves package installation commands through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC594 / MCP-AUTOAPPROVE-GIT-CLONE` | MCP configuration auto-approves `Bash(git clone:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC595 / MCP-AUTOAPPROVE-GIT-FETCH` | MCP configuration auto-approves `Bash(git fetch:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC596 / MCP-AUTOAPPROVE-GIT-LS-REMOTE` | MCP configuration auto-approves `Bash(git ls-remote:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC597 / MCP-AUTOAPPROVE-GIT-ADD` | MCP configuration auto-approves `Bash(git add:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC598 / MCP-AUTOAPPROVE-GIT-CONFIG` | MCP configuration auto-approves `Bash(git config:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC599 / MCP-AUTOAPPROVE-GIT-TAG` | MCP configuration auto-approves `Bash(git tag:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC600 / MCP-AUTOAPPROVE-GIT-BRANCH` | MCP configuration auto-approves `Bash(git branch:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC601 / MCP-AUTOAPPROVE-GH-PR` | MCP configuration auto-approves `Bash(gh pr:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC602 / MCP-AUTOAPPROVE-GIT-STASH` | MCP configuration auto-approves `Bash(git stash:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC603 / MCP-AUTOAPPROVE-GIT-RESTORE` | MCP configuration auto-approves `Bash(git restore:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC604 / MCP-AUTOAPPROVE-GIT-REBASE` | MCP configuration auto-approves `Bash(git rebase:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC605 / MCP-AUTOAPPROVE-GIT-MERGE` | MCP configuration auto-approves `Bash(git merge:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC606 / MCP-AUTOAPPROVE-GIT-CHERRY-PICK` | MCP configuration auto-approves `Bash(git cherry-pick:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC607 / MCP-AUTOAPPROVE-GIT-APPLY` | MCP configuration auto-approves `Bash(git apply:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC608 / MCP-AUTOAPPROVE-GIT-AM` | MCP configuration auto-approves `Bash(git am:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC609 / MCP-AUTOAPPROVE-CRONTAB` | MCP configuration auto-approves `Bash(crontab:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC610 / MCP-AUTOAPPROVE-SYSTEMCTL-ENABLE` | MCP configuration auto-approves `Bash(systemctl enable:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC611 / MCP-AUTOAPPROVE-LAUNCHCTL-LOAD` | MCP configuration auto-approves `Bash(launchctl load:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC612 / MCP-AUTOAPPROVE-LAUNCHCTL-BOOTSTRAP` | MCP configuration auto-approves `Bash(launchctl bootstrap:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC613 / MCP-AUTOAPPROVE-CHMOD` | MCP configuration auto-approves `Bash(chmod:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC614 / MCP-AUTOAPPROVE-CHOWN` | MCP configuration auto-approves `Bash(chown:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC615 / MCP-AUTOAPPROVE-CHGRP` | MCP configuration auto-approves `Bash(chgrp:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC616 / MCP-AUTOAPPROVE-SU` | MCP configuration auto-approves `Bash(su:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC617 / MCP-AUTOAPPROVE-WEBFETCH-RAW-GITHUB` | MCP configuration auto-approves `WebFetch(domain:raw.githubusercontent.com)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC618 / MCP-AUTOAPPROVE-READ` | MCP configuration auto-approves bare `Read` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC619 / MCP-AUTOAPPROVE-WRITE` | MCP configuration auto-approves bare `Write` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC620 / MCP-AUTOAPPROVE-EDIT` | MCP configuration auto-approves bare `Edit` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC621 / MCP-AUTOAPPROVE-GLOB` | MCP configuration auto-approves bare `Glob` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC622 / MCP-AUTOAPPROVE-GREP` | MCP configuration auto-approves bare `Grep` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC623 / MCP-AUTOAPPROVE-WEBFETCH` | MCP configuration auto-approves bare `WebFetch` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC624 / MCP-AUTOAPPROVE-WEBSEARCH` | MCP configuration auto-approves bare `WebSearch` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC625 / MCP-AUTOAPPROVE-BASH` | MCP configuration auto-approves bare `Bash` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC546 / MCP-AUTOAPPROVE-BASH-WILDCARD` | MCP configuration auto-approves blanket shell execution with `autoApprove: ["Bash(*)"]` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC547 / MCP-AUTOAPPROVE-CURL` | MCP configuration auto-approves `Bash(curl:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC548 / MCP-AUTOAPPROVE-WGET` | MCP configuration auto-approves `Bash(wget:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC549 / MCP-AUTOAPPROVE-SUDO` | MCP configuration auto-approves `Bash(sudo:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC550 / MCP-AUTOAPPROVE-RM` | MCP configuration auto-approves `Bash(rm:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC551 / MCP-AUTOAPPROVE-GIT-PUSH` | MCP configuration auto-approves `Bash(git push)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC552 / MCP-AUTOAPPROVE-GH-API-POST` | MCP configuration auto-approves `Bash(gh api --method POST:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC553 / MCP-AUTOAPPROVE-GIT-CHECKOUT` | MCP configuration auto-approves `Bash(git checkout:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC554 / MCP-AUTOAPPROVE-GIT-COMMIT` | MCP configuration auto-approves `Bash(git commit:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC555 / MCP-AUTOAPPROVE-GIT-RESET` | MCP configuration auto-approves `Bash(git reset:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC556 / MCP-AUTOAPPROVE-GIT-CLEAN` | MCP configuration auto-approves `Bash(git clean:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC557 / MCP-AUTOAPPROVE-GH-API-DELETE` | MCP configuration auto-approves `Bash(gh api --method DELETE:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC558 / MCP-AUTOAPPROVE-GH-API-PATCH` | MCP configuration auto-approves `Bash(gh api --method PATCH:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC559 / MCP-AUTOAPPROVE-GH-API-PUT` | MCP configuration auto-approves `Bash(gh api --method PUT:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC560 / MCP-AUTOAPPROVE-GH-ISSUE-CREATE` | MCP configuration auto-approves `Bash(gh issue create:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC561 / MCP-AUTOAPPROVE-GH-REPO-CREATE` | MCP configuration auto-approves `Bash(gh repo create:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC562 / MCP-AUTOAPPROVE-GH-REPO-DELETE` | MCP configuration auto-approves `Bash(gh repo delete:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC563 / MCP-AUTOAPPROVE-GH-REPO-EDIT` | MCP configuration auto-approves `Bash(gh repo edit:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC564 / MCP-AUTOAPPROVE-GH-SECRET-SET` | MCP configuration auto-approves `Bash(gh secret set:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC565 / MCP-AUTOAPPROVE-GH-VARIABLE-SET` | MCP configuration auto-approves `Bash(gh variable set:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC566 / MCP-AUTOAPPROVE-GH-WORKFLOW-RUN` | MCP configuration auto-approves `Bash(gh workflow run:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC567 / MCP-AUTOAPPROVE-READ-WILDCARD` | MCP configuration auto-approves `Read(*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC568 / MCP-AUTOAPPROVE-WRITE-WILDCARD` | MCP configuration auto-approves `Write(*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC569 / MCP-AUTOAPPROVE-EDIT-WILDCARD` | MCP configuration auto-approves `Edit(*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC570 / MCP-AUTOAPPROVE-GLOB-WILDCARD` | MCP configuration auto-approves `Glob(*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC571 / MCP-AUTOAPPROVE-GREP-WILDCARD` | MCP configuration auto-approves `Grep(*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC572 / MCP-AUTOAPPROVE-WEBFETCH-WILDCARD` | MCP configuration auto-approves `WebFetch(*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC573 / MCP-AUTOAPPROVE-WEBSEARCH-WILDCARD` | MCP configuration auto-approves `WebSearch(*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC574 / MCP-AUTOAPPROVE-READ-UNSAFE-PATH` | MCP configuration auto-approves `Read(...)` over an unsafe path through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC575 / MCP-AUTOAPPROVE-WRITE-UNSAFE-PATH` | MCP configuration auto-approves `Write(...)` over an unsafe path through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC576 / MCP-AUTOAPPROVE-EDIT-UNSAFE-PATH` | MCP configuration auto-approves `Edit(...)` over an unsafe path through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC577 / MCP-AUTOAPPROVE-GLOB-UNSAFE-PATH` | MCP configuration auto-approves `Glob(...)` over an unsafe path through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC578 / MCP-AUTOAPPROVE-GREP-UNSAFE-PATH` | MCP configuration auto-approves `Grep(...)` over an unsafe path through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC579 / MCP-AUTOAPPROVE-GH-SECRET-DELETE` | MCP configuration auto-approves `Bash(gh secret delete:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC580 / MCP-AUTOAPPROVE-GH-VARIABLE-DELETE` | MCP configuration auto-approves `Bash(gh variable delete:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC581 / MCP-AUTOAPPROVE-GH-WORKFLOW-DISABLE` | MCP configuration auto-approves `Bash(gh workflow disable:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC582 / MCP-AUTOAPPROVE-GH-REPO-TRANSFER` | MCP configuration auto-approves `Bash(gh repo transfer:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC583 / MCP-AUTOAPPROVE-GH-RELEASE-CREATE` | MCP configuration auto-approves `Bash(gh release create:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC584 / MCP-AUTOAPPROVE-GH-RELEASE-DELETE` | MCP configuration auto-approves `Bash(gh release delete:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC585 / MCP-AUTOAPPROVE-GH-RELEASE-UPLOAD` | MCP configuration auto-approves `Bash(gh release upload:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC586 / MCP-AUTOAPPROVE-NPX` | MCP configuration auto-approves `Bash(npx ...)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC587 / MCP-AUTOAPPROVE-UVX` | MCP configuration auto-approves `Bash(uvx ...)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC588 / MCP-AUTOAPPROVE-NPM-EXEC` | MCP configuration auto-approves `Bash(npm exec ...)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC589 / MCP-AUTOAPPROVE-BUNX` | MCP configuration auto-approves `Bash(bunx ...)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC590 / MCP-AUTOAPPROVE-PNPM-DLX` | MCP configuration auto-approves `Bash(pnpm dlx ...)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC591 / MCP-AUTOAPPROVE-YARN-DLX` | MCP configuration auto-approves `Bash(yarn dlx ...)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC592 / MCP-AUTOAPPROVE-PIPX-RUN` | MCP configuration auto-approves `Bash(pipx run ...)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC593 / MCP-AUTOAPPROVE-PACKAGE-INSTALL` | MCP configuration auto-approves package installation commands through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC594 / MCP-AUTOAPPROVE-GIT-CLONE` | MCP configuration auto-approves `Bash(git clone:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC595 / MCP-AUTOAPPROVE-GIT-FETCH` | MCP configuration auto-approves `Bash(git fetch:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC596 / MCP-AUTOAPPROVE-GIT-LS-REMOTE` | MCP configuration auto-approves `Bash(git ls-remote:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC597 / MCP-AUTOAPPROVE-GIT-ADD` | MCP configuration auto-approves `Bash(git add:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC598 / MCP-AUTOAPPROVE-GIT-CONFIG` | MCP configuration auto-approves `Bash(git config:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC599 / MCP-AUTOAPPROVE-GIT-TAG` | MCP configuration auto-approves `Bash(git tag:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC600 / MCP-AUTOAPPROVE-GIT-BRANCH` | MCP configuration auto-approves `Bash(git branch:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC601 / MCP-AUTOAPPROVE-GH-PR` | MCP configuration auto-approves `Bash(gh pr:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC602 / MCP-AUTOAPPROVE-GIT-STASH` | MCP configuration auto-approves `Bash(git stash:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC603 / MCP-AUTOAPPROVE-GIT-RESTORE` | MCP configuration auto-approves `Bash(git restore:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC604 / MCP-AUTOAPPROVE-GIT-REBASE` | MCP configuration auto-approves `Bash(git rebase:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC605 / MCP-AUTOAPPROVE-GIT-MERGE` | MCP configuration auto-approves `Bash(git merge:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC606 / MCP-AUTOAPPROVE-GIT-CHERRY-PICK` | MCP configuration auto-approves `Bash(git cherry-pick:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC607 / MCP-AUTOAPPROVE-GIT-APPLY` | MCP configuration auto-approves `Bash(git apply:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC608 / MCP-AUTOAPPROVE-GIT-AM` | MCP configuration auto-approves `Bash(git am:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC609 / MCP-AUTOAPPROVE-CRONTAB` | MCP configuration auto-approves `Bash(crontab:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC610 / MCP-AUTOAPPROVE-SYSTEMCTL-ENABLE` | MCP configuration auto-approves `Bash(systemctl enable:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC611 / MCP-AUTOAPPROVE-LAUNCHCTL-LOAD` | MCP configuration auto-approves `Bash(launchctl load:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC612 / MCP-AUTOAPPROVE-LAUNCHCTL-BOOTSTRAP` | MCP configuration auto-approves `Bash(launchctl bootstrap:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC613 / MCP-AUTOAPPROVE-CHMOD` | MCP configuration auto-approves `Bash(chmod:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC614 / MCP-AUTOAPPROVE-CHOWN` | MCP configuration auto-approves `Bash(chown:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC615 / MCP-AUTOAPPROVE-CHGRP` | MCP configuration auto-approves `Bash(chgrp:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC616 / MCP-AUTOAPPROVE-SU` | MCP configuration auto-approves `Bash(su:*)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC617 / MCP-AUTOAPPROVE-WEBFETCH-RAW-GITHUB` | MCP configuration auto-approves `WebFetch(domain:raw.githubusercontent.com)` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC618 / MCP-AUTOAPPROVE-READ` | MCP configuration auto-approves bare `Read` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC619 / MCP-AUTOAPPROVE-WRITE` | MCP configuration auto-approves bare `Write` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC620 / MCP-AUTOAPPROVE-EDIT` | MCP configuration auto-approves bare `Edit` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC621 / MCP-AUTOAPPROVE-GLOB` | MCP configuration auto-approves bare `Glob` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC622 / MCP-AUTOAPPROVE-GREP` | MCP configuration auto-approves bare `Grep` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC623 / MCP-AUTOAPPROVE-WEBFETCH` | MCP configuration auto-approves bare `WebFetch` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC624 / MCP-AUTOAPPROVE-WEBSEARCH` | MCP configuration auto-approves bare `WebSearch` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
+| `SEC625 / MCP-AUTOAPPROVE-BASH` | MCP configuration auto-approves bare `Bash` through `autoApprove` | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
 | `SEC626 / CLAUDE-BASH` | Claude settings permissions allow bare `Bash` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC627 / CLAUDE-READ` | Claude settings permissions allow bare `Read` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC628 / CLAUDE-WRITE` | Claude settings permissions allow bare `Write` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
@@ -2585,10 +2585,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit wildcard auto-approval in MCP client config.
@@ -2607,10 +2607,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit blanket auto-approval in MCP client config.
@@ -2629,10 +2629,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit blanket tool trust in MCP client config.
@@ -2651,10 +2651,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit MCP config booleans that disable sandbox isolation.
@@ -2673,10 +2673,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit wildcard capability grants in MCP config.
@@ -5859,10 +5859,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit blanket shell auto-approval in MCP client config.
@@ -5881,10 +5881,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit `curl` auto-approval in MCP client config.
@@ -5903,10 +5903,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit `wget` auto-approval in MCP client config.
@@ -5925,10 +5925,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `sudo` auto-approval in MCP client config.
@@ -5947,10 +5947,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact destructive `rm` auto-approval in MCP client config.
@@ -5969,10 +5969,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `git push` auto-approval in MCP client config.
@@ -5991,10 +5991,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact GitHub API POST auto-approval in MCP client config.
@@ -6013,10 +6013,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `git checkout` auto-approval in MCP client config.
@@ -6035,10 +6035,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `git commit` auto-approval in MCP client config.
@@ -6057,10 +6057,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `git reset` auto-approval in MCP client config.
@@ -6079,10 +6079,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `git clean` auto-approval in MCP client config.
@@ -6101,10 +6101,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact GitHub API DELETE auto-approval in MCP client config.
@@ -6123,10 +6123,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact GitHub API PATCH auto-approval in MCP client config.
@@ -6145,10 +6145,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact GitHub API PUT auto-approval in MCP client config.
@@ -6167,10 +6167,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `gh issue create` auto-approval in MCP client config.
@@ -6189,10 +6189,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `gh repo create` auto-approval in MCP client config.
@@ -6211,10 +6211,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `gh repo delete` auto-approval in MCP client config.
@@ -6233,10 +6233,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `gh repo edit` auto-approval in MCP client config.
@@ -6255,10 +6255,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `gh secret set` auto-approval in MCP client config.
@@ -6277,10 +6277,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `gh variable set` auto-approval in MCP client config.
@@ -6299,10 +6299,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `gh workflow run` auto-approval in MCP client config.
@@ -6321,10 +6321,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit `Read(*)` auto-approval in MCP client config.
@@ -6343,10 +6343,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit `Write(*)` auto-approval in MCP client config.
@@ -6365,10 +6365,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit `Edit(*)` auto-approval in MCP client config.
@@ -6387,10 +6387,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit `Glob(*)` auto-approval in MCP client config.
@@ -6409,10 +6409,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit `Grep(*)` auto-approval in MCP client config.
@@ -6431,10 +6431,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit `WebFetch(*)` auto-approval in MCP client config.
@@ -6453,10 +6453,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit `WebSearch(*)` auto-approval in MCP client config.
@@ -6475,10 +6475,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact unsafe-path `Read(...)` auto-approval in MCP client config.
@@ -6497,10 +6497,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact unsafe-path `Write(...)` auto-approval in MCP client config.
@@ -6519,10 +6519,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact unsafe-path `Edit(...)` auto-approval in MCP client config.
@@ -6541,10 +6541,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact unsafe-path `Glob(...)` auto-approval in MCP client config.
@@ -6563,10 +6563,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact unsafe-path `Grep(...)` auto-approval in MCP client config.
@@ -6585,10 +6585,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `gh secret delete` auto-approval in MCP client config.
@@ -6607,10 +6607,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `gh variable delete` auto-approval in MCP client config.
@@ -6629,10 +6629,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `gh workflow disable` auto-approval in MCP client config.
@@ -6651,10 +6651,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `gh repo transfer` auto-approval in MCP client config.
@@ -6673,10 +6673,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `gh release create` auto-approval in MCP client config.
@@ -6695,10 +6695,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `gh release delete` auto-approval in MCP client config.
@@ -6717,10 +6717,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `gh release upload` auto-approval in MCP client config.
@@ -6739,10 +6739,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(npx ...)` auto-approval in MCP client config.
@@ -6761,10 +6761,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(uvx ...)` auto-approval in MCP client config.
@@ -6783,10 +6783,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(npm exec ...)` auto-approval in MCP client config.
@@ -6805,10 +6805,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(bunx ...)` auto-approval in MCP client config.
@@ -6827,10 +6827,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(pnpm dlx ...)` auto-approval in MCP client config.
@@ -6849,10 +6849,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(yarn dlx ...)` auto-approval in MCP client config.
@@ -6871,10 +6871,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(pipx run ...)` auto-approval in MCP client config.
@@ -6893,10 +6893,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact package installation auto-approval in MCP client config.
@@ -6915,10 +6915,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(git clone:*)` auto-approval in MCP client config.
@@ -6937,10 +6937,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(git fetch:*)` auto-approval in MCP client config.
@@ -6959,10 +6959,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(git ls-remote:*)` auto-approval in MCP client config.
@@ -6981,10 +6981,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(git add:*)` auto-approval in MCP client config.
@@ -7003,10 +7003,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(git config:*)` auto-approval in MCP client config.
@@ -7025,10 +7025,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(git tag:*)` auto-approval in MCP client config.
@@ -7047,10 +7047,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(git branch:*)` auto-approval in MCP client config.
@@ -7069,10 +7069,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(gh pr:*)` auto-approval in MCP client config.
@@ -7091,10 +7091,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(git stash:*)` auto-approval in MCP client config.
@@ -7113,10 +7113,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(git restore:*)` auto-approval in MCP client config.
@@ -7135,10 +7135,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(git rebase:*)` auto-approval in MCP client config.
@@ -7157,10 +7157,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(git merge:*)` auto-approval in MCP client config.
@@ -7179,10 +7179,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(git cherry-pick:*)` auto-approval in MCP client config.
@@ -7201,10 +7201,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(git apply:*)` auto-approval in MCP client config.
@@ -7223,10 +7223,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(git am:*)` auto-approval in MCP client config.
@@ -7245,10 +7245,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(crontab:*)` auto-approval in MCP client config.
@@ -7267,10 +7267,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(systemctl enable:*)` auto-approval in MCP client config.
@@ -7289,10 +7289,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(launchctl load:*)` auto-approval in MCP client config.
@@ -7311,10 +7311,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(launchctl bootstrap:*)` auto-approval in MCP client config.
@@ -7333,10 +7333,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(chmod:*)` auto-approval in MCP client config.
@@ -7355,10 +7355,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(chown:*)` auto-approval in MCP client config.
@@ -7377,10 +7377,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(chgrp:*)` auto-approval in MCP client config.
@@ -7399,10 +7399,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact `Bash(su:*)` auto-approval in MCP client config.
@@ -7421,10 +7421,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact raw GitHub WebFetch auto-approval in MCP client config.
@@ -7443,10 +7443,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact bare `Read` auto-approval in MCP client config.
@@ -7465,10 +7465,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact bare `Write` auto-approval in MCP client config.
@@ -7487,10 +7487,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact bare `Edit` auto-approval in MCP client config.
@@ -7509,10 +7509,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact bare `Glob` auto-approval in MCP client config.
@@ -7531,10 +7531,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact bare `Grep` auto-approval in MCP client config.
@@ -7553,10 +7553,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact bare `WebFetch` auto-approval in MCP client config.
@@ -7575,10 +7575,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact bare `WebSearch` auto-approval in MCP client config.
@@ -7597,10 +7597,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `governance`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact bare `Bash` auto-approval in MCP client config.

@@ -2398,7 +2398,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveWildcardRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit wildcard auto-approval in MCP client config.",
@@ -2418,7 +2418,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveBashWildcardRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit blanket shell auto-approval in MCP client config.",
@@ -2438,7 +2438,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveCurlRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit `curl` auto-approval in MCP client config.",
@@ -2458,7 +2458,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveWgetRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit `wget` auto-approval in MCP client config.",
@@ -2478,7 +2478,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveSudoRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `sudo` auto-approval in MCP client config.",
@@ -2498,7 +2498,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveRmRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact destructive `rm` auto-approval in MCP client config.",
@@ -2518,7 +2518,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGitPushRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `git push` auto-approval in MCP client config.",
@@ -2538,7 +2538,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhApiPostRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact GitHub API POST auto-approval in MCP client config.",
@@ -2558,7 +2558,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGitCheckoutRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `git checkout` auto-approval in MCP client config.",
@@ -2578,7 +2578,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGitCommitRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `git commit` auto-approval in MCP client config.",
@@ -2598,7 +2598,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGitResetRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `git reset` auto-approval in MCP client config.",
@@ -2618,7 +2618,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGitCleanRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `git clean` auto-approval in MCP client config.",
@@ -2638,7 +2638,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhApiDeleteRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact GitHub API DELETE auto-approval in MCP client config.",
@@ -2658,7 +2658,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhApiPatchRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact GitHub API PATCH auto-approval in MCP client config.",
@@ -2678,7 +2678,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhApiPutRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact GitHub API PUT auto-approval in MCP client config.",
@@ -2698,7 +2698,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhIssueCreateRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `gh issue create` auto-approval in MCP client config.",
@@ -2718,7 +2718,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhRepoCreateRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `gh repo create` auto-approval in MCP client config.",
@@ -2738,7 +2738,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhRepoDeleteRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `gh repo delete` auto-approval in MCP client config.",
@@ -2758,7 +2758,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhRepoEditRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `gh repo edit` auto-approval in MCP client config.",
@@ -2778,7 +2778,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhSecretSetRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `gh secret set` auto-approval in MCP client config.",
@@ -2798,7 +2798,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhVariableSetRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `gh variable set` auto-approval in MCP client config.",
@@ -2818,7 +2818,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhWorkflowRunRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `gh workflow run` auto-approval in MCP client config.",
@@ -2838,7 +2838,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhSecretDeleteRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `gh secret delete` auto-approval in MCP client config.",
@@ -2858,7 +2858,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhVariableDeleteRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `gh variable delete` auto-approval in MCP client config.",
@@ -2878,7 +2878,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhWorkflowDisableRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `gh workflow disable` auto-approval in MCP client config.",
@@ -2898,7 +2898,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhRepoTransferRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `gh repo transfer` auto-approval in MCP client config.",
@@ -2918,7 +2918,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhReleaseCreateRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `gh release create` auto-approval in MCP client config.",
@@ -2938,7 +2938,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhReleaseDeleteRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `gh release delete` auto-approval in MCP client config.",
@@ -2958,7 +2958,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhReleaseUploadRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `gh release upload` auto-approval in MCP client config.",
@@ -2978,7 +2978,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveNpxRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact `Bash(npx ...)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-mutable-runner-family"],
@@ -2990,7 +2990,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveUvxRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact `Bash(uvx ...)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-mutable-runner-family"],
@@ -3002,7 +3002,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveNpmExecRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact `Bash(npm exec ...)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-mutable-runner-family"],
@@ -3014,7 +3014,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveBunxRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact `Bash(bunx ...)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-mutable-runner-family"],
@@ -3026,7 +3026,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApprovePnpmDlxRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact `Bash(pnpm dlx ...)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-mutable-runner-family"],
@@ -3038,7 +3038,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveYarnDlxRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact `Bash(yarn dlx ...)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-mutable-runner-family"],
@@ -3050,7 +3050,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApprovePipxRunRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact `Bash(pipx run ...)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-mutable-runner-family"],
@@ -3062,7 +3062,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApprovePackageInstallRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact package installation auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-package-install-family"],
@@ -3074,7 +3074,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveGitCloneRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact `Bash(git clone:*)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-repo-fetch-family"],
@@ -3086,7 +3086,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveGitFetchRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact `Bash(git fetch:*)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-repo-fetch-family"],
@@ -3098,7 +3098,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveGitLsRemoteRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact `Bash(git ls-remote:*)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-repo-fetch-family"],
@@ -3110,7 +3110,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGitAddRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `Bash(git add:*)` auto-approval in MCP client config.",
@@ -3130,7 +3130,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGitConfigRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `Bash(git config:*)` auto-approval in MCP client config.",
@@ -3150,7 +3150,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGitTagRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `Bash(git tag:*)` auto-approval in MCP client config.",
@@ -3170,7 +3170,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGitBranchRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `Bash(git branch:*)` auto-approval in MCP client config.",
@@ -3190,7 +3190,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGhPrRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `Bash(gh pr:*)` auto-approval in MCP client config.",
@@ -3210,7 +3210,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGitStashRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `Bash(git stash:*)` auto-approval in MCP client config.",
@@ -3230,7 +3230,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGitRestoreRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `Bash(git restore:*)` auto-approval in MCP client config.",
@@ -3250,7 +3250,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGitRebaseRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `Bash(git rebase:*)` auto-approval in MCP client config.",
@@ -3270,7 +3270,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGitMergeRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `Bash(git merge:*)` auto-approval in MCP client config.",
@@ -3290,7 +3290,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGitCherryPickRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `Bash(git cherry-pick:*)` auto-approval in MCP client config.",
@@ -3310,7 +3310,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGitApplyRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `Bash(git apply:*)` auto-approval in MCP client config.",
@@ -3330,7 +3330,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveGitAmRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `Bash(git am:*)` auto-approval in MCP client config.",
@@ -3350,7 +3350,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveCrontabRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `Bash(crontab:*)` auto-approval in MCP client config.",
@@ -3370,7 +3370,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveSystemctlEnableRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `Bash(systemctl enable:*)` auto-approval in MCP client config.",
@@ -3390,7 +3390,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveLaunchctlLoadRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `Bash(launchctl load:*)` auto-approval in MCP client config.",
@@ -3410,7 +3410,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpAutoApproveLaunchctlBootstrapRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact `Bash(launchctl bootstrap:*)` auto-approval in MCP client config.",
@@ -3430,7 +3430,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveChmodRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact `Bash(chmod:*)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-privileged-shell-family"],
@@ -3442,7 +3442,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveChownRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact `Bash(chown:*)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-privileged-shell-family"],
@@ -3454,7 +3454,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveChgrpRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact `Bash(chgrp:*)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-privileged-shell-family"],
@@ -3466,7 +3466,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveSuRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact `Bash(su:*)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-privileged-shell-family"],
@@ -3478,7 +3478,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveWebFetchRawGithubusercontentRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact raw GitHub WebFetch auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-webfetch-raw-github"],
@@ -3490,7 +3490,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveReadWildcardRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches explicit `Read(*)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-wildcard-tool-family"],
@@ -3502,7 +3502,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveWriteWildcardRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches explicit `Write(*)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-wildcard-tool-family"],
@@ -3514,7 +3514,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveEditWildcardRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches explicit `Edit(*)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-wildcard-tool-family"],
@@ -3526,7 +3526,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveGlobWildcardRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches explicit `Glob(*)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-wildcard-tool-family"],
@@ -3538,7 +3538,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveGrepWildcardRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches explicit `Grep(*)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-wildcard-tool-family"],
@@ -3550,7 +3550,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveWebFetchWildcardRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches explicit `WebFetch(*)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-wildcard-tool-family"],
@@ -3562,7 +3562,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveWebSearchWildcardRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches explicit `WebSearch(*)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-wildcard-tool-family"],
@@ -3574,7 +3574,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveBashRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact bare `Bash` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-unscoped-tool-family"],
@@ -3586,7 +3586,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveReadRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact bare `Read` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-unscoped-tool-family"],
@@ -3598,7 +3598,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveWriteRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact bare `Write` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-unscoped-tool-family"],
@@ -3610,7 +3610,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveEditRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact bare `Edit` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-unscoped-tool-family"],
@@ -3622,7 +3622,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveGlobRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact bare `Glob` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-unscoped-tool-family"],
@@ -3634,7 +3634,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveGrepRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact bare `Grep` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-unscoped-tool-family"],
@@ -3646,7 +3646,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveWebFetchRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact bare `WebFetch` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-unscoped-tool-family"],
@@ -3658,7 +3658,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveWebSearchRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact bare `WebSearch` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-unscoped-tool-family"],
@@ -3670,7 +3670,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveReadUnsafePathRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact unsafe-path `Read(...)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-unsafe-path-family"],
@@ -3682,7 +3682,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveWriteUnsafePathRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact unsafe-path `Write(...)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-unsafe-path-family"],
@@ -3694,7 +3694,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveEditUnsafePathRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact unsafe-path `Edit(...)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-unsafe-path-family"],
@@ -3706,7 +3706,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveGlobUnsafePathRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact unsafe-path `Glob(...)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-unsafe-path-family"],
@@ -3718,7 +3718,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveGrepUnsafePathRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches exact unsafe-path `Grep(...)` auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-unsafe-path-family"],
@@ -3730,7 +3730,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpAutoApproveToolsTrueRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches explicit blanket auto-approval in MCP client config.",
         malicious_case_ids: &["mcp-autoapprove-tools-true"],
@@ -3742,7 +3742,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpTrustToolsTrueRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches explicit blanket tool trust in MCP client config.",
         malicious_case_ids: &["mcp-trust-tools-true"],
@@ -3754,7 +3754,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpSandboxDisabledRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches explicit MCP config booleans that disable sandbox isolation.",
         malicious_case_ids: &["mcp-sandbox-disabled"],
@@ -3766,7 +3766,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     stable_native_message_rule_spec! {
         metadata: McpCapabilitiesWildcardRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: GOVERNANCE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Matches explicit wildcard capability grants in MCP config.",
         malicious_case_ids: &["mcp-capabilities-wildcard"],

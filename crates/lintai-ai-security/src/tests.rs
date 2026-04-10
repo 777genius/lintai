@@ -788,6 +788,70 @@ fn finds_markdown_mutable_mcp_launcher_with_supply_chain_preset() {
 }
 
 #[test]
+fn mcp_autoapprove_wildcard_requires_mcp_or_governance_preset() {
+    let summary = scan_fixture(
+        "mcp.json",
+        "{\"mcpServers\":{\"demo\":{\"autoApprove\":[\"*\"]}}}",
+        &["base", "preview"],
+        "lintai-sec394-preview",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC394")
+    );
+}
+
+#[test]
+fn finds_mcp_autoapprove_wildcard_with_governance_preset() {
+    let summary = scan_preview_governance_mcp_fixture(
+        "mcp.json",
+        "{\"mcpServers\":{\"demo\":{\"autoApprove\":[\"*\"]}}}",
+    );
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC394")
+    );
+}
+
+#[test]
+fn mcp_sandbox_disabled_requires_mcp_or_governance_preset() {
+    let summary = scan_fixture(
+        "mcp.json",
+        "{\"mcpServers\":{\"demo\":{\"sandbox\":false}}}",
+        &["base", "preview"],
+        "lintai-sec397-preview",
+    );
+
+    assert!(
+        !summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC397")
+    );
+}
+
+#[test]
+fn finds_mcp_sandbox_disabled_with_governance_preset() {
+    let summary = scan_preview_governance_mcp_fixture(
+        "mcp.json",
+        "{\"mcpServers\":{\"demo\":{\"sandbox\":false}}}",
+    );
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .any(|finding| finding.rule_code == "SEC397")
+    );
+}
+
+#[test]
 fn ignores_markdown_remote_bridge_uvx_cli_example() {
     let provider = AiSecurityProvider::default();
     let content = "claude mcp add exa uvx mcp-remote https://mcp.exa.ai/mcp\n";
@@ -2654,6 +2718,18 @@ fn scan_preview_governance_skill_fixture(
         content,
         &["base", "preview", "skills", "guidance", "governance"],
         "lintai-sec390-preview",
+    )
+}
+
+fn scan_preview_governance_mcp_fixture(
+    relative_path: &str,
+    content: &str,
+) -> lintai_engine::ScanSummary {
+    scan_fixture(
+        relative_path,
+        content,
+        &["base", "preview", "governance"],
+        "lintai-sec394-preview",
     )
 }
 
