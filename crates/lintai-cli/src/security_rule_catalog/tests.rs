@@ -113,6 +113,16 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .find(|entry| entry.metadata.code == "SEC101")
         .unwrap();
     assert_eq!(sec101.default_presets(), vec!["threat-review", "skills"]);
+    assert_eq!(sec101.public_lane(), PublicLane::ThreatReview);
+    assert_eq!(sec101.metadata.category, Category::Audit);
+
+    let sec105 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC105")
+        .unwrap();
+    assert_eq!(sec105.default_presets(), vec!["threat-review", "skills"]);
+    assert_eq!(sec105.public_lane(), PublicLane::ThreatReview);
+    assert_eq!(sec105.metadata.category, Category::Audit);
 
     let sec350 = entries
         .iter()
