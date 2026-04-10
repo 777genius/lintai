@@ -184,6 +184,20 @@ fn shipped_rules_have_expected_default_preset_mapping() {
     assert_eq!(sec416.default_presets(), vec!["guidance"]);
     assert_eq!(sec416.public_lane(), PublicLane::Guidance);
 
+    let sec419 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC419")
+        .unwrap();
+    assert_eq!(sec419.default_presets(), vec!["governance"]);
+    assert_eq!(sec419.public_lane(), PublicLane::Governance);
+
+    let sec466 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC466")
+        .unwrap();
+    assert_eq!(sec466.default_presets(), vec!["governance"]);
+    assert_eq!(sec466.public_lane(), PublicLane::Governance);
+
     let sec401 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC401")

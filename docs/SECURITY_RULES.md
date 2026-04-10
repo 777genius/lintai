@@ -108,7 +108,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC386 / CLAUDE-GIT-CHECKOUT-PERMISSION` | Claude settings permissions allow `Bash(git checkout:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC387 / CLAUDE-GIT-COMMIT-PERMISSION` | Claude settings permissions allow `Bash(git commit:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC388 / CLAUDE-GIT-STASH-PERMISSION` | Claude settings permissions allow `Bash(git stash:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC389 / MD-WEBSEARCH-UNSCOPED` | AI-native markdown frontmatter grants bare `WebSearch` tool access | `preview` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC389 / MD-WEBSEARCH-UNSCOPED` | AI-native markdown frontmatter grants bare `WebSearch` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC390 / MD-GIT-PUSH-PERMISSION` | AI-native markdown frontmatter grants `Bash(git push)` tool access | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC391 / MD-GIT-CHECKOUT-PERMISSION` | AI-native markdown frontmatter grants `Bash(git checkout:*)` tool access | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC392 / MD-GIT-COMMIT-PERMISSION` | AI-native markdown frontmatter grants `Bash(git commit:*)` tool access | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
@@ -123,7 +123,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC401 / POLICY-EXEC-MISMATCH` | Project policy forbids execution, but repository contains executable behavior | `compat` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC402 / POLICY-NETWORK-MISMATCH` | Project policy forbids network access, but repository contains network behavior | `compat` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC403 / POLICY-SKILL-CAPABILITIES-MISMATCH` | Skill frontmatter capabilities conflict with project policy | `compat` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
-| `SEC404 / MD-WEBFETCH-UNSCOPED` | AI-native markdown frontmatter grants bare `WebFetch` tool access | `preview` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC404 / MD-WEBFETCH-UNSCOPED` | AI-native markdown frontmatter grants bare `WebFetch` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC405 / CLAUDE-PACKAGE-INSTALL-PERMISSION` | Claude settings permissions allow package installation commands in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC406 / CLAUDE-GIT-ADD-PERMISSION` | Claude settings permissions allow `Bash(git add:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC407 / CLAUDE-GIT-CLONE-PERMISSION` | Claude settings permissions allow `Bash(git clone:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
@@ -138,9 +138,9 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC416 / MD-CLAUDE-PIP-INSTALL` | AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `guidance` |
 | `SEC417 / MD-PIP-GIT-UNPINNED` | AI-native markdown installs Python packages from an unpinned `git+https://` source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC418 / CLAUDE-WEBFETCH-RAW-GITHUB` | Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC419 / MD-CURL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(curl:*)` authority | `preview` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC420 / MD-WGET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(wget:*)` authority | `preview` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC421 / MD-GIT-CLONE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git clone:*)` authority | `preview` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC419 / MD-CURL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(curl:*)` authority | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC420 / MD-WGET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(wget:*)` authority | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC421 / MD-GIT-CLONE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git clone:*)` authority | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC422 / MCP-COMMAND-SUDO` | MCP configuration launches the server through `sudo` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC423 / MD-READ-UNSCOPED` | AI-native markdown frontmatter grants bare `Read` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC424 / MD-WRITE-UNSCOPED` | AI-native markdown frontmatter grants bare `Write` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
@@ -151,20 +151,20 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC429 / MD-WRITE-UNSAFE-PATH` | AI-native markdown frontmatter grants `Write(...)` over an unsafe repo-external path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC430 / MD-EDIT-UNSAFE-PATH` | AI-native markdown frontmatter grants `Edit(...)` over an unsafe repo-external path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC431 / MD-GLOB-UNSAFE-PATH` | AI-native markdown frontmatter grants `Glob(...)` over an unsafe repo-external path | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC432 / MD-GIT-ADD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git add:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC433 / MD-GIT-FETCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git fetch:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC434 / MD-WEBFETCH-RAW-GITHUB` | AI-native markdown frontmatter grants `WebFetch(domain:raw.githubusercontent.com)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC435 / MD-GIT-CONFIG-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git config:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC436 / MD-GIT-TAG-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git tag:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC437 / MD-GIT-BRANCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git branch:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC438 / MD-GIT-RESET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git reset:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC439 / MD-GIT-CLEAN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git clean:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC440 / MD-GIT-RESTORE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git restore:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC441 / MD-GIT-REBASE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git rebase:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC442 / MD-GIT-MERGE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git merge:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC443 / MD-GIT-CHERRY-PICK-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git cherry-pick:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC444 / MD-GIT-APPLY-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git apply:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC445 / MD-GIT-AM-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git am:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC432 / MD-GIT-ADD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git add:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC433 / MD-GIT-FETCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git fetch:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC434 / MD-WEBFETCH-RAW-GITHUB` | AI-native markdown frontmatter grants `WebFetch(domain:raw.githubusercontent.com)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC435 / MD-GIT-CONFIG-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git config:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC436 / MD-GIT-TAG-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git tag:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC437 / MD-GIT-BRANCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git branch:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC438 / MD-GIT-RESET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git reset:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC439 / MD-GIT-CLEAN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git clean:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC440 / MD-GIT-RESTORE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git restore:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC441 / MD-GIT-REBASE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git rebase:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC442 / MD-GIT-MERGE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git merge:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC443 / MD-GIT-CHERRY-PICK-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git cherry-pick:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC444 / MD-GIT-APPLY-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git apply:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC445 / MD-GIT-AM-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git am:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC446 / MCP-ARGS-SUDO` | MCP configuration passes `sudo` as the first launch argument | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC447 / MD-PACKAGE-INSTALL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants package installation authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC448 / MD-PIP-TRUSTED-HOST` | AI-native markdown installs Python packages with `--trusted-host` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
@@ -182,14 +182,14 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC460 / MD-PIP-CONFIG-HTTP-FIND-LINKS` | AI-native markdown configures Python package discovery with insecure `http://` find-links | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC461 / MD-PIP-CONFIG-TRUSTED-HOST` | AI-native markdown configures Python package resolution with `trusted-host` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC462 / MD-NETWORK-TLS-BYPASS` | AI-native markdown disables TLS verification for a network-capable command | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC463 / MD-SUDO-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(sudo:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC463 / MD-SUDO-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(sudo:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC464 / MD-GIT-HTTP-CLONE` | AI-native markdown clones a Git repository from an insecure `http://` source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC465 / MD-GIT-HTTP-REMOTE` | AI-native markdown configures a Git remote with an insecure `http://` source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC466 / MD-RM-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(rm:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC467 / MD-CHMOD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chmod:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC468 / MD-CHOWN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chown:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC469 / MD-CHGRP-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chgrp:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC470 / MD-SU-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(su:*)` authority | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC466 / MD-RM-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(rm:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC467 / MD-CHMOD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chmod:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC468 / MD-CHOWN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chown:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC469 / MD-CHGRP-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(chgrp:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
+| `SEC470 / MD-SU-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(su:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC471 / MD-GIT-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `http.sslVerify false` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC472 / MD-GIT-SSL-NO-VERIFY` | AI-native markdown disables Git TLS verification with `GIT_SSL_NO_VERIFY` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC473 / MD-GIT-INLINE-SSLVERIFY-FALSE` | AI-native markdown disables Git TLS verification with `git -c http.sslVerify=false` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
@@ -2491,10 +2491,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for bare WebSearch grants that omit a reviewed search scope.
@@ -2739,10 +2739,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for exact bare `WebFetch` grants that expose unconstrained remote fetch authority as shared default policy.
@@ -3065,10 +3065,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for explicit wildcard curl grants in shared allowed-tools policy.
@@ -3087,10 +3087,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for explicit wildcard wget grants in shared allowed-tools policy.
@@ -3109,10 +3109,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for wildcard git clone grants in shared allowed-tools policy.
@@ -3351,10 +3351,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for wildcard git add grants in shared allowed-tools policy.
@@ -3373,10 +3373,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for wildcard git fetch grants in shared allowed-tools policy.
@@ -3395,10 +3395,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for explicit raw GitHub content fetch grants in shared allowed-tools policy.
@@ -3417,10 +3417,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for wildcard git config grants in shared allowed-tools policy.
@@ -3439,10 +3439,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for wildcard git tag grants in shared allowed-tools policy.
@@ -3461,10 +3461,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for wildcard git branch grants in shared allowed-tools policy.
@@ -3483,10 +3483,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for wildcard git reset grants in shared allowed-tools policy.
@@ -3505,10 +3505,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for wildcard git clean grants in shared allowed-tools policy.
@@ -3527,10 +3527,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for wildcard git restore grants in shared allowed-tools policy.
@@ -3549,10 +3549,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for wildcard git rebase grants in shared allowed-tools policy.
@@ -3571,10 +3571,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for wildcard git merge grants in shared allowed-tools policy.
@@ -3593,10 +3593,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for wildcard git cherry-pick grants in shared allowed-tools policy.
@@ -3615,10 +3615,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for wildcard git apply grants in shared allowed-tools policy.
@@ -3637,10 +3637,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for wildcard git am grants in shared allowed-tools policy.
@@ -4033,10 +4033,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for explicit wildcard sudo grants in shared allowed-tools policy.
@@ -4099,10 +4099,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for explicit wildcard rm grants in shared allowed-tools policy.
@@ -4121,10 +4121,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for explicit wildcard chmod grants in shared allowed-tools policy.
@@ -4143,10 +4143,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for explicit wildcard chown grants in shared allowed-tools policy.
@@ -4165,10 +4165,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for explicit wildcard chgrp grants in shared allowed-tools policy.
@@ -4187,10 +4187,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for explicit wildcard su grants in shared allowed-tools policy.

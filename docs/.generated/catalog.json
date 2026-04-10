@@ -315,10 +315,8 @@
         "lintai-ai-security:SEC386",
         "lintai-ai-security:SEC387",
         "lintai-ai-security:SEC388",
-        "lintai-ai-security:SEC389",
         "lintai-ai-security:SEC399",
         "lintai-ai-security:SEC400",
-        "lintai-ai-security:SEC404",
         "lintai-ai-security:SEC405",
         "lintai-ai-security:SEC406",
         "lintai-ai-security:SEC407",
@@ -332,27 +330,10 @@
         "lintai-ai-security:SEC415",
         "lintai-ai-security:SEC417",
         "lintai-ai-security:SEC418",
-        "lintai-ai-security:SEC419",
-        "lintai-ai-security:SEC420",
-        "lintai-ai-security:SEC421",
         "lintai-ai-security:SEC428",
         "lintai-ai-security:SEC429",
         "lintai-ai-security:SEC430",
         "lintai-ai-security:SEC431",
-        "lintai-ai-security:SEC432",
-        "lintai-ai-security:SEC433",
-        "lintai-ai-security:SEC434",
-        "lintai-ai-security:SEC435",
-        "lintai-ai-security:SEC436",
-        "lintai-ai-security:SEC437",
-        "lintai-ai-security:SEC438",
-        "lintai-ai-security:SEC439",
-        "lintai-ai-security:SEC440",
-        "lintai-ai-security:SEC441",
-        "lintai-ai-security:SEC442",
-        "lintai-ai-security:SEC443",
-        "lintai-ai-security:SEC444",
-        "lintai-ai-security:SEC445",
         "lintai-ai-security:SEC447",
         "lintai-ai-security:SEC448",
         "lintai-ai-security:SEC449",
@@ -369,14 +350,8 @@
         "lintai-ai-security:SEC460",
         "lintai-ai-security:SEC461",
         "lintai-ai-security:SEC462",
-        "lintai-ai-security:SEC463",
         "lintai-ai-security:SEC464",
         "lintai-ai-security:SEC465",
-        "lintai-ai-security:SEC466",
-        "lintai-ai-security:SEC467",
-        "lintai-ai-security:SEC468",
-        "lintai-ai-security:SEC469",
-        "lintai-ai-security:SEC470",
         "lintai-ai-security:SEC471",
         "lintai-ai-security:SEC472",
         "lintai-ai-security:SEC473",
@@ -475,30 +450,11 @@
         "lintai-ai-security:SEC350",
         "lintai-ai-security:SEC351",
         "lintai-ai-security:SEC352",
-        "lintai-ai-security:SEC389",
-        "lintai-ai-security:SEC404",
         "lintai-ai-security:SEC417",
-        "lintai-ai-security:SEC419",
-        "lintai-ai-security:SEC420",
-        "lintai-ai-security:SEC421",
         "lintai-ai-security:SEC428",
         "lintai-ai-security:SEC429",
         "lintai-ai-security:SEC430",
         "lintai-ai-security:SEC431",
-        "lintai-ai-security:SEC432",
-        "lintai-ai-security:SEC433",
-        "lintai-ai-security:SEC434",
-        "lintai-ai-security:SEC435",
-        "lintai-ai-security:SEC436",
-        "lintai-ai-security:SEC437",
-        "lintai-ai-security:SEC438",
-        "lintai-ai-security:SEC439",
-        "lintai-ai-security:SEC440",
-        "lintai-ai-security:SEC441",
-        "lintai-ai-security:SEC442",
-        "lintai-ai-security:SEC443",
-        "lintai-ai-security:SEC444",
-        "lintai-ai-security:SEC445",
         "lintai-ai-security:SEC447",
         "lintai-ai-security:SEC448",
         "lintai-ai-security:SEC449",
@@ -515,14 +471,8 @@
         "lintai-ai-security:SEC460",
         "lintai-ai-security:SEC461",
         "lintai-ai-security:SEC462",
-        "lintai-ai-security:SEC463",
         "lintai-ai-security:SEC464",
         "lintai-ai-security:SEC465",
-        "lintai-ai-security:SEC466",
-        "lintai-ai-security:SEC467",
-        "lintai-ai-security:SEC468",
-        "lintai-ai-security:SEC469",
-        "lintai-ai-security:SEC470",
         "lintai-ai-security:SEC471",
         "lintai-ai-security:SEC472",
         "lintai-ai-security:SEC473",
@@ -875,15 +825,40 @@
       "description": "Opt-in review rules for shared mutation authority and broad bare tool grants that should not read like headline security findings.",
       "extends": [],
       "ruleIds": [
+        "lintai-ai-security:SEC389",
         "lintai-ai-security:SEC390",
         "lintai-ai-security:SEC391",
         "lintai-ai-security:SEC392",
         "lintai-ai-security:SEC393",
+        "lintai-ai-security:SEC404",
+        "lintai-ai-security:SEC419",
+        "lintai-ai-security:SEC420",
+        "lintai-ai-security:SEC421",
         "lintai-ai-security:SEC423",
         "lintai-ai-security:SEC424",
         "lintai-ai-security:SEC425",
         "lintai-ai-security:SEC426",
         "lintai-ai-security:SEC427",
+        "lintai-ai-security:SEC432",
+        "lintai-ai-security:SEC433",
+        "lintai-ai-security:SEC434",
+        "lintai-ai-security:SEC435",
+        "lintai-ai-security:SEC436",
+        "lintai-ai-security:SEC437",
+        "lintai-ai-security:SEC438",
+        "lintai-ai-security:SEC439",
+        "lintai-ai-security:SEC440",
+        "lintai-ai-security:SEC441",
+        "lintai-ai-security:SEC442",
+        "lintai-ai-security:SEC443",
+        "lintai-ai-security:SEC444",
+        "lintai-ai-security:SEC445",
+        "lintai-ai-security:SEC463",
+        "lintai-ai-security:SEC466",
+        "lintai-ai-security:SEC467",
+        "lintai-ai-security:SEC468",
+        "lintai-ai-security:SEC469",
+        "lintai-ai-security:SEC470",
         "lintai-ai-security:SEC474",
         "lintai-ai-security:SEC494",
         "lintai-ai-security:SEC495",
@@ -4532,7 +4507,7 @@
       "slug": "sec389",
       "canonicalPath": "/rules/lintai-ai-security/sec389",
       "summary": "AI-native markdown frontmatter grants bare `WebSearch` tool access",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -4541,8 +4516,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -4976,7 +4950,7 @@
       "slug": "sec404",
       "canonicalPath": "/rules/lintai-ai-security/sec404",
       "summary": "AI-native markdown frontmatter grants bare `WebFetch` tool access",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -4985,8 +4959,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -5567,7 +5540,7 @@
       "slug": "sec419",
       "canonicalPath": "/rules/lintai-ai-security/sec419",
       "summary": "AI-native markdown frontmatter grants `Bash(curl:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -5576,8 +5549,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -5607,7 +5579,7 @@
       "slug": "sec420",
       "canonicalPath": "/rules/lintai-ai-security/sec420",
       "summary": "AI-native markdown frontmatter grants `Bash(wget:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -5616,8 +5588,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -5647,7 +5618,7 @@
       "slug": "sec421",
       "canonicalPath": "/rules/lintai-ai-security/sec421",
       "summary": "AI-native markdown frontmatter grants `Bash(git clone:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -5656,8 +5627,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -6082,7 +6052,7 @@
       "slug": "sec432",
       "canonicalPath": "/rules/lintai-ai-security/sec432",
       "summary": "AI-native markdown frontmatter grants `Bash(git add:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -6091,8 +6061,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -6122,7 +6091,7 @@
       "slug": "sec433",
       "canonicalPath": "/rules/lintai-ai-security/sec433",
       "summary": "AI-native markdown frontmatter grants `Bash(git fetch:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -6131,8 +6100,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -6162,7 +6130,7 @@
       "slug": "sec434",
       "canonicalPath": "/rules/lintai-ai-security/sec434",
       "summary": "AI-native markdown frontmatter grants `WebFetch(domain:raw.githubusercontent.com)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -6171,8 +6139,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -6202,7 +6169,7 @@
       "slug": "sec435",
       "canonicalPath": "/rules/lintai-ai-security/sec435",
       "summary": "AI-native markdown frontmatter grants `Bash(git config:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -6211,8 +6178,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -6242,7 +6208,7 @@
       "slug": "sec436",
       "canonicalPath": "/rules/lintai-ai-security/sec436",
       "summary": "AI-native markdown frontmatter grants `Bash(git tag:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -6251,8 +6217,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -6282,7 +6247,7 @@
       "slug": "sec437",
       "canonicalPath": "/rules/lintai-ai-security/sec437",
       "summary": "AI-native markdown frontmatter grants `Bash(git branch:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -6291,8 +6256,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -6322,7 +6286,7 @@
       "slug": "sec438",
       "canonicalPath": "/rules/lintai-ai-security/sec438",
       "summary": "AI-native markdown frontmatter grants `Bash(git reset:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -6331,8 +6295,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -6362,7 +6325,7 @@
       "slug": "sec439",
       "canonicalPath": "/rules/lintai-ai-security/sec439",
       "summary": "AI-native markdown frontmatter grants `Bash(git clean:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -6371,8 +6334,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -6402,7 +6364,7 @@
       "slug": "sec440",
       "canonicalPath": "/rules/lintai-ai-security/sec440",
       "summary": "AI-native markdown frontmatter grants `Bash(git restore:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -6411,8 +6373,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -6442,7 +6403,7 @@
       "slug": "sec441",
       "canonicalPath": "/rules/lintai-ai-security/sec441",
       "summary": "AI-native markdown frontmatter grants `Bash(git rebase:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -6451,8 +6412,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -6482,7 +6442,7 @@
       "slug": "sec442",
       "canonicalPath": "/rules/lintai-ai-security/sec442",
       "summary": "AI-native markdown frontmatter grants `Bash(git merge:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -6491,8 +6451,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -6522,7 +6481,7 @@
       "slug": "sec443",
       "canonicalPath": "/rules/lintai-ai-security/sec443",
       "summary": "AI-native markdown frontmatter grants `Bash(git cherry-pick:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -6531,8 +6490,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -6562,7 +6520,7 @@
       "slug": "sec444",
       "canonicalPath": "/rules/lintai-ai-security/sec444",
       "summary": "AI-native markdown frontmatter grants `Bash(git apply:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -6571,8 +6529,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -6602,7 +6559,7 @@
       "slug": "sec445",
       "canonicalPath": "/rules/lintai-ai-security/sec445",
       "summary": "AI-native markdown frontmatter grants `Bash(git am:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -6611,8 +6568,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -7324,7 +7280,7 @@
       "slug": "sec463",
       "canonicalPath": "/rules/lintai-ai-security/sec463",
       "summary": "AI-native markdown frontmatter grants `Bash(sudo:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -7333,8 +7289,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -7444,7 +7399,7 @@
       "slug": "sec466",
       "canonicalPath": "/rules/lintai-ai-security/sec466",
       "summary": "AI-native markdown frontmatter grants `Bash(rm:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -7453,8 +7408,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -7484,7 +7438,7 @@
       "slug": "sec467",
       "canonicalPath": "/rules/lintai-ai-security/sec467",
       "summary": "AI-native markdown frontmatter grants `Bash(chmod:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -7493,8 +7447,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -7524,7 +7477,7 @@
       "slug": "sec468",
       "canonicalPath": "/rules/lintai-ai-security/sec468",
       "summary": "AI-native markdown frontmatter grants `Bash(chown:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -7533,8 +7486,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -7564,7 +7516,7 @@
       "slug": "sec469",
       "canonicalPath": "/rules/lintai-ai-security/sec469",
       "summary": "AI-native markdown frontmatter grants `Bash(chgrp:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -7573,8 +7525,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -7604,7 +7555,7 @@
       "slug": "sec470",
       "canonicalPath": "/rules/lintai-ai-security/sec470",
       "summary": "AI-native markdown frontmatter grants `Bash(su:*)` authority",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -7613,8 +7564,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {

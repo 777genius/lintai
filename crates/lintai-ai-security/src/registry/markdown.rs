@@ -2179,7 +2179,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: UnscopedWebSearchAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for bare WebSearch grants that omit a reviewed search scope.",
         malicious_case_ids: &["skill-risky-frontmatter-tool-grants"],
@@ -2763,7 +2763,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: UnscopedWebFetchAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for exact bare `WebFetch` grants that expose unconstrained remote fetch authority as shared default policy.",
         malicious_case_ids: &["skill-unscoped-webfetch-allowed-tools"],
@@ -2775,7 +2775,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: CurlAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for explicit wildcard curl grants in shared allowed-tools policy.",
         malicious_case_ids: &["skill-curl-allowed-tools"],
@@ -2787,7 +2787,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: WgetAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for explicit wildcard wget grants in shared allowed-tools policy.",
         malicious_case_ids: &["skill-wget-allowed-tools"],
@@ -2799,7 +2799,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: SudoAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for explicit wildcard sudo grants in shared allowed-tools policy.",
         malicious_case_ids: &["skill-sudo-allowed-tools"],
@@ -2811,7 +2811,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: RmAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for explicit wildcard rm grants in shared allowed-tools policy.",
         malicious_case_ids: &["skill-rm-allowed-tools"],
@@ -2823,7 +2823,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: ChmodAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for explicit wildcard chmod grants in shared allowed-tools policy.",
         malicious_case_ids: &["skill-chmod-allowed-tools"],
@@ -2835,7 +2835,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: ChownAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for explicit wildcard chown grants in shared allowed-tools policy.",
         malicious_case_ids: &["skill-chown-allowed-tools"],
@@ -2847,7 +2847,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: ChgrpAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for explicit wildcard chgrp grants in shared allowed-tools policy.",
         malicious_case_ids: &["skill-chgrp-allowed-tools"],
@@ -2859,7 +2859,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: SuAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for explicit wildcard su grants in shared allowed-tools policy.",
         malicious_case_ids: &["skill-su-allowed-tools"],
@@ -2871,7 +2871,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: GitCloneAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for wildcard git clone grants in shared allowed-tools policy.",
         malicious_case_ids: &["skill-git-clone-allowed-tools"],
@@ -2883,7 +2883,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: GitAddAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for wildcard git add grants in shared allowed-tools policy.",
         malicious_case_ids: &["skill-git-add-allowed-tools"],
@@ -2895,7 +2895,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: GitFetchAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for wildcard git fetch grants in shared allowed-tools policy.",
         malicious_case_ids: &["skill-git-fetch-allowed-tools"],
@@ -2907,7 +2907,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: WebFetchRawGithubAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for explicit raw GitHub content fetch grants in shared allowed-tools policy.",
         malicious_case_ids: &["skill-webfetch-raw-github-allowed-tools"],
@@ -2919,7 +2919,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: GitConfigAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for wildcard git config grants in shared allowed-tools policy.",
         malicious_case_ids: &["skill-git-config-allowed-tools"],
@@ -2931,7 +2931,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: GitTagAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for wildcard git tag grants in shared allowed-tools policy.",
         malicious_case_ids: &["skill-git-tag-allowed-tools"],
@@ -2943,7 +2943,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: GitBranchAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native frontmatter for wildcard git branch grants in shared allowed-tools policy.",
@@ -2963,7 +2963,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: GitResetAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native frontmatter for wildcard git reset grants in shared allowed-tools policy.",
@@ -2983,7 +2983,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: GitCleanAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native frontmatter for wildcard git clean grants in shared allowed-tools policy.",
@@ -3003,7 +3003,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: GitRestoreAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native frontmatter for wildcard git restore grants in shared allowed-tools policy.",
@@ -3023,7 +3023,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: GitRebaseAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native frontmatter for wildcard git rebase grants in shared allowed-tools policy.",
@@ -3043,7 +3043,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: GitMergeAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native frontmatter for wildcard git merge grants in shared allowed-tools policy.",
@@ -3063,7 +3063,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: GitCherryPickAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native frontmatter for wildcard git cherry-pick grants in shared allowed-tools policy.",
@@ -3083,7 +3083,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: GitApplyAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native frontmatter for wildcard git apply grants in shared allowed-tools policy.",
@@ -3103,7 +3103,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: GitAmAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks AI-native frontmatter for wildcard git am grants in shared allowed-tools policy.",

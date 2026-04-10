@@ -2157,7 +2157,7 @@ fn ignores_markdown_git_inline_sslverify_true() {
 #[test]
 fn finds_rm_allowed_tools() {
     let content = "---\nallowed-tools: Bash(rm:*)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2174,7 +2174,7 @@ fn finds_rm_allowed_tools() {
 #[test]
 fn ignores_rm_specific_allowed_tools() {
     let content = "---\nallowed-tools: Bash(rm ./tmp/output.txt)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -2187,7 +2187,7 @@ fn ignores_rm_specific_allowed_tools() {
 #[test]
 fn finds_chmod_allowed_tools() {
     let content = "---\nallowed-tools: Bash(chmod:*)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2204,7 +2204,7 @@ fn finds_chmod_allowed_tools() {
 #[test]
 fn ignores_chmod_specific_allowed_tools() {
     let content = "---\nallowed-tools: Bash(chmod 600 ~/.ssh/id_rsa)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -2217,7 +2217,7 @@ fn ignores_chmod_specific_allowed_tools() {
 #[test]
 fn finds_chown_allowed_tools() {
     let content = "---\nallowed-tools: Bash(chown:*)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2234,7 +2234,7 @@ fn finds_chown_allowed_tools() {
 #[test]
 fn ignores_chown_specific_allowed_tools() {
     let content = "---\nallowed-tools: Bash(chown root:staff ./bin/tool)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -2247,7 +2247,7 @@ fn ignores_chown_specific_allowed_tools() {
 #[test]
 fn finds_chgrp_allowed_tools() {
     let content = "---\nallowed-tools: Bash(chgrp:*)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2264,7 +2264,7 @@ fn finds_chgrp_allowed_tools() {
 #[test]
 fn ignores_chgrp_specific_allowed_tools() {
     let content = "---\nallowed-tools: Bash(chgrp staff ./bin/tool)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary
@@ -2277,7 +2277,7 @@ fn ignores_chgrp_specific_allowed_tools() {
 #[test]
 fn finds_su_allowed_tools() {
     let content = "---\nallowed-tools: Bash(su:*)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2294,7 +2294,7 @@ fn finds_su_allowed_tools() {
 #[test]
 fn ignores_su_specific_allowed_tools() {
     let content = "---\nallowed-tools: Bash(su deploy)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     assert!(
         !summary

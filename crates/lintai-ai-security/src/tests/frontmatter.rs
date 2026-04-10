@@ -39,13 +39,13 @@ fn ignores_unscoped_bash_allowed_tools_on_fixture_like_path() {
 #[test]
 fn finds_unscoped_websearch_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: WebSearch, Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
     assert_marker_span(&summary, "SEC389", content, "WebSearch");
 }
 
 #[test]
 fn ignores_scoped_websearch_allowed_tools_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: WebSearch(site:docs.example.com), Read\n---\n# Skill\n",
     );
@@ -943,7 +943,7 @@ fn ignores_specific_git_ls_remote_allowed_tools_in_frontmatter() {
 #[test]
 fn finds_unscoped_webfetch_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: WebFetch, Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -959,7 +959,7 @@ fn finds_unscoped_webfetch_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_scoped_webfetch_allowed_tools_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: WebFetch(domain:docs.example.com), Read\n---\n# Skill\n",
     );
@@ -975,7 +975,7 @@ fn ignores_scoped_webfetch_allowed_tools_in_frontmatter() {
 #[test]
 fn finds_curl_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(curl:*), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -991,7 +991,7 @@ fn finds_curl_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_curl_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(curl https://example.com/install.sh), Read\n---\n# Skill\n",
     );
@@ -1006,7 +1006,7 @@ fn ignores_curl_allowed_tools_when_command_is_more_specific() {
 
 #[test]
 fn ignores_curl_allowed_tools_on_fixture_like_path() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "tests/fixtures/skill/SKILL.md",
         "---\nallowed-tools: Bash(curl:*), Read\n---\n# Fixture skill\n",
     );
@@ -1022,7 +1022,7 @@ fn ignores_curl_allowed_tools_on_fixture_like_path() {
 #[test]
 fn finds_wget_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(wget:*), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1038,7 +1038,7 @@ fn finds_wget_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_wget_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(wget https://example.com/tool.tgz), Read\n---\n# Skill\n",
     );
@@ -1053,7 +1053,7 @@ fn ignores_wget_allowed_tools_when_command_is_more_specific() {
 
 #[test]
 fn ignores_wget_allowed_tools_on_fixture_like_path() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "tests/fixtures/skill/SKILL.md",
         "---\nallowed-tools: Bash(wget:*), Read\n---\n# Fixture skill\n",
     );
@@ -1069,7 +1069,7 @@ fn ignores_wget_allowed_tools_on_fixture_like_path() {
 #[test]
 fn finds_sudo_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(sudo:*), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1085,7 +1085,7 @@ fn finds_sudo_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_sudo_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(sudo apt-get update), Read\n---\n# Skill\n",
     );
@@ -1100,7 +1100,7 @@ fn ignores_sudo_allowed_tools_when_command_is_more_specific() {
 
 #[test]
 fn ignores_sudo_allowed_tools_on_fixture_like_path() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "tests/fixtures/skill/SKILL.md",
         "---\nallowed-tools: Bash(sudo:*), Read\n---\n# Fixture skill\n",
     );
@@ -1116,7 +1116,7 @@ fn ignores_sudo_allowed_tools_on_fixture_like_path() {
 #[test]
 fn finds_git_clone_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git clone:*), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1132,7 +1132,7 @@ fn finds_git_clone_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_git_clone_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(git clone https://github.com/acme/demo.git), Read\n---\n# Skill\n",
     );
@@ -1147,7 +1147,7 @@ fn ignores_git_clone_allowed_tools_when_command_is_more_specific() {
 
 #[test]
 fn ignores_git_clone_allowed_tools_on_fixture_like_path() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "tests/fixtures/skill/SKILL.md",
         "---\nallowed-tools: Bash(git clone:*), Read\n---\n# Fixture skill\n",
     );
@@ -1163,7 +1163,7 @@ fn ignores_git_clone_allowed_tools_on_fixture_like_path() {
 #[test]
 fn finds_git_add_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git add:*), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1179,7 +1179,7 @@ fn finds_git_add_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_git_add_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(git add src/lib.rs), Read\n---\n# Skill\n",
     );
@@ -1195,7 +1195,7 @@ fn ignores_git_add_allowed_tools_when_command_is_more_specific() {
 #[test]
 fn finds_git_fetch_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git fetch:*), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1211,7 +1211,7 @@ fn finds_git_fetch_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_git_fetch_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(git fetch origin main), Read\n---\n# Skill\n",
     );
@@ -1228,7 +1228,7 @@ fn ignores_git_fetch_allowed_tools_when_command_is_more_specific() {
 fn finds_webfetch_raw_github_allowed_tools_in_frontmatter() {
     let content =
         "---\nallowed-tools: WebFetch(domain:raw.githubusercontent.com), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1249,7 +1249,7 @@ fn finds_webfetch_raw_github_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_webfetch_non_raw_github_allowed_tools_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: WebFetch(domain:github.com), Read\n---\n# Skill\n",
     );
@@ -1265,7 +1265,7 @@ fn ignores_webfetch_non_raw_github_allowed_tools_in_frontmatter() {
 #[test]
 fn finds_git_config_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git config:*), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1281,7 +1281,7 @@ fn finds_git_config_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_git_config_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(git config user.name belief), Read\n---\n# Skill\n",
     );
@@ -1297,7 +1297,7 @@ fn ignores_git_config_allowed_tools_when_command_is_more_specific() {
 #[test]
 fn finds_git_tag_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git tag:*), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1313,7 +1313,7 @@ fn finds_git_tag_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_git_tag_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(git tag v1.2.3), Read\n---\n# Skill\n",
     );
@@ -1329,7 +1329,7 @@ fn ignores_git_tag_allowed_tools_when_command_is_more_specific() {
 #[test]
 fn finds_git_branch_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git branch:*), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1345,7 +1345,7 @@ fn finds_git_branch_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_git_branch_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(git branch feature/test), Read\n---\n# Skill\n",
     );
@@ -1361,7 +1361,7 @@ fn ignores_git_branch_allowed_tools_when_command_is_more_specific() {
 #[test]
 fn finds_git_reset_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git reset:*), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1377,7 +1377,7 @@ fn finds_git_reset_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_git_reset_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(git reset --hard HEAD~1), Read\n---\n# Skill\n",
     );
@@ -1393,7 +1393,7 @@ fn ignores_git_reset_allowed_tools_when_command_is_more_specific() {
 #[test]
 fn finds_git_clean_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git clean:*), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1409,7 +1409,7 @@ fn finds_git_clean_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_git_clean_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(git clean -fd), Read\n---\n# Skill\n",
     );
@@ -1425,7 +1425,7 @@ fn ignores_git_clean_allowed_tools_when_command_is_more_specific() {
 #[test]
 fn finds_git_restore_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git restore:*), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1441,7 +1441,7 @@ fn finds_git_restore_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_git_restore_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(git restore src/lib.rs), Read\n---\n# Skill\n",
     );
@@ -1457,7 +1457,7 @@ fn ignores_git_restore_allowed_tools_when_command_is_more_specific() {
 #[test]
 fn finds_git_rebase_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git rebase:*), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1473,7 +1473,7 @@ fn finds_git_rebase_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_git_rebase_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(git rebase main), Read\n---\n# Skill\n",
     );
@@ -1489,7 +1489,7 @@ fn ignores_git_rebase_allowed_tools_when_command_is_more_specific() {
 #[test]
 fn finds_git_merge_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git merge:*), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1505,7 +1505,7 @@ fn finds_git_merge_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_git_merge_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(git merge feature/x), Read\n---\n# Skill\n",
     );
@@ -1521,7 +1521,7 @@ fn ignores_git_merge_allowed_tools_when_command_is_more_specific() {
 #[test]
 fn finds_git_cherry_pick_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git cherry-pick:*), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1537,7 +1537,7 @@ fn finds_git_cherry_pick_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_git_cherry_pick_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(git cherry-pick abc1234), Read\n---\n# Skill\n",
     );
@@ -1553,7 +1553,7 @@ fn ignores_git_cherry_pick_allowed_tools_when_command_is_more_specific() {
 #[test]
 fn finds_git_apply_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git apply:*), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1569,7 +1569,7 @@ fn finds_git_apply_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_git_apply_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(git apply fix.patch), Read\n---\n# Skill\n",
     );
@@ -1585,7 +1585,7 @@ fn ignores_git_apply_allowed_tools_when_command_is_more_specific() {
 #[test]
 fn finds_git_am_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(git am:*), Read\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -1601,7 +1601,7 @@ fn finds_git_am_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_git_am_allowed_tools_when_command_is_more_specific() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(git am 0001.patch), Read\n---\n# Skill\n",
     );
