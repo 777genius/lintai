@@ -34,7 +34,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC309 / MCP-LITERAL-SECRET` | Configuration commits literal secret material in env, auth, or header values | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC310 / MCP-METADATA-HOST-LITERAL` | Configuration endpoint targets a metadata or private-network host literal | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC311 / PLUGIN-UNSAFE-PATH` | Cursor plugin manifest contains an unsafe absolute or parent-traversing path | `compat` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `compat`, `mcp` |
-| `SEC312 / MD-PRIVATE-KEY` | Markdown contains committed private key material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `base`, `skills` |
+| `SEC312 / MD-PRIVATE-KEY` | Markdown contains committed private key material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC313 / MD-PIPE-SHELL` | Fenced shell example pipes remote content directly into a shell | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC314 / TOOL-MISSING-MACHINE-FIELDS` | MCP-style tool descriptor is missing required machine fields | `compat` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC315 / TOOL-DUPLICATE-NAMES` | MCP-style tool descriptor collection contains duplicate tool names | `compat` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `compat`, `mcp` |
@@ -43,7 +43,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC318 / ANTHROPIC-STRICT-ADDITIONAL-PROPERTIES` | Anthropic strict tool input schema omits additionalProperties: false | `compat` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC319 / SERVER-REMOTE-URL` | server.json remotes entry uses an insecure or non-public remote URL | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `supply-chain`, `mcp` |
 | `SEC320 / SERVER-UNDEFINED-URL-VAR` | server.json remotes URL references an undefined template variable | `compat` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `compat`, `mcp` |
-| `SEC321 / SERVER-LITERAL-AUTH-HEADER` | server.json remotes header commits literal authentication material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC321 / SERVER-LITERAL-AUTH-HEADER` | server.json remotes header commits literal authentication material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC322 / SERVER-UNDEFINED-HEADER-VAR` | server.json remotes header value references an undefined template variable | `compat` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC323 / SERVER-AUTH-SECRET-FLAG` | server.json auth header carries material without an explicit secret flag | `compat` | Preview | `preview_blocked` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC324 / GHA-UNPINNED-ACTION` | GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
@@ -966,7 +966,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `skills`
+- Default Presets: `preview`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit committed private-key PEM markers inside agent markdown surfaces.
@@ -1160,7 +1160,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks remotes[].headers[] auth-like values for literal bearer/basic material or literal API key style values.

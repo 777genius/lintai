@@ -37,8 +37,6 @@
       "description": "Minimal stable baseline for explicit compatibility-focused setups.",
       "extends": [],
       "ruleIds": [
-        "lintai-ai-security:SEC312",
-        "lintai-ai-security:SEC321",
         "lintai-ai-security:SEC329",
         "lintai-ai-security:SEC340"
       ],
@@ -68,7 +66,9 @@
         "lintai-ai-security:SEC308",
         "lintai-ai-security:SEC309",
         "lintai-ai-security:SEC310",
+        "lintai-ai-security:SEC312",
         "lintai-ai-security:SEC313",
+        "lintai-ai-security:SEC321",
         "lintai-ai-security:SEC335",
         "lintai-ai-security:SEC338",
         "lintai-ai-security:SEC339",
@@ -1727,7 +1727,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "skills"
       ],
       "lifecycleState": "stable_gated",
@@ -2079,7 +2079,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",

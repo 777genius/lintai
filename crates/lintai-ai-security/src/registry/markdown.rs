@@ -3499,7 +3499,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownPrivateKeyPemRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: BASE_SKILLS_PRESETS,
+        default_presets: PREVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit committed private-key PEM markers inside agent markdown surfaces.",
