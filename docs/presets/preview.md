@@ -12,7 +12,7 @@ default.
 
 This lane can include two different shapes of shipped preview rule:
 
-- core preview rules that still look like part of the main product thesis
+- strong deeper-review rules that still align with the main product thesis, but are not part of the quiet `recommended` default
 - context-sensitive preview rules that are still useful, but need more domain-specific validation before they should be read as universal signals
 
 ## When To Use It

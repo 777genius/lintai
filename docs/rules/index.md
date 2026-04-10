@@ -25,9 +25,9 @@
 
 These are the current highest-signal community-facing rules based on the latest external validation work:
 
-- [SEC352](/rules/lintai-ai-security/sec352): unscoped `Bash` grants in AI-native frontmatter
-- [SEC347](/rules/lintai-ai-security/sec347): markdown MCP setup through mutable package runners
 - [SEC340](/rules/lintai-ai-security/sec340): Claude hook commands using mutable package launchers
 - [SEC329](/rules/lintai-ai-security/sec329): committed `mcp.json` using mutable package launchers
+- [SEC352](/rules/lintai-ai-security/sec352): unscoped `Bash` grants in AI-native frontmatter
+- [SEC324](/rules/lintai-ai-security/sec324): unpinned third-party GitHub Actions
 
 <RuleDirectory />

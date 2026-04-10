@@ -10,7 +10,7 @@
 
 ## Полевой апдейт (2026-03-30): что выносить на первый экран
 
-После реального прогона по `1545` файлам из official, community и stratified cohorts, лучший первый экран для сайта и docs сейчас такой:
+После реального прогона по `1545` файлам из official, community и stratified cohorts, лучший первый экран для сайта и docs сначала выглядел так:
 
 1. `SEC352` — unscoped `Bash` grant в AI-native frontmatter. Увер. `9/10`, Надёж. `9/10`
 2. `SEC347` — mutable MCP launcher в markdown setup docs. Увер. `9/10`, Надёж. `9/10`
@@ -22,6 +22,19 @@
 - `SEC352` сейчас даёт лучший signal/noise на обычных community skills, а не только на offensive-security corpus.
 - `SEC347`, `SEC340` и `SEC329` остаются самыми defendable operational rules для MCP / Claude wiring.
 - Эвристические и domain-sensitive правила вроде `SEC102`, `SEC313`, `SEC335`, `SEC348`, `SEC349`, `SEC351` полезны, но хуже подходят для "первого впечатления" о качестве ruleset.
+
+## Product posture update (2026-04-10)
+
+После quiet-default cleanup `SEC347` больше не входит в `recommended`, а остаётся в `preview` и `skills`.
+
+Текущий более честный first-screen набор такой:
+
+1. `SEC352` — сильнейший least-privilege rule для shared skills/frontmatter. Увер. `9/10`, Надёж. `9/10`
+2. `SEC340` — mutable launcher в committed Claude settings hook. Увер. `9/10`, Надёж. `9/10`
+3. `SEC329` — mutable launcher в committed MCP config. Увер. `9/10`, Надёж. `9/10`
+4. `SEC324` — unpinned third-party GitHub Action как сильный supply-chain control. Увер. `9/10`, Надёж. `9/10`
+
+`SEC347` по-прежнему хороший preview rule и useful deeper-review signal для AI-native docs, но его больше не стоит подавать как quiet-default face of product.
 
 ## Синтез 15 исследовательских агентов (март 2026)
 

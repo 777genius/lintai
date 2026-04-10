@@ -54,8 +54,10 @@
 
 На текущем срезе это означает:
 
-- `Flagship`: `SEC352`, `SEC347`, `SEC340`, `SEC329`
-- `Domain-sensitive`: `SEC102`, `SEC313`, `SEC335`, `SEC348`, `SEC349`, `SEC351`
+- `Flagship`: `SEC352`, `SEC340`, `SEC329`, `SEC324`
+- `Domain-sensitive`: `SEC102`, `SEC313`, `SEC335`, `SEC347`, `SEC348`, `SEC349`, `SEC351`
+
+`SEC347` остаётся сильным shipped preview rule, но после quiet-default hardening его больше не стоит подавать как first-screen example наравне с committed config rules.
 
 ## Flagship promotion track
 
