@@ -5,8 +5,9 @@ use super::{
     dockerfile, github_workflow, hooks, json, markdown, server_json, tool_json,
 };
 use lintai_api::{
-    CatalogDetectionClassKind, CatalogLifecycleDetails, CatalogRuleIdentity, validate_group_ids,
-    validate_rule_identities, validate_rule_presets, validate_rule_quality_contract,
+    CatalogDetectionClassKind, CatalogLifecycleDetails, CatalogPublicLane, CatalogRuleIdentity,
+    validate_group_ids, validate_rule_identities, validate_rule_presets,
+    validate_rule_quality_contract,
 };
 
 #[derive(Clone, Copy)]
@@ -100,11 +101,12 @@ fn validate_rule_specs(specs: &[NativeRuleSpec]) {
     );
 
     for spec in specs {
+        let public_lane = crate::native_catalog::public_lane_for_presets(spec.default_presets);
         validate_rule_presets(
             "native",
             spec.metadata.code,
             spec.default_presets,
-            crate::native_catalog::public_lane_for_presets(spec.default_presets),
+            public_lane,
         );
         validate_rule_quality_contract(
             "native",
@@ -161,6 +163,12 @@ fn validate_rule_specs(specs: &[NativeRuleSpec]) {
                     promotion_requirements,
                 },
             ) => {
+                validate_preview_lane_intent(
+                    spec.metadata.code,
+                    blocker,
+                    spec.default_presets,
+                    public_lane,
+                );
                 assert!(
                     !blocker.is_empty(),
                     "preview heuristic rule {} should declare a blocker",
@@ -185,6 +193,12 @@ fn validate_rule_specs(specs: &[NativeRuleSpec]) {
                     promotion_requirements,
                 },
             ) => {
+                validate_preview_lane_intent(
+                    spec.metadata.code,
+                    blocker,
+                    spec.default_presets,
+                    public_lane,
+                );
                 assert!(
                     !blocker.is_empty(),
                     "preview structural rule {} should declare a blocker",
@@ -233,5 +247,31 @@ fn validate_rule_specs(specs: &[NativeRuleSpec]) {
                 );
             }
         }
+    }
+}
+
+fn validate_preview_lane_intent(
+    code: &'static str,
+    blocker: &'static str,
+    default_presets: &'static [&'static str],
+    public_lane: CatalogPublicLane,
+) {
+    let blocker_lower = blocker.to_ascii_lowercase();
+    let guidance_only = blocker_lower.contains("guidance-only")
+        || blocker_lower.contains("guidance only")
+        || blocker_lower.contains("spec-guidance-only");
+
+    if guidance_only {
+        assert_eq!(
+            public_lane,
+            CatalogPublicLane::Guidance,
+            "preview rule {code} declares guidance-only positioning but public lane is {public_lane:?}",
+        );
+        assert_eq!(
+            default_presets,
+            &["guidance"],
+            "preview rule {code} declares guidance-only positioning but default presets are {:?}",
+            default_presets,
+        );
     }
 }
