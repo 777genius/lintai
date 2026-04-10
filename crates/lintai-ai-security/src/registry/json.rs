@@ -3778,7 +3778,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpSudoCommandRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact MCP server launch paths that run under `sudo`.",
@@ -3798,7 +3798,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpSudoArgs0Rule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches exact MCP server launch paths that pass `sudo` as the first argv element.",
@@ -3838,7 +3838,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpSensitiveDockerMountRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP config Docker launch paths for bind mounts of sensitive host sources such as docker.sock, SSH material, cloud credentials, and kubeconfig directories.",
@@ -3858,7 +3858,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpDangerousDockerFlagRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks committed MCP config Docker launch paths for privileged or host-escape runtime flags such as --privileged, --network host, --pid host, and --ipc host.",

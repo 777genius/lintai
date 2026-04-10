@@ -57,8 +57,8 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC335 / MD-METADATA-SERVICE-ACCESS` | AI-native markdown contains a direct cloud metadata-service access example | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC336 / MCP-BROAD-ENVFILE` | Repo-local MCP client config loads a broad dotenv-style envFile | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
 | `SEC337 / MCP-DOCKER-UNPINNED-IMAGE` | MCP configuration launches Docker with an image reference that is not digest-pinned | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
-| `SEC338 / MCP-DOCKER-SENSITIVE-MOUNT` | MCP configuration launches Docker with a bind mount of sensitive host material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC339 / MCP-DOCKER-HOST-ESCAPE` | MCP configuration launches Docker with a host-escape or privileged runtime flag | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC338 / MCP-DOCKER-SENSITIVE-MOUNT` | MCP configuration launches Docker with a bind mount of sensitive host material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC339 / MCP-DOCKER-HOST-ESCAPE` | MCP configuration launches Docker with a host-escape or privileged runtime flag | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC340 / CLAUDE-HOOK-MUTABLE-LAUNCHER` | Claude settings command hook uses a mutable package launcher | `recommended` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `recommended`, `base`, `claude` |
 | `SEC341 / CLAUDE-HOOK-DOWNLOAD-EXEC` | Claude settings command hook downloads remote content and pipes it into a shell | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `supply-chain`, `claude` |
 | `SEC342 / CLAUDE-HOOK-TLS-BYPASS` | Claude settings command hook disables TLS verification in a network-capable execution path | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `supply-chain`, `claude` |
@@ -141,7 +141,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC419 / MD-CURL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(curl:*)` authority | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC420 / MD-WGET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(wget:*)` authority | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC421 / MD-GIT-CLONE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git clone:*)` authority | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC422 / MCP-COMMAND-SUDO` | MCP configuration launches the server through `sudo` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC422 / MCP-COMMAND-SUDO` | MCP configuration launches the server through `sudo` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC423 / MD-READ-UNSCOPED` | AI-native markdown frontmatter grants bare `Read` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC424 / MD-WRITE-UNSCOPED` | AI-native markdown frontmatter grants bare `Write` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC425 / MD-EDIT-UNSCOPED` | AI-native markdown frontmatter grants bare `Edit` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
@@ -165,7 +165,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC443 / MD-GIT-CHERRY-PICK-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git cherry-pick:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC444 / MD-GIT-APPLY-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git apply:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC445 / MD-GIT-AM-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git am:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC446 / MCP-ARGS-SUDO` | MCP configuration passes `sudo` as the first launch argument | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC446 / MCP-ARGS-SUDO` | MCP configuration passes `sudo` as the first launch argument | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC447 / MD-PACKAGE-INSTALL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants package installation authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC448 / MD-PIP-TRUSTED-HOST` | AI-native markdown installs Python packages with `--trusted-host` | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `supply-chain` |
 | `SEC449 / MD-PIP-HTTP-INDEX` | AI-native markdown installs Python packages from an insecure `http://` package index | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `supply-chain` |
@@ -1448,7 +1448,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP config Docker launch paths for bind mounts of sensitive host sources such as docker.sock, SSH material, cloud credentials, and kubeconfig directories.
@@ -1470,7 +1470,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP config Docker launch paths for privileged or host-escape runtime flags such as --privileged, --network host, --pid host, and --ipc host.
@@ -3134,7 +3134,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact MCP server launch paths that run under `sudo`.
@@ -3662,7 +3662,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact MCP server launch paths that pass `sudo` as the first argv element.

@@ -50,11 +50,7 @@
         "lintai-ai-security:SEC312",
         "lintai-ai-security:SEC321",
         "lintai-ai-security:SEC329",
-        "lintai-ai-security:SEC338",
-        "lintai-ai-security:SEC339",
         "lintai-ai-security:SEC340",
-        "lintai-ai-security:SEC422",
-        "lintai-ai-security:SEC446",
         "lintai-ai-security:SEC633",
         "lintai-ai-security:SEC634",
         "lintai-ai-security:SEC635",
@@ -184,9 +180,13 @@
         "lintai-ai-security:SEC308",
         "lintai-ai-security:SEC313",
         "lintai-ai-security:SEC335",
+        "lintai-ai-security:SEC338",
+        "lintai-ai-security:SEC339",
         "lintai-ai-security:SEC349",
         "lintai-ai-security:SEC350",
-        "lintai-ai-security:SEC351"
+        "lintai-ai-security:SEC351",
+        "lintai-ai-security:SEC422",
+        "lintai-ai-security:SEC446"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -2593,7 +2593,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -2633,7 +2633,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -5611,7 +5611,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -6548,7 +6548,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
