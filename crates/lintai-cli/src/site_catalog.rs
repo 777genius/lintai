@@ -453,6 +453,22 @@ mod tests {
         assert_eq!(sec390.default_presets, vec!["governance"]);
         assert_eq!(sec390.public_lane, "governance");
 
+        let sec385 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC385")
+            .expect("SEC385 should exist");
+        assert_eq!(sec385.default_presets, vec!["governance", "claude"]);
+        assert_eq!(sec385.public_lane, "governance");
+
+        let sec399 = catalog
+            .rules
+            .iter()
+            .find(|rule| rule.rule_id == "lintai-ai-security:SEC399")
+            .expect("SEC399 should exist");
+        assert_eq!(sec399.default_presets, vec!["governance", "claude"]);
+        assert_eq!(sec399.public_lane, "governance");
+
         let sec756 = catalog
             .rules
             .iter()

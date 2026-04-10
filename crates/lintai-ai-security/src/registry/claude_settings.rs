@@ -65,7 +65,7 @@ use crate::claude_settings_rules::{
     check_claude_settings_wget_permission, check_claude_settings_write_unsafe_path,
     check_claude_settings_write_wildcard, check_claude_settings_yarn_dlx_permission,
 };
-use crate::registry::presets::PREVIEW_CLAUDE_PRESETS;
+use crate::registry::presets::{GOVERNANCE_CLAUDE_PRESETS, PREVIEW_CLAUDE_PRESETS};
 
 declare_rule! {
     pub struct ClaudeSettingsMissingHookTimeoutRule {
@@ -1643,7 +1643,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsUnscopedWebSearchRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings permissions for bare `WebSearch` grants without a reviewed scope.",
@@ -1663,7 +1663,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsWebFetchRawGithubusercontentRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings permissions for explicit raw GitHub content fetch grants.",
@@ -1683,7 +1683,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitPushPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(git push)` authority.",
@@ -1703,7 +1703,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitAddPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(git add:*)` authority.",
@@ -1723,7 +1723,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitClonePermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(git clone:*)` authority.",
@@ -1743,7 +1743,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhPrPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(gh pr:*)` authority.",
@@ -1763,7 +1763,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhApiPostPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub API POST mutation authority through `permissions.allow`.",
@@ -1783,7 +1783,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhApiDeletePermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub API DELETE mutation authority through `permissions.allow`.",
@@ -1803,7 +1803,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhApiPatchPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub API PATCH mutation authority through `permissions.allow`.",
@@ -1823,7 +1823,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhApiPutPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub API PUT mutation authority through `permissions.allow`.",
@@ -1843,7 +1843,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhIssueCreatePermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub issue creation authority through `permissions.allow`.",
@@ -1863,7 +1863,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhRepoCreatePermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub repository creation authority through `permissions.allow`.",
@@ -1883,7 +1883,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhRepoDeletePermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub repository deletion authority through `permissions.allow`.",
@@ -1903,7 +1903,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhRepoEditPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub repository settings mutation authority through `permissions.allow`.",
@@ -1923,7 +1923,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhRepoTransferPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub repository transfer authority through `permissions.allow`.",
@@ -1943,7 +1943,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhReleaseCreatePermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub release creation authority through `permissions.allow`.",
@@ -1963,7 +1963,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhReleaseUploadPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub release asset upload authority through `permissions.allow`.",
@@ -1983,7 +1983,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhReleaseDeletePermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub release deletion authority through `permissions.allow`.",
@@ -2003,7 +2003,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhSecretSetPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub secret mutation authority through `permissions.allow`.",
@@ -2023,7 +2023,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhVariableSetPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub variable mutation authority through `permissions.allow`.",
@@ -2043,7 +2043,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhWorkflowRunPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub workflow dispatch authority through `permissions.allow`.",
@@ -2063,7 +2063,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhSecretDeletePermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub secret deletion authority through `permissions.allow`.",
@@ -2083,7 +2083,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhVariableDeletePermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub variable deletion authority through `permissions.allow`.",
@@ -2103,7 +2103,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGhWorkflowDisablePermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings for exact GitHub workflow disable authority through `permissions.allow`.",
@@ -2123,7 +2123,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitFetchPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(git fetch:*)` authority.",
@@ -2143,7 +2143,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitLsRemotePermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings permissions for wildcard remote repository inspection grants.",
@@ -2163,7 +2163,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsCurlPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings permissions for explicit wildcard curl execution grants.",
@@ -2183,7 +2183,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsWgetPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings permissions for explicit wildcard wget execution grants.",
@@ -2203,7 +2203,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitConfigPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings permissions for wildcard git config mutation grants.",
@@ -2223,7 +2223,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitTagPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings permissions for wildcard git tag mutation grants.",
@@ -2243,7 +2243,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitBranchPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings permissions for wildcard git branch mutation grants.",
@@ -2303,7 +2303,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsNpxPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(npx ...)` mutable package-runner authority.",
@@ -2323,7 +2323,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsUvxPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(uvx ...)` mutable package-runner authority.",
@@ -2343,7 +2343,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsNpmExecPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(npm exec ...)` mutable package-runner authority.",
@@ -2363,7 +2363,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsBunxPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(bunx ...)` mutable package-runner authority.",
@@ -2383,7 +2383,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsPnpmDlxPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(pnpm dlx ...)` mutable package-runner authority.",
@@ -2403,7 +2403,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsYarnDlxPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(yarn dlx ...)` mutable package-runner authority.",
@@ -2423,7 +2423,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsPipxRunPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(pipx run ...)` mutable package-runner authority.",
@@ -2443,7 +2443,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitCheckoutPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(git checkout:*)` authority.",
@@ -2463,7 +2463,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitCommitPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(git commit:*)` authority.",
@@ -2483,7 +2483,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitStashPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(git stash:*)` authority.",
@@ -2503,7 +2503,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitResetPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(git reset:*)` authority.",
@@ -2523,7 +2523,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitCleanPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(git clean:*)` authority.",
@@ -2543,7 +2543,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitRestorePermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(git restore:*)` authority.",
@@ -2563,7 +2563,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitRebasePermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(git rebase:*)` authority.",
@@ -2583,7 +2583,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitMergePermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(git merge:*)` authority.",
@@ -2603,7 +2603,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitCherryPickPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(git cherry-pick:*)` authority.",
@@ -2623,7 +2623,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitApplyPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(git apply:*)` authority.",
@@ -2643,7 +2643,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsGitAmPermissionRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact `Bash(git am:*)` authority.",
@@ -2943,7 +2943,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsUnscopedWebFetchRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings permissions for exact bare `WebFetch` grants.",

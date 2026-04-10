@@ -9,6 +9,7 @@ pub(crate) const RECOMMENDED_BASE_MCP_PRESETS: &[&str] = &["recommended", "base"
 pub(crate) const BASE_CLAUDE_PRESETS: &[&str] = &["base", "claude"];
 pub(crate) const PREVIEW_CLAUDE_PRESETS: &[&str] = &["preview", "claude"];
 pub(crate) const COMPAT_CLAUDE_PRESETS: &[&str] = &["compat", "claude"];
+pub(crate) const GOVERNANCE_CLAUDE_PRESETS: &[&str] = &["governance", "claude"];
 pub(crate) const RECOMMENDED_BASE_CLAUDE_PRESETS: &[&str] = &["recommended", "base", "claude"];
 pub(crate) const GUIDANCE_PRESETS: &[&str] = &["guidance"];
 pub(crate) const GOVERNANCE_PRESETS: &[&str] = &["governance"];

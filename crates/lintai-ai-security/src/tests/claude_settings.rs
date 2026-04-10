@@ -155,7 +155,7 @@ fn finds_claude_settings_webfetch_wildcard() {
 #[test]
 fn finds_claude_settings_webfetch_raw_githubusercontent_permission() {
     let content = r#"{"permissions":{"allow":["WebFetch(domain:github.com)","WebFetch(domain:raw.githubusercontent.com)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -411,7 +411,7 @@ fn finds_claude_settings_unscoped_grep() {
 #[test]
 fn finds_claude_settings_unscoped_webfetch() {
     let content = r#"{"permissions":{"allow":["WebFetch","Bash(git status)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -445,7 +445,7 @@ fn finds_claude_settings_websearch_wildcard() {
 #[test]
 fn finds_claude_settings_unscoped_websearch() {
     let content = r#"{"permissions":{"allow":["WebSearch","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -462,7 +462,7 @@ fn finds_claude_settings_unscoped_websearch() {
 #[test]
 fn finds_claude_settings_git_push_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git push)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -479,7 +479,7 @@ fn finds_claude_settings_git_push_permission() {
 #[test]
 fn finds_claude_settings_git_add_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git add:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -496,7 +496,7 @@ fn finds_claude_settings_git_add_permission() {
 #[test]
 fn finds_claude_settings_git_clone_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git clone:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -513,7 +513,7 @@ fn finds_claude_settings_git_clone_permission() {
 #[test]
 fn finds_claude_settings_gh_pr_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh pr:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -530,7 +530,7 @@ fn finds_claude_settings_gh_pr_permission() {
 #[test]
 fn finds_claude_settings_gh_api_post_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh api --method POST:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -547,7 +547,7 @@ fn finds_claude_settings_gh_api_post_permission() {
 #[test]
 fn finds_claude_settings_gh_api_delete_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh api --method DELETE:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -564,7 +564,7 @@ fn finds_claude_settings_gh_api_delete_permission() {
 #[test]
 fn finds_claude_settings_gh_api_patch_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh api --method PATCH:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -581,7 +581,7 @@ fn finds_claude_settings_gh_api_patch_permission() {
 #[test]
 fn finds_claude_settings_gh_api_put_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh api --method PUT:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -598,7 +598,7 @@ fn finds_claude_settings_gh_api_put_permission() {
 #[test]
 fn finds_claude_settings_gh_issue_create_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh issue create:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -615,7 +615,7 @@ fn finds_claude_settings_gh_issue_create_permission() {
 #[test]
 fn finds_claude_settings_gh_repo_create_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh repo create:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -632,7 +632,7 @@ fn finds_claude_settings_gh_repo_create_permission() {
 #[test]
 fn finds_claude_settings_gh_repo_delete_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh repo delete:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -649,7 +649,7 @@ fn finds_claude_settings_gh_repo_delete_permission() {
 #[test]
 fn finds_claude_settings_gh_release_delete_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh release delete:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -666,7 +666,7 @@ fn finds_claude_settings_gh_release_delete_permission() {
 #[test]
 fn finds_claude_settings_gh_repo_edit_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh repo edit:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -683,7 +683,7 @@ fn finds_claude_settings_gh_repo_edit_permission() {
 #[test]
 fn finds_claude_settings_gh_repo_transfer_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh repo transfer:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -700,7 +700,7 @@ fn finds_claude_settings_gh_repo_transfer_permission() {
 #[test]
 fn finds_claude_settings_gh_release_create_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh release create:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -717,7 +717,7 @@ fn finds_claude_settings_gh_release_create_permission() {
 #[test]
 fn finds_claude_settings_gh_release_upload_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh release upload:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -734,7 +734,7 @@ fn finds_claude_settings_gh_release_upload_permission() {
 #[test]
 fn ignores_specific_claude_settings_gh_api_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh api --method GET:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     assert!(
         !summary
@@ -747,7 +747,7 @@ fn ignores_specific_claude_settings_gh_api_permission() {
 #[test]
 fn ignores_specific_claude_settings_gh_repo_delete_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh repo view:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     assert!(
         !summary
@@ -760,7 +760,7 @@ fn ignores_specific_claude_settings_gh_repo_delete_permission() {
 #[test]
 fn ignores_specific_claude_settings_gh_release_delete_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh release view:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     assert!(
         !summary
@@ -773,7 +773,7 @@ fn ignores_specific_claude_settings_gh_release_delete_permission() {
 #[test]
 fn ignores_specific_claude_settings_gh_repo_edit_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh repo view:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     assert!(
         !summary
@@ -786,7 +786,7 @@ fn ignores_specific_claude_settings_gh_repo_edit_permission() {
 #[test]
 fn ignores_specific_claude_settings_gh_repo_transfer_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh repo view:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     assert!(
         !summary
@@ -799,7 +799,7 @@ fn ignores_specific_claude_settings_gh_repo_transfer_permission() {
 #[test]
 fn ignores_specific_claude_settings_gh_release_create_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh release view:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     assert!(
         !summary
@@ -812,7 +812,7 @@ fn ignores_specific_claude_settings_gh_release_create_permission() {
 #[test]
 fn ignores_specific_claude_settings_gh_release_upload_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh release view:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     assert!(
         !summary
@@ -825,7 +825,7 @@ fn ignores_specific_claude_settings_gh_release_upload_permission() {
 #[test]
 fn ignores_specific_claude_settings_gh_api_delete_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh api --method GET:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     assert!(
         !summary
@@ -838,7 +838,7 @@ fn ignores_specific_claude_settings_gh_api_delete_permission() {
 #[test]
 fn ignores_specific_claude_settings_gh_api_patch_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh api --method GET:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     assert!(
         !summary
@@ -851,7 +851,7 @@ fn ignores_specific_claude_settings_gh_api_patch_permission() {
 #[test]
 fn ignores_specific_claude_settings_gh_api_put_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh api --method GET:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     assert!(
         !summary
@@ -877,7 +877,7 @@ fn ignores_specific_claude_settings_gh_issue_permission() {
 #[test]
 fn ignores_specific_claude_settings_gh_repo_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh repo view:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     assert!(
         !summary
@@ -890,7 +890,7 @@ fn ignores_specific_claude_settings_gh_repo_permission() {
 #[test]
 fn finds_claude_settings_gh_secret_set_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh secret set:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -907,7 +907,7 @@ fn finds_claude_settings_gh_secret_set_permission() {
 #[test]
 fn finds_claude_settings_gh_variable_set_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh variable set:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -924,7 +924,7 @@ fn finds_claude_settings_gh_variable_set_permission() {
 #[test]
 fn finds_claude_settings_gh_workflow_run_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh workflow run:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -941,7 +941,7 @@ fn finds_claude_settings_gh_workflow_run_permission() {
 #[test]
 fn finds_claude_settings_gh_secret_delete_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh secret delete:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -959,7 +959,7 @@ fn finds_claude_settings_gh_secret_delete_permission() {
 #[test]
 fn finds_claude_settings_gh_variable_delete_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh variable delete:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -977,7 +977,7 @@ fn finds_claude_settings_gh_variable_delete_permission() {
 #[test]
 fn finds_claude_settings_gh_workflow_disable_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh workflow disable:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -995,7 +995,7 @@ fn finds_claude_settings_gh_workflow_disable_permission() {
 #[test]
 fn ignores_specific_claude_settings_gh_secret_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh secret list:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     assert!(
         !summary
@@ -1008,7 +1008,7 @@ fn ignores_specific_claude_settings_gh_secret_permission() {
 #[test]
 fn ignores_specific_claude_settings_gh_secret_delete_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh secret list:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     assert!(
         !summary
@@ -1021,7 +1021,7 @@ fn ignores_specific_claude_settings_gh_secret_delete_permission() {
 #[test]
 fn ignores_specific_claude_settings_gh_variable_delete_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh variable list:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     assert!(
         !summary
@@ -1034,7 +1034,7 @@ fn ignores_specific_claude_settings_gh_variable_delete_permission() {
 #[test]
 fn ignores_specific_claude_settings_gh_workflow_disable_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh workflow view:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     assert!(
         !summary
@@ -1047,7 +1047,7 @@ fn ignores_specific_claude_settings_gh_workflow_disable_permission() {
 #[test]
 fn ignores_specific_claude_settings_gh_variable_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh variable list:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     assert!(
         !summary
@@ -1060,7 +1060,7 @@ fn ignores_specific_claude_settings_gh_variable_permission() {
 #[test]
 fn ignores_specific_claude_settings_gh_workflow_permission() {
     let content = r#"{"permissions":{"allow":["Bash(gh workflow view:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     assert!(
         !summary
@@ -1073,7 +1073,7 @@ fn ignores_specific_claude_settings_gh_workflow_permission() {
 #[test]
 fn finds_claude_settings_git_fetch_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git fetch:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1090,7 +1090,7 @@ fn finds_claude_settings_git_fetch_permission() {
 #[test]
 fn finds_claude_settings_git_ls_remote_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git ls-remote:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1107,7 +1107,7 @@ fn finds_claude_settings_git_ls_remote_permission() {
 #[test]
 fn finds_claude_settings_curl_permission() {
     let content = r#"{"permissions":{"allow":["Bash(curl:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1124,7 +1124,7 @@ fn finds_claude_settings_curl_permission() {
 #[test]
 fn finds_claude_settings_wget_permission() {
     let content = r#"{"permissions":{"allow":["Bash(wget:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1141,7 +1141,7 @@ fn finds_claude_settings_wget_permission() {
 #[test]
 fn finds_claude_settings_git_config_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git config:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1158,7 +1158,7 @@ fn finds_claude_settings_git_config_permission() {
 #[test]
 fn finds_claude_settings_git_tag_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git tag:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1175,7 +1175,7 @@ fn finds_claude_settings_git_tag_permission() {
 #[test]
 fn finds_claude_settings_git_branch_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git branch:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1209,7 +1209,7 @@ fn finds_claude_settings_enabled_mcpjson_servers() {
 #[test]
 fn finds_claude_settings_npx_permission() {
     let content = r#"{"permissions":{"allow":["Bash(npx claude-flow:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1226,7 +1226,7 @@ fn finds_claude_settings_npx_permission() {
 #[test]
 fn finds_claude_settings_uvx_permission() {
     let content = r#"{"permissions":{"allow":["Bash(uvx ruff:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1243,7 +1243,7 @@ fn finds_claude_settings_uvx_permission() {
 #[test]
 fn finds_claude_settings_npm_exec_permission() {
     let content = r#"{"permissions":{"allow":["Bash(npm exec eslint:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1260,7 +1260,7 @@ fn finds_claude_settings_npm_exec_permission() {
 #[test]
 fn finds_claude_settings_bunx_permission() {
     let content = r#"{"permissions":{"allow":["Bash(bunx prettier:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1277,7 +1277,7 @@ fn finds_claude_settings_bunx_permission() {
 #[test]
 fn finds_claude_settings_pnpm_dlx_permission() {
     let content = r#"{"permissions":{"allow":["Bash(pnpm dlx cowsay:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1294,7 +1294,7 @@ fn finds_claude_settings_pnpm_dlx_permission() {
 #[test]
 fn finds_claude_settings_yarn_dlx_permission() {
     let content = r#"{"permissions":{"allow":["Bash(yarn dlx create-vite:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1311,7 +1311,7 @@ fn finds_claude_settings_yarn_dlx_permission() {
 #[test]
 fn finds_claude_settings_pipx_run_permission() {
     let content = r#"{"permissions":{"allow":["Bash(pipx run black:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1379,7 +1379,7 @@ fn finds_claude_settings_python_m_pip_install_permission() {
 #[test]
 fn finds_claude_settings_git_checkout_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git checkout:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1396,7 +1396,7 @@ fn finds_claude_settings_git_checkout_permission() {
 #[test]
 fn finds_claude_settings_git_commit_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git commit:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1413,7 +1413,7 @@ fn finds_claude_settings_git_commit_permission() {
 #[test]
 fn finds_claude_settings_git_stash_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git stash:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1430,7 +1430,7 @@ fn finds_claude_settings_git_stash_permission() {
 #[test]
 fn finds_claude_settings_git_reset_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git reset:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1447,7 +1447,7 @@ fn finds_claude_settings_git_reset_permission() {
 #[test]
 fn finds_claude_settings_git_clean_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git clean:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1464,7 +1464,7 @@ fn finds_claude_settings_git_clean_permission() {
 #[test]
 fn finds_claude_settings_git_restore_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git restore:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1481,7 +1481,7 @@ fn finds_claude_settings_git_restore_permission() {
 #[test]
 fn finds_claude_settings_git_rebase_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git rebase:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1498,7 +1498,7 @@ fn finds_claude_settings_git_rebase_permission() {
 #[test]
 fn finds_claude_settings_git_merge_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git merge:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1515,7 +1515,7 @@ fn finds_claude_settings_git_merge_permission() {
 #[test]
 fn finds_claude_settings_git_cherry_pick_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git cherry-pick:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1532,7 +1532,7 @@ fn finds_claude_settings_git_cherry_pick_permission() {
 #[test]
 fn finds_claude_settings_git_apply_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git apply:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1549,7 +1549,7 @@ fn finds_claude_settings_git_apply_permission() {
 #[test]
 fn finds_claude_settings_git_am_permission() {
     let content = r#"{"permissions":{"allow":["Bash(git am:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -1679,7 +1679,7 @@ fn ignores_claude_settings_specific_bash_permission_without_npx() {
 
 #[test]
 fn ignores_claude_settings_specific_webfetch_permissions() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["WebFetch(https://api.example.com/*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1694,7 +1694,7 @@ fn ignores_claude_settings_specific_webfetch_permissions() {
 
 #[test]
 fn ignores_claude_settings_specific_websearch_permissions() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["WebSearch(site:docs.example.com)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1709,7 +1709,7 @@ fn ignores_claude_settings_specific_websearch_permissions() {
 
 #[test]
 fn ignores_claude_settings_unscoped_websearch_when_wildcard_form_used() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["WebSearch(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1724,7 +1724,7 @@ fn ignores_claude_settings_unscoped_websearch_when_wildcard_form_used() {
 
 #[test]
 fn ignores_claude_settings_git_push_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git push origin main)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1739,7 +1739,7 @@ fn ignores_claude_settings_git_push_permission_when_command_is_more_specific() {
 
 #[test]
 fn ignores_claude_settings_git_add_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git add src/lib.rs)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1754,7 +1754,7 @@ fn ignores_claude_settings_git_add_permission_when_command_is_more_specific() {
 
 #[test]
 fn ignores_claude_settings_git_clone_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git clone https://github.com/acme/demo.git)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1769,7 +1769,7 @@ fn ignores_claude_settings_git_clone_permission_when_command_is_more_specific() 
 
 #[test]
 fn ignores_claude_settings_gh_pr_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(gh pr diff:*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1859,7 +1859,7 @@ fn ignores_claude_settings_repo_local_grep_scope() {
 
 #[test]
 fn ignores_claude_settings_git_fetch_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git fetch origin main)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1874,7 +1874,7 @@ fn ignores_claude_settings_git_fetch_permission_when_command_is_more_specific() 
 
 #[test]
 fn ignores_claude_settings_git_reset_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git reset --hard HEAD~1)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1889,7 +1889,7 @@ fn ignores_claude_settings_git_reset_permission_when_command_is_more_specific() 
 
 #[test]
 fn ignores_claude_settings_git_clean_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git clean -fd)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1904,7 +1904,7 @@ fn ignores_claude_settings_git_clean_permission_when_command_is_more_specific() 
 
 #[test]
 fn ignores_claude_settings_git_restore_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git restore src/lib.rs)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1919,7 +1919,7 @@ fn ignores_claude_settings_git_restore_permission_when_command_is_more_specific(
 
 #[test]
 fn ignores_claude_settings_git_rebase_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git rebase origin/main)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1934,7 +1934,7 @@ fn ignores_claude_settings_git_rebase_permission_when_command_is_more_specific()
 
 #[test]
 fn ignores_claude_settings_git_merge_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git merge feature/branch)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1949,7 +1949,7 @@ fn ignores_claude_settings_git_merge_permission_when_command_is_more_specific() 
 
 #[test]
 fn ignores_claude_settings_git_cherry_pick_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git cherry-pick abc1234)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1964,7 +1964,7 @@ fn ignores_claude_settings_git_cherry_pick_permission_when_command_is_more_speci
 
 #[test]
 fn ignores_claude_settings_git_apply_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git apply patch.diff)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1979,7 +1979,7 @@ fn ignores_claude_settings_git_apply_permission_when_command_is_more_specific() 
 
 #[test]
 fn ignores_claude_settings_git_am_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git am series.patch)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -1994,7 +1994,7 @@ fn ignores_claude_settings_git_am_permission_when_command_is_more_specific() {
 
 #[test]
 fn ignores_claude_settings_git_ls_remote_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git ls-remote origin)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2009,7 +2009,7 @@ fn ignores_claude_settings_git_ls_remote_permission_when_command_is_more_specifi
 
 #[test]
 fn ignores_claude_settings_git_checkout_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git checkout feature/branch)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2024,7 +2024,7 @@ fn ignores_claude_settings_git_checkout_permission_when_command_is_more_specific
 
 #[test]
 fn ignores_claude_settings_git_commit_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git commit -m release)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2039,7 +2039,7 @@ fn ignores_claude_settings_git_commit_permission_when_command_is_more_specific()
 
 #[test]
 fn ignores_claude_settings_git_stash_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git stash push -u)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2054,7 +2054,7 @@ fn ignores_claude_settings_git_stash_permission_when_command_is_more_specific() 
 
 #[test]
 fn ignores_claude_settings_curl_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(curl https://example.com/install.sh)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2069,7 +2069,7 @@ fn ignores_claude_settings_curl_permission_when_command_is_more_specific() {
 
 #[test]
 fn ignores_claude_settings_uvx_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(uv run ruff check .)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2084,7 +2084,7 @@ fn ignores_claude_settings_uvx_permission_when_command_is_more_specific() {
 
 #[test]
 fn ignores_claude_settings_npm_exec_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(npm run lint)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2099,7 +2099,7 @@ fn ignores_claude_settings_npm_exec_permission_when_command_is_more_specific() {
 
 #[test]
 fn ignores_claude_settings_bunx_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(bun run lint)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2114,7 +2114,7 @@ fn ignores_claude_settings_bunx_permission_when_command_is_more_specific() {
 
 #[test]
 fn ignores_claude_settings_pnpm_dlx_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(pnpm install)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2129,7 +2129,7 @@ fn ignores_claude_settings_pnpm_dlx_permission_when_command_is_more_specific() {
 
 #[test]
 fn ignores_claude_settings_yarn_dlx_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(yarn install)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2144,7 +2144,7 @@ fn ignores_claude_settings_yarn_dlx_permission_when_command_is_more_specific() {
 
 #[test]
 fn ignores_claude_settings_pipx_run_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(python -m black src)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2159,7 +2159,7 @@ fn ignores_claude_settings_pipx_run_permission_when_command_is_more_specific() {
 
 #[test]
 fn ignores_claude_settings_wget_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(wget https://example.com/archive.tgz)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2174,7 +2174,7 @@ fn ignores_claude_settings_wget_permission_when_command_is_more_specific() {
 
 #[test]
 fn ignores_claude_settings_git_config_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git config user.name)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2189,7 +2189,7 @@ fn ignores_claude_settings_git_config_permission_when_command_is_more_specific()
 
 #[test]
 fn ignores_claude_settings_git_tag_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git tag v1.2.3)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -2204,7 +2204,7 @@ fn ignores_claude_settings_git_tag_permission_when_command_is_more_specific() {
 
 #[test]
 fn ignores_claude_settings_git_branch_permission_when_command_is_more_specific() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git branch feature/test)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );

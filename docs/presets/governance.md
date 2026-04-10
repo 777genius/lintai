@@ -13,11 +13,11 @@ This includes both:
 
 - shared mutation authority such as Git publication or repository-changing commands
 - broad default read, write, edit, search, discovery, and fetch grants in checked-in AI-native frontmatter
-- shared workflow permissions such as `curl`, `wget`, `git clone`, `git add`, or similar command grants in committed AI settings and frontmatter
+- shared workflow permissions such as `curl`, `wget`, `git clone`, `git add`, `npx`, or similar command grants in committed AI settings, Claude settings, and frontmatter
 
 ## When To Use It
 
-Use it when you want `lintai` to review repo-wide defaults such as shared Git mutation authority, shared workflow command grants, or broad bare tool grants in committed AI settings and `allowed-tools`, especially in teams that care about least privilege and workflow design in checked-in agent instructions.
+Use it when you want `lintai` to review repo-wide defaults such as shared Git mutation authority, shared workflow command grants, or broad bare tool grants in committed AI settings, Claude settings, and `allowed-tools`, especially in teams that care about least privilege and workflow design in checked-in agent instructions.
 
 ## Tradeoffs
 

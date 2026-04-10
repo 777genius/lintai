@@ -2609,6 +2609,18 @@ fn scan_preview_claude_settings_fixture(
     )
 }
 
+fn scan_preview_governance_claude_settings_fixture(
+    relative_path: &str,
+    content: &str,
+) -> lintai_engine::ScanSummary {
+    scan_fixture(
+        relative_path,
+        content,
+        &["base", "preview", "claude", "governance"],
+        "lintai-sec385-preview",
+    )
+}
+
 #[allow(clippy::duplicate_mod)]
 mod claude_settings;
 #[allow(clippy::duplicate_mod)]

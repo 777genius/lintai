@@ -103,11 +103,11 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC381 / CLAUDE-HOOK-TIMEOUT` | Claude settings command hook should set `timeout` in a shared committed config | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
 | `SEC382 / CLAUDE-HOOK-MATCHER-EVENT` | Claude settings should not use `matcher` on unsupported hook events | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
 | `SEC383 / CLAUDE-HOOK-MISSING-MATCHER` | Claude settings should set `matcher` on matcher-capable hook events | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
-| `SEC384 / CLAUDE-WEBSEARCH-UNSCOPED` | Claude settings permissions allow bare `WebSearch` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC385 / CLAUDE-GIT-PUSH-PERMISSION` | Claude settings permissions allow `Bash(git push)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC386 / CLAUDE-GIT-CHECKOUT-PERMISSION` | Claude settings permissions allow `Bash(git checkout:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC387 / CLAUDE-GIT-COMMIT-PERMISSION` | Claude settings permissions allow `Bash(git commit:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC388 / CLAUDE-GIT-STASH-PERMISSION` | Claude settings permissions allow `Bash(git stash:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC384 / CLAUDE-WEBSEARCH-UNSCOPED` | Claude settings permissions allow bare `WebSearch` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC385 / CLAUDE-GIT-PUSH-PERMISSION` | Claude settings permissions allow `Bash(git push)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC386 / CLAUDE-GIT-CHECKOUT-PERMISSION` | Claude settings permissions allow `Bash(git checkout:*)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC387 / CLAUDE-GIT-COMMIT-PERMISSION` | Claude settings permissions allow `Bash(git commit:*)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC388 / CLAUDE-GIT-STASH-PERMISSION` | Claude settings permissions allow `Bash(git stash:*)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC389 / MD-WEBSEARCH-UNSCOPED` | AI-native markdown frontmatter grants bare `WebSearch` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC390 / MD-GIT-PUSH-PERMISSION` | AI-native markdown frontmatter grants `Bash(git push)` tool access | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC391 / MD-GIT-CHECKOUT-PERMISSION` | AI-native markdown frontmatter grants `Bash(git checkout:*)` tool access | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
@@ -118,26 +118,26 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC396 / MCP-TRUST-TOOLS` | MCP configuration fully trusts tools with `trustTools: true` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC397 / MCP-SANDBOX-DISABLED` | MCP configuration disables sandboxing with `sandbox: false` or `disableSandbox: true` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC398 / MCP-CAPABILITIES-WILDCARD` | MCP configuration grants all capabilities with `capabilities: ["*"]` or `capabilities: "*"` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC399 / CLAUDE-NPX-PERMISSION` | Claude settings permissions allow `Bash(npx ...)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC399 / CLAUDE-NPX-PERMISSION` | Claude settings permissions allow `Bash(npx ...)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC400 / CLAUDE-ENABLED-MCPJSON-SERVERS` | Claude settings enable `enabledMcpjsonServers` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC401 / POLICY-EXEC-MISMATCH` | Project policy forbids execution, but repository contains executable behavior | `compat` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC402 / POLICY-NETWORK-MISMATCH` | Project policy forbids network access, but repository contains network behavior | `compat` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC403 / POLICY-SKILL-CAPABILITIES-MISMATCH` | Skill frontmatter capabilities conflict with project policy | `compat` | Preview | `preview_blocked` | Warn | `workspace` | `workspace` | `structural` | `none` | `compat` |
 | `SEC404 / MD-WEBFETCH-UNSCOPED` | AI-native markdown frontmatter grants bare `WebFetch` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC405 / CLAUDE-PACKAGE-INSTALL-PERMISSION` | Claude settings permissions allow package installation commands in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC406 / CLAUDE-GIT-ADD-PERMISSION` | Claude settings permissions allow `Bash(git add:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC407 / CLAUDE-GIT-CLONE-PERMISSION` | Claude settings permissions allow `Bash(git clone:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC408 / CLAUDE-GH-PR-PERMISSION` | Claude settings permissions allow `Bash(gh pr:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC409 / CLAUDE-GIT-FETCH-PERMISSION` | Claude settings permissions allow `Bash(git fetch:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC410 / CLAUDE-GIT-LS-REMOTE-PERMISSION` | Claude settings permissions allow `Bash(git ls-remote:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC411 / CLAUDE-CURL-PERMISSION` | Claude settings permissions allow `Bash(curl:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC412 / CLAUDE-WGET-PERMISSION` | Claude settings permissions allow `Bash(wget:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC413 / CLAUDE-GIT-CONFIG-PERMISSION` | Claude settings permissions allow `Bash(git config:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC414 / CLAUDE-GIT-TAG-PERMISSION` | Claude settings permissions allow `Bash(git tag:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC415 / CLAUDE-GIT-BRANCH-PERMISSION` | Claude settings permissions allow `Bash(git branch:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC406 / CLAUDE-GIT-ADD-PERMISSION` | Claude settings permissions allow `Bash(git add:*)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC407 / CLAUDE-GIT-CLONE-PERMISSION` | Claude settings permissions allow `Bash(git clone:*)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC408 / CLAUDE-GH-PR-PERMISSION` | Claude settings permissions allow `Bash(gh pr:*)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC409 / CLAUDE-GIT-FETCH-PERMISSION` | Claude settings permissions allow `Bash(git fetch:*)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC410 / CLAUDE-GIT-LS-REMOTE-PERMISSION` | Claude settings permissions allow `Bash(git ls-remote:*)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC411 / CLAUDE-CURL-PERMISSION` | Claude settings permissions allow `Bash(curl:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC412 / CLAUDE-WGET-PERMISSION` | Claude settings permissions allow `Bash(wget:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC413 / CLAUDE-GIT-CONFIG-PERMISSION` | Claude settings permissions allow `Bash(git config:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC414 / CLAUDE-GIT-TAG-PERMISSION` | Claude settings permissions allow `Bash(git tag:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC415 / CLAUDE-GIT-BRANCH-PERMISSION` | Claude settings permissions allow `Bash(git branch:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC416 / MD-CLAUDE-PIP-INSTALL` | AI-native markdown models Claude package installation with bare `pip install` despite explicit `uv` preference guidance | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `guidance` |
 | `SEC417 / MD-PIP-GIT-UNPINNED` | AI-native markdown installs Python packages from an unpinned `git+https://` source | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC418 / CLAUDE-WEBFETCH-RAW-GITHUB` | Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC418 / CLAUDE-WEBFETCH-RAW-GITHUB` | Claude settings permissions allow `WebFetch(domain:raw.githubusercontent.com)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC419 / MD-CURL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(curl:*)` authority | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC420 / MD-WGET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(wget:*)` authority | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC421 / MD-GIT-CLONE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git clone:*)` authority | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
@@ -197,22 +197,22 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC475 / CLAUDE-READ-UNSAFE-PATH` | Claude settings permissions allow `Read(...)` over an unsafe path in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC476 / CLAUDE-WRITE-UNSAFE-PATH` | Claude settings permissions allow `Write(...)` over an unsafe path in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC477 / CLAUDE-EDIT-UNSAFE-PATH` | Claude settings permissions allow `Edit(...)` over an unsafe path in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC478 / CLAUDE-GIT-RESET-PERMISSION` | Claude settings permissions allow `Bash(git reset:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC479 / CLAUDE-GIT-CLEAN-PERMISSION` | Claude settings permissions allow `Bash(git clean:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC480 / CLAUDE-GIT-RESTORE-PERMISSION` | Claude settings permissions allow `Bash(git restore:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC481 / CLAUDE-GIT-REBASE-PERMISSION` | Claude settings permissions allow `Bash(git rebase:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC482 / CLAUDE-GIT-MERGE-PERMISSION` | Claude settings permissions allow `Bash(git merge:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC483 / CLAUDE-GIT-CHERRY-PICK-PERMISSION` | Claude settings permissions allow `Bash(git cherry-pick:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC484 / CLAUDE-GIT-APPLY-PERMISSION` | Claude settings permissions allow `Bash(git apply:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC485 / CLAUDE-GIT-AM-PERMISSION` | Claude settings permissions allow `Bash(git am:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC478 / CLAUDE-GIT-RESET-PERMISSION` | Claude settings permissions allow `Bash(git reset:*)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC479 / CLAUDE-GIT-CLEAN-PERMISSION` | Claude settings permissions allow `Bash(git clean:*)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC480 / CLAUDE-GIT-RESTORE-PERMISSION` | Claude settings permissions allow `Bash(git restore:*)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC481 / CLAUDE-GIT-REBASE-PERMISSION` | Claude settings permissions allow `Bash(git rebase:*)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC482 / CLAUDE-GIT-MERGE-PERMISSION` | Claude settings permissions allow `Bash(git merge:*)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC483 / CLAUDE-GIT-CHERRY-PICK-PERMISSION` | Claude settings permissions allow `Bash(git cherry-pick:*)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC484 / CLAUDE-GIT-APPLY-PERMISSION` | Claude settings permissions allow `Bash(git apply:*)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC485 / CLAUDE-GIT-AM-PERMISSION` | Claude settings permissions allow `Bash(git am:*)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC486 / CLAUDE-GLOB-UNSAFE-PATH` | Claude settings permissions allow `Glob(...)` over an unsafe path in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC487 / CLAUDE-GREP-UNSAFE-PATH` | Claude settings permissions allow `Grep(...)` over an unsafe path in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC488 / CLAUDE-UVX-PERMISSION` | Claude settings permissions allow `Bash(uvx ...)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC489 / CLAUDE-PNPM-DLX-PERMISSION` | Claude settings permissions allow `Bash(pnpm dlx ...)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC490 / CLAUDE-YARN-DLX-PERMISSION` | Claude settings permissions allow `Bash(yarn dlx ...)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC491 / CLAUDE-PIPX-RUN-PERMISSION` | Claude settings permissions allow `Bash(pipx run ...)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC492 / CLAUDE-NPM-EXEC-PERMISSION` | Claude settings permissions allow `Bash(npm exec ...)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC493 / CLAUDE-BUNX-PERMISSION` | Claude settings permissions allow `Bash(bunx ...)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC488 / CLAUDE-UVX-PERMISSION` | Claude settings permissions allow `Bash(uvx ...)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC489 / CLAUDE-PNPM-DLX-PERMISSION` | Claude settings permissions allow `Bash(pnpm dlx ...)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC490 / CLAUDE-YARN-DLX-PERMISSION` | Claude settings permissions allow `Bash(yarn dlx ...)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC491 / CLAUDE-PIPX-RUN-PERMISSION` | Claude settings permissions allow `Bash(pipx run ...)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC492 / CLAUDE-NPM-EXEC-PERMISSION` | Claude settings permissions allow `Bash(npm exec ...)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC493 / CLAUDE-BUNX-PERMISSION` | Claude settings permissions allow `Bash(bunx ...)` in a shared committed config | `governance` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC494 / MD-NPM-EXEC-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(npm exec:*)` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC495 / MD-BUNX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(bunx:*)` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC496 / MD-UVX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(uvx:*)` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
@@ -221,21 +221,21 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC499 / MD-PIPX-RUN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(pipx run:*)` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC500 / MD-NPX-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(npx:*)` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC501 / MD-GIT-LS-REMOTE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git ls-remote:*)` tool access | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC502 / CLAUDE-GH-API-POST-PERMISSION` | Claude settings permissions allow `Bash(gh api --method POST:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC503 / CLAUDE-GH-ISSUE-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh issue create:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC504 / CLAUDE-GH-REPO-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh repo create:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC502 / CLAUDE-GH-API-POST-PERMISSION` | Claude settings permissions allow `Bash(gh api --method POST:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC503 / CLAUDE-GH-ISSUE-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh issue create:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC504 / CLAUDE-GH-REPO-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh repo create:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC505 / MD-GH-API-POST-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method POST:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC506 / MD-GH-ISSUE-CREATE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh issue create:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC507 / MD-GH-REPO-CREATE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo create:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC508 / CLAUDE-GH-SECRET-SET-PERMISSION` | Claude settings permissions allow `Bash(gh secret set:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC509 / CLAUDE-GH-VARIABLE-SET-PERMISSION` | Claude settings permissions allow `Bash(gh variable set:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC510 / CLAUDE-GH-WORKFLOW-RUN-PERMISSION` | Claude settings permissions allow `Bash(gh workflow run:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC508 / CLAUDE-GH-SECRET-SET-PERMISSION` | Claude settings permissions allow `Bash(gh secret set:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC509 / CLAUDE-GH-VARIABLE-SET-PERMISSION` | Claude settings permissions allow `Bash(gh variable set:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC510 / CLAUDE-GH-WORKFLOW-RUN-PERMISSION` | Claude settings permissions allow `Bash(gh workflow run:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC511 / MD-GH-SECRET-SET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh secret set:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC512 / MD-GH-VARIABLE-SET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh variable set:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC513 / MD-GH-WORKFLOW-RUN-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh workflow run:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC514 / CLAUDE-GH-SECRET-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh secret delete:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC515 / CLAUDE-GH-VARIABLE-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh variable delete:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC516 / CLAUDE-GH-WORKFLOW-DISABLE-PERMISSION` | Claude settings permissions allow `Bash(gh workflow disable:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC514 / CLAUDE-GH-SECRET-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh secret delete:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC515 / CLAUDE-GH-VARIABLE-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh variable delete:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC516 / CLAUDE-GH-WORKFLOW-DISABLE-PERMISSION` | Claude settings permissions allow `Bash(gh workflow disable:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC517 / MD-GH-SECRET-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh secret delete:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC518 / MD-GH-VARIABLE-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh variable delete:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC519 / MD-GH-WORKFLOW-DISABLE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh workflow disable:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
@@ -247,23 +247,23 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC525 / MD-WEBFETCH-WILDCARD` | AI-native markdown frontmatter grants `WebFetch(*)` wildcard access | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC526 / MD-WEBSEARCH-WILDCARD` | AI-native markdown frontmatter grants `WebSearch(*)` wildcard access | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC527 / MD-BASH-WILDCARD` | AI-native markdown frontmatter grants `Bash(*)` wildcard access | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC528 / CLAUDE-GH-API-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh api --method DELETE:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC528 / CLAUDE-GH-API-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh api --method DELETE:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC529 / MD-GH-API-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method DELETE:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC530 / CLAUDE-GH-API-PATCH-PERMISSION` | Claude settings permissions allow `Bash(gh api --method PATCH:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC531 / CLAUDE-GH-API-PUT-PERMISSION` | Claude settings permissions allow `Bash(gh api --method PUT:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC530 / CLAUDE-GH-API-PATCH-PERMISSION` | Claude settings permissions allow `Bash(gh api --method PATCH:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
+| `SEC531 / CLAUDE-GH-API-PUT-PERMISSION` | Claude settings permissions allow `Bash(gh api --method PUT:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC532 / MD-GH-API-PATCH-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method PATCH:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC533 / MD-GH-API-PUT-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method PUT:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC534 / CLAUDE-GH-REPO-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh repo delete:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC534 / CLAUDE-GH-REPO-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh repo delete:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC535 / MD-GH-REPO-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo delete:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC536 / CLAUDE-GH-RELEASE-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh release delete:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC536 / CLAUDE-GH-RELEASE-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh release delete:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC537 / MD-GH-RELEASE-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh release delete:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC538 / CLAUDE-GH-REPO-EDIT-PERMISSION` | Claude settings permissions allow `Bash(gh repo edit:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC538 / CLAUDE-GH-REPO-EDIT-PERMISSION` | Claude settings permissions allow `Bash(gh repo edit:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC539 / MD-GH-REPO-EDIT-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo edit:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC540 / CLAUDE-GH-RELEASE-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh release create:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC540 / CLAUDE-GH-RELEASE-CREATE-PERMISSION` | Claude settings permissions allow `Bash(gh release create:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC541 / MD-GH-RELEASE-CREATE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh release create:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC542 / CLAUDE-GH-REPO-TRANSFER-PERMISSION` | Claude settings permissions allow `Bash(gh repo transfer:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC542 / CLAUDE-GH-REPO-TRANSFER-PERMISSION` | Claude settings permissions allow `Bash(gh repo transfer:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC543 / MD-GH-REPO-TRANSFER-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh repo transfer:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC544 / CLAUDE-GH-RELEASE-UPLOAD-PERMISSION` | Claude settings permissions allow `Bash(gh release upload:*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC544 / CLAUDE-GH-RELEASE-UPLOAD-PERMISSION` | Claude settings permissions allow `Bash(gh release upload:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC545 / MD-GH-RELEASE-UPLOAD-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh release upload:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC546 / MCP-AUTOAPPROVE-BASH-WILDCARD` | MCP configuration auto-approves blanket shell execution with `autoApprove: ["Bash(*)"]` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC547 / MCP-AUTOAPPROVE-CURL` | MCP configuration auto-approves `Bash(curl:*)` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
@@ -351,7 +351,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC629 / CLAUDE-EDIT` | Claude settings permissions allow bare `Edit` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC630 / CLAUDE-GLOB` | Claude settings permissions allow bare `Glob` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC631 / CLAUDE-GREP` | Claude settings permissions allow bare `Grep` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC632 / CLAUDE-WEBFETCH` | Claude settings permissions allow bare `WebFetch` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC632 / CLAUDE-WEBFETCH` | Claude settings permissions allow bare `WebFetch` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC633` | Hook script attempts destructive root deletion | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC634` | Hook script accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC635` | Hook script writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
@@ -2381,10 +2381,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings permissions for bare `WebSearch` grants without a reviewed scope.
@@ -2403,10 +2403,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(git push)` authority.
@@ -2425,10 +2425,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(git checkout:*)` authority.
@@ -2447,10 +2447,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(git commit:*)` authority.
@@ -2469,10 +2469,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(git stash:*)` authority.
@@ -2695,10 +2695,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(npx ...)` mutable package-runner authority.
@@ -2783,10 +2783,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(git add:*)` authority.
@@ -2805,10 +2805,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(git clone:*)` authority.
@@ -2827,10 +2827,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(gh pr:*)` authority.
@@ -2849,10 +2849,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(git fetch:*)` authority.
@@ -2871,10 +2871,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings permissions for wildcard remote repository inspection grants.
@@ -2893,10 +2893,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings permissions for explicit wildcard curl execution grants.
@@ -2915,10 +2915,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings permissions for explicit wildcard wget execution grants.
@@ -2937,10 +2937,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings permissions for wildcard git config mutation grants.
@@ -2959,10 +2959,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings permissions for wildcard git tag mutation grants.
@@ -2981,10 +2981,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings permissions for wildcard git branch mutation grants.
@@ -3043,10 +3043,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings permissions for explicit raw GitHub content fetch grants.
@@ -4363,10 +4363,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(git reset:*)` authority.
@@ -4385,10 +4385,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(git clean:*)` authority.
@@ -4407,10 +4407,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(git restore:*)` authority.
@@ -4429,10 +4429,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(git rebase:*)` authority.
@@ -4451,10 +4451,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(git merge:*)` authority.
@@ -4473,10 +4473,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(git cherry-pick:*)` authority.
@@ -4495,10 +4495,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(git apply:*)` authority.
@@ -4517,10 +4517,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(git am:*)` authority.
@@ -4583,10 +4583,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(uvx ...)` mutable package-runner authority.
@@ -4605,10 +4605,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(pnpm dlx ...)` mutable package-runner authority.
@@ -4627,10 +4627,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(yarn dlx ...)` mutable package-runner authority.
@@ -4649,10 +4649,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(pipx run ...)` mutable package-runner authority.
@@ -4671,10 +4671,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(npm exec ...)` mutable package-runner authority.
@@ -4693,10 +4693,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact `Bash(bunx ...)` mutable package-runner authority.
@@ -4891,10 +4891,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub API POST mutation authority through `permissions.allow`.
@@ -4913,10 +4913,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub issue creation authority through `permissions.allow`.
@@ -4935,10 +4935,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub repository creation authority through `permissions.allow`.
@@ -5023,10 +5023,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub secret mutation authority through `permissions.allow`.
@@ -5045,10 +5045,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub variable mutation authority through `permissions.allow`.
@@ -5067,10 +5067,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub workflow dispatch authority through `permissions.allow`.
@@ -5155,10 +5155,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub secret deletion authority through `permissions.allow`.
@@ -5177,10 +5177,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub variable deletion authority through `permissions.allow`.
@@ -5199,10 +5199,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub workflow disable authority through `permissions.allow`.
@@ -5463,10 +5463,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub API DELETE mutation authority through `permissions.allow`.
@@ -5507,10 +5507,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub API PATCH mutation authority through `permissions.allow`.
@@ -5529,10 +5529,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub API PUT mutation authority through `permissions.allow`.
@@ -5595,10 +5595,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub repository deletion authority through `permissions.allow`.
@@ -5639,10 +5639,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub release deletion authority through `permissions.allow`.
@@ -5683,10 +5683,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub repository settings mutation authority through `permissions.allow`.
@@ -5727,10 +5727,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub release creation authority through `permissions.allow`.
@@ -5771,10 +5771,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub repository transfer authority through `permissions.allow`.
@@ -5815,10 +5815,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings for exact GitHub release asset upload authority through `permissions.allow`.
@@ -7751,10 +7751,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings permissions for exact bare `WebFetch` grants.
