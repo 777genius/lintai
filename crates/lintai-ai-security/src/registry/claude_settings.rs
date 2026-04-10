@@ -1403,7 +1403,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsInvalidHookMatcherEventRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: COMPAT_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact use of `matcher` on unsupported hook events.",
@@ -1423,7 +1423,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsMissingRequiredHookMatcherRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: COMPAT_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact omission of `matcher` on matcher-capable hook events.",
@@ -1443,7 +1443,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsMissingHookTimeoutRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: COMPAT_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for exact omission of `timeout` on command hooks.",
@@ -2703,7 +2703,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsExternalAbsoluteHookCommandRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: COMPAT_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for repo-external absolute hook command paths.",
@@ -2803,7 +2803,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsHomeDirectoryHookCommandRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: COMPAT_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for hook commands rooted in the home directory.",
@@ -2983,7 +2983,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsMissingSchemaRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: COMPAT_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared committed Claude settings for omission of a top-level `$schema` reference.",

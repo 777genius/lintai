@@ -163,6 +163,34 @@ fn shipped_rules_have_expected_default_preset_mapping() {
     assert_eq!(sec401.default_presets(), vec!["compat"]);
     assert_eq!(sec401.public_lane(), PublicLane::Compat);
 
+    let sec361 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC361")
+        .unwrap();
+    assert_eq!(sec361.default_presets(), vec!["compat", "claude"]);
+    assert_eq!(sec361.public_lane(), PublicLane::Compat);
+
+    let sec381 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC381")
+        .unwrap();
+    assert_eq!(sec381.default_presets(), vec!["compat", "claude"]);
+    assert_eq!(sec381.public_lane(), PublicLane::Compat);
+
+    let sec382 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC382")
+        .unwrap();
+    assert_eq!(sec382.default_presets(), vec!["compat", "claude"]);
+    assert_eq!(sec382.public_lane(), PublicLane::Compat);
+
+    let sec383 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC383")
+        .unwrap();
+    assert_eq!(sec383.default_presets(), vec!["compat", "claude"]);
+    assert_eq!(sec383.public_lane(), PublicLane::Compat);
+
     let sec756 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC756")

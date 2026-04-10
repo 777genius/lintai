@@ -305,14 +305,11 @@
         "lintai-ai-security:SEC358",
         "lintai-ai-security:SEC359",
         "lintai-ai-security:SEC360",
-        "lintai-ai-security:SEC361",
         "lintai-ai-security:SEC362",
-        "lintai-ai-security:SEC363",
         "lintai-ai-security:SEC364",
         "lintai-ai-security:SEC365",
         "lintai-ai-security:SEC366",
         "lintai-ai-security:SEC367",
-        "lintai-ai-security:SEC368",
         "lintai-ai-security:SEC369",
         "lintai-ai-security:SEC372",
         "lintai-ai-security:SEC373",
@@ -322,9 +319,6 @@
         "lintai-ai-security:SEC378",
         "lintai-ai-security:SEC379",
         "lintai-ai-security:SEC380",
-        "lintai-ai-security:SEC381",
-        "lintai-ai-security:SEC382",
-        "lintai-ai-security:SEC383",
         "lintai-ai-security:SEC384",
         "lintai-ai-security:SEC385",
         "lintai-ai-security:SEC386",
@@ -458,6 +452,12 @@
       "description": "Policy and compatibility checks that compare declared workspace posture against repository behavior.",
       "extends": [],
       "ruleIds": [
+        "lintai-ai-security:SEC361",
+        "lintai-ai-security:SEC363",
+        "lintai-ai-security:SEC368",
+        "lintai-ai-security:SEC381",
+        "lintai-ai-security:SEC382",
+        "lintai-ai-security:SEC383",
         "lintai-policy-mismatch:SEC401",
         "lintai-policy-mismatch:SEC402",
         "lintai-policy-mismatch:SEC403"
@@ -3482,7 +3482,7 @@
       "slug": "sec361",
       "canonicalPath": "/rules/lintai-ai-security/sec361",
       "summary": "Claude settings file is missing a top-level `$schema` reference",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "preview",
@@ -3491,7 +3491,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "compat",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -3562,7 +3562,7 @@
       "slug": "sec363",
       "canonicalPath": "/rules/lintai-ai-security/sec363",
       "summary": "Claude settings hook command uses a home-directory path in a shared committed config",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "preview",
@@ -3571,7 +3571,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "compat",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -3762,7 +3762,7 @@
       "slug": "sec368",
       "canonicalPath": "/rules/lintai-ai-security/sec368",
       "summary": "Claude settings hook command uses a repo-external absolute path in a shared committed config",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "preview",
@@ -3771,7 +3771,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "compat",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -4231,7 +4231,7 @@
       "slug": "sec381",
       "canonicalPath": "/rules/lintai-ai-security/sec381",
       "summary": "Claude settings command hook should set `timeout` in a shared committed config",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "preview",
@@ -4240,7 +4240,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "compat",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -4271,7 +4271,7 @@
       "slug": "sec382",
       "canonicalPath": "/rules/lintai-ai-security/sec382",
       "summary": "Claude settings should not use `matcher` on unsupported hook events",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "preview",
@@ -4280,7 +4280,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "compat",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -4311,7 +4311,7 @@
       "slug": "sec383",
       "canonicalPath": "/rules/lintai-ai-security/sec383",
       "summary": "Claude settings should set `matcher` on matcher-capable hook events",
-      "publicLane": "preview",
+      "publicLane": "compat",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "preview",
@@ -4320,7 +4320,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "compat",
         "claude"
       ],
       "lifecycleState": "stable_gated",

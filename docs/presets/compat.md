@@ -7,11 +7,17 @@ presetId: compat
 
 ## What This Preset Enables
 
-The `compat` preset enables workspace policy mismatch rules as a separate policy/audit lane.
+The `compat` preset enables compatibility and contract checks as a separate audit lane.
+
+That includes:
+
+- workspace policy mismatch rules
+- shared config contract checks where the file is valid enough to parse, but still likely to misbehave or mislead reviewers
+- tool-specific compatibility checks such as Claude settings quality rules that are useful, but not headline security findings
 
 ## When To Use It
 
-Use it when project policy and repo-local artifacts need to stay aligned.
+Use it when project policy and repo-local artifacts need to stay aligned, or when you want shared config correctness checks without mixing them into the main security preview lane.
 
 ## Tradeoffs
 

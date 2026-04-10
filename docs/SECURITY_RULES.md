@@ -80,14 +80,14 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC358 / PLUGIN-AGENT-MCPSERVERS` | Plugin agent frontmatter sets `mcpServers` | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC359 / CURSOR-RULE-ALWAYSAPPLY` | Cursor rule frontmatter `alwaysApply` must be boolean | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC360 / CURSOR-RULE-GLOBS` | Cursor rule frontmatter `globs` must be a sequence of patterns | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC361 / CLAUDE-SETTINGS-SCHEMA` | Claude settings file is missing a top-level `$schema` reference | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC361 / CLAUDE-SETTINGS-SCHEMA` | Claude settings file is missing a top-level `$schema` reference | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
 | `SEC362 / CLAUDE-BASH-WILDCARD` | Claude settings permissions allow `Bash(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC363 / CLAUDE-HOME-HOOK-PATH` | Claude settings hook command uses a home-directory path in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC363 / CLAUDE-HOME-HOOK-PATH` | Claude settings hook command uses a home-directory path in a shared committed config | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
 | `SEC364 / CLAUDE-BYPASS-PERMISSIONS` | Claude settings set `permissions.defaultMode` to `bypassPermissions` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC365 / CLAUDE-HTTP-HOOK-URL` | Claude settings allow non-HTTPS HTTP hook URLs in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC366 / CLAUDE-HTTP-HOOK-HOST` | Claude settings allow dangerous host literals in `allowedHttpHookUrls` | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC367 / CLAUDE-WEBFETCH-WILDCARD` | Claude settings permissions allow `WebFetch(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC368 / CLAUDE-ABS-HOOK-PATH` | Claude settings hook command uses a repo-external absolute path in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC368 / CLAUDE-ABS-HOOK-PATH` | Claude settings hook command uses a repo-external absolute path in a shared committed config | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
 | `SEC369 / CLAUDE-WRITE-WILDCARD` | Claude settings permissions allow `Write(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC370 / COPILOT-PATH-SUFFIX` | Path-specific GitHub Copilot instruction markdown under `.github/instructions/` uses the wrong file suffix | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC371 / COPILOT-APPLYTO-TYPE` | Path-specific GitHub Copilot instruction markdown has an invalid `applyTo` shape | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
@@ -100,9 +100,9 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC378 / CURSOR-ALWAYSAPPLY-GLOBS` | Cursor rule frontmatter should not set `globs` when `alwaysApply` is `true` | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC379 / CURSOR-UNKNOWN-FRONTMATTER` | Cursor rule frontmatter contains an unknown key | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC380 / CURSOR-DESCRIPTION` | Cursor rule frontmatter should include `description` | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC381 / CLAUDE-HOOK-TIMEOUT` | Claude settings command hook should set `timeout` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC382 / CLAUDE-HOOK-MATCHER-EVENT` | Claude settings should not use `matcher` on unsupported hook events | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC383 / CLAUDE-HOOK-MISSING-MATCHER` | Claude settings should set `matcher` on matcher-capable hook events | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC381 / CLAUDE-HOOK-TIMEOUT` | Claude settings command hook should set `timeout` in a shared committed config | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
+| `SEC382 / CLAUDE-HOOK-MATCHER-EVENT` | Claude settings should not use `matcher` on unsupported hook events | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
+| `SEC383 / CLAUDE-HOOK-MISSING-MATCHER` | Claude settings should set `matcher` on matcher-capable hook events | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
 | `SEC384 / CLAUDE-WEBSEARCH-UNSCOPED` | Claude settings permissions allow bare `WebSearch` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC385 / CLAUDE-GIT-PUSH-PERMISSION` | Claude settings permissions allow `Bash(git push)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC386 / CLAUDE-GIT-CHECKOUT-PERMISSION` | Claude settings permissions allow `Bash(git checkout:*)` in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
@@ -1899,10 +1899,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `compat`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for omission of a top-level `$schema` reference.
@@ -1943,10 +1943,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `compat`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for hook commands rooted in the home directory.
@@ -2053,10 +2053,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `compat`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for repo-external absolute hook command paths.
@@ -2315,10 +2315,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `compat`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact omission of `timeout` on command hooks.
@@ -2337,10 +2337,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `compat`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact use of `matcher` on unsupported hook events.
@@ -2359,10 +2359,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `compat`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `claude`
+- Default Presets: `compat`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared committed Claude settings for exact omission of `matcher` on matcher-capable hook events.
