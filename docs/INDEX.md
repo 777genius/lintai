@@ -4,8 +4,8 @@
   <p class="lintai-kicker">Rule Guide</p>
   <h1>Browse rules and presets with less guesswork.</h1>
   <p class="lintai-lead">
-    Start with the quiet `recommended` default, then opt into `preview` or `governance` only
-    when you want broader review.
+    Start with the quiet `recommended` default, then opt into `preview` or explicit sidecar
+    lanes like `compat`, `governance`, and `supply-chain` only when you want broader review.
   </p>
   <div class="lintai-feature-list">
     <div class="lintai-feature-item">
@@ -23,7 +23,7 @@
 
 - Open [recommended preset](/presets/recommended) if you want the main default most teams should start with.
 - Open [Rule Reference](/rules/) to browse checks by provider and rule code.
-- Open [Preset Reference](/presets/) to understand activation defaults and overlays.
+- Open [Preset Reference](/presets/) to understand activation defaults, overlays, and sidecar lanes.
 
 ## Featured Rules
 
@@ -32,7 +32,7 @@ If you only look at a few rules first, start with these:
 - [SEC340](/rules/lintai-ai-security/sec340) for mutable package launchers in committed Claude hook settings.
 - [SEC329](/rules/lintai-ai-security/sec329) for mutable package launchers in committed `mcp.json`.
 - [SEC352](/rules/lintai-ai-security/sec352) for unscoped `Bash` grants in AI-native frontmatter. This remains the strongest skills-markdown preview rule from recent external validation.
-- [SEC324](/rules/lintai-ai-security/sec324) for unpinned third-party GitHub Actions in committed CI.
+- [SEC324](/rules/lintai-ai-security/sec324) for unpinned third-party GitHub Actions in committed CI. Treat this as a strong sidecar supply-chain control, not as the main quiet-default story.
 
 ## What You Will Find
 

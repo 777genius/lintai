@@ -1,6 +1,6 @@
-# Топ правил для AI-линтера (security-first)
+# Топ правил для AI-линтера (precision-first)
 
-Документ **ручной**: приоритизация и threat-model для репозиториев со **skills**, **MCP**, **инструкциями в Markdown**, **tool JSON**, **плагинами IDE** и **CI-артефактами**. Не заменяет сгенерированный каталог текущих кодов правил — см. **[SECURITY_RULES.md](SECURITY_RULES.md)**.
+Документ **ручной**: приоритизация и threat-model для репозиториев со **skills**, **MCP**, **инструкциями в Markdown**, **tool JSON**, **плагинами IDE** и **CI-артефактами**. Он описывает не только headline security-сигналы, но и practical default checks, preview signals и sidecar controls. Не заменяет сгенерированный каталог текущих кодов правил — см. **[SECURITY_RULES.md](SECURITY_RULES.md)**.
 
 **Срез:** 29 марта 2026. Часть правил уже покрывается shipped `SEC*` в `lintai-ai-security`, часть — кандидаты на следующие итерации.
 
@@ -29,12 +29,12 @@
 
 Текущий более честный first-screen набор такой:
 
-1. `SEC352` — сильнейший least-privilege rule для shared skills/frontmatter. Увер. `9/10`, Надёж. `9/10`
-2. `SEC340` — mutable launcher в committed Claude settings hook. Увер. `9/10`, Надёж. `9/10`
-3. `SEC329` — mutable launcher в committed MCP config. Увер. `9/10`, Надёж. `9/10`
-4. `SEC324` — unpinned third-party GitHub Action как сильный supply-chain control. Увер. `9/10`, Надёж. `9/10`
+1. `SEC340` — mutable launcher в committed Claude settings hook. Увер. `9/10`, Надёж. `9/10`
+2. `SEC329` — mutable launcher в committed MCP config. Увер. `9/10`, Надёж. `9/10`
+3. `SEC352` — сильнейший least-privilege rule для shared skills/frontmatter. Увер. `9/10`, Надёж. `9/10`
+4. `SEC324` — unpinned third-party GitHub Action как сильный sidecar supply-chain control. Увер. `9/10`, Надёж. `9/10`
 
-`SEC347` по-прежнему хороший preview rule и useful deeper-review signal для AI-native docs, но его больше не стоит подавать как quiet-default face of product.
+`SEC340`, `SEC329` и `SEC352` лучше всего показывают quiet-default и near-default product value. `SEC324` тоже очень сильный, но его правильнее подавать как supporting sidecar control, а не как proof, что весь продукт в первую очередь про CI supply chain. `SEC347` по-прежнему хороший preview rule и useful deeper-review signal для AI-native docs, но его больше не стоит подавать как quiet-default face of product.
 
 ## Синтез 15 исследовательских агентов (март 2026)
 

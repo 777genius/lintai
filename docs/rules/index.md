@@ -23,7 +23,7 @@
 
 ## Start With These
 
-These are the current highest-signal community-facing rules based on the latest external validation work:
+These are the current highest-signal community-facing rules based on the latest external validation work. The first three are the clearest default-value story; `SEC324` remains a strong sidecar hardening control:
 
 - [SEC340](/rules/lintai-ai-security/sec340): Claude hook commands using mutable package launchers
 - [SEC329](/rules/lintai-ai-security/sec329): committed `mcp.json` using mutable package launchers
