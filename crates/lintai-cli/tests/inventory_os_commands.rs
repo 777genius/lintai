@@ -190,6 +190,7 @@ fn inventory_os_explicit_presets_enable_broader_machine_review() {
             "inventory-os",
             "--scope=user",
             "--preset=base",
+            "--preset=preview",
             "--preset=mcp",
             "--preset=claude",
             "--preset=supply-chain",

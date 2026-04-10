@@ -110,14 +110,13 @@ fn fix_preview_surfaces_suggestions_for_mcp_repo_without_planning_fixes() {
     assert_eq!(output.status.code(), Some(0));
     let stdout = stdout_string(&output);
     assert!(stdout.contains("no autofixable findings matched the current selection"));
-    assert!(stdout.contains("suggest SEC301"));
     assert!(stdout.contains("suggest-edit SEC302"));
     assert!(!stdout.contains("suggest SEC303"));
     assert!(stdout.contains("replacement: \"https://\""));
     assert!(stdout.contains("planned 0 fix(es)"));
-    assert!(stdout.contains("surfaced 2 suggestion-bearing finding(s)"));
+    assert!(stdout.contains("surfaced 1 suggestion-bearing finding(s)"));
     assert!(stdout.contains("surfaced 1 suggestion edit(s)"));
-    assert!(stdout.contains("surfaced 1 message-only suggestion(s)"));
+    assert!(stdout.contains("surfaced 0 message-only suggestion(s)"));
     assert!(stdout.contains("files changed 0"));
 }
 

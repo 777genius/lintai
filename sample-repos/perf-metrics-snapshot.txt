@@ -21,8 +21,8 @@ ai_security_work_budget=signal_builds:1 markdown_regions:6 hook_lines:0 hook_tok
 
 repo=mcp-heavy
 scanned_files=2
-findings=2
-provider_metrics=provider=lintai-ai-security phase=file invocations=2 findings=2 errors=0
+findings=1
+provider_metrics=provider=lintai-ai-security phase=file invocations=2 findings=1 errors=0
 provider=lintai-policy-mismatch phase=workspace invocations=1 findings=0 errors=0
 ai_security_work_budget=signal_builds:2 markdown_regions:3 hook_lines:0 hook_tokens:0 json_values:20 json_locator_builds:1
 

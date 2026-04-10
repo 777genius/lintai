@@ -9,7 +9,6 @@ Included surfaces:
 
 Expected findings:
 
-- `SEC301` shell-wrapper MCP command
 - `SEC302` plain HTTP MCP endpoint
 
 Expected result:

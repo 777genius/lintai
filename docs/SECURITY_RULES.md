@@ -23,7 +23,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC204 / HOOK-TLS-BYPASS` | Hook script disables TLS or certificate verification for a network call | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC205 / HOOK-STATIC-AUTH` | Hook script embeds static authentication material in a network call | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `base` |
 | `SEC206 / HOOK-BASE64-EXEC` | Hook script decodes a base64 payload and executes it | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `base` |
-| `SEC301 / MCP-SHELL-WRAPPER` | MCP configuration shells out through sh -c or bash -c | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC301 / MCP-SHELL-WRAPPER` | MCP configuration shells out through sh -c or bash -c | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC302 / MCP-PLAIN-HTTP-ENDPOINT` | Configuration contains an insecure http:// endpoint | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `suggestion` | `supply-chain` |
 | `SEC303 / MCP-CREDENTIAL-ENV-PASSTHROUGH` | MCP configuration passes through credential environment variables | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
 | `SEC304 / MCP-TLS-BYPASS` | Configuration disables TLS or certificate verification | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
@@ -32,7 +32,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC307 / MCP-SENSITIVE-ENV-REFERENCE` | Configuration forwards sensitive environment variable references | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `governance`, `mcp` |
 | `SEC308 / MCP-SUSPICIOUS-ENDPOINT` | Configuration points at a suspicious remote endpoint | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
 | `SEC309 / MCP-LITERAL-SECRET` | Configuration commits literal secret material in env, auth, or header values | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC310 / MCP-METADATA-HOST-LITERAL` | Configuration endpoint targets a metadata or private-network host literal | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
+| `SEC310 / MCP-METADATA-HOST-LITERAL` | Configuration endpoint targets a metadata or private-network host literal | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC311 / PLUGIN-UNSAFE-PATH` | Cursor plugin manifest contains an unsafe absolute or parent-traversing path | `compat` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC312 / MD-PRIVATE-KEY` | Markdown contains committed private key material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `base`, `skills` |
 | `SEC313 / MD-PIPE-SHELL` | Fenced shell example pipes remote content directly into a shell | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
@@ -736,7 +736,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit shell-wrapper command structure in JSON config, whether the shell is the command itself or the first launch argument.
@@ -922,7 +922,7 @@ Important behavior:
 - Public Lane: `preview`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `base`, `mcp`
+- Default Presets: `preview`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit metadata-service or private-network host literals in endpoint-like configuration values.

@@ -43,10 +43,8 @@
         "lintai-ai-security:SEC204",
         "lintai-ai-security:SEC205",
         "lintai-ai-security:SEC206",
-        "lintai-ai-security:SEC301",
         "lintai-ai-security:SEC305",
         "lintai-ai-security:SEC309",
-        "lintai-ai-security:SEC310",
         "lintai-ai-security:SEC312",
         "lintai-ai-security:SEC321",
         "lintai-ai-security:SEC329",
@@ -176,8 +174,10 @@
         "lintai-ai-security:SEC103",
         "lintai-ai-security:SEC104",
         "lintai-ai-security:SEC105",
+        "lintai-ai-security:SEC301",
         "lintai-ai-security:SEC306",
         "lintai-ai-security:SEC308",
+        "lintai-ai-security:SEC310",
         "lintai-ai-security:SEC313",
         "lintai-ai-security:SEC335",
         "lintai-ai-security:SEC338",
@@ -1311,7 +1311,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -1647,7 +1647,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "base",
+        "preview",
         "mcp"
       ],
       "lifecycleState": "stable_gated",

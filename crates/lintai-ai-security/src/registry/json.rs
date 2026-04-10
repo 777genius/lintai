@@ -2114,7 +2114,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: McpShellWrapperRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit shell-wrapper command structure in JSON config, whether the shell is the command itself or the first launch argument.",
@@ -2282,7 +2282,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
     NativeRuleSpec {
         metadata: JsonDangerousEndpointHostRule::METADATA,
         surface: Surface::Json,
-        default_presets: BASE_MCP_PRESETS,
+        default_presets: PREVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit metadata-service or private-network host literals in endpoint-like configuration values.",

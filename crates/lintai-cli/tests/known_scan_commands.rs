@@ -108,6 +108,7 @@ fn scan_known_global_respects_explicit_presets_for_machine_artifacts() {
             "scan-known",
             "--scope=global",
             "--preset=base",
+            "--preset=preview",
             "--preset=mcp",
             "--format=json",
         ],

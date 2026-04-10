@@ -191,11 +191,8 @@ fn mcp_heavy_sample_repo_emits_mcp_rule_set() {
     let text = format_text(&report);
 
     assert_case_summary(&manifest, &summary);
-    assert_eq!(
-        sample_repo_rule_codes(&summary),
-        BTreeSet::from(["SEC301", "SEC302"])
-    );
-    for rule_code in ["SEC301", "SEC302"] {
+    assert_eq!(sample_repo_rule_codes(&summary), BTreeSet::from(["SEC302"]));
+    for rule_code in ["SEC302"] {
         assert!(text.contains(rule_code));
         assert!(text.contains("  suggest:"));
         let finding = summary
@@ -204,10 +201,7 @@ fn mcp_heavy_sample_repo_emits_mcp_rule_set() {
             .find(|finding| finding.rule_code == rule_code)
             .unwrap();
         assert!(!finding.suggestions.is_empty());
-        match rule_code {
-            "SEC302" => assert!(finding.suggestions[0].fix.is_some()),
-            _ => assert!(finding.suggestions[0].fix.is_none()),
-        }
+        assert!(finding.suggestions[0].fix.is_some());
     }
 }
 
