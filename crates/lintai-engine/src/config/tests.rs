@@ -186,6 +186,7 @@ enable = ["strict"]
 fn engine_config_can_be_built_from_explicit_builtin_presets() {
     let config = super::EngineConfig::from_enabled_presets(&[
         "base".to_owned(),
+        "threat-review".to_owned(),
         "mcp".to_owned(),
         "claude".to_owned(),
     ])
@@ -193,13 +194,18 @@ fn engine_config_can_be_built_from_explicit_builtin_presets() {
 
     assert_eq!(
         config.resolve_for(".cursor/mcp.json").enabled_presets,
-        vec!["base".to_owned(), "mcp".to_owned(), "claude".to_owned()]
+        vec![
+            "base".to_owned(),
+            "threat-review".to_owned(),
+            "mcp".to_owned(),
+            "claude".to_owned(),
+        ]
     );
     assert!(
         config
             .resolve_for(".cursor/mcp.json")
             .active_rule_codes
-            .contains("SEC301")
+            .contains("SEC338")
     );
     assert!(
         config
@@ -211,7 +217,7 @@ fn engine_config_can_be_built_from_explicit_builtin_presets() {
         !config
             .resolve_for("skills/demo/SKILL.md")
             .active_rule_codes
-            .contains("SEC102")
+            .contains("SEC352")
     );
 }
 
@@ -336,7 +342,7 @@ enable = ["base", "skills"]
         vec!["base".to_owned(), "skills".to_owned()]
     );
     assert_eq!(
-        resolved.severity_for("SEC347", Category::Security, Severity::Warn),
+        resolved.severity_for("SEC335", Category::Security, Severity::Warn),
         Severity::Warn
     );
 }

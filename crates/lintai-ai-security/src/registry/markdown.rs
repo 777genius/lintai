@@ -1553,7 +1553,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: HtmlCommentDirectiveRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: THREAT_REVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Depends on suspicious phrase heuristics inside hidden HTML comments.",
@@ -1567,7 +1567,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownDownloadExecRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: THREAT_REVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Depends on prose command heuristics outside code blocks.",
@@ -1583,7 +1583,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: HtmlCommentDownloadExecRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: THREAT_REVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Depends on hidden-comment command heuristics rather than a structural execution model.",
@@ -1597,7 +1597,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownBase64ExecRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: THREAT_REVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Depends on prose base64-and-exec text heuristics.",
@@ -1613,7 +1613,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownPathTraversalRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: THREAT_REVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Depends on prose path-traversal and access-verb heuristics.",
@@ -2135,7 +2135,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: UntrustedInstructionPromotionRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: THREAT_REVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Instruction-boundary promotion in markdown is prose-aware and needs external usefulness review before any stronger posture.",
@@ -2151,7 +2151,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: ApprovalBypassInstructionRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: THREAT_REVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Heuristic,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Approval-bypass guidance in markdown is prose-aware and needs external usefulness review before any stronger posture.",
@@ -3499,7 +3499,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownPrivateKeyPemRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: THREAT_REVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Matches explicit committed private-key PEM markers inside agent markdown surfaces.",
@@ -3519,7 +3519,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     NativeRuleSpec {
         metadata: MarkdownFencedPipeShellRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: THREAT_REVIEW_SKILLS_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Preview {
             blocker: "Depends on fenced shell-example command heuristics and still needs broader external precision review.",

@@ -39,7 +39,7 @@ pub(crate) fn format_explain_config(
     output.push_str(&format!("detected_format={:?}\n", resolved.detected_format));
     output.push_str(&format!("enabled_presets={:?}\n", resolved.enabled_presets));
     if resolved.enabled_presets == ["recommended"] {
-        output.push_str("preset_note=recommended is the quiet default for most teams; add preview or governance when you want broader review\n");
+        output.push_str("preset_note=recommended is the quiet default for most teams; add preview, threat-review, or governance when you want broader review\n");
     }
     output.push_str(&format!(
         "relevant_surface_presets={:?}\n",
@@ -125,7 +125,7 @@ mod tests {
 
         assert!(formatted.contains("enabled_presets=[\"recommended\"]"));
         assert!(formatted.contains(
-            "preset_note=recommended is the quiet default for most teams; add preview or governance when you want broader review"
+            "preset_note=recommended is the quiet default for most teams; add preview, threat-review, or governance when you want broader review"
         ));
     }
 

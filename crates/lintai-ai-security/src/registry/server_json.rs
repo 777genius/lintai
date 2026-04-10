@@ -111,7 +111,7 @@ pub(crate) const RULE_SPECS: [NativeRuleSpec; 5] = [
     NativeRuleSpec {
         metadata: ServerJsonLiteralAuthHeaderRule::METADATA,
         surface: Surface::ServerJson,
-        default_presets: PREVIEW_MCP_PRESETS,
+        default_presets: THREAT_REVIEW_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks remotes[].headers[] auth-like values for literal bearer/basic material or literal API key style values.",

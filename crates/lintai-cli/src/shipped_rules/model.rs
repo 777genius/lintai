@@ -50,6 +50,11 @@ impl SecurityRuleCatalogEntry {
             {
                 "Structural stable rule positioned as a supply-chain hardening control: high-precision and actionable, but not a blanket claim of direct repository compromise."
             }
+            (CatalogDetectionClass::Structural, RuleTier::Stable)
+                if self.public_lane == CatalogPublicLane::ThreatReview =>
+            {
+                "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default."
+            }
             (CatalogDetectionClass::Heuristic, _) => {
                 "Heuristic preview rule; not a stable contract and may evolve as false-positive tuning improves."
             }

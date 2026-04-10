@@ -352,15 +352,15 @@ mod tests {
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC101")
             .expect("SEC101 should exist");
-        assert_eq!(sec101.default_presets, vec!["preview", "skills"]);
+        assert_eq!(sec101.default_presets, vec!["threat-review", "skills"]);
 
         let sec201 = catalog
             .rules
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC201")
             .expect("SEC201 should exist");
-        assert_eq!(sec201.default_presets, vec!["preview"]);
-        assert_eq!(sec201.public_lane, "preview");
+        assert_eq!(sec201.default_presets, vec!["threat-review"]);
+        assert_eq!(sec201.public_lane, "threat-review");
 
         let sec340 = catalog
             .rules
@@ -402,8 +402,8 @@ mod tests {
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC321")
             .expect("SEC321 should exist");
-        assert_eq!(sec321.default_presets, vec!["preview", "mcp"]);
-        assert_eq!(sec321.public_lane, "preview");
+        assert_eq!(sec321.default_presets, vec!["threat-review", "mcp"]);
+        assert_eq!(sec321.public_lane, "threat-review");
 
         let sec320 = catalog
             .rules
@@ -530,72 +530,72 @@ mod tests {
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC633")
             .expect("SEC633 should exist");
-        assert_eq!(sec633.default_presets, vec!["preview"]);
-        assert_eq!(sec633.public_lane, "preview");
+        assert_eq!(sec633.default_presets, vec!["threat-review"]);
+        assert_eq!(sec633.public_lane, "threat-review");
 
         let sec687 = catalog
             .rules
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC687")
             .expect("SEC687 should exist");
-        assert_eq!(sec687.default_presets, vec!["preview"]);
-        assert_eq!(sec687.public_lane, "preview");
+        assert_eq!(sec687.default_presets, vec!["threat-review"]);
+        assert_eq!(sec687.public_lane, "threat-review");
 
         let sec727 = catalog
             .rules
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC727")
             .expect("SEC727 should exist");
-        assert_eq!(sec727.default_presets, vec!["preview"]);
-        assert_eq!(sec727.public_lane, "preview");
+        assert_eq!(sec727.default_presets, vec!["threat-review"]);
+        assert_eq!(sec727.public_lane, "threat-review");
 
         let sec637 = catalog
             .rules
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC637")
             .expect("SEC637 should exist");
-        assert_eq!(sec637.default_presets, vec!["preview", "mcp"]);
-        assert_eq!(sec637.public_lane, "preview");
+        assert_eq!(sec637.default_presets, vec!["threat-review", "mcp"]);
+        assert_eq!(sec637.public_lane, "threat-review");
 
         let sec674 = catalog
             .rules
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC674")
             .expect("SEC674 should exist");
-        assert_eq!(sec674.default_presets, vec!["preview", "mcp"]);
-        assert_eq!(sec674.public_lane, "preview");
+        assert_eq!(sec674.default_presets, vec!["threat-review", "mcp"]);
+        assert_eq!(sec674.public_lane, "threat-review");
 
         let sec705 = catalog
             .rules
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC705")
             .expect("SEC705 should exist");
-        assert_eq!(sec705.default_presets, vec!["preview", "mcp"]);
-        assert_eq!(sec705.public_lane, "preview");
+        assert_eq!(sec705.default_presets, vec!["threat-review", "mcp"]);
+        assert_eq!(sec705.public_lane, "threat-review");
 
         let sec641 = catalog
             .rules
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC641")
             .expect("SEC641 should exist");
-        assert_eq!(sec641.default_presets, vec!["preview", "claude"]);
-        assert_eq!(sec641.public_lane, "preview");
+        assert_eq!(sec641.default_presets, vec!["threat-review", "claude"]);
+        assert_eq!(sec641.public_lane, "threat-review");
 
         let sec677 = catalog
             .rules
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC677")
             .expect("SEC677 should exist");
-        assert_eq!(sec677.default_presets, vec!["preview", "claude"]);
-        assert_eq!(sec677.public_lane, "preview");
+        assert_eq!(sec677.default_presets, vec!["threat-review", "claude"]);
+        assert_eq!(sec677.public_lane, "threat-review");
 
         let sec739 = catalog
             .rules
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC739")
             .expect("SEC739 should exist");
-        assert_eq!(sec739.default_presets, vec!["preview", "claude"]);
-        assert_eq!(sec739.public_lane, "preview");
+        assert_eq!(sec739.default_presets, vec!["threat-review", "claude"]);
+        assert_eq!(sec739.public_lane, "threat-review");
 
         let sec352 = catalog
             .rules
@@ -610,8 +610,8 @@ mod tests {
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC312")
             .expect("SEC312 should exist");
-        assert_eq!(sec312.default_presets, vec!["preview", "skills"]);
-        assert_eq!(sec312.public_lane, "preview");
+        assert_eq!(sec312.default_presets, vec!["threat-review", "skills"]);
+        assert_eq!(sec312.public_lane, "threat-review");
 
         let sec347 = catalog
             .rules
@@ -746,32 +746,32 @@ mod tests {
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC338")
             .expect("SEC338 should exist");
-        assert_eq!(sec338.default_presets, vec!["preview", "mcp"]);
-        assert_eq!(sec338.public_lane, "preview");
+        assert_eq!(sec338.default_presets, vec!["threat-review", "mcp"]);
+        assert_eq!(sec338.public_lane, "threat-review");
 
         let sec339 = catalog
             .rules
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC339")
             .expect("SEC339 should exist");
-        assert_eq!(sec339.default_presets, vec!["preview", "mcp"]);
-        assert_eq!(sec339.public_lane, "preview");
+        assert_eq!(sec339.default_presets, vec!["threat-review", "mcp"]);
+        assert_eq!(sec339.public_lane, "threat-review");
 
         let sec422 = catalog
             .rules
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC422")
             .expect("SEC422 should exist");
-        assert_eq!(sec422.default_presets, vec!["preview", "mcp"]);
-        assert_eq!(sec422.public_lane, "preview");
+        assert_eq!(sec422.default_presets, vec!["threat-review", "mcp"]);
+        assert_eq!(sec422.public_lane, "threat-review");
 
         let sec446 = catalog
             .rules
             .iter()
             .find(|rule| rule.rule_id == "lintai-ai-security:SEC446")
             .expect("SEC446 should exist");
-        assert_eq!(sec446.default_presets, vec!["preview", "mcp"]);
-        assert_eq!(sec446.public_lane, "preview");
+        assert_eq!(sec446.default_presets, vec!["threat-review", "mcp"]);
+        assert_eq!(sec446.public_lane, "threat-review");
 
         let sec355 = catalog
             .rules

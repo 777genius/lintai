@@ -91,14 +91,14 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .iter()
         .find(|entry| entry.metadata.code == "SEC201")
         .unwrap();
-    assert_eq!(sec201.default_presets(), vec!["preview"]);
-    assert_eq!(sec201.public_lane(), PublicLane::Preview);
+    assert_eq!(sec201.default_presets(), vec!["threat-review"]);
+    assert_eq!(sec201.public_lane(), PublicLane::ThreatReview);
 
     let sec101 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC101")
         .unwrap();
-    assert_eq!(sec101.default_presets(), vec!["preview", "skills"]);
+    assert_eq!(sec101.default_presets(), vec!["threat-review", "skills"]);
 
     let sec323 = entries
         .iter()
@@ -118,8 +118,8 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .iter()
         .find(|entry| entry.metadata.code == "SEC321")
         .unwrap();
-    assert_eq!(sec321.default_presets(), vec!["preview", "mcp"]);
-    assert_eq!(sec321.public_lane(), PublicLane::Preview);
+    assert_eq!(sec321.default_presets(), vec!["threat-review", "mcp"]);
+    assert_eq!(sec321.public_lane(), PublicLane::ThreatReview);
 
     let sec320 = entries
         .iter()
@@ -387,155 +387,155 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .iter()
         .find(|entry| entry.metadata.code == "SEC338")
         .unwrap();
-    assert_eq!(sec338.default_presets(), vec!["preview", "mcp"]);
-    assert_eq!(sec338.public_lane(), PublicLane::Preview);
+    assert_eq!(sec338.default_presets(), vec!["threat-review", "mcp"]);
+    assert_eq!(sec338.public_lane(), PublicLane::ThreatReview);
 
     let sec339 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC339")
         .unwrap();
-    assert_eq!(sec339.default_presets(), vec!["preview", "mcp"]);
-    assert_eq!(sec339.public_lane(), PublicLane::Preview);
+    assert_eq!(sec339.default_presets(), vec!["threat-review", "mcp"]);
+    assert_eq!(sec339.public_lane(), PublicLane::ThreatReview);
 
     let sec422 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC422")
         .unwrap();
-    assert_eq!(sec422.default_presets(), vec!["preview", "mcp"]);
-    assert_eq!(sec422.public_lane(), PublicLane::Preview);
+    assert_eq!(sec422.default_presets(), vec!["threat-review", "mcp"]);
+    assert_eq!(sec422.public_lane(), PublicLane::ThreatReview);
 
     let sec312 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC312")
         .unwrap();
-    assert_eq!(sec312.default_presets(), vec!["preview", "skills"]);
-    assert_eq!(sec312.public_lane(), PublicLane::Preview);
+    assert_eq!(sec312.default_presets(), vec!["threat-review", "skills"]);
+    assert_eq!(sec312.public_lane(), PublicLane::ThreatReview);
 
     let sec446 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC446")
         .unwrap();
-    assert_eq!(sec446.default_presets(), vec!["preview", "mcp"]);
-    assert_eq!(sec446.public_lane(), PublicLane::Preview);
+    assert_eq!(sec446.default_presets(), vec!["threat-review", "mcp"]);
+    assert_eq!(sec446.public_lane(), PublicLane::ThreatReview);
 
     let sec633 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC633")
         .unwrap();
-    assert_eq!(sec633.default_presets(), vec!["preview"]);
-    assert_eq!(sec633.public_lane(), PublicLane::Preview);
+    assert_eq!(sec633.default_presets(), vec!["threat-review"]);
+    assert_eq!(sec633.public_lane(), PublicLane::ThreatReview);
 
     let sec649 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC649")
         .unwrap();
-    assert_eq!(sec649.default_presets(), vec!["preview"]);
-    assert_eq!(sec649.public_lane(), PublicLane::Preview);
+    assert_eq!(sec649.default_presets(), vec!["threat-review"]);
+    assert_eq!(sec649.public_lane(), PublicLane::ThreatReview);
 
     let sec687 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC687")
         .unwrap();
-    assert_eq!(sec687.default_presets(), vec!["preview"]);
-    assert_eq!(sec687.public_lane(), PublicLane::Preview);
+    assert_eq!(sec687.default_presets(), vec!["threat-review"]);
+    assert_eq!(sec687.public_lane(), PublicLane::ThreatReview);
 
     let sec703 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC703")
         .unwrap();
-    assert_eq!(sec703.default_presets(), vec!["preview"]);
-    assert_eq!(sec703.public_lane(), PublicLane::Preview);
+    assert_eq!(sec703.default_presets(), vec!["threat-review"]);
+    assert_eq!(sec703.public_lane(), PublicLane::ThreatReview);
 
     let sec727 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC727")
         .unwrap();
-    assert_eq!(sec727.default_presets(), vec!["preview"]);
-    assert_eq!(sec727.public_lane(), PublicLane::Preview);
+    assert_eq!(sec727.default_presets(), vec!["threat-review"]);
+    assert_eq!(sec727.public_lane(), PublicLane::ThreatReview);
 
     let sec637 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC637")
         .unwrap();
-    assert_eq!(sec637.default_presets(), vec!["preview", "mcp"]);
-    assert_eq!(sec637.public_lane(), PublicLane::Preview);
+    assert_eq!(sec637.default_presets(), vec!["threat-review", "mcp"]);
+    assert_eq!(sec637.public_lane(), PublicLane::ThreatReview);
 
     let sec652 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC652")
         .unwrap();
-    assert_eq!(sec652.default_presets(), vec!["preview", "mcp"]);
-    assert_eq!(sec652.public_lane(), PublicLane::Preview);
+    assert_eq!(sec652.default_presets(), vec!["threat-review", "mcp"]);
+    assert_eq!(sec652.public_lane(), PublicLane::ThreatReview);
 
     let sec674 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC674")
         .unwrap();
-    assert_eq!(sec674.default_presets(), vec!["preview", "mcp"]);
-    assert_eq!(sec674.public_lane(), PublicLane::Preview);
+    assert_eq!(sec674.default_presets(), vec!["threat-review", "mcp"]);
+    assert_eq!(sec674.public_lane(), PublicLane::ThreatReview);
 
     let sec705 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC705")
         .unwrap();
-    assert_eq!(sec705.default_presets(), vec!["preview", "mcp"]);
-    assert_eq!(sec705.public_lane(), PublicLane::Preview);
+    assert_eq!(sec705.default_presets(), vec!["threat-review", "mcp"]);
+    assert_eq!(sec705.public_lane(), PublicLane::ThreatReview);
 
     let sec729 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC729")
         .unwrap();
-    assert_eq!(sec729.default_presets(), vec!["preview", "mcp"]);
-    assert_eq!(sec729.public_lane(), PublicLane::Preview);
+    assert_eq!(sec729.default_presets(), vec!["threat-review", "mcp"]);
+    assert_eq!(sec729.public_lane(), PublicLane::ThreatReview);
 
     let sec737 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC737")
         .unwrap();
-    assert_eq!(sec737.default_presets(), vec!["preview", "mcp"]);
-    assert_eq!(sec737.public_lane(), PublicLane::Preview);
+    assert_eq!(sec737.default_presets(), vec!["threat-review", "mcp"]);
+    assert_eq!(sec737.public_lane(), PublicLane::ThreatReview);
 
     let sec641 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC641")
         .unwrap();
-    assert_eq!(sec641.default_presets(), vec!["preview", "claude"]);
-    assert_eq!(sec641.public_lane(), PublicLane::Preview);
+    assert_eq!(sec641.default_presets(), vec!["threat-review", "claude"]);
+    assert_eq!(sec641.public_lane(), PublicLane::ThreatReview);
 
     let sec655 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC655")
         .unwrap();
-    assert_eq!(sec655.default_presets(), vec!["preview", "claude"]);
-    assert_eq!(sec655.public_lane(), PublicLane::Preview);
+    assert_eq!(sec655.default_presets(), vec!["threat-review", "claude"]);
+    assert_eq!(sec655.public_lane(), PublicLane::ThreatReview);
 
     let sec677 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC677")
         .unwrap();
-    assert_eq!(sec677.default_presets(), vec!["preview", "claude"]);
-    assert_eq!(sec677.public_lane(), PublicLane::Preview);
+    assert_eq!(sec677.default_presets(), vec!["threat-review", "claude"]);
+    assert_eq!(sec677.public_lane(), PublicLane::ThreatReview);
 
     let sec707 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC707")
         .unwrap();
-    assert_eq!(sec707.default_presets(), vec!["preview", "claude"]);
-    assert_eq!(sec707.public_lane(), PublicLane::Preview);
+    assert_eq!(sec707.default_presets(), vec!["threat-review", "claude"]);
+    assert_eq!(sec707.public_lane(), PublicLane::ThreatReview);
 
     let sec731 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC731")
         .unwrap();
-    assert_eq!(sec731.default_presets(), vec!["preview", "claude"]);
-    assert_eq!(sec731.public_lane(), PublicLane::Preview);
+    assert_eq!(sec731.default_presets(), vec!["threat-review", "claude"]);
+    assert_eq!(sec731.public_lane(), PublicLane::ThreatReview);
 
     let sec739 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC739")
         .unwrap();
-    assert_eq!(sec739.default_presets(), vec!["preview", "claude"]);
-    assert_eq!(sec739.public_lane(), PublicLane::Preview);
+    assert_eq!(sec739.default_presets(), vec!["threat-review", "claude"]);
+    assert_eq!(sec739.public_lane(), PublicLane::ThreatReview);
 
     let sec355 = entries
         .iter()

@@ -111,6 +111,12 @@ fn builtin_preset_spec(name: &str) -> Result<BuiltinPresetSpec, ConfigError> {
             active_rules: rules_for_preset("preview"),
             ..Default::default()
         }),
+        "threat-review" => Ok(BuiltinPresetSpec {
+            name: "threat-review",
+            extends: &[],
+            active_rules: rules_for_preset("threat-review"),
+            ..Default::default()
+        }),
         "skills" => Ok(BuiltinPresetSpec {
             name: "skills",
             extends: &[],
@@ -154,7 +160,7 @@ fn builtin_preset_spec(name: &str) -> Result<BuiltinPresetSpec, ConfigError> {
             ..Default::default()
         }),
         other => Err(ConfigError::new(format!(
-            "unknown builtin preset `{other}`; expected one of: recommended, base, strict, compat, preview, skills, mcp, claude, guidance, governance, supply-chain, advisory"
+            "unknown builtin preset `{other}`; expected one of: recommended, base, strict, compat, preview, threat-review, skills, mcp, claude, guidance, governance, supply-chain, advisory"
         ))),
     }
 }

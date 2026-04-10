@@ -1,13 +1,15 @@
 pub(crate) const HEURISTIC_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed precision review, a non-heuristic graduation basis, and completed stable checklist metadata.";
 pub(crate) const STRUCTURAL_PREVIEW_REQUIREMENTS: &str = "Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.";
-pub(crate) const PREVIEW_PRESETS: &[&str] = &["preview"];
 pub(crate) const PREVIEW_SKILLS_PRESETS: &[&str] = &["preview", "skills"];
 pub(crate) const PREVIEW_MCP_PRESETS: &[&str] = &["preview", "mcp"];
+pub(crate) const THREAT_REVIEW_PRESETS: &[&str] = &["threat-review"];
+pub(crate) const THREAT_REVIEW_SKILLS_PRESETS: &[&str] = &["threat-review", "skills"];
+pub(crate) const THREAT_REVIEW_MCP_PRESETS: &[&str] = &["threat-review", "mcp"];
 pub(crate) const COMPAT_MCP_PRESETS: &[&str] = &["compat", "mcp"];
 pub(crate) const GOVERNANCE_MCP_PRESETS: &[&str] = &["governance", "mcp"];
 pub(crate) const SUPPLY_CHAIN_MCP_PRESETS: &[&str] = &["supply-chain", "mcp"];
 pub(crate) const RECOMMENDED_BASE_MCP_PRESETS: &[&str] = &["recommended", "base", "mcp"];
-pub(crate) const PREVIEW_CLAUDE_PRESETS: &[&str] = &["preview", "claude"];
+pub(crate) const THREAT_REVIEW_CLAUDE_PRESETS: &[&str] = &["threat-review", "claude"];
 pub(crate) const COMPAT_CLAUDE_PRESETS: &[&str] = &["compat", "claude"];
 pub(crate) const GOVERNANCE_CLAUDE_PRESETS: &[&str] = &["governance", "claude"];
 pub(crate) const SUPPLY_CHAIN_CLAUDE_PRESETS: &[&str] = &["supply-chain", "claude"];

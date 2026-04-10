@@ -20,6 +20,7 @@ pub(super) fn append_default_summary(output: &mut String, report: &ReportEnvelop
     if !report.findings.is_empty() {
         let mut recommended = 0usize;
         let mut preview = 0usize;
+        let mut threat_review = 0usize;
         let mut governance = 0usize;
         let mut guidance = 0usize;
         let mut supply_chain = 0usize;
@@ -30,6 +31,7 @@ pub(super) fn append_default_summary(output: &mut String, report: &ReportEnvelop
             match shipped_rule_public_lane(&finding.rule_code).unwrap_or(PublicLane::Preview) {
                 PublicLane::Recommended => recommended += 1,
                 PublicLane::Preview => preview += 1,
+                PublicLane::ThreatReview => threat_review += 1,
                 PublicLane::Governance => governance += 1,
                 PublicLane::Guidance => guidance += 1,
                 PublicLane::SupplyChain => supply_chain += 1,
@@ -40,6 +42,7 @@ pub(super) fn append_default_summary(output: &mut String, report: &ReportEnvelop
 
         append_lane_summary(output, "recommended findings", recommended);
         append_lane_summary(output, "preview findings", preview);
+        append_lane_summary(output, "threat-review findings", threat_review);
         append_lane_summary(output, "governance review findings", governance);
         append_lane_summary(output, "guidance findings", guidance);
         append_lane_summary(output, "supply-chain findings", supply_chain);

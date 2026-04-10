@@ -34,6 +34,12 @@ const BUILTIN_PRESETS: &[BuiltinPresetSpec] = &[
         extends: &[],
     },
     BuiltinPresetSpec {
+        id: "threat-review",
+        kind: BuiltinPresetKind::Membership,
+        description: "Explicit threat-review rules for malicious, credential-bearing, or spyware-like behavior that should stay opt-in instead of shaping the quiet default.",
+        extends: &[],
+    },
+    BuiltinPresetSpec {
         id: "compat",
         kind: BuiltinPresetKind::Membership,
         description: "Policy and compatibility checks that compare declared workspace posture against repository behavior.",
@@ -112,6 +118,8 @@ pub fn builtin_public_lane_for_presets(preset_ids: &[&str]) -> CatalogPublicLane
         CatalogPublicLane::SupplyChain
     } else if preset_ids.contains(&"advisory") {
         CatalogPublicLane::Advisory
+    } else if preset_ids.contains(&"threat-review") {
+        CatalogPublicLane::ThreatReview
     } else if preset_ids.contains(&"compat") {
         CatalogPublicLane::Compat
     } else if preset_ids.contains(&"guidance") {
@@ -155,6 +163,7 @@ mod tests {
         assert!(membership_ids.contains(&"recommended"));
         assert!(membership_ids.contains(&"base"));
         assert!(membership_ids.contains(&"compat"));
+        assert!(membership_ids.contains(&"threat-review"));
         assert!(!membership_ids.contains(&"strict"));
     }
 
@@ -179,6 +188,10 @@ mod tests {
         assert_eq!(
             builtin_public_lane_for_presets(&["advisory"]),
             CatalogPublicLane::Advisory
+        );
+        assert_eq!(
+            builtin_public_lane_for_presets(&["threat-review", "mcp"]),
+            CatalogPublicLane::ThreatReview
         );
         assert_eq!(
             builtin_public_lane_for_presets(&["preview", "skills"]),

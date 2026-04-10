@@ -5,7 +5,7 @@
   <h1>Browse rules and presets with less guesswork.</h1>
   <p class="lintai-lead">
     Start with the quiet `recommended` default, then opt into `preview` or explicit sidecar
-    lanes like `compat`, `governance`, and `supply-chain` only when you want broader review.
+    lanes like `threat-review`, `compat`, `governance`, and `supply-chain` only when you want broader review.
   </p>
   <div class="lintai-feature-list">
     <div class="lintai-feature-item">

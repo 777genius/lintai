@@ -72,7 +72,8 @@ pub(super) fn render_preset_activation_model() -> Vec<String> {
         String::new(),
         "- `recommended`: the quiet practical default for most teams, composed from curated high-signal shipped rules".to_owned(),
         "- `base`: the minimal stable baseline kept for explicit compatibility-focused setups".to_owned(),
-        "- `preview`: deeper-review rules that expand coverage beyond the recommended default and include context-sensitive shipped preview checks".to_owned(),
+        "- `preview`: deeper-review rules that expand coverage beyond the recommended default without becoming the catch-all malicious-behavior bucket".to_owned(),
+        "- `threat-review`: explicit malicious, credential-bearing, or spyware-like review rules that stay opt-in because they should not shape the quiet default or the softer preview lane".to_owned(),
         "- `compat`: workspace policy mismatch rules (`SEC401`-`SEC403`) kept as a separate policy lane".to_owned(),
         "- `skills`: markdown-surface rules for the core instruction/skills lane".to_owned(),
         "- `mcp`: all `json`, `tool_json`, and `server_json` surface rules, including preview MCP/config rules".to_owned(),
@@ -86,7 +87,7 @@ pub(super) fn render_preset_activation_model() -> Vec<String> {
         String::new(),
         "- `strict` is a severity overlay, not a membership preset: when enabled, active security rules are raised through preset policy instead of silently activating new rules by itself.".to_owned(),
         "- if `[presets]` is omitted, `lintai` enables `recommended` by default.".to_owned(),
-        "- Dedicated sidecar lanes such as `compat`, `guidance`, `governance`, `supply-chain`, and `advisory` stay opt-in and are not implied by `base` or `preview`.".to_owned(),
+        "- Dedicated sidecar lanes such as `threat-review`, `compat`, `guidance`, `governance`, `supply-chain`, and `advisory` stay opt-in and are not implied by `base` or `preview`.".to_owned(),
         "- Category overrides do not activate rules outside the resolved preset set.".to_owned(),
         "- Explicit `[rules] SECxxx = \"...\"` remains the escape hatch for intentional per-rule opt-in outside the default preset set.".to_owned(),
     ]

@@ -1,2 +1,2 @@
 [presets]
-enable = ["preview", "mcp"]
+enable = ["preview", "threat-review", "mcp"]

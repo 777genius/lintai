@@ -32,7 +32,7 @@ The current shipped lanes are optimized for high-signal repository-local review 
 
 - quiet default `recommended` checks for committed config and shared-policy signals that are easy to explain and review often
 - deeper-review `preview` checks for useful but more contextual findings
-- explicit `compat`, `governance`, and `supply-chain` sidecar lanes for contract quality, workflow policy, and supporting hardening controls
+- explicit `threat-review`, `compat`, `governance`, and `supply-chain` sidecar lanes for malicious-behavior review, contract quality, workflow policy, and supporting hardening controls
 - hidden or override-style instructions in agent-facing text surfaces
 - hook scripts that download-and-execute, exfiltrate secrets, disable TLS verification, or embed static auth
 - MCP and plugin JSON configurations that shell out unsafely, use insecure endpoints, disable trust checks, pass through sensitive credentials, or launch remote tooling through mutable execution paths

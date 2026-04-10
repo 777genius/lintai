@@ -102,6 +102,7 @@ impl CatalogRemediationSupport {
 pub enum CatalogPublicLane {
     Recommended,
     Preview,
+    ThreatReview,
     Governance,
     Guidance,
     SupplyChain,
@@ -114,6 +115,7 @@ impl CatalogPublicLane {
         match self {
             Self::Recommended => "recommended",
             Self::Preview => "preview",
+            Self::ThreatReview => "threat-review",
             Self::Governance => "governance",
             Self::Guidance => "guidance",
             Self::SupplyChain => "supply-chain",
@@ -154,6 +156,7 @@ mod tests {
         assert_eq!(CatalogPublicLane::SupplyChain.slug(), "supply-chain");
         assert_eq!(CatalogPublicLane::Compat.slug(), "compat");
         assert_eq!(CatalogPublicLane::Advisory.slug(), "advisory");
+        assert_eq!(CatalogPublicLane::ThreatReview.slug(), "threat-review");
         assert_eq!(
             CatalogRemediationSupport::MessageOnly.slug(),
             "message_only"

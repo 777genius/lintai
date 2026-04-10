@@ -24,6 +24,7 @@
   - suspicious phrases in descriptive text
   - suspicious host markers
   - env-name heuristics or similar signals that may need FP tuning
+- **`threat-review`** is the explicit opt-in lane for malicious, credential-bearing, or spyware-like signals that may still be structurally strong but should not define the main `preview` story or the quiet default UX
 - Эвристическое правило может быть полезным, но пока оно зависит от phrase/domain marker lists, оно не считается canonical `Stable`.
 
 ## Graduation gates

@@ -266,6 +266,12 @@ mod tests {
             &["preview", "skills"],
             CatalogPublicLane::Preview,
         );
+        validate_rule_presets(
+            "demo",
+            "SEC201",
+            &["threat-review", "mcp"],
+            CatalogPublicLane::ThreatReview,
+        );
         validate_rule_presets("demo", "SEC401", &["compat"], CatalogPublicLane::Compat);
         validate_rule_quality_contract(
             "demo",

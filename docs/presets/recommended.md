@@ -18,4 +18,5 @@ context-sensitive preview checks or workflow-governance review findings.
 ## Tradeoffs
 
 You get a calmer default with stronger practical signal, but broader context-sensitive review stays
-in `preview`, and shared-authority policy checks stay in `governance`.
+in `preview`, explicit malicious-behavior review stays in `threat-review`, and shared-authority
+policy checks stay in `governance`.

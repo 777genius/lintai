@@ -17,6 +17,7 @@ impl ValidationPackage {
         "claude",
         "skills",
         "preview",
+        "threat-review",
         "compat",
         "governance",
         "guidance",

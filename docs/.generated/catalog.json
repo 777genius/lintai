@@ -49,6 +49,22 @@
       "description": "Deeper-review rules that expand coverage beyond the recommended default.",
       "extends": [],
       "ruleIds": [
+        "lintai-ai-security:SEC301",
+        "lintai-ai-security:SEC306",
+        "lintai-ai-security:SEC308",
+        "lintai-ai-security:SEC310",
+        "lintai-ai-security:SEC335",
+        "lintai-ai-security:SEC349"
+      ],
+      "canonicalPath": "/presets/preview"
+    },
+    {
+      "id": "threat-review",
+      "kind": "membership",
+      "title": "threat-review",
+      "description": "Explicit threat-review rules for malicious, credential-bearing, or spyware-like behavior that should stay opt-in instead of shaping the quiet default.",
+      "extends": [],
+      "ruleIds": [
         "lintai-ai-security:SEC101",
         "lintai-ai-security:SEC102",
         "lintai-ai-security:SEC103",
@@ -60,19 +76,13 @@
         "lintai-ai-security:SEC204",
         "lintai-ai-security:SEC205",
         "lintai-ai-security:SEC206",
-        "lintai-ai-security:SEC301",
         "lintai-ai-security:SEC305",
-        "lintai-ai-security:SEC306",
-        "lintai-ai-security:SEC308",
         "lintai-ai-security:SEC309",
-        "lintai-ai-security:SEC310",
         "lintai-ai-security:SEC312",
         "lintai-ai-security:SEC313",
         "lintai-ai-security:SEC321",
-        "lintai-ai-security:SEC335",
         "lintai-ai-security:SEC338",
         "lintai-ai-security:SEC339",
-        "lintai-ai-security:SEC349",
         "lintai-ai-security:SEC350",
         "lintai-ai-security:SEC351",
         "lintai-ai-security:SEC422",
@@ -188,7 +198,7 @@
         "lintai-ai-security:SEC741",
         "lintai-ai-security:SEC742"
       ],
-      "canonicalPath": "/presets/preview"
+      "canonicalPath": "/presets/threat-review"
     },
     {
       "id": "compat",
@@ -908,7 +918,7 @@
       "slug": "sec101",
       "canonicalPath": "/rules/lintai-ai-security/sec101",
       "summary": "Hidden HTML comment contains dangerous agent instructions",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -917,7 +927,7 @@
       "detectionClass": "heuristic",
       "remediationSupport": "safe_fix",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "skills"
       ],
       "lifecycleState": "preview_blocked",
@@ -940,7 +950,7 @@
       "slug": "sec102",
       "canonicalPath": "/rules/lintai-ai-security/sec102",
       "summary": "Markdown contains remote download-and-execute instruction outside code blocks",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -949,7 +959,7 @@
       "detectionClass": "heuristic",
       "remediationSupport": "suggestion",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "skills"
       ],
       "lifecycleState": "preview_blocked",
@@ -972,7 +982,7 @@
       "slug": "sec103",
       "canonicalPath": "/rules/lintai-ai-security/sec103",
       "summary": "Hidden HTML comment contains remote download-and-execute instruction",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -981,7 +991,7 @@
       "detectionClass": "heuristic",
       "remediationSupport": "safe_fix",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "skills"
       ],
       "lifecycleState": "preview_blocked",
@@ -1004,7 +1014,7 @@
       "slug": "sec104",
       "canonicalPath": "/rules/lintai-ai-security/sec104",
       "summary": "Markdown contains a base64-decoded executable payload outside code blocks",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -1013,7 +1023,7 @@
       "detectionClass": "heuristic",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "skills"
       ],
       "lifecycleState": "preview_blocked",
@@ -1036,7 +1046,7 @@
       "slug": "sec105",
       "canonicalPath": "/rules/lintai-ai-security/sec105",
       "summary": "Markdown instructions reference parent-directory traversal for file access",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -1045,7 +1055,7 @@
       "detectionClass": "heuristic",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "skills"
       ],
       "lifecycleState": "preview_blocked",
@@ -1068,7 +1078,7 @@
       "slug": "sec201",
       "canonicalPath": "/rules/lintai-ai-security/sec201",
       "summary": "Hook script downloads remote code and executes it",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -1077,7 +1087,7 @@
       "detectionClass": "structural",
       "remediationSupport": "suggestion",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -1093,7 +1103,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals download-and-execute observation over non-comment hook lines."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -1107,7 +1117,7 @@
       "slug": "sec202",
       "canonicalPath": "/rules/lintai-ai-security/sec202",
       "summary": "Hook script appears to exfiltrate secrets through a network call",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -1116,7 +1126,7 @@
       "detectionClass": "structural",
       "remediationSupport": "suggestion",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -1132,7 +1142,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals secret exfil observation from network markers plus secret markers on non-comment lines."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -1146,7 +1156,7 @@
       "slug": "sec203",
       "canonicalPath": "/rules/lintai-ai-security/sec203",
       "summary": "Hook script sends secret material to an insecure http:// endpoint",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -1155,7 +1165,7 @@
       "detectionClass": "structural",
       "remediationSupport": "suggestion",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -1171,7 +1181,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals precise http:// span observation gated by concurrent secret exfil markers."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -1185,7 +1195,7 @@
       "slug": "sec204",
       "canonicalPath": "/rules/lintai-ai-security/sec204",
       "summary": "Hook script disables TLS or certificate verification for a network call",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -1194,7 +1204,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -1210,7 +1220,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals TLS-bypass token observation over parsed hook line tokens and network context."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -1224,7 +1234,7 @@
       "slug": "sec205",
       "canonicalPath": "/rules/lintai-ai-security/sec205",
       "summary": "Hook script embeds static authentication material in a network call",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -1233,7 +1243,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -1249,7 +1259,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals userinfo/header literal extraction excluding dynamic references."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -1263,7 +1273,7 @@
       "slug": "sec206",
       "canonicalPath": "/rules/lintai-ai-security/sec206",
       "summary": "Hook script decodes a base64 payload and executes it",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -1272,7 +1282,7 @@
       "detectionClass": "structural",
       "remediationSupport": "suggestion",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -1288,7 +1298,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals base64-decode plus exec observation over non-comment hook lines."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -1462,7 +1472,7 @@
       "slug": "sec305",
       "canonicalPath": "/rules/lintai-ai-security/sec305",
       "summary": "Configuration embeds static authentication material in a connection or auth value",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -1471,7 +1481,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -1488,7 +1498,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals literal authorization or userinfo span extraction excluding dynamic placeholders."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -1598,7 +1608,7 @@
       "slug": "sec309",
       "canonicalPath": "/rules/lintai-ai-security/sec309",
       "summary": "Configuration commits literal secret material in env, auth, or header values",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -1607,7 +1617,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -1624,7 +1634,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals literal secret observation over env, header, and auth-like keys excluding dynamic placeholders."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -1718,7 +1728,7 @@
       "slug": "sec312",
       "canonicalPath": "/rules/lintai-ai-security/sec312",
       "summary": "Markdown contains committed private key material",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -1727,7 +1737,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "skills"
       ],
       "lifecycleState": "stable_gated",
@@ -1744,7 +1754,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "MarkdownSignals private-key marker observation across parsed markdown regions excluding placeholder examples."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -1758,7 +1768,7 @@
       "slug": "sec313",
       "canonicalPath": "/rules/lintai-ai-security/sec313",
       "summary": "Fenced shell example pipes remote content directly into a shell",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -1767,7 +1777,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "skills"
       ],
       "lifecycleState": "preview_blocked",
@@ -2070,7 +2080,7 @@
       "slug": "sec321",
       "canonicalPath": "/rules/lintai-ai-security/sec321",
       "summary": "server.json remotes header commits literal authentication material",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "server_json",
       "tier": "stable",
@@ -2079,7 +2089,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -2096,7 +2106,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ServerJsonSignals inspects remotes[].headers[] auth-like names and value literals without looking at packages[].transport."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -2584,7 +2594,7 @@
       "slug": "sec338",
       "canonicalPath": "/rules/lintai-ai-security/sec338",
       "summary": "MCP configuration launches Docker with a bind mount of sensitive host material",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -2593,7 +2603,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -2610,7 +2620,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals docker run argument analysis over ArtifactKind::McpConfig objects, limited to -v/--volume and --mount bind forms with sensitive host-path markers."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -2624,7 +2634,7 @@
       "slug": "sec339",
       "canonicalPath": "/rules/lintai-ai-security/sec339",
       "summary": "MCP configuration launches Docker with a host-escape or privileged runtime flag",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -2633,7 +2643,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -2650,7 +2660,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals docker run argument analysis over ArtifactKind::McpConfig objects, limited to explicit privileged and host namespace flags."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -3036,7 +3046,7 @@
       "slug": "sec350",
       "canonicalPath": "/rules/lintai-ai-security/sec350",
       "summary": "Instruction markdown promotes untrusted external content to developer/system-level instructions",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -3045,7 +3055,7 @@
       "detectionClass": "heuristic",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "skills"
       ],
       "lifecycleState": "preview_blocked",
@@ -3068,7 +3078,7 @@
       "slug": "sec351",
       "canonicalPath": "/rules/lintai-ai-security/sec351",
       "summary": "AI-native instruction explicitly disables user approval or confirmation",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "preview",
@@ -3077,7 +3087,7 @@
       "detectionClass": "heuristic",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "skills"
       ],
       "lifecycleState": "preview_blocked",
@@ -5602,7 +5612,7 @@
       "slug": "sec422",
       "canonicalPath": "/rules/lintai-ai-security/sec422",
       "summary": "MCP configuration launches the server through `sudo`",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -5611,7 +5621,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -5628,7 +5638,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact string detection for `command: \"sudo\"` on parsed MCP configuration objects."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -6539,7 +6549,7 @@
       "slug": "sec446",
       "canonicalPath": "/rules/lintai-ai-security/sec446",
       "summary": "MCP configuration passes `sudo` as the first launch argument",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -6548,7 +6558,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -6565,7 +6575,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals exact string detection for `args[0] == \"sudo\"` on parsed MCP configuration objects."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -13959,7 +13969,7 @@
       "slug": "sec633",
       "canonicalPath": "/rules/lintai-ai-security/sec633",
       "summary": "Hook script attempts destructive root deletion",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -13968,7 +13978,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -13984,7 +13994,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals shell-token analysis over non-comment hook lines for `rm` with recursive+force flags targeting `/` or using `--no-preserve-root`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -13998,7 +14008,7 @@
       "slug": "sec634",
       "canonicalPath": "/rules/lintai-ai-security/sec634",
       "summary": "Hook script accesses a sensitive system password file",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -14007,7 +14017,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -14023,7 +14033,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals path detection over non-comment hook lines for `/etc/shadow`, `/etc/passwd`, `/etc/sudoers`, `/etc/gshadow`, or `/etc/master.passwd`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14037,7 +14047,7 @@
       "slug": "sec635",
       "canonicalPath": "/rules/lintai-ai-security/sec635",
       "summary": "Hook script writes to a shell profile startup file",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -14046,7 +14056,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -14062,7 +14072,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals redirection-or-tee detection over `.bashrc`, `.bash_profile`, `.zshrc`, or `.profile` targets in non-comment hook lines."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14076,7 +14086,7 @@
       "slug": "sec636",
       "canonicalPath": "/rules/lintai-ai-security/sec636",
       "summary": "Hook script writes to SSH authorized_keys",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -14085,7 +14095,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -14101,7 +14111,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals redirection-or-tee detection for `authorized_keys` targets in non-comment hook lines."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14115,7 +14125,7 @@
       "slug": "sec637",
       "canonicalPath": "/rules/lintai-ai-security/sec637",
       "summary": "MCP configuration command attempts destructive root deletion",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -14124,7 +14134,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14141,7 +14151,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `rm` with recursive+force flags targeting `/` or using `--no-preserve-root`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14155,7 +14165,7 @@
       "slug": "sec638",
       "canonicalPath": "/rules/lintai-ai-security/sec638",
       "summary": "MCP configuration command accesses a sensitive system password file",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -14164,7 +14174,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14181,7 +14191,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args path detection over ArtifactKind::McpConfig for `/etc/shadow`, `/etc/passwd`, `/etc/sudoers`, `/etc/gshadow`, or `/etc/master.passwd`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14195,7 +14205,7 @@
       "slug": "sec639",
       "canonicalPath": "/rules/lintai-ai-security/sec639",
       "summary": "MCP configuration command writes to a shell profile startup file",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -14204,7 +14214,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14221,7 +14231,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig using redirection-or-tee targeting of `.bashrc`, `.bash_profile`, `.zshrc`, or `.profile`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14235,7 +14245,7 @@
       "slug": "sec640",
       "canonicalPath": "/rules/lintai-ai-security/sec640",
       "summary": "MCP configuration command writes to SSH authorized_keys",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -14244,7 +14254,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14261,7 +14271,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig using redirection-or-tee targeting of `authorized_keys`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14275,7 +14285,7 @@
       "slug": "sec641",
       "canonicalPath": "/rules/lintai-ai-security/sec641",
       "summary": "Claude settings command hook attempts destructive root deletion",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -14284,7 +14294,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -14301,7 +14311,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `rm` with recursive+force flags targeting `/` or using `--no-preserve-root`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14315,7 +14325,7 @@
       "slug": "sec642",
       "canonicalPath": "/rules/lintai-ai-security/sec642",
       "summary": "Claude settings command hook accesses a sensitive system password file",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -14324,7 +14334,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -14341,7 +14351,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook path detection over committed hook entries with type == command for `/etc/shadow`, `/etc/passwd`, `/etc/sudoers`, `/etc/gshadow`, or `/etc/master.passwd`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14355,7 +14365,7 @@
       "slug": "sec643",
       "canonicalPath": "/rules/lintai-ai-security/sec643",
       "summary": "Claude settings command hook writes to a shell profile startup file",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -14364,7 +14374,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -14381,7 +14391,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook analysis over committed hook entries with type == command using redirection-or-tee targeting of `.bashrc`, `.bash_profile`, `.zshrc`, or `.profile`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14395,7 +14405,7 @@
       "slug": "sec644",
       "canonicalPath": "/rules/lintai-ai-security/sec644",
       "summary": "Claude settings command hook writes to SSH authorized_keys",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -14404,7 +14414,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -14421,7 +14431,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook analysis over committed hook entries with type == command using redirection-or-tee targeting of `authorized_keys`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14435,7 +14445,7 @@
       "slug": "sec645",
       "canonicalPath": "/rules/lintai-ai-security/sec645",
       "summary": "Plugin hook command attempts destructive root deletion",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -14444,7 +14454,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14461,7 +14471,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `rm` with recursive+force flags targeting `/` or using `--no-preserve-root`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14475,7 +14485,7 @@
       "slug": "sec646",
       "canonicalPath": "/rules/lintai-ai-security/sec646",
       "summary": "Plugin hook command accesses a sensitive system password file",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -14484,7 +14494,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14501,7 +14511,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string path detection over ArtifactKind::CursorPluginHooks for `/etc/shadow`, `/etc/passwd`, `/etc/sudoers`, `/etc/gshadow`, or `/etc/master.passwd`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14515,7 +14525,7 @@
       "slug": "sec647",
       "canonicalPath": "/rules/lintai-ai-security/sec647",
       "summary": "Plugin hook command writes to a shell profile startup file",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -14524,7 +14534,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14541,7 +14551,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks using redirection-or-tee targeting of `.bashrc`, `.bash_profile`, `.zshrc`, or `.profile`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14555,7 +14565,7 @@
       "slug": "sec648",
       "canonicalPath": "/rules/lintai-ai-security/sec648",
       "summary": "Plugin hook command writes to SSH authorized_keys",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -14564,7 +14574,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14581,7 +14591,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks using redirection-or-tee targeting of `authorized_keys`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14595,7 +14605,7 @@
       "slug": "sec649",
       "canonicalPath": "/rules/lintai-ai-security/sec649",
       "summary": "Hook script manipulates cron persistence",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -14604,7 +14614,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -14620,7 +14630,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-or-write-target detection over non-comment hook lines for `crontab` mutation or writes to `/etc/cron*` and `/var/spool/cron`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14634,7 +14644,7 @@
       "slug": "sec650",
       "canonicalPath": "/rules/lintai-ai-security/sec650",
       "summary": "Hook script registers a systemd service or unit for persistence",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -14643,7 +14653,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -14659,7 +14669,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-or-write-target detection over non-comment hook lines for `systemctl enable|link` or writes to systemd unit paths."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14673,7 +14683,7 @@
       "slug": "sec651",
       "canonicalPath": "/rules/lintai-ai-security/sec651",
       "summary": "Hook script registers a launchd plist for persistence",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -14682,7 +14692,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -14698,7 +14708,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-or-write-target detection over non-comment hook lines for `launchctl load|bootstrap` or writes to LaunchAgents/LaunchDaemons plist paths."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14712,7 +14722,7 @@
       "slug": "sec652",
       "canonicalPath": "/rules/lintai-ai-security/sec652",
       "summary": "MCP configuration command manipulates cron persistence",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -14721,7 +14731,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14738,7 +14748,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `crontab` mutation or writes to cron persistence paths."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14752,7 +14762,7 @@
       "slug": "sec653",
       "canonicalPath": "/rules/lintai-ai-security/sec653",
       "summary": "MCP configuration command registers a systemd service or unit for persistence",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -14761,7 +14771,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14778,7 +14788,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `systemctl enable|link` or writes to systemd unit paths."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14792,7 +14802,7 @@
       "slug": "sec654",
       "canonicalPath": "/rules/lintai-ai-security/sec654",
       "summary": "MCP configuration command registers a launchd plist for persistence",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -14801,7 +14811,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14818,7 +14828,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `launchctl load|bootstrap` or writes to LaunchAgents/LaunchDaemons plist paths."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14832,7 +14842,7 @@
       "slug": "sec655",
       "canonicalPath": "/rules/lintai-ai-security/sec655",
       "summary": "Claude settings command hook manipulates cron persistence",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -14841,7 +14851,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -14858,7 +14868,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `crontab` mutation or writes to cron persistence paths."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14872,7 +14882,7 @@
       "slug": "sec656",
       "canonicalPath": "/rules/lintai-ai-security/sec656",
       "summary": "Claude settings command hook registers a systemd service or unit for persistence",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -14881,7 +14891,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -14898,7 +14908,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `systemctl enable|link` or writes to systemd unit paths."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14912,7 +14922,7 @@
       "slug": "sec657",
       "canonicalPath": "/rules/lintai-ai-security/sec657",
       "summary": "Claude settings command hook registers a launchd plist for persistence",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -14921,7 +14931,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -14938,7 +14948,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `launchctl load|bootstrap` or writes to LaunchAgents/LaunchDaemons plist paths."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14952,7 +14962,7 @@
       "slug": "sec658",
       "canonicalPath": "/rules/lintai-ai-security/sec658",
       "summary": "Plugin hook command manipulates cron persistence",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -14961,7 +14971,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -14978,7 +14988,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `crontab` mutation or writes to cron persistence paths."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -14992,7 +15002,7 @@
       "slug": "sec659",
       "canonicalPath": "/rules/lintai-ai-security/sec659",
       "summary": "Plugin hook command registers a systemd service or unit for persistence",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -15001,7 +15011,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15018,7 +15028,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `systemctl enable|link` or writes to systemd unit paths."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15032,7 +15042,7 @@
       "slug": "sec660",
       "canonicalPath": "/rules/lintai-ai-security/sec660",
       "summary": "Plugin hook command registers a launchd plist for persistence",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -15041,7 +15051,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15058,7 +15068,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `launchctl load|bootstrap` or writes to LaunchAgents/LaunchDaemons plist paths."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15072,7 +15082,7 @@
       "slug": "sec661",
       "canonicalPath": "/rules/lintai-ai-security/sec661",
       "summary": "Hook script performs an insecure permission change",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -15081,7 +15091,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -15097,7 +15107,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals shell-token analysis over non-comment hook lines for `chmod 777`, `chmod 0777`, or symbolic world-writable modes such as `a+rwx`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15111,7 +15121,7 @@
       "slug": "sec662",
       "canonicalPath": "/rules/lintai-ai-security/sec662",
       "summary": "Hook script manipulates setuid or setgid permissions",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -15120,7 +15130,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -15136,7 +15146,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals shell-token analysis over non-comment hook lines for chmod octal modes with setuid/setgid bits or symbolic modes such as `u+s` and `g+s`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15150,7 +15160,7 @@
       "slug": "sec663",
       "canonicalPath": "/rules/lintai-ai-security/sec663",
       "summary": "Hook script manipulates Linux capabilities",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -15159,7 +15169,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -15175,7 +15185,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals shell-token analysis over non-comment hook lines for `setcap` or dangerous Linux capability tokens such as `cap_setuid` and `cap_sys_admin`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15189,7 +15199,7 @@
       "slug": "sec664",
       "canonicalPath": "/rules/lintai-ai-security/sec664",
       "summary": "MCP configuration command performs an insecure permission change",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -15198,7 +15208,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15215,7 +15225,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `chmod 777`, `chmod 0777`, or symbolic world-writable modes such as `a+rwx`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15229,7 +15239,7 @@
       "slug": "sec665",
       "canonicalPath": "/rules/lintai-ai-security/sec665",
       "summary": "MCP configuration command manipulates setuid or setgid permissions",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -15238,7 +15248,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15255,7 +15265,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for chmod octal modes with setuid/setgid bits or symbolic modes such as `u+s` and `g+s`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15269,7 +15279,7 @@
       "slug": "sec666",
       "canonicalPath": "/rules/lintai-ai-security/sec666",
       "summary": "MCP configuration command manipulates Linux capabilities",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -15278,7 +15288,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15295,7 +15305,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `setcap` or dangerous Linux capability tokens such as `cap_setuid` and `cap_sys_admin`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15309,7 +15319,7 @@
       "slug": "sec667",
       "canonicalPath": "/rules/lintai-ai-security/sec667",
       "summary": "Claude settings command hook performs an insecure permission change",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -15318,7 +15328,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -15335,7 +15345,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `chmod 777`, `chmod 0777`, or symbolic world-writable modes such as `a+rwx`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15349,7 +15359,7 @@
       "slug": "sec668",
       "canonicalPath": "/rules/lintai-ai-security/sec668",
       "summary": "Claude settings command hook manipulates setuid or setgid permissions",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -15358,7 +15368,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -15375,7 +15385,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for chmod octal modes with setuid/setgid bits or symbolic modes such as `u+s` and `g+s`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15389,7 +15399,7 @@
       "slug": "sec669",
       "canonicalPath": "/rules/lintai-ai-security/sec669",
       "summary": "Claude settings command hook manipulates Linux capabilities",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -15398,7 +15408,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -15415,7 +15425,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `setcap` or dangerous Linux capability tokens such as `cap_setuid` and `cap_sys_admin`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15429,7 +15439,7 @@
       "slug": "sec670",
       "canonicalPath": "/rules/lintai-ai-security/sec670",
       "summary": "Plugin hook command performs an insecure permission change",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -15438,7 +15448,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15455,7 +15465,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `chmod 777`, `chmod 0777`, or symbolic world-writable modes such as `a+rwx`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15469,7 +15479,7 @@
       "slug": "sec671",
       "canonicalPath": "/rules/lintai-ai-security/sec671",
       "summary": "Plugin hook command manipulates setuid or setgid permissions",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -15478,7 +15488,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15495,7 +15505,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for chmod octal modes with setuid/setgid bits or symbolic modes such as `u+s` and `g+s`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15509,7 +15519,7 @@
       "slug": "sec672",
       "canonicalPath": "/rules/lintai-ai-security/sec672",
       "summary": "Plugin hook command manipulates Linux capabilities",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -15518,7 +15528,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15535,7 +15545,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `setcap` or dangerous Linux capability tokens such as `cap_setuid` and `cap_sys_admin`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15549,7 +15559,7 @@
       "slug": "sec673",
       "canonicalPath": "/rules/lintai-ai-security/sec673",
       "summary": "Hook script posts secret material to a webhook endpoint",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -15558,7 +15568,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -15574,7 +15584,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for secret markers plus webhook endpoint markers such as `hooks.slack.com/services/` or `discord.com/api/webhooks/`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15588,7 +15598,7 @@
       "slug": "sec674",
       "canonicalPath": "/rules/lintai-ai-security/sec674",
       "summary": "MCP configuration command appears to send secret material over the network",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -15597,7 +15607,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15614,7 +15624,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for secret markers combined with network-capable command context."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15628,7 +15638,7 @@
       "slug": "sec675",
       "canonicalPath": "/rules/lintai-ai-security/sec675",
       "summary": "MCP configuration command sends secret material to an insecure http:// endpoint",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -15637,7 +15647,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15654,7 +15664,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for `http://` endpoints gated by concurrent secret markers in a network-capable command path."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15668,7 +15678,7 @@
       "slug": "sec676",
       "canonicalPath": "/rules/lintai-ai-security/sec676",
       "summary": "MCP configuration command posts secret material to a webhook endpoint",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -15677,7 +15687,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15694,7 +15704,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for secret markers plus webhook endpoint markers such as `hooks.slack.com/services/` or `discord.com/api/webhooks/`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15708,7 +15718,7 @@
       "slug": "sec677",
       "canonicalPath": "/rules/lintai-ai-security/sec677",
       "summary": "Claude settings command hook appears to send secret material over the network",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -15717,7 +15727,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -15734,7 +15744,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for secret markers combined with network-capable command context."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15748,7 +15758,7 @@
       "slug": "sec678",
       "canonicalPath": "/rules/lintai-ai-security/sec678",
       "summary": "Claude settings command hook sends secret material to an insecure http:// endpoint",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -15757,7 +15767,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -15774,7 +15784,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for `http://` endpoints gated by concurrent secret markers in a network-capable command path."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15788,7 +15798,7 @@
       "slug": "sec679",
       "canonicalPath": "/rules/lintai-ai-security/sec679",
       "summary": "Claude settings command hook posts secret material to a webhook endpoint",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -15797,7 +15807,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -15814,7 +15824,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for secret markers plus webhook endpoint markers such as `hooks.slack.com/services/` or `discord.com/api/webhooks/`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15828,7 +15838,7 @@
       "slug": "sec680",
       "canonicalPath": "/rules/lintai-ai-security/sec680",
       "summary": "Plugin hook command appears to send secret material over the network",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -15837,7 +15847,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15854,7 +15864,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for secret markers combined with network-capable command context."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15868,7 +15878,7 @@
       "slug": "sec681",
       "canonicalPath": "/rules/lintai-ai-security/sec681",
       "summary": "Plugin hook command sends secret material to an insecure http:// endpoint",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -15877,7 +15887,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15894,7 +15904,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for `http://` endpoints gated by concurrent secret markers in a network-capable command path."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15908,7 +15918,7 @@
       "slug": "sec682",
       "canonicalPath": "/rules/lintai-ai-security/sec682",
       "summary": "Plugin hook command posts secret material to a webhook endpoint",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -15917,7 +15927,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -15934,7 +15944,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for secret markers plus webhook endpoint markers such as `hooks.slack.com/services/` or `discord.com/api/webhooks/`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15948,7 +15958,7 @@
       "slug": "sec683",
       "canonicalPath": "/rules/lintai-ai-security/sec683",
       "summary": "Hook script transfers a sensitive credential file to a remote destination",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -15957,7 +15967,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -15974,7 +15984,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `sftp`, `rsync`, `curl`, `aws s3 cp`, `gsutil cp`, or `rclone copy`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -15988,7 +15998,7 @@
       "slug": "sec684",
       "canonicalPath": "/rules/lintai-ai-security/sec684",
       "summary": "MCP configuration command transfers a sensitive credential file to a remote destination",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -15997,7 +16007,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16015,7 +16025,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `sftp`, `rsync`, `curl`, `aws s3 cp`, `gsutil cp`, or `rclone copy`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16029,7 +16039,7 @@
       "slug": "sec685",
       "canonicalPath": "/rules/lintai-ai-security/sec685",
       "summary": "Claude settings command hook transfers a sensitive credential file to a remote destination",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -16038,7 +16048,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -16056,7 +16066,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `sftp`, `rsync`, `curl`, `aws s3 cp`, `gsutil cp`, or `rclone copy`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16070,7 +16080,7 @@
       "slug": "sec686",
       "canonicalPath": "/rules/lintai-ai-security/sec686",
       "summary": "Plugin hook command transfers a sensitive credential file to a remote destination",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -16079,7 +16089,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16097,7 +16107,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for sensitive file paths such as `.env`, `.aws/credentials`, `.ssh/id_rsa`, or `.kube/config` combined with transfer commands like `scp`, `sftp`, `rsync`, `curl`, `aws s3 cp`, `gsutil cp`, or `rclone copy`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16111,7 +16121,7 @@
       "slug": "sec687",
       "canonicalPath": "/rules/lintai-ai-security/sec687",
       "summary": "Hook script reads local clipboard contents",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -16120,7 +16130,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -16136,7 +16146,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16150,7 +16160,7 @@
       "slug": "sec688",
       "canonicalPath": "/rules/lintai-ai-security/sec688",
       "summary": "Hook script accesses browser credential or cookie stores",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -16159,7 +16169,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -16175,7 +16185,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16189,7 +16199,7 @@
       "slug": "sec689",
       "canonicalPath": "/rules/lintai-ai-security/sec689",
       "summary": "MCP configuration command reads local clipboard contents",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -16198,7 +16208,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16215,7 +16225,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16229,7 +16239,7 @@
       "slug": "sec690",
       "canonicalPath": "/rules/lintai-ai-security/sec690",
       "summary": "MCP configuration command accesses browser credential or cookie stores",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -16238,7 +16248,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16255,7 +16265,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16269,7 +16279,7 @@
       "slug": "sec691",
       "canonicalPath": "/rules/lintai-ai-security/sec691",
       "summary": "Claude settings command hook reads local clipboard contents",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -16278,7 +16288,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -16295,7 +16305,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16309,7 +16319,7 @@
       "slug": "sec692",
       "canonicalPath": "/rules/lintai-ai-security/sec692",
       "summary": "Claude settings command hook accesses browser credential or cookie stores",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -16318,7 +16328,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -16335,7 +16345,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16349,7 +16359,7 @@
       "slug": "sec693",
       "canonicalPath": "/rules/lintai-ai-security/sec693",
       "summary": "Plugin hook command reads local clipboard contents",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -16358,7 +16368,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16375,7 +16385,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16389,7 +16399,7 @@
       "slug": "sec694",
       "canonicalPath": "/rules/lintai-ai-security/sec694",
       "summary": "Plugin hook command accesses browser credential or cookie stores",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -16398,7 +16408,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16415,7 +16425,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16429,7 +16439,7 @@
       "slug": "sec695",
       "canonicalPath": "/rules/lintai-ai-security/sec695",
       "summary": "Hook script exfiltrates clipboard contents over the network",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -16438,7 +16448,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -16454,7 +16464,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard` combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16468,7 +16478,7 @@
       "slug": "sec696",
       "canonicalPath": "/rules/lintai-ai-security/sec696",
       "summary": "Hook script exfiltrates browser credential or cookie store data",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -16477,7 +16487,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -16493,7 +16503,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16507,7 +16517,7 @@
       "slug": "sec697",
       "canonicalPath": "/rules/lintai-ai-security/sec697",
       "summary": "MCP configuration command exfiltrates clipboard contents over the network",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -16516,7 +16526,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16533,7 +16543,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard` combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16547,7 +16557,7 @@
       "slug": "sec698",
       "canonicalPath": "/rules/lintai-ai-security/sec698",
       "summary": "MCP configuration command exfiltrates browser credential or cookie store data",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -16556,7 +16566,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16573,7 +16583,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16587,7 +16597,7 @@
       "slug": "sec699",
       "canonicalPath": "/rules/lintai-ai-security/sec699",
       "summary": "Claude settings command hook exfiltrates clipboard contents over the network",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -16596,7 +16606,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -16613,7 +16623,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard` combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16627,7 +16637,7 @@
       "slug": "sec700",
       "canonicalPath": "/rules/lintai-ai-security/sec700",
       "summary": "Claude settings command hook exfiltrates browser credential or cookie store data",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -16636,7 +16646,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -16653,7 +16663,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16667,7 +16677,7 @@
       "slug": "sec701",
       "canonicalPath": "/rules/lintai-ai-security/sec701",
       "summary": "Plugin hook command exfiltrates clipboard contents over the network",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -16676,7 +16686,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16693,7 +16703,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for clipboard read utilities such as `pbpaste`, `wl-paste`, `xclip -o`, `xsel --output`, or PowerShell `Get-Clipboard` combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16707,7 +16717,7 @@
       "slug": "sec702",
       "canonicalPath": "/rules/lintai-ai-security/sec702",
       "summary": "Plugin hook command exfiltrates browser credential or cookie store data",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -16716,7 +16726,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16733,7 +16743,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for browser profile paths such as Chrome or Firefox state directories paired with secret-store files like `Cookies`, `Login Data`, `logins.json`, `key4.db`, `Web Data`, or `Local State`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16747,7 +16757,7 @@
       "slug": "sec703",
       "canonicalPath": "/rules/lintai-ai-security/sec703",
       "summary": "Hook script captures a screenshot or desktop image",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -16756,7 +16766,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -16773,7 +16783,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16787,7 +16797,7 @@
       "slug": "sec704",
       "canonicalPath": "/rules/lintai-ai-security/sec704",
       "summary": "Hook script captures and exfiltrates a screenshot or desktop image",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -16796,7 +16806,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -16812,7 +16822,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16826,7 +16836,7 @@
       "slug": "sec705",
       "canonicalPath": "/rules/lintai-ai-security/sec705",
       "summary": "MCP configuration command captures a screenshot or desktop image",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -16835,7 +16845,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16853,7 +16863,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16867,7 +16877,7 @@
       "slug": "sec706",
       "canonicalPath": "/rules/lintai-ai-security/sec706",
       "summary": "MCP configuration command captures and exfiltrates a screenshot or desktop image",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -16876,7 +16886,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -16893,7 +16903,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16907,7 +16917,7 @@
       "slug": "sec707",
       "canonicalPath": "/rules/lintai-ai-security/sec707",
       "summary": "Claude settings command hook captures a screenshot or desktop image",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -16916,7 +16926,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -16934,7 +16944,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16948,7 +16958,7 @@
       "slug": "sec708",
       "canonicalPath": "/rules/lintai-ai-security/sec708",
       "summary": "Claude settings command hook captures and exfiltrates a screenshot or desktop image",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -16957,7 +16967,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -16974,7 +16984,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -16988,7 +16998,7 @@
       "slug": "sec709",
       "canonicalPath": "/rules/lintai-ai-security/sec709",
       "summary": "Plugin hook command captures a screenshot or desktop image",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -16997,7 +17007,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17015,7 +17025,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17029,7 +17039,7 @@
       "slug": "sec710",
       "canonicalPath": "/rules/lintai-ai-security/sec710",
       "summary": "Plugin hook command captures and exfiltrates a screenshot or desktop image",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -17038,7 +17048,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17055,7 +17065,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit screen capture utilities such as `screencapture`, `scrot`, `gnome-screenshot`, `grim`, `maim`, `grimshot`, ImageMagick `import -window root`, or PowerShell `CopyFromScreen`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17069,7 +17079,7 @@
       "slug": "sec711",
       "canonicalPath": "/rules/lintai-ai-security/sec711",
       "summary": "Hook script captures a camera image or webcam stream",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -17078,7 +17088,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -17095,7 +17105,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera or video device selectors."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17109,7 +17119,7 @@
       "slug": "sec712",
       "canonicalPath": "/rules/lintai-ai-security/sec712",
       "summary": "Hook script records microphone or audio input",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -17118,7 +17128,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -17135,7 +17145,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit audio capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with microphone or audio device selectors."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17149,7 +17159,7 @@
       "slug": "sec713",
       "canonicalPath": "/rules/lintai-ai-security/sec713",
       "summary": "Hook script captures and exfiltrates camera or webcam data",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -17158,7 +17168,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -17174,7 +17184,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera or video device selectors, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17188,7 +17198,7 @@
       "slug": "sec714",
       "canonicalPath": "/rules/lintai-ai-security/sec714",
       "summary": "Hook script records and exfiltrates microphone or audio input",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -17197,7 +17207,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -17213,7 +17223,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit audio capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with microphone or audio device selectors, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17227,7 +17237,7 @@
       "slug": "sec715",
       "canonicalPath": "/rules/lintai-ai-security/sec715",
       "summary": "MCP configuration command captures a webcam or camera image",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -17236,7 +17246,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17254,7 +17264,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17268,7 +17278,7 @@
       "slug": "sec716",
       "canonicalPath": "/rules/lintai-ai-security/sec716",
       "summary": "MCP configuration command captures microphone audio",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -17277,7 +17287,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17295,7 +17305,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17309,7 +17319,7 @@
       "slug": "sec717",
       "canonicalPath": "/rules/lintai-ai-security/sec717",
       "summary": "MCP configuration command captures and exfiltrates webcam or camera data",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -17318,7 +17328,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17335,7 +17345,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17349,7 +17359,7 @@
       "slug": "sec718",
       "canonicalPath": "/rules/lintai-ai-security/sec718",
       "summary": "MCP configuration command captures and exfiltrates microphone audio",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -17358,7 +17368,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17375,7 +17385,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17389,7 +17399,7 @@
       "slug": "sec719",
       "canonicalPath": "/rules/lintai-ai-security/sec719",
       "summary": "Claude settings command hook captures a webcam or camera image",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -17398,7 +17408,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -17416,7 +17426,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17430,7 +17440,7 @@
       "slug": "sec720",
       "canonicalPath": "/rules/lintai-ai-security/sec720",
       "summary": "Claude settings command hook captures microphone audio",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -17439,7 +17449,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -17457,7 +17467,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17471,7 +17481,7 @@
       "slug": "sec721",
       "canonicalPath": "/rules/lintai-ai-security/sec721",
       "summary": "Claude settings command hook captures and exfiltrates webcam or camera data",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -17480,7 +17490,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -17497,7 +17507,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17511,7 +17521,7 @@
       "slug": "sec722",
       "canonicalPath": "/rules/lintai-ai-security/sec722",
       "summary": "Claude settings command hook captures and exfiltrates microphone audio",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -17520,7 +17530,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -17537,7 +17547,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17551,7 +17561,7 @@
       "slug": "sec723",
       "canonicalPath": "/rules/lintai-ai-security/sec723",
       "summary": "Plugin hook command captures a webcam or camera image",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -17560,7 +17570,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17578,7 +17588,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17592,7 +17602,7 @@
       "slug": "sec724",
       "canonicalPath": "/rules/lintai-ai-security/sec724",
       "summary": "Plugin hook command captures microphone audio",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -17601,7 +17611,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17619,7 +17629,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17633,7 +17643,7 @@
       "slug": "sec725",
       "canonicalPath": "/rules/lintai-ai-security/sec725",
       "summary": "Plugin hook command captures and exfiltrates webcam or camera data",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -17642,7 +17652,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17659,7 +17669,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit camera capture utilities such as `imagesnap`, `fswebcam`, or `ffmpeg` with camera-oriented selectors like `video=`, `/dev/video`, `-f v4l2`, `-f video4linux2`, `webcam`, or `camera`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17673,7 +17683,7 @@
       "slug": "sec726",
       "canonicalPath": "/rules/lintai-ai-security/sec726",
       "summary": "Plugin hook command captures and exfiltrates microphone audio",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -17682,7 +17692,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17699,7 +17709,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit microphone capture utilities such as `arecord`, `parecord`, `parec`, `rec`, `sox -d`, or `ffmpeg` with audio-oriented selectors like `audio=`, `-f alsa`, `-f pulse`, `microphone`, or ` mic`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17713,7 +17723,7 @@
       "slug": "sec727",
       "canonicalPath": "/rules/lintai-ai-security/sec727",
       "summary": "Hook script captures keystrokes or keyboard input",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -17722,7 +17732,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -17739,7 +17749,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17753,7 +17763,7 @@
       "slug": "sec728",
       "canonicalPath": "/rules/lintai-ai-security/sec728",
       "summary": "Hook script captures and exfiltrates keystrokes or keyboard input",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -17762,7 +17772,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -17778,7 +17788,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17792,7 +17802,7 @@
       "slug": "sec729",
       "canonicalPath": "/rules/lintai-ai-security/sec729",
       "summary": "MCP configuration command captures keystrokes or keyboard input",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -17801,7 +17811,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17819,7 +17829,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17833,7 +17843,7 @@
       "slug": "sec730",
       "canonicalPath": "/rules/lintai-ai-security/sec730",
       "summary": "MCP configuration command captures and exfiltrates keystrokes or keyboard input",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -17842,7 +17852,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17859,7 +17869,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17873,7 +17883,7 @@
       "slug": "sec731",
       "canonicalPath": "/rules/lintai-ai-security/sec731",
       "summary": "Claude settings command hook captures keystrokes or keyboard input",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -17882,7 +17892,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -17900,7 +17910,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17914,7 +17924,7 @@
       "slug": "sec732",
       "canonicalPath": "/rules/lintai-ai-security/sec732",
       "summary": "Claude settings command hook captures and exfiltrates keystrokes or keyboard input",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -17923,7 +17933,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -17940,7 +17950,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17954,7 +17964,7 @@
       "slug": "sec733",
       "canonicalPath": "/rules/lintai-ai-security/sec733",
       "summary": "Plugin hook command captures keystrokes or keyboard input",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -17963,7 +17973,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -17981,7 +17991,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -17995,7 +18005,7 @@
       "slug": "sec734",
       "canonicalPath": "/rules/lintai-ai-security/sec734",
       "summary": "Plugin hook command captures and exfiltrates keystrokes or keyboard input",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -18004,7 +18014,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -18021,7 +18031,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit keylogger primitives such as `logkeys`, `xinput test`, `evtest`, `showkey`, PowerShell `GetAsyncKeyState`, or inline Python listener markers like `pynput.keyboard.Listener`, combined with remote sinks such as `curl`, `wget`, `scp`, `rsync`, `nc`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -18035,7 +18045,7 @@
       "slug": "sec735",
       "canonicalPath": "/rules/lintai-ai-security/sec735",
       "summary": "Hook script dumps environment variables or shell state",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -18044,7 +18054,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -18062,7 +18072,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -18076,7 +18086,7 @@
       "slug": "sec736",
       "canonicalPath": "/rules/lintai-ai-security/sec736",
       "summary": "Hook script dumps and exfiltrates environment variables or shell state",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "hook",
       "tier": "stable",
@@ -18085,7 +18095,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview"
+        "threat-review"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -18102,7 +18112,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "HookSignals command-line analysis over non-comment hook lines for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `sftp`, `rsync`, `nc`, `aws s3 cp`, `gsutil cp`, `rclone copy`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -18116,7 +18126,7 @@
       "slug": "sec737",
       "canonicalPath": "/rules/lintai-ai-security/sec737",
       "summary": "MCP configuration command dumps environment variables or shell state",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -18125,7 +18135,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -18144,7 +18154,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -18158,7 +18168,7 @@
       "slug": "sec738",
       "canonicalPath": "/rules/lintai-ai-security/sec738",
       "summary": "MCP configuration command dumps and exfiltrates environment variables or shell state",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -18167,7 +18177,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -18185,7 +18195,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-plus-args analysis over ArtifactKind::McpConfig for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `sftp`, `rsync`, `nc`, `aws s3 cp`, `gsutil cp`, `rclone copy`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -18199,7 +18209,7 @@
       "slug": "sec739",
       "canonicalPath": "/rules/lintai-ai-security/sec739",
       "summary": "Claude settings command hook dumps environment variables or shell state",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -18208,7 +18218,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -18227,7 +18237,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -18241,7 +18251,7 @@
       "slug": "sec740",
       "canonicalPath": "/rules/lintai-ai-security/sec740",
       "summary": "Claude settings command hook dumps and exfiltrates environment variables or shell state",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -18250,7 +18260,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -18268,7 +18278,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "ClaudeSettingsSignals command-hook string analysis over committed hook entries with type == command for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `sftp`, `rsync`, `nc`, `aws s3 cp`, `gsutil cp`, `rclone copy`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -18282,7 +18292,7 @@
       "slug": "sec741",
       "canonicalPath": "/rules/lintai-ai-security/sec741",
       "summary": "Plugin hook command dumps environment variables or shell state",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -18291,7 +18301,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -18310,7 +18320,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {
@@ -18324,7 +18334,7 @@
       "slug": "sec742",
       "canonicalPath": "/rules/lintai-ai-security/sec742",
       "summary": "Plugin hook command dumps and exfiltrates environment variables or shell state",
-      "publicLane": "preview",
+      "publicLane": "threat-review",
       "scope": "per_file",
       "surface": "json",
       "tier": "stable",
@@ -18333,7 +18343,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "threat-review",
         "mcp"
       ],
       "lifecycleState": "stable_gated",
@@ -18351,7 +18361,7 @@
         "remediationReviewed": true,
         "deterministicSignalBasis": "JsonSignals command-string analysis over ArtifactKind::CursorPluginHooks for explicit environment enumeration primitives such as `printenv`, `env` used as a dump, `export -p`, `declare -xp`, or `compgen -v`, combined with remote sinks such as `curl`, `wget`, `scp`, `sftp`, `rsync`, `nc`, `aws s3 cp`, `gsutil cp`, `rclone copy`, or HTTP(S) endpoints."
       },
-      "canonicalNote": "Structural stable rule intended as a high-precision check with deterministic evidence.",
+      "canonicalNote": "Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.",
       "relatedRuleIds": []
     },
     {

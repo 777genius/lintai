@@ -1,2 +1,2 @@
 [presets]
-enable = ["base", "preview", "governance"]
+enable = ["base", "preview", "threat-review", "governance"]

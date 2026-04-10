@@ -191,7 +191,7 @@ fn fix_apply_reports_conflicts_deterministically() {
     fs::create_dir_all(repo_dir.join("docs")).unwrap();
     fs::write(
         repo_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\"]\n",
+        "[presets]\nenable = [\"base\", \"preview\", \"threat-review\"]\n",
     )
     .unwrap();
     fs::write(

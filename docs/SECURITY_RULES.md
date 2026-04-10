@@ -12,30 +12,30 @@ Canonical catalog for the shipped security rules currently exposed by:
 
 | Code | Summary | Public Lane | Tier | Lifecycle | Severity | Scope | Surface | Detection | Remediation | Presets |
 |---|---|---|---|---|---|---|---|---|---|---|
-| `SEC101 / MD-HIDDEN-INSTRUCTIONS` | Hidden HTML comment contains dangerous agent instructions | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `safe_fix` | `preview`, `skills` |
-| `SEC102 / MD-DOWNLOAD-EXEC` | Markdown contains remote download-and-execute instruction outside code blocks | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `suggestion` | `preview`, `skills` |
-| `SEC103 / MD-HIDDEN-DOWNLOAD-EXEC` | Hidden HTML comment contains remote download-and-execute instruction | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `safe_fix` | `preview`, `skills` |
-| `SEC104 / MD-BASE64-EXEC` | Markdown contains a base64-decoded executable payload outside code blocks | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC105 / MD-PATH-TRAVERSAL` | Markdown instructions reference parent-directory traversal for file access | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC201 / HOOK-DOWNLOAD-EXEC` | Hook script downloads remote code and executes it | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `preview` |
-| `SEC202 / HOOK-SECRET-EXFIL` | Hook script appears to exfiltrate secrets through a network call | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `preview` |
-| `SEC203 / HOOK-PLAIN-HTTP-SECRET-EXFIL` | Hook script sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `preview` |
-| `SEC204 / HOOK-TLS-BYPASS` | Hook script disables TLS or certificate verification for a network call | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC205 / HOOK-STATIC-AUTH` | Hook script embeds static authentication material in a network call | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC206 / HOOK-BASE64-EXEC` | Hook script decodes a base64 payload and executes it | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `preview` |
+| `SEC101 / MD-HIDDEN-INSTRUCTIONS` | Hidden HTML comment contains dangerous agent instructions | `threat-review` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `safe_fix` | `threat-review`, `skills` |
+| `SEC102 / MD-DOWNLOAD-EXEC` | Markdown contains remote download-and-execute instruction outside code blocks | `threat-review` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `suggestion` | `threat-review`, `skills` |
+| `SEC103 / MD-HIDDEN-DOWNLOAD-EXEC` | Hidden HTML comment contains remote download-and-execute instruction | `threat-review` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `safe_fix` | `threat-review`, `skills` |
+| `SEC104 / MD-BASE64-EXEC` | Markdown contains a base64-decoded executable payload outside code blocks | `threat-review` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `threat-review`, `skills` |
+| `SEC105 / MD-PATH-TRAVERSAL` | Markdown instructions reference parent-directory traversal for file access | `threat-review` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `threat-review`, `skills` |
+| `SEC201 / HOOK-DOWNLOAD-EXEC` | Hook script downloads remote code and executes it | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `threat-review` |
+| `SEC202 / HOOK-SECRET-EXFIL` | Hook script appears to exfiltrate secrets through a network call | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `threat-review` |
+| `SEC203 / HOOK-PLAIN-HTTP-SECRET-EXFIL` | Hook script sends secret material to an insecure http:// endpoint | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `threat-review` |
+| `SEC204 / HOOK-TLS-BYPASS` | Hook script disables TLS or certificate verification for a network call | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC205 / HOOK-STATIC-AUTH` | Hook script embeds static authentication material in a network call | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC206 / HOOK-BASE64-EXEC` | Hook script decodes a base64 payload and executes it | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `suggestion` | `threat-review` |
 | `SEC301 / MCP-SHELL-WRAPPER` | MCP configuration shells out through sh -c or bash -c | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC302 / MCP-PLAIN-HTTP-ENDPOINT` | Configuration contains an insecure http:// endpoint | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `suggestion` | `supply-chain` |
 | `SEC303 / MCP-CREDENTIAL-ENV-PASSTHROUGH` | MCP configuration passes through credential environment variables | `governance` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
 | `SEC304 / MCP-TLS-BYPASS` | Configuration disables TLS or certificate verification | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
-| `SEC305 / MCP-STATIC-AUTH` | Configuration embeds static authentication material in a connection or auth value | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC305 / MCP-STATIC-AUTH` | Configuration embeds static authentication material in a connection or auth value | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
 | `SEC306 / MCP-HIDDEN-INSTRUCTIONS` | JSON configuration description contains override-style hidden instructions | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
 | `SEC307 / MCP-SENSITIVE-ENV-REFERENCE` | Configuration forwards sensitive environment variable references | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `governance`, `mcp` |
 | `SEC308 / MCP-SUSPICIOUS-ENDPOINT` | Configuration points at a suspicious remote endpoint | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `heuristic` | `message_only` | `preview`, `mcp` |
-| `SEC309 / MCP-LITERAL-SECRET` | Configuration commits literal secret material in env, auth, or header values | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC309 / MCP-LITERAL-SECRET` | Configuration commits literal secret material in env, auth, or header values | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
 | `SEC310 / MCP-METADATA-HOST-LITERAL` | Configuration endpoint targets a metadata or private-network host literal | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
 | `SEC311 / PLUGIN-UNSAFE-PATH` | Cursor plugin manifest contains an unsafe absolute or parent-traversing path | `compat` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `compat`, `mcp` |
-| `SEC312 / MD-PRIVATE-KEY` | Markdown contains committed private key material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC313 / MD-PIPE-SHELL` | Fenced shell example pipes remote content directly into a shell | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC312 / MD-PRIVATE-KEY` | Markdown contains committed private key material | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `threat-review`, `skills` |
+| `SEC313 / MD-PIPE-SHELL` | Fenced shell example pipes remote content directly into a shell | `threat-review` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `threat-review`, `skills` |
 | `SEC314 / TOOL-MISSING-MACHINE-FIELDS` | MCP-style tool descriptor is missing required machine fields | `compat` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC315 / TOOL-DUPLICATE-NAMES` | MCP-style tool descriptor collection contains duplicate tool names | `compat` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC316 / OPENAI-STRICT-ADDITIONAL-PROPERTIES` | OpenAI strict tool schema omits recursive additionalProperties: false | `compat` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `compat`, `mcp` |
@@ -43,7 +43,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC318 / ANTHROPIC-STRICT-ADDITIONAL-PROPERTIES` | Anthropic strict tool input schema omits additionalProperties: false | `compat` | Stable | `stable_gated` | Warn | `per_file` | `tool_json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC319 / SERVER-REMOTE-URL` | server.json remotes entry uses an insecure or non-public remote URL | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `supply-chain`, `mcp` |
 | `SEC320 / SERVER-UNDEFINED-URL-VAR` | server.json remotes URL references an undefined template variable | `compat` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `compat`, `mcp` |
-| `SEC321 / SERVER-LITERAL-AUTH-HEADER` | server.json remotes header commits literal authentication material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC321 / SERVER-LITERAL-AUTH-HEADER` | server.json remotes header commits literal authentication material | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `threat-review`, `mcp` |
 | `SEC322 / SERVER-UNDEFINED-HEADER-VAR` | server.json remotes header value references an undefined template variable | `compat` | Stable | `stable_gated` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC323 / SERVER-AUTH-SECRET-FLAG` | server.json auth header carries material without an explicit secret flag | `compat` | Preview | `preview_blocked` | Warn | `per_file` | `server_json` | `structural` | `message_only` | `compat`, `mcp` |
 | `SEC324 / GHA-UNPINNED-ACTION` | GitHub Actions workflow uses a third-party action that is not pinned to a full commit SHA | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `github_workflow` | `structural` | `message_only` | `supply-chain` |
@@ -57,8 +57,8 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC335 / MD-METADATA-SERVICE-ACCESS` | AI-native markdown contains a direct cloud metadata-service access example | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC336 / MCP-BROAD-ENVFILE` | Repo-local MCP client config loads a broad dotenv-style envFile | `governance` | Preview | `preview_blocked` | Warn | `per_file` | `json` | `structural` | `message_only` | `governance`, `mcp` |
 | `SEC337 / MCP-DOCKER-UNPINNED-IMAGE` | MCP configuration launches Docker with an image reference that is not digest-pinned | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
-| `SEC338 / MCP-DOCKER-SENSITIVE-MOUNT` | MCP configuration launches Docker with a bind mount of sensitive host material | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC339 / MCP-DOCKER-HOST-ESCAPE` | MCP configuration launches Docker with a host-escape or privileged runtime flag | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC338 / MCP-DOCKER-SENSITIVE-MOUNT` | MCP configuration launches Docker with a bind mount of sensitive host material | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC339 / MCP-DOCKER-HOST-ESCAPE` | MCP configuration launches Docker with a host-escape or privileged runtime flag | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
 | `SEC340 / CLAUDE-HOOK-MUTABLE-LAUNCHER` | Claude settings command hook uses a mutable package launcher | `recommended` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `recommended`, `base`, `claude` |
 | `SEC341 / CLAUDE-HOOK-DOWNLOAD-EXEC` | Claude settings command hook downloads remote content and pipes it into a shell | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `supply-chain`, `claude` |
 | `SEC342 / CLAUDE-HOOK-TLS-BYPASS` | Claude settings command hook disables TLS verification in a network-capable execution path | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `supply-chain`, `claude` |
@@ -69,8 +69,8 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC347 / MD-MCP-MUTABLE-LAUNCHER` | AI-native markdown example launches MCP through a mutable package runner | `supply-chain` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `supply-chain` |
 | `SEC348 / MD-DOCKER-MUTABLE-IMAGE` | AI-native markdown Docker example uses a mutable registry image | `supply-chain` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `supply-chain` |
 | `SEC349 / MD-DOCKER-HOST-ESCAPE` | AI-native markdown Docker example uses a host-escape or privileged runtime pattern | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
-| `SEC350 / MD-UNTRUSTED-INSTRUCTION-PROMOTION` | Instruction markdown promotes untrusted external content to developer/system-level instructions | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC351 / MD-APPROVAL-BYPASS` | AI-native instruction explicitly disables user approval or confirmation | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
+| `SEC350 / MD-UNTRUSTED-INSTRUCTION-PROMOTION` | Instruction markdown promotes untrusted external content to developer/system-level instructions | `threat-review` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `threat-review`, `skills` |
+| `SEC351 / MD-APPROVAL-BYPASS` | AI-native instruction explicitly disables user approval or confirmation | `threat-review` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `threat-review`, `skills` |
 | `SEC352 / MD-UNSCOPED-BASH` | AI-native markdown frontmatter grants unscoped Bash tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC353 / COPILOT-4K` | GitHub Copilot instruction markdown exceeds the 4000-character guidance limit | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC354 / COPILOT-PATH-APPLYTO` | Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
@@ -141,7 +141,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC419 / MD-CURL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(curl:*)` authority | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC420 / MD-WGET-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(wget:*)` authority | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC421 / MD-GIT-CLONE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git clone:*)` authority | `governance` | Preview | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC422 / MCP-COMMAND-SUDO` | MCP configuration launches the server through `sudo` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC422 / MCP-COMMAND-SUDO` | MCP configuration launches the server through `sudo` | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
 | `SEC423 / MD-READ-UNSCOPED` | AI-native markdown frontmatter grants bare `Read` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC424 / MD-WRITE-UNSCOPED` | AI-native markdown frontmatter grants bare `Write` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC425 / MD-EDIT-UNSCOPED` | AI-native markdown frontmatter grants bare `Edit` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
@@ -165,7 +165,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC443 / MD-GIT-CHERRY-PICK-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git cherry-pick:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC444 / MD-GIT-APPLY-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git apply:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC445 / MD-GIT-AM-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(git am:*)` authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC446 / MCP-ARGS-SUDO` | MCP configuration passes `sudo` as the first launch argument | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC446 / MCP-ARGS-SUDO` | MCP configuration passes `sudo` as the first launch argument | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
 | `SEC447 / MD-PACKAGE-INSTALL-ALLOWED-TOOLS` | AI-native markdown frontmatter grants package installation authority | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC448 / MD-PIP-TRUSTED-HOST` | AI-native markdown installs Python packages with `--trusted-host` | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `supply-chain` |
 | `SEC449 / MD-PIP-HTTP-INDEX` | AI-native markdown installs Python packages from an insecure `http://` package index | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `supply-chain` |
@@ -352,116 +352,116 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC630 / CLAUDE-GLOB` | Claude settings permissions allow bare `Glob` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC631 / CLAUDE-GREP` | Claude settings permissions allow bare `Grep` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC632 / CLAUDE-WEBFETCH` | Claude settings permissions allow bare `WebFetch` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
-| `SEC633` | Hook script attempts destructive root deletion | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC634` | Hook script accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC635` | Hook script writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC636` | Hook script writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC637` | MCP configuration command attempts destructive root deletion | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC638` | MCP configuration command accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC639` | MCP configuration command writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC640` | MCP configuration command writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC641` | Claude settings command hook attempts destructive root deletion | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC642` | Claude settings command hook accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC643` | Claude settings command hook writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC644` | Claude settings command hook writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC645` | Plugin hook command attempts destructive root deletion | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC646` | Plugin hook command accesses a sensitive system password file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC647` | Plugin hook command writes to a shell profile startup file | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC648` | Plugin hook command writes to SSH authorized_keys | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC649` | Hook script manipulates cron persistence | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC650` | Hook script registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC651` | Hook script registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC652` | MCP configuration command manipulates cron persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC653` | MCP configuration command registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC654` | MCP configuration command registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC655` | Claude settings command hook manipulates cron persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC656` | Claude settings command hook registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC657` | Claude settings command hook registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC658` | Plugin hook command manipulates cron persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC659` | Plugin hook command registers a systemd service or unit for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC660` | Plugin hook command registers a launchd plist for persistence | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC661` | Hook script performs an insecure permission change | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC662` | Hook script manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC663` | Hook script manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC664` | MCP configuration command performs an insecure permission change | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC665` | MCP configuration command manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC666` | MCP configuration command manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC667` | Claude settings command hook performs an insecure permission change | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC668` | Claude settings command hook manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC669` | Claude settings command hook manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC670` | Plugin hook command performs an insecure permission change | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC671` | Plugin hook command manipulates setuid or setgid permissions | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC672` | Plugin hook command manipulates Linux capabilities | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC673` | Hook script posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC674` | MCP configuration command appears to send secret material over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC675` | MCP configuration command sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC676` | MCP configuration command posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC677` | Claude settings command hook appears to send secret material over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC678` | Claude settings command hook sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC679` | Claude settings command hook posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC680` | Plugin hook command appears to send secret material over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC681` | Plugin hook command sends secret material to an insecure http:// endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC682` | Plugin hook command posts secret material to a webhook endpoint | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC683` | Hook script transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC684` | MCP configuration command transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC685` | Claude settings command hook transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC686` | Plugin hook command transfers a sensitive credential file to a remote destination | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC687` | Hook script reads local clipboard contents | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC688` | Hook script accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC689` | MCP configuration command reads local clipboard contents | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC690` | MCP configuration command accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC691` | Claude settings command hook reads local clipboard contents | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC692` | Claude settings command hook accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC693` | Plugin hook command reads local clipboard contents | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC694` | Plugin hook command accesses browser credential or cookie stores | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC695` | Hook script exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC696` | Hook script exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC697` | MCP configuration command exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC698` | MCP configuration command exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC699` | Claude settings command hook exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC700` | Claude settings command hook exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC701` | Plugin hook command exfiltrates clipboard contents over the network | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC702` | Plugin hook command exfiltrates browser credential or cookie store data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC703` | Hook script captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC704` | Hook script captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC705` | MCP configuration command captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC706` | MCP configuration command captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC707` | Claude settings command hook captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC708` | Claude settings command hook captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC709` | Plugin hook command captures a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC710` | Plugin hook command captures and exfiltrates a screenshot or desktop image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC711` | Hook script captures a camera image or webcam stream | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC712` | Hook script records microphone or audio input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC713` | Hook script captures and exfiltrates camera or webcam data | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC714` | Hook script records and exfiltrates microphone or audio input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC715` | MCP configuration command captures a webcam or camera image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC716` | MCP configuration command captures microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC717` | MCP configuration command captures and exfiltrates webcam or camera data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC718` | MCP configuration command captures and exfiltrates microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC719` | Claude settings command hook captures a webcam or camera image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC720` | Claude settings command hook captures microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC721` | Claude settings command hook captures and exfiltrates webcam or camera data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC722` | Claude settings command hook captures and exfiltrates microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC723` | Plugin hook command captures a webcam or camera image | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC724` | Plugin hook command captures microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC725` | Plugin hook command captures and exfiltrates webcam or camera data | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC726` | Plugin hook command captures and exfiltrates microphone audio | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC727` | Hook script captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC728` | Hook script captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC729` | MCP configuration command captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC730` | MCP configuration command captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC731` | Claude settings command hook captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC732` | Claude settings command hook captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC733` | Plugin hook command captures keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC734` | Plugin hook command captures and exfiltrates keystrokes or keyboard input | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC735` | Hook script dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC736` | Hook script dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `preview` |
-| `SEC737` | MCP configuration command dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC738` | MCP configuration command dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC739` | Claude settings command hook dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC740` | Claude settings command hook dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
-| `SEC741` | Plugin hook command dumps environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
-| `SEC742` | Plugin hook command dumps and exfiltrates environment variables or shell state | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `preview`, `mcp` |
+| `SEC633` | Hook script attempts destructive root deletion | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC634` | Hook script accesses a sensitive system password file | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC635` | Hook script writes to a shell profile startup file | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC636` | Hook script writes to SSH authorized_keys | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC637` | MCP configuration command attempts destructive root deletion | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC638` | MCP configuration command accesses a sensitive system password file | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC639` | MCP configuration command writes to a shell profile startup file | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC640` | MCP configuration command writes to SSH authorized_keys | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC641` | Claude settings command hook attempts destructive root deletion | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC642` | Claude settings command hook accesses a sensitive system password file | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC643` | Claude settings command hook writes to a shell profile startup file | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC644` | Claude settings command hook writes to SSH authorized_keys | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC645` | Plugin hook command attempts destructive root deletion | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC646` | Plugin hook command accesses a sensitive system password file | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC647` | Plugin hook command writes to a shell profile startup file | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC648` | Plugin hook command writes to SSH authorized_keys | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC649` | Hook script manipulates cron persistence | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC650` | Hook script registers a systemd service or unit for persistence | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC651` | Hook script registers a launchd plist for persistence | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC652` | MCP configuration command manipulates cron persistence | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC653` | MCP configuration command registers a systemd service or unit for persistence | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC654` | MCP configuration command registers a launchd plist for persistence | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC655` | Claude settings command hook manipulates cron persistence | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC656` | Claude settings command hook registers a systemd service or unit for persistence | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC657` | Claude settings command hook registers a launchd plist for persistence | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC658` | Plugin hook command manipulates cron persistence | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC659` | Plugin hook command registers a systemd service or unit for persistence | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC660` | Plugin hook command registers a launchd plist for persistence | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC661` | Hook script performs an insecure permission change | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC662` | Hook script manipulates setuid or setgid permissions | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC663` | Hook script manipulates Linux capabilities | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC664` | MCP configuration command performs an insecure permission change | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC665` | MCP configuration command manipulates setuid or setgid permissions | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC666` | MCP configuration command manipulates Linux capabilities | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC667` | Claude settings command hook performs an insecure permission change | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC668` | Claude settings command hook manipulates setuid or setgid permissions | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC669` | Claude settings command hook manipulates Linux capabilities | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC670` | Plugin hook command performs an insecure permission change | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC671` | Plugin hook command manipulates setuid or setgid permissions | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC672` | Plugin hook command manipulates Linux capabilities | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC673` | Hook script posts secret material to a webhook endpoint | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC674` | MCP configuration command appears to send secret material over the network | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC675` | MCP configuration command sends secret material to an insecure http:// endpoint | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC676` | MCP configuration command posts secret material to a webhook endpoint | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC677` | Claude settings command hook appears to send secret material over the network | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC678` | Claude settings command hook sends secret material to an insecure http:// endpoint | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC679` | Claude settings command hook posts secret material to a webhook endpoint | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC680` | Plugin hook command appears to send secret material over the network | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC681` | Plugin hook command sends secret material to an insecure http:// endpoint | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC682` | Plugin hook command posts secret material to a webhook endpoint | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC683` | Hook script transfers a sensitive credential file to a remote destination | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC684` | MCP configuration command transfers a sensitive credential file to a remote destination | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC685` | Claude settings command hook transfers a sensitive credential file to a remote destination | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC686` | Plugin hook command transfers a sensitive credential file to a remote destination | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC687` | Hook script reads local clipboard contents | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC688` | Hook script accesses browser credential or cookie stores | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC689` | MCP configuration command reads local clipboard contents | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC690` | MCP configuration command accesses browser credential or cookie stores | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC691` | Claude settings command hook reads local clipboard contents | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC692` | Claude settings command hook accesses browser credential or cookie stores | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC693` | Plugin hook command reads local clipboard contents | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC694` | Plugin hook command accesses browser credential or cookie stores | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC695` | Hook script exfiltrates clipboard contents over the network | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC696` | Hook script exfiltrates browser credential or cookie store data | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC697` | MCP configuration command exfiltrates clipboard contents over the network | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC698` | MCP configuration command exfiltrates browser credential or cookie store data | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC699` | Claude settings command hook exfiltrates clipboard contents over the network | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC700` | Claude settings command hook exfiltrates browser credential or cookie store data | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC701` | Plugin hook command exfiltrates clipboard contents over the network | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC702` | Plugin hook command exfiltrates browser credential or cookie store data | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC703` | Hook script captures a screenshot or desktop image | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC704` | Hook script captures and exfiltrates a screenshot or desktop image | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC705` | MCP configuration command captures a screenshot or desktop image | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC706` | MCP configuration command captures and exfiltrates a screenshot or desktop image | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC707` | Claude settings command hook captures a screenshot or desktop image | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC708` | Claude settings command hook captures and exfiltrates a screenshot or desktop image | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC709` | Plugin hook command captures a screenshot or desktop image | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC710` | Plugin hook command captures and exfiltrates a screenshot or desktop image | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC711` | Hook script captures a camera image or webcam stream | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC712` | Hook script records microphone or audio input | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC713` | Hook script captures and exfiltrates camera or webcam data | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC714` | Hook script records and exfiltrates microphone or audio input | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC715` | MCP configuration command captures a webcam or camera image | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC716` | MCP configuration command captures microphone audio | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC717` | MCP configuration command captures and exfiltrates webcam or camera data | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC718` | MCP configuration command captures and exfiltrates microphone audio | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC719` | Claude settings command hook captures a webcam or camera image | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC720` | Claude settings command hook captures microphone audio | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC721` | Claude settings command hook captures and exfiltrates webcam or camera data | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC722` | Claude settings command hook captures and exfiltrates microphone audio | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC723` | Plugin hook command captures a webcam or camera image | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC724` | Plugin hook command captures microphone audio | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC725` | Plugin hook command captures and exfiltrates webcam or camera data | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC726` | Plugin hook command captures and exfiltrates microphone audio | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC727` | Hook script captures keystrokes or keyboard input | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC728` | Hook script captures and exfiltrates keystrokes or keyboard input | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC729` | MCP configuration command captures keystrokes or keyboard input | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC730` | MCP configuration command captures and exfiltrates keystrokes or keyboard input | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC731` | Claude settings command hook captures keystrokes or keyboard input | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC732` | Claude settings command hook captures and exfiltrates keystrokes or keyboard input | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC733` | Plugin hook command captures keystrokes or keyboard input | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC734` | Plugin hook command captures and exfiltrates keystrokes or keyboard input | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC735` | Hook script dumps environment variables or shell state | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC736` | Hook script dumps and exfiltrates environment variables or shell state | `threat-review` | Stable | `stable_gated` | Deny | `per_file` | `hook` | `structural` | `message_only` | `threat-review` |
+| `SEC737` | MCP configuration command dumps environment variables or shell state | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC738` | MCP configuration command dumps and exfiltrates environment variables or shell state | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC739` | Claude settings command hook dumps environment variables or shell state | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC740` | Claude settings command hook dumps and exfiltrates environment variables or shell state | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `threat-review`, `claude` |
+| `SEC741` | Plugin hook command dumps environment variables or shell state | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
+| `SEC742` | Plugin hook command dumps and exfiltrates environment variables or shell state | `threat-review` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `threat-review`, `mcp` |
 | `SEC743` | package.json defines a dangerous install-time lifecycle script | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC744` | package.json installs a dependency from a git or forge shortcut source | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
 | `SEC745` | package.json uses an unbounded dependency version like * or latest | `supply-chain` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `supply-chain` |
@@ -483,7 +483,8 @@ All shipped rules now participate in the preset model through a deterministic su
 
 - `recommended`: the quiet practical default for most teams, composed from curated high-signal shipped rules
 - `base`: the minimal stable baseline kept for explicit compatibility-focused setups
-- `preview`: deeper-review rules that expand coverage beyond the recommended default and include context-sensitive shipped preview checks
+- `preview`: deeper-review rules that expand coverage beyond the recommended default without becoming the catch-all malicious-behavior bucket
+- `threat-review`: explicit malicious, credential-bearing, or spyware-like review rules that stay opt-in because they should not shape the quiet default or the softer preview lane
 - `compat`: workspace policy mismatch rules (`SEC401`-`SEC403`) kept as a separate policy lane
 - `skills`: markdown-surface rules for the core instruction/skills lane
 - `mcp`: all `json`, `tool_json`, and `server_json` surface rules, including preview MCP/config rules
@@ -497,7 +498,7 @@ Important behavior:
 
 - `strict` is a severity overlay, not a membership preset: when enabled, active security rules are raised through preset policy instead of silently activating new rules by itself.
 - if `[presets]` is omitted, `lintai` enables `recommended` by default.
-- Dedicated sidecar lanes such as `compat`, `guidance`, `governance`, `supply-chain`, and `advisory` stay opt-in and are not implied by `base` or `preview`.
+- Dedicated sidecar lanes such as `threat-review`, `compat`, `guidance`, `governance`, `supply-chain`, and `advisory` stay opt-in and are not implied by `base` or `preview`.
 - Category overrides do not activate rules outside the resolved preset set.
 - Explicit `[rules] SECxxx = "..."` remains the escape hatch for intentional per-rule opt-in outside the default preset set.
 
@@ -511,10 +512,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `heuristic`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `threat-review`, `skills`
 - Remediation: `safe_fix`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Depends on suspicious phrase heuristics inside hidden HTML comments.
@@ -529,10 +530,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `heuristic`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `threat-review`, `skills`
 - Remediation: `suggestion`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Depends on prose command heuristics outside code blocks.
@@ -547,10 +548,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `heuristic`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `threat-review`, `skills`
 - Remediation: `safe_fix`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Depends on hidden-comment command heuristics rather than a structural execution model.
@@ -565,10 +566,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `heuristic`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `threat-review`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Depends on prose base64-and-exec text heuristics.
@@ -583,10 +584,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `heuristic`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `threat-review`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Depends on prose path-traversal and access-verb heuristics.
@@ -601,10 +602,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `suggestion`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit remote download-and-execute behavior in hook shell lines, not prose text.
@@ -613,7 +614,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC202 / HOOK-SECRET-EXFIL` — Hook script appears to exfiltrate secrets through a network call
 
@@ -623,10 +624,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `suggestion`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches secret-bearing network exfil behavior in executable hook lines.
@@ -635,7 +636,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC203 / HOOK-PLAIN-HTTP-SECRET-EXFIL` — Hook script sends secret material to an insecure http:// endpoint
 
@@ -645,10 +646,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `suggestion`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches insecure HTTP transport on a secret-bearing hook exfil path.
@@ -657,7 +658,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC204 / HOOK-TLS-BYPASS` — Hook script disables TLS or certificate verification for a network call
 
@@ -667,10 +668,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit TLS verification bypass tokens in executable hook network context.
@@ -679,7 +680,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-tls-verified-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC205 / HOOK-STATIC-AUTH` — Hook script embeds static authentication material in a network call
 
@@ -689,10 +690,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches literal static auth material in hook URLs or authorization headers.
@@ -701,7 +702,7 @@ Important behavior:
 - Benign Corpus: `hook-auth-dynamic-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC206 / HOOK-BASE64-EXEC` — Hook script decodes a base64 payload and executes it
 
@@ -711,10 +712,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `suggestion`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit base64 decode-and-execute behavior in executable hook lines.
@@ -723,7 +724,7 @@ Important behavior:
 - Benign Corpus: `hook-base64-decode-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC301 / MCP-SHELL-WRAPPER` — MCP configuration shells out through sh -c or bash -c
 
@@ -821,10 +822,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches literal static auth material embedded directly in configuration values.
@@ -833,7 +834,7 @@ Important behavior:
 - Benign Corpus: `mcp-authorization-placeholder-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC306 / MCP-HIDDEN-INSTRUCTIONS` — JSON configuration description contains override-style hidden instructions
 
@@ -897,10 +898,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches literal secret material committed into env, header, or auth-like JSON fields.
@@ -909,7 +910,7 @@ Important behavior:
 - Benign Corpus: `mcp-secret-placeholder-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC310 / MCP-METADATA-HOST-LITERAL` — Configuration endpoint targets a metadata or private-network host literal
 
@@ -963,10 +964,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `threat-review`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit committed private-key PEM markers inside agent markdown surfaces.
@@ -975,7 +976,7 @@ Important behavior:
 - Benign Corpus: `skill-public-key-pem-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC313 / MD-PIPE-SHELL` — Fenced shell example pipes remote content directly into a shell
 
@@ -985,10 +986,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `threat-review`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Depends on fenced shell-example command heuristics and still needs broader external precision review.
@@ -1157,10 +1158,10 @@ Important behavior:
 - Surface: `server_json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks remotes[].headers[] auth-like values for literal bearer/basic material or literal API key style values.
@@ -1169,7 +1170,7 @@ Important behavior:
 - Benign Corpus: `server-json-auth-header-placeholder-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC322 / SERVER-UNDEFINED-HEADER-VAR` — server.json remotes header value references an undefined template variable
 
@@ -1445,10 +1446,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP config Docker launch paths for bind mounts of sensitive host sources such as docker.sock, SSH material, cloud credentials, and kubeconfig directories.
@@ -1457,7 +1458,7 @@ Important behavior:
 - Benign Corpus: `mcp-docker-named-volume-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC339 / MCP-DOCKER-HOST-ESCAPE` — MCP configuration launches Docker with a host-escape or privileged runtime flag
 
@@ -1467,10 +1468,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP config Docker launch paths for privileged or host-escape runtime flags such as --privileged, --network host, --pid host, and --ipc host.
@@ -1479,7 +1480,7 @@ Important behavior:
 - Benign Corpus: `mcp-docker-safe-run`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC340 / CLAUDE-HOOK-MUTABLE-LAUNCHER` — Claude settings command hook uses a mutable package launcher
 
@@ -1697,10 +1698,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `heuristic`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `threat-review`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Instruction-boundary promotion in markdown is prose-aware and needs external usefulness review before any stronger posture.
@@ -1715,10 +1716,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `heuristic`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Preview`
-- Default Presets: `preview`, `skills`
+- Default Presets: `threat-review`, `skills`
 - Remediation: `message_only`
 - Lifecycle: `preview_blocked`
 - Promotion Blocker: Approval-bypass guidance in markdown is prose-aware and needs external usefulness review before any stronger posture.
@@ -3131,10 +3132,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact MCP server launch paths that run under `sudo`.
@@ -3143,7 +3144,7 @@ Important behavior:
 - Benign Corpus: `mcp-command-non-sudo-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC423 / MD-READ-UNSCOPED` — AI-native markdown frontmatter grants bare `Read` tool access
 
@@ -3659,10 +3660,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches exact MCP server launch paths that pass `sudo` as the first argv element.
@@ -3671,7 +3672,7 @@ Important behavior:
 - Benign Corpus: `mcp-args-non-sudo-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC447 / MD-PACKAGE-INSTALL-ALLOWED-TOOLS` — AI-native markdown frontmatter grants package installation authority
 
@@ -7773,10 +7774,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit `rm`-style destructive root deletion payloads in executable hook lines.
@@ -7785,7 +7786,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC634` — Hook script accesses a sensitive system password file
 
@@ -7795,10 +7796,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches direct access to sensitive password and sudo policy files in executable hook lines.
@@ -7807,7 +7808,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC635` — Hook script writes to a shell profile startup file
 
@@ -7817,10 +7818,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit shell startup profile modification in executable hook lines.
@@ -7829,7 +7830,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC636` — Hook script writes to SSH authorized_keys
 
@@ -7839,10 +7840,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit writes to SSH `authorized_keys` in executable hook lines.
@@ -7851,7 +7852,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC637` — MCP configuration command attempts destructive root deletion
 
@@ -7861,10 +7862,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit `rm`-style destructive root deletion payloads.
@@ -7873,7 +7874,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC638` — MCP configuration command accesses a sensitive system password file
 
@@ -7883,10 +7884,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for direct access to sensitive password and sudo policy files.
@@ -7895,7 +7896,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC639` — MCP configuration command writes to a shell profile startup file
 
@@ -7905,10 +7906,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit writes to shell startup profile files.
@@ -7917,7 +7918,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC640` — MCP configuration command writes to SSH authorized_keys
 
@@ -7927,10 +7928,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit writes to SSH `authorized_keys`.
@@ -7939,7 +7940,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC641` — Claude settings command hook attempts destructive root deletion
 
@@ -7949,10 +7950,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit `rm`-style destructive root deletion payloads.
@@ -7961,7 +7962,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC642` — Claude settings command hook accesses a sensitive system password file
 
@@ -7971,10 +7972,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for direct access to sensitive password and sudo policy files.
@@ -7983,7 +7984,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC643` — Claude settings command hook writes to a shell profile startup file
 
@@ -7993,10 +7994,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit writes to shell startup profile files.
@@ -8005,7 +8006,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC644` — Claude settings command hook writes to SSH authorized_keys
 
@@ -8015,10 +8016,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit writes to SSH `authorized_keys`.
@@ -8027,7 +8028,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC645` — Plugin hook command attempts destructive root deletion
 
@@ -8037,10 +8038,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit `rm`-style destructive root deletion payloads.
@@ -8049,7 +8050,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC646` — Plugin hook command accesses a sensitive system password file
 
@@ -8059,10 +8060,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for direct access to sensitive password and sudo policy files.
@@ -8071,7 +8072,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC647` — Plugin hook command writes to a shell profile startup file
 
@@ -8081,10 +8082,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit writes to shell startup profile files.
@@ -8093,7 +8094,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC648` — Plugin hook command writes to SSH authorized_keys
 
@@ -8103,10 +8104,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit writes to SSH `authorized_keys`.
@@ -8115,7 +8116,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC649` — Hook script manipulates cron persistence
 
@@ -8125,10 +8126,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit cron manipulation or cron file writes in executable hook lines.
@@ -8137,7 +8138,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC650` — Hook script registers a systemd service or unit for persistence
 
@@ -8147,10 +8148,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit systemd service registration or unit-file writes in executable hook lines.
@@ -8159,7 +8160,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC651` — Hook script registers a launchd plist for persistence
 
@@ -8169,10 +8170,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit launchd registration or LaunchAgents/LaunchDaemons plist writes in executable hook lines.
@@ -8181,7 +8182,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC652` — MCP configuration command manipulates cron persistence
 
@@ -8191,10 +8192,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit cron persistence setup.
@@ -8203,7 +8204,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC653` — MCP configuration command registers a systemd service or unit for persistence
 
@@ -8213,10 +8214,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit systemd service registration or unit-file writes.
@@ -8225,7 +8226,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC654` — MCP configuration command registers a launchd plist for persistence
 
@@ -8235,10 +8236,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.
@@ -8247,7 +8248,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC655` — Claude settings command hook manipulates cron persistence
 
@@ -8257,10 +8258,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit cron persistence setup.
@@ -8269,7 +8270,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC656` — Claude settings command hook registers a systemd service or unit for persistence
 
@@ -8279,10 +8280,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit systemd service registration or unit-file writes.
@@ -8291,7 +8292,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC657` — Claude settings command hook registers a launchd plist for persistence
 
@@ -8301,10 +8302,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.
@@ -8313,7 +8314,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC658` — Plugin hook command manipulates cron persistence
 
@@ -8323,10 +8324,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit cron persistence setup.
@@ -8335,7 +8336,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC659` — Plugin hook command registers a systemd service or unit for persistence
 
@@ -8345,10 +8346,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit systemd service registration or unit-file writes.
@@ -8357,7 +8358,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC660` — Plugin hook command registers a launchd plist for persistence
 
@@ -8367,10 +8368,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit launchd registration or LaunchAgents/LaunchDaemons plist writes.
@@ -8379,7 +8380,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC661` — Hook script performs an insecure permission change
 
@@ -8389,10 +8390,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit insecure chmod payloads in executable hook lines.
@@ -8401,7 +8402,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC662` — Hook script manipulates setuid or setgid permissions
 
@@ -8411,10 +8412,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit setuid or setgid chmod payloads in executable hook lines.
@@ -8423,7 +8424,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC663` — Hook script manipulates Linux capabilities
 
@@ -8433,10 +8434,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit Linux capability manipulation payloads in executable hook lines.
@@ -8445,7 +8446,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC664` — MCP configuration command performs an insecure permission change
 
@@ -8455,10 +8456,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit insecure chmod payloads.
@@ -8467,7 +8468,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC665` — MCP configuration command manipulates setuid or setgid permissions
 
@@ -8477,10 +8478,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit setuid or setgid chmod payloads.
@@ -8489,7 +8490,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC666` — MCP configuration command manipulates Linux capabilities
 
@@ -8499,10 +8500,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit Linux capability manipulation payloads.
@@ -8511,7 +8512,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC667` — Claude settings command hook performs an insecure permission change
 
@@ -8521,10 +8522,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit insecure chmod payloads.
@@ -8533,7 +8534,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC668` — Claude settings command hook manipulates setuid or setgid permissions
 
@@ -8543,10 +8544,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit setuid or setgid chmod payloads.
@@ -8555,7 +8556,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC669` — Claude settings command hook manipulates Linux capabilities
 
@@ -8565,10 +8566,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit Linux capability manipulation payloads.
@@ -8577,7 +8578,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC670` — Plugin hook command performs an insecure permission change
 
@@ -8587,10 +8588,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit insecure chmod payloads.
@@ -8599,7 +8600,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC671` — Plugin hook command manipulates setuid or setgid permissions
 
@@ -8609,10 +8610,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit setuid or setgid chmod payloads.
@@ -8621,7 +8622,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC672` — Plugin hook command manipulates Linux capabilities
 
@@ -8631,10 +8632,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit Linux capability manipulation payloads.
@@ -8643,7 +8644,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC673` — Hook script posts secret material to a webhook endpoint
 
@@ -8653,10 +8654,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit secret-bearing posts to well-known webhook endpoints in executable hook lines.
@@ -8665,7 +8666,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC674` — MCP configuration command appears to send secret material over the network
 
@@ -8675,10 +8676,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit secret-bearing network exfil payloads.
@@ -8687,7 +8688,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC675` — MCP configuration command sends secret material to an insecure http:// endpoint
 
@@ -8697,10 +8698,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for secret-bearing exfil over insecure HTTP.
@@ -8709,7 +8710,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC676` — MCP configuration command posts secret material to a webhook endpoint
 
@@ -8719,10 +8720,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for secret-bearing posts to webhook endpoints.
@@ -8731,7 +8732,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC677` — Claude settings command hook appears to send secret material over the network
 
@@ -8741,10 +8742,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit secret-bearing network exfil payloads.
@@ -8753,7 +8754,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC678` — Claude settings command hook sends secret material to an insecure http:// endpoint
 
@@ -8763,10 +8764,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for secret-bearing exfil over insecure HTTP.
@@ -8775,7 +8776,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC679` — Claude settings command hook posts secret material to a webhook endpoint
 
@@ -8785,10 +8786,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for secret-bearing posts to webhook endpoints.
@@ -8797,7 +8798,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC680` — Plugin hook command appears to send secret material over the network
 
@@ -8807,10 +8808,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit secret-bearing network exfil payloads.
@@ -8819,7 +8820,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC681` — Plugin hook command sends secret material to an insecure http:// endpoint
 
@@ -8829,10 +8830,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for secret-bearing exfil over insecure HTTP.
@@ -8841,7 +8842,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC682` — Plugin hook command posts secret material to a webhook endpoint
 
@@ -8851,10 +8852,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for secret-bearing posts to webhook endpoints.
@@ -8863,7 +8864,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC683` — Hook script transfers a sensitive credential file to a remote destination
 
@@ -8873,10 +8874,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit transfer of sensitive credential files to remote network or cloud-storage destinations in executable hook lines.
@@ -8885,7 +8886,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC684` — MCP configuration command transfers a sensitive credential file to a remote destination
 
@@ -8895,10 +8896,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit transfer of sensitive credential files to remote destinations.
@@ -8907,7 +8908,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC685` — Claude settings command hook transfers a sensitive credential file to a remote destination
 
@@ -8917,10 +8918,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit transfer of sensitive credential files to remote destinations.
@@ -8929,7 +8930,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC686` — Plugin hook command transfers a sensitive credential file to a remote destination
 
@@ -8939,10 +8940,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit transfer of sensitive credential files to remote destinations.
@@ -8951,7 +8952,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC687` — Hook script reads local clipboard contents
 
@@ -8961,10 +8962,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit clipboard-reading commands in executable hook lines.
@@ -8973,7 +8974,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC688` — Hook script accesses browser credential or cookie stores
 
@@ -8983,10 +8984,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches direct access to browser credential or cookie storage files in executable hook lines.
@@ -8995,7 +8996,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC689` — MCP configuration command reads local clipboard contents
 
@@ -9005,10 +9006,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for clipboard-reading commands that can extract local user data.
@@ -9017,7 +9018,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC690` — MCP configuration command accesses browser credential or cookie stores
 
@@ -9027,10 +9028,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for direct access to browser credential or cookie storage files.
@@ -9039,7 +9040,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC691` — Claude settings command hook reads local clipboard contents
 
@@ -9049,10 +9050,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for clipboard-reading behavior that can extract local user data.
@@ -9061,7 +9062,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC692` — Claude settings command hook accesses browser credential or cookie stores
 
@@ -9071,10 +9072,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for direct access to browser credential or cookie storage files.
@@ -9083,7 +9084,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC693` — Plugin hook command reads local clipboard contents
 
@@ -9093,10 +9094,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for clipboard-reading behavior that can extract local user data.
@@ -9105,7 +9106,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC694` — Plugin hook command accesses browser credential or cookie stores
 
@@ -9115,10 +9116,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for direct access to browser credential or cookie storage files.
@@ -9127,7 +9128,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC695` — Hook script exfiltrates clipboard contents over the network
 
@@ -9137,10 +9138,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches clipboard-reading commands that also transmit data to remote network endpoints in executable hook lines.
@@ -9149,7 +9150,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC696` — Hook script exfiltrates browser credential or cookie store data
 
@@ -9159,10 +9160,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches direct access to browser credential or cookie storage files combined with remote transfer behavior in executable hook lines.
@@ -9171,7 +9172,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC697` — MCP configuration command exfiltrates clipboard contents over the network
 
@@ -9181,10 +9182,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for clipboard-reading commands that also transmit captured data to remote destinations.
@@ -9193,7 +9194,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC698` — MCP configuration command exfiltrates browser credential or cookie store data
 
@@ -9203,10 +9204,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for direct access to browser credential or cookie storage files combined with remote transfer behavior.
@@ -9215,7 +9216,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC699` — Claude settings command hook exfiltrates clipboard contents over the network
 
@@ -9225,10 +9226,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for clipboard-reading behavior that also transmits captured data to remote destinations.
@@ -9237,7 +9238,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC700` — Claude settings command hook exfiltrates browser credential or cookie store data
 
@@ -9247,10 +9248,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for direct access to browser credential or cookie storage files combined with remote transfer behavior.
@@ -9259,7 +9260,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC701` — Plugin hook command exfiltrates clipboard contents over the network
 
@@ -9269,10 +9270,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for clipboard reads that also transmit captured data to remote destinations.
@@ -9281,7 +9282,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC702` — Plugin hook command exfiltrates browser credential or cookie store data
 
@@ -9291,10 +9292,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for direct access to browser credential or cookie storage files combined with remote transfer behavior.
@@ -9303,7 +9304,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC703` — Hook script captures a screenshot or desktop image
 
@@ -9313,10 +9314,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit screen capture utilities in executable hook lines.
@@ -9325,7 +9326,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC704` — Hook script captures and exfiltrates a screenshot or desktop image
 
@@ -9335,10 +9336,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit screen capture utilities combined with remote transfer behavior in executable hook lines.
@@ -9347,7 +9348,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC705` — MCP configuration command captures a screenshot or desktop image
 
@@ -9357,10 +9358,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit screen capture utilities.
@@ -9369,7 +9370,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC706` — MCP configuration command captures and exfiltrates a screenshot or desktop image
 
@@ -9379,10 +9380,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit screen capture utilities combined with remote transfer behavior.
@@ -9391,7 +9392,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC707` — Claude settings command hook captures a screenshot or desktop image
 
@@ -9401,10 +9402,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit screen capture utilities.
@@ -9413,7 +9414,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC708` — Claude settings command hook captures and exfiltrates a screenshot or desktop image
 
@@ -9423,10 +9424,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit screen capture utilities combined with remote transfer behavior.
@@ -9435,7 +9436,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC709` — Plugin hook command captures a screenshot or desktop image
 
@@ -9445,10 +9446,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit screen capture utilities.
@@ -9457,7 +9458,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC710` — Plugin hook command captures and exfiltrates a screenshot or desktop image
 
@@ -9467,10 +9468,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit screen capture utilities combined with remote transfer behavior.
@@ -9479,7 +9480,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC711` — Hook script captures a camera image or webcam stream
 
@@ -9489,10 +9490,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit camera or webcam capture utilities in executable hook lines.
@@ -9501,7 +9502,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC712` — Hook script records microphone or audio input
 
@@ -9511,10 +9512,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit microphone or audio-recording utilities in executable hook lines.
@@ -9523,7 +9524,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC713` — Hook script captures and exfiltrates camera or webcam data
 
@@ -9533,10 +9534,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit camera or webcam capture utilities combined with remote transfer behavior in executable hook lines.
@@ -9545,7 +9546,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC714` — Hook script records and exfiltrates microphone or audio input
 
@@ -9555,10 +9556,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Matches explicit microphone or audio-recording utilities combined with remote transfer behavior in executable hook lines.
@@ -9567,7 +9568,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC715` — MCP configuration command captures a webcam or camera image
 
@@ -9577,10 +9578,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit webcam or camera capture utilities.
@@ -9589,7 +9590,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC716` — MCP configuration command captures microphone audio
 
@@ -9599,10 +9600,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit microphone recording utilities.
@@ -9611,7 +9612,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC717` — MCP configuration command captures and exfiltrates webcam or camera data
 
@@ -9621,10 +9622,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit webcam or camera capture utilities combined with remote transfer behavior.
@@ -9633,7 +9634,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC718` — MCP configuration command captures and exfiltrates microphone audio
 
@@ -9643,10 +9644,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit microphone recording utilities combined with remote transfer behavior.
@@ -9655,7 +9656,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC719` — Claude settings command hook captures a webcam or camera image
 
@@ -9665,10 +9666,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit webcam or camera capture utilities.
@@ -9677,7 +9678,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC720` — Claude settings command hook captures microphone audio
 
@@ -9687,10 +9688,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit microphone recording utilities.
@@ -9699,7 +9700,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC721` — Claude settings command hook captures and exfiltrates webcam or camera data
 
@@ -9709,10 +9710,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit webcam or camera capture utilities combined with remote transfer behavior.
@@ -9721,7 +9722,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC722` — Claude settings command hook captures and exfiltrates microphone audio
 
@@ -9731,10 +9732,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit microphone recording utilities combined with remote transfer behavior.
@@ -9743,7 +9744,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC723` — Plugin hook command captures a webcam or camera image
 
@@ -9753,10 +9754,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit webcam or camera capture utilities.
@@ -9765,7 +9766,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC724` — Plugin hook command captures microphone audio
 
@@ -9775,10 +9776,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit microphone recording utilities.
@@ -9787,7 +9788,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC725` — Plugin hook command captures and exfiltrates webcam or camera data
 
@@ -9797,10 +9798,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit webcam or camera capture utilities combined with remote transfer behavior.
@@ -9809,7 +9810,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC726` — Plugin hook command captures and exfiltrates microphone audio
 
@@ -9819,10 +9820,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit microphone recording utilities combined with remote transfer behavior.
@@ -9831,7 +9832,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC727` — Hook script captures keystrokes or keyboard input
 
@@ -9841,10 +9842,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks hook shell lines for explicit keystroke capture utilities or keylogger markers.
@@ -9853,7 +9854,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC728` — Hook script captures and exfiltrates keystrokes or keyboard input
 
@@ -9863,10 +9864,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks hook shell lines for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.
@@ -9875,7 +9876,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC729` — MCP configuration command captures keystrokes or keyboard input
 
@@ -9885,10 +9886,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit keystroke capture utilities or keylogger markers.
@@ -9897,7 +9898,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC730` — MCP configuration command captures and exfiltrates keystrokes or keyboard input
 
@@ -9907,10 +9908,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.
@@ -9919,7 +9920,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC731` — Claude settings command hook captures keystrokes or keyboard input
 
@@ -9929,10 +9930,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit keystroke capture utilities or keylogger markers.
@@ -9941,7 +9942,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC732` — Claude settings command hook captures and exfiltrates keystrokes or keyboard input
 
@@ -9951,10 +9952,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.
@@ -9963,7 +9964,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC733` — Plugin hook command captures keystrokes or keyboard input
 
@@ -9973,10 +9974,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit keystroke capture utilities or keylogger markers.
@@ -9985,7 +9986,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC734` — Plugin hook command captures and exfiltrates keystrokes or keyboard input
 
@@ -9995,10 +9996,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit keystroke capture utilities or keylogger markers combined with remote transfer behavior.
@@ -10007,7 +10008,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC735` — Hook script dumps environment variables or shell state
 
@@ -10017,10 +10018,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks hook shell lines for explicit environment or shell-state enumeration commands.
@@ -10029,7 +10030,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC736` — Hook script dumps and exfiltrates environment variables or shell state
 
@@ -10039,10 +10040,10 @@ Important behavior:
 - Surface: `hook`
 - Detection: `structural`
 - Default Severity: `Deny`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`
+- Default Presets: `threat-review`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks hook shell lines for explicit environment or shell-state enumeration commands combined with remote transfer behavior.
@@ -10051,7 +10052,7 @@ Important behavior:
 - Benign Corpus: `cursor-plugin-clean-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC737` — MCP configuration command dumps environment variables or shell state
 
@@ -10061,10 +10062,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit environment or shell-state enumeration commands.
@@ -10073,7 +10074,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC738` — MCP configuration command dumps and exfiltrates environment variables or shell state
 
@@ -10083,10 +10084,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed MCP launch paths for explicit environment or shell-state enumeration commands combined with remote transfer behavior.
@@ -10095,7 +10096,7 @@ Important behavior:
 - Benign Corpus: `mcp-safe-basic`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC739` — Claude settings command hook dumps environment variables or shell state
 
@@ -10105,10 +10106,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit environment or shell-state enumeration commands.
@@ -10117,7 +10118,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC740` — Claude settings command hook dumps and exfiltrates environment variables or shell state
 
@@ -10127,10 +10128,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `threat-review`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed Claude settings command hooks for explicit environment or shell-state enumeration commands combined with remote transfer behavior.
@@ -10139,7 +10140,7 @@ Important behavior:
 - Benign Corpus: `claude-settings-network-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC741` — Plugin hook command dumps environment variables or shell state
 
@@ -10149,10 +10150,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit environment or shell-state enumeration commands.
@@ -10161,7 +10162,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC742` — Plugin hook command dumps and exfiltrates environment variables or shell state
 
@@ -10171,10 +10172,10 @@ Important behavior:
 - Surface: `json`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `threat-review`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `mcp`
+- Default Presets: `threat-review`, `mcp`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks committed plugin hook command values for explicit environment or shell-state enumeration commands combined with remote transfer behavior.
@@ -10183,7 +10184,7 @@ Important behavior:
 - Benign Corpus: `plugin-hook-command-safe`
 - Structured Evidence Required: `true`
 - Remediation Reviewed: `true`
-- Canonical Note: Structural stable rule intended as a high-precision check with deterministic evidence.
+- Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
 ### `SEC743` — package.json defines a dangerous install-time lifecycle script
 

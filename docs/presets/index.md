@@ -2,8 +2,8 @@
   <p class="lintai-kicker">Activation Surface</p>
   <h1>Preset Reference</h1>
   <p class="lintai-lead">
-    Start with `recommended` for the quiet default, then add `preview` or `governance` only when
-    you want broader review.
+    Start with `recommended` for the quiet default, then add `preview`, `threat-review`, or other
+    explicit sidecar lanes only when you want broader review.
   </p>
   <div class="lintai-feature-list">
     <div class="lintai-feature-item">

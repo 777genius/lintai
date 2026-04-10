@@ -14,6 +14,7 @@ This lane can include two different shapes of shipped preview rule:
 
 - strong deeper-review rules that still align with the main product thesis, but are not part of the quiet `recommended` default
 - context-sensitive preview rules that are still useful, but need more domain-specific validation before they should be read as universal signals
+- medium-weight review signals that are more contextual than the quiet default, but not as explicitly malicious or spyware-like as the dedicated `threat-review` lane
 
 ## When To Use It
 
@@ -21,4 +22,4 @@ Use it when you want wider discovery and are willing to review more contextual f
 
 ## Tradeoffs
 
-This preset can surface more noise than `recommended`; dedicated sidecar lanes like `compat`, `guidance`, `governance`, and `advisory` still stay explicit. It is still the main deeper-review lane, not a catch-all guidance bucket.
+This preset can surface more noise than `recommended`; dedicated sidecar lanes like `threat-review`, `compat`, `guidance`, `governance`, and `advisory` still stay explicit. It is intentionally no longer the bucket for overt malicious-execution or spyware-style review.
