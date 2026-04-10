@@ -2167,7 +2167,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: UnscopedBashAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for exact bare `Bash` grants that expose unconstrained shell authority as shared default policy.",
         malicious_case_ids: &["skill-unscoped-bash-allowed-tools"],
@@ -2583,7 +2583,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 124] = [
     stable_native_message_rule_spec! {
         metadata: WildcardBashAllowedToolsRule::METADATA,
         surface: Surface::Markdown,
-        default_presets: PREVIEW_SKILLS_PRESETS,
+        default_presets: GOVERNANCE_PRESETS,
         detection_class: DetectionClass::Structural,
         rationale: "Checks AI-native frontmatter for exact `Bash(*)` grants that expose unconstrained shell execution as shared default policy.",
         malicious_case_ids: &["skill-bash-wildcard-allowed-tools"],

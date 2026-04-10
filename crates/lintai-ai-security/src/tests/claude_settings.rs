@@ -104,7 +104,7 @@ fn ignores_claude_settings_bypass_permissions_on_fixture_like_path() {
 #[test]
 fn finds_claude_settings_unscoped_bash() {
     let content = r#"{"permissions":{"allow":["Bash","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -121,7 +121,7 @@ fn finds_claude_settings_unscoped_bash() {
 #[test]
 fn finds_claude_settings_bash_wildcard() {
     let content = r#"{"permissions":{"allow":["Bash(*)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#;
-    let summary = scan_preview_claude_settings_fixture(".claude/settings.json", content);
+    let summary = scan_preview_governance_claude_settings_fixture(".claude/settings.json", content);
 
     let finding = summary
         .findings
@@ -3169,7 +3169,7 @@ fn ignores_claude_settings_read_wildcard_on_fixture_like_path() {
 
 #[test]
 fn ignores_claude_settings_specific_bash_permissions() {
-    let summary = scan_preview_claude_settings_fixture(
+    let summary = scan_preview_governance_claude_settings_fixture(
         ".claude/settings.json",
         r#"{"permissions":{"allow":["Bash(git status)","Read(*)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo done"}]}]}}"#,
     );
@@ -3188,7 +3188,7 @@ fn ignores_claude_settings_bash_wildcard_on_fixture_like_path() {
     std::fs::create_dir_all(temp_dir.join("tests/fixtures/.claude")).unwrap();
     std::fs::write(
         temp_dir.join("lintai.toml"),
-        "[presets]\nenable = [\"base\", \"preview\", \"claude\"]\n",
+        "[presets]\nenable = [\"base\", \"preview\", \"claude\", \"governance\"]\n",
     )
     .unwrap();
     std::fs::write(

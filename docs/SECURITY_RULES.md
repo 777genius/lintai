@@ -71,7 +71,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC349 / MD-DOCKER-HOST-ESCAPE` | AI-native markdown Docker example uses a host-escape or privileged runtime pattern | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
 | `SEC350 / MD-UNTRUSTED-INSTRUCTION-PROMOTION` | Instruction markdown promotes untrusted external content to developer/system-level instructions | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
 | `SEC351 / MD-APPROVAL-BYPASS` | AI-native instruction explicitly disables user approval or confirmation | `preview` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `heuristic` | `message_only` | `preview`, `skills` |
-| `SEC352 / MD-UNSCOPED-BASH` | AI-native markdown frontmatter grants unscoped Bash tool access | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC352 / MD-UNSCOPED-BASH` | AI-native markdown frontmatter grants unscoped Bash tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC353 / COPILOT-4K` | GitHub Copilot instruction markdown exceeds the 4000-character guidance limit | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC354 / COPILOT-PATH-APPLYTO` | Path-specific GitHub Copilot instruction markdown is missing `applyTo` frontmatter | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC355 / MD-WILDCARD-TOOLS` | AI-native markdown frontmatter grants wildcard tool access | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
@@ -81,7 +81,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC359 / CURSOR-RULE-ALWAYSAPPLY` | Cursor rule frontmatter `alwaysApply` must be boolean | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC360 / CURSOR-RULE-GLOBS` | Cursor rule frontmatter `globs` must be a sequence of patterns | `guidance` | Preview | `preview_blocked` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `guidance` |
 | `SEC361 / CLAUDE-SETTINGS-SCHEMA` | Claude settings file is missing a top-level `$schema` reference | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
-| `SEC362 / CLAUDE-BASH-WILDCARD` | Claude settings permissions allow `Bash(*)` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC362 / CLAUDE-BASH-WILDCARD` | Claude settings permissions allow `Bash(*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC363 / CLAUDE-HOME-HOOK-PATH` | Claude settings hook command uses a home-directory path in a shared committed config | `compat` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `compat`, `claude` |
 | `SEC364 / CLAUDE-BYPASS-PERMISSIONS` | Claude settings set `permissions.defaultMode` to `bypassPermissions` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
 | `SEC365 / CLAUDE-HTTP-HOOK-URL` | Claude settings allow non-HTTPS HTTP hook URLs in a shared committed config | `preview` | Preview | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
@@ -246,7 +246,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC524 / MD-GREP-WILDCARD` | AI-native markdown frontmatter grants `Grep(*)` wildcard access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC525 / MD-WEBFETCH-WILDCARD` | AI-native markdown frontmatter grants `WebFetch(*)` wildcard access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC526 / MD-WEBSEARCH-WILDCARD` | AI-native markdown frontmatter grants `WebSearch(*)` wildcard access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
-| `SEC527 / MD-BASH-WILDCARD` | AI-native markdown frontmatter grants `Bash(*)` wildcard access | `preview` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `preview`, `skills` |
+| `SEC527 / MD-BASH-WILDCARD` | AI-native markdown frontmatter grants `Bash(*)` wildcard access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC528 / CLAUDE-GH-API-DELETE-PERMISSION` | Claude settings permissions allow `Bash(gh api --method DELETE:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC529 / MD-GH-API-DELETE-ALLOWED-TOOLS` | AI-native markdown frontmatter grants `Bash(gh api --method DELETE:*)` tool access | `governance` | Stable | `stable_gated` | Warn | `per_file` | `markdown` | `structural` | `message_only` | `governance` |
 | `SEC530 / CLAUDE-GH-API-PATCH-PERMISSION` | Claude settings permissions allow `Bash(gh api --method PATCH:*)` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
@@ -345,7 +345,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC623 / MCP-AUTOAPPROVE-WEBFETCH` | MCP configuration auto-approves bare `WebFetch` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC624 / MCP-AUTOAPPROVE-WEBSEARCH` | MCP configuration auto-approves bare `WebSearch` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
 | `SEC625 / MCP-AUTOAPPROVE-BASH` | MCP configuration auto-approves bare `Bash` through `autoApprove` | `preview` | Stable | `stable_gated` | Warn | `per_file` | `json` | `structural` | `message_only` | `base`, `mcp` |
-| `SEC626 / CLAUDE-BASH` | Claude settings permissions allow bare `Bash` in a shared committed config | `preview` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `preview`, `claude` |
+| `SEC626 / CLAUDE-BASH` | Claude settings permissions allow bare `Bash` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC627 / CLAUDE-READ` | Claude settings permissions allow bare `Read` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC628 / CLAUDE-WRITE` | Claude settings permissions allow bare `Write` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
 | `SEC629 / CLAUDE-EDIT` | Claude settings permissions allow bare `Edit` in a shared committed config | `governance` | Stable | `stable_gated` | Warn | `per_file` | `claude_settings` | `structural` | `message_only` | `governance`, `claude` |
@@ -1733,10 +1733,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for exact bare `Bash` grants that expose unconstrained shell authority as shared default policy.
@@ -1921,10 +1921,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings permissions for explicit wildcard `Bash(*)` grants.
@@ -5441,10 +5441,10 @@ Important behavior:
 - Surface: `markdown`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `skills`
+- Default Presets: `governance`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks AI-native frontmatter for exact `Bash(*)` grants that expose unconstrained shell execution as shared default policy.
@@ -7619,10 +7619,10 @@ Important behavior:
 - Surface: `claude_settings`
 - Detection: `structural`
 - Default Severity: `Warn`
-- Public Lane: `preview`
+- Public Lane: `governance`
 - Default Confidence: `High`
 - Tier: `Stable`
-- Default Presets: `preview`, `claude`
+- Default Presets: `governance`, `claude`
 - Remediation: `message_only`
 - Lifecycle: `stable_gated`
 - Graduation Rationale: Checks shared Claude settings permissions for exact bare `Bash` grants.

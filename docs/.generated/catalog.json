@@ -298,16 +298,12 @@
         "lintai-ai-security:SEC349",
         "lintai-ai-security:SEC350",
         "lintai-ai-security:SEC351",
-        "lintai-ai-security:SEC352",
-        "lintai-ai-security:SEC362",
         "lintai-ai-security:SEC364",
         "lintai-ai-security:SEC365",
         "lintai-ai-security:SEC366",
         "lintai-ai-security:SEC400",
         "lintai-ai-security:SEC405",
-        "lintai-ai-security:SEC447",
-        "lintai-ai-security:SEC527",
-        "lintai-ai-security:SEC626"
+        "lintai-ai-security:SEC447"
       ],
       "canonicalPath": "/presets/preview"
     },
@@ -350,9 +346,7 @@
         "lintai-ai-security:SEC349",
         "lintai-ai-security:SEC350",
         "lintai-ai-security:SEC351",
-        "lintai-ai-security:SEC352",
-        "lintai-ai-security:SEC447",
-        "lintai-ai-security:SEC527"
+        "lintai-ai-security:SEC447"
       ],
       "canonicalPath": "/presets/skills"
     },
@@ -694,6 +688,8 @@
       "description": "Opt-in review rules for shared mutation authority and broad bare tool grants that should not read like headline security findings.",
       "extends": [],
       "ruleIds": [
+        "lintai-ai-security:SEC352",
+        "lintai-ai-security:SEC362",
         "lintai-ai-security:SEC367",
         "lintai-ai-security:SEC369",
         "lintai-ai-security:SEC372",
@@ -809,6 +805,7 @@
         "lintai-ai-security:SEC524",
         "lintai-ai-security:SEC525",
         "lintai-ai-security:SEC526",
+        "lintai-ai-security:SEC527",
         "lintai-ai-security:SEC528",
         "lintai-ai-security:SEC529",
         "lintai-ai-security:SEC530",
@@ -827,6 +824,7 @@
         "lintai-ai-security:SEC543",
         "lintai-ai-security:SEC544",
         "lintai-ai-security:SEC545",
+        "lintai-ai-security:SEC626",
         "lintai-ai-security:SEC627",
         "lintai-ai-security:SEC628",
         "lintai-ai-security:SEC629",
@@ -3121,7 +3119,7 @@
       "slug": "sec352",
       "canonicalPath": "/rules/lintai-ai-security/sec352",
       "summary": "AI-native markdown frontmatter grants unscoped Bash tool access",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -3130,8 +3128,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -3449,7 +3446,7 @@
       "slug": "sec362",
       "canonicalPath": "/rules/lintai-ai-security/sec362",
       "summary": "Claude settings permissions allow `Bash(*)` in a shared committed config",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -3458,7 +3455,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "governance",
         "claude"
       ],
       "lifecycleState": "stable_gated",
@@ -9752,7 +9749,7 @@
       "slug": "sec527",
       "canonicalPath": "/rules/lintai-ai-security/sec527",
       "summary": "AI-native markdown frontmatter grants `Bash(*)` wildcard access",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "markdown",
       "tier": "stable",
@@ -9761,8 +9758,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
-        "skills"
+        "governance"
       ],
       "lifecycleState": "stable_gated",
       "lifecycle": {
@@ -13703,7 +13699,7 @@
       "slug": "sec626",
       "canonicalPath": "/rules/lintai-ai-security/sec626",
       "summary": "Claude settings permissions allow bare `Bash` in a shared committed config",
-      "publicLane": "preview",
+      "publicLane": "governance",
       "scope": "per_file",
       "surface": "claude_settings",
       "tier": "stable",
@@ -13712,7 +13708,7 @@
       "detectionClass": "structural",
       "remediationSupport": "message_only",
       "defaultPresets": [
-        "preview",
+        "governance",
         "claude"
       ],
       "lifecycleState": "stable_gated",

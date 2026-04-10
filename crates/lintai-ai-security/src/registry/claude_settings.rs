@@ -2823,7 +2823,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsUnscopedBashRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings permissions for exact bare `Bash` grants.",
@@ -2963,7 +2963,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
     NativeRuleSpec {
         metadata: ClaudeSettingsBashWildcardRule::METADATA,
         surface: Surface::ClaudeSettings,
-        default_presets: PREVIEW_CLAUDE_PRESETS,
+        default_presets: GOVERNANCE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
             rationale: "Checks shared Claude settings permissions for explicit wildcard `Bash(*)` grants.",

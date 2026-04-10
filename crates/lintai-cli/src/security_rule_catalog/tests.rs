@@ -147,8 +147,8 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .iter()
         .find(|entry| entry.metadata.code == "SEC352")
         .unwrap();
-    assert_eq!(sec352.default_presets(), vec!["preview", "skills"]);
-    assert_eq!(sec352.public_lane(), PublicLane::Preview);
+    assert_eq!(sec352.default_presets(), vec!["governance"]);
+    assert_eq!(sec352.public_lane(), PublicLane::Governance);
 
     let sec347 = entries
         .iter()
@@ -241,6 +241,13 @@ fn shipped_rules_have_expected_default_preset_mapping() {
     assert_eq!(sec399.default_presets(), vec!["governance", "claude"]);
     assert_eq!(sec399.public_lane(), PublicLane::Governance);
 
+    let sec362 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC362")
+        .unwrap();
+    assert_eq!(sec362.default_presets(), vec!["governance", "claude"]);
+    assert_eq!(sec362.public_lane(), PublicLane::Governance);
+
     let sec369 = entries
         .iter()
         .find(|entry| entry.metadata.code == "SEC369")
@@ -261,6 +268,13 @@ fn shipped_rules_have_expected_default_preset_mapping() {
         .unwrap();
     assert_eq!(sec627.default_presets(), vec!["governance", "claude"]);
     assert_eq!(sec627.public_lane(), PublicLane::Governance);
+
+    let sec626 = entries
+        .iter()
+        .find(|entry| entry.metadata.code == "SEC626")
+        .unwrap();
+    assert_eq!(sec626.default_presets(), vec!["governance", "claude"]);
+    assert_eq!(sec626.public_lane(), PublicLane::Governance);
 
     let sec401 = entries
         .iter()

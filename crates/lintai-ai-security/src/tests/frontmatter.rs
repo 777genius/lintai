@@ -3,13 +3,13 @@ use super::*;
 #[test]
 fn finds_unscoped_bash_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash, Read, Write\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
     assert_marker_span(&summary, "SEC352", content, "Bash");
 }
 
 #[test]
 fn finds_unscoped_bash_allowed_tools_in_yaml_list_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "AGENTS.md",
         "---\nallowed-tools:\n  - Bash\n  - Read\n---\n# Agent\n",
     );
@@ -18,7 +18,7 @@ fn finds_unscoped_bash_allowed_tools_in_yaml_list_frontmatter() {
 
 #[test]
 fn ignores_scoped_bash_allowed_tools_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(git:*), Read\n---\n# Skill\n",
     );
@@ -30,7 +30,7 @@ fn ignores_unscoped_bash_allowed_tools_on_fixture_like_path() {
     let summary = scan_fixture(
         "tests/fixtures/skill/SKILL.md",
         "---\nallowed-tools: Bash, Read\n---\n# Fixture skill\n",
-        &["base", "preview", "skills", "guidance"],
+        &["base", "preview", "skills", "guidance", "governance"],
         "lintai-sec352-fixture-safe",
     );
     assert_lacks_rule(&summary, "SEC352");
@@ -2008,7 +2008,7 @@ fn finds_wildcard_read_allowed_tools_in_frontmatter() {
 #[test]
 fn finds_wildcard_bash_allowed_tools_in_frontmatter() {
     let content = "---\nallowed-tools: Bash(*), Read(./docs/**)\n---\n# Skill\n";
-    let summary = scan_preview_skill_fixture("SKILL.md", content);
+    let summary = scan_preview_governance_skill_fixture("SKILL.md", content);
 
     let finding = summary
         .findings
@@ -2024,7 +2024,7 @@ fn finds_wildcard_bash_allowed_tools_in_frontmatter() {
 
 #[test]
 fn ignores_scoped_bash_allowed_tools_wildcard_rule_in_frontmatter() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "SKILL.md",
         "---\nallowed-tools: Bash(git status:*), Read(./docs/**)\n---\n# Skill\n",
     );
@@ -2039,7 +2039,7 @@ fn ignores_scoped_bash_allowed_tools_wildcard_rule_in_frontmatter() {
 
 #[test]
 fn ignores_wildcard_bash_allowed_tools_on_fixture_like_path() {
-    let summary = scan_preview_skill_fixture(
+    let summary = scan_preview_governance_skill_fixture(
         "tests/fixtures/skill/SKILL.md",
         "---\nallowed-tools: Bash(*), Read(./docs/**)\n---\n# Fixture skill\n",
     );
