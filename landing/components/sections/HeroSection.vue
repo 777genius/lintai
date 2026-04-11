@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import {
-  mdiArrowTopRight,
-  mdiCodeBracesBox,
-  mdiLockOutline,
-  mdiShieldCheckOutline,
-} from '@mdi/js';
+import { mdiArrowTopRight, mdiCodeBracesBox, mdiLockOutline, mdiShieldCheckOutline } from '@mdi/js';
 
 const { content } = useLandingContent();
 const { t, locale } = useI18n();
@@ -26,10 +21,7 @@ const releaseDate = computed(() => {
     <v-container class="hero-section__container">
       <div class="hero-section__grid">
         <div class="hero-section__content">
-          <h1
-            class="hero-section__title"
-            :class="{ 'hero-section__title--compact': compactTitle }"
-          >
+          <h1 class="hero-section__title" :class="{ 'hero-section__title--compact': compactTitle }">
             {{ content.hero.title }}
           </h1>
 
@@ -43,12 +35,7 @@ const releaseDate = computed(() => {
 
           <div class="hero-section__actions">
             <div class="hero-section__cta-row">
-              <v-btn
-                variant="flat"
-                size="large"
-                href="#download"
-                class="hero-section__btn-primary"
-              >
+              <v-btn variant="flat" size="large" href="#download" class="hero-section__btn-primary">
                 {{ t('hero.primaryCta') }}
               </v-btn>
               <v-btn
@@ -109,11 +96,11 @@ const releaseDate = computed(() => {
 <style scoped>
 .hero-section {
   position: relative;
-  min-height: min(680px, calc(100svh - 64px));
+  min-height: auto;
   display: flex;
   align-items: flex-start;
   padding-top: 20px;
-  padding-bottom: 24px;
+  padding-bottom: 28px;
 }
 
 .hero-section__container {
@@ -123,20 +110,20 @@ const releaseDate = computed(() => {
 
 .hero-section__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.24fr) minmax(360px, 500px);
-  gap: clamp(20px, 2.4vw, 40px);
+  grid-template-columns: 1fr;
+  gap: clamp(20px, 2.2vw, 30px);
   align-items: start;
 }
 
 .hero-section__content {
   position: relative;
   z-index: 2;
-  max-width: 840px;
-  min-height: 620px;
+  max-width: 980px;
+  min-height: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding-top: clamp(18px, 3vh, 40px);
+  padding-top: clamp(12px, 2vh, 24px);
 }
 
 .hero-section__title {
@@ -256,8 +243,8 @@ const releaseDate = computed(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: auto;
-  margin-bottom: 24px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .hero-section__trust-item {
@@ -285,8 +272,8 @@ const releaseDate = computed(() => {
 .hero-section__preview {
   position: relative;
   width: 100%;
-  max-width: 520px;
-  margin-left: auto;
+  max-width: 1120px;
+  margin-left: 0;
 }
 
 .hero-section__preview-glow {
@@ -348,11 +335,6 @@ const releaseDate = computed(() => {
 }
 
 @media (min-width: 1261px) {
-  .hero-section__title {
-    white-space: nowrap;
-    text-wrap: nowrap;
-  }
-
   .hero-section__title--compact {
     font-size: clamp(1.88rem, 2.2vw, 2.42rem);
   }
@@ -366,7 +348,6 @@ const releaseDate = computed(() => {
   }
 
   .hero-section__grid {
-    grid-template-columns: 1fr;
     gap: 28px;
   }
 

@@ -1,8 +1,8 @@
 {
   "hero": {
-    "title": "Review AI agent capabilities.",
-    "subtitle": "Shows what it can run, access, and what defaults it gets before merge.",
-    "supportLine": "MCP, hooks, permissions, and agent instructions."
+    "title": "Scan local AI agent config.",
+    "subtitle": "Find risky run, access, and default changes in the agent files already on your machine.",
+    "supportLine": "Claude, Cursor, MCP, hooks, permissions, and shared instructions."
   },
   "features": [
     {
@@ -164,9 +164,9 @@
   "comparisonRows": [
     {
       "id": "offline",
-      "feature": "Runs locally before merge",
+      "feature": "Runs on your machine",
       "lintai": { "status": "yes", "note": "Built for local runs and CI" },
-      "manualReview": { "status": "partial", "note": "Depends on reviewer discipline" },
+      "manualReview": { "status": "partial", "note": "Depends on what a person notices" },
       "scripts": { "status": "partial", "note": "Possible, but usually incomplete" },
       "cloudScanners": { "status": "no", "note": "Often starts with upload or hosted state" }
     },
@@ -174,13 +174,13 @@
       "id": "signal",
       "feature": "Shows the exact reason for each finding",
       "lintai": { "status": "yes", "note": "Stable ids with structured evidence" },
-      "manualReview": { "status": "partial", "note": "Explanations vary by reviewer" },
+      "manualReview": { "status": "partial", "note": "Explanations vary by person" },
       "scripts": { "status": "partial", "note": "Hard to keep clear across repos" },
       "cloudScanners": { "status": "partial", "note": "May be broader, but not always explainable" }
     },
     {
       "id": "scope",
-      "feature": "Checks agent config that code review often misses",
+      "feature": "Checks agent config people usually trust by default",
       "lintai": {
         "status": "yes",
         "note": "Skills, MCP, hooks, settings, instruction files"
@@ -241,7 +241,7 @@
     {
       "id": "fastestStart",
       "question": "What is the fastest way to try lintai?",
-      "answer": "Install the public release CLI from GitHub Releases, run <code>lintai scan .</code> in a repo that already contains supported files, and compare the <code>Stable</code> and <code>Preview</code> findings before deciding how hard to gate it in CI."
+      "answer": "Install the public release CLI from GitHub Releases, run <code>lintai scan .</code> where your agent config already lives, and inspect the <code>Stable</code> findings first. Add CI later if you actually need it."
     },
     {
       "id": "cloudVsLintai",

@@ -1,8 +1,8 @@
 {
   "hero": {
-    "title": "Проверяйте возможности AI-агента.",
-    "subtitle": "Показывает, что агент может запускать, к чему получает доступ и какие правила получает по умолчанию, ещё до merge.",
-    "supportLine": "MCP, хуки, права доступа и инструкции для агентов."
+    "title": "Проверьте локальный конфиг AI-агента.",
+    "subtitle": "Находит рискованные изменения в запуске, доступе и дефолтах в agent-файлах, которые уже стоят у вас локально.",
+    "supportLine": "Claude, Cursor, MCP, хуки, права доступа и общие инструкции."
   },
   "features": [
     {
@@ -164,9 +164,9 @@
   "comparisonRows": [
     {
       "id": "offline",
-      "feature": "Запускается локально до merge",
+      "feature": "Работает прямо на вашей машине",
       "lintai": { "status": "yes", "note": "Сделан для локальных прогонов и CI" },
-      "manualReview": { "status": "partial", "note": "Зависит от дисциплины reviewer'а" },
+      "manualReview": { "status": "partial", "note": "Зависит от того, что заметит человек" },
       "scripts": { "status": "partial", "note": "Возможно, но обычно неполно" },
       "cloudScanners": { "status": "no", "note": "Часто начинаются с upload или hosted state" }
     },
@@ -176,14 +176,14 @@
       "lintai": { "status": "yes", "note": "Stable id и структурированные детали" },
       "manualReview": {
         "status": "partial",
-        "note": "Объяснения зависят от человека"
+        "note": "Объяснения зависят от конкретного человека"
       },
       "scripts": { "status": "partial", "note": "Трудно держать понятными на всех репозиториях" },
       "cloudScanners": { "status": "partial", "note": "Могут быть шире, но не всегда объяснимы" }
     },
     {
       "id": "scope",
-      "feature": "Проверяет конфиг агента, который ревью кода часто пропускает",
+      "feature": "Проверяет конфиг агента, который обычно принимают на доверии",
       "lintai": {
         "status": "yes",
         "note": "Skills, MCP, хуки, настройки и файлы инструкций"
@@ -197,7 +197,10 @@
       "feature": "Легко встраивается в CI и проверки кода",
       "lintai": { "status": "yes", "note": "Text, JSON и SARIF встроены" },
       "manualReview": { "status": "no", "note": "По умолчанию нет машиночитаемого вывода" },
-      "scripts": { "status": "partial", "note": "Обычно требуют отдельную обвязку на каждый репозиторий" },
+      "scripts": {
+        "status": "partial",
+        "note": "Обычно требуют отдельную обвязку на каждый репозиторий"
+      },
       "cloudScanners": {
         "status": "yes",
         "note": "Часто сильны здесь, но не локальны по умолчанию"
@@ -220,7 +223,10 @@
       "lintai": { "status": "yes", "note": "scan-known и inventory-os встроены" },
       "manualReview": { "status": "no", "note": "Скучно и неполно" },
       "scripts": { "status": "partial", "note": "Возможно, но сильно зависит от платформы" },
-      "cloudScanners": { "status": "no", "note": "Обычно не рассчитаны на локальное состояние клиента" }
+      "cloudScanners": {
+        "status": "no",
+        "note": "Обычно не рассчитаны на локальное состояние клиента"
+      }
     }
   ],
   "faq": [
@@ -247,7 +253,7 @@
     {
       "id": "fastestStart",
       "question": "Как быстрее всего попробовать lintai?",
-      "answer": "Установите CLI публичного релиза из GitHub Releases, запустите <code>lintai scan .</code> на репозитории, где уже есть поддерживаемые файлы, а затем отдельно разберите <code>Stable</code> и <code>Preview</code> findings перед тем, как жёстко заводить lintai в CI."
+      "answer": "Установите CLI публичного релиза из GitHub Releases, запустите <code>lintai scan .</code> там, где уже лежит ваш agent config, и сначала разберите <code>Stable</code> findings. В CI можно идти позже, если это реально нужно."
     },
     {
       "id": "cloudVsLintai",

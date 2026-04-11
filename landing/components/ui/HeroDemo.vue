@@ -48,11 +48,7 @@ const surfaces = computed(() => [
 
     <div class="hero-demo__body">
       <div class="hero-demo__focus-grid">
-        <article
-          v-for="area in focusAreas"
-          :key="area.id"
-          class="hero-demo__focus-card"
-        >
+        <article v-for="area in focusAreas" :key="area.id" class="hero-demo__focus-card">
           <span class="hero-demo__focus-pill">{{ area.pill }}</span>
           <div class="hero-demo__focus-title">{{ area.title }}</div>
           <p class="hero-demo__focus-body">{{ area.body }}</p>
@@ -70,11 +66,7 @@ const surfaces = computed(() => [
     <div class="hero-demo__footer">
       <span class="hero-demo__footer-label">{{ t('hero.demo.summaryLabel') }}</span>
       <div class="hero-demo__surfaces">
-        <span
-          v-for="surface in surfaces"
-          :key="surface"
-          class="hero-demo__surface-pill"
-        >
+        <span v-for="surface in surfaces" :key="surface" class="hero-demo__surface-pill">
           {{ surface }}
         </span>
       </div>
@@ -173,7 +165,8 @@ const surfaces = computed(() => [
 
 .hero-demo__focus-grid {
   display: grid;
-  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .hero-demo__focus-card,
@@ -278,6 +271,12 @@ const surfaces = computed(() => [
 
   .hero-demo__command {
     font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 960px) {
+  .hero-demo__focus-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>

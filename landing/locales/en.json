@@ -8,8 +8,8 @@
     "viewOnGithub": "Open GitHub"
   },
   "hero": {
-    "primaryCta": "Run your first scan",
-    "secondaryCta": "See examples",
+    "primaryCta": "Run a local scan",
+    "secondaryCta": "See example findings",
     "docsCta": "Open GitHub",
     "preview": "lintai scan flow preview",
     "latestRelease": "Latest release",
@@ -20,36 +20,36 @@
     "factOutputsBody": "Stable findings first, Preview for deeper review, plus explicit compatibility and supply-chain lanes when teams want more than the quiet default.",
     "trust": {
       "oneRepo": "Runs locally",
-      "validated": "Clear findings",
-      "openSource": "CI + SARIF"
+      "validated": "Agent config",
+      "openSource": "JSON + SARIF"
     },
     "demo": {
-      "title": "What lintai shows before merge",
-      "subtitle": "Ordinary-looking files can quietly change what an agent is allowed to do.",
-      "scanLabel": "First scan",
-      "summaryLabel": "Common files worth reviewing",
-      "offline": "Before merge",
+      "title": "What lintai checks locally",
+      "subtitle": "It scans the agent files you already use.",
+      "scanLabel": "Local scan",
+      "summaryLabel": "Common local config files",
+      "offline": "Runs locally",
       "focus": {
         "run": {
           "pill": "Run",
-          "title": "What the agent can run",
-          "body": "Hooks, shell grants, and mutable launcher paths."
+          "title": "Commands and launchers",
+          "body": "Hooks, shell grants, uvx and npx paths."
         },
         "access": {
           "pill": "Access",
-          "title": "What the agent can access",
-          "body": "Permissions, MCP wiring, and tool connections."
+          "title": "Tool and MCP access",
+          "body": "Permissions, MCP servers, connected tools."
         },
         "inherit": {
           "pill": "Inherit",
-          "title": "What defaults it gets",
-          "body": "Shared instructions, editor rules, and team policy."
+          "title": "Shared defaults",
+          "body": "Team settings, rules, and instruction files."
         }
       },
       "exampleLabel": "Example finding",
       "exampleFile": ".claude/settings.json",
       "exampleTitle": "Broad shell access in shared settings",
-      "exampleBody": "Looks like a convenient shortcut, but quietly turns team defaults into broader authority than the repo needs."
+      "exampleBody": "This shared config grants more shell power than most local setups need."
     }
   },
   "download": {
@@ -80,8 +80,8 @@
     "search": "Search language…"
   },
   "features": {
-    "sectionTitle": "What normal review misses",
-    "sectionSubtitle": "These files look like settings or docs, but they quietly decide what your coding agents can do.",
+    "sectionTitle": "What local agent config hides",
+    "sectionSubtitle": "These files look routine, but they quietly decide what a local agent can run, access, and inherit.",
     "looksLikeLabel": "Looks harmless",
     "actuallyDoesLabel": "Actually changes"
   },
@@ -117,14 +117,14 @@
     }
   },
   "comparison": {
-    "sectionTitle": "Why run lintai before merge",
-    "sectionSubtitle": "So risky defaults do not quietly spread, and teams can keep default checks separate from deeper review lanes.",
+    "sectionTitle": "Why run lintai locally first",
+    "sectionSubtitle": "So risky defaults are visible on your machine before they quietly become normal team config.",
     "feature": "Approach",
     "withoutDedicatedCheck": "Without a dedicated check",
     "alsoUseful": "Also useful later",
     "columns": {
       "lintai": "lintai",
-      "manualReview": "Manual review",
+      "manualReview": "Manual checking",
       "scripts": "Ad hoc scripts",
       "cloudScanners": "Generic cloud scanners"
     }
