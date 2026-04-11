@@ -1,0 +1,81 @@
+name: Publish npm Wrapper
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Stable release tag to publish, for example v0.1.0"
+        required: true
+        default: "v0.1.0"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish_npm:
+    name: Publish lintai-cli to npm
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'release' &&
+       github.event.release.prerelease == false &&
+       github.event.release.draft == false)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - id: release_context
+        name: Resolve release tag
+        shell: bash
+        run: |
+          if [[ "${GITHUB_EVENT_NAME}" == "release" ]]; then
+            tag="${{ github.event.release.tag_name }}"
+          else
+            tag="${{ inputs.release_tag }}"
+          fi
+
+          if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "expected a plain stable release tag like v0.1.0, got: $tag" >&2
+            exit 1
+          fi
+
+          echo "release_tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "package_version=${tag#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Verify GitHub release exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh release view "${{ steps.release_context.outputs.release_tag }}" \
+            --repo "${{ github.repository }}" >/dev/null
+
+      - name: Fail if this npm version already exists
+        shell: bash
+        run: |
+          if npm view "lintai-cli@${{ steps.release_context.outputs.package_version }}" version >/dev/null 2>&1; then
+            echo "lintai-cli@${{ steps.release_context.outputs.package_version }} is already published" >&2
+            exit 1
+          fi
+
+      - name: Set npm package version
+        working-directory: npm/lintai-cli
+        run: npm pkg set version="${{ steps.release_context.outputs.package_version }}"
+
+      - name: Preview npm tarball
+        run: npm pack --dry-run ./npm/lintai-cli
+
+      - name: Publish to npm
+        working-directory: npm/lintai-cli
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public --provenance

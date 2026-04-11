@@ -1,0 +1,42 @@
+{
+  "name": "lintai-cli",
+  "version": "0.1.0",
+  "description": "Offline-first security linter for AI agent config surfaces",
+  "type": "module",
+  "bin": {
+    "lintai": "./bin/lintai.js"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "README.md"
+  ],
+  "scripts": {
+    "postinstall": "node ./bin/postinstall.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/777genius/lintai.git"
+  },
+  "homepage": "https://github.com/777genius/lintai",
+  "bugs": {
+    "url": "https://github.com/777genius/lintai/issues"
+  },
+  "license": "MIT OR Apache-2.0",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "keywords": [
+    "lintai",
+    "security",
+    "ai",
+    "mcp",
+    "skills",
+    "agent"
+  ]
+}
