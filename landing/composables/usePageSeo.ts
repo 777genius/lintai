@@ -59,7 +59,7 @@ export const usePageSeo = (
       width: 1200,
       height: 630,
       type: 'image/png',
-      alt: 'lintai - fast offline security checks for AI agent artifacts',
+      alt: 'lintai - make AI agent policy reviewable',
     };
   });
 

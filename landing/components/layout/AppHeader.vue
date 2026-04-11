@@ -15,8 +15,8 @@ const homeHref = computed(() => router.resolve(homePath.value).href);
 const navItems = computed(() => [
   { id: 'features', label: t('nav.features') },
   { id: 'featured-rules', label: t('nav.featuredRules') },
-  { id: 'download', label: t('nav.download') },
   { id: 'comparison', label: t('nav.comparison') },
+  { id: 'download', label: t('nav.download') },
   { id: 'faq', label: t('nav.faq') },
 ]);
 

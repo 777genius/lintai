@@ -2,9 +2,9 @@
 
 [![coverage](https://img.shields.io/endpoint?url=https%3A%2F%2F777genius.github.io%2Flintai%2Fcoverage%2Fcoverage-badge.json)](https://777genius.github.io/lintai/coverage/)
 
-Fast offline security checks for AI agent artifacts in your repo.
+Make AI agent policy reviewable.
 
-`lintai` helps you verify skills, MCP configs, agent rules, hooks, and plugin manifests before you trust them in local workflows or CI.
+`lintai` checks the files that quietly decide what coding agents can run, access, and inherit before merge. It helps you review MCP configs, hooks, permissions, skills, and agent instructions before risky defaults spread through local workflows or CI.
 It can also run an opt-in advisory lane for committed npm lockfiles.
 
 Initial public release: `v0.1.0`

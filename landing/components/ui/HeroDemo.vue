@@ -1,147 +1,39 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed } from 'vue';
 
 const { t } = useI18n();
 
-const steps = computed(() => [
+const focusAreas = computed(() => [
   {
-    id: 'index',
-    number: '01',
-    title: t('hero.demo.steps.index.title'),
-    body: t('hero.demo.steps.index.body'),
+    id: 'run',
+    pill: t('hero.demo.focus.run.pill'),
+    title: t('hero.demo.focus.run.title'),
+    body: t('hero.demo.focus.run.body'),
   },
   {
-    id: 'scan',
-    number: '02',
-    title: t('hero.demo.steps.scan.title'),
-    body: t('hero.demo.steps.scan.body'),
+    id: 'access',
+    pill: t('hero.demo.focus.access.pill'),
+    title: t('hero.demo.focus.access.title'),
+    body: t('hero.demo.focus.access.body'),
   },
   {
-    id: 'ship',
-    number: '03',
-    title: t('hero.demo.steps.ship.title'),
-    body: t('hero.demo.steps.ship.body'),
-  },
-]);
-
-const scenarios = computed(() => [
-  {
-    id: 'skills',
-    surface: 'SKILL.md',
-    family: t('hero.demo.scenarios.skills.family'),
-    ruleCode: 'SEC352',
-    ruleTitle: t('hero.demo.scenarios.skills.title'),
-    summary: t('hero.demo.scenarios.skills.summary'),
-    evidence: 'allowed-tools: Bash, Read',
-    related: ['SEC355', 'SEC393'],
-    accent: '#00f0ff',
-  },
-  {
-    id: 'claude-hooks',
-    surface: '.claude/settings.json',
-    family: t('hero.demo.scenarios.claudeHooks.family'),
-    ruleCode: 'SEC340',
-    ruleTitle: t('hero.demo.scenarios.claudeHooks.title'),
-    summary: t('hero.demo.scenarios.claudeHooks.summary'),
-    evidence: 'command: "npx claude-flow@alpha hooks pre-command"',
-    related: ['SEC381', 'SEC341'],
-    accent: '#ff00ff',
-  },
-  {
-    id: 'mcp',
-    surface: 'mcp.json',
-    family: t('hero.demo.scenarios.mcp.family'),
-    ruleCode: 'SEC329',
-    ruleTitle: t('hero.demo.scenarios.mcp.title'),
-    summary: t('hero.demo.scenarios.mcp.summary'),
-    evidence: '"command": "npx"',
-    related: ['SEC396', 'SEC397'],
-    accent: '#39ff14',
-  },
-  {
-    id: 'claude-perms',
-    surface: '.claude/settings.json',
-    family: t('hero.demo.scenarios.claudePerms.family'),
-    ruleCode: 'SEC362',
-    ruleTitle: t('hero.demo.scenarios.claudePerms.title'),
-    summary: t('hero.demo.scenarios.claudePerms.summary'),
-    evidence: 'permissions.allow = ["Bash(*)", "Write(*)"]',
-    related: ['SEC369', 'SEC373'],
-    accent: '#ffd700',
-  },
-  {
-    id: 'cursor',
-    surface: '.cursor/rules/review.mdc',
-    family: t('hero.demo.scenarios.cursor.family'),
-    ruleCode: 'SEC379',
-    ruleTitle: t('hero.demo.scenarios.cursor.title'),
-    summary: t('hero.demo.scenarios.cursor.summary'),
-    evidence: 'alwaysApply: true + globs',
-    related: ['SEC378', 'SEC380'],
-    accent: '#7c3aed',
-  },
-  {
-    id: 'copilot',
-    surface: '.github/instructions/review.instructions.md',
-    family: t('hero.demo.scenarios.copilot.family'),
-    ruleCode: 'SEC377',
-    ruleTitle: t('hero.demo.scenarios.copilot.title'),
-    summary: t('hero.demo.scenarios.copilot.summary'),
-    evidence: 'applyTo: "[unclosed"',
-    related: ['SEC354', 'SEC370'],
-    accent: '#fb7185',
+    id: 'inherit',
+    pill: t('hero.demo.focus.inherit.pill'),
+    title: t('hero.demo.focus.inherit.title'),
+    body: t('hero.demo.focus.inherit.body'),
   },
 ]);
 
-const containerRef = ref<HTMLElement | null>(null);
-const activeIndex = ref(0);
-const visible = ref(false);
-const activeScenario = computed(() => scenarios.value[activeIndex.value] ?? scenarios.value[0]);
-const surfacesPreview = computed(() => scenarios.value.slice(0, 3));
-const progressWidth = computed(
-  () => `${((activeIndex.value + 1) / Math.max(scenarios.value.length, 1)) * 100}%`,
-);
-
-let observer: IntersectionObserver | null = null;
-let intervalId: ReturnType<typeof setInterval> | null = null;
-
-const start = () => {
-  if (intervalId || scenarios.value.length < 2) return;
-  intervalId = setInterval(() => {
-    activeIndex.value = (activeIndex.value + 1) % scenarios.value.length;
-  }, 3200);
-};
-
-const stop = () => {
-  if (!intervalId) return;
-  clearInterval(intervalId);
-  intervalId = null;
-};
-
-watch(visible, (value) => {
-  if (value) start();
-  else stop();
-});
-
-onMounted(() => {
-  observer = new IntersectionObserver(
-    ([entry]) => {
-      visible.value = entry.isIntersecting;
-    },
-    { threshold: 0.2 },
-  );
-
-  if (containerRef.value) observer.observe(containerRef.value);
-});
-
-onUnmounted(() => {
-  observer?.disconnect();
-  stop();
-});
+const surfaces = computed(() => [
+  'SKILL.md',
+  'mcp.json',
+  '.claude/settings.json',
+  '.cursor/rules/*.mdc',
+]);
 </script>
 
 <template>
-  <div ref="containerRef" class="hero-demo" role="img" :aria-label="t('hero.preview')">
+  <div class="hero-demo" role="img" :aria-label="t('hero.preview')">
     <div class="hero-demo__glow" />
 
     <div class="hero-demo__header">
@@ -149,61 +41,42 @@ onUnmounted(() => {
         <span class="hero-demo__eyebrow">{{ t('hero.demo.scanLabel') }}</span>
         <span class="hero-demo__status">{{ t('hero.demo.offline') }}</span>
       </div>
-      <code class="hero-demo__command">$ lintai scan . --format sarif</code>
-      <div class="hero-demo__chips">
-        <span class="hero-demo__chip">{{ t('hero.demo.repoLocalOnly') }}</span>
-        <span class="hero-demo__chip">{{ t('hero.demo.stableFirst') }}</span>
-        <span class="hero-demo__chip">{{ t('hero.demo.machineReadable') }}</span>
-      </div>
+      <h3 class="hero-demo__title">{{ t('hero.demo.title') }}</h3>
+      <p class="hero-demo__subtitle">{{ t('hero.demo.subtitle') }}</p>
+      <code class="hero-demo__command">$ lintai scan .</code>
     </div>
 
     <div class="hero-demo__body">
-      <div class="hero-demo__steps">
-        <div v-for="step in steps" :key="step.id" class="hero-demo__step-card">
-          <span class="hero-demo__step-number">{{ step.number }}</span>
-          <div class="hero-demo__step-copy">
-            <div class="hero-demo__step-title">{{ step.title }}</div>
-            <p class="hero-demo__step-body">{{ step.body }}</p>
-          </div>
-        </div>
+      <div class="hero-demo__focus-grid">
+        <article
+          v-for="area in focusAreas"
+          :key="area.id"
+          class="hero-demo__focus-card"
+        >
+          <span class="hero-demo__focus-pill">{{ area.pill }}</span>
+          <div class="hero-demo__focus-title">{{ area.title }}</div>
+          <p class="hero-demo__focus-body">{{ area.body }}</p>
+        </article>
       </div>
 
-      <Transition name="hero-demo-fade" mode="out-in">
-        <div
-          :key="activeScenario.id"
-          class="hero-demo__signal-card"
-          :style="{ '--accent': activeScenario.accent }"
-        >
-          <div class="hero-demo__signal-head">
-            <div>
-              <div class="hero-demo__signal-label">{{ t('hero.demo.currentSignal') }}</div>
-              <div class="hero-demo__signal-surface">{{ activeScenario.surface }}</div>
-            </div>
-            <span class="hero-demo__rule-chip">{{ activeScenario.ruleCode }}</span>
-          </div>
-
-          <div class="hero-demo__signal-family">{{ activeScenario.family }}</div>
-          <h3 class="hero-demo__signal-title">{{ activeScenario.ruleTitle }}</h3>
-          <p class="hero-demo__signal-summary">{{ activeScenario.summary }}</p>
-
-          <div class="hero-demo__surface-pills">
-            <span
-              v-for="surface in surfacesPreview"
-              :key="surface.id"
-              class="hero-demo__surface-pill"
-              :class="{ 'hero-demo__surface-pill--active': surface.id === activeScenario.id }"
-            >
-              {{ surface.surface }}
-            </span>
-          </div>
-        </div>
-      </Transition>
+      <div class="hero-demo__example-card">
+        <div class="hero-demo__example-label">{{ t('hero.demo.exampleLabel') }}</div>
+        <code class="hero-demo__example-file">{{ t('hero.demo.exampleFile') }}</code>
+        <h4 class="hero-demo__example-title">{{ t('hero.demo.exampleTitle') }}</h4>
+        <p class="hero-demo__example-body">{{ t('hero.demo.exampleBody') }}</p>
+      </div>
     </div>
 
     <div class="hero-demo__footer">
       <span class="hero-demo__footer-label">{{ t('hero.demo.summaryLabel') }}</span>
-      <div class="hero-demo__progress">
-        <span class="hero-demo__progress-bar" :style="{ width: progressWidth }" />
+      <div class="hero-demo__surfaces">
+        <span
+          v-for="surface in surfaces"
+          :key="surface"
+          class="hero-demo__surface-pill"
+        >
+          {{ surface }}
+        </span>
       </div>
     </div>
   </div>
@@ -238,18 +111,14 @@ onUnmounted(() => {
 .hero-demo__footer {
   position: relative;
   z-index: 1;
-  min-width: 0;
 }
 
 .hero-demo__header {
-  padding: 16px 16px 12px;
+  padding: 18px 18px 14px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.hero-demo__eyebrow-row,
-.hero-demo__footer,
-.hero-demo__signal-head,
-.hero-demo__evidence-row {
+.hero-demo__eyebrow-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
@@ -259,9 +128,7 @@ onUnmounted(() => {
 .hero-demo__eyebrow,
 .hero-demo__status,
 .hero-demo__footer-label,
-.hero-demo__signal-label,
-.hero-demo__evidence-label,
-.hero-demo__step-number {
+.hero-demo__example-label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.7rem;
   letter-spacing: 0.12em;
@@ -273,190 +140,101 @@ onUnmounted(() => {
   color: #b5f7ff;
 }
 
-.hero-demo__command {
+.hero-demo__title {
+  margin: 14px 0 8px;
+  color: #eef2ff;
+  font-size: 1.1rem;
+  line-height: 1.25;
+}
+
+.hero-demo__subtitle {
+  margin: 0;
+  color: #b9c4e3;
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.hero-demo__command,
+.hero-demo__example-file {
   display: block;
-  margin-top: 8px;
+  margin-top: 12px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   line-height: 1.4;
   color: #f8fafc;
-}
-
-.hero-demo__chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.hero-demo__chip,
-.hero-demo__surface-pill,
-.hero-demo__rule-chip {
-  border-radius: 999px;
-  padding: 7px 10px;
-  font-size: 0.72rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.hero-demo__chip,
-.hero-demo__surface-pill {
-  color: #b9c4e3;
+  overflow-wrap: anywhere;
 }
 
 .hero-demo__body {
   display: grid;
   gap: 12px;
-  padding: 14px 16px;
+  padding: 16px 18px;
 }
 
-.hero-demo__steps {
+.hero-demo__focus-grid {
   display: grid;
-  gap: 8px;
+  gap: 10px;
 }
 
-.hero-demo__step-card {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 12px;
+.hero-demo__focus-card,
+.hero-demo__example-card {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.025);
+  padding: 14px;
+}
+
+.hero-demo__focus-pill,
+.hero-demo__surface-pill {
+  display: inline-flex;
   align-items: center;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  background: rgba(255, 255, 255, 0.018);
-  padding: 11px 12px;
-}
-
-.hero-demo__step-number {
-  min-width: 30px;
-  color: #b5f7ff;
-}
-
-.hero-demo__step-title {
-  color: #eff6ff;
-  font-size: 0.88rem;
-  font-weight: 700;
-  margin-bottom: 2px;
-}
-
-.hero-demo__step-body,
-.hero-demo__signal-summary {
-  margin: 0;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.72rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
   color: #b9c4e3;
-  line-height: 1.45;
+}
+
+.hero-demo__focus-title,
+.hero-demo__example-title {
+  margin-top: 10px;
+  color: #eef2ff;
+  font-size: 0.96rem;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.hero-demo__focus-body,
+.hero-demo__example-body {
+  margin: 6px 0 0;
+  color: #b9c4e3;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.hero-demo__example-card {
+  border-color: rgba(0, 240, 255, 0.14);
+  background:
+    linear-gradient(180deg, rgba(0, 240, 255, 0.06), rgba(255, 255, 255, 0.03)),
+    rgba(255, 255, 255, 0.02);
+}
+
+.hero-demo__example-file {
+  margin-top: 10px;
+  color: #b5f7ff;
   font-size: 0.8rem;
 }
 
-.hero-demo__signal-card {
-  border-radius: 16px;
-  border: 1px solid color-mix(in srgb, var(--accent) 26%, rgba(255, 255, 255, 0.08));
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--accent) 7%, rgba(255, 255, 255, 0.03)),
-      rgba(255, 255, 255, 0.02)
-    ),
-    rgba(255, 255, 255, 0.02);
-  padding: 14px;
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 10%, transparent);
-  min-height: 192px;
+.hero-demo__footer {
+  padding: 0 18px 18px;
 }
 
-.hero-demo__signal-surface,
-.hero-demo__detail-code {
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.hero-demo__signal-surface {
-  margin-top: 4px;
-  color: #eef6ff;
-  font-size: 0.88rem;
-  line-height: 1.35;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.hero-demo__signal-family {
-  margin-top: 8px;
-  color: color-mix(in srgb, var(--accent) 76%, #ffffff 24%);
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.hero-demo__signal-title {
-  margin: 8px 0 6px;
-  color: #eef2ff;
-  font-size: 0.98rem;
-  line-height: 1.32;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  min-height: calc(0.98rem * 1.32 * 2);
-}
-
-.hero-demo__rule-chip {
-  color: #0a0a0f;
-  background: linear-gradient(135deg, #00f0ff, #39ff14);
-  border-color: transparent;
-  font-weight: 800;
-  flex-shrink: 0;
-}
-
-.hero-demo__surface-pills {
+.hero-demo__surfaces {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 10px;
-  min-width: 0;
-  min-height: 38px;
-}
-
-.hero-demo__surface-pill--active {
-  border-color: color-mix(in srgb, var(--accent) 32%, rgba(255, 255, 255, 0.08));
-  color: #f2fbff;
-  background: color-mix(in srgb, var(--accent) 14%, rgba(255, 255, 255, 0.04));
-}
-
-.hero-demo__footer {
-  padding: 0 16px 16px;
-  gap: 16px;
-}
-
-.hero-demo__progress {
-  flex: 1;
-  height: 7px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.07);
-  overflow: hidden;
-}
-
-.hero-demo__progress-bar {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #00f0ff, #ff00ff 52%, #39ff14);
-  transition: width 0.28s ease;
-}
-
-.hero-demo-fade-enter-active,
-.hero-demo-fade-leave-active {
-  transition:
-    opacity 0.24s ease,
-    transform 0.24s ease;
-}
-
-.hero-demo-fade-enter-from,
-.hero-demo-fade-leave-to {
-  opacity: 0;
-  transform: translateY(8px);
 }
 
 .v-theme--light .hero-demo {
@@ -466,16 +244,18 @@ onUnmounted(() => {
   border-color: rgba(8, 145, 178, 0.14);
 }
 
+.v-theme--light .hero-demo__title,
 .v-theme--light .hero-demo__command,
-.v-theme--light .hero-demo__signal-surface,
-.v-theme--light .hero-demo__signal-title,
-.v-theme--light .hero-demo__step-title {
+.v-theme--light .hero-demo__focus-title,
+.v-theme--light .hero-demo__example-title,
+.v-theme--light .hero-demo__example-file {
   color: #0f172a;
 }
 
-.v-theme--light .hero-demo__step-body,
-.v-theme--light .hero-demo__signal-summary,
-.v-theme--light .hero-demo__chip,
+.v-theme--light .hero-demo__subtitle,
+.v-theme--light .hero-demo__focus-body,
+.v-theme--light .hero-demo__example-body,
+.v-theme--light .hero-demo__focus-pill,
 .v-theme--light .hero-demo__surface-pill {
   color: #475569;
 }
@@ -487,19 +267,17 @@ onUnmounted(() => {
     padding-inline: 14px;
   }
 
-  .hero-demo__command {
-    font-size: 0.82rem;
-  }
-
-  .hero-demo__signal-head,
-  .hero-demo__evidence-row,
-  .hero-demo__footer {
+  .hero-demo__eyebrow-row {
     grid-template-columns: 1fr;
     align-items: flex-start;
   }
 
-  .hero-demo__signal-card {
-    min-height: 0;
+  .hero-demo__title {
+    font-size: 1rem;
+  }
+
+  .hero-demo__command {
+    font-size: 0.82rem;
   }
 }
 </style>

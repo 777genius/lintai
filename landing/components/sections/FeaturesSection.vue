@@ -34,6 +34,10 @@ const items = computed(() =>
             <FeatureCard
               :title="item.title"
               :description="item.description"
+              :looks-like="item.looksLike"
+              :actually-does="item.actuallyDoes"
+              :looks-like-label="t('features.looksLikeLabel')"
+              :actually-does-label="t('features.actuallyDoesLabel')"
               :icon="item.icon"
               :accent="item.accent"
             />

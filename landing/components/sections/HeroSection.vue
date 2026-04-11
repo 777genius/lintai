@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { mdiOpenSourceInitiative, mdiRobotOutline, mdiViewDashboardOutline } from '@mdi/js';
+import {
+  mdiArrowTopRight,
+  mdiCodeBracesBox,
+  mdiLockOutline,
+  mdiShieldCheckOutline,
+} from '@mdi/js';
 
 const { content } = useLandingContent();
 const { t, locale } = useI18n();
 const config = useRuntimeConfig();
 const githubUrl = `https://github.com/${config.public.githubRepo}`;
-const { docsUrl } = useDocsLinks();
 const { data: releaseData } = useReleaseDownloads();
+const compactTitle = computed(() => locale.value === 'ru');
 
 const releaseVersion = computed(() => releaseData.value?.version || null);
 const releaseDate = computed(() => {
@@ -21,8 +26,10 @@ const releaseDate = computed(() => {
     <v-container class="hero-section__container">
       <div class="hero-section__grid">
         <div class="hero-section__content">
-          <h1 class="hero-section__title">
-            <span class="hero-section__logo">L</span>
+          <h1
+            class="hero-section__title"
+            :class="{ 'hero-section__title--compact': compactTitle }"
+          >
             {{ content.hero.title }}
           </h1>
 
@@ -30,28 +37,39 @@ const releaseDate = computed(() => {
             {{ content.hero.subtitle }}
           </p>
 
+          <p class="hero-section__support-line">
+            {{ content.hero.supportLine }}
+          </p>
+
           <div class="hero-section__actions">
-            <v-btn
-              variant="flat"
-              size="large"
+            <div class="hero-section__cta-row">
+              <v-btn
+                variant="flat"
+                size="large"
+                href="#download"
+                class="hero-section__btn-primary"
+              >
+                {{ t('hero.primaryCta') }}
+              </v-btn>
+              <v-btn
+                variant="outlined"
+                size="large"
+                href="#featured-rules"
+                class="hero-section__btn-secondary"
+              >
+                {{ t('hero.secondaryCta') }}
+              </v-btn>
+            </div>
+
+            <a
               :href="githubUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="hero-section__btn-primary"
+              class="hero-section__subaction"
             >
-              {{ t('hero.primaryCta') }}
-            </v-btn>
-            <v-btn
-              variant="outlined"
-              size="large"
-              href="#featured-rules"
-              class="hero-section__btn-secondary"
-            >
-              {{ t('hero.secondaryCta') }}
-            </v-btn>
-            <v-btn variant="tonal" size="large" :href="docsUrl" class="hero-section__btn-tertiary">
-              {{ t('hero.docsCta') }}
-            </v-btn>
+              <span>{{ t('hero.docsCta') }}</span>
+              <v-icon size="16" :icon="mdiArrowTopRight" />
+            </a>
           </div>
 
           <div class="hero-section__meta-row">
@@ -63,27 +81,16 @@ const releaseDate = computed(() => {
 
           <div class="hero-section__trust">
             <div class="hero-section__trust-item">
-              <v-icon size="16" class="hero-section__trust-icon" :icon="mdiRobotOutline" />
+              <v-icon size="16" class="hero-section__trust-icon" :icon="mdiLockOutline" />
               <span>{{ t('hero.trust.oneRepo') }}</span>
             </div>
             <div class="hero-section__trust-item">
-              <v-icon size="16" class="hero-section__trust-icon" :icon="mdiViewDashboardOutline" />
+              <v-icon size="16" class="hero-section__trust-icon" :icon="mdiShieldCheckOutline" />
               <span>{{ t('hero.trust.validated') }}</span>
             </div>
             <div class="hero-section__trust-item">
-              <v-icon size="16" class="hero-section__trust-icon" :icon="mdiOpenSourceInitiative" />
+              <v-icon size="16" class="hero-section__trust-icon" :icon="mdiCodeBracesBox" />
               <span>{{ t('hero.trust.openSource') }}</span>
-            </div>
-          </div>
-
-          <div class="hero-section__fact-grid">
-            <div class="hero-section__fact-card">
-              <span class="hero-section__fact-label">{{ t('hero.factFocusLabel') }}</span>
-              <p class="hero-section__fact-copy">{{ t('hero.factFocusBody') }}</p>
-            </div>
-            <div class="hero-section__fact-card">
-              <span class="hero-section__fact-label">{{ t('hero.factOutputsLabel') }}</span>
-              <p class="hero-section__fact-copy">{{ t('hero.factOutputsBody') }}</p>
             </div>
           </div>
         </div>
@@ -102,11 +109,11 @@ const releaseDate = computed(() => {
 <style scoped>
 .hero-section {
   position: relative;
-  min-height: min(760px, calc(100svh - 64px));
+  min-height: min(680px, calc(100svh - 64px));
   display: flex;
   align-items: flex-start;
   padding-top: 20px;
-  padding-bottom: 40px;
+  padding-bottom: 24px;
 }
 
 .hero-section__container {
@@ -116,49 +123,39 @@ const releaseDate = computed(() => {
 
 .hero-section__grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(460px, 600px);
+  grid-template-columns: minmax(0, 1.24fr) minmax(360px, 500px);
   gap: clamp(20px, 2.4vw, 40px);
-  align-items: center;
+  align-items: start;
 }
 
 .hero-section__content {
   position: relative;
   z-index: 2;
-  max-width: 620px;
+  max-width: 840px;
+  min-height: 620px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: clamp(18px, 3vh, 40px);
 }
 
 .hero-section__title {
-  font-size: clamp(3rem, 5vw, 4.7rem);
+  font-size: clamp(2.8rem, 4vw, 3.8rem);
   font-weight: 800;
   letter-spacing: -0.04em;
-  line-height: 1.1;
+  line-height: 1.03;
   margin-bottom: 20px;
   background: linear-gradient(135deg, #e0e6ff 0%, #00f0ff 50%, #ff00ff 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  white-space: nowrap;
+  max-width: none;
+  text-wrap: balance;
 }
 
-.hero-section__logo {
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #00f0ff, #ff00ff 55%, #39ff14);
-  color: #0a0a0f;
-  font-size: 1.85rem;
-  line-height: 1;
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 800;
-  box-shadow: 0 10px 30px rgba(0, 240, 255, 0.2);
-  -webkit-text-fill-color: initial;
+.hero-section__title--compact {
+  letter-spacing: -0.05em;
+  font-size: clamp(2.55rem, 3.35vw, 3.35rem);
 }
 
 .hero-section__subtitle {
@@ -166,14 +163,29 @@ const releaseDate = computed(() => {
   line-height: 1.75;
   color: #a8b4d1;
   max-width: 58ch;
-  margin-bottom: 28px;
+  margin-bottom: 14px;
+}
+
+.hero-section__support-line {
+  margin: 0 0 28px;
+  color: #d3ddf9;
+  font-size: 0.96rem;
+  line-height: 1.65;
+  max-width: 62ch;
 }
 
 .hero-section__actions {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  margin-bottom: 20px;
+}
+
+.hero-section__cta-row {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 18px;
+  align-items: center;
 }
 
 .hero-section__meta-row {
@@ -196,6 +208,8 @@ const releaseDate = computed(() => {
   color: #0a0a0f !important;
   font-weight: 700 !important;
   letter-spacing: 0.02em !important;
+  min-width: 230px;
+  min-height: 48px;
   box-shadow: 0 4px 20px rgba(0, 240, 255, 0.3) !important;
   transition: all 0.3s ease !important;
 }
@@ -209,6 +223,8 @@ const releaseDate = computed(() => {
   border-color: rgba(0, 240, 255, 0.3) !important;
   color: #00f0ff !important;
   font-weight: 600 !important;
+  min-width: 220px;
+  min-height: 48px;
   transition: all 0.3s ease !important;
 }
 
@@ -217,24 +233,30 @@ const releaseDate = computed(() => {
   background: rgba(0, 240, 255, 0.06) !important;
 }
 
-.hero-section__btn-tertiary {
-  background: rgba(255, 255, 255, 0.04) !important;
-  color: #d9e2ff !important;
-  font-weight: 600 !important;
-  border: 1px solid rgba(217, 226, 255, 0.12) !important;
-  transition: all 0.3s ease !important;
+.hero-section__subaction {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 4px;
+  color: #d3ddf9;
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
-.hero-section__btn-tertiary:hover {
-  background: rgba(255, 255, 255, 0.08) !important;
-  border-color: rgba(217, 226, 255, 0.24) !important;
-  transform: translateY(-1px) !important;
+.hero-section__subaction:hover {
+  color: #ffffff;
+  transform: translateX(2px);
 }
 
 .hero-section__trust {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  margin-top: auto;
   margin-bottom: 24px;
 }
 
@@ -256,39 +278,6 @@ const releaseDate = computed(() => {
   opacity: 0.8;
 }
 
-.hero-section__fact-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.hero-section__fact-card {
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
-    rgba(8, 11, 18, 0.72);
-  padding: 18px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-}
-
-.hero-section__fact-label {
-  display: block;
-  margin-bottom: 10px;
-  color: #8fa1c8;
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.hero-section__fact-copy {
-  margin: 0;
-  color: #d7e3ff;
-  line-height: 1.6;
-  font-size: 0.96rem;
-}
-
 .hero-section__demo-col {
   position: relative;
 }
@@ -296,7 +285,7 @@ const releaseDate = computed(() => {
 .hero-section__preview {
   position: relative;
   width: 100%;
-  max-width: 600px;
+  max-width: 520px;
   margin-left: auto;
 }
 
@@ -347,10 +336,26 @@ const releaseDate = computed(() => {
   -webkit-text-fill-color: transparent;
 }
 
+.v-theme--light .hero-section__support-line {
+  color: #334155;
+}
+
 .v-theme--light .hero-section__subtitle,
 .v-theme--light .hero-section__trust-item,
-.v-theme--light .hero-section__release-badge {
+.v-theme--light .hero-section__release-badge,
+.v-theme--light .hero-section__subaction {
   color: #64748b;
+}
+
+@media (min-width: 1261px) {
+  .hero-section__title {
+    white-space: nowrap;
+    text-wrap: nowrap;
+  }
+
+  .hero-section__title--compact {
+    font-size: clamp(1.88rem, 2.2vw, 2.42rem);
+  }
 }
 
 @media (max-width: 960px) {
@@ -367,16 +372,18 @@ const releaseDate = computed(() => {
 
   .hero-section__title {
     font-size: 2.4rem;
+    max-width: 100%;
     white-space: normal;
+  }
+
+  .hero-section__content {
+    min-height: auto;
+    padding-top: 0;
   }
 
   .hero-section__subtitle {
     font-size: 1.05rem;
-    margin-bottom: 28px;
-  }
-
-  .hero-section__fact-grid {
-    grid-template-columns: 1fr;
+    margin-bottom: 14px;
   }
 
   .hero-section__preview {
@@ -393,17 +400,28 @@ const releaseDate = computed(() => {
 
   .hero-section__title {
     font-size: 2rem;
-    gap: 12px;
   }
 
-  .hero-section__logo {
-    width: 48px;
-    height: 48px;
-    font-size: 1.2rem;
-  }
-
-  .hero-section__actions :deep(.v-btn) {
+  .hero-section__cta-row {
     width: 100%;
+    flex-direction: column;
+  }
+
+  .hero-section__cta-row :deep(.v-btn) {
+    width: 100%;
+  }
+
+  .hero-section__actions {
+    width: 100%;
+  }
+
+  .hero-section__trust {
+    gap: 8px;
+  }
+
+  .hero-section__trust-item {
+    padding: 8px 10px;
+    font-size: 0.74rem;
   }
 }
 </style>

@@ -1,38 +1,30 @@
 {
   "hero": {
-    "title": "lintai",
-    "subtitle": "lintai is an offline-first security linter for AI agent configs and instructions in your repo. It checks files like SKILL.md, mcp.json, Claude settings, Cursor rules, and Copilot instructions with deterministic findings and CI-ready output."
+    "title": "Review AI agent capabilities.",
+    "subtitle": "Shows what it can run, access, and what defaults it gets before merge.",
+    "supportLine": "MCP, hooks, permissions, and agent instructions."
   },
   "features": [
     {
-      "id": "offlineFirst",
-      "title": "Offline-first by default",
-      "description": "Run it locally or in CI without sending repo instructions and agent config to a hosted scanning service."
+      "id": "sharedShell",
+      "title": "Broad shell access in shared settings",
+      "description": "A small permissions shortcut can quietly widen shell authority.",
+      "looksLike": "A harmless shared settings block.",
+      "actuallyDoes": "Turns team defaults into broader shell access than the repo needs."
     },
     {
-      "id": "deterministic",
-      "title": "Deterministic findings with evidence",
-      "description": "The same repo produces the same rule ids, evidence, and exit codes, which makes review and automation easier to trust."
+      "id": "mcpLauncher",
+      "title": "Mutable launcher in committed mcp.json",
+      "description": "A routine command path can quietly change how tooling resolves.",
+      "looksLike": "Normal mcp.json wiring or setup guidance.",
+      "actuallyDoes": "Runs agent tooling through a mutable launcher on every machine."
     },
     {
-      "id": "repoSurfaces",
-      "title": "Targets the files that actually steer agents",
-      "description": "The current v0.1 scope focuses on SKILL.md, mcp.json, Claude and Cursor settings, hooks, and adjacent instruction files."
-    },
-    {
-      "id": "ciReady",
-      "title": "Built for CI and SARIF from the start",
-      "description": "Text, JSON, and SARIF output let teams gate pull requests without building a separate workflow just for agent checks."
-    },
-    {
-      "id": "honestBoundary",
-      "title": "Honest Stable vs Preview boundary",
-      "description": "Stable findings are the default baseline. Preview findings are useful extra guidance, but not the main trust bar."
-    },
-    {
-      "id": "installedAudit",
-      "title": "More than repository scans when you need it",
-      "description": "When repo scan is not enough, scan-known, inventory-os, and policy-os help audit what local AI clients already have configured."
+      "id": "hookBoundary",
+      "title": "Hook command with no clear boundary",
+      "description": "A shared hook can run with no clear execution guardrails.",
+      "looksLike": "Simple setup glue in a repo hook.",
+      "actuallyDoes": "Executes commands with unclear time, tool, or boundary limits."
     }
   ],
   "featuredRules": [
@@ -172,45 +164,45 @@
   "comparisonRows": [
     {
       "id": "offline",
-      "feature": "Offline-first local workflow",
-      "lintai": { "status": "yes", "note": "Built for local and CI runs" },
+      "feature": "Runs locally before merge",
+      "lintai": { "status": "yes", "note": "Built for local runs and CI" },
       "manualReview": { "status": "partial", "note": "Depends on reviewer discipline" },
       "scripts": { "status": "partial", "note": "Possible, but usually incomplete" },
-      "cloudScanners": { "status": "no", "note": "Often requires upload or hosted state" }
+      "cloudScanners": { "status": "no", "note": "Often starts with upload or hosted state" }
     },
     {
       "id": "signal",
-      "feature": "Deterministic findings with evidence",
-      "lintai": { "status": "yes", "note": "Stable rule ids and structured evidence" },
-      "manualReview": { "status": "partial", "note": "Review quality varies by person" },
-      "scripts": { "status": "partial", "note": "Hard to keep consistent across repos" },
+      "feature": "Shows the exact reason for each finding",
+      "lintai": { "status": "yes", "note": "Stable ids with structured evidence" },
+      "manualReview": { "status": "partial", "note": "Explanations vary by reviewer" },
+      "scripts": { "status": "partial", "note": "Hard to keep clear across repos" },
       "cloudScanners": { "status": "partial", "note": "May be broader, but not always explainable" }
     },
     {
       "id": "scope",
-      "feature": "Targets AI-native repo surfaces directly",
+      "feature": "Checks agent config that code review often misses",
       "lintai": {
         "status": "yes",
-        "note": "Skills, MCP, hooks, client settings, agent policy files"
+        "note": "Skills, MCP, hooks, settings, instruction files"
       },
-      "manualReview": { "status": "partial", "note": "Easy to miss non-code files" },
-      "scripts": { "status": "partial", "note": "Usually one narrow file family only" },
-      "cloudScanners": { "status": "partial", "note": "Often broader than needed for this niche" }
+      "manualReview": { "status": "partial", "note": "Easy to miss harmless-looking files" },
+      "scripts": { "status": "partial", "note": "Usually cover one narrow file family" },
+      "cloudScanners": { "status": "partial", "note": "Usually broader than this repo-level gap" }
     },
     {
       "id": "ci",
-      "feature": "CI and SARIF integration",
-      "lintai": { "status": "yes", "note": "Text, JSON, and SARIF are first-class" },
-      "manualReview": { "status": "no", "note": "No machine-readable contract by default" },
+      "feature": "Fits into CI and code scanning",
+      "lintai": { "status": "yes", "note": "Text, JSON, and SARIF are built in" },
+      "manualReview": { "status": "no", "note": "No machine-readable output by default" },
       "scripts": { "status": "partial", "note": "Usually needs custom glue per repo" },
-      "cloudScanners": { "status": "yes", "note": "Usually strong, but not repo-local by default" }
+      "cloudScanners": { "status": "yes", "note": "Usually strong here, but not repo-local first" }
     },
     {
       "id": "boundary",
-      "feature": "Honest Stable vs Preview boundary",
+      "feature": "Separates release-grade checks from preview signals",
       "lintai": { "status": "yes", "note": "Documented in the shipped product posture" },
       "manualReview": { "status": "no", "note": "Usually lives in tribal knowledge" },
-      "scripts": { "status": "no", "note": "Rarely separated into maturity lanes" },
+      "scripts": { "status": "no", "note": "Rarely split into maturity lanes" },
       "cloudScanners": {
         "status": "partial",
         "note": "May be broad, but not always explicit about noise"
@@ -218,7 +210,7 @@
     },
     {
       "id": "installed",
-      "feature": "Audit what is already installed locally",
+      "feature": "Can inspect what is already installed locally",
       "lintai": { "status": "yes", "note": "scan-known and inventory-os are built in" },
       "manualReview": { "status": "no", "note": "Tedious and incomplete" },
       "scripts": { "status": "partial", "note": "Possible, but platform-specific" },
@@ -229,12 +221,12 @@
     {
       "id": "whatIsIt",
       "question": "What is lintai?",
-      "answer": "lintai is an offline-first security linter for AI agent configs and instruction files in your repo. It checks the files that shape agent behavior before they become shared team defaults."
+      "answer": "lintai shows what your AI agent can run, access, and what defaults it gets by checking the ordinary-looking files that usually control that behavior before risky defaults quietly spread through a repo."
     },
     {
       "id": "whatDoesItScan",
       "question": "What does lintai scan in the current v0.1 scope?",
-      "answer": "The current v0.1 scope focuses on files such as <code>SKILL.md</code>, <code>CLAUDE.md</code>, Cursor rules, MCP configs, Claude hook settings, local client config files, and an opt-in advisory lane for committed npm lockfiles."
+      "answer": "The current v0.1 scope focuses on the repo files that usually decide what an agent is allowed to do: <code>SKILL.md</code>, <code>CLAUDE.md</code>, Cursor rules, MCP configs, Claude hook settings, local client config files, and an opt-in advisory lane for committed npm lockfiles."
     },
     {
       "id": "offlineFirst",
@@ -254,12 +246,12 @@
     {
       "id": "cloudVsLintai",
       "question": "Does lintai replace cloud scanners or broad supply-chain platforms?",
-      "answer": "No. The current v0.1 release is intentionally narrower. Think of it as a focused linter for AI agent files in your repo, not a hosted platform for every security or supply-chain problem."
+      "answer": "No. The current v0.1 release is intentionally narrower. Think of it as a focused linter for repo-local AI agent files, not a hosted platform for every security or supply-chain problem."
     }
   ],
   "download": {
-    "title": "Get started",
-    "note": "Pick an install path, open the docs, and start with a fast repo-local scan."
+    "title": "Run your first scan",
+    "note": "Pick an install path, open the docs, and run the first repository scan."
   },
   "installChannels": [
     {

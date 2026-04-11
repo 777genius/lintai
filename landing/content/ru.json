@@ -1,38 +1,30 @@
 {
   "hero": {
-    "title": "lintai",
-    "subtitle": "lintai - это offline-first security linter для конфигов и instruction-файлов AI-агентов в вашем репозитории. Он проверяет SKILL.md, mcp.json, Claude settings, Cursor rules и Copilot instructions с детерминированными findings и CI-ready output."
+    "title": "Проверяйте возможности AI-агента.",
+    "subtitle": "Показывает, что агент может запускать, к чему получает доступ и какие правила получает по умолчанию, ещё до merge.",
+    "supportLine": "MCP, хуки, права доступа и инструкции для агентов."
   },
   "features": [
     {
-      "id": "offlineFirst",
-      "title": "Offline-first по умолчанию",
-      "description": "Запускайте локально или в CI без отправки repo instructions и agent config в hosted scanning service."
+      "id": "sharedShell",
+      "title": "Слишком широкий shell-доступ в общих настройках",
+      "description": "Небольшой shortcut в правах доступа может тихо расширять shell-полномочия.",
+      "looksLike": "Безобидный блок в общих настройках.",
+      "actuallyDoes": "Превращает дефолты команды в более широкий shell-доступ, чем реально нужен репозиторию."
     },
     {
-      "id": "deterministic",
-      "title": "Детерминированные finding'и с evidence",
-      "description": "Один и тот же репозиторий даёт одни и те же rule id, evidence и exit code, поэтому review и автоматизация становятся предсказуемее."
+      "id": "mcpLauncher",
+      "title": "Запуск инструмента на лету в mcp.json",
+      "description": "Обычный путь запуска может тихо менять то, как резолвится tooling агента.",
+      "looksLike": "Нормальное подключение в mcp.json или setup-инструкция.",
+      "actuallyDoes": "Запускает инструменты агента через mutable launcher на каждой машине."
     },
     {
-      "id": "repoSurfaces",
-      "title": "Целится в файлы, которые реально управляют агентом",
-      "description": "Текущий v0.1 сфокусирован на SKILL.md, mcp.json, Claude и Cursor settings, hooks и соседних instruction-файлах."
-    },
-    {
-      "id": "ciReady",
-      "title": "Сразу готов для CI и SARIF",
-      "description": "Text, JSON и SARIF output позволяют ставить проверки в pull request без отдельного workflow только для agent checks."
-    },
-    {
-      "id": "honestBoundary",
-      "title": "Честная граница Stable vs Preview",
-      "description": "Stable findings - базовая планка. Preview findings полезны как дополнительный слой, но это не основной trust bar."
-    },
-    {
-      "id": "installedAudit",
-      "title": "Не только repo scans, когда нужно больше",
-      "description": "Когда repo scan недостаточен, scan-known, inventory-os и policy-os помогают проверить, что уже настроено в локальных AI clients."
+      "id": "hookBoundary",
+      "title": "Хук-команда без понятных границ",
+      "description": "Общий хук может запускаться без понятных границ исполнения.",
+      "looksLike": "Простая склейка для setup в хуке репозитория.",
+      "actuallyDoes": "Выполняет команды без ясных ограничений по времени, инструментам или границам запуска."
     }
   ],
   "featuredRules": [
@@ -172,75 +164,75 @@
   "comparisonRows": [
     {
       "id": "offline",
-      "feature": "Offline-first локальный workflow",
-      "lintai": { "status": "yes", "note": "Сделан под локальные и CI-прогоны" },
+      "feature": "Запускается локально до merge",
+      "lintai": { "status": "yes", "note": "Сделан для локальных прогонов и CI" },
       "manualReview": { "status": "partial", "note": "Зависит от дисциплины reviewer'а" },
       "scripts": { "status": "partial", "note": "Возможно, но обычно неполно" },
-      "cloudScanners": { "status": "no", "note": "Часто требуют upload или hosted state" }
+      "cloudScanners": { "status": "no", "note": "Часто начинаются с upload или hosted state" }
     },
     {
       "id": "signal",
-      "feature": "Детерминированные finding'и с evidence",
-      "lintai": { "status": "yes", "note": "Stable rule id и структурированное evidence" },
+      "feature": "Показывает точную причину каждого сигнала",
+      "lintai": { "status": "yes", "note": "Stable id и структурированные детали" },
       "manualReview": {
         "status": "partial",
-        "note": "Качество review плавает от человека к человеку"
+        "note": "Объяснения зависят от человека"
       },
-      "scripts": { "status": "partial", "note": "Трудно держать консистентно по репозиториям" },
+      "scripts": { "status": "partial", "note": "Трудно держать понятными на всех репозиториях" },
       "cloudScanners": { "status": "partial", "note": "Могут быть шире, но не всегда объяснимы" }
     },
     {
       "id": "scope",
-      "feature": "Бьёт прямо по AI-native repo surfaces",
+      "feature": "Проверяет конфиг агента, который ревью кода часто пропускает",
       "lintai": {
         "status": "yes",
-        "note": "Skills, MCP, hooks, client settings, agent policy files"
+        "note": "Skills, MCP, хуки, настройки и файлы инструкций"
       },
-      "manualReview": { "status": "partial", "note": "Не-кодовые файлы легко пропустить" },
-      "scripts": { "status": "partial", "note": "Обычно закрывают только одно семейство файлов" },
-      "cloudScanners": { "status": "partial", "note": "Часто шире, чем нужно этой нише" }
+      "manualReview": { "status": "partial", "note": "Файлы с безобидным видом легко пропустить" },
+      "scripts": { "status": "partial", "note": "Обычно покрывают только одно семейство файлов" },
+      "cloudScanners": { "status": "partial", "note": "Обычно шире, чем этот repo-level разрыв" }
     },
     {
       "id": "ci",
-      "feature": "CI и SARIF integration",
-      "lintai": { "status": "yes", "note": "Text, JSON и SARIF - first-class output" },
-      "manualReview": { "status": "no", "note": "Нет machine-readable контракта по умолчанию" },
-      "scripts": { "status": "partial", "note": "Обычно требуют custom glue на каждый repo" },
+      "feature": "Легко встраивается в CI и проверки кода",
+      "lintai": { "status": "yes", "note": "Text, JSON и SARIF встроены" },
+      "manualReview": { "status": "no", "note": "По умолчанию нет машиночитаемого вывода" },
+      "scripts": { "status": "partial", "note": "Обычно требуют отдельную обвязку на каждый репозиторий" },
       "cloudScanners": {
         "status": "yes",
-        "note": "Часто сильны здесь, но не repo-local по дефолту"
+        "note": "Часто сильны здесь, но не локальны по умолчанию"
       }
     },
     {
       "id": "boundary",
-      "feature": "Честная граница Stable vs Preview",
-      "lintai": { "status": "yes", "note": "Задокументирована в shipped product posture" },
-      "manualReview": { "status": "no", "note": "Обычно живёт как tribal knowledge" },
+      "feature": "Отделяет релизный сигнал от preview-проверок",
+      "lintai": { "status": "yes", "note": "Задокументирована в релизной политике продукта" },
+      "manualReview": { "status": "no", "note": "Обычно держится на неформальных договорённостях" },
       "scripts": { "status": "no", "note": "Редко разделяются по maturity lanes" },
       "cloudScanners": {
         "status": "partial",
-        "note": "Могут быть широкими, но не всегда честны про noise"
+        "note": "Могут быть широкими, но не всегда честны про шум"
       }
     },
     {
       "id": "installed",
-      "feature": "Аудит уже установленного локального state",
+      "feature": "Может проверить то, что уже установлено локально",
       "lintai": { "status": "yes", "note": "scan-known и inventory-os встроены" },
       "manualReview": { "status": "no", "note": "Скучно и неполно" },
-      "scripts": { "status": "partial", "note": "Возможно, но сильно platform-specific" },
-      "cloudScanners": { "status": "no", "note": "Обычно не рассчитаны на local client state" }
+      "scripts": { "status": "partial", "note": "Возможно, но сильно зависит от платформы" },
+      "cloudScanners": { "status": "no", "note": "Обычно не рассчитаны на локальное состояние клиента" }
     }
   ],
   "faq": [
     {
       "id": "whatIsIt",
       "question": "Что такое lintai?",
-      "answer": "lintai - это offline-first security linter для конфигов и instruction-файлов AI-агентов в вашем репозитории. Он проверяет файлы, которые реально меняют поведение агента, до того как они становятся общими дефолтами команды."
+      "answer": "lintai показывает, что AI-агент может запускать, к чему получать доступ и какие правила получает по умолчанию, проверяя обычные на вид файлы до того, как рискованные дефолты тихо расползутся по репозиторию."
     },
     {
       "id": "whatDoesItScan",
       "question": "Что lintai сканирует в текущем v0.1?",
-      "answer": "Текущий v0.1 сфокусирован на файлах вроде <code>SKILL.md</code>, <code>CLAUDE.md</code>, Cursor rules, MCP configs, Claude hook settings, локальных client config files и opt-in advisory lane для committed npm lockfiles."
+      "answer": "Текущий v0.1 сфокусирован на файлах репозитория, которые обычно решают, что агенту разрешено делать: <code>SKILL.md</code>, <code>CLAUDE.md</code>, правила Cursor, MCP-конфиги, настройки Claude hooks, локальные client config files и opt-in advisory lane для committed npm lockfiles."
     },
     {
       "id": "offlineFirst",
@@ -260,12 +252,12 @@
     {
       "id": "cloudVsLintai",
       "question": "Заменяет ли lintai cloud scanners или широкие supply-chain платформы?",
-      "answer": "Нет. Текущий релиз v0.1 намеренно уже. Его лучше понимать как узко сфокусированный линтер для AI agent files в репозитории, а не как хостинговую платформу для всех security или supply-chain задач."
+      "answer": "Нет. Текущий релиз v0.1 намеренно уже. Его лучше понимать как узко сфокусированный линтер для repo-local AI agent files, а не как хостинговую платформу для всех security или supply-chain задач."
     }
   ],
   "download": {
-    "title": "Старт",
-    "note": "Выберите install path, откройте docs и начните с быстрого repo-local scan."
+    "title": "Запустите первую проверку",
+    "note": "Выберите способ установки, откройте документацию и запустите первую проверку по репозиторию."
   },
   "installChannels": [
     {

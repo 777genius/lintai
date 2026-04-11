@@ -9,6 +9,8 @@ const { width } = useWindowSize();
 const sectionRef = ref<HTMLElement | null>(null);
 const activePage = ref(0);
 const visible = ref(false);
+const staticDesktop = computed(() => width.value >= 1200);
+const featuredDesktopCards = computed(() => content.value.featuredRules.slice(0, 3));
 
 const visibleCards = computed(() => {
   if (width.value >= 1200) return 3;
@@ -48,7 +50,7 @@ const prevPage = () => {
 };
 
 const startAutoAdvance = () => {
-  if (autoAdvanceId || totalPages.value < 2) return;
+  if (autoAdvanceId || totalPages.value < 2 || staticDesktop.value) return;
   autoAdvanceId = setInterval(() => {
     nextPage();
   }, 4800);
@@ -67,6 +69,11 @@ watch(visible, (value) => {
 
 watch([totalPages, visibleCards], () => {
   activePage.value = Math.min(activePage.value, Math.max(totalPages.value - 1, 0));
+});
+
+watch(staticDesktop, (value) => {
+  if (value) stopAutoAdvance();
+  else if (visible.value) startAutoAdvance();
 });
 
 onMounted(() => {
@@ -94,7 +101,49 @@ onUnmounted(() => {
         <p class="featured-rules__subtitle">{{ t('featuredRules.sectionSubtitle') }}</p>
       </div>
 
+      <div v-if="staticDesktop" class="featured-rules__viewport featured-rules__viewport--desktop">
+        <div class="featured-rules__grid" :style="{ '--cards-per-page': 3 }">
+          <article
+            v-for="rule in featuredDesktopCards"
+            :key="rule.id"
+            class="featured-rules__card"
+          >
+            <div class="featured-rules__meta">
+              <div class="featured-rules__eyebrow">{{ rule.eyebrow }}</div>
+              <span class="featured-rules__lifecycle">{{ rule.lifecycle }}</span>
+            </div>
+            <div class="featured-rules__surface">{{ rule.surface }}</div>
+            <h3 class="featured-rules__card-title">{{ rule.title }}</h3>
+            <p class="featured-rules__body">{{ rule.description }}</p>
+
+            <div class="featured-rules__panel">
+              <div class="featured-rules__panel-label">
+                {{ t('featuredRules.whyItMatters') }}
+              </div>
+              <p class="featured-rules__panel-copy">{{ rule.whyItMatters }}</p>
+            </div>
+
+            <div class="featured-rules__footer">
+              <span class="featured-rules__signal">
+                <span class="featured-rules__signal-label">{{ t('featuredRules.evidenceLabel') }}</span>
+                <span>{{ rule.evidence }}</span>
+              </span>
+              <span class="featured-rules__code">{{ rule.code }}</span>
+              <a
+                :href="rule.href"
+                class="featured-rules__link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {{ t('featuredRules.openRule') }}
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+
       <div
+        v-else
         class="featured-rules__carousel"
         @mouseenter="stopAutoAdvance"
         @mouseleave="visible && startAutoAdvance()"
@@ -124,7 +173,6 @@ onUnmounted(() => {
                   <div class="featured-rules__eyebrow">{{ rule.eyebrow }}</div>
                   <span class="featured-rules__lifecycle">{{ rule.lifecycle }}</span>
                 </div>
-                <div class="featured-rules__code">{{ rule.code }}</div>
                 <div class="featured-rules__surface">{{ rule.surface }}</div>
                 <h3 class="featured-rules__card-title">{{ rule.title }}</h3>
                 <p class="featured-rules__body">{{ rule.description }}</p>
@@ -143,6 +191,7 @@ onUnmounted(() => {
                     }}</span>
                     <span>{{ rule.evidence }}</span>
                   </span>
+                  <span class="featured-rules__code">{{ rule.code }}</span>
                   <a
                     :href="rule.href"
                     class="featured-rules__link"
@@ -167,7 +216,12 @@ onUnmounted(() => {
         </button>
       </div>
 
-      <div class="featured-rules__pagination" role="tablist" aria-label="Featured rules slides">
+      <div
+        v-if="!staticDesktop"
+        class="featured-rules__pagination"
+        role="tablist"
+        aria-label="Featured rules slides"
+      >
         <button
           v-for="(_, index) in pages"
           :key="index"
@@ -208,6 +262,10 @@ onUnmounted(() => {
 .featured-rules__viewport {
   padding: 0 40px 12px;
   overflow: hidden;
+}
+
+.featured-rules__viewport--desktop {
+  padding-inline: 0;
 }
 
 .featured-rules__grid {
@@ -311,13 +369,6 @@ onUnmounted(() => {
   font-family: 'JetBrains Mono', monospace;
 }
 
-.featured-rules__code {
-  font-size: 1.2rem;
-  font-weight: 800;
-  color: #00f0ff;
-  font-family: 'JetBrains Mono', monospace;
-}
-
 .featured-rules__surface {
   color: #7dd3fc;
   font-size: 0.8rem;
@@ -359,6 +410,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  flex-wrap: wrap;
   gap: 16px;
 }
 
@@ -367,6 +419,14 @@ onUnmounted(() => {
   gap: 6px;
   color: #95a3c4;
   font-size: 0.86rem;
+}
+
+.featured-rules__code {
+  color: #7dd3fc;
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .featured-rules__link {

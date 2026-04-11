@@ -4,6 +4,8 @@ export interface FeatureItem {
   id: string;
   title: string;
   description: string;
+  looksLike: string;
+  actuallyDoes: string;
 }
 
 export interface FeaturedRuleCard {
@@ -28,6 +30,7 @@ export interface FaqItem {
 export interface HeroContent {
   title: string;
   subtitle: string;
+  supportLine: string;
 }
 
 export interface DownloadContent {

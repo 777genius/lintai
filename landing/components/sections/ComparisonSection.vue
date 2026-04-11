@@ -1,41 +1,49 @@
 <script setup lang="ts">
+import {
+  mdiCheckDecagramOutline,
+  mdiFileSearchOutline,
+  mdiLanConnect,
+  mdiPlayCircleOutline,
+  mdiRadar,
+  mdiShieldCheckOutline,
+} from '@mdi/js';
+
 const { content } = useLandingContent();
 const { t } = useI18n();
 
-type ComparisonKey = 'lintai' | 'manualReview' | 'scripts' | 'cloudScanners';
+const highlightIds = ['offline', 'signal', 'boundary', 'scope'] as const;
 
-const columns: Array<{ key: ComparisonKey; labelKey: string; highlight?: boolean }> = [
-  { key: 'lintai', labelKey: 'comparison.columns.lintai', highlight: true },
-  { key: 'manualReview', labelKey: 'comparison.columns.manualReview' },
-  { key: 'scripts', labelKey: 'comparison.columns.scripts' },
-  { key: 'cloudScanners', labelKey: 'comparison.columns.cloudScanners' },
-];
+const comparisonVisuals = {
+  offline: { icon: mdiPlayCircleOutline, accent: '#00f0ff' },
+  signal: { icon: mdiFileSearchOutline, accent: '#ff00ff' },
+  scope: { icon: mdiRadar, accent: '#39ff14' },
+  ci: { icon: mdiLanConnect, accent: '#7dd3fc' },
+  boundary: { icon: mdiShieldCheckOutline, accent: '#ffd166' },
+  installed: { icon: mdiCheckDecagramOutline, accent: '#c084fc' },
+} as const;
 
-function getStatusIcon(status: 'yes' | 'partial' | 'no'): string {
-  switch (status) {
-    case 'yes':
-      return '✓';
-    case 'partial':
-      return '◐';
-    default:
-      return '✕';
-  }
-}
+const highlightRows = computed(() =>
+  highlightIds
+    .map((id) => content.value.comparisonRows.find((row) => row.id === id))
+    .filter((row): row is NonNullable<typeof row> => row !== null && row !== undefined)
+    .map((row) => ({
+      ...row,
+      icon: comparisonVisuals[row.id as keyof typeof comparisonVisuals]?.icon ?? mdiShieldCheckOutline,
+      accent:
+        comparisonVisuals[row.id as keyof typeof comparisonVisuals]?.accent ?? '#00f0ff',
+    })),
+);
 
-function getCellClass(status: 'yes' | 'partial' | 'no'): string {
-  switch (status) {
-    case 'yes':
-      return 'comparison-row__cell--yes';
-    case 'partial':
-      return 'comparison-row__cell--partial';
-    default:
-      return 'comparison-row__cell--no';
-  }
-}
-
-function getCell(row: (typeof content.value.comparisonRows)[number], key: ComparisonKey) {
-  return row[key];
-}
+const secondaryRows = computed(() =>
+  content.value.comparisonRows
+    .filter((row) => !highlightIds.includes(row.id as (typeof highlightIds)[number]))
+    .map((row) => ({
+      ...row,
+      icon: comparisonVisuals[row.id as keyof typeof comparisonVisuals]?.icon ?? mdiShieldCheckOutline,
+      accent:
+        comparisonVisuals[row.id as keyof typeof comparisonVisuals]?.accent ?? '#00f0ff',
+    })),
+);
 </script>
 
 <template>
@@ -50,45 +58,51 @@ function getCell(row: (typeof content.value.comparisonRows)[number], key: Compar
         </p>
       </div>
 
-      <div class="comparison-grid">
-        <div class="comparison-grid__header">
-          <div class="comparison-grid__feature-head">
-            {{ t('comparison.feature') }}
-          </div>
-          <div
-            v-for="column in columns"
-            :key="column.key"
-            class="comparison-grid__column-head"
-            :class="{ 'comparison-grid__column-head--highlight': column.highlight }"
-          >
-            {{ t(column.labelKey) }}
-          </div>
-        </div>
-
-        <article v-for="row in content.comparisonRows" :key="row.id" class="comparison-row">
-          <div class="comparison-row__feature">
-            {{ row.feature }}
-          </div>
-
-          <div class="comparison-row__cells">
-            <div
-              v-for="column in columns"
-              :key="column.key"
-              class="comparison-row__cell"
-              :class="[
-                getCellClass(getCell(row, column.key).status),
-                { 'comparison-row__cell--highlight': column.highlight },
-              ]"
-            >
-              <span class="comparison-row__icon">
-                {{ getStatusIcon(getCell(row, column.key).status) }}
-              </span>
-              <span class="comparison-row__note">
-                {{ getCell(row, column.key).note }}
-              </span>
+      <div class="comparison-section__grid">
+        <article
+          v-for="row in highlightRows"
+          :key="row.id"
+          class="comparison-card"
+          :style="{ '--accent': row.accent }"
+        >
+          <div class="comparison-card__top">
+            <div class="comparison-card__icon-wrap">
+              <div class="comparison-card__icon-bg" />
+              <v-icon :icon="row.icon" size="22" class="comparison-card__icon" />
             </div>
+            <h3 class="comparison-card__title">{{ row.feature }}</h3>
+          </div>
+
+          <p class="comparison-card__body">{{ row.lintai.note }}</p>
+
+          <div class="comparison-card__contrast">
+            <div class="comparison-card__contrast-label">
+              {{ t('comparison.withoutDedicatedCheck') }}
+            </div>
+            <p class="comparison-card__contrast-copy">{{ row.manualReview.note }}</p>
           </div>
         </article>
+      </div>
+
+      <div v-if="secondaryRows.length" class="comparison-section__secondary">
+        <div class="comparison-section__secondary-label">
+          {{ t('comparison.alsoUseful') }}
+        </div>
+
+        <div class="comparison-section__secondary-grid">
+          <article
+            v-for="row in secondaryRows"
+            :key="row.id"
+            class="comparison-secondary-card"
+            :style="{ '--accent': row.accent }"
+          >
+            <div class="comparison-secondary-card__head">
+              <v-icon :icon="row.icon" size="18" class="comparison-secondary-card__icon" />
+              <h3 class="comparison-secondary-card__title">{{ row.feature }}</h3>
+            </div>
+            <p class="comparison-secondary-card__body">{{ row.lintai.note }}</p>
+          </article>
+        </div>
       </div>
     </v-container>
   </section>
@@ -101,10 +115,8 @@ function getCell(row: (typeof content.value.comparisonRows)[number], key: Compar
 
 .comparison-section__header {
   text-align: center;
-  max-width: 720px;
-  margin: 0 auto 56px;
-  position: relative;
-  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto 48px;
 }
 
 .comparison-section__title {
@@ -126,94 +138,143 @@ function getCell(row: (typeof content.value.comparisonRows)[number], key: Compar
   margin: 0;
 }
 
-.comparison-grid {
-  border-radius: 24px;
-  border: 1px solid rgba(0, 240, 255, 0.12);
-  background: linear-gradient(180deg, rgba(11, 15, 25, 0.92), rgba(8, 11, 18, 0.84));
+.comparison-section__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.comparison-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 100%;
+  padding: 22px;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(11, 15, 25, 0.94), rgba(8, 11, 18, 0.86));
   box-shadow:
     0 18px 60px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(16px);
-  overflow: hidden;
 }
 
-.comparison-grid__header {
-  display: grid;
-  grid-template-columns: minmax(220px, 1.15fr) repeat(4, minmax(0, 1fr));
-  gap: 0;
+.comparison-card__top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.comparison-grid__feature-head,
-.comparison-grid__column-head {
-  padding: 18px 20px;
-  font-size: 0.78rem;
+.comparison-card__icon-wrap {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.comparison-card__icon-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: var(--accent);
+  opacity: 0.16;
+}
+
+.comparison-card__icon {
+  position: relative;
+  color: var(--accent) !important;
+}
+
+.comparison-card__title {
+  margin: 0;
+  font-size: 1.08rem;
+  line-height: 1.35;
+  color: #e2e8f0;
+}
+
+.comparison-card__body {
+  margin: 0;
+  color: #c5d0e9;
+  line-height: 1.65;
+  font-size: 0.96rem;
+}
+
+.comparison-card__contrast {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.comparison-card__contrast-label {
+  font-size: 0.68rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #9aa7c7;
+  color: var(--accent);
   font-family: 'JetBrains Mono', monospace;
-  background: rgba(255, 255, 255, 0.02);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 6px;
 }
 
-.comparison-grid__column-head--highlight {
-  background: rgba(0, 240, 255, 0.04);
-}
-
-.comparison-row {
-  display: grid;
-  grid-template-columns: minmax(220px, 1.15fr) minmax(0, 4fr);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.comparison-row:last-child {
-  border-bottom: none;
-}
-
-.comparison-row__feature {
-  padding: 20px;
-  color: #e2e8f0;
-  font-weight: 600;
-  line-height: 1.5;
-}
-
-.comparison-row__cells {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.comparison-row__cell {
-  display: grid;
-  grid-template-columns: 20px minmax(0, 1fr);
-  gap: 10px;
-  align-items: start;
-  padding: 20px 18px;
-}
-
-.comparison-row__cell--highlight {
-  background: rgba(0, 240, 255, 0.04);
-}
-
-.comparison-row__icon {
-  font-weight: 800;
-  line-height: 1.1;
-}
-
-.comparison-row__note {
-  color: #b9c4e3;
+.comparison-card__contrast-copy {
+  margin: 0;
+  color: #94a3c4;
   line-height: 1.55;
-  font-size: 0.92rem;
+  font-size: 0.86rem;
 }
 
-.comparison-row__cell--yes .comparison-row__icon {
-  color: #39ff14;
+.comparison-section__secondary {
+  margin-top: 20px;
+  padding: 18px 20px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.comparison-row__cell--partial .comparison-row__icon {
-  color: #ffd166;
+.comparison-section__secondary-label {
+  margin-bottom: 14px;
+  font-size: 0.76rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8fa1c8;
+  font-family: 'JetBrains Mono', monospace;
 }
 
-.comparison-row__cell--no .comparison-row__icon {
-  color: #ff6b6b;
+.comparison-section__secondary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.comparison-secondary-card {
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.comparison-secondary-card__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.comparison-secondary-card__icon {
+  color: var(--accent) !important;
+}
+
+.comparison-secondary-card__title {
+  margin: 0;
+  font-size: 0.96rem;
+  color: #dbe5ff;
+  line-height: 1.4;
+}
+
+.comparison-secondary-card__body {
+  margin: 0;
+  color: #9fb0d3;
+  line-height: 1.55;
+  font-size: 0.88rem;
 }
 
 .v-theme--light .comparison-section__title {
@@ -227,60 +288,74 @@ function getCell(row: (typeof content.value.comparisonRows)[number], key: Compar
   color: #475569;
 }
 
-.v-theme--light .comparison-grid {
-  border-color: rgba(15, 23, 42, 0.08);
+.v-theme--light .comparison-card {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.94));
+  border-color: rgba(15, 23, 42, 0.08);
   box-shadow:
     0 18px 50px rgba(15, 23, 42, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-.v-theme--light .comparison-grid__feature-head,
-.v-theme--light .comparison-grid__column-head {
-  color: #64748b;
-  background: rgba(148, 163, 184, 0.06);
-  border-bottom-color: rgba(15, 23, 42, 0.06);
-}
-
-.v-theme--light .comparison-grid__column-head--highlight,
-.v-theme--light .comparison-row__cell--highlight {
-  background: rgba(14, 165, 233, 0.05);
-}
-
-.v-theme--light .comparison-row {
-  border-bottom-color: rgba(15, 23, 42, 0.06);
-}
-
-.v-theme--light .comparison-row__feature {
+.v-theme--light .comparison-card__title {
   color: #0f172a;
 }
 
-.v-theme--light .comparison-row__note {
+.v-theme--light .comparison-card__body {
   color: #475569;
+}
+
+.v-theme--light .comparison-card__contrast {
+  border-top-color: rgba(15, 23, 42, 0.08);
+}
+
+.v-theme--light .comparison-card__contrast-copy {
+  color: #64748b;
+}
+
+.v-theme--light .comparison-section__secondary {
+  border-top-color: rgba(15, 23, 42, 0.08);
+}
+
+.v-theme--light .comparison-secondary-card {
+  background: rgba(255, 255, 255, 0.82);
+  border-color: rgba(15, 23, 42, 0.08);
+}
+
+.v-theme--light .comparison-secondary-card__title {
+  color: #0f172a;
+}
+
+.v-theme--light .comparison-secondary-card__body {
+  color: #64748b;
 }
 
 @media (max-width: 960px) {
   .comparison-section__title {
-    font-size: 1.85rem;
+    font-size: 1.9rem;
   }
 
-  .comparison-section__header {
-    margin-bottom: 40px;
-  }
-
-  .comparison-grid {
-    overflow-x: auto;
-  }
-
-  .comparison-grid__header,
-  .comparison-row {
-    min-width: 920px;
+  .comparison-section__grid,
+  .comparison-section__secondary-grid {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 600px) {
   .comparison-section__title {
-    font-size: 1.6rem;
+    font-size: 1.65rem;
+  }
+
+  .comparison-section__header {
+    margin-bottom: 36px;
+  }
+
+  .comparison-card,
+  .comparison-secondary-card {
+    padding: 18px;
+  }
+
+  .comparison-section__secondary {
+    padding-inline: 0;
   }
 }
 </style>

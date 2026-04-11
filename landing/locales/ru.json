@@ -1,17 +1,17 @@
 {
   "nav": {
-    "features": "Возможности",
-    "featuredRules": "Ключевые правила",
+    "features": "Что пропускают",
+    "featuredRules": "Примеры",
     "comparison": "Почему lintai",
-    "download": "Старт",
+    "download": "Запуск",
     "faq": "FAQ",
     "viewOnGithub": "Открыть GitHub"
   },
   "hero": {
-    "primaryCta": "Открыть GitHub",
-    "secondaryCta": "Смотреть ключевые правила",
-    "docsCta": "Открыть docs",
-    "preview": "Превью процесса lintai",
+    "primaryCta": "Запустить первую проверку",
+    "secondaryCta": "Посмотреть примеры",
+    "docsCta": "Открыть GitHub",
+    "preview": "Как работает lintai",
     "latestRelease": "Последний релиз",
     "kicker": "",
     "factFocusLabel": "Фокус сейчас",
@@ -19,79 +19,37 @@
     "factOutputsLabel": "Что команда получает",
     "factOutputsBody": "Сначала Stable findings, затем Preview для более глубокого review, плюс отдельные compatibility и supply-chain lanes, когда команде нужно больше, чем тихий дефолт.",
     "trust": {
-      "oneRepo": "Offline-first",
-      "validated": "Детерминированные finding'и",
-      "openSource": "Open source"
+      "oneRepo": "Локально",
+      "validated": "Понятные выводы",
+      "openSource": "CI + SARIF"
     },
     "demo": {
-      "title": "процесс lintai",
-      "subtitle": "Сканируйте конфиги и instruction-файлы, которые управляют агентами в вашем репозитории.",
-      "scanLabel": "Repo scan",
-      "surfaceMap": "Карта поверхностей",
-      "signalBoard": "Панель сигналов",
-      "currentSignal": "Текущий сигнал",
-      "evidenceLabel": "Evidence",
-      "remediationLabel": "Remediation",
-      "outputsLabel": "Выходы",
-      "summaryLabel": "Крутим самые сильные repo-local поверхности",
-      "offline": "Offline-first",
-      "repoLocalOnly": "только repo-local",
-      "stableFirst": "Stable first",
-      "previewDeeper": "Preview deeper",
-      "machineReadable": "SARIF + JSON",
-      "structuredEvidence": "структурированное evidence",
-      "steps": {
-        "index": {
-          "title": "Найдите файлы, которые управляют агентами",
-          "body": "Индексируйте skills, MCP wiring, hook settings и instruction-файлы до того, как они тихо станут дефолтами команды."
+      "title": "Что lintai покажет до merge",
+      "subtitle": "Обычные на вид файлы могут тихо менять, что агенту разрешено.",
+      "scanLabel": "Первая проверка",
+      "summaryLabel": "Частые файлы, которые имеет смысл ревьюить",
+      "offline": "до merge",
+      "focus": {
+        "run": {
+          "pill": "Запуск",
+          "title": "Что агент может запускать",
+          "body": "Хуки, shell-доступ и пути запуска, которые меняются от машины к машине."
         },
-        "scan": {
-          "title": "Сначала самые понятные проверки",
-          "body": "Начинайте со stable сигналов по конфигам и policy, а не с расплывчатых prose-only эвристик."
+        "access": {
+          "pill": "Доступ",
+          "title": "К чему агент может получать доступ",
+          "body": "Права доступа, MCP-подключения и доступные инструменты."
         },
-        "ship": {
-          "title": "Дальше evidence в review или CI",
-          "body": "Экспортируйте SARIF или JSON, чтобы один и тот же сигнал был читаем в review, CI и downstream tooling."
+        "inherit": {
+          "pill": "Наследование",
+          "title": "Какие правила агент получает по умолчанию",
+          "body": "Общие инструкции, правила редактора и дефолты команды."
         }
       },
-      "scenarios": {
-        "skills": {
-          "family": "skills markdown",
-          "title": "Широкий Bash grant в shared frontmatter",
-          "summary": "lintai ловит слишком широкую shell-власть, которая всё ещё слишком часто встречается в shared skills и agent markdown.",
-          "remediation": "Сузьте Bash(...) под конкретный workflow вместо широкого shell-default."
-        },
-        "claudeHooks": {
-          "family": "Claude hook settings",
-          "title": "Mutable package launcher в committed hook",
-          "summary": "Shared Claude hooks должны быть reviewed automation, а не runtime package resolution через npx или uvx.",
-          "remediation": "Замените mutable launcher на vendored script или другой reproducible local command."
-        },
-        "mcp": {
-          "family": "MCP client config",
-          "title": "Mutable runner внутри committed mcp.json",
-          "summary": "Committed MCP wiring - это исполняемая настройка. lintai проверяет, что launch path воспроизводим и reviewable.",
-          "remediation": "Перейдите на pinned local wrapper, vendored script или другой reviewed execution path."
-        },
-        "claudePerms": {
-          "family": "Claude shared permissions",
-          "title": "Wildcard shell и write access в shared policy",
-          "summary": "Широкие Claude permissions легко копируются между repo и гораздо хуже защищаются на review, чем узкий allowlist.",
-          "remediation": "Замените Bash(*) и Write(*) на scoped command patterns и path-specific write targets."
-        },
-        "cursor": {
-          "family": "Cursor rule contract",
-          "title": "Unknown или contradictory Cursor frontmatter",
-          "summary": "lintai относится к shared .mdc routing как к config, а не к prose, и ловит drift в rule-pack до того, как он превращается в tribal knowledge.",
-          "remediation": "Оставьте только поддерживаемые ключи Cursor и уберите globs из alwaysApply rules."
-        },
-        "copilot": {
-          "family": "Copilot path targeting",
-          "title": "Невалидный applyTo glob в path-specific instructions",
-          "summary": "Сломанный applyTo может выглядеть нормально на review, но тихо не матчить файлы, которые команда ожидает.",
-          "remediation": "Используйте валидные reviewed glob patterns, чтобы instruction contract оставался testable и явным."
-        }
-      }
+      "exampleLabel": "Пример вывода",
+      "exampleFile": ".claude/settings.json",
+      "exampleTitle": "Слишком широкий shell-доступ в общих настройках",
+      "exampleBody": "Выглядит как удобный shortcut, но делает дефолты команды шире, чем реально требует репозиторий."
     }
   },
   "download": {
@@ -101,11 +59,11 @@
     "command": "Команда",
     "copy": "Копировать",
     "copied": "Скопировано",
-    "quickstartTitle": "Рекомендуемый quickstart",
-    "quickstartSubtitle": "Это самый короткий поддерживаемый путь от установки до первого показательного прогона lintai.",
-    "installTabsLabel": "Выберите install path",
-    "supportTitle": "Текущее позиционирование продукта",
-    "supportSubtitle": "Честно о текущем релизе: на что продукт нацелен сейчас и где реально проходит граница доверия.",
+    "quickstartTitle": "Короткий путь к первой проверке",
+    "quickstartSubtitle": "Самый короткий поддерживаемый путь от установки до первого показательного прогона lintai.",
+    "installTabsLabel": "Выберите способ установки",
+    "supportTitle": "Что важно знать перед CI",
+    "supportSubtitle": "Коротко и честно: где у текущего релиза сильная сторона и где сейчас проходит его граница доверия.",
     "supportLink": "Открыть релизный контракт"
   },
   "common": {
@@ -122,12 +80,14 @@
     "search": "Найти язык…"
   },
   "features": {
-    "sectionTitle": "Security checks для AI-native поверхностей репозитория",
-    "sectionSubtitle": "lintai намеренно узкий: он проверяет конфиги и instruction-файлы, которые реально меняют поведение AI-агентов."
+    "sectionTitle": "Что ревью кода часто пропускает",
+    "sectionSubtitle": "Эти файлы выглядят как настройки или документация, но именно они тихо определяют, что AI-агенты могут делать.",
+    "looksLikeLabel": "Выглядит как",
+    "actuallyDoesLabel": "Но на деле"
   },
   "featuredRules": {
-    "sectionTitle": "Начните с самых defendable правил",
-    "sectionSubtitle": "Эти правила покрывают executable config, shared policy и editor instructions - те части продукта, которые проще всего объяснить и защитить в реальном review.",
+    "sectionTitle": "Что lintai ловит на практике",
+    "sectionSubtitle": "Ниже - типовые вещи, которые lintai подсвечивает в конфиге, общих настройках и инструкциях редактора.",
     "openRule": "Открыть правило",
     "whyItMatters": "Почему это важно",
     "evidenceLabel": "Сигнал"
@@ -145,7 +105,7 @@
       "cloudVsLintai": "Позиционирование"
     },
     "quickLinks": {
-      "badge": "Старт",
+      "badge": "Дальше",
       "title": "Нужен более явный следующий шаг?",
       "subtitle": "Большинству команд сначала достаточно трёх страниц: индекса docs, заметки о позиционировании и текущего релизного контракта.",
       "docsTitle": "Открыть индекс docs",
@@ -157,27 +117,29 @@
     }
   },
   "comparison": {
-    "sectionTitle": "Почему команды пробуют lintai первым",
+    "sectionTitle": "Зачем запускать lintai до merge",
     "sectionSubtitle": "Чтобы рискованные дефолты не расползались по репозиторию, а default checks оставались отдельно от более глубоких review lanes.",
-    "feature": "Workflow",
+    "feature": "Подход",
+    "withoutDedicatedCheck": "Если отдельной проверки нет",
+    "alsoUseful": "Полезно и дальше",
     "columns": {
       "lintai": "lintai",
       "manualReview": "Ручной review",
-      "scripts": "Ad hoc scripts",
-      "cloudScanners": "Generic cloud scanners"
+      "scripts": "Разовые скрипты",
+      "cloudScanners": "Облачные сканеры"
     }
   },
   "footer": {
     "copyright": "© {year}",
-    "tagline": "Offline-first проверки для конфигов и instruction-файлов AI-агентов.",
+    "tagline": "Покажите, что AI-агенту разрешено.",
     "github": "GitHub",
     "docs": "Docs"
   },
   "meta": {
-    "homeTitle": "lintai | Быстрые offline security checks для AI agent artifacts",
-    "homeDescription": "lintai помогает проверять skills, MCP-конфиги, hook settings, локальные client policy files и AI instruction files с детерминированными finding'ами, evidence и CI-ready output.",
-    "downloadTitle": "Старт с lintai | Установка CLI публичного релиза",
-    "downloadDescription": "Выберите подходящий install path для lintai, откройте docs и начните с быстрого offline scan по репозиторию."
+    "homeTitle": "lintai | Показывает, что AI-агенту разрешено",
+    "homeDescription": "lintai показывает, что AI-агент может запускать, к чему получать доступ и какие правила получает по умолчанию, проверяя MCP, хуки, права доступа и инструкции для агентов.",
+    "downloadTitle": "Запустите первую проверку с lintai | Установка CLI публичного релиза",
+    "downloadDescription": "Выберите подходящий способ установки lintai, откройте документацию и запустите первую проверку по репозиторию."
   },
   "error": {
     "notFoundTitle": "Страница не найдена",

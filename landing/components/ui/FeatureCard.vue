@@ -2,6 +2,10 @@
 defineProps<{
   title: string;
   description: string;
+  looksLike: string;
+  actuallyDoes: string;
+  looksLikeLabel: string;
+  actuallyDoesLabel: string;
   icon: string;
   accent?: string;
 }>();
@@ -17,6 +21,16 @@ defineProps<{
       <h3 class="feature-card__title">{{ title }}</h3>
     </div>
     <p class="feature-card__desc">{{ description }}</p>
+    <div class="feature-card__details">
+      <div class="feature-card__detail">
+        <div class="feature-card__detail-label">{{ looksLikeLabel }}</div>
+        <p class="feature-card__detail-copy">{{ looksLike }}</p>
+      </div>
+      <div class="feature-card__detail">
+        <div class="feature-card__detail-label">{{ actuallyDoesLabel }}</div>
+        <p class="feature-card__detail-copy">{{ actuallyDoes }}</p>
+      </div>
+    </div>
     <div class="feature-card__shine" />
   </div>
 </template>
@@ -97,11 +111,37 @@ defineProps<{
 }
 
 .feature-card__desc {
-  font-size: 0.85rem;
+  font-size: 0.86rem;
   line-height: 1.6;
-  opacity: 0.7;
+  opacity: 0.82;
+  margin: 0 0 14px;
+}
+
+.feature-card__details {
+  display: grid;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.feature-card__detail {
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.feature-card__detail-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 6px;
+}
+
+.feature-card__detail-copy {
   margin: 0;
-  flex-grow: 1;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: #c8d3ec;
 }
 
 .feature-card__shine {
@@ -144,6 +184,10 @@ defineProps<{
   opacity: 0.85;
 }
 
+.v-theme--dark .feature-card__detail {
+  border-top-color: rgba(148, 163, 184, 0.14);
+}
+
 .v-theme--dark .feature-card__icon-bg {
   opacity: 0.18;
 }
@@ -173,6 +217,14 @@ defineProps<{
 
 .v-theme--light .feature-card__desc {
   opacity: 0.6;
+}
+
+.v-theme--light .feature-card__detail {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+.v-theme--light .feature-card__detail-copy {
+  color: #475569;
 }
 
 @media (max-width: 960px) {

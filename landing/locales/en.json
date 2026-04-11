@@ -1,16 +1,16 @@
 {
   "nav": {
-    "features": "Features",
-    "featuredRules": "Featured rules",
+    "features": "What gets missed",
+    "featuredRules": "Examples",
     "comparison": "Why lintai",
-    "download": "Get started",
+    "download": "Run it",
     "faq": "FAQ",
     "viewOnGithub": "Open GitHub"
   },
   "hero": {
-    "primaryCta": "Open GitHub",
-    "secondaryCta": "See featured rules",
-    "docsCta": "View docs",
+    "primaryCta": "Run your first scan",
+    "secondaryCta": "See examples",
+    "docsCta": "Open GitHub",
     "preview": "lintai scan flow preview",
     "latestRelease": "Latest release",
     "kicker": "",
@@ -19,79 +19,37 @@
     "factOutputsLabel": "What teams ship",
     "factOutputsBody": "Stable findings first, Preview for deeper review, plus explicit compatibility and supply-chain lanes when teams want more than the quiet default.",
     "trust": {
-      "oneRepo": "Offline-first",
-      "validated": "Deterministic findings",
-      "openSource": "Open source"
+      "oneRepo": "Runs locally",
+      "validated": "Clear findings",
+      "openSource": "CI + SARIF"
     },
     "demo": {
-      "title": "lintai flow",
-      "subtitle": "Scan the config and instruction files that steer agents in your repo.",
-      "scanLabel": "Repo scan",
-      "surfaceMap": "Surface map",
-      "signalBoard": "Signal board",
-      "currentSignal": "Current signal",
-      "evidenceLabel": "Evidence",
-      "remediationLabel": "Remediation",
-      "outputsLabel": "Outputs",
-      "summaryLabel": "Rotating through the strongest repo-local surfaces",
-      "offline": "Offline-first",
-      "repoLocalOnly": "repo-local only",
-      "stableFirst": "Stable first",
-      "previewDeeper": "Preview deeper",
-      "machineReadable": "SARIF + JSON",
-      "structuredEvidence": "structured evidence",
-      "steps": {
-        "index": {
-          "title": "Find the files that steer agents",
-          "body": "Index skills, MCP wiring, hook settings, and instruction files before they quietly become team defaults."
+      "title": "What lintai shows before merge",
+      "subtitle": "Ordinary-looking files can quietly change what an agent is allowed to do.",
+      "scanLabel": "First scan",
+      "summaryLabel": "Common files worth reviewing",
+      "offline": "Before merge",
+      "focus": {
+        "run": {
+          "pill": "Run",
+          "title": "What the agent can run",
+          "body": "Hooks, shell grants, and mutable launcher paths."
         },
-        "scan": {
-          "title": "Run the clearest checks first",
-          "body": "Start from stable config and policy signals instead of vague prose-only heuristics."
+        "access": {
+          "pill": "Access",
+          "title": "What the agent can access",
+          "body": "Permissions, MCP wiring, and tool connections."
         },
-        "ship": {
-          "title": "Ship evidence into review or CI",
-          "body": "Export SARIF or JSON so the same findings stay readable in review, CI, and downstream tooling."
+        "inherit": {
+          "pill": "Inherit",
+          "title": "What defaults it gets",
+          "body": "Shared instructions, editor rules, and team policy."
         }
       },
-      "scenarios": {
-        "skills": {
-          "family": "skills markdown",
-          "title": "Unscoped Bash grant in shared frontmatter",
-          "summary": "lintai catches the broad shell grant that still shows up too often in shared skills and agent markdown.",
-          "remediation": "Scope Bash(...) to the exact workflow instead of shipping a broad shell default."
-        },
-        "claudeHooks": {
-          "family": "Claude hook settings",
-          "title": "Mutable package launcher in a committed hook",
-          "summary": "Shared Claude hooks should be reviewed automation, not runtime package resolution through npx or uvx.",
-          "remediation": "Replace the mutable launcher with a vendored script or another reproducible local command."
-        },
-        "mcp": {
-          "family": "MCP client config",
-          "title": "Mutable runner inside committed mcp.json",
-          "summary": "Committed MCP wiring is executable setup. lintai checks that the launch path is reproducible and reviewable.",
-          "remediation": "Switch to a pinned local wrapper, vendored script, or another reviewed execution path."
-        },
-        "claudePerms": {
-          "family": "Claude shared permissions",
-          "title": "Wildcard shell and write access in shared policy",
-          "summary": "Broad Claude permissions are easy to copy across repos and much harder to defend in review than a narrow allowlist.",
-          "remediation": "Replace Bash(*) and Write(*) with scoped command patterns and path-specific write targets."
-        },
-        "cursor": {
-          "family": "Cursor rule contract",
-          "title": "Unknown or contradictory Cursor frontmatter",
-          "summary": "lintai treats shared .mdc routing like config, not prose, and catches rule-pack drift before it turns into tribal knowledge.",
-          "remediation": "Keep Cursor rules on supported keys only and remove globs from alwaysApply rules."
-        },
-        "copilot": {
-          "family": "Copilot path targeting",
-          "title": "Invalid applyTo glob in path-specific instructions",
-          "summary": "A broken applyTo can look fine in review while silently failing to target the files the team expects.",
-          "remediation": "Use valid reviewed glob patterns so the instruction contract stays testable and explicit."
-        }
-      }
+      "exampleLabel": "Example finding",
+      "exampleFile": ".claude/settings.json",
+      "exampleTitle": "Broad shell access in shared settings",
+      "exampleBody": "Looks like a convenient shortcut, but quietly turns team defaults into broader authority than the repo needs."
     }
   },
   "download": {
@@ -101,11 +59,11 @@
     "command": "Command",
     "copy": "Copy",
     "copied": "Copied",
-    "quickstartTitle": "Recommended quickstart",
-    "quickstartSubtitle": "This is the fastest supported path from install to a representative lintai run.",
-    "installTabsLabel": "Choose install path",
-    "supportTitle": "Current product posture",
-    "supportSubtitle": "The honest release view: what the product is aimed at today and where the trust boundary really is.",
+    "quickstartTitle": "Fast path to the first scan",
+    "quickstartSubtitle": "The shortest supported path from install to a representative lintai run.",
+    "installTabsLabel": "Choose an install path",
+    "supportTitle": "What to know before CI",
+    "supportSubtitle": "The short honest version: where the current release is strong and where its trust boundary still sits.",
     "supportLink": "Read the release posture"
   },
   "common": {
@@ -122,12 +80,14 @@
     "search": "Search language…"
   },
   "features": {
-    "sectionTitle": "Security checks built for AI-native repo surfaces",
-    "sectionSubtitle": "lintai is deliberately narrow: it checks the config and instruction files that actually change how AI agents behave."
+    "sectionTitle": "What normal review misses",
+    "sectionSubtitle": "These files look like settings or docs, but they quietly decide what your coding agents can do.",
+    "looksLikeLabel": "Looks harmless",
+    "actuallyDoesLabel": "Actually changes"
   },
   "featuredRules": {
-    "sectionTitle": "Start with the most defendable rules first",
-    "sectionSubtitle": "These rules cover executable config, shared policy, and editor instructions - the parts of the product that are easiest to explain and defend in real review.",
+    "sectionTitle": "What lintai catches in practice",
+    "sectionSubtitle": "These are typical things lintai highlights in committed config, shared settings, and editor instructions.",
     "openRule": "Open rule docs",
     "whyItMatters": "Why it matters",
     "evidenceLabel": "Signal"
@@ -157,9 +117,11 @@
     }
   },
   "comparison": {
-    "sectionTitle": "Why teams try lintai first",
+    "sectionTitle": "Why run lintai before merge",
     "sectionSubtitle": "So risky defaults do not quietly spread, and teams can keep default checks separate from deeper review lanes.",
-    "feature": "Workflow",
+    "feature": "Approach",
+    "withoutDedicatedCheck": "Without a dedicated check",
+    "alsoUseful": "Also useful later",
     "columns": {
       "lintai": "lintai",
       "manualReview": "Manual review",
@@ -169,13 +131,13 @@
   },
   "footer": {
     "copyright": "© {year}",
-    "tagline": "Offline-first checks for AI agent configs and instructions.",
+    "tagline": "See what your AI agent is allowed to do.",
     "github": "GitHub",
     "docs": "Docs"
   },
   "meta": {
-    "homeTitle": "lintai | Fast offline security checks for AI agent artifacts",
-    "homeDescription": "lintai helps teams verify skills, MCP configs, hook settings, local client policy files, and AI instruction files with deterministic findings, evidence, and CI-ready output.",
+    "homeTitle": "lintai | See what your AI agent is allowed to do",
+    "homeDescription": "lintai shows what your AI agent can run, access, and what defaults it gets by checking MCP, hooks, permissions, and agent instructions.",
     "downloadTitle": "Get started with lintai | Install the public release CLI",
     "downloadDescription": "Choose the right install path for lintai, open the docs, and start with a fast offline scan of your repository."
   },
