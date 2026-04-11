@@ -13,6 +13,7 @@
     "docsCta": "Открыть GitHub",
     "preview": "Как работает lintai",
     "latestRelease": "Последний релиз",
+    "quickRunLabel": "Быстрый запуск",
     "kicker": "",
     "factFocusLabel": "Фокус сейчас",
     "factFocusBody": "SKILL.md, mcp.json, shared Claude settings, Cursor rules и Copilot instruction files.",
@@ -60,8 +61,8 @@
     "copy": "Копировать",
     "copied": "Скопировано",
     "quickstartTitle": "Короткий путь к первой проверке",
-    "quickstartSubtitle": "Самый короткий поддерживаемый путь от установки до первого показательного прогона lintai.",
-    "installTabsLabel": "Выберите способ установки",
+    "quickstartSubtitle": "Самый быстрый поддерживаемый путь к реальному локальному прогону lintai.",
+    "installTabsLabel": "Выберите сценарий запуска",
     "supportTitle": "Что важно знать перед CI",
     "supportSubtitle": "Коротко и честно: где у текущего релиза сильная сторона и где сейчас проходит его граница доверия.",
     "supportLink": "Открыть релизный контракт"

@@ -253,17 +253,25 @@
   ],
   "download": {
     "title": "Run your first scan",
-    "note": "Pick an install path, open the docs, and run the first repository scan."
+    "note": "Pick the fastest supported path and run lintai locally before you wire in anything else."
   },
   "installChannels": [
+    {
+      "id": "quickrun",
+      "title": "Quick run",
+      "description": "Fastest supported path on macOS and Linux. Downloads the verified release installer, installs lintai, and immediately scans the current repository.",
+      "href": "https://github.com/777genius/lintai/releases",
+      "note": "Best default for a first local check when you want the shortest real path to findings.",
+      "command": "https://github.com/777genius/lintai/releases",
+      "recommended": true
+    },
     {
       "id": "script",
       "title": "Verified shell installer",
       "description": "Recommended Unix-like install path for the public release. The installer downloads the tagged archive plus SHA256SUMS and verifies the checksum.",
       "href": "https://github.com/777genius/lintai/releases",
       "note": "Best default on macOS and Linux when you want the supported release flow.",
-      "command": "https://github.com/777genius/lintai/releases",
-      "recommended": true
+      "command": "https://github.com/777genius/lintai/releases"
     },
     {
       "id": "powershell",
@@ -309,7 +317,7 @@
       "id": "scan",
       "title": "Run the first repo scan",
       "command": "lintai scan .",
-      "note": "Start on a repository that already contains supported AI-native files so the first run is representative."
+      "note": "Start in a repository that already contains supported AI-native files so the first run is representative."
     },
     {
       "id": "sarif",

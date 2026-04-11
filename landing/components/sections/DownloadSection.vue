@@ -7,6 +7,7 @@ const {
   releasePageUrl,
   shellInstallerUrl,
   powerShellInstallerUrl,
+  quickRunCommand,
   shellInstallCommand,
   powerShellInstallCommand,
   archiveCommand,
@@ -36,6 +37,14 @@ const supportAccent = ['#39ff14', '#00f0ff', '#ffb703', '#f472b6', '#94a3b8'];
 
 const installChannels = computed(() =>
   content.value.installChannels.map((channel) => {
+    if (channel.id === 'quickrun') {
+      return {
+        ...channel,
+        href: shellInstallerUrl || fallbackUrl,
+        command: quickRunCommand || undefined,
+      };
+    }
+
     if (channel.id === 'docs') {
       return { ...channel, href: quickstartUrl.value, command: quickstartUrl.value };
     }
@@ -100,20 +109,30 @@ const selectedInstallChannel = computed(
 );
 
 const quickstartSteps = computed(() =>
-  content.value.quickstartSteps.map((step) => {
-    if (step.id !== 'install' || !selectedInstallChannel.value?.command) {
-      return step;
-    }
+  content.value.quickstartSteps
+    .filter((step) => !(selectedInstallChannel.value?.id === 'quickrun' && step.id === 'install'))
+    .map((step) => {
+      if (selectedInstallChannel.value?.id === 'quickrun' && step.id === 'scan') {
+        return {
+          ...step,
+          command: selectedInstallChannel.value.command.trim(),
+          note: selectedInstallChannel.value.note,
+        };
+      }
 
-    const installCommand = selectedInstallChannel.value.command.trim();
-    const isExecutableInstallCommand = !/^https?:\/\//.test(installCommand);
+      if (step.id !== 'install' || !selectedInstallChannel.value?.command) {
+        return step;
+      }
 
-    return {
-      ...step,
-      command: isExecutableInstallCommand ? `${installCommand}\nlintai version` : installCommand,
-      note: selectedInstallChannel.value.note,
-    };
-  }),
+      const installCommand = selectedInstallChannel.value.command.trim();
+      const isExecutableInstallCommand = !/^https?:\/\//.test(installCommand);
+
+      return {
+        ...step,
+        command: isExecutableInstallCommand ? `${installCommand}\nlintai version` : installCommand,
+        note: selectedInstallChannel.value.note,
+      };
+    }),
 );
 
 const setCopiedState = (commandId: string) => {

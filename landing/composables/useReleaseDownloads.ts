@@ -2,8 +2,10 @@ import latestRelease from '~/data/release-latest.json';
 import {
   buildArchiveCommand,
   buildPowerShellInstallerCommand,
+  buildShellQuickRunCommand,
   buildShellInstallerCommand,
   getReleasePageUrl,
+  getReleaseAssetUrl,
   getTaggedReleaseUrl,
   normalizeDownloadsResponse,
 } from '~/utils/releaseDownloads';
@@ -18,14 +20,20 @@ const staticReleaseData = normalizeDownloadsResponse(
 export const useReleaseDownloads = () => {
   const config = useRuntimeConfig();
   const githubRepo = config.public.githubRepo || '777genius/lintai';
+  const previewReleaseTag = import.meta.dev ? 'v0.1.0' : null;
   const data = ref<DownloadsApiResponse>(staticReleaseData);
   const pending = ref(false);
   const error = ref<Error | null>(null);
   const releasePageUrl = config.public.githubReleasesUrl || getReleasePageUrl(githubRepo);
   const fallbackUrl = getTaggedReleaseUrl(githubRepo, data.value.tag);
-  const shellInstallerUrl = data.value.variants.installers.shell.url;
-  const powerShellInstallerUrl = data.value.variants.installers.powershell.url;
+  const shellInstallerUrl =
+    data.value.variants.installers.shell.url ||
+    getReleaseAssetUrl(githubRepo, previewReleaseTag, 'lintai-installer.sh');
+  const powerShellInstallerUrl =
+    data.value.variants.installers.powershell.url ||
+    getReleaseAssetUrl(githubRepo, previewReleaseTag, 'lintai-installer.ps1');
   const shellInstallCommand = buildShellInstallerCommand(shellInstallerUrl);
+  const quickRunCommand = buildShellQuickRunCommand(shellInstallerUrl);
   const powerShellInstallCommand = buildPowerShellInstallerCommand(powerShellInstallerUrl);
   const archiveCommand = buildArchiveCommand(githubRepo, data.value.tag);
 
@@ -75,6 +83,7 @@ export const useReleaseDownloads = () => {
     shellInstallerUrl,
     powerShellInstallerUrl,
     shellInstallCommand,
+    quickRunCommand,
     powerShellInstallCommand,
     archiveCommand,
     resolve,

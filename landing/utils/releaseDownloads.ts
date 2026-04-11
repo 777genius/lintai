@@ -158,12 +158,33 @@ export function getTaggedReleaseUrl(githubRepo: string, tag: string | null): str
     : getReleasePageUrl(githubRepo);
 }
 
+export function getReleaseAssetUrl(
+  githubRepo: string,
+  tag: string | null,
+  assetName: string,
+): string | null {
+  if (!tag) {
+    return null;
+  }
+
+  return `https://github.com/${githubRepo}/releases/download/${tag}/${assetName}`;
+}
+
 export function buildShellInstallerCommand(url: string | null): string | null {
   if (!url) {
     return null;
   }
 
   return `curl -fsSLO ${url}\nsh ./lintai-installer.sh`;
+}
+
+export function buildShellQuickRunCommand(url: string | null): string | null {
+  const installCommand = buildShellInstallerCommand(url);
+  if (!installCommand) {
+    return null;
+  }
+
+  return `${installCommand}\nlintai scan .`;
 }
 
 export function buildPowerShellInstallerCommand(url: string | null): string | null {

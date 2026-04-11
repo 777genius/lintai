@@ -5,8 +5,17 @@ const { content } = useLandingContent();
 const { t, locale } = useI18n();
 const config = useRuntimeConfig();
 const githubUrl = `https://github.com/${config.public.githubRepo}`;
-const { data: releaseData } = useReleaseDownloads();
+const { data: releaseData, quickRunCommand } = useReleaseDownloads();
 const compactTitle = computed(() => locale.value === 'ru');
+const copiedQuickRun = ref(false);
+
+let quickRunTimer: ReturnType<typeof setTimeout> | null = null;
+
+onBeforeUnmount(() => {
+  if (quickRunTimer) {
+    clearTimeout(quickRunTimer);
+  }
+});
 
 const releaseVersion = computed(() => releaseData.value?.version || null);
 const releaseDate = computed(() => {
@@ -14,6 +23,46 @@ const releaseDate = computed(() => {
   if (!raw) return null;
   return formatReleaseDate(raw, locale.value);
 });
+
+const fallbackCopy = async (text: string) => {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'absolute';
+  textarea.style.left = '-9999px';
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+};
+
+const copyQuickRun = async () => {
+  if (!import.meta.client || !quickRunCommand) {
+    return;
+  }
+
+  const text = quickRunCommand.trim();
+
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      await fallbackCopy(text);
+    }
+  } catch {
+    await fallbackCopy(text);
+  }
+
+  copiedQuickRun.value = true;
+
+  if (quickRunTimer) {
+    clearTimeout(quickRunTimer);
+  }
+
+  quickRunTimer = setTimeout(() => {
+    copiedQuickRun.value = false;
+  }, 1800);
+};
 </script>
 
 <template>
@@ -43,6 +92,16 @@ const releaseDate = computed(() => {
           <p class="hero-section__support-line">
             {{ content.hero.supportLine }}
           </p>
+
+          <div v-if="quickRunCommand" class="hero-section__quick-run">
+            <div class="hero-section__quick-run-head">
+              <span class="hero-section__quick-run-label">{{ t('hero.quickRunLabel') }}</span>
+              <button type="button" class="hero-section__quick-run-copy" @click="copyQuickRun">
+                {{ copiedQuickRun ? t('download.copied') : t('download.copy') }}
+              </button>
+            </div>
+            <pre class="hero-section__quick-run-command"><code>{{ quickRunCommand }}</code></pre>
+          </div>
 
           <div class="hero-section__actions">
             <div class="hero-section__cta-row">
@@ -181,6 +240,67 @@ const releaseDate = computed(() => {
   font-size: 0.96rem;
   line-height: 1.65;
   max-width: 62ch;
+}
+
+.hero-section__quick-run {
+  width: min(100%, 720px);
+  margin: 0 0 26px;
+  padding: 14px 16px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(0, 240, 255, 0.12);
+  background:
+    linear-gradient(180deg, rgba(0, 240, 255, 0.05), rgba(255, 255, 255, 0.02)),
+    rgba(9, 13, 22, 0.86);
+  backdrop-filter: blur(12px);
+}
+
+.hero-section__quick-run-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.hero-section__quick-run-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8fa1c8;
+}
+
+.hero-section__quick-run-copy {
+  appearance: none;
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  background: rgba(0, 240, 255, 0.06);
+  color: #8ae8ff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.hero-section__quick-run-copy:hover {
+  border-color: rgba(0, 240, 255, 0.34);
+  background: rgba(0, 240, 255, 0.12);
+  color: #d6fbff;
+}
+
+.hero-section__quick-run-command {
+  margin: 0;
+  padding: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.84rem;
+  line-height: 1.7;
+  color: #f8fafc;
 }
 
 .hero-section__actions {
@@ -347,6 +467,33 @@ const releaseDate = computed(() => {
 
 .v-theme--light .hero-section__support-line {
   color: #334155;
+}
+
+.v-theme--light .hero-section__quick-run {
+  border-color: rgba(14, 165, 233, 0.14);
+  background:
+    linear-gradient(180deg, rgba(14, 165, 233, 0.08), rgba(255, 255, 255, 0.8)),
+    rgba(255, 255, 255, 0.85);
+}
+
+.v-theme--light .hero-section__quick-run-label {
+  color: #64748b;
+}
+
+.v-theme--light .hero-section__quick-run-copy {
+  border-color: rgba(2, 132, 199, 0.18);
+  background: rgba(2, 132, 199, 0.06);
+  color: #075985;
+}
+
+.v-theme--light .hero-section__quick-run-copy:hover {
+  border-color: rgba(2, 132, 199, 0.28);
+  background: rgba(2, 132, 199, 0.1);
+  color: #0f172a;
+}
+
+.v-theme--light .hero-section__quick-run-command {
+  color: #0f172a;
 }
 
 .v-theme--light .hero-section__source-link {

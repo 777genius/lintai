@@ -265,17 +265,25 @@
   ],
   "download": {
     "title": "Запустите первую проверку",
-    "note": "Выберите способ установки, откройте документацию и запустите первую проверку по репозиторию."
+    "note": "Выберите самый быстрый поддерживаемый путь и прогоните lintai локально до того, как подключите что-то ещё."
   },
   "installChannels": [
+    {
+      "id": "quickrun",
+      "title": "Быстрый запуск",
+      "description": "Самый быстрый поддерживаемый путь на macOS и Linux. Скачивает проверяемый installer релиза, ставит lintai и сразу запускает scan по текущему репозиторию.",
+      "href": "https://github.com/777genius/lintai/releases",
+      "note": "Лучший путь по умолчанию для первой локальной проверки, если нужен самый короткий реальный путь к findings.",
+      "command": "https://github.com/777genius/lintai/releases",
+      "recommended": true
+    },
     {
       "id": "script",
       "title": "Проверяемый shell installer",
       "description": "Рекомендуемый путь установки релиза для Unix-like систем. Инсталлер скачивает архив релиза, файл SHA256SUMS и затем проверяет checksum.",
       "href": "https://github.com/777genius/lintai/releases",
       "note": "Лучший вариант по умолчанию на macOS и Linux, если нужен поддерживаемый релизный сценарий.",
-      "command": "https://github.com/777genius/lintai/releases",
-      "recommended": true
+      "command": "https://github.com/777genius/lintai/releases"
     },
     {
       "id": "powershell",
@@ -321,7 +329,7 @@
       "id": "scan",
       "title": "Запустите первый repo scan",
       "command": "lintai scan .",
-      "note": "Лучше начинать на репозитории, где уже есть поддерживаемые AI-native файлы, чтобы первый прогон был показательным."
+      "note": "Лучше начинать в репозитории, где уже есть поддерживаемые AI-native файлы, чтобы первый прогон был показательным."
     },
     {
       "id": "sarif",

@@ -13,6 +13,7 @@
     "docsCta": "Open GitHub",
     "preview": "lintai scan flow preview",
     "latestRelease": "Latest release",
+    "quickRunLabel": "Quick run",
     "kicker": "",
     "factFocusLabel": "Focus today",
     "factFocusBody": "SKILL.md, mcp.json, shared Claude settings, Cursor rules, and Copilot instruction files.",
@@ -60,8 +61,8 @@
     "copy": "Copy",
     "copied": "Copied",
     "quickstartTitle": "Fast path to the first scan",
-    "quickstartSubtitle": "The shortest supported path from install to a representative lintai run.",
-    "installTabsLabel": "Choose an install path",
+    "quickstartSubtitle": "The fastest supported path to a real local lintai scan.",
+    "installTabsLabel": "Choose a run path",
     "supportTitle": "What to know before CI",
     "supportSubtitle": "The short honest version: where the current release is strong and where its trust boundary still sits.",
     "supportLink": "Read the release posture"
