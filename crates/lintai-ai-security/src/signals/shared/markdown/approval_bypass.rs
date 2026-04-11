@@ -37,6 +37,8 @@ pub(crate) const MARKDOWN_APPROVAL_SAFETY_MARKERS: &[&str] = &[
     "must confirm",
     "must ask",
 ];
+pub(crate) const MARKDOWN_APPROVAL_NEGATED_ACTION_PREFIX_MARKERS: &[&str] =
+    &["never ", "do not ", "don't ", "must not "];
 pub(crate) const MARKDOWN_NEGATIVE_SECTION_HEADERS: &[&str] =
     &["**never:**", "**must not:**", "never:", "must not:"];
 pub(crate) fn find_approval_bypass_instruction_relative_span(
@@ -76,6 +78,9 @@ pub(crate) fn find_approval_bypass_instruction_relative_span(
             }
 
             let window = local_marker_window(&lowered, &marker_span, 96);
+            if has_negated_sensitive_action(window) {
+                continue;
+            }
             if MARKDOWN_APPROVAL_SENSITIVE_ACTION_MARKERS
                 .iter()
                 .any(|candidate| window.contains(candidate))
@@ -111,6 +116,21 @@ pub(crate) fn local_marker_window<'a>(text: &'a str, marker_span: &Span, radius:
     let start = marker_span.start_byte.saturating_sub(radius);
     let end = (marker_span.end_byte + radius).min(text.len());
     &text[start..end]
+}
+
+pub(crate) fn has_negated_sensitive_action(window: &str) -> bool {
+    MARKDOWN_APPROVAL_SENSITIVE_ACTION_MARKERS
+        .iter()
+        .flat_map(|action| {
+            window
+                .match_indices(action)
+                .map(move |(start, _)| &window[start.saturating_sub(32)..start])
+        })
+        .any(|prefix| {
+            MARKDOWN_APPROVAL_NEGATED_ACTION_PREFIX_MARKERS
+                .iter()
+                .any(|marker| prefix.contains(marker))
+        })
 }
 
 pub(crate) fn has_nearby_negative_section_header(

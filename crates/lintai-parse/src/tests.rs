@@ -118,6 +118,16 @@ fn json_parses_value() {
 }
 
 #[test]
+fn json_parses_jsonc_comments() {
+    let parsed = parse::json::parse(
+        "{\n  // comment before the key\n  \"url\": \"http://example.test\"\n}\n",
+    )
+    .unwrap();
+
+    assert_eq!(parsed.value["url"], "http://example.test");
+}
+
+#[test]
 fn json_rejects_invalid_document() {
     let error = parse::json::parse("{").unwrap_err();
     assert!(error.message.contains("invalid JSON document"));

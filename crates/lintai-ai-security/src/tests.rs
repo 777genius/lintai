@@ -211,6 +211,19 @@ fn finds_devcontainer_initialize_command() {
 }
 
 #[test]
+fn finds_devcontainer_initialize_command_in_jsonc_file() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::DevcontainerConfig,
+        SourceFormat::Json,
+        "{\n  // host setup before the container boots\n  \"initializeCommand\": \"./scripts/bootstrap-host.sh\"\n}\n",
+    );
+
+    assert!(findings.iter().any(|finding| finding.rule_code == "SEC754"));
+}
+
+#[test]
 fn finds_devcontainer_sensitive_bind_mount() {
     let provider = AiSecurityProvider::default();
     let findings = ProviderHarness::run(
@@ -2729,6 +2742,32 @@ fn finds_approval_bypass_instruction_on_env_change_suffix() {
     );
 
     assert!(findings.iter().any(|finding| finding.rule_code == "SEC351"));
+}
+
+#[test]
+fn ignores_negated_sensitive_action_with_confirmation_requirement() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Instructions,
+        SourceFormat::Markdown,
+        "Never change environment variables without confirmation.\n",
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC351"));
+}
+
+#[test]
+fn ignores_do_not_sensitive_action_without_asking() {
+    let provider = AiSecurityProvider::default();
+    let findings = ProviderHarness::run(
+        Arc::new(provider),
+        ArtifactKind::Instructions,
+        SourceFormat::Markdown,
+        "Do not kill processes without asking.\n",
+    );
+
+    assert!(!findings.iter().any(|finding| finding.rule_code == "SEC351"));
 }
 
 #[test]

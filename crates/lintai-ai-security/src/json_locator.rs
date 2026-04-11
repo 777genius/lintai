@@ -172,11 +172,41 @@ impl<'a> JsonLocatorParser<'a> {
     }
 
     fn skip_whitespace(&mut self) {
-        while let Some(ch) = self.peek_char() {
-            if ch.is_whitespace() {
-                self.offset += ch.len_utf8();
-            } else {
-                break;
+        loop {
+            while let Some(ch) = self.peek_char() {
+                if ch.is_whitespace() {
+                    self.offset += ch.len_utf8();
+                } else {
+                    break;
+                }
+            }
+
+            match (
+                self.peek_char(),
+                self.input
+                    .get(self.offset + 1..)
+                    .and_then(|rest| rest.chars().next()),
+            ) {
+                (Some('/'), Some('/')) => {
+                    self.offset += 2;
+                    while let Some(ch) = self.peek_char() {
+                        self.offset += ch.len_utf8();
+                        if matches!(ch, '\n' | '\r') {
+                            break;
+                        }
+                    }
+                }
+                (Some('/'), Some('*')) => {
+                    self.offset += 2;
+                    while let Some(ch) = self.peek_char() {
+                        self.offset += ch.len_utf8();
+                        if ch == '*' && self.peek_char() == Some('/') {
+                            self.offset += 1;
+                            break;
+                        }
+                    }
+                }
+                _ => break,
             }
         }
     }
@@ -255,6 +285,23 @@ mod tests {
                 JsonPathSegment::Key("strictSSL".to_owned()),
             ]),
             Some(&Span::new(38, 42))
+        );
+    }
+
+    #[test]
+    fn tolerates_jsonc_comments_while_preserving_spans() {
+        let map = JsonLocationMap::parse(
+            "{\n  // comment\n  \"initializeCommand\": \"./scripts/bootstrap-host.sh\"\n}\n",
+        )
+        .unwrap();
+
+        assert_eq!(
+            map.key_span(&[JsonPathSegment::Key("initializeCommand".to_owned())]),
+            Some(&Span::new(18, 35))
+        );
+        assert_eq!(
+            map.value_span(&[JsonPathSegment::Key("initializeCommand".to_owned())]),
+            Some(&Span::new(39, 66))
         );
     }
 }
