@@ -1,8 +1,10 @@
 {
   "hero": {
-    "title": "Проверьте локальный конфиг AI-агента.",
-    "subtitle": "Находит рискованные изменения в запуске, доступе и дефолтах в agent-файлах, которые уже стоят у вас локально.",
-    "supportLine": "Claude, Cursor, MCP, хуки, права доступа и общие инструкции."
+    "title": "AI опаснее, чем кажется.",
+    "subtitle": "В исследовании 31,132 agent skills у 26.1% нашли минимум одну уязвимость.",
+    "sourceLabel": "Источник: Agent Skills in the Wild",
+    "sourceHref": "https://arxiv.org/abs/2601.10338",
+    "supportLine": "Offline-first, точный security linter для SKILLS, MCP, plugins, configs и другой AI-инфраструктуры."
   },
   "features": [
     {

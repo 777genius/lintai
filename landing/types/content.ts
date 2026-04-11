@@ -30,6 +30,8 @@ export interface FaqItem {
 export interface HeroContent {
   title: string;
   subtitle: string;
+  sourceLabel?: string;
+  sourceHref?: string;
   supportLine: string;
 }
 

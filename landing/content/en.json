@@ -1,8 +1,10 @@
 {
   "hero": {
-    "title": "Scan local AI agent config.",
-    "subtitle": "Find risky run, access, and default changes in the agent files already on your machine.",
-    "supportLine": "Claude, Cursor, MCP, hooks, permissions, and shared instructions."
+    "title": "AI is more dangerous than you think.",
+    "subtitle": "26.1% of 31,132 agent skills analyzed in the wild contained at least one vulnerability.",
+    "sourceLabel": "Source: Agent Skills in the Wild",
+    "sourceHref": "https://arxiv.org/abs/2601.10338",
+    "supportLine": "Offline-first, precision security linter for SKILLS, MCP, plugins, configs and other AI infrastructure."
   },
   "features": [
     {

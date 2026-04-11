@@ -26,7 +26,18 @@ const releaseDate = computed(() => {
           </h1>
 
           <p class="hero-section__subtitle">
-            {{ content.hero.subtitle }}
+            <span>{{ content.hero.subtitle }}</span>
+            <template v-if="content.hero.sourceLabel && content.hero.sourceHref">
+              {{ ' ' }}
+              <a
+                :href="content.hero.sourceHref"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hero-section__source-link"
+              >
+                {{ content.hero.sourceLabel }}
+              </a>
+            </template>
           </p>
 
           <p class="hero-section__support-line">
@@ -151,6 +162,17 @@ const releaseDate = computed(() => {
   color: #a8b4d1;
   max-width: 58ch;
   margin-bottom: 14px;
+}
+
+.hero-section__source-link {
+  color: #8ae8ff;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  transition: color 0.2s ease;
+}
+
+.hero-section__source-link:hover {
+  color: #c5f4ff;
 }
 
 .hero-section__support-line {
@@ -325,6 +347,14 @@ const releaseDate = computed(() => {
 
 .v-theme--light .hero-section__support-line {
   color: #334155;
+}
+
+.v-theme--light .hero-section__source-link {
+  color: #005a8f;
+}
+
+.v-theme--light .hero-section__source-link:hover {
+  color: #003f66;
 }
 
 .v-theme--light .hero-section__subtitle,
