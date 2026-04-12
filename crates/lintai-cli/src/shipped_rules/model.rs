@@ -66,11 +66,4 @@ impl SecurityRuleCatalogEntry {
             }
         }
     }
-
-    pub(crate) fn lifecycle_state(self) -> &'static str {
-        match self.lifecycle {
-            CatalogRuleLifecycle::Preview { .. } => "preview_blocked",
-            CatalogRuleLifecycle::Stable { .. } => "stable_gated",
-        }
-    }
 }

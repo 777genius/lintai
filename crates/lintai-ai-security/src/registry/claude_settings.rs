@@ -65,9 +65,7 @@ use crate::claude_settings_rules::{
     check_claude_settings_wget_permission, check_claude_settings_write_unsafe_path,
     check_claude_settings_write_wildcard, check_claude_settings_yarn_dlx_permission,
 };
-use crate::registry::presets::{
-    GOVERNANCE_CLAUDE_PRESETS, SUPPLY_CHAIN_CLAUDE_PRESETS,
-};
+use crate::registry::presets::{GOVERNANCE_CLAUDE_PRESETS, SUPPLY_CHAIN_CLAUDE_PRESETS};
 
 declare_rule! {
     pub struct ClaudeSettingsMissingHookTimeoutRule {

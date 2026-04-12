@@ -1,4 +1,5 @@
 use std::collections::BTreeSet;
+use std::io::IsTerminal;
 use std::path::Path;
 use std::process::ExitCode;
 use std::sync::Arc;
@@ -29,10 +30,15 @@ pub(crate) const POLICY_OS_DEFAULT_PRESETS: &[&str] = &["base", "mcp", "claude"]
 pub(crate) fn emit_report(
     report: &output::ReportEnvelope<'_>,
     output_format: OutputFormat,
+    color_mode: output::ColorMode,
 ) -> Result<(), String> {
     match output_format {
         OutputFormat::Text => {
-            print!("{}", output::format_text(report));
+            let style = output::ResolvedTextStyle::from_environment(
+                output::TextRenderOptions::new(color_mode, std::io::stdout().is_terminal()),
+                &output::TextColorEnvironment::current(),
+            );
+            print!("{}", output::format_text_with_style(report, style));
         }
         OutputFormat::Json => {
             println!(

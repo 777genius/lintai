@@ -197,10 +197,11 @@ mod tests {
 
         for rule in &catalog.rules {
             let summary_line = format!(
-                "| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |",
+                "| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |",
                 inline_code(&rule.display_label),
                 escape_markdown_table_cell(&rule.summary),
                 inline_code(&rule.public_lane),
+                inline_code(&rule.category),
                 tier_label(&rule.tier),
                 inline_code(&rule.lifecycle_state),
                 severity_label(&rule.default_severity),
@@ -234,6 +235,7 @@ mod tests {
                     inline_code(severity_label(&rule.default_severity))
                 ),
                 format!("- Public Lane: {}", inline_code(&rule.public_lane)),
+                format!("- Category: {}", inline_code(&rule.category)),
                 format!(
                     "- Default Confidence: {}",
                     inline_code(confidence_label(&rule.default_confidence))

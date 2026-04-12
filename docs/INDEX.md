@@ -31,7 +31,7 @@ If you only look at a few rules first, start with these:
 
 - [SEC340](/rules/lintai-ai-security/sec340) for mutable package launchers in committed Claude hook settings.
 - [SEC329](/rules/lintai-ai-security/sec329) for mutable package launchers in committed `mcp.json`.
-- [SEC352](/rules/lintai-ai-security/sec352) for unscoped `Bash` grants in AI-native frontmatter. This remains the strongest skills-markdown preview rule from recent external validation.
+- [SEC352](/rules/lintai-ai-security/sec352) for unscoped `Bash` grants in AI-native frontmatter. Treat this as a strong governance least-privilege sidecar control, not as part of the quiet default story.
 - [SEC324](/rules/lintai-ai-security/sec324) for unpinned third-party GitHub Actions in committed CI. Treat this as a strong sidecar supply-chain control, not as the main quiet-default story.
 
 ## What You Will Find
@@ -39,6 +39,24 @@ If you only look at a few rules first, start with these:
 - Short, readable rule names for faster scanning in the catalog and sidebar.
 - Clear rule pages with summary, severity, lifecycle, and preset membership.
 - Preset pages that show the rules they enable and what they are meant for.
+
+## How To Read Lanes
+
+- `recommended` - quiet practical default findings most teams should start with
+- `preview` - broader contextual review outside the quiet default
+- `threat-review` - explicit malicious, secret-bearing, or spyware-like review
+- `supply-chain` - reproducibility, provenance, and dependency hardening review
+- `compat` - config, schema, and policy contract review
+- `governance` - shared authority and workflow policy review
+- `guidance` - advice-oriented guidance and maintainability review
+- `advisory` - installed-package advisory review
+
+## How To Read Categories
+
+- `security` - strong exploit, secret, or unsafe-execution signal
+- `hardening` - least-privilege, provenance, or operational hygiene signal
+- `quality` - contract, schema, or config correctness signal
+- `audit` - heuristic or triage-oriented review signal
 
 ## Project References
 
@@ -50,7 +68,7 @@ the main supporting docs are:
 - [EXTERNAL_VALIDATION_PLAN.md](EXTERNAL_VALIDATION_PLAN.md)
 - [EXTERNAL_VALIDATION_FIELD_UPDATE_2026-03-30.md](EXTERNAL_VALIDATION_FIELD_UPDATE_2026-03-30.md)
 - [SIGNAL_QUALITY_AUDIT_2026-04-02.md](SIGNAL_QUALITY_AUDIT_2026-04-02.md)
-- [SEC352_STABLE_CANDIDATE_TRACK.md](SEC352_STABLE_CANDIDATE_TRACK.md)
+- [SEC352_STABLE_CANDIDATE_TRACK.md](SEC352_STABLE_CANDIDATE_TRACK.md) - historical promotion packet retained for reference
 - [EXTERNAL_VALIDATION_REPORT.md](EXTERNAL_VALIDATION_REPORT.md)
 - [EXTERNAL_VALIDATION_TOOL_JSON_REPORT.md](EXTERNAL_VALIDATION_TOOL_JSON_REPORT.md)
 - [EXTERNAL_VALIDATION_SERVER_JSON_REPORT.md](EXTERNAL_VALIDATION_SERVER_JSON_REPORT.md)

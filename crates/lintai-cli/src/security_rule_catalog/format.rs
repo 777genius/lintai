@@ -1,38 +1,70 @@
 use crate::shipped_rules::{
-    CatalogDetectionClass, CatalogRemediationSupport, CatalogSurface, PublicLane, RuleScope,
+    CatalogDetectionClass, CatalogRemediationSupport, CatalogRuleLifecycle, CatalogSurface,
+    PublicLane, RuleScope,
 };
-use lintai_api::{RuleMetadata, RuleTier};
+use lintai_api::{Category, RuleMetadata, RuleTier};
 
-pub(super) fn format_scope(scope: RuleScope) -> &'static str {
-    scope.slug()
+pub(crate) fn format_scope(scope: RuleScope) -> &'static str {
+    match scope {
+        RuleScope::PerFile => "per-file",
+        RuleScope::Workspace => "workspace",
+    }
 }
 
-pub(super) fn format_surface(surface: CatalogSurface) -> &'static str {
+pub(crate) fn format_surface(surface: CatalogSurface) -> &'static str {
     surface.slug()
 }
 
-pub(super) fn format_detection(detection_class: CatalogDetectionClass) -> &'static str {
-    detection_class.slug()
+pub(crate) fn format_detection(detection_class: CatalogDetectionClass) -> &'static str {
+    match detection_class {
+        CatalogDetectionClass::Structural => "structural",
+        CatalogDetectionClass::Heuristic => "heuristic",
+    }
 }
 
-pub(super) fn format_remediation(remediation_support: CatalogRemediationSupport) -> &'static str {
-    remediation_support.slug()
+pub(crate) fn format_remediation(
+    remediation_support: CatalogRemediationSupport,
+) -> &'static str {
+    match remediation_support {
+        CatalogRemediationSupport::None => "none",
+        CatalogRemediationSupport::MessageOnly => "message only",
+        CatalogRemediationSupport::Suggestion => "suggestion",
+        CatalogRemediationSupport::SafeFix => "safe fix",
+    }
 }
 
-pub(super) fn format_public_lane(public_lane: PublicLane) -> &'static str {
+pub(crate) fn format_public_lane(public_lane: PublicLane) -> &'static str {
     public_lane.slug()
 }
 
-pub(super) fn format_tier(tier: RuleTier) -> &'static str {
+pub(crate) fn format_tier(tier: RuleTier) -> &'static str {
     tier.label()
 }
 
-pub(super) fn format_severity(metadata: RuleMetadata) -> &'static str {
+pub(crate) fn format_severity(metadata: RuleMetadata) -> &'static str {
     metadata.default_severity.label()
 }
 
-pub(super) fn format_confidence(metadata: RuleMetadata) -> &'static str {
+pub(crate) fn format_confidence(metadata: RuleMetadata) -> &'static str {
     metadata.default_confidence.label()
+}
+
+pub(crate) fn format_category(category: Category) -> &'static str {
+    match category {
+        Category::Critical => "critical",
+        Category::Security => "security",
+        Category::Hardening => "hardening",
+        Category::Quality => "quality",
+        Category::Audit => "audit",
+        Category::Nursery => "nursery",
+    }
+}
+
+pub(crate) fn format_lifecycle(lifecycle: CatalogRuleLifecycle) -> &'static str {
+    match lifecycle {
+        CatalogRuleLifecycle::Preview { .. } => "preview",
+        CatalogRuleLifecycle::Stable { .. } => "stable",
+    }
 }
 
 pub(super) fn format_case_ids(case_ids: &[&str]) -> String {

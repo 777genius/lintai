@@ -1,4 +1,5 @@
 use super::*;
+use crate::output::ColorMode;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum KnownScope {
@@ -36,6 +37,7 @@ pub struct ScanKnownArgs {
     pub scope: KnownScope,
     pub client_filters: BTreeSet<String>,
     pub preset_ids: Vec<String>,
+    pub color_mode: ColorMode,
 }
 
 #[derive(Clone, Debug)]
@@ -44,6 +46,7 @@ pub struct InventoryOsArgs {
     pub scope: InventoryOsScope,
     pub client_filters: BTreeSet<String>,
     pub preset_ids: Vec<String>,
+    pub color_mode: ColorMode,
     pub path_root: Option<PathBuf>,
     pub write_baseline: Option<PathBuf>,
     pub diff_against: Option<PathBuf>,

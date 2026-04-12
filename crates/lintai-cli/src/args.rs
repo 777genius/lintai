@@ -9,11 +9,14 @@ mod known_scan;
 mod policy;
 mod scan;
 
+use crate::output::ColorMode;
+
 #[derive(Debug)]
 pub struct ScanArgs {
     pub target: PathBuf,
     pub format_override: Option<OutputFormat>,
     pub preset_ids: Vec<String>,
+    pub color_mode: ColorMode,
 }
 
 #[derive(Debug)]
@@ -50,6 +53,7 @@ mod tests {
         parse_scan_args, parse_scan_known_args,
     };
     use crate::known_scan::{InventoryOsScope, KnownScope};
+    use crate::output::ColorMode;
     use lintai_engine::OutputFormat;
 
     #[test]
@@ -58,6 +62,7 @@ mod tests {
         assert_eq!(parsed.target, std::path::PathBuf::from("."));
         assert_eq!(parsed.format_override, None);
         assert!(parsed.preset_ids.is_empty());
+        assert_eq!(parsed.color_mode, ColorMode::Auto);
     }
 
     #[test]
@@ -83,12 +88,33 @@ mod tests {
     }
 
     #[test]
+    fn scan_parses_color_mode() {
+        let parsed = parse_scan_args(["--color=always"].into_iter().map(str::to_owned)).unwrap();
+        assert_eq!(parsed.color_mode, ColorMode::Always);
+    }
+
+    #[test]
+    fn scan_rejects_invalid_color_mode() {
+        let error = parse_scan_args(["--color=rainbow"].into_iter().map(str::to_owned))
+            .expect_err("invalid --color should fail");
+        assert!(error.contains("unsupported --color value: rainbow"));
+    }
+
+    #[test]
     fn scan_known_defaults_to_both_scope() {
         let parsed = parse_scan_known_args(std::iter::empty()).unwrap();
         assert_eq!(parsed.format_override, None);
         assert_eq!(parsed.scope, KnownScope::Both);
         assert!(parsed.client_filters.is_empty());
         assert!(parsed.preset_ids.is_empty());
+        assert_eq!(parsed.color_mode, ColorMode::Auto);
+    }
+
+    #[test]
+    fn scan_known_parses_color_mode() {
+        let parsed =
+            parse_scan_known_args(["--color=never"].into_iter().map(str::to_owned)).unwrap();
+        assert_eq!(parsed.color_mode, ColorMode::Never);
     }
 
     #[test]
@@ -98,9 +124,17 @@ mod tests {
         assert_eq!(parsed.scope, InventoryOsScope::Both);
         assert!(parsed.client_filters.is_empty());
         assert!(parsed.preset_ids.is_empty());
+        assert_eq!(parsed.color_mode, ColorMode::Auto);
         assert_eq!(parsed.path_root, None);
         assert_eq!(parsed.write_baseline, None);
         assert_eq!(parsed.diff_against, None);
+    }
+
+    #[test]
+    fn inventory_os_parses_color_mode() {
+        let parsed =
+            parse_inventory_os_args(["--color=always"].into_iter().map(str::to_owned)).unwrap();
+        assert_eq!(parsed.color_mode, ColorMode::Always);
     }
 
     #[test]
@@ -237,6 +271,17 @@ mod tests {
         )
         .unwrap();
         assert_eq!(parsed.preset_ids, vec!["base", "mcp", "claude"]);
+    }
+
+    #[test]
+    fn policy_os_parses_color_mode() {
+        let parsed = parse_policy_os_args(
+            ["--policy=/tmp/policy.toml", "--color=never"]
+                .into_iter()
+                .map(str::to_owned),
+        )
+        .unwrap();
+        assert_eq!(parsed.color_mode, ColorMode::Never);
     }
 
     #[test]

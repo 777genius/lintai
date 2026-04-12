@@ -30,6 +30,7 @@ pub(crate) struct PolicyOsArgs {
     pub(crate) scope: crate::known_scan::InventoryOsScope,
     pub(crate) client_filters: BTreeSet<String>,
     pub(crate) preset_ids: Vec<String>,
+    pub(crate) color_mode: crate::output::ColorMode,
     pub(crate) path_root: Option<PathBuf>,
     pub(crate) policy_path: PathBuf,
 }

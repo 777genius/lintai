@@ -2,6 +2,8 @@
 
 This audit records the first repo-wide signal-quality sweep that prioritized real-world rule behavior over generic docs cleanup. The goal was to answer a narrow question for the highest-signal families: is the rule detector precise, is the product posture correct, and do the checked-in docs/tests actually defend that behavior.
 
+> Historical note: some posture and lane wording below predates the later sidecar-lane cleanup. When this audit disagrees with the current shipped catalog, the shipped catalog and preset pages win.
+
 ## Scope
 
 Primary review set:
@@ -27,7 +29,7 @@ Related featured structural rules corrected during the same pass:
 | `SEC324` | `flagship practical` | Strong structural supply-chain control with clear remediation and low ambiguity. |
 | `SEC417` | `flagship practical` | High-signal package provenance rule for mutable `pip install git+https://...` examples. |
 | `SEC347` | `flagship practical` | Narrow MCP-doc launcher rule with good safety suppressions and clear guidance posture. |
-| `SEC352` | `flagship practical` | Strongest least-privilege markdown signal in current field validation. |
+| `SEC352` | `flagship governance sidecar` | Strongest least-privilege markdown signal in current field validation, but now positioned as a governance sidecar rather than a preview/default-adjacent rule. |
 | `SEC348` | `context-sensitive but valid` | Detector is precise, but many real docs trade reproducibility for convenience. |
 | `SEC349` | `context-sensitive but valid` | High-value Docker host-escape detector, but examples can be intentionally instructional. |
 | `SEC462` | `context-sensitive but valid` | Strong detector for TLS bypass guidance; context can still be training or lab material. |
@@ -62,10 +64,10 @@ Related featured structural rules corrected during the same pass:
 ### `SEC352` — Bare `Bash` in frontmatter
 
 - Detector shape: high precision. Parsed frontmatter is used instead of string splitting, and scoped `Bash(...)` forms stay clean.
-- Product posture: correct as the main least-privilege flagship.
+- Product posture: detector quality stayed strong, but the shipped product posture is now a flagship governance sidecar rather than a preview/default-adjacent rule.
 - Severity and confidence: still appropriate as `Warn` plus `High`.
 - Docs and tests: already aligned and backed by field data.
-- Sweep result: keep as the lead least-privilege rule.
+- Sweep result: keep as the lead least-privilege governance rule.
 
 ### `SEC348` — Mutable Docker image
 

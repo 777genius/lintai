@@ -30,8 +30,9 @@ defineProps<{
         <span class="lintai-link-title">{{ ruleShortName(rule) }}</span>
         <span class="lintai-link-summary">{{ rule.summary }}</span>
         <span class="lintai-link-chips">
+          <span class="lintai-badge" :data-kind="'lane'">{{ rule.publicLane }}</span>
+          <span class="lintai-badge" :data-kind="'category'">{{ rule.category }}</span>
           <span class="lintai-badge" :data-kind="'surface'">{{ rule.surface }}</span>
-          <span class="lintai-badge" :data-kind="'tier'" :data-value="rule.tier">{{ rule.tier }}</span>
         </span>
       </article>
     </div>

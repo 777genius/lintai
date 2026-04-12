@@ -178,7 +178,7 @@ fn clean_sample_repo_stays_clean() {
 
     assert_case_summary(&manifest, &summary);
     assert!(summary.findings.is_empty());
-    assert!(text.contains("found 0 finding(s)"));
+    assert!(text.contains("found 0 findings"));
 }
 
 #[test]
@@ -192,17 +192,16 @@ fn mcp_heavy_sample_repo_emits_mcp_rule_set() {
 
     assert_case_summary(&manifest, &summary);
     assert_eq!(sample_repo_rule_codes(&summary), BTreeSet::from(["SEC302"]));
-    for rule_code in ["SEC302"] {
-        assert!(text.contains(rule_code));
-        assert!(text.contains("  suggest:"));
-        let finding = summary
-            .findings
-            .iter()
-            .find(|finding| finding.rule_code == rule_code)
-            .unwrap();
-        assert!(!finding.suggestions.is_empty());
-        assert!(finding.suggestions[0].fix.is_some());
-    }
+    let rule_code = "SEC302";
+    assert!(text.contains(rule_code));
+    assert!(text.contains("  suggest:"));
+    let finding = summary
+        .findings
+        .iter()
+        .find(|finding| finding.rule_code == rule_code)
+        .unwrap();
+    assert!(!finding.suggestions.is_empty());
+    assert!(finding.suggestions[0].fix.is_some());
 }
 
 #[test]

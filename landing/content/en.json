@@ -1,6 +1,6 @@
 {
   "hero": {
-    "title": "AI is more dangerous than you think.",
+    "title": "AI is more dangerous than you think",
     "subtitle": "26.1% of 31,132 agent skills analyzed in the wild contained at least one vulnerability.",
     "sourceLabel": "Source: Agent Skills in the Wild",
     "sourceHref": "https://arxiv.org/abs/2601.10338",

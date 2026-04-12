@@ -1,7 +1,7 @@
-# SEC352 Stable-Candidate Track
+# SEC352 Historical Promotion Packet
 
-> Promotion packet for `SEC352 / MD-UNSCOPED-BASH`.
-> Goal: keep the rule in `Preview` until the remaining graduation work is explicit, reviewable, and small.
+> Historical note: this packet was written when `SEC352 / MD-UNSCOPED-BASH` was still preview-scoped.
+> Current shipped state: `SEC352` now ships as a stable `governance` rule and should be read as a governance least-privilege sidecar control, not as an active preview promotion candidate.
 
 ## Why This Rule Is Different
 
@@ -84,15 +84,11 @@ Primary narrative reference:
 - [ ] Complete final stable graduation metadata at the native rule-spec level
 - [ ] Confirm final stable messaging for severity and remediation wording
 
-## Current Decision
+## Historical Decision
 
-Keep `SEC352` in `Preview` for now, but treat it as the leading stable-candidate in the skills-markdown lane.
+At the time of this packet, the decision was to keep `SEC352` in `Preview` while promotion metadata and reproducible field evidence were being formalized.
 
-This is the intended meaning of the current lifecycle posture:
-
-- not "the rule is weak"
-- not "the signal is unproven"
-- but "the remaining work is promotion discipline, not detector credibility"
+That decision is now superseded by the shipped catalog: `SEC352` is stable, but intentionally positioned in the `governance` lane rather than as a quiet-default rule.
 
 ## Next Promotion Actions
 

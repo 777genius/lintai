@@ -101,7 +101,7 @@ fn fix_apply_removes_comment_spans_and_follow_up_scan_is_clean() {
     let scan_output = run_lintai(&repo_dir, &["scan", "."]);
     assert_eq!(scan_output.status.code(), Some(0));
     let scan_stdout = stdout_string(&scan_output);
-    assert!(scan_stdout.contains("found 0 finding(s)"));
+    assert!(scan_stdout.contains("found 0 findings"));
 }
 
 #[test]
@@ -210,5 +210,5 @@ fn fix_apply_reports_conflicts_deterministically() {
     let scan_output = run_lintai(&repo_dir, &["scan", "."]);
     assert_eq!(scan_output.status.code(), Some(0));
     let scan_stdout = stdout_string(&scan_output);
-    assert!(scan_stdout.contains("found 0 finding(s)"));
+    assert!(scan_stdout.contains("found 0 findings"));
 }

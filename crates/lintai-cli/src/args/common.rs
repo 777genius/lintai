@@ -3,6 +3,7 @@ use std::iter::Peekable;
 use lintai_engine::OutputFormat;
 
 use crate::known_scan::{InventoryOsScope, KnownScope};
+use crate::output::ColorMode;
 
 pub(super) fn next_flag_value<I>(
     flag: &str,
@@ -31,6 +32,15 @@ pub(super) fn parse_output_format(value: &str) -> Result<OutputFormat, String> {
         "json" => Ok(OutputFormat::Json),
         "sarif" => Ok(OutputFormat::Sarif),
         other => Err(format!("unsupported output format: {other}")),
+    }
+}
+
+pub(super) fn parse_color_mode(value: &str) -> Result<ColorMode, String> {
+    match value {
+        "auto" => Ok(ColorMode::Auto),
+        "always" => Ok(ColorMode::Always),
+        "never" => Ok(ColorMode::Never),
+        other => Err(format!("unsupported --color value: {other}")),
     }
 }
 

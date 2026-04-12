@@ -7,7 +7,7 @@ presetId: strict
 
 ## What This Preset Enables
 
-The `strict` preset is an overlay, not a membership bucket. It layers stricter severity posture on top of
+The `strict` preset is an overlay, not a direct-activation preset. It layers stricter severity posture on top of
 already-active rules, and by default that means the `recommended` default set.
 
 ## When To Use It

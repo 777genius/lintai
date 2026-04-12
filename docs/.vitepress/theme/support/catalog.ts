@@ -1,6 +1,8 @@
 import { computed } from 'vue'
 import { useData } from 'vitepress'
 
+import { presetRole, presetRoleExplainer, sortPresetIds } from '../../presetModel'
+import { RULE_LANE_SECTIONS } from '../../ruleModel'
 import { ruleDisplayCode, ruleShortName } from '../../ruleLabels'
 import { data as siteData } from '../../rules.data'
 import type { SitePreset, SiteRule } from '../../siteCatalog'
@@ -55,7 +57,7 @@ export function relatedRulesFor(rule: SiteRule): SiteRule[] {
 }
 
 export function presetsForRule(rule: SiteRule): SitePreset[] {
-  return rule.defaultPresets
+  return sortPresetIds(rule.defaultPresets)
     .map((presetId) => siteData.presetsById[presetId])
     .filter(Boolean)
 }
@@ -67,6 +69,50 @@ export function rulesForPreset(preset: SitePreset): SiteRule[] {
 }
 
 export { ruleDisplayCode, ruleShortName }
+export { presetRole, presetRoleExplainer }
+export { RULE_LANE_SECTIONS }
+
+export function laneExplainer(lane: string): string {
+  switch (lane) {
+    case 'recommended':
+      return 'Quiet practical default findings most teams should start with.'
+    case 'preview':
+      return 'Broader contextual review outside the quiet default.'
+    case 'threat-review':
+      return 'Explicit malicious, secret-bearing, or spyware-like review.'
+    case 'supply-chain':
+      return 'Reproducibility, provenance, and dependency hardening review.'
+    case 'compat':
+      return 'Config, schema, and policy contract review.'
+    case 'governance':
+      return 'Shared authority and workflow policy review.'
+    case 'guidance':
+      return 'Advice-oriented guidance and maintainability review.'
+    case 'advisory':
+      return 'Installed-package advisory review.'
+    default:
+      return 'Rule lane used to position the finding in the product experience.'
+  }
+}
+
+export function categoryExplainer(category: string): string {
+  switch (category) {
+    case 'security':
+      return 'Strong exploit, secret, or unsafe-execution signal.'
+    case 'hardening':
+      return 'Least-privilege, provenance, or operational hygiene signal.'
+    case 'quality':
+      return 'Contract, schema, or config correctness signal.'
+    case 'audit':
+      return 'Heuristic or triage-oriented review signal.'
+    case 'critical':
+      return 'Critical impact signal reserved for the strongest cases.'
+    case 'nursery':
+      return 'Early-stage rule not meant as a mature product contract.'
+    default:
+      return 'Rule category used to describe the shape of the signal.'
+  }
+}
 
 function relatedRuleScore(rule: SiteRule, candidate: SiteRule, explicit: Set<string>): number {
   if (explicit.has(candidate.ruleId)) {

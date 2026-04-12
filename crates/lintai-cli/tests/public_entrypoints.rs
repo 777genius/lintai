@@ -90,10 +90,93 @@ fn readme_root_cargo_help_command_is_truthful() {
     let stdout = String::from_utf8(output.stdout).expect("stdout should be valid UTF-8");
     assert!(
         stdout.contains("lintai scan [path] [--preset NAME]")
+            && stdout.contains("--color=auto|always|never")
             && stdout.contains("lintai config-schema")
             && stdout.contains("lintai advisory-db export-bundled"),
         "help output missing expected commands: {stdout}"
     );
+}
+
+#[test]
+fn subcommand_help_flag_prints_specific_usage() {
+    let output = run_root_cargo(&["run", "--", "inventory-os", "--help"]);
+    assert_eq!(
+        output.status.code(),
+        Some(0),
+        "inventory-os --help failed:\n{}",
+        stderr_string(&output)
+    );
+
+    let stdout = String::from_utf8(output.stdout).expect("stdout should be valid UTF-8");
+    assert!(stdout.contains("lintai inventory-os [--scope=user|system|both]"));
+    assert!(stdout.contains("--color=auto|always|never"));
+    assert!(!stdout.contains("lintai scan [path]"));
+}
+
+#[test]
+fn help_subcommand_prints_specific_usage() {
+    let output = run_root_cargo(&["run", "--", "help", "inventory-os"]);
+    assert_eq!(
+        output.status.code(),
+        Some(0),
+        "help inventory-os failed:\n{}",
+        stderr_string(&output)
+    );
+
+    let stdout = String::from_utf8(output.stdout).expect("stdout should be valid UTF-8");
+    assert!(stdout.contains("lintai inventory-os [--scope=user|system|both]"));
+    assert!(stdout.contains("--diff-against FILE"));
+    assert!(!stdout.contains("lintai scan [path]"));
+}
+
+#[test]
+fn scan_color_always_emits_ansi_for_text_output() {
+    let output = run_root_cargo(&[
+        "run",
+        "--quiet",
+        "--",
+        "scan",
+        "./sample-repos/mcp-heavy/repo",
+        "--preset=supply-chain",
+        "--color=always",
+    ]);
+    assert_eq!(
+        output.status.code(),
+        Some(0),
+        "colorized text scan failed:\n{}",
+        stderr_string(&output)
+    );
+
+    let stdout = String::from_utf8(output.stdout).expect("stdout should be valid UTF-8");
+    assert!(stdout.contains("\u{1b}["));
+    assert!(stdout.contains("SEC302"));
+    assert!(stdout.contains("supply-chain (1)"));
+}
+
+#[test]
+fn scan_color_always_keeps_json_uncolored() {
+    let output = run_root_cargo(&[
+        "run",
+        "--quiet",
+        "--",
+        "scan",
+        "./sample-repos/mcp-heavy/repo",
+        "--preset=supply-chain",
+        "--format=json",
+        "--color=always",
+    ]);
+    assert_eq!(
+        output.status.code(),
+        Some(0),
+        "json scan with --color failed:\n{}",
+        stderr_string(&output)
+    );
+
+    let stdout = String::from_utf8(output.stdout).expect("stdout should be valid UTF-8");
+    assert!(!stdout.contains("\u{1b}["));
+    let value: serde_json::Value = serde_json::from_str(&stdout).expect("scan output JSON");
+    assert_eq!(value["findings"].as_array().unwrap().len(), 1);
+    assert_eq!(value["findings"][0]["rule_code"], "SEC302");
 }
 
 #[test]

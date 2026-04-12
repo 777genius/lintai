@@ -1,26 +1,51 @@
 use crate::output::model::ReportEnvelope;
-use crate::shipped_rules::shipped_rule_docs_url;
 
-use super::common::{changed_root_fragment, client_for_inventory_finding};
+use super::common::{append_section_gap, changed_root_fragment, count_label};
+use super::scan::append_lane_summary;
+use super::style::ResolvedTextStyle;
 
-pub(super) fn append_inventory_summary(output: &mut String, report: &ReportEnvelope<'_>) -> bool {
+pub(super) fn append_inventory_summary(
+    output: &mut String,
+    report: &ReportEnvelope<'_>,
+    style: ResolvedTextStyle,
+) -> bool {
     if let Some(inventory_diff) = &report.inventory_diff {
         let inventory_stats = report
             .inventory_stats
             .as_ref()
             .expect("inventory_diff requires inventory_stats");
         output.push_str(&format!(
-            "inventory diff discovered {} root(s), new {} root(s), removed {} root(s), changed {} root(s), new lintable {} root(s), risk increased {} root(s), new findings {}\n",
-            report.inventory_roots.len(),
-            inventory_diff.new_roots.len(),
-            inventory_diff.removed_roots.len(),
-            inventory_diff.changed_roots.len(),
-            inventory_diff.new_lintable_roots.len(),
-            inventory_diff.risk_increased_roots.len(),
-            inventory_diff.new_findings.len()
+            "inventory diff discovered {}, {}, {}, {}, {}, {}, {}\n",
+            count_label(report.inventory_roots.len(), "root", "roots"),
+            count_label(inventory_diff.new_roots.len(), "new root", "new roots"),
+            count_label(
+                inventory_diff.removed_roots.len(),
+                "removed root",
+                "removed roots",
+            ),
+            count_label(
+                inventory_diff.changed_roots.len(),
+                "changed root",
+                "changed roots",
+            ),
+            count_label(
+                inventory_diff.new_lintable_roots.len(),
+                "new lintable root",
+                "new lintable roots",
+            ),
+            count_label(
+                inventory_diff.risk_increased_roots.len(),
+                "root with increased risk",
+                "roots with increased risk",
+            ),
+            count_label(
+                inventory_diff.new_findings.len(),
+                "new finding",
+                "new findings",
+            ),
         ));
         output.push_str(&format!(
-            "inventory counters: user={} system={} lintable={} discovered_only={} high={} medium={} low={} scanned={} non_target={} excluded={} binary={} unreadable={} unrecognized={}\n",
+            "inventory counters: user={}, system={}, lintable={}, discovered-only={}, high={}, medium={}, low={}, scanned={}, non-target={}, excluded={}, binary={}, unreadable={}, unrecognized={}\n",
             inventory_stats.user_roots,
             inventory_stats.system_roots,
             inventory_stats.lintable_roots,
@@ -35,6 +60,7 @@ pub(super) fn append_inventory_summary(output: &mut String, report: &ReportEnvel
             inventory_stats.unreadable_files,
             inventory_stats.unrecognized_files,
         ));
+        append_lane_summary(output, &inventory_diff.new_findings, style);
         return true;
     }
 
@@ -42,36 +68,162 @@ pub(super) fn append_inventory_summary(output: &mut String, report: &ReportEnvel
         return false;
     };
     output.push_str(&format!(
-        "inventory discovered {} root(s), user {} root(s), system {} root(s), lintable {} root(s), discovered-only {} root(s), high risk {} root(s), medium risk {} root(s), low risk {} root(s), scanned {} supported artifact(s), non-target {} file(s), found {} finding(s), {} diagnostic(s), {} runtime error(s)\n",
-        report.inventory_roots.len(),
-        inventory_stats.user_roots,
-        inventory_stats.system_roots,
-        inventory_stats.lintable_roots,
-        inventory_stats.discovered_only_roots,
-        inventory_stats.high_risk_roots,
-        inventory_stats.medium_risk_roots,
-        inventory_stats.low_risk_roots,
-        inventory_stats.supported_artifacts_scanned,
-        inventory_stats.non_target_total(),
-        report.findings.len(),
-        report.diagnostics.len(),
-        report.runtime_errors.len()
+        "inventory discovered {}, user {}, system {}, lintable {}, discovered-only {}, high risk {}, medium risk {}, low risk {}, scanned {}, non-target {}, found {}, {}, {}\n",
+        count_label(report.inventory_roots.len(), "root", "roots"),
+        count_label(inventory_stats.user_roots, "root", "roots"),
+        count_label(inventory_stats.system_roots, "root", "roots"),
+        count_label(inventory_stats.lintable_roots, "root", "roots"),
+        count_label(inventory_stats.discovered_only_roots, "root", "roots"),
+        count_label(inventory_stats.high_risk_roots, "root", "roots"),
+        count_label(inventory_stats.medium_risk_roots, "root", "roots"),
+        count_label(inventory_stats.low_risk_roots, "root", "roots"),
+        count_label(
+            inventory_stats.supported_artifacts_scanned,
+            "supported artifact",
+            "supported artifacts",
+        ),
+        count_label(inventory_stats.non_target_total(), "file", "files"),
+        count_label(report.findings.len(), "finding", "findings"),
+        count_label(report.diagnostics.len(), "diagnostic", "diagnostics"),
+        count_label(report.runtime_errors.len(), "runtime error", "runtime errors"),
     ));
     output.push_str(&format!(
-        "inventory counters: non_target={} excluded={} binary={} unreadable={} unrecognized={}\n",
+        "inventory counters: non-target={}, excluded={}, binary={}, unreadable={}, unrecognized={}\n",
         inventory_stats.non_target_files_in_lintable_roots,
         inventory_stats.excluded_files,
         inventory_stats.binary_files,
         inventory_stats.unreadable_files,
         inventory_stats.unrecognized_files,
     ));
+    append_lane_summary(output, report.findings, style);
     true
 }
 
-pub(super) fn append_inventory_sections(output: &mut String, report: &ReportEnvelope<'_>) {
-    for root in &report.inventory_roots {
+pub(super) fn append_inventory_sections(
+    output: &mut String,
+    report: &ReportEnvelope<'_>,
+    style: ResolvedTextStyle,
+) {
+    append_inventory_root_section(output, &report.inventory_roots, style);
+
+    let Some(inventory_diff) = &report.inventory_diff else {
+        return;
+    };
+
+    append_inventory_root_section_with_title(output, "new roots", &inventory_diff.new_roots, style);
+    append_inventory_root_section_with_title(
+        output,
+        "removed roots",
+        &inventory_diff.removed_roots,
+        style,
+    );
+
+    if !inventory_diff.changed_roots.is_empty() {
+        append_section_gap(output);
+        output
+            .push_str(&style.section_heading("changed roots", inventory_diff.changed_roots.len()));
+        output.push_str("\n\n");
+        let mut changed_roots = inventory_diff.changed_roots.iter().collect::<Vec<_>>();
+        changed_roots.sort_by(|left, right| {
+            left.path
+                .cmp(&right.path)
+                .then_with(|| left.client.cmp(&right.client))
+                .then_with(|| left.surface.cmp(&right.surface))
+        });
+        for (index, root) in changed_roots.iter().enumerate() {
+            let detail = changed_root_fragment(root);
+            output.push_str("  ");
+            output.push_str(&format!("{} {} {}", root.client, root.surface, root.path));
+            output.push('\n');
+            output.push_str("  ");
+            if detail.is_empty() {
+                output.push_str(&style.secondary("content changed"));
+            } else {
+                output.push_str(&style.secondary(&detail));
+            }
+            output.push('\n');
+            if index + 1 < changed_roots.len() {
+                output.push('\n');
+            }
+        }
+    }
+
+    append_inventory_root_section_with_title(
+        output,
+        "new lintable roots",
+        &inventory_diff.new_lintable_roots,
+        style,
+    );
+
+    if !inventory_diff.risk_increased_roots.is_empty() {
+        append_section_gap(output);
+        output.push_str(
+            &style.section_heading("risk increased", inventory_diff.risk_increased_roots.len()),
+        );
+        output.push_str("\n\n");
+        let mut risk_increased_roots = inventory_diff
+            .risk_increased_roots
+            .iter()
+            .collect::<Vec<_>>();
+        risk_increased_roots.sort_by(|left, right| {
+            left.path
+                .cmp(&right.path)
+                .then_with(|| left.client.cmp(&right.client))
+                .then_with(|| left.surface.cmp(&right.surface))
+        });
+        for (index, root) in risk_increased_roots.iter().enumerate() {
+            output.push_str("  ");
+            output.push_str(&format!("{} {} {}", root.client, root.surface, root.path));
+            output.push('\n');
+            output.push_str("  ");
+            output.push_str(&style.secondary(&format!(
+                "risk {} -> {}",
+                root.old_risk_level, root.new_risk_level
+            )));
+            output.push('\n');
+            if index + 1 < risk_increased_roots.len() {
+                output.push('\n');
+            }
+        }
+    }
+}
+
+fn append_inventory_root_section(
+    output: &mut String,
+    roots: &[crate::known_scan::InventoryRoot],
+    style: ResolvedTextStyle,
+) {
+    append_inventory_root_section_with_title(output, "inventory roots", roots, style);
+}
+
+fn append_inventory_root_section_with_title(
+    output: &mut String,
+    title: &str,
+    roots: &[crate::known_scan::InventoryRoot],
+    style: ResolvedTextStyle,
+) {
+    if roots.is_empty() {
+        return;
+    }
+
+    append_section_gap(output);
+    output.push_str(&style.section_heading(title, roots.len()));
+    output.push_str("\n\n");
+
+    let mut sorted_roots = roots.iter().collect::<Vec<_>>();
+    sorted_roots.sort_by(|left, right| {
+        left.path
+            .cmp(&right.path)
+            .then_with(|| left.client.cmp(&right.client))
+            .then_with(|| left.surface.cmp(&right.surface))
+            .then_with(|| left.mode.cmp(&right.mode))
+            .then_with(|| left.risk_level.cmp(&right.risk_level))
+    });
+
+    for (index, root) in sorted_roots.iter().enumerate() {
+        output.push_str("  ");
         output.push_str(&format!(
-            "inventory-root [{} {} {}] {} {} {}\n",
+            "[{}] [{}] [{}] {} {} {}",
             root.provenance.origin_scope,
             root.risk_level,
             root.mode,
@@ -79,55 +231,9 @@ pub(super) fn append_inventory_sections(output: &mut String, report: &ReportEnve
             root.surface,
             root.path
         ));
-    }
-
-    if let Some(inventory_diff) = &report.inventory_diff {
-        for root in &inventory_diff.new_roots {
-            output.push_str(&format!(
-                "new-root [{} {}] {} {} {}\n",
-                root.risk_level, root.mode, root.client, root.surface, root.path
-            ));
-        }
-        for root in &inventory_diff.removed_roots {
-            output.push_str(&format!(
-                "removed-root [{} {}] {} {} {}\n",
-                root.risk_level, root.mode, root.client, root.surface, root.path
-            ));
-        }
-        for root in &inventory_diff.changed_roots {
-            output.push_str(&format!(
-                "changed-root [{}] {} {} {}\n",
-                changed_root_fragment(root),
-                root.client,
-                root.surface,
-                root.path
-            ));
-        }
-        for root in &inventory_diff.new_lintable_roots {
-            output.push_str(&format!(
-                "new-lintable-root [{}] {} {} {}\n",
-                root.risk_level, root.client, root.surface, root.path
-            ));
-        }
-        for root in &inventory_diff.risk_increased_roots {
-            output.push_str(&format!(
-                "risk-increased-root [{}->{}] {} {} {}\n",
-                root.old_risk_level, root.new_risk_level, root.client, root.surface, root.path
-            ));
-        }
-        for finding in &inventory_diff.new_findings {
-            output.push_str(&format!(
-                "new-finding {} {} {}\n",
-                finding.rule_code,
-                client_for_inventory_finding(
-                    &report.inventory_roots,
-                    finding.location.normalized_path.as_str()
-                ),
-                finding.location.normalized_path
-            ));
-            if let Some(url) = shipped_rule_docs_url(&finding.rule_code) {
-                output.push_str(&format!("  docs: {url}\n"));
-            }
+        output.push('\n');
+        if index + 1 < sorted_roots.len() {
+            output.push('\n');
         }
     }
 }
@@ -193,7 +299,7 @@ mod tests {
             &RuleMetadata::new(
                 "SEC417",
                 "test",
-                lintai_api::Category::Security,
+                lintai_api::Category::Hardening,
                 Severity::Warn,
                 lintai_api::Confidence::High,
                 RuleTier::Stable,
@@ -266,18 +372,59 @@ mod tests {
         });
 
         let mut output = String::new();
-        super::append_inventory_summary(&mut output, &envelope);
-        super::append_inventory_sections(&mut output, &envelope);
-
-        assert!(output.contains("inventory diff discovered 1 root(s), new 1 root(s), removed 0 root(s), changed 1 root(s), new lintable 1 root(s), risk increased 1 root(s), new findings 1"));
-        assert!(output.contains("inventory counters: user=1"));
-        assert!(output.contains("new-root [low lintable] client-a surface service/new"));
-        assert!(output.contains("changed-root [mode discovered_only->lintable mtime 101->none] client-a surface service/config.json"));
-        assert!(
-            output
-                .contains("risk-increased-root [low->medium] client-a surface service/config.json")
+        super::append_inventory_summary(
+            &mut output,
+            &envelope,
+            super::ResolvedTextStyle::plain_for_tests(),
         );
-        assert!(output.contains("new-finding SEC417 client-a service/config.json"));
+        super::append_inventory_sections(
+            &mut output,
+            &envelope,
+            super::ResolvedTextStyle::plain_for_tests(),
+        );
+
+        assert!(output.contains(
+            "inventory diff discovered 1 root, 1 new root, 0 removed roots, 1 changed root, 1 new lintable root, 1 root with increased risk, 1 new finding"
+        ));
+        assert!(output.contains("lanes: supply-chain 1"));
+        assert!(output.contains("new roots (1)"));
+        assert!(output.contains("changed roots (1)"));
+        assert!(output.contains("risk increased (1)"));
+    }
+
+    #[test]
+    fn changed_root_without_metadata_delta_marks_content_change() {
+        let mut envelope = base_envelope(&[]);
+        envelope.inventory_stats = Some(InventoryStats::default());
+        envelope.inventory_diff = Some(InventoryDiff {
+            new_roots: Vec::new(),
+            removed_roots: Vec::new(),
+            changed_roots: vec![InventoryChangedRoot {
+                client: "client-a".into(),
+                surface: "surface".into(),
+                path: "service/config.json".into(),
+                old_mode: "lintable".into(),
+                new_mode: "lintable".into(),
+                old_risk_level: "low".into(),
+                new_risk_level: "low".into(),
+                old_path_type: "file".into(),
+                new_path_type: "file".into(),
+                old_mtime_epoch_s: None,
+                new_mtime_epoch_s: None,
+            }],
+            new_lintable_roots: Vec::new(),
+            risk_increased_roots: Vec::new(),
+            new_findings: Vec::new(),
+        });
+        let mut output = String::new();
+
+        super::append_inventory_sections(
+            &mut output,
+            &envelope,
+            super::ResolvedTextStyle::plain_for_tests(),
+        );
+
+        assert!(output.contains("content changed"));
     }
 
     #[test]
@@ -307,18 +454,20 @@ mod tests {
         });
         let mut output = String::new();
 
-        let did_render = super::append_inventory_summary(&mut output, &envelope);
-        super::append_inventory_sections(&mut output, &envelope);
+        let did_render = super::append_inventory_summary(
+            &mut output,
+            &envelope,
+            super::ResolvedTextStyle::plain_for_tests(),
+        );
+        super::append_inventory_sections(
+            &mut output,
+            &envelope,
+            super::ResolvedTextStyle::plain_for_tests(),
+        );
 
         assert!(did_render);
-        assert!(
-            output.contains("inventory discovered 1 root(s), user 1 root(s), system 1 root(s)")
-        );
-        assert!(output.contains("inventory counters: non_target=7"));
-        assert!(output.contains("excluded=8"));
-        assert!(output.contains("binary=9"));
-        assert!(output.contains("unreadable=10"));
-        assert!(output.contains("unrecognized=11"));
-        assert!(output.contains("inventory-root [project low lintable] client-a surface service"));
+        assert!(output.contains("inventory discovered 1 root, user 1 root, system 1 root"));
+        assert!(output.contains("inventory counters: non-target=7"));
+        assert!(output.contains("inventory roots (1)"));
     }
 }

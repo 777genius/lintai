@@ -1,5 +1,9 @@
 use lintai_api::{BuiltinPresetKind, BuiltinPresetSpec, RuleMetadata};
 
+use crate::security_rule_catalog::format::{
+    format_category, format_detection, format_lifecycle, format_public_lane,
+    format_remediation, format_scope, format_surface,
+};
 use crate::shipped_rules::{
     CatalogRuleLifecycle, SecurityRuleCatalogEntry, provider_sort_key, shipped_rule_alias,
 };
@@ -42,6 +46,7 @@ pub(super) struct SiteRuleModel {
     pub(super) doc_title: String,
     pub(super) summary: String,
     pub(super) public_lane: String,
+    pub(super) category: String,
     pub(super) scope: String,
     pub(super) surface: String,
     pub(super) tier: String,
@@ -128,20 +133,21 @@ fn site_rule_model(entry: SecurityRuleCatalogEntry) -> SiteRuleModel {
         alias: shipped_rule_alias(entry.metadata.code).map(str::to_owned),
         doc_title: entry.metadata.doc_title.to_owned(),
         summary: entry.metadata.summary.to_owned(),
-        public_lane: entry.public_lane().slug().to_owned(),
-        scope: entry.scope.slug().to_owned(),
-        surface: entry.surface.slug().to_owned(),
+        public_lane: format_public_lane(entry.public_lane()).to_owned(),
+        category: format_category(entry.metadata.category).to_owned(),
+        scope: format_scope(entry.scope).to_owned(),
+        surface: format_surface(entry.surface).to_owned(),
         tier: entry.metadata.tier.slug().to_owned(),
         default_severity: severity_name(entry.metadata).to_owned(),
         default_confidence: confidence_name(entry.metadata).to_owned(),
-        detection_class: entry.detection_class.slug().to_owned(),
-        remediation_support: entry.remediation_support.slug().to_owned(),
+        detection_class: format_detection(entry.detection_class).to_owned(),
+        remediation_support: format_remediation(entry.remediation_support).to_owned(),
         default_presets: entry
             .default_presets()
             .into_iter()
             .map(str::to_owned)
             .collect(),
-        lifecycle_state: entry.lifecycle_state().to_owned(),
+        lifecycle_state: format_lifecycle(entry.lifecycle).to_owned(),
         lifecycle: lifecycle_model(entry.lifecycle),
         canonical_note: entry.canonical_note().to_owned(),
         related_rule_ids: Vec::new(),

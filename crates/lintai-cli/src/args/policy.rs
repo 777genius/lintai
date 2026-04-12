@@ -5,8 +5,8 @@ use crate::known_scan::InventoryOsScope;
 use crate::policy_os::PolicyOsArgs;
 
 use super::common::{
-    next_flag_value, normalize_client_filter, parse_inventory_scope, parse_output_format,
-    push_preset_id, unexpected_extra_argument, unknown_flag,
+    next_flag_value, normalize_client_filter, parse_color_mode, parse_inventory_scope,
+    parse_output_format, push_preset_id, unexpected_extra_argument, unknown_flag,
 };
 
 pub(crate) fn parse_policy_os_args(
@@ -16,6 +16,7 @@ pub(crate) fn parse_policy_os_args(
     let mut scope = InventoryOsScope::Both;
     let mut client_filters = BTreeSet::new();
     let mut preset_ids = Vec::new();
+    let mut color_mode = crate::output::ColorMode::Auto;
     let mut path_root = None;
     let mut policy_path = None;
     let mut args = args.peekable();
@@ -23,6 +24,10 @@ pub(crate) fn parse_policy_os_args(
     while let Some(arg) = args.next() {
         if let Some(value) = next_flag_value("--format", &arg, &mut args)? {
             format_override = Some(parse_output_format(&value)?);
+            continue;
+        }
+        if let Some(value) = next_flag_value("--color", &arg, &mut args)? {
+            color_mode = parse_color_mode(&value)?;
             continue;
         }
         if let Some(value) = next_flag_value("--scope", &arg, &mut args)? {
@@ -58,6 +63,7 @@ pub(crate) fn parse_policy_os_args(
         scope,
         client_filters,
         preset_ids,
+        color_mode,
         path_root,
         policy_path,
     })

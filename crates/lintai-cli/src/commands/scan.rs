@@ -28,6 +28,7 @@ pub(crate) fn run(
         parsed
             .format_override
             .unwrap_or(workspace.engine_config.output_format),
+        parsed.color_mode,
     )?;
 
     Ok(exit_code_for_scan_summary(

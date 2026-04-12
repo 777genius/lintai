@@ -2,6 +2,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { PRESET_SECTIONS } from './presetModel'
+import { RULE_LANE_SECTIONS } from './ruleModel'
 import { ruleDisplayCode, ruleShortName, ruleSidebarText } from './ruleLabels'
 
 export interface SiteProvider {
@@ -47,6 +49,8 @@ export interface SiteRule {
   slug: string
   canonicalPath: string
   summary: string
+  publicLane: string
+  category: string
   scope: string
   surface: string
   tier: string
@@ -73,6 +77,7 @@ export interface SiteCatalogData {
   providersById: Record<string, SiteProvider>
   presetsById: Record<string, SitePreset>
   rulesById: Record<string, SiteRule>
+  rulesByLane: Array<{ lane: string; title: string; description: string; rules: SiteRule[] }>
   rulesByProvider: Array<{ provider: SiteProvider; rules: SiteRule[] }>
 }
 
@@ -108,6 +113,14 @@ export function loadSiteCatalogData(): SiteCatalogData {
       .filter((rule) => rule.providerId === provider.id)
       .sort((left, right) => sortRules(left, right))
   }))
+  const rulesByLane = RULE_LANE_SECTIONS.map((section) => ({
+    lane: section.id,
+    title: section.title,
+    description: section.description,
+    rules: catalog.rules
+      .filter((rule) => rule.publicLane === section.id)
+      .sort((left, right) => sortRules(left, right))
+  })).filter((group) => group.rules.length > 0)
 
   validateCatalogRelations(catalog, { providersById, presetsById, rulesById })
   validateDocsCoverage(catalog)
@@ -118,6 +131,7 @@ export function loadSiteCatalogData(): SiteCatalogData {
     providersById,
     presetsById,
     rulesById,
+    rulesByLane,
     rulesByProvider
   }
 
@@ -160,8 +174,8 @@ export function metadataForPage(
 }
 
 export function buildSidebar(data: SiteCatalogData): SidebarItem[] {
-  const ruleItems = data.rulesByProvider.map(({ provider, rules }) => ({
-    text: provider.title,
+  const ruleItems = data.rulesByLane.map(({ title, rules }) => ({
+    text: title,
     collapsed: true,
     items: rules.map((rule) => ({
       text: ruleSidebarText(rule),
@@ -169,14 +183,17 @@ export function buildSidebar(data: SiteCatalogData): SidebarItem[] {
     }))
   }))
 
-  const presetOrder = ['base', 'preview', 'compat', 'skills', 'mcp', 'claude', 'strict']
-  const presetItems = presetOrder
-    .map((id) => data.presetsById[id])
-    .filter(Boolean)
-    .map((preset) => ({
-      text: preset.title,
-      link: preset.canonicalPath
-    }))
+  const presetItems = PRESET_SECTIONS.map((section) => ({
+    text: section.title,
+    collapsed: false,
+    items: section.presetIds
+      .map((id) => data.presetsById[id])
+      .filter(Boolean)
+      .map((preset) => ({
+        text: preset.title,
+        link: preset.canonicalPath
+      }))
+  })).filter((section) => section.items.length > 0)
 
   return [
     {

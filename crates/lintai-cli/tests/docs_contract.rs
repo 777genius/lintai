@@ -89,7 +89,9 @@ fn index_links_public_release_shipping_checklist() {
     let text = include_str!("../../../docs/INDEX.md");
 
     assert!(
-        text.contains("[PUBLIC_RELEASE_SHIPPING_CHECKLIST.md](PUBLIC_RELEASE_SHIPPING_CHECKLIST.md)"),
+        text.contains(
+            "[PUBLIC_RELEASE_SHIPPING_CHECKLIST.md](PUBLIC_RELEASE_SHIPPING_CHECKLIST.md)"
+        ),
         "index.md should link the canonical public release shipping checklist"
     );
 }

@@ -76,10 +76,11 @@ fn scan_known_global_discovers_roots_and_stays_quiet_by_default() {
     let output = run_lintai(&cwd, &home, &xdg, &["scan-known", "--scope=global"]);
     assert_eq!(output.status.code(), Some(0));
     let stdout = stdout_string(&output);
-    assert!(stdout.contains("root [global lintable] claude-code skills"));
-    assert!(stdout.contains("root [global lintable] cursor mcp"));
+    assert!(stdout.contains("discovered roots (2)"));
+    assert!(stdout.contains("[global] [lintable] claude-code skills"));
+    assert!(stdout.contains("[global] [lintable] cursor mcp"));
     assert!(stdout.contains("discovery counters:"));
-    assert!(stdout.contains("found 0 finding(s)"));
+    assert!(stdout.contains("found 0 findings"));
     assert!(stdout.contains(&home.join(".claude/skills").display().to_string()));
     assert!(stdout.contains(&home.join(".cursor/mcp.json").display().to_string()));
 }

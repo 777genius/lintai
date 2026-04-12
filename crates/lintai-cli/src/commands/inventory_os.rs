@@ -49,7 +49,7 @@ pub(crate) fn run(args: impl Iterator<Item = String>) -> Result<ExitCode, String
             policy_stats: None,
         },
     );
-    emit_report(&report, output_format)?;
+    emit_report(&report, output_format, parsed.color_mode)?;
     Ok(exit_code_for_inventory_summary(
         &inventory.aggregate,
         inventory.blocking,

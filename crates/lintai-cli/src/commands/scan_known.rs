@@ -105,6 +105,6 @@ pub(crate) fn run(
         report_roots,
         Some(discovery_stats),
     );
-    emit_report(&report, output_format)?;
+    emit_report(&report, output_format, parsed.color_mode)?;
     Ok(exit_code_for_inventory_summary(&aggregate, blocking))
 }

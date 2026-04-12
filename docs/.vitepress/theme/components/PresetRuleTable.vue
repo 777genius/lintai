@@ -17,7 +17,7 @@ defineProps<{
     </div>
     <p v-if="!rules.length" class="lintai-empty-state">
       This preset does not directly activate any rules. It modifies the behavior of rules that are
-      already active through membership presets.
+      already active through other presets that directly activate rules.
     </p>
     <div v-else class="lintai-link-grid">
       <article
@@ -34,7 +34,8 @@ defineProps<{
         <span class="lintai-link-title">{{ ruleShortName(rule) }}</span>
         <span class="lintai-link-summary">{{ rule.summary }}</span>
         <span class="lintai-link-chips">
-          <span class="lintai-badge" :data-kind="'tier'" :data-value="rule.tier">{{ rule.tier }}</span>
+          <span class="lintai-badge" :data-kind="'lane'">{{ rule.publicLane }}</span>
+          <span class="lintai-badge" :data-kind="'category'">{{ rule.category }}</span>
           <span class="lintai-badge" :data-kind="'surface'">{{ rule.surface }}</span>
         </span>
       </article>

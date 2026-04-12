@@ -3,8 +3,8 @@ use std::collections::BTreeSet;
 use crate::known_scan::{KnownScope, ScanKnownArgs};
 
 use super::common::{
-    next_flag_value, normalize_client_filter, parse_known_scope, parse_output_format,
-    push_preset_id, unexpected_extra_argument, unknown_flag,
+    next_flag_value, normalize_client_filter, parse_color_mode, parse_known_scope,
+    parse_output_format, push_preset_id, unexpected_extra_argument, unknown_flag,
 };
 
 pub(crate) fn parse_scan_known_args(
@@ -14,11 +14,16 @@ pub(crate) fn parse_scan_known_args(
     let mut scope = KnownScope::Both;
     let mut client_filters = BTreeSet::new();
     let mut preset_ids = Vec::new();
+    let mut color_mode = crate::output::ColorMode::Auto;
     let mut args = args.peekable();
 
     while let Some(arg) = args.next() {
         if let Some(value) = next_flag_value("--format", &arg, &mut args)? {
             format_override = Some(parse_output_format(&value)?);
+            continue;
+        }
+        if let Some(value) = next_flag_value("--color", &arg, &mut args)? {
+            color_mode = parse_color_mode(&value)?;
             continue;
         }
         if let Some(value) = next_flag_value("--scope", &arg, &mut args)? {
@@ -45,5 +50,6 @@ pub(crate) fn parse_scan_known_args(
         scope,
         client_filters,
         preset_ids,
+        color_mode,
     })
 }

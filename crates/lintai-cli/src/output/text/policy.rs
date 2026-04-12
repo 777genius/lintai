@@ -1,18 +1,68 @@
+use std::collections::BTreeSet;
+
 use crate::output::model::ReportEnvelope;
 
-pub(super) fn append_policy_sections(output: &mut String, report: &ReportEnvelope<'_>) {
-    if let Some(policy_stats) = &report.policy_stats {
+use super::common::{append_section_gap, count_label};
+use super::scan::append_lane_summary;
+use super::style::ResolvedTextStyle;
+
+pub(super) fn append_policy_sections(
+    output: &mut String,
+    report: &ReportEnvelope<'_>,
+    style: ResolvedTextStyle,
+) {
+    if report.policy_stats.is_some() || !report.policy_matches.is_empty() {
+        let matched_roots = report
+            .policy_stats
+            .as_ref()
+            .map(|policy_stats| policy_stats.matched_roots)
+            .unwrap_or_else(|| {
+                report
+                    .policy_matches
+                    .iter()
+                    .map(|policy_match| {
+                        (
+                            policy_match.client.as_str(),
+                            policy_match.surface.as_str(),
+                            policy_match.path.as_str(),
+                        )
+                    })
+                    .collect::<BTreeSet<_>>()
+                    .len()
+            });
+        let deny_matches = report
+            .policy_stats
+            .as_ref()
+            .map(|policy_stats| policy_stats.deny_matches)
+            .unwrap_or_else(|| {
+                report
+                    .policy_matches
+                    .iter()
+                    .filter(|policy_match| policy_match.severity == "deny")
+                    .count()
+            });
+        let warn_matches = report
+            .policy_stats
+            .as_ref()
+            .map(|policy_stats| policy_stats.warn_matches)
+            .unwrap_or_else(|| {
+                report
+                    .policy_matches
+                    .iter()
+                    .filter(|policy_match| policy_match.severity == "warn")
+                    .count()
+            });
         output.push_str(&format!(
-            "policy matched {} root(s), deny {}, warn {}, inventory roots {}, findings {}\n",
-            policy_stats.matched_roots,
-            policy_stats.deny_matches,
-            policy_stats.warn_matches,
-            report.inventory_roots.len(),
-            report.findings.len()
+            "policy matched {}, deny {}, warn {}, inventory {}, {}\n",
+            count_label(matched_roots, "root", "roots"),
+            deny_matches,
+            warn_matches,
+            count_label(report.inventory_roots.len(), "root", "roots"),
+            count_label(report.findings.len(), "finding", "findings"),
         ));
         if let Some(inventory_stats) = &report.inventory_stats {
             output.push_str(&format!(
-                "inventory counters: user={} system={} lintable={} discovered_only={} high={} medium={} low={} scanned={} non_target={} excluded={} binary={} unreadable={} unrecognized={}\n",
+                "inventory counters: user={}, system={}, lintable={}, discovered-only={}, high={}, medium={}, low={}, scanned={}, non-target={}, excluded={}, binary={}, unreadable={}, unrecognized={}\n",
                 inventory_stats.user_roots,
                 inventory_stats.system_roots,
                 inventory_stats.lintable_roots,
@@ -28,21 +78,77 @@ pub(super) fn append_policy_sections(output: &mut String, report: &ReportEnvelop
                 inventory_stats.unrecognized_files,
             ));
         }
+        append_lane_summary(output, report.findings, style);
     }
 
-    for policy_match in &report.policy_matches {
+    if report.policy_matches.is_empty() {
+        return;
+    }
+
+    append_section_gap(output);
+    output.push_str(&style.section_heading("policy matches", report.policy_matches.len()));
+    output.push_str("\n\n");
+
+    let mut policy_matches = report.policy_matches.iter().collect::<Vec<_>>();
+    policy_matches.sort_by(|left, right| {
+        policy_severity_rank(&right.severity)
+            .cmp(&policy_severity_rank(&left.severity))
+            .then_with(|| left.policy_id.cmp(&right.policy_id))
+            .then_with(|| left.client.cmp(&right.client))
+            .then_with(|| left.surface.cmp(&right.surface))
+            .then_with(|| left.path.cmp(&right.path))
+            .then_with(|| left.message.cmp(&right.message))
+    });
+
+    for (index, policy_match) in policy_matches.iter().enumerate() {
+        output.push_str("  ");
         output.push_str(&format!(
-            "policy [{}] {} {} {} {} {}\n",
+            "[{}] {} {} {} {}",
             policy_match.severity,
             policy_match.policy_id,
             policy_match.client,
             policy_match.surface,
-            policy_match.path,
-            policy_match.message
+            policy_match.path
         ));
-        for rule_code in &policy_match.matched_findings {
-            output.push_str(&format!("  matched: {rule_code}\n"));
+        output.push('\n');
+
+        output.push_str("  ");
+        output.push_str(&policy_match.message);
+        output.push('\n');
+
+        if !policy_match.evidence.is_empty() {
+            output.push_str("  ");
+            output.push_str(&style.secondary("evidence:"));
+            output.push('\n');
+            for evidence in &policy_match.evidence {
+                output.push_str("    ");
+                output.push_str(evidence);
+                output.push('\n');
+            }
         }
+
+        if !policy_match.matched_findings.is_empty() {
+            output.push_str("  ");
+            output.push_str(&style.secondary("matched findings:"));
+            output.push('\n');
+            for rule_code in &policy_match.matched_findings {
+                output.push_str("    ");
+                output.push_str(rule_code);
+                output.push('\n');
+            }
+        }
+
+        if index + 1 < policy_matches.len() {
+            output.push('\n');
+        }
+    }
+}
+
+fn policy_severity_rank(severity: &str) -> usize {
+    match severity {
+        "deny" => 2,
+        "warn" => 1,
+        _ => 0,
     }
 }
 
@@ -84,7 +190,7 @@ mod tests {
             &RuleMetadata::new(
                 "SEC417",
                 "test",
-                lintai_api::Category::Security,
+                lintai_api::Category::Hardening,
                 Severity::Warn,
                 lintai_api::Confidence::High,
                 RuleTier::Stable,
@@ -142,18 +248,19 @@ mod tests {
         });
 
         let mut output = String::new();
-        super::append_policy_sections(&mut output, &envelope);
+        super::append_policy_sections(
+            &mut output,
+            &envelope,
+            super::ResolvedTextStyle::plain_for_tests(),
+        );
 
         assert!(
-            output.contains(
-                "policy matched 1 root(s), deny 1, warn 2, inventory roots 1, findings 1"
-            )
+            output.contains("policy matched 1 root, deny 1, warn 2, inventory 1 root, 1 finding")
         );
-        assert!(output.contains("inventory counters: user=1 system=0 lintable=1 discovered_only=0 high=0 medium=0 low=0 scanned=0 non_target=0 excluded=0 binary=0 unreadable=0 unrecognized=0"));
-        assert!(output.contains(
-            "policy [warn] policy_1 client-a surface service/config.json policy message"
-        ));
-        assert!(output.contains("  matched: SEC417"));
+        assert!(output.contains("inventory counters: user=1"));
+        assert!(output.contains("policy matches (1)"));
+        assert!(output.contains("[warn] policy_1 client-a surface service/config.json"));
+        assert!(output.contains("matched findings:"));
     }
 
     #[test]
@@ -173,10 +280,16 @@ mod tests {
             risk_level: "low".into(),
         }];
 
-        super::append_policy_sections(&mut output, &envelope);
+        super::append_policy_sections(
+            &mut output,
+            &envelope,
+            super::ResolvedTextStyle::plain_for_tests(),
+        );
 
-        assert!(output.contains(
-            "policy [warn] policy_1 client-a surface service/config.json policy message"
-        ));
+        assert!(
+            output.contains("policy matched 1 root, deny 0, warn 1, inventory 0 roots, 0 findings")
+        );
+        assert!(output.contains("policy matches (1)"));
+        assert!(output.contains("policy message"));
     }
 }

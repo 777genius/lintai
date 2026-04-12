@@ -7,16 +7,16 @@
   </p>
   <div class="lintai-feature-list">
     <div class="lintai-feature-item">
-      <strong>Membership presets</strong>
-      <span>Activate curated groups of rules directly.</span>
+      <strong>Start with `recommended`</strong>
+      <span>Use the quiet default first, then add broader review only when you need it.</span>
     </div>
     <div class="lintai-feature-item">
-      <strong>Overlay presets</strong>
-      <span>Adjust the behavior of rules that are already active.</span>
+      <strong>Add sidecar lanes deliberately</strong>
+      <span>`preview`, `threat-review`, `governance`, `compat`, and others are explicit extra review passes.</span>
     </div>
     <div class="lintai-feature-item">
-      <strong>Bidirectional navigation</strong>
-      <span>Preset pages link to rules, and rule pages link back to their memberships.</span>
+      <strong>Use surface presets when scoping matters</strong>
+      <span>`skills`, `mcp`, and `claude` focus review on a specific artifact family instead of broad repo coverage.</span>
     </div>
   </div>
 </div>

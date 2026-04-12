@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { mdiArrowTopRight, mdiCodeBracesBox, mdiLockOutline, mdiShieldCheckOutline } from '@mdi/js';
+import { mdiCodeBracesBox, mdiLockOutline, mdiShieldCheckOutline } from '@mdi/js';
 
 const { content } = useLandingContent();
 const { t, locale } = useI18n();
-const config = useRuntimeConfig();
-const githubUrl = `https://github.com/${config.public.githubRepo}`;
 const { data: releaseData, quickRunCommand } = useReleaseDownloads();
 const compactTitle = computed(() => locale.value === 'ru');
 const copiedQuickRun = ref(false);
@@ -117,16 +115,6 @@ const copyQuickRun = async () => {
                 {{ t('hero.secondaryCta') }}
               </v-btn>
             </div>
-
-            <a
-              :href="githubUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="hero-section__subaction"
-            >
-              <span>{{ t('hero.docsCta') }}</span>
-              <v-icon size="16" :icon="mdiArrowTopRight" />
-            </a>
           </div>
 
           <div class="hero-section__meta-row">
@@ -200,14 +188,16 @@ const copyQuickRun = async () => {
   font-size: clamp(2.8rem, 4vw, 3.8rem);
   font-weight: 800;
   letter-spacing: -0.04em;
-  line-height: 1.03;
+  line-height: 1.09;
   margin-bottom: 20px;
+  padding-bottom: 0.08em;
   background: linear-gradient(135deg, #e0e6ff 0%, #00f0ff 50%, #ff00ff 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   max-width: none;
   text-wrap: balance;
+  overflow: visible;
 }
 
 .hero-section__title--compact {
@@ -362,25 +352,6 @@ const copyQuickRun = async () => {
   background: rgba(0, 240, 255, 0.06) !important;
 }
 
-.hero-section__subaction {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0 4px;
-  color: #d3ddf9;
-  text-decoration: none;
-  font-size: 0.92rem;
-  font-weight: 600;
-  transition:
-    color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.hero-section__subaction:hover {
-  color: #ffffff;
-  transform: translateX(2px);
-}
-
 .hero-section__trust {
   display: flex;
   flex-wrap: wrap;
@@ -506,8 +477,7 @@ const copyQuickRun = async () => {
 
 .v-theme--light .hero-section__subtitle,
 .v-theme--light .hero-section__trust-item,
-.v-theme--light .hero-section__release-badge,
-.v-theme--light .hero-section__subaction {
+.v-theme--light .hero-section__release-badge {
   color: #64748b;
 }
 

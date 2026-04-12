@@ -186,7 +186,7 @@ fn assert_text_output(case: &CommandCase, stdout: &str) {
 
     if case.expected_rules.is_empty() {
         assert!(
-            stdout.contains("found 0 finding(s)"),
+            stdout.contains("found 0 findings"),
             "{} expected clean summary: {stdout}",
             case.name
         );
@@ -319,6 +319,7 @@ fn assert_fix_preview_output(case: &CommandCase, stdout: &str) {
 fn assert_help_output(case: &CommandCase, stdout: &str) {
     for expected in [
         "lintai scan [path]",
+        "--color=auto|always|never",
         "lintai scan-known [--scope=project|global|both] [--client NAME] [--preset NAME]",
         "lintai inventory-os [--scope=user|system|both] [--client NAME] [--preset NAME]",
         "lintai policy-os --policy FILE [--scope=user|system|both] [--client NAME] [--preset NAME]",

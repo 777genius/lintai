@@ -55,7 +55,8 @@
 
 На текущем срезе это означает:
 
-- `Flagship`: `SEC352`, `SEC340`, `SEC329`, `SEC324`
+- `Flagship quiet-default/default-adjacent`: `SEC340`, `SEC329`
+- `Flagship sidecar`: `SEC352`, `SEC324`
 - `Domain-sensitive`: `SEC102`, `SEC313`, `SEC335`, `SEC347`, `SEC348`, `SEC349`, `SEC351`
 
 `SEC347` остаётся сильным shipped preview rule, но после quiet-default hardening его больше не стоит подавать как first-screen example наравне с committed config rules.
@@ -79,7 +80,7 @@
 
 Текущий основной stable-candidate:
 
-- `SEC352`
+- сейчас нет отдельного highlighted stable-candidate; `SEC352` уже shipped как stable `governance` rule и больше не относится к preview promotion track
 
 ## Запрещённые подходы (anti-patterns)
 

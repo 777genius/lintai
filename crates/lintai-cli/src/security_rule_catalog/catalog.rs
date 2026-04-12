@@ -1,7 +1,8 @@
 use crate::security_rule_catalog::format::{
     escape_markdown_table_cell, escape_markdown_text, format_bool, format_case_ids,
-    format_confidence, format_detection, format_presets, format_public_lane, format_remediation,
-    format_scope, format_severity, format_surface, format_tier, render_inline_code,
+    format_category, format_confidence, format_detection, format_lifecycle, format_presets,
+    format_public_lane, format_remediation, format_scope, format_severity, format_surface, format_tier,
+    render_inline_code,
 };
 use crate::shipped_rules::{CatalogRuleLifecycle, SecurityRuleCatalogEntry, shipped_rule_alias};
 
@@ -37,20 +38,21 @@ pub(super) fn render_summary(entries: &[SecurityRuleCatalogEntry]) -> Vec<String
         String::new(),
         "## Summary".to_owned(),
         String::new(),
-        "| Code | Summary | Public Lane | Tier | Lifecycle | Severity | Scope | Surface | Detection | Remediation | Presets |".to_owned(),
-        "|---|---|---|---|---|---|---|---|---|---|---|".to_owned(),
+        "| Code | Summary | Public Lane | Category | Tier | Lifecycle | Severity | Scope | Surface | Detection | Remediation | Presets |".to_owned(),
+        "|---|---|---|---|---|---|---|---|---|---|---|---|".to_owned(),
     ];
 
     let mut summary_entries = entries.to_vec();
     summary_entries.sort_by_key(|entry| entry.metadata.code);
     for entry in summary_entries {
         lines.push(format!(
-            "| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |",
+            "| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |",
             render_rule_identity(entry.metadata.code),
             escape_markdown_table_cell(entry.metadata.summary),
             render_inline_code(format_public_lane(entry.public_lane())),
+            render_inline_code(format_category(entry.metadata.category)),
             format_tier(entry.metadata.tier),
-            render_inline_code(entry.lifecycle_state()),
+            render_inline_code(format_lifecycle(entry.lifecycle)),
             format_severity(entry.metadata),
             render_inline_code(format_scope(entry.scope)),
             render_inline_code(format_surface(entry.surface)),
@@ -149,6 +151,10 @@ fn render_detail_section(entry: SecurityRuleCatalogEntry) -> Vec<String> {
             render_inline_code(format_public_lane(entry.public_lane()))
         ),
         format!(
+            "- Category: {}",
+            render_inline_code(format_category(entry.metadata.category))
+        ),
+        format!(
             "- Default Confidence: {}",
             render_inline_code(format_confidence(entry.metadata))
         ),
@@ -166,7 +172,7 @@ fn render_detail_section(entry: SecurityRuleCatalogEntry) -> Vec<String> {
         ),
         format!(
             "- Lifecycle: {}",
-            render_inline_code(entry.lifecycle_state())
+            render_inline_code(format_lifecycle(entry.lifecycle))
         ),
     ];
 

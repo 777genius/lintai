@@ -1,5 +1,5 @@
 mod catalog;
-mod format;
+pub(crate) mod format;
 #[cfg(test)]
 mod tests;
 

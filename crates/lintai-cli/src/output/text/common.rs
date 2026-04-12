@@ -1,34 +1,7 @@
-use std::path::Path;
+use lintai_api::Location;
+use lintai_engine::ProviderExecutionPhase;
 
-use lintai_api::Severity;
-use lintai_engine::{DiagnosticSeverity, ProviderExecutionPhase, RuntimeErrorKind};
-
-use crate::known_scan::{InventoryChangedRoot, InventoryRoot};
-
-pub(super) fn severity_label(severity: Severity) -> &'static str {
-    match severity {
-        Severity::Deny => "deny",
-        Severity::Warn => "warn",
-        Severity::Allow => "allow",
-    }
-}
-
-pub(super) fn diagnostic_label(kind: DiagnosticSeverity) -> &'static str {
-    match kind {
-        DiagnosticSeverity::Info => "info",
-        DiagnosticSeverity::Warn => "warn",
-    }
-}
-
-pub(super) fn error_kind_label(kind: RuntimeErrorKind) -> &'static str {
-    match kind {
-        RuntimeErrorKind::Read => "read",
-        RuntimeErrorKind::InvalidUtf8 => "invalid_utf8",
-        RuntimeErrorKind::Parse => "parse",
-        RuntimeErrorKind::ProviderExecution => "provider_execution",
-        RuntimeErrorKind::ProviderTimeout => "provider_timeout",
-    }
-}
+use crate::known_scan::InventoryChangedRoot;
 
 pub(super) fn provider_execution_phase_label(phase: ProviderExecutionPhase) -> &'static str {
     match phase {
@@ -46,11 +19,15 @@ pub(super) fn changed_root_fragment(root: &InventoryChangedRoot) -> String {
         ));
     }
     if root.old_mode != root.new_mode {
-        parts.push(format!("mode {}->{}", root.old_mode, root.new_mode));
+        parts.push(format!(
+            "mode {}->{}",
+            inventory_mode_label(&root.old_mode),
+            inventory_mode_label(&root.new_mode)
+        ));
     }
     if root.old_path_type != root.new_path_type {
         parts.push(format!(
-            "path_type {}->{}",
+            "path type {}->{}",
             root.old_path_type, root.new_path_type
         ));
     }
@@ -64,22 +41,50 @@ pub(super) fn changed_root_fragment(root: &InventoryChangedRoot) -> String {
     parts.join(" ")
 }
 
-pub(super) fn client_for_inventory_finding<'a>(
-    roots: &'a [InventoryRoot],
-    normalized_path: &str,
-) -> &'a str {
-    let finding_path = Path::new(normalized_path);
-    roots
-        .iter()
-        .find(|root| match root.provenance.path_type.as_str() {
-            "directory" => {
-                let root_path = Path::new(&root.path);
-                finding_path == root_path || finding_path.starts_with(root_path)
-            }
-            _ => root.path == normalized_path,
-        })
-        .map(|root| root.client.as_str())
-        .unwrap_or("unknown")
+pub(super) fn location_label(location: &Location) -> String {
+    if let Some(start) = &location.start {
+        return format!(
+            "{}:{}:{}",
+            location.normalized_path, start.line, start.column
+        );
+    }
+
+    format!(
+        "{}:{}-{}",
+        location.normalized_path, location.span.start_byte, location.span.end_byte
+    )
+}
+
+pub(super) fn location_detail_label(location: &Location) -> String {
+    if let Some(start) = &location.start {
+        return format!("{}:{}", start.line, start.column);
+    }
+
+    format!("{}-{}", location.span.start_byte, location.span.end_byte)
+}
+
+pub(super) fn append_section_gap(output: &mut String) {
+    if output.is_empty() {
+        return;
+    }
+    if !output.ends_with('\n') {
+        output.push('\n');
+    }
+    if !output.ends_with("\n\n") {
+        output.push('\n');
+    }
+}
+
+pub(super) fn count_label(count: usize, singular: &str, plural: &str) -> String {
+    if count == 1 {
+        format!("1 {singular}")
+    } else {
+        format!("{count} {plural}")
+    }
+}
+
+pub(super) fn diagnostic_code_label(code: &str) -> String {
+    code.replace('_', "-")
 }
 
 fn option_u64_label(value: Option<u64>) -> String {
@@ -88,48 +93,21 @@ fn option_u64_label(value: Option<u64>) -> String {
         .unwrap_or_else(|| "none".to_owned())
 }
 
+fn inventory_mode_label(mode: &str) -> &str {
+    match mode {
+        "discovered_only" => "discovered-only",
+        other => other,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::changed_root_fragment;
-    use crate::known_scan::{InventoryChangedRoot, InventoryRoot};
+    use crate::known_scan::InventoryChangedRoot;
+    use lintai_api::{LineColumn, Location, Span};
 
     #[test]
-    fn maps_severity_labels() {
-        assert_eq!(super::severity_label(lintai_api::Severity::Deny), "deny");
-        assert_eq!(super::severity_label(lintai_api::Severity::Warn), "warn");
-        assert_eq!(super::severity_label(lintai_api::Severity::Allow), "allow");
-    }
-
-    #[test]
-    fn maps_diagnostic_and_runtime_error_labels() {
-        assert_eq!(
-            super::diagnostic_label(lintai_engine::DiagnosticSeverity::Info),
-            "info"
-        );
-        assert_eq!(
-            super::diagnostic_label(lintai_engine::DiagnosticSeverity::Warn),
-            "warn"
-        );
-        assert_eq!(
-            super::error_kind_label(lintai_engine::RuntimeErrorKind::Read),
-            "read"
-        );
-        assert_eq!(
-            super::error_kind_label(lintai_engine::RuntimeErrorKind::InvalidUtf8),
-            "invalid_utf8"
-        );
-        assert_eq!(
-            super::error_kind_label(lintai_engine::RuntimeErrorKind::Parse),
-            "parse"
-        );
-        assert_eq!(
-            super::error_kind_label(lintai_engine::RuntimeErrorKind::ProviderExecution),
-            "provider_execution"
-        );
-        assert_eq!(
-            super::error_kind_label(lintai_engine::RuntimeErrorKind::ProviderTimeout),
-            "provider_timeout"
-        );
+    fn maps_provider_execution_phase_labels() {
         assert_eq!(
             super::provider_execution_phase_label(lintai_engine::ProviderExecutionPhase::File),
             "file"
@@ -157,59 +135,54 @@ mod tests {
         };
 
         let fragment = changed_root_fragment(&changed);
-        assert!(fragment.contains("mode discovered_only->lintable"));
-        assert!(fragment.contains("path_type file->directory"));
+        assert!(fragment.contains("mode discovered-only->lintable"));
+        assert!(fragment.contains("path type file->directory"));
         assert!(fragment.contains("mtime none->1730"));
         assert!(!fragment.contains("risk"));
     }
 
     #[test]
-    fn client_for_inventory_finding_matches_directory_scope() {
-        let root = InventoryRoot {
-            client: "client".into(),
-            surface: "surface".into(),
-            path: "/tmp/project".into(),
-            mode: "lintable".into(),
-            risk_level: "low".into(),
-            provenance: crate::known_scan::InventoryProvenance {
-                origin_scope: "project".into(),
-                path_type: "directory".into(),
-                target_path: None,
-                owner: None,
-                mtime_epoch_s: None,
-            },
-        };
-        let file = InventoryRoot {
-            client: "other".into(),
-            surface: "surface".into(),
-            path: "/tmp/other/README.md".into(),
-            mode: "lintable".into(),
-            risk_level: "low".into(),
-            provenance: crate::known_scan::InventoryProvenance {
-                origin_scope: "project".into(),
-                path_type: "file".into(),
-                target_path: None,
-                owner: None,
-                mtime_epoch_s: None,
-            },
-        };
+    fn location_label_prefers_line_column_when_present() {
+        let mut location = Location::new("repo/file.md", Span::new(4, 9));
+        location.start = Some(LineColumn::new(3, 7));
 
-        let roots = vec![root, file];
+        assert_eq!(super::location_label(&location), "repo/file.md:3:7");
+    }
+
+    #[test]
+    fn location_label_falls_back_to_byte_span() {
+        let location = Location::new("repo/file.md", Span::new(4, 9));
+
+        assert_eq!(super::location_label(&location), "repo/file.md:4-9");
+    }
+
+    #[test]
+    fn location_detail_label_prefers_line_column_when_present() {
+        let mut location = Location::new("repo/file.md", Span::new(4, 9));
+        location.start = Some(LineColumn::new(3, 7));
+
+        assert_eq!(super::location_detail_label(&location), "3:7");
+    }
+
+    #[test]
+    fn location_detail_label_falls_back_to_byte_span() {
+        let location = Location::new("repo/file.md", Span::new(4, 9));
+
+        assert_eq!(super::location_detail_label(&location), "4-9");
+    }
+
+    #[test]
+    fn count_label_handles_singular_and_plural() {
+        assert_eq!(super::count_label(1, "file", "files"), "1 file");
+        assert_eq!(super::count_label(2, "file", "files"), "2 files");
+    }
+
+    #[test]
+    fn diagnostic_code_label_humanizes_snake_case() {
         assert_eq!(
-            super::client_for_inventory_finding(&roots, "/tmp/project"),
-            "client"
+            super::diagnostic_code_label("parse_recovery"),
+            "parse-recovery"
         );
-        assert_eq!(
-            super::client_for_inventory_finding(&roots, "/tmp/project/src/lib.rs"),
-            "client"
-        );
-        assert_eq!(
-            super::client_for_inventory_finding(&roots, "/tmp/other/README.md"),
-            "other"
-        );
-        assert_eq!(
-            super::client_for_inventory_finding(&roots, "/tmp/other"),
-            "unknown"
-        );
+        assert_eq!(super::diagnostic_code_label("yaml"), "yaml");
     }
 }

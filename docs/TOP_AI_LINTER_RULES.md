@@ -31,10 +31,10 @@
 
 1. `SEC340` — mutable launcher в committed Claude settings hook. Увер. `9/10`, Надёж. `9/10`
 2. `SEC329` — mutable launcher в committed MCP config. Увер. `9/10`, Надёж. `9/10`
-3. `SEC352` — сильнейший least-privilege rule для shared skills/frontmatter. Увер. `9/10`, Надёж. `9/10`
-4. `SEC324` — unpinned third-party GitHub Action как сильный sidecar supply-chain control. Увер. `9/10`, Надёж. `9/10`
+3. `SEC324` — unpinned third-party GitHub Action как сильный sidecar supply-chain control. Увер. `9/10`, Надёж. `9/10`
+4. `SEC352` — сильный governance least-privilege rule для shared skills/frontmatter. Увер. `9/10`, Надёж. `9/10`
 
-`SEC340`, `SEC329` и `SEC352` лучше всего показывают quiet-default и near-default product value. `SEC324` тоже очень сильный, но его правильнее подавать как supporting sidecar control, а не как proof, что весь продукт в первую очередь про CI supply chain. `SEC347` по-прежнему хороший preview rule и useful deeper-review signal для AI-native docs, но его больше не стоит подавать как quiet-default face of product.
+`SEC340` и `SEC329` лучше всего показывают quiet-default product value. `SEC324` и `SEC352` тоже очень сильные, но их правильнее подавать как explicit sidecar controls - supply-chain и governance соответственно. `SEC347` по-прежнему хороший preview rule и useful deeper-review signal для AI-native docs, но его больше не стоит подавать как quiet-default face of product.
 
 ## Синтез 15 исследовательских агентов (март 2026)
 
