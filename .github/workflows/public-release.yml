@@ -441,7 +441,6 @@ jobs:
             dist/lintai-installer.sh
             dist/lintai-installer.ps1
             dist/SHA256SUMS
-            dist/*-sbom.tar.gz
             dist/*-provenance.intoto.jsonl
 
   smoke_published_curl_installer:
