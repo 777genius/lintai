@@ -232,6 +232,23 @@ For teams evaluating `v0.1`, a good default is:
 
 Treat `diagnostics` separately from findings.
 
+## Broad Local Scans
+
+`lintai scan .` is meant for one repository at a time. If you scan a parent directory that contains many repos, scan each repository directly when you want findings for that repository.
+
+To keep broad scans readable, lintai does not descend into nested Git repositories or Git worktrees during directory walks. Direct scans still work:
+
+```bash
+lintai scan claude/_worktrees/some-worktree
+```
+
+Test corpora are project-specific, so lintai does not hide every `corpus/` directory globally. If your repository keeps intentionally malicious fixtures or generated samples, exclude them explicitly in `lintai.toml`:
+
+```toml
+[files]
+exclude = ["corpus/**"]
+```
+
 ## Installed Artifact Audit
 
 Repository scans are the primary workflow, but `lintai` can also help audit what your AI clients already have configured.

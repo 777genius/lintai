@@ -129,7 +129,7 @@ mod tests {
         );
         assert_eq!(
             shipped_rule_doc_title("SEC340"),
-            Some("Claude hook: mutable package launcher")
+            Some("Claude hook: dynamic package launch")
         );
         assert_eq!(shipped_rule_alias("SEC353"), Some("COPILOT-4K"));
         assert_eq!(shipped_rule_alias("SEC355"), Some("MD-WILDCARD-TOOLS"));

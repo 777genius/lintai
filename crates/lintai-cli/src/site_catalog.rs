@@ -1070,7 +1070,7 @@ mod tests {
                 .any(|rule_id| rule_id == "lintai-ai-security:SEC390")
         );
         assert_eq!(sec101.doc_title, "HTML comment: dangerous instructions");
-        assert_eq!(sec340.doc_title, "Claude hook: mutable package launcher");
+        assert_eq!(sec340.doc_title, "Claude hook: dynamic package launch");
         assert_eq!(sec401.doc_title, "Policy mismatch: execution");
         assert_eq!(
             sec756.doc_title,

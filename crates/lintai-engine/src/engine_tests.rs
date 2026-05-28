@@ -696,6 +696,52 @@ fn does_not_discover_symlinked_directory_outside_project_root() {
 }
 
 #[test]
+fn does_not_descend_into_nested_git_repository_during_broad_scan() {
+    let temp_dir = unique_temp_dir("lintai-nested-git-repo");
+    std::fs::create_dir_all(temp_dir.join("nested/.git")).unwrap();
+    std::fs::write(temp_dir.join("SKILL.md"), b"# root\n").unwrap();
+    std::fs::write(temp_dir.join("nested/SKILL.md"), b"# nested\n").unwrap();
+
+    let summary = Engine::builder().build().scan_path(&temp_dir).unwrap();
+
+    assert_eq!(summary.scanned_files, 1);
+    assert!(summary.findings.is_empty());
+    assert!(summary.runtime_errors.is_empty());
+}
+
+#[test]
+fn direct_scan_of_nested_git_repository_still_works() {
+    let temp_dir = unique_temp_dir("lintai-direct-nested-git-repo");
+    let nested_dir = temp_dir.join("nested");
+    std::fs::create_dir_all(nested_dir.join(".git")).unwrap();
+    std::fs::write(nested_dir.join("SKILL.md"), b"# nested\n").unwrap();
+
+    let summary = Engine::builder().build().scan_path(&nested_dir).unwrap();
+
+    assert_eq!(summary.scanned_files, 1);
+    assert!(summary.runtime_errors.is_empty());
+}
+
+#[test]
+fn does_not_descend_into_nested_git_worktree_during_broad_scan() {
+    let temp_dir = unique_temp_dir("lintai-nested-git-worktree");
+    let worktree_dir = temp_dir.join("_worktrees/demo");
+    std::fs::create_dir_all(&worktree_dir).unwrap();
+    std::fs::write(
+        worktree_dir.join(".git"),
+        b"gitdir: ../.git/worktrees/demo\n",
+    )
+    .unwrap();
+    std::fs::write(worktree_dir.join("SKILL.md"), b"# worktree\n").unwrap();
+    std::fs::write(temp_dir.join("SKILL.md"), b"# root\n").unwrap();
+
+    let summary = Engine::builder().build().scan_path(&temp_dir).unwrap();
+
+    assert_eq!(summary.scanned_files, 1);
+    assert!(summary.runtime_errors.is_empty());
+}
+
+#[test]
 fn suppression_hook_filters_findings() {
     let temp_dir = unique_temp_dir("lintai-suppression");
     std::fs::create_dir_all(&temp_dir).unwrap();

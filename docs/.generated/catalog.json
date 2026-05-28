@@ -2406,10 +2406,10 @@
       "displayCode": "SEC329",
       "alias": "MCP-MUTABLE-LAUNCHER",
       "displayLabel": "SEC329 / MCP-MUTABLE-LAUNCHER",
-      "docTitle": "MCP config: mutable package runner",
+      "docTitle": "MCP config: dynamic package launch",
       "slug": "sec329",
       "canonicalPath": "/rules/lintai-ai-security/sec329",
-      "summary": "MCP configuration launches tooling through a mutable package runner",
+      "summary": "MCP config launches an external package dynamically at runtime",
       "publicLane": "recommended",
       "category": "security",
       "scope": "per-file",
@@ -2427,7 +2427,7 @@
       "lifecycleState": "stable",
       "lifecycle": {
         "kind": "stable",
-        "rationale": "Checks committed MCP config command launchers for mutable package-runner forms such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.",
+        "rationale": "Checks committed MCP config commands that dynamically download or resolve packages at runtime through npx, uvx, pnpm dlx, yarn dlx, or pipx run.",
         "maliciousCaseIds": [
           "mcp-mutable-launcher"
         ],
@@ -2717,10 +2717,10 @@
       "displayCode": "SEC340",
       "alias": "CLAUDE-HOOK-MUTABLE-LAUNCHER",
       "displayLabel": "SEC340 / CLAUDE-HOOK-MUTABLE-LAUNCHER",
-      "docTitle": "Claude hook: mutable package launcher",
+      "docTitle": "Claude hook: dynamic package launch",
       "slug": "sec340",
       "canonicalPath": "/rules/lintai-ai-security/sec340",
-      "summary": "Claude settings command hook uses a mutable package launcher",
+      "summary": "Claude hook launches an external package dynamically at runtime",
       "publicLane": "recommended",
       "category": "security",
       "scope": "per-file",
@@ -2738,7 +2738,7 @@
       "lifecycleState": "stable",
       "lifecycle": {
         "kind": "stable",
-        "rationale": "Checks committed Claude settings command hooks for mutable package launcher forms such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.",
+        "rationale": "Checks committed Claude settings hooks that dynamically download or resolve packages at runtime through npx, uvx, pnpm dlx, yarn dlx, or pipx run.",
         "maliciousCaseIds": [
           "claude-settings-mutable-launcher"
         ],

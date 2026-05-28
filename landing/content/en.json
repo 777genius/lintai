@@ -16,10 +16,10 @@
     },
     {
       "id": "mcpLauncher",
-      "title": "Mutable launcher in committed mcp.json",
-      "description": "A routine command path can quietly change how tooling resolves.",
+      "title": "Dynamic package launch in mcp.json",
+      "description": "A routine command path can quietly change what code the agent runs.",
       "looksLike": "Normal mcp.json wiring or setup guidance.",
-      "actuallyDoes": "Runs agent tooling through a mutable launcher on every machine."
+      "actuallyDoes": "Downloads or resolves agent tooling dynamically at runtime."
     },
     {
       "id": "hookBoundary",
@@ -37,8 +37,8 @@
       "surface": "Hook settings",
       "lifecycle": "Committed config",
       "title": "On-the-fly launches in hook config",
-      "description": "Catches shared hook commands that launch tooling at runtime instead of using a reviewed executable path.",
-      "whyItMatters": "A hook should behave like reviewed automation, not like a command path that changes under different machines or package state.",
+      "description": "Catches shared hook commands that resolve packages at runtime instead of using a reviewed executable path.",
+      "whyItMatters": "A hook should behave like reviewed automation, not like a command path that can run different package code later.",
       "evidence": "Committed-config signal with a concrete execution path to review.",
       "href": "https://777genius.github.io/lintai/docs/rules/lintai-ai-security/sec340.html"
     },
@@ -48,9 +48,9 @@
       "code": "SEC329",
       "surface": "mcp.json",
       "lifecycle": "Before merge",
-      "title": "Mutable package launcher in committed config",
-      "description": "Catches mcp.json entries that look routine but still decide how agent tooling gets resolved and executed.",
-      "whyItMatters": "This is the kind of change normal review underestimates because it sits in config, not in the code path it affects.",
+      "title": "Dynamic package launch in committed config",
+      "description": "Catches mcp.json entries that launch external packages dynamically instead of using reviewed local tooling.",
+      "whyItMatters": "This is easy to underestimate in review because the repo changes config, while the executed code can come from a registry later.",
       "evidence": "High-confidence signal for checked-in MCP wiring.",
       "href": "https://777genius.github.io/lintai/docs/rules/lintai-ai-security/sec329.html"
     },

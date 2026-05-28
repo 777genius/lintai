@@ -51,7 +51,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC326 / GHA-PR-TARGET-HEAD-CHECKOUT` | GitHub Actions pull_request_target workflow checks out untrusted pull request head content | `supply-chain` | `hardening` | Stable | `stable` | Warn | `per-file` | `github_workflow` | `structural` | `message only` | `supply-chain` |
 | `SEC327 / GHA-WRITE-ALL-PERMISSIONS` | GitHub Actions workflow grants GITHUB_TOKEN write-all permissions | `supply-chain` | `hardening` | Stable | `stable` | Warn | `per-file` | `github_workflow` | `structural` | `message only` | `supply-chain` |
 | `SEC328 / GHA-WRITE-CAPABLE-THIRD-PARTY-ACTION` | GitHub Actions workflow combines explicit write-capable permissions with a third-party action | `supply-chain` | `hardening` | Preview | `preview` | Warn | `per-file` | `github_workflow` | `structural` | `message only` | `supply-chain` |
-| `SEC329 / MCP-MUTABLE-LAUNCHER` | MCP configuration launches tooling through a mutable package runner | `recommended` | `security` | Stable | `stable` | Warn | `per-file` | `json` | `structural` | `message only` | `recommended`, `base`, `mcp` |
+| `SEC329 / MCP-MUTABLE-LAUNCHER` | MCP config launches an external package dynamically at runtime | `recommended` | `security` | Stable | `stable` | Warn | `per-file` | `json` | `structural` | `message only` | `recommended`, `base`, `mcp` |
 | `SEC330 / MCP-DOWNLOAD-EXEC` | MCP configuration command downloads remote content and pipes it into a shell | `supply-chain` | `security` | Stable | `stable` | Warn | `per-file` | `json` | `structural` | `message only` | `supply-chain`, `mcp` |
 | `SEC331 / MCP-TLS-BYPASS` | MCP configuration command disables TLS verification in a network-capable execution path | `supply-chain` | `hardening` | Stable | `stable` | Warn | `per-file` | `json` | `structural` | `message only` | `supply-chain` |
 | `SEC335 / MD-METADATA-SERVICE-ACCESS` | AI-native markdown contains a direct cloud metadata-service access example | `threat-review` | `audit` | Preview | `preview` | Warn | `per-file` | `markdown` | `structural` | `message only` | `threat-review`, `skills` |
@@ -59,7 +59,7 @@ Canonical catalog for the shipped security rules currently exposed by:
 | `SEC337 / MCP-DOCKER-UNPINNED-IMAGE` | MCP configuration launches Docker with an image reference that is not digest-pinned | `supply-chain` | `hardening` | Stable | `stable` | Warn | `per-file` | `json` | `structural` | `message only` | `supply-chain` |
 | `SEC338 / MCP-DOCKER-SENSITIVE-MOUNT` | MCP configuration launches Docker with a bind mount of sensitive host material | `threat-review` | `security` | Stable | `stable` | Warn | `per-file` | `json` | `structural` | `message only` | `threat-review`, `mcp` |
 | `SEC339 / MCP-DOCKER-HOST-ESCAPE` | MCP configuration launches Docker with a host-escape or privileged runtime flag | `threat-review` | `security` | Stable | `stable` | Warn | `per-file` | `json` | `structural` | `message only` | `threat-review`, `mcp` |
-| `SEC340 / CLAUDE-HOOK-MUTABLE-LAUNCHER` | Claude settings command hook uses a mutable package launcher | `recommended` | `security` | Stable | `stable` | Warn | `per-file` | `claude_settings` | `structural` | `message only` | `recommended`, `base`, `claude` |
+| `SEC340 / CLAUDE-HOOK-MUTABLE-LAUNCHER` | Claude hook launches an external package dynamically at runtime | `recommended` | `security` | Stable | `stable` | Warn | `per-file` | `claude_settings` | `structural` | `message only` | `recommended`, `base`, `claude` |
 | `SEC341 / CLAUDE-HOOK-DOWNLOAD-EXEC` | Claude settings command hook downloads remote content and pipes it into a shell | `supply-chain` | `security` | Stable | `stable` | Warn | `per-file` | `claude_settings` | `structural` | `message only` | `supply-chain`, `claude` |
 | `SEC342 / CLAUDE-HOOK-TLS-BYPASS` | Claude settings command hook disables TLS verification in a network-capable execution path | `supply-chain` | `hardening` | Stable | `stable` | Warn | `per-file` | `claude_settings` | `structural` | `message only` | `supply-chain`, `claude` |
 | `SEC343 / PLUGIN-HOOK-MUTABLE-LAUNCHER` | Plugin hook command uses a mutable package launcher | `supply-chain` | `hardening` | Stable | `stable` | Warn | `per-file` | `json` | `structural` | `message only` | `supply-chain` |
@@ -1353,7 +1353,7 @@ Important behavior:
 - Promotion Requirements: Needs corpus-backed precision review, external usefulness evidence, and completed stable checklist metadata.
 - Canonical Note: Structural preview rule; deterministic today, but the preview contract may still evolve.
 
-### `SEC329 / MCP-MUTABLE-LAUNCHER` — MCP configuration launches tooling through a mutable package runner
+### `SEC329 / MCP-MUTABLE-LAUNCHER` — MCP config launches an external package dynamically at runtime
 
 - Provider: `lintai-ai-security`
 - Alias: `MCP-MUTABLE-LAUNCHER`
@@ -1368,7 +1368,7 @@ Important behavior:
 - Default Presets: `recommended`, `base`, `mcp`
 - Remediation: `message only`
 - Lifecycle: `stable`
-- Graduation Rationale: Checks committed MCP config command launchers for mutable package-runner forms such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.
+- Graduation Rationale: Checks committed MCP config commands that dynamically download or resolve packages at runtime through npx, uvx, pnpm dlx, yarn dlx, or pipx run.
 - Deterministic Signal Basis: JsonSignals command/args analysis over ArtifactKind::McpConfig objects with launcher-specific argument gating.
 - Malicious Corpus: `mcp-mutable-launcher`
 - Benign Corpus: `mcp-pinned-launcher-safe`
@@ -1529,7 +1529,7 @@ Important behavior:
 - Remediation Reviewed: `true`
 - Canonical Note: Structural stable rule positioned as an explicit threat-review control: high-signal malicious, credential-bearing, or spyware-like behavior that stays opt-in rather than shaping the quiet default.
 
-### `SEC340 / CLAUDE-HOOK-MUTABLE-LAUNCHER` — Claude settings command hook uses a mutable package launcher
+### `SEC340 / CLAUDE-HOOK-MUTABLE-LAUNCHER` — Claude hook launches an external package dynamically at runtime
 
 - Provider: `lintai-ai-security`
 - Alias: `CLAUDE-HOOK-MUTABLE-LAUNCHER`
@@ -1544,7 +1544,7 @@ Important behavior:
 - Default Presets: `recommended`, `base`, `claude`
 - Remediation: `message only`
 - Lifecycle: `stable`
-- Graduation Rationale: Checks committed Claude settings command hooks for mutable package launcher forms such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.
+- Graduation Rationale: Checks committed Claude settings hooks that dynamically download or resolve packages at runtime through npx, uvx, pnpm dlx, yarn dlx, or pipx run.
 - Deterministic Signal Basis: ClaudeSettingsSignals command-hook analysis over committed .claude/settings.json or claude/settings.json objects with type == command under hooks.
 - Malicious Corpus: `claude-settings-mutable-launcher`
 - Benign Corpus: `claude-settings-pinned-launcher-safe`

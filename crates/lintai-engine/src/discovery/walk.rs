@@ -10,6 +10,7 @@ pub(super) fn build_walker<'a>(
     canonical_project_root: Option<&'a Path>,
 ) -> ignore::Walk {
     let mut walker = WalkBuilder::new(root);
+    let scan_root = root.to_path_buf();
     walker.hidden(false);
     walker.follow_links(follow_symlinks);
     walker.parents(false);
@@ -18,11 +19,18 @@ pub(super) fn build_walker<'a>(
     walker.git_exclude(true);
     if let Some(project_root) = canonical_project_root {
         let project_root = project_root.to_path_buf();
+        let scan_root = scan_root.clone();
         walker.filter_entry(move |entry| {
-            should_visit_path(entry.path(), Some(project_root.as_path()))
+            should_visit_path(
+                entry.path(),
+                Some(project_root.as_path()),
+                Some(scan_root.as_path()),
+            )
         });
     } else {
-        walker.filter_entry(|entry| should_visit_path(entry.path(), None));
+        walker.filter_entry(move |entry| {
+            should_visit_path(entry.path(), None, Some(scan_root.as_path()))
+        });
     }
     walker.build()
 }

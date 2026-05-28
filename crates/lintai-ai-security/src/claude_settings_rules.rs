@@ -25,7 +25,7 @@ macro_rules! claude_settings_span_rule {
 claude_settings_span_rule!(
     check_claude_settings_mutable_launcher,
     mutable_launcher_span,
-    "Claude settings command hook uses a mutable package launcher"
+    "Claude hook launches an external package dynamically; the code can change without a repo change"
 );
 claude_settings_span_rule!(
     check_claude_settings_missing_schema,

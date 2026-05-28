@@ -217,8 +217,8 @@ declare_rule! {
 declare_rule! {
     pub struct McpMutableLauncherRule {
         code: "SEC329",
-        summary: "MCP configuration launches tooling through a mutable package runner",
-        doc_title: "MCP config: mutable package runner",
+        summary: "MCP config launches an external package dynamically at runtime",
+        doc_title: "MCP config: dynamic package launch",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -2325,7 +2325,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
         default_presets: RECOMMENDED_BASE_MCP_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
-            rationale: "Checks committed MCP config command launchers for mutable package-runner forms such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.",
+            rationale: "Checks committed MCP config commands that dynamically download or resolve packages at runtime through npx, uvx, pnpm dlx, yarn dlx, or pipx run.",
             malicious_case_ids: &["mcp-mutable-launcher"],
             benign_case_ids: &["mcp-pinned-launcher-safe"],
             requires_structured_evidence: true,
@@ -2335,7 +2335,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 169] = [
         check: check_mcp_mutable_launcher,
         safe_fix: None,
         suggestion_message: Some(
-            "replace the mutable launcher with a vendored, pinned, or otherwise reproducible MCP execution path",
+            "replace the dynamic package launch with a vendored, pinned, or local reviewed MCP command",
         ),
         suggestion_fix: None,
     },

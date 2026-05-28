@@ -29,8 +29,8 @@
 
 If you only look at a few rules first, start with these:
 
-- [SEC340](/rules/lintai-ai-security/sec340) for mutable package launchers in committed Claude hook settings.
-- [SEC329](/rules/lintai-ai-security/sec329) for mutable package launchers in committed `mcp.json`.
+- [SEC340](/rules/lintai-ai-security/sec340) for Claude hooks that launch external packages dynamically at runtime.
+- [SEC329](/rules/lintai-ai-security/sec329) for committed `mcp.json` entries that launch external packages dynamically at runtime.
 - [SEC352](/rules/lintai-ai-security/sec352) for unscoped `Bash` grants in AI-native frontmatter. Treat this as a strong governance least-privilege sidecar control, not as part of the quiet default story.
 - [SEC324](/rules/lintai-ai-security/sec324) for unpinned third-party GitHub Actions in committed CI. Treat this as a strong sidecar supply-chain control, not as the main quiet-default story.
 

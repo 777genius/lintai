@@ -1030,8 +1030,8 @@ declare_rule! {
 declare_rule! {
     pub struct ClaudeSettingsMutableLauncherRule {
         code: "SEC340",
-        summary: "Claude settings command hook uses a mutable package launcher",
-        doc_title: "Claude hook: mutable package launcher",
+        summary: "Claude hook launches an external package dynamically at runtime",
+        doc_title: "Claude hook: dynamic package launch",
         category: Category::Security,
         default_severity: Severity::Warn,
         default_confidence: Confidence::High,
@@ -3006,7 +3006,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
         default_presets: RECOMMENDED_BASE_CLAUDE_PRESETS,
         detection_class: DetectionClass::Structural,
         lifecycle: RuleLifecycle::Stable {
-            rationale: "Checks committed Claude settings command hooks for mutable package launcher forms such as npx, uvx, pnpm dlx, yarn dlx, and pipx run.",
+            rationale: "Checks committed Claude settings hooks that dynamically download or resolve packages at runtime through npx, uvx, pnpm dlx, yarn dlx, or pipx run.",
             malicious_case_ids: &["claude-settings-mutable-launcher"],
             benign_case_ids: &["claude-settings-pinned-launcher-safe"],
             requires_structured_evidence: true,
@@ -3016,7 +3016,7 @@ pub(crate) static RULE_SPECS: [NativeRuleSpec; 111] = [
         check: check_claude_settings_mutable_launcher,
         safe_fix: None,
         suggestion_message: Some(
-            "replace the mutable package launcher in the committed Claude hook with a vendored, pinned, or otherwise reproducible execution path",
+            "replace the dynamic package launch in the committed Claude hook with a vendored, pinned, or local reviewed command",
         ),
         suggestion_fix: None,
     },

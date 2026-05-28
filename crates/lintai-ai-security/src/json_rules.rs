@@ -28,7 +28,7 @@ json_span_rule!(
 json_span_rule!(
     check_mcp_mutable_launcher,
     mutable_mcp_launcher_span,
-    "MCP configuration uses a mutable package launcher in committed config"
+    "MCP config launches an external package dynamically; the code can change without a repo change"
 );
 json_span_rule!(
     check_mcp_inline_download_exec,
