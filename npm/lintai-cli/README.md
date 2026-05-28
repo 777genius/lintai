@@ -2,13 +2,11 @@
 
 `lintai-cli` is the npm wrapper package for the `lintai` native CLI.
 
-It is intended to download the matching GitHub Release binary for the current platform, verify it against `SHA256SUMS`, and then run `lintai`.
+It downloads the matching GitHub Release binary for the current platform, verifies it against `SHA256SUMS`, caches it locally, and then runs `lintai`.
 
-This package is checked into the repository, but it is not currently published to the public npm registry.
+The package does not ship native binaries inside the npm tarball. GitHub Release assets remain the canonical binary source.
 
-It also expects matching GitHub Release assets for the selected tag, so it is not a working public install path until those release assets are published.
-
-## Intended Published Usage
+## Usage
 
 ```bash
 npx lintai-cli scan .

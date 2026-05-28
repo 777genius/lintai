@@ -261,7 +261,7 @@ This mode stays inventory-first: it reports what `lintai` can honestly discover 
 
 ## Install Details
 
-The public CLI is distributed through GitHub Release assets only.
+The public CLI ships through GitHub Release binaries. The optional `lintai-cli` npm package is a thin wrapper: it downloads the matching GitHub Release binary, verifies `SHA256SUMS`, caches it locally, and forwards arguments to `lintai`.
 
 ### macOS / Linux
 
@@ -270,6 +270,21 @@ curl -fsSL https://github.com/777genius/lintai/releases/latest/download/lintai-i
 ```
 
 The installer downloads the tagged binary archive and `SHA256SUMS` from the same GitHub Release, verifies the checksum, and installs `lintai` into `~/.local/bin` by default.
+
+### npm / npx
+
+```bash
+npx lintai-cli scan .
+```
+
+For a global npm install:
+
+```bash
+npm i -g lintai-cli
+lintai scan .
+```
+
+The npm package does not carry native binaries. It resolves back to the same GitHub Release assets and checksum file used by the curl installer.
 
 ### Windows PowerShell
 
@@ -304,7 +319,8 @@ Current status:
 
 - Current release: `v0.1.0`
 - Public CLI distribution: GitHub Releases with prebuilt binaries
-- No Homebrew, npm, or `cargo install` CLI channel in this release
+- Optional npm wrapper: `npx lintai-cli scan .`
+- No Homebrew or `cargo install` CLI channel in this release
 - Precision-first security checks for supported agent artifact surfaces
 - Best evaluated on real repositories that already contain those surfaces
 - `Stable` findings are the current trust baseline
@@ -332,4 +348,4 @@ Repo-level orientation:
 - [`PUBLIC_COMPATIBILITY_POLICY.md`](PUBLIC_COMPATIBILITY_POLICY.md)
 - [`docs/ARCH_GAPS.md`](docs/ARCH_GAPS.md)
 
-`lintai-api` remains the only stable publishable crate. The CLI release does not promise Homebrew, npm, or `cargo install` distribution for `v0.1.0`.
+`lintai-api` remains the only stable publishable crate. The CLI release supports GitHub Release assets plus the `lintai-cli` npm wrapper; it does not promise Homebrew or `cargo install` distribution for `v0.1.0`.

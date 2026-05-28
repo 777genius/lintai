@@ -6,7 +6,7 @@
 ## Release Identity
 
 - Release tag: `v0.1.0`
-- Release channel: GitHub Releases with prebuilt binaries
+- Release channel: GitHub Releases with prebuilt binaries plus the `lintai-cli` npm wrapper
 - Workflow: [`public-release.yml`](https://github.com/777genius/lintai/blob/main/.github/workflows/public-release.yml)
 - Release note: [releases/v0.1.0.md](releases/v0.1.0.md)
 
@@ -45,7 +45,10 @@ The shipping workflow must publish exactly these asset classes:
 9. Verify the workflow runs [`scripts/release/verify-release-assets.sh`](https://github.com/777genius/lintai/blob/main/scripts/release/verify-release-assets.sh) against the generated `SHA256SUMS` and provenance bundle before publish.
 10. Verify the workflow published GitHub artifact attestations for the shipped release assets.
 11. Verify the workflow refreshed the landing Pages artifact after publish so the download page points at the just-published release tag.
-12. Verify no parallel package-manager or registry publication step was introduced for this release workflow.
+12. Verify `npm-publish.yml` published `lintai-cli@0.1.0` to npm.
+13. Verify the npm wrapper fetches only tagged GitHub Release assets and validates `SHA256SUMS`.
+14. Verify `npx lintai-cli scan .` works from a fresh npm cache.
+15. Verify no package-manager channel publishes separate native binaries outside the GitHub Release asset set.
 
 ## Verification Commands
 
@@ -69,7 +72,8 @@ The public-facing release posture is valid only if:
 - the GitHub Release uses the checked-in release note
 - the published assets match the expected target list above
 - the installer scripts are shipped as convenience assets inside that same GitHub Release
+- the `lintai-cli` npm wrapper is published as a convenience channel over the same GitHub Release assets
 - the GitHub Pages landing/download metadata is refreshed from the published GitHub Release before the public page is deployed
 - the release includes a checked-in supply-chain evidence bundle: CycloneDX SBOM plus provenance attestation bundle
-- no docs imply Homebrew, npm, or `cargo install` support for the CLI in this release
-- no workflow or release note implies an alternative installation source beyond published GitHub Release assets; the curl shortcut must resolve to the release installer asset
+- no docs imply Homebrew or `cargo install` support for the CLI in this release
+- no workflow or release note implies a native binary source beyond published GitHub Release assets; the curl and npm shortcuts must resolve to release assets

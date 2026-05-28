@@ -78,4 +78,4 @@ the main supporting docs are:
 - [PUBLIC_RELEASE_SHIPPING_CHECKLIST.md](PUBLIC_RELEASE_SHIPPING_CHECKLIST.md)
 - [V0_1_TO_1_0_ROADMAP.md](V0_1_TO_1_0_ROADMAP.md)
 
-The `v0.1.0` public release ships through GitHub Release assets. The quick install path is `curl` to the GitHub Release installer asset.
+The `v0.1.0` public release ships through GitHub Release assets plus the `lintai-cli` npm wrapper. The quick install paths are `curl` to the GitHub Release installer asset or `npx lintai-cli scan .`; both resolve to the release binaries.

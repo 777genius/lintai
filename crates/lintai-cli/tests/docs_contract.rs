@@ -156,7 +156,7 @@ fn readme_documents_current_positioning_posture() {
     );
     assert!(
         text.contains("Public CLI distribution: GitHub Releases with prebuilt binaries"),
-        "README.md should document GitHub-binaries-only release distribution"
+        "README.md should document GitHub release binary distribution"
     );
     assert!(
         text.contains(
@@ -165,8 +165,8 @@ fn readme_documents_current_positioning_posture() {
         "README.md should document the planned simple curl install path"
     );
     assert!(
-        text.contains("No Homebrew, npm, or `cargo install` CLI channel in this release")
-            && text.contains("does not promise Homebrew, npm, or `cargo install`"),
+        text.contains("Optional npm wrapper: `npx lintai-cli scan .`")
+            && text.contains("does not promise Homebrew or `cargo install`"),
         "README.md should explicitly document unsupported release packaging channels"
     );
     assert!(
@@ -255,14 +255,17 @@ fn public_release_doc_exists_and_matches_current_posture() {
 
     assert!(text.contains("v0.1.0"));
     assert!(text.contains("initial public release"));
-    assert!(text.contains("Distribution channel: GitHub Releases with prebuilt binaries only"));
+    assert!(
+        text.contains("Distribution channels: GitHub Releases with prebuilt binaries and the `lintai-cli` npm wrapper")
+    );
     assert!(text.contains("lintai-installer.sh"));
     assert!(text.contains("lintai-installer.ps1"));
     assert!(text.contains("curl -fsSL https://github.com/777genius/lintai/releases/latest/download/lintai-installer.sh | sh"));
     assert!(text.contains("release promise for this phase is limited"));
+    assert!(text.contains("npx lintai-cli scan ."));
     assert!(text.contains("`lintai-api` remains the only stable publishable crate"));
     assert!(text.contains("EXTERNAL_VALIDATION_REPORT.md"));
-    assert!(text.contains("does **not** promise Homebrew, npm, or `cargo install`"));
+    assert!(text.contains("does **not** promise Homebrew or `cargo install`"));
     assert!(text.contains("positioned as `1.0`"));
     assert!(text.contains("PUBLIC_RELEASE_SHIPPING_CHECKLIST.md"));
 }
@@ -274,25 +277,24 @@ fn release_roadmap_and_shipping_checklist_lock_release_only_distribution() {
     let index = include_str!("../../../docs/INDEX.md");
 
     assert!(
-        roadmap.contains("ship through GitHub Release assets only"),
-        "V0_1_TO_1_0_ROADMAP.md should treat GitHub Release assets as the explicit release distribution posture"
+        roadmap.contains("GitHub Release assets remain the canonical binary source"),
+        "V0_1_TO_1_0_ROADMAP.md should treat GitHub Release assets as the canonical binary source"
     );
     assert!(
-        roadmap.contains("additional installer channels as post-`v0.1` follow-up work"),
-        "V0_1_TO_1_0_ROADMAP.md should defer installer channels until after the initial public release cycle"
+        roadmap.contains("additional native installer channels such as Homebrew and `cargo install` as post-`v0.1` follow-up work"),
+        "V0_1_TO_1_0_ROADMAP.md should defer native installer channels until after the initial public release cycle"
     );
     assert!(
-        checklist.contains("no parallel package-manager or registry publication step"),
-        "PUBLIC_RELEASE_SHIPPING_CHECKLIST.md should forbid parallel package-manager publication outside the GitHub Release asset set"
+        checklist.contains("no package-manager channel publishes separate native binaries"),
+        "PUBLIC_RELEASE_SHIPPING_CHECKLIST.md should forbid separate native binary publication outside the GitHub Release asset set"
     );
     assert!(
-        checklist
-            .contains("alternative installation source beyond published GitHub Release assets"),
-        "PUBLIC_RELEASE_SHIPPING_CHECKLIST.md should keep the release-assets-only truth check explicit"
+        checklist.contains("the curl and npm shortcuts must resolve to release assets"),
+        "PUBLIC_RELEASE_SHIPPING_CHECKLIST.md should keep the GitHub Release asset truth check explicit"
     );
     assert!(
-        index.contains("`v0.1.0` public release ships through GitHub Release assets"),
-        "index.md should summarize the release-only distribution decision"
+        index.contains("`v0.1.0` public release ships through GitHub Release assets plus the `lintai-cli` npm wrapper"),
+        "index.md should summarize the release distribution decision"
     );
     assert!(
         checklist.contains("lintai-installer.sh") && checklist.contains("lintai-installer.ps1"),
@@ -309,8 +311,9 @@ fn readme_and_release_note_document_install_status() {
     assert!(readme.contains("lintai help"));
     assert!(readme.contains("cargo run -q -p lintai-cli --bin lintai -- scan"));
     assert!(release_note.contains("curl -fsSL https://github.com/777genius/lintai/releases/latest/download/lintai-installer.sh | sh"));
+    assert!(release_note.contains("npx lintai-cli scan ."));
     assert!(release_note.contains("Initial public release of `lintai`."));
-    assert!(release_note.contains("no package-manager install contract"));
+    assert!(release_note.contains("npm is intentionally a thin wrapper"));
 }
 
 #[test]

@@ -74,7 +74,7 @@ Ship `lintai` publicly with honest positioning: narrow, precision-first, offline
 ### Work
 
 - Freeze the current `v0.1` product contract and present the release as the initial public release.
-- Freeze distribution posture for the release itself: ship through GitHub Release assets only and avoid implying that Homebrew, npm, or `cargo install` are part of the current release contract.
+- Freeze distribution posture for the release itself: GitHub Release assets remain the canonical binary source, with `lintai-cli` allowed as a thin npm wrapper over those assets. Avoid implying that Homebrew or `cargo install` are part of the current release contract.
 - Tighten public docs around:
   - who it is for
   - what surfaces it supports
@@ -93,7 +93,7 @@ Ship `lintai` publicly with honest positioning: narrow, precision-first, offline
 - Do not widen the public API surface for this release.
 - Keep `lintai-api` as the only stable publishable contract crate.
 - Keep the current CLI contract, JSON schema, SARIF, stable key, and fix surface unchanged unless a narrow bug fix forces an adjustment.
-- Treat additional installer channels as post-`v0.1` follow-up work, not release blockers or implied commitments.
+- Treat additional native installer channels such as Homebrew and `cargo install` as post-`v0.1` follow-up work, not release blockers or implied commitments.
 
 ## Phase 4 — Structural Rule Expansion After The Initial Public Release
 
