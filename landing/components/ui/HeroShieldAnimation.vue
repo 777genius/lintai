@@ -12,11 +12,11 @@ import {
 } from '@mdi/js';
 
 const impactAt = 0.48;
-const shieldImpacting = ref(false);
-let shieldImpactResetTimer: ReturnType<typeof setTimeout> | null = null;
-let shieldImpactFrame = 0;
-const shieldImpactTimers: ReturnType<typeof setTimeout>[] = [];
-const shieldImpactIntervals: ReturnType<typeof setInterval>[] = [];
+const rootEl = ref<HTMLElement | null>(null);
+const shieldWrapEl = ref<HTMLElement | null>(null);
+let shieldImpactPollFrame = 0;
+let activeShieldImpact: Animation | null = null;
+const animationProgresses = new WeakMap<Animation, number>();
 
 const threats = [
   {
@@ -94,65 +94,96 @@ const threats = [
 ];
 
 const triggerShieldImpact = () => {
-  shieldImpacting.value = false;
-
-  if (shieldImpactResetTimer) {
-    clearTimeout(shieldImpactResetTimer);
+  const shield = shieldWrapEl.value;
+  if (!shield) {
+    return;
   }
 
-  if (import.meta.client) {
-    cancelAnimationFrame(shieldImpactFrame);
-    shieldImpactFrame = requestAnimationFrame(() => {
-      shieldImpactFrame = requestAnimationFrame(() => {
-        shieldImpacting.value = true;
-        shieldImpactResetTimer = setTimeout(() => {
-          shieldImpacting.value = false;
-        }, 240);
-      });
-    });
+  if (activeShieldImpact) {
+    activeShieldImpact.cancel();
   }
+
+  activeShieldImpact = shield.animate(
+    [
+      { transform: 'translateY(-50%) rotate(0deg)' },
+      { transform: 'translate(-7px, -50%) rotate(-3deg)', offset: 0.28 },
+      { transform: 'translate(4px, -50%) rotate(2deg)', offset: 0.56 },
+      { transform: 'translateY(-50%) rotate(0deg)' },
+    ],
+    { duration: 240, easing: 'ease-out' },
+  );
+};
+
+const isThreatBounceAnimation = (animation: Animation) =>
+  'animationName' in animation &&
+  String((animation as Animation & { animationName?: string }).animationName).includes(
+    'threatBounce',
+  );
+
+const getAnimationProgress = (animation: Animation): number | null => {
+  const timing = animation.effect?.getComputedTiming();
+  const duration = timing?.duration;
+  const currentTime = animation.currentTime;
+
+  if (typeof duration !== 'number' || duration <= 0 || typeof currentTime !== 'number') {
+    return null;
+  }
+
+  return (((currentTime % duration) + duration) % duration) / duration;
+};
+
+const pollShieldImpacts = () => {
+  const root = rootEl.value;
+  if (!root || root.getBoundingClientRect().width <= 0) {
+    shieldImpactPollFrame = requestAnimationFrame(pollShieldImpacts);
+    return;
+  }
+
+  const threatElements = root.querySelectorAll<HTMLElement>('.hero-shield-animation__threat');
+  for (const threat of threatElements) {
+    const animation = threat.getAnimations().find(isThreatBounceAnimation);
+    if (!animation) {
+      continue;
+    }
+
+    const progress = getAnimationProgress(animation);
+    if (progress === null) {
+      continue;
+    }
+
+    const previousProgress = animationProgresses.get(animation);
+    animationProgresses.set(animation, progress);
+
+    if (previousProgress === undefined) {
+      continue;
+    }
+
+    const crossedImpactFrame = previousProgress < impactAt && progress >= impactAt;
+    if (crossedImpactFrame) {
+      triggerShieldImpact();
+    }
+  }
+
+  shieldImpactPollFrame = requestAnimationFrame(pollShieldImpacts);
 };
 
 onMounted(() => {
-  for (const threat of threats) {
-    const elapsed = ((-threat.delayMs % threat.durationMs) + threat.durationMs) % threat.durationMs;
-    const hitTime = threat.durationMs * impactAt;
-    const firstHitDelay = (hitTime - elapsed + threat.durationMs) % threat.durationMs;
-    const initialDelay = firstHitDelay < 80 ? firstHitDelay + threat.durationMs : firstHitDelay;
-
-    const timer = setTimeout(() => {
-      triggerShieldImpact();
-      shieldImpactIntervals.push(setInterval(triggerShieldImpact, threat.durationMs));
-    }, initialDelay);
-
-    shieldImpactTimers.push(timer);
-  }
+  shieldImpactPollFrame = requestAnimationFrame(pollShieldImpacts);
 });
 
 onBeforeUnmount(() => {
-  cancelAnimationFrame(shieldImpactFrame);
+  cancelAnimationFrame(shieldImpactPollFrame);
 
-  if (shieldImpactResetTimer) {
-    clearTimeout(shieldImpactResetTimer);
-  }
-
-  for (const timer of shieldImpactTimers) {
-    clearTimeout(timer);
-  }
-
-  for (const interval of shieldImpactIntervals) {
-    clearInterval(interval);
+  if (activeShieldImpact) {
+    activeShieldImpact.cancel();
   }
 });
 </script>
 
 <template>
-  <div class="hero-shield-animation" aria-hidden="true">
+  <div ref="rootEl" class="hero-shield-animation" aria-hidden="true">
     <div class="hero-shield-animation__field" />
-    <div
-      class="hero-shield-animation__shield-wrap"
-      :class="{ 'hero-shield-animation__shield-wrap--impact': shieldImpacting }"
-    >
+    <div ref="shieldWrapEl" class="hero-shield-animation__shield-wrap">
       <div class="hero-shield-animation__shield-halo" />
       <v-icon class="hero-shield-animation__shield" :icon="mdiShieldCheckOutline" />
     </div>
@@ -211,10 +242,6 @@ onBeforeUnmount(() => {
   transform: translateY(-50%);
   display: grid;
   place-items: center;
-}
-
-.hero-shield-animation__shield-wrap--impact {
-  animation: shieldImpact 240ms ease-out;
 }
 
 .hero-shield-animation__shield-halo {
@@ -360,21 +387,6 @@ onBeforeUnmount(() => {
   58% {
     opacity: 0;
     transform: translate(-50%, -50%) scale(2.4);
-  }
-}
-
-@keyframes shieldImpact {
-  0% {
-    transform: translateY(-50%) rotate(0deg);
-  }
-  28% {
-    transform: translate(-7px, -50%) rotate(-3deg);
-  }
-  56% {
-    transform: translate(4px, -50%) rotate(2deg);
-  }
-  100% {
-    transform: translateY(-50%) rotate(0deg);
   }
 }
 
