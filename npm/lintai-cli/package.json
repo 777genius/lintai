@@ -4,7 +4,7 @@
   "description": "Offline-first security linter for AI agent config surfaces",
   "type": "module",
   "bin": {
-    "lintai": "./bin/lintai.js"
+    "lintai": "bin/lintai.js"
   },
   "files": [
     "bin",
