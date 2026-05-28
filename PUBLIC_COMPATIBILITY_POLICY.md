@@ -8,7 +8,7 @@ This file defines the compatibility promises for the initial public `v0.1` core 
 - `lintai-testing` is intentionally internal during `v0.1` because it still depends on unpublished engine internals.
 - All other crates in `lintai/` are internal-only.
 - The `lintai` CLI is public product surface, but machine-readable stability promises still attach to `scan`, `config`, JSON, and SARIF first.
-- The current public CLI distribution channel is GitHub Releases with prebuilt binaries only.
+- The public `v0.1.0` CLI distribution channel is GitHub Releases with prebuilt binaries only, with `curl` as a shortcut to the release installer asset.
 
 ## `lintai-api`
 
@@ -35,6 +35,7 @@ This file defines the compatibility promises for the initial public `v0.1` core 
 ## CLI Commands
 
 - `scan`, `explain-config`, `config-schema`, and `help` remain public CLI surface.
+- `scan-known`, `inventory-os`, `policy-os`, and `advisory-db` are also public CLI surface in the current `v0.1` line.
 - `fix` is additive public CLI surface.
 - The presence of the `fix` command is stable after introduction, but autofix availability is rule-specific and may expand over time.
 - The current safe autofix allowlist is limited to `SEC101` and `SEC103`.

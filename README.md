@@ -7,7 +7,7 @@ Make AI agent policy reviewable.
 `lintai` checks the files that quietly decide what coding agents can run, access, and inherit before merge. It helps you review MCP configs, hooks, permissions, skills, and agent instructions before risky defaults spread through local workflows or CI.
 It can also run an opt-in advisory lane for committed npm lockfiles.
 
-Initial public release: `v0.1.0`
+Current release: `v0.1.0`
 
 - Fast local and CI checks
 - Deterministic findings with evidence
@@ -25,18 +25,9 @@ Think of it as a Ruff/Biome-style workflow for agent artifact review: fast, dete
 
 ## Quick Start
 
-Install `lintai v0.1.0` from GitHub Releases:
-
 ```bash
-curl -fsSLO https://github.com/777genius/lintai/releases/download/v0.1.0/lintai-installer.sh
-sh ./lintai-installer.sh
-```
-
-Run a first scan:
-
-```bash
+curl -fsSL https://github.com/777genius/lintai/releases/latest/download/lintai-installer.sh | sh
 lintai scan .
-lintai scan . --format sarif
 ```
 
 Exit codes:
@@ -49,7 +40,7 @@ Interpretation:
 
 - `Stable` findings are the release-quality baseline behind the quiet `recommended` default.
 - `Preview` findings are useful deeper-review signals, but not the baseline trust bar.
-- explicit sidecar lanes such as `compat`, `governance`, and `supply-chain` stay opt-in on purpose.
+- explicit sidecar lanes such as `threat-review`, `compat`, `governance`, and `supply-chain` stay opt-in on purpose.
 
 ## What It Scans
 
@@ -214,6 +205,7 @@ Builtin preset intent:
 - `strict`: `recommended` plus stricter preset-level hardening
 - `compat`: transition and project-policy mismatch lane
 - `preview`: deeper review lane with broader and more context-sensitive findings
+- `threat-review`: explicit malicious, credential-bearing, or spyware-like review lane
 - `skills`: instruction and skills markdown overlays
 - `mcp`: MCP and tool/server config overlays
 - `claude`: Claude-specific config overlays
@@ -267,34 +259,24 @@ This mode stays inventory-first: it reports what `lintai` can honestly discover 
 
 ## Install Details
 
-The current public release is distributed through GitHub Releases with prebuilt binaries.
+The public CLI is distributed through GitHub Release assets only.
 
 ### macOS / Linux
 
 ```bash
-curl -fsSLO https://github.com/777genius/lintai/releases/download/v0.1.0/lintai-installer.sh
-sh ./lintai-installer.sh
+curl -fsSL https://github.com/777genius/lintai/releases/latest/download/lintai-installer.sh | sh
 ```
 
-The installer downloads the tagged archive and `SHA256SUMS`, verifies the checksum, and installs `lintai` into `~/.local/bin` by default.
+The installer downloads the tagged binary archive and `SHA256SUMS` from the same GitHub Release, verifies the checksum, and installs `lintai` into `~/.local/bin` by default.
 
 ### Windows PowerShell
 
 ```powershell
-Invoke-WebRequest -Uri https://github.com/777genius/lintai/releases/download/v0.1.0/lintai-installer.ps1 -OutFile .\lintai-installer.ps1
+Invoke-WebRequest -Uri https://github.com/777genius/lintai/releases/latest/download/lintai-installer.ps1 -OutFile .\lintai-installer.ps1
 powershell -ExecutionPolicy Bypass -File .\lintai-installer.ps1
 ```
 
-The PowerShell installer downloads the tagged archive and `SHA256SUMS`, verifies the checksum, and installs `lintai.exe` into `%USERPROFILE%\.local\bin` by default.
-
-### Manual archive install
-
-1. Download the archive for your target from the GitHub Release.
-2. Download `SHA256SUMS` from the same release and verify the archive checksum.
-3. Optional but recommended: download the provenance bundle and verify it with `gh attestation verify` or [scripts/release/verify-release-assets.sh](scripts/release/verify-release-assets.sh).
-4. Extract `lintai` or `lintai.exe` into a directory on your `PATH`.
-
-### Post-install verification
+### Verify
 
 ```bash
 lintai help
@@ -302,15 +284,27 @@ lintai config-schema
 lintai scan .
 ```
 
+### From source
+
+This repository pins Rust `1.90.0` in [`rust-toolchain.toml`](rust-toolchain.toml).
+
+```bash
+cargo run -q -p lintai-cli --bin lintai -- help
+cargo run -q -p lintai-cli --bin lintai -- config-schema
+cargo run -q -p lintai-cli --bin lintai -- scan /path/to/target-repo
+```
+
 ## Project Status and Docs
 
 Current status:
 
-- Initial public release: `v0.1.0`
+- Current release: `v0.1.0`
+- Public CLI distribution: GitHub Releases with prebuilt binaries
+- No Homebrew, npm, or `cargo install` CLI channel in this release
 - Precision-first security checks for supported agent artifact surfaces
 - Best evaluated on real repositories that already contain those surfaces
 - `Stable` findings are the current trust baseline
-- Honest posture: initial public release / precision-first `0.x` tool, not yet a broad `1.0` ecosystem platform
+- Honest posture: initial public `0.x` tool, not yet a broad `1.0` ecosystem platform
 
 ## Current Non-Goals
 
@@ -324,7 +318,7 @@ Not the goal in `v0.1`:
 Canonical docs:
 
 - [`docs/POSITIONING_AND_SCOPE.md`](docs/POSITIONING_AND_SCOPE.md): product positioning and non-goals
-- [`docs/PUBLIC_RELEASE.md`](docs/PUBLIC_RELEASE.md): current release contract
+- [`docs/PUBLIC_RELEASE.md`](docs/PUBLIC_RELEASE.md): `v0.1.0` release contract
 - [`docs/EXTERNAL_VALIDATION_REPORT.md`](docs/EXTERNAL_VALIDATION_REPORT.md): checked-in release evidence base
 - [`docs/INDEX.md`](docs/INDEX.md): full project doc index
 
@@ -334,4 +328,4 @@ Repo-level orientation:
 - [`PUBLIC_COMPATIBILITY_POLICY.md`](PUBLIC_COMPATIBILITY_POLICY.md)
 - [`docs/ARCH_GAPS.md`](docs/ARCH_GAPS.md)
 
-`lintai-api` remains the only stable publishable crate. The CLI release does not yet promise Homebrew, npm, or `cargo install` distribution.
+`lintai-api` remains the only stable publishable crate. The CLI release does not promise Homebrew, npm, or `cargo install` distribution for `v0.1.0`.

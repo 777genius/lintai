@@ -25,11 +25,12 @@ The canonical source of truth for `v0.1` scope remains [V0_1_RELEASE_CHARTER.md]
 
 ## Packaging and Compatibility
 
-- The CLI is distributed through GitHub binary artifacts only in this release.
-- GitHub Release assets may include convenience installer scripts such as `lintai-installer.sh` and `lintai-installer.ps1`; they remain part of the same release-asset channel, not a parallel package-manager channel.
+- The CLI ships through GitHub binary artifacts only.
+- GitHub Release assets include convenience installer scripts such as `lintai-installer.sh` and `lintai-installer.ps1`; they remain part of the same release-asset channel, not a parallel package-manager channel.
+- The macOS/Linux quick install path is `curl -fsSL https://github.com/777genius/lintai/releases/latest/download/lintai-installer.sh | sh`; it is a shortcut to the published GitHub Release installer asset, not a separate distribution channel.
 - GitHub Release assets also carry release-verification artifacts for this release: `SHA256SUMS`, a CycloneDX SBOM bundle, and a provenance attestation bundle for the published files.
 - The canonical in-repo verification flow is [`scripts/release/verify-release-assets.sh`](https://github.com/777genius/lintai/blob/main/scripts/release/verify-release-assets.sh), which checks `SHA256SUMS` and can verify the provenance bundle with `gh attestation verify`.
-- The release promise for this phase is intentionally limited to those GitHub Release assets; users should not assume a parallel installer channel exists unless it is explicitly announced in a later release note.
+- The release promise for this phase is limited to those GitHub Release assets; users should not assume a parallel installer channel exists unless it is explicitly announced in a later release note.
 - This phase does **not** promise Homebrew, npm, or `cargo install` support for the CLI.
 - `lintai-api` remains the only stable publishable crate.
 - All other crates remain internal-only implementation detail.

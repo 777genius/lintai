@@ -1,9 +1,6 @@
 name: Publish npm Wrapper
 
 on:
-  release:
-    types:
-      - published
   workflow_dispatch:
     inputs:
       release_tag:
@@ -18,11 +15,6 @@ permissions:
 jobs:
   publish_npm:
     name: Publish lintai-cli to npm
-    if: >
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'release' &&
-       github.event.release.prerelease == false &&
-       github.event.release.draft == false)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -37,11 +29,7 @@ jobs:
         name: Resolve release tag
         shell: bash
         run: |
-          if [[ "${GITHUB_EVENT_NAME}" == "release" ]]; then
-            tag="${{ github.event.release.tag_name }}"
-          else
-            tag="${{ inputs.release_tag }}"
-          fi
+          tag="${{ inputs.release_tag }}"
 
           if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "expected a plain stable release tag like v0.1.0, got: $tag" >&2

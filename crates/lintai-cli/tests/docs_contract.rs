@@ -139,7 +139,7 @@ fn readme_documents_current_positioning_posture() {
     let text = include_str!("../../../README.md");
 
     assert!(
-        text.contains("initial public release / precision-first `0.x` tool"),
+        text.contains("initial public `0.x` tool"),
         "README.md should document the current release posture honestly"
     );
     assert!(
@@ -151,15 +151,22 @@ fn readme_documents_current_positioning_posture() {
         "README.md should link the canonical positioning doc"
     );
     assert!(
-        text.contains("Initial public release: `v0.1.0`"),
+        text.contains("Current release: `v0.1.0`"),
         "README.md should expose the current release name"
     );
     assert!(
-        text.contains("GitHub Releases"),
+        text.contains("Public CLI distribution: GitHub Releases with prebuilt binaries"),
         "README.md should document GitHub-binaries-only release distribution"
     );
     assert!(
-        text.contains("does not yet promise Homebrew, npm, or `cargo install`"),
+        text.contains(
+            "curl -fsSL https://github.com/777genius/lintai/releases/latest/download/lintai-installer.sh | sh"
+        ),
+        "README.md should document the planned simple curl install path"
+    );
+    assert!(
+        text.contains("No Homebrew, npm, or `cargo install` CLI channel in this release")
+            && text.contains("does not promise Homebrew, npm, or `cargo install`"),
         "README.md should explicitly document unsupported release packaging channels"
     );
     assert!(
@@ -248,10 +255,11 @@ fn public_release_doc_exists_and_matches_current_posture() {
 
     assert!(text.contains("v0.1.0"));
     assert!(text.contains("initial public release"));
-    assert!(text.contains("GitHub Releases with prebuilt binaries only"));
+    assert!(text.contains("Distribution channel: GitHub Releases with prebuilt binaries only"));
     assert!(text.contains("lintai-installer.sh"));
     assert!(text.contains("lintai-installer.ps1"));
-    assert!(text.contains("release promise for this phase is intentionally limited"));
+    assert!(text.contains("curl -fsSL https://github.com/777genius/lintai/releases/latest/download/lintai-installer.sh | sh"));
+    assert!(text.contains("release promise for this phase is limited"));
     assert!(text.contains("`lintai-api` remains the only stable publishable crate"));
     assert!(text.contains("EXTERNAL_VALIDATION_REPORT.md"));
     assert!(text.contains("does **not** promise Homebrew, npm, or `cargo install`"));
@@ -278,11 +286,12 @@ fn release_roadmap_and_shipping_checklist_lock_release_only_distribution() {
         "PUBLIC_RELEASE_SHIPPING_CHECKLIST.md should forbid parallel package-manager publication outside the GitHub Release asset set"
     );
     assert!(
-        checklist.contains("alternative installation channel beyond downloading the published GitHub Release assets"),
+        checklist
+            .contains("alternative installation source beyond published GitHub Release assets"),
         "PUBLIC_RELEASE_SHIPPING_CHECKLIST.md should keep the release-assets-only truth check explicit"
     );
     assert!(
-        index.contains("GitHub Release assets only"),
+        index.contains("`v0.1.0` public release ships through GitHub Release assets"),
         "index.md should summarize the release-only distribution decision"
     );
     assert!(
@@ -292,17 +301,16 @@ fn release_roadmap_and_shipping_checklist_lock_release_only_distribution() {
 }
 
 #[test]
-fn readme_and_release_note_document_download_then_run_installers() {
+fn readme_and_release_note_document_install_status() {
     let readme = include_str!("../../../README.md");
     let release_note = include_str!("../../../docs/releases/v0.1.0.md");
 
-    assert!(readme.contains("lintai-installer.sh"));
-    assert!(readme.contains("lintai-installer.ps1"));
-    assert!(readme.contains("curl -fsSLO"));
-    assert!(readme.contains("Manual archive install"));
-    assert!(readme.contains("Post-install verification"));
-    assert!(release_note.contains("download `lintai-installer.sh` or `lintai-installer.ps1`"));
-    assert!(release_note.contains("no `curl | sh` install contract"));
+    assert!(readme.contains("curl -fsSL https://github.com/777genius/lintai/releases/latest/download/lintai-installer.sh | sh"));
+    assert!(readme.contains("lintai help"));
+    assert!(readme.contains("cargo run -q -p lintai-cli --bin lintai -- scan"));
+    assert!(release_note.contains("curl -fsSL https://github.com/777genius/lintai/releases/latest/download/lintai-installer.sh | sh"));
+    assert!(release_note.contains("Initial public release of `lintai`."));
+    assert!(release_note.contains("no package-manager install contract"));
 }
 
 #[test]
@@ -367,6 +375,30 @@ fn public_release_workflow_matches_shipping_contract() {
     assert!(text.contains("SHA256SUMS"));
     assert!(text.contains("Verify release asset bundle"));
     assert!(text.contains("verify-release-assets.sh"));
+    assert!(text.contains("Smoke Published Curl Installer"));
+    assert!(text.contains("releases/latest/download/lintai-installer.sh"));
+}
+
+#[test]
+fn release_installers_keep_template_guards_render_safe() {
+    let shell_installer = include_str!("../../../scripts/release/lintai-installer.sh");
+    let powershell_installer = include_str!("../../../scripts/release/lintai-installer.ps1");
+
+    assert!(shell_installer.contains("TEMPLATE_RELEASE_TAG='__RELEASE''_TAG__'"));
+    assert!(shell_installer.contains("TEMPLATE_RELEASE_REPOSITORY='__RELEASE''_REPOSITORY__'"));
+    assert!(
+        !shell_installer.contains("*__RELEASE_TAG__*")
+            && !shell_installer.contains("*__RELEASE_REPOSITORY__*"),
+        "sed rendering must not rewrite the shell template guard into a real release tag guard"
+    );
+    assert!(powershell_installer.contains("$ReleaseTagPlaceholder = \"__RELEASE\" + \"_TAG__\""));
+    assert!(powershell_installer
+        .contains("$ReleaseRepositoryPlaceholder = \"__RELEASE\" + \"_REPOSITORY__\""));
+    assert!(
+        !powershell_installer.contains("*__RELEASE_TAG__*")
+            && !powershell_installer.contains("*__RELEASE_REPOSITORY__*"),
+        "PowerShell rendering must not rewrite the template guard into a real release tag guard"
+    );
 }
 
 #[test]

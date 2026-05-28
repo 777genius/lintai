@@ -8,6 +8,8 @@ param(
 
 $ReleaseTag = if ($env:LINTAI_INSTALL_RELEASE_TAG) { $env:LINTAI_INSTALL_RELEASE_TAG } else { "__RELEASE_TAG__" }
 $ReleaseRepository = if ($env:LINTAI_INSTALL_RELEASE_REPOSITORY) { $env:LINTAI_INSTALL_RELEASE_REPOSITORY } else { "__RELEASE_REPOSITORY__" }
+$ReleaseTagPlaceholder = "__RELEASE" + "_TAG__"
+$ReleaseRepositoryPlaceholder = "__RELEASE" + "_REPOSITORY__"
 
 function Fail([string]$Message) {
     throw $Message
@@ -24,11 +26,11 @@ function Resolve-Target {
     }
 }
 
-if ($ReleaseTag -like "*__RELEASE_TAG__*" -or [string]::IsNullOrWhiteSpace($ReleaseTag)) {
+if ($ReleaseTag -like "*$ReleaseTagPlaceholder*" -or [string]::IsNullOrWhiteSpace($ReleaseTag)) {
     Fail "This installer is a template. Download lintai-installer.ps1 from a published GitHub Release asset."
 }
 
-if ($ReleaseRepository -like "*__RELEASE_REPOSITORY__*" -or [string]::IsNullOrWhiteSpace($ReleaseRepository)) {
+if ($ReleaseRepository -like "*$ReleaseRepositoryPlaceholder*" -or [string]::IsNullOrWhiteSpace($ReleaseRepository)) {
     Fail "This installer is a template. Download lintai-installer.ps1 from a published GitHub Release asset."
 }
 

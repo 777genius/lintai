@@ -3,6 +3,8 @@ set -eu
 
 RELEASE_TAG="${LINTAI_INSTALL_RELEASE_TAG:-__RELEASE_TAG__}"
 RELEASE_REPOSITORY="${LINTAI_INSTALL_RELEASE_REPOSITORY:-__RELEASE_REPOSITORY__}"
+TEMPLATE_RELEASE_TAG='__RELEASE''_TAG__'
+TEMPLATE_RELEASE_REPOSITORY='__RELEASE''_REPOSITORY__'
 DEFAULT_INSTALL_DIR="${HOME}/.local/bin"
 DEFAULT_BASE_URL="https://github.com/${RELEASE_REPOSITORY}/releases/download/${RELEASE_TAG}"
 
@@ -113,13 +115,13 @@ while [ "$#" -gt 0 ]; do
 done
 
 case "$RELEASE_TAG" in
-  *__RELEASE_TAG__*|"" )
+  ""|*"$TEMPLATE_RELEASE_TAG"* )
     die "this installer is a template; download lintai-installer.sh from a published GitHub Release asset"
     ;;
 esac
 
 case "$RELEASE_REPOSITORY" in
-  *__RELEASE_REPOSITORY__*|"" )
+  ""|*"$TEMPLATE_RELEASE_REPOSITORY"* )
     die "this installer is a template; download lintai-installer.sh from a published GitHub Release asset"
     ;;
 esac

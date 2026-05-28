@@ -417,11 +417,52 @@ jobs:
             dist/*-sbom.tar.gz
             dist/*-provenance.intoto.jsonl
 
+  smoke_published_curl_installer:
+    name: Smoke Published Curl Installer
+    needs:
+      - release_context
+      - publish_release
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install through public release URLs
+        shell: bash
+        run: |
+          tag_url="https://github.com/${{ github.repository }}/releases/download/${{ needs.release_context.outputs.release_tag }}/lintai-installer.sh"
+          latest_url="https://github.com/${{ github.repository }}/releases/latest/download/lintai-installer.sh"
+
+          for channel in tag latest; do
+            if [[ "$channel" == "tag" ]]; then
+              installer_url="$tag_url"
+            else
+              installer_url="$latest_url"
+            fi
+
+            installer_path="${RUNNER_TEMP}/lintai-installer-${channel}.sh"
+            for attempt in 1 2 3 4 5; do
+              if curl -fsSL -o "$installer_path" "$installer_url"; then
+                break
+              fi
+              if [[ "$attempt" == "5" ]]; then
+                echo "failed to download published installer: $installer_url" >&2
+                exit 1
+              fi
+              sleep 10
+            done
+
+            install_dir="${RUNNER_TEMP}/lintai-bin-${channel}"
+            sh "$installer_path" --install-dir "$install_dir" --target x86_64-unknown-linux-gnu
+            "$install_dir/lintai" help >/dev/null
+            "$install_dir/lintai" scan sample-repos/clean/repo
+          done
+
   build_release_pages:
     name: Build Release Pages Artifact
     needs:
       - release_context
       - publish_release
+      - smoke_published_curl_installer
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:

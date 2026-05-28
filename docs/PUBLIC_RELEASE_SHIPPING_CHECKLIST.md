@@ -16,7 +16,7 @@
 - `Smoke Gate` is green on the candidate commit
 - `Docs Gate` is green on the candidate commit
 - [PUBLIC_RELEASE.md](PUBLIC_RELEASE.md) matches the intended public release posture
-- [EXTERNAL_VALIDATION_REPORT.md](EXTERNAL_VALIDATION_REPORT.md) reflects the completed wave 2 evidence
+- [EXTERNAL_VALIDATION_REPORT.md](EXTERNAL_VALIDATION_REPORT.md) reflects the evidence snapshot chosen for the `v0.1.0` candidate
 
 ## Expected Release Assets
 
@@ -41,10 +41,11 @@ The shipping workflow must publish exactly these asset classes:
 5. Verify the uploaded body matches [releases/v0.1.0.md](releases/v0.1.0.md).
 6. Verify the release assets, installer scripts, `SHA256SUMS`, SBOM bundle, and provenance bundle are present.
 7. Verify the installer scripts still fetch only tagged GitHub Release assets and perform checksum validation before install.
-8. Verify the workflow runs [`scripts/release/verify-release-assets.sh`](https://github.com/777genius/lintai/blob/main/scripts/release/verify-release-assets.sh) against the generated `SHA256SUMS` and provenance bundle before publish.
-9. Verify the workflow published GitHub artifact attestations for the shipped release assets.
-10. Verify the workflow refreshed the landing Pages artifact after publish so the download page points at the just-published release tag.
-11. Verify no parallel package-manager or registry publication step was introduced for this release workflow.
+8. Verify the workflow smoke-tests the public `releases/latest/download/lintai-installer.sh` curl installer against the just-published release.
+9. Verify the workflow runs [`scripts/release/verify-release-assets.sh`](https://github.com/777genius/lintai/blob/main/scripts/release/verify-release-assets.sh) against the generated `SHA256SUMS` and provenance bundle before publish.
+10. Verify the workflow published GitHub artifact attestations for the shipped release assets.
+11. Verify the workflow refreshed the landing Pages artifact after publish so the download page points at the just-published release tag.
+12. Verify no parallel package-manager or registry publication step was introduced for this release workflow.
 
 ## Verification Commands
 
@@ -71,4 +72,4 @@ The public-facing release posture is valid only if:
 - the GitHub Pages landing/download metadata is refreshed from the published GitHub Release before the public page is deployed
 - the release includes a checked-in supply-chain evidence bundle: CycloneDX SBOM plus provenance attestation bundle
 - no docs imply Homebrew, npm, or `cargo install` support for the CLI in this release
-- no workflow or release note implies an alternative installation channel beyond downloading the published GitHub Release assets
+- no workflow or release note implies an alternative installation source beyond published GitHub Release assets; the curl shortcut must resolve to the release installer asset

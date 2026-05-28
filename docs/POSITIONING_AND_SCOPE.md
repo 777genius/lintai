@@ -66,14 +66,15 @@ For the canonical rule-quality policy, see [RULE_QUALITY_POLICY.md](RULE_QUALITY
 
 ## Release Posture
 
-The honest release posture for the current state is:
+The honest release posture for `v0.1.0` is:
 
-- initial public release now: `v0.1.0`
+- initial public release: `v0.1.0`
 - practical `0.x` tool for real repository trials now
-- distributed through GitHub Releases with prebuilt binaries only in this phase
+- public distribution is GitHub Releases with prebuilt binaries only in this phase
+- macOS/Linux quick install is `curl` to the GitHub Release installer asset
 - not yet positioned as a broad `1.0` security platform for the whole AI ecosystem
 
-The current confidence base is the completed wave 2 external validation report in [EXTERNAL_VALIDATION_REPORT.md](EXTERNAL_VALIDATION_REPORT.md).
+The current confidence base is the checked-in external validation report in [EXTERNAL_VALIDATION_REPORT.md](EXTERNAL_VALIDATION_REPORT.md).
 
 ## Evaluation Guidance
 
