@@ -37,15 +37,9 @@ const threats = [
       class="hero-shield-animation__threat"
       :class="`hero-shield-animation__threat--${threat.id}`"
     >
+      <span class="hero-shield-animation__threat-impact" />
       <v-icon :icon="threat.icon" />
     </span>
-
-    <span
-      v-for="index in 5"
-      :key="index"
-      class="hero-shield-animation__impact"
-      :class="`hero-shield-animation__impact--${index}`"
-    />
   </div>
 </template>
 
@@ -109,7 +103,8 @@ const threats = [
 
 .hero-shield-animation__threat {
   position: absolute;
-  right: -16%;
+  left: 108%;
+  top: var(--start-y);
   z-index: 3;
   width: 44px;
   height: 44px;
@@ -122,7 +117,9 @@ const threats = [
   box-shadow:
     0 12px 26px rgba(0, 0, 0, 0.28),
     0 0 20px rgba(255, 0, 255, 0.1);
-  animation: threatBounce 4.8s infinite cubic-bezier(0.5, 0, 0.25, 1);
+  animation: threatBounce var(--duration, 4.8s) infinite cubic-bezier(0.5, 0, 0.25, 1);
+  animation-delay: var(--delay, 0s);
+  transform: translate(-50%, -50%);
 }
 
 .hero-shield-animation__threat .v-icon {
@@ -130,124 +127,143 @@ const threats = [
   height: 24px;
 }
 
-.hero-shield-animation__threat--bug {
-  top: 18%;
-  color: #39ff14;
-  animation-delay: -0.2s;
-  animation-duration: 4.2s;
-}
-
-.hero-shield-animation__threat--virus {
-  top: 36%;
-  color: #ff4d7d;
-  animation-delay: -1.1s;
-  animation-duration: 4.7s;
-}
-
-.hero-shield-animation__threat--lock {
-  top: 57%;
-  color: #f6d365;
-  animation-delay: -2s;
-  animation-duration: 4.4s;
-}
-
-.hero-shield-animation__threat--cloud {
-  top: 72%;
-  color: #8ae8ff;
-  animation-delay: -3s;
-  animation-duration: 5s;
-}
-
-.hero-shield-animation__threat--alert {
-  top: 24%;
-  color: #ff8f5a;
-  animation-delay: -3.8s;
-  animation-duration: 5.2s;
-}
-
-.hero-shield-animation__threat--console {
-  top: 47%;
-  color: #9aa7ff;
-  animation-delay: -4.5s;
-  animation-duration: 5.6s;
-}
-
-.hero-shield-animation__threat--skull {
-  top: 63%;
-  color: #f8fafc;
-  animation-delay: -5.2s;
-  animation-duration: 5.1s;
-}
-
-.hero-shield-animation__threat--bomb {
-  top: 10%;
-  color: #ff5cf7;
-  animation-delay: -6s;
-  animation-duration: 5.8s;
-}
-
-.hero-shield-animation__impact {
+.hero-shield-animation__threat-impact {
   position: absolute;
-  left: 31%;
-  top: 50%;
-  z-index: 1;
+  inset: 50%;
+  z-index: -1;
   width: 18px;
   height: 18px;
   border-radius: 50%;
   border: 1px solid rgba(138, 232, 255, 0.9);
   opacity: 0;
-  transform: translate(-50%, -50%);
-  animation: impactRing 3.8s infinite;
+  transform: translate(-50%, -50%) scale(0.4);
+  animation: threatImpact var(--duration, 4.8s) infinite;
+  animation-delay: var(--delay, 0s);
 }
 
-.hero-shield-animation__impact--1 {
-  top: 24%;
-  animation-delay: 0.1s;
+.hero-shield-animation__threat--bug {
+  --start-y: 18%;
+  --hit-y: 49%;
+  --exit-y: 10%;
+  --delay: -0.2s;
+  --duration: 4.2s;
+  color: #39ff14;
 }
 
-.hero-shield-animation__impact--2 {
-  top: 39%;
-  animation-delay: 0.85s;
+.hero-shield-animation__threat--virus {
+  --start-y: 36%;
+  --hit-y: 50%;
+  --exit-y: 24%;
+  --delay: -1.1s;
+  --duration: 4.7s;
+  color: #ff4d7d;
 }
 
-.hero-shield-animation__impact--3 {
-  top: 58%;
-  animation-delay: 1.55s;
+.hero-shield-animation__threat--lock {
+  --start-y: 57%;
+  --hit-y: 51%;
+  --exit-y: 68%;
+  --delay: -2s;
+  --duration: 4.4s;
+  color: #f6d365;
 }
 
-.hero-shield-animation__impact--4 {
-  top: 73%;
-  animation-delay: 2.35s;
+.hero-shield-animation__threat--cloud {
+  --start-y: 72%;
+  --hit-y: 52%;
+  --exit-y: 84%;
+  --delay: -3s;
+  --duration: 5s;
+  color: #8ae8ff;
 }
 
-.hero-shield-animation__impact--5 {
-  top: 31%;
-  animation-delay: 3.1s;
+.hero-shield-animation__threat--alert {
+  --start-y: 24%;
+  --hit-y: 49%;
+  --exit-y: 18%;
+  --delay: -3.8s;
+  --duration: 5.2s;
+  color: #ff8f5a;
+}
+
+.hero-shield-animation__threat--console {
+  --start-y: 47%;
+  --hit-y: 51%;
+  --exit-y: 36%;
+  --delay: -4.5s;
+  --duration: 5.6s;
+  color: #9aa7ff;
+}
+
+.hero-shield-animation__threat--skull {
+  --start-y: 63%;
+  --hit-y: 52%;
+  --exit-y: 78%;
+  --delay: -5.2s;
+  --duration: 5.1s;
+  color: #f8fafc;
+}
+
+.hero-shield-animation__threat--bomb {
+  --start-y: 10%;
+  --hit-y: 48%;
+  --exit-y: 6%;
+  --delay: -6s;
+  --duration: 5.8s;
+  color: #ff5cf7;
 }
 
 @keyframes threatBounce {
   0% {
     opacity: 0;
-    transform: translate3d(0, 0, 0) rotate(0deg) scale(0.78);
+    left: 108%;
+    top: var(--start-y);
+    transform: translate(-50%, -50%) rotate(0deg) scale(0.78);
   }
   12% {
     opacity: 1;
   }
   44% {
     opacity: 1;
-    transform: translate3d(-72%, 8px, 0) rotate(-18deg) scale(1);
+    left: 58%;
+    top: var(--hit-y);
+    transform: translate(-50%, -50%) rotate(-18deg) scale(1);
   }
-  52% {
+  48%,
+  54% {
     opacity: 1;
-    transform: translate3d(-365%, 0, 0) rotate(-78deg) scale(0.9);
+    left: 39%;
+    top: var(--hit-y);
+    transform: translate(-50%, -50%) rotate(-78deg) scale(0.9);
   }
   66% {
     opacity: 1;
-    transform: translate3d(-210%, -26px, 0) rotate(-165deg) scale(0.82);
+    left: 62%;
+    top: var(--exit-y);
+    transform: translate(-50%, -50%) rotate(-165deg) scale(0.82);
   }
   100% {
     opacity: 0;
-    transform: translate3d(16%, -56px, 0) rotate(-245deg) scale(0.64);
+    left: 112%;
+    top: var(--exit-y);
+    transform: translate(-50%, -50%) rotate(-245deg) scale(0.64);
+  }
+}
+
+@keyframes threatImpact {
+  0%,
+  42%,
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  48% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  58% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.4);
   }
 }
 
@@ -290,23 +306,6 @@ const threats = [
   61% {
     opacity: 1;
     transform: scale(1.08);
-  }
-}
-
-@keyframes impactRing {
-  0%,
-  23%,
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.4);
-  }
-  27% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(0.85);
-  }
-  36% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(2.4);
   }
 }
 
