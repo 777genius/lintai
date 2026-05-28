@@ -436,7 +436,10 @@ jobs:
           prerelease: false
           overwrite_files: true
           files: |
-            dist/*.tar.gz
+            dist/lintai-${{ needs.release_context.outputs.release_tag }}-aarch64-apple-darwin.tar.gz
+            dist/lintai-${{ needs.release_context.outputs.release_tag }}-x86_64-unknown-linux-gnu.tar.gz
+            dist/lintai-${{ needs.release_context.outputs.release_tag }}-x86_64-unknown-linux-musl.tar.gz
+            dist/lintai-${{ needs.release_context.outputs.release_tag }}-sbom.tar.gz
             dist/*.zip
             dist/lintai-installer.sh
             dist/lintai-installer.ps1
