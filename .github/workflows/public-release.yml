@@ -19,7 +19,6 @@ permissions:
   contents: write
   attestations: write
   id-token: write
-  pages: write
 
 jobs:
   release_context:
@@ -435,6 +434,7 @@ jobs:
           name: ${{ needs.release_context.outputs.release_title }}
           body_path: ${{ needs.release_context.outputs.release_notes_path }}
           prerelease: false
+          overwrite_files: true
           files: |
             dist/*.tar.gz
             dist/*.zip
@@ -483,75 +483,3 @@ jobs:
             "$install_dir/lintai" help >/dev/null
             "$install_dir/lintai" scan sample-repos/clean/repo
           done
-
-  build_release_pages:
-    name: Build Release Pages Artifact
-    needs:
-      - release_context
-      - publish_release
-      - smoke_published_curl_installer
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 8.15.1
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: 1.90.0
-      - uses: Swatinem/rust-cache@v2
-      - uses: actions/configure-pages@v5
-        with:
-          enablement: true
-      - name: Install docs dependencies
-        run: npm ci
-      - name: Install landing dependencies
-        working-directory: landing
-        run: pnpm install --frozen-lockfile
-      - name: Refresh release manifest
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          LINTAI_GITHUB_REPO: ${{ github.repository }}
-          LINTAI_RELEASE_TAG: ${{ needs.release_context.outputs.release_tag }}
-          LINTAI_REQUIRE_RELEASE_MANIFEST: "true"
-        working-directory: landing
-        run: pnpm run release:manifest
-      - name: Verify checked-in case manifests stay canonical
-        run: npm run fixtures:check
-      - name: Validate docs contracts
-        run: |
-          cargo test -q -p lintai-cli site_catalog -- --nocapture
-          cargo test -q -p lintai-cli --test docs_contract -- --nocapture
-      - name: Build landing
-        env:
-          NUXT_APP_BASE_URL: /lintai/
-        working-directory: landing
-        run: pnpm generate
-      - name: Build VitePress docs for GitHub Pages
-        env:
-          LINTAI_DOCS_BASE: /lintai/docs/
-        run: |
-          npm run docs:build
-      - name: Assemble Pages artifact
-        working-directory: landing
-        run: pnpm run build:pages
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .pages-dist
-
-  deploy_release_pages:
-    name: Deploy Release Pages
-    needs:
-      - build_release_pages
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
