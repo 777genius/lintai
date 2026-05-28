@@ -295,13 +295,41 @@ jobs:
       - name: Start local release server
         shell: pwsh
         run: |
-          $job = Start-Job -ScriptBlock {
-            param($path)
-            Set-Location $path
-            py -3 -m http.server 18081
-          } -ArgumentList (Join-Path $pwd "dist")
-          Set-Content -Path "$env:RUNNER_TEMP\lintai-http-job.txt" -Value $job.Id
-          Start-Sleep -Seconds 2
+          $python = Get-Command python -ErrorAction SilentlyContinue
+          if ($python) {
+            $server = Start-Process `
+              -FilePath $python.Source `
+              -ArgumentList @("-m", "http.server", "18081", "--bind", "127.0.0.1") `
+              -WorkingDirectory "dist" `
+              -PassThru `
+              -WindowStyle Hidden
+          }
+          else {
+            $py = Get-Command py -ErrorAction Stop
+            $server = Start-Process `
+              -FilePath $py.Source `
+              -ArgumentList @("-3", "-m", "http.server", "18081", "--bind", "127.0.0.1") `
+              -WorkingDirectory "dist" `
+              -PassThru `
+              -WindowStyle Hidden
+          }
+
+          Set-Content -Path "$env:RUNNER_TEMP\lintai-http-pid.txt" -Value $server.Id
+          for ($attempt = 1; $attempt -le 30; $attempt++) {
+            try {
+              Invoke-WebRequest -Uri "http://127.0.0.1:18081/SHA256SUMS" -UseBasicParsing | Out-Null
+              break
+            }
+            catch {
+              if ($attempt -eq 30) {
+                if ($server.HasExited) {
+                  throw "Local release server exited with code $($server.ExitCode)."
+                }
+                throw
+              }
+              Start-Sleep -Seconds 1
+            }
+          }
       - name: Run Windows installer smoke
         shell: pwsh
         env:
@@ -314,10 +342,9 @@ jobs:
         if: always()
         shell: pwsh
         run: |
-          if (Test-Path "$env:RUNNER_TEMP\lintai-http-job.txt") {
-            $jobId = Get-Content "$env:RUNNER_TEMP\lintai-http-job.txt"
-            Stop-Job -Id $jobId -ErrorAction SilentlyContinue
-            Remove-Job -Id $jobId -Force -ErrorAction SilentlyContinue
+          if (Test-Path "$env:RUNNER_TEMP\lintai-http-pid.txt") {
+            $serverPid = Get-Content "$env:RUNNER_TEMP\lintai-http-pid.txt"
+            Stop-Process -Id $serverPid -Force -ErrorAction SilentlyContinue
           }
 
   publish_release:
