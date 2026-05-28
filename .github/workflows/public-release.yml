@@ -385,7 +385,7 @@ jobs:
           while IFS= read -r bom; do
             rel="${bom#./}"
             cp "$bom" "dist/${bundle_root}/${rel//\//__}"
-          done < <(find . -path './target' -prune -o -name bom.json -print | sort)
+          done < <(find . -path './target' -prune -o \( -name '*.cdx.json' -o -name bom.json \) -print | sort)
           if [[ -z "$(find "dist/${bundle_root}" -maxdepth 1 -type f -print -quit)" ]]; then
             echo "no CycloneDX SBOM files were generated" >&2
             exit 1
