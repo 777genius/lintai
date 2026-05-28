@@ -67,8 +67,8 @@ try {
     $ArchivePath = Join-Path $TempDir $ArchiveName
     $ChecksumPath = Join-Path $TempDir "SHA256SUMS"
 
-    Invoke-WebRequest -Uri "$BaseUrl/$ArchiveName" -OutFile $ArchivePath
-    Invoke-WebRequest -Uri "$BaseUrl/SHA256SUMS" -OutFile $ChecksumPath
+    Invoke-WebRequest -Uri "$BaseUrl/$ArchiveName" -OutFile $ArchivePath -UseBasicParsing
+    Invoke-WebRequest -Uri "$BaseUrl/SHA256SUMS" -OutFile $ChecksumPath -UseBasicParsing
 
     $ExpectedLine = Get-Content $ChecksumPath | Where-Object { $_ -match ("  " + [regex]::Escape($ArchiveName) + "$") } | Select-Object -First 1
     if (-not $ExpectedLine) {
@@ -85,7 +85,8 @@ try {
     Expand-Archive -Path $ArchivePath -DestinationPath $TempDir -Force
 
     $InstalledBinary = Join-Path $InstallDir "lintai.exe"
-    Copy-Item (Join-Path $TempDir $AssetBaseName "lintai.exe") $InstalledBinary -Force
+    $ExtractedBinary = Join-Path (Join-Path $TempDir $AssetBaseName) "lintai.exe"
+    Copy-Item $ExtractedBinary $InstalledBinary -Force
 
     & $InstalledBinary help | Out-Null
 
