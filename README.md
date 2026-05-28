@@ -7,7 +7,7 @@ Make AI agent policy reviewable.
 `lintai` checks the files that quietly decide what coding agents can run, access, and inherit before merge. It helps you review MCP configs, hooks, permissions, skills, and agent instructions before risky defaults spread through local workflows or CI.
 It can also run an opt-in advisory lane for committed npm lockfiles.
 
-Current release: `v0.1.0`
+Current release: `v0.1.1`
 
 - Fast local and CI checks
 - Deterministic findings with evidence
@@ -334,7 +334,7 @@ cargo run -q -p lintai-cli --bin lintai -- scan /path/to/target-repo
 
 Current status:
 
-- Current release: `v0.1.0`
+- Current release: `v0.1.1`
 - Public CLI distribution: GitHub Releases with prebuilt binaries
 - Optional npm wrapper: `npx lintai-cli scan .`
 - No Homebrew or `cargo install` CLI channel in this release

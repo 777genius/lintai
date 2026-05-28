@@ -151,7 +151,7 @@ fn readme_documents_current_positioning_posture() {
         "README.md should link the canonical positioning doc"
     );
     assert!(
-        text.contains("Current release: `v0.1.0`"),
+        text.contains("Current release: `v0.1.1`"),
         "README.md should expose the current release name"
     );
     assert!(

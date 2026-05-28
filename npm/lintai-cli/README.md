@@ -21,5 +21,5 @@ lintai scan .
 
 - `LINTAI_NPM_BASE_URL` - override the release asset base URL
 - `LINTAI_NPM_CACHE_DIR` - override the local cache directory
-- `LINTAI_NPM_RELEASE_TAG` - override the release tag, for example `v0.1.0`
+- `LINTAI_NPM_RELEASE_TAG` - override the release tag, for example `v0.1.1`
 - `LINTAI_NPM_SKIP_DOWNLOAD=1` - skip `postinstall` download
