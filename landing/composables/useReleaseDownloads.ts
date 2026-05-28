@@ -1,6 +1,7 @@
 import latestRelease from '~/data/release-latest.json';
 import {
   buildArchiveCommand,
+  buildNpxQuickRunCommand,
   buildPowerShellInstallerCommand,
   buildShellQuickRunCommand,
   buildShellInstallerCommand,
@@ -33,7 +34,9 @@ export const useReleaseDownloads = () => {
     data.value.variants.installers.powershell.url ||
     getReleaseAssetUrl(githubRepo, previewReleaseTag, 'lintai-installer.ps1');
   const shellInstallCommand = buildShellInstallerCommand(shellInstallerUrl);
-  const quickRunCommand = buildShellQuickRunCommand(shellInstallerUrl);
+  const npxQuickRunCommand = buildNpxQuickRunCommand();
+  const curlQuickRunCommand = buildShellQuickRunCommand(shellInstallerUrl);
+  const quickRunCommand = npxQuickRunCommand;
   const powerShellInstallCommand = buildPowerShellInstallerCommand(powerShellInstallerUrl);
   const archiveCommand = buildArchiveCommand(githubRepo, data.value.tag);
 
@@ -83,6 +86,8 @@ export const useReleaseDownloads = () => {
     shellInstallerUrl,
     powerShellInstallerUrl,
     shellInstallCommand,
+    npxQuickRunCommand,
+    curlQuickRunCommand,
     quickRunCommand,
     powerShellInstallCommand,
     archiveCommand,

@@ -187,6 +187,10 @@ export function buildShellQuickRunCommand(url: string | null): string | null {
   return `${installCommand}\nlintai scan .`;
 }
 
+export function buildNpxQuickRunCommand(): string {
+  return 'npx lintai-cli scan .';
+}
+
 export function buildPowerShellInstallerCommand(url: string | null): string | null {
   if (!url) {
     return null;

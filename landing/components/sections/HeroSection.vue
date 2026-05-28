@@ -3,9 +3,10 @@ import { mdiCodeBracesBox, mdiLockOutline, mdiShieldCheckOutline } from '@mdi/js
 
 const { content } = useLandingContent();
 const { t, locale } = useI18n();
-const { data: releaseData, quickRunCommand } = useReleaseDownloads();
+const { data: releaseData, npxQuickRunCommand, curlQuickRunCommand } = useReleaseDownloads();
 const compactTitle = computed(() => locale.value === 'ru');
 const copiedQuickRun = ref(false);
+const quickRunMode = ref<'npx' | 'curl'>('npx');
 
 let quickRunTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -16,6 +17,12 @@ onBeforeUnmount(() => {
 });
 
 const releaseVersion = computed(() => releaseData.value?.version || null);
+const quickRunCommand = computed(() =>
+  quickRunMode.value === 'curl' && curlQuickRunCommand ? curlQuickRunCommand : npxQuickRunCommand,
+);
+const quickRunToggleLabel = computed(() =>
+  quickRunMode.value === 'curl' ? t('hero.useNpx') : t('hero.useCurl'),
+);
 const releaseDate = computed(() => {
   const raw = releaseData.value?.pubDate;
   if (!raw) return null;
@@ -35,11 +42,11 @@ const fallbackCopy = async (text: string) => {
 };
 
 const copyQuickRun = async () => {
-  if (!import.meta.client || !quickRunCommand) {
+  if (!import.meta.client || !quickRunCommand.value) {
     return;
   }
 
-  const text = quickRunCommand.trim();
+  const text = quickRunCommand.value.trim();
 
   try {
     if (navigator.clipboard?.writeText) {
@@ -60,6 +67,11 @@ const copyQuickRun = async () => {
   quickRunTimer = setTimeout(() => {
     copiedQuickRun.value = false;
   }, 1800);
+};
+
+const toggleQuickRunMode = () => {
+  quickRunMode.value = quickRunMode.value === 'curl' ? 'npx' : 'curl';
+  copiedQuickRun.value = false;
 };
 </script>
 
@@ -94,9 +106,19 @@ const copyQuickRun = async () => {
           <div v-if="quickRunCommand" class="hero-section__quick-run">
             <div class="hero-section__quick-run-head">
               <span class="hero-section__quick-run-label">{{ t('hero.quickRunLabel') }}</span>
-              <button type="button" class="hero-section__quick-run-copy" @click="copyQuickRun">
-                {{ copiedQuickRun ? t('download.copied') : t('download.copy') }}
-              </button>
+              <div class="hero-section__quick-run-actions">
+                <button
+                  v-if="curlQuickRunCommand"
+                  type="button"
+                  class="hero-section__quick-run-mode"
+                  @click="toggleQuickRunMode"
+                >
+                  {{ quickRunToggleLabel }}
+                </button>
+                <button type="button" class="hero-section__quick-run-copy" @click="copyQuickRun">
+                  {{ copiedQuickRun ? t('download.copied') : t('download.copy') }}
+                </button>
+              </div>
             </div>
             <pre class="hero-section__quick-run-command"><code>{{ quickRunCommand }}</code></pre>
           </div>
@@ -258,6 +280,31 @@ const copyQuickRun = async () => {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #8fa1c8;
+}
+
+.hero-section__quick-run-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.hero-section__quick-run-mode {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #8ae8ff;
+  padding: 4px 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  transition: color 0.2s ease;
+}
+
+.hero-section__quick-run-mode:hover {
+  color: #d6fbff;
 }
 
 .hero-section__quick-run-copy {
@@ -449,6 +496,14 @@ const copyQuickRun = async () => {
 
 .v-theme--light .hero-section__quick-run-label {
   color: #64748b;
+}
+
+.v-theme--light .hero-section__quick-run-mode {
+  color: #075985;
+}
+
+.v-theme--light .hero-section__quick-run-mode:hover {
+  color: #0f172a;
 }
 
 .v-theme--light .hero-section__quick-run-copy {

@@ -14,6 +14,8 @@
     "preview": "lintai scan flow preview",
     "latestRelease": "Latest release",
     "quickRunLabel": "Quick run",
+    "useCurl": "use curl",
+    "useNpx": "use npx",
     "kicker": "",
     "factFocusLabel": "Focus today",
     "factFocusBody": "SKILL.md, mcp.json, shared Claude settings, Cursor rules, and Copilot instruction files.",

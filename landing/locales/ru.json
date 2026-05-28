@@ -14,6 +14,8 @@
     "preview": "Как работает lintai",
     "latestRelease": "Последний релиз",
     "quickRunLabel": "Быстрый запуск",
+    "useCurl": "use curl",
+    "useNpx": "use npx",
     "kicker": "",
     "factFocusLabel": "Фокус сейчас",
     "factFocusBody": "SKILL.md, mcp.json, shared Claude settings, Cursor rules и Copilot instruction files.",
