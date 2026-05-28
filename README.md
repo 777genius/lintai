@@ -27,8 +27,10 @@ Think of it as a Ruff/Biome-style workflow for agent artifact review: fast, dete
 
 ```bash
 curl -fsSL https://github.com/777genius/lintai/releases/latest/download/lintai-installer.sh | sh
-lintai scan .
+"$HOME/.local/bin/lintai" scan .
 ```
+
+After `~/.local/bin` is on `PATH`, use `lintai scan .` directly.
 
 Exit codes:
 
@@ -279,10 +281,12 @@ powershell -ExecutionPolicy Bypass -File .\lintai-installer.ps1
 ### Verify
 
 ```bash
-lintai help
-lintai config-schema
-lintai scan .
+"$HOME/.local/bin/lintai" help
+"$HOME/.local/bin/lintai" config-schema
+"$HOME/.local/bin/lintai" scan .
 ```
+
+If `~/.local/bin` is already on `PATH`, `lintai help` works directly.
 
 ### From source
 
