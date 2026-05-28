@@ -162,6 +162,10 @@ const toggleQuickRunMode = () => {
           </div>
         </div>
 
+        <div class="hero-section__defense-col">
+          <HeroShieldAnimation />
+        </div>
+
         <div class="hero-section__demo-col">
           <div class="hero-section__preview">
             <div class="hero-section__preview-glow" />
@@ -425,6 +429,10 @@ const toggleQuickRunMode = () => {
   opacity: 0.8;
 }
 
+.hero-section__defense-col {
+  display: none;
+}
+
 .hero-section__demo-col {
   position: relative;
 }
@@ -537,6 +545,23 @@ const toggleQuickRunMode = () => {
 }
 
 @media (min-width: 1261px) {
+  .hero-section__grid {
+    grid-template-columns: minmax(0, 980px) minmax(360px, 1fr);
+    align-items: center;
+    gap: clamp(32px, 4vw, 72px);
+  }
+
+  .hero-section__defense-col {
+    display: flex;
+    min-width: 0;
+    justify-content: center;
+    align-self: center;
+  }
+
+  .hero-section__demo-col {
+    display: none;
+  }
+
   .hero-section__title--compact {
     font-size: clamp(1.88rem, 2.2vw, 2.42rem);
   }
