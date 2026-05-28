@@ -1,10 +1,10 @@
-$ErrorActionPreference = "Stop"
-
 param(
     [string]$Target,
-    [string]$InstallDir = (Join-Path $env:USERPROFILE ".local\bin"),
+    [string]$InstallDir,
     [string]$BaseUrl = $env:LINTAI_INSTALL_BASE_URL
 )
+
+$ErrorActionPreference = "Stop"
 
 $ReleaseTag = if ($env:LINTAI_INSTALL_RELEASE_TAG) { $env:LINTAI_INSTALL_RELEASE_TAG } else { "__RELEASE_TAG__" }
 $ReleaseRepository = if ($env:LINTAI_INSTALL_RELEASE_REPOSITORY) { $env:LINTAI_INSTALL_RELEASE_REPOSITORY } else { "__RELEASE_REPOSITORY__" }
@@ -15,8 +15,20 @@ function Fail([string]$Message) {
     throw $Message
 }
 
+function Test-WindowsHost {
+    return ($env:OS -eq "Windows_NT" -or $IsWindows -or $PSVersionTable.PSEdition -eq "Desktop")
+}
+
+if ([string]::IsNullOrWhiteSpace($InstallDir)) {
+    $UserHome = if ($env:USERPROFILE) { $env:USERPROFILE } else { [Environment]::GetFolderPath([Environment+SpecialFolder]::UserProfile) }
+    if ([string]::IsNullOrWhiteSpace($UserHome)) {
+        Fail "Could not resolve the user profile directory. Pass -InstallDir explicitly."
+    }
+    $InstallDir = Join-Path $UserHome ".local\bin"
+}
+
 function Resolve-Target {
-    if (-not $IsWindows) {
+    if (-not (Test-WindowsHost)) {
         Fail "This installer is intended for Windows PowerShell hosts."
     }
 
