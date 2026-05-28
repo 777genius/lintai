@@ -11,22 +11,148 @@ import {
   mdiVirusOutline,
 } from '@mdi/js';
 
+const impactAt = 0.48;
+const shieldImpacting = ref(false);
+let shieldImpactResetTimer: ReturnType<typeof setTimeout> | null = null;
+let shieldImpactFrame = 0;
+const shieldImpactTimers: ReturnType<typeof setTimeout>[] = [];
+const shieldImpactIntervals: ReturnType<typeof setInterval>[] = [];
+
 const threats = [
-  { id: 'bug', icon: mdiBugOutline },
-  { id: 'virus', icon: mdiVirusOutline },
-  { id: 'lock', icon: mdiLockOpenVariantOutline },
-  { id: 'cloud', icon: mdiCloudAlertOutline },
-  { id: 'alert', icon: mdiAlertOctagonOutline },
-  { id: 'console', icon: mdiConsoleNetworkOutline },
-  { id: 'skull', icon: mdiSkullCrossbonesOutline },
-  { id: 'bomb', icon: mdiBomb },
+  {
+    id: 'bug',
+    icon: mdiBugOutline,
+    startY: '18%',
+    hitY: '49%',
+    exitY: '10%',
+    delayMs: -200,
+    durationMs: 4200,
+  },
+  {
+    id: 'virus',
+    icon: mdiVirusOutline,
+    startY: '36%',
+    hitY: '50%',
+    exitY: '24%',
+    delayMs: -1100,
+    durationMs: 4700,
+  },
+  {
+    id: 'lock',
+    icon: mdiLockOpenVariantOutline,
+    startY: '57%',
+    hitY: '51%',
+    exitY: '68%',
+    delayMs: -2000,
+    durationMs: 4400,
+  },
+  {
+    id: 'cloud',
+    icon: mdiCloudAlertOutline,
+    startY: '72%',
+    hitY: '52%',
+    exitY: '84%',
+    delayMs: -3000,
+    durationMs: 5000,
+  },
+  {
+    id: 'alert',
+    icon: mdiAlertOctagonOutline,
+    startY: '24%',
+    hitY: '49%',
+    exitY: '18%',
+    delayMs: -3800,
+    durationMs: 5200,
+  },
+  {
+    id: 'console',
+    icon: mdiConsoleNetworkOutline,
+    startY: '47%',
+    hitY: '51%',
+    exitY: '36%',
+    delayMs: -4500,
+    durationMs: 5600,
+  },
+  {
+    id: 'skull',
+    icon: mdiSkullCrossbonesOutline,
+    startY: '63%',
+    hitY: '52%',
+    exitY: '78%',
+    delayMs: -5200,
+    durationMs: 5100,
+  },
+  {
+    id: 'bomb',
+    icon: mdiBomb,
+    startY: '10%',
+    hitY: '48%',
+    exitY: '6%',
+    delayMs: -6000,
+    durationMs: 5800,
+  },
 ];
+
+const triggerShieldImpact = () => {
+  shieldImpacting.value = false;
+
+  if (shieldImpactResetTimer) {
+    clearTimeout(shieldImpactResetTimer);
+  }
+
+  if (import.meta.client) {
+    cancelAnimationFrame(shieldImpactFrame);
+    shieldImpactFrame = requestAnimationFrame(() => {
+      shieldImpactFrame = requestAnimationFrame(() => {
+        shieldImpacting.value = true;
+        shieldImpactResetTimer = setTimeout(() => {
+          shieldImpacting.value = false;
+        }, 240);
+      });
+    });
+  }
+};
+
+onMounted(() => {
+  for (const threat of threats) {
+    const elapsed = ((-threat.delayMs % threat.durationMs) + threat.durationMs) % threat.durationMs;
+    const hitTime = threat.durationMs * impactAt;
+    const firstHitDelay = (hitTime - elapsed + threat.durationMs) % threat.durationMs;
+    const initialDelay = firstHitDelay < 80 ? firstHitDelay + threat.durationMs : firstHitDelay;
+
+    const timer = setTimeout(() => {
+      triggerShieldImpact();
+      shieldImpactIntervals.push(setInterval(triggerShieldImpact, threat.durationMs));
+    }, initialDelay);
+
+    shieldImpactTimers.push(timer);
+  }
+});
+
+onBeforeUnmount(() => {
+  cancelAnimationFrame(shieldImpactFrame);
+
+  if (shieldImpactResetTimer) {
+    clearTimeout(shieldImpactResetTimer);
+  }
+
+  for (const timer of shieldImpactTimers) {
+    clearTimeout(timer);
+  }
+
+  for (const interval of shieldImpactIntervals) {
+    clearInterval(interval);
+  }
+});
 </script>
 
 <template>
   <div class="hero-shield-animation" aria-hidden="true">
     <div class="hero-shield-animation__field" />
-    <div class="hero-shield-animation__shield-wrap">
+    <div
+      class="hero-shield-animation__shield-wrap"
+      :class="{ 'hero-shield-animation__shield-wrap--impact': shieldImpacting }"
+    >
       <div class="hero-shield-animation__shield-halo" />
       <v-icon class="hero-shield-animation__shield" :icon="mdiShieldCheckOutline" />
     </div>
@@ -36,6 +162,13 @@ const threats = [
       :key="threat.id"
       class="hero-shield-animation__threat"
       :class="`hero-shield-animation__threat--${threat.id}`"
+      :style="{
+        '--start-y': threat.startY,
+        '--hit-y': threat.hitY,
+        '--exit-y': threat.exitY,
+        '--delay': `${threat.delayMs}ms`,
+        '--duration': `${threat.durationMs}ms`,
+      }"
     >
       <span class="hero-shield-animation__threat-impact" />
       <v-icon :icon="threat.icon" />
@@ -78,7 +211,10 @@ const threats = [
   transform: translateY(-50%);
   display: grid;
   place-items: center;
-  animation: shieldShake 3.8s infinite;
+}
+
+.hero-shield-animation__shield-wrap--impact {
+  animation: shieldImpact 240ms ease-out;
 }
 
 .hero-shield-animation__shield-halo {
@@ -142,74 +278,34 @@ const threats = [
 }
 
 .hero-shield-animation__threat--bug {
-  --start-y: 18%;
-  --hit-y: 49%;
-  --exit-y: 10%;
-  --delay: -0.2s;
-  --duration: 4.2s;
   color: #39ff14;
 }
 
 .hero-shield-animation__threat--virus {
-  --start-y: 36%;
-  --hit-y: 50%;
-  --exit-y: 24%;
-  --delay: -1.1s;
-  --duration: 4.7s;
   color: #ff4d7d;
 }
 
 .hero-shield-animation__threat--lock {
-  --start-y: 57%;
-  --hit-y: 51%;
-  --exit-y: 68%;
-  --delay: -2s;
-  --duration: 4.4s;
   color: #f6d365;
 }
 
 .hero-shield-animation__threat--cloud {
-  --start-y: 72%;
-  --hit-y: 52%;
-  --exit-y: 84%;
-  --delay: -3s;
-  --duration: 5s;
   color: #8ae8ff;
 }
 
 .hero-shield-animation__threat--alert {
-  --start-y: 24%;
-  --hit-y: 49%;
-  --exit-y: 18%;
-  --delay: -3.8s;
-  --duration: 5.2s;
   color: #ff8f5a;
 }
 
 .hero-shield-animation__threat--console {
-  --start-y: 47%;
-  --hit-y: 51%;
-  --exit-y: 36%;
-  --delay: -4.5s;
-  --duration: 5.6s;
   color: #9aa7ff;
 }
 
 .hero-shield-animation__threat--skull {
-  --start-y: 63%;
-  --hit-y: 52%;
-  --exit-y: 78%;
-  --delay: -5.2s;
-  --duration: 5.1s;
   color: #f8fafc;
 }
 
 .hero-shield-animation__threat--bomb {
-  --start-y: 10%;
-  --hit-y: 48%;
-  --exit-y: 6%;
-  --delay: -6s;
-  --duration: 5.8s;
   color: #ff5cf7;
 }
 
@@ -267,31 +363,17 @@ const threats = [
   }
 }
 
-@keyframes shieldShake {
-  0%,
-  26%,
+@keyframes shieldImpact {
+  0% {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  28% {
+    transform: translate(-7px, -50%) rotate(-3deg);
+  }
+  56% {
+    transform: translate(4px, -50%) rotate(2deg);
+  }
   100% {
-    transform: translateY(-50%) rotate(0deg);
-  }
-  29% {
-    transform: translate(-6px, -50%) rotate(-3deg);
-  }
-  32% {
-    transform: translate(3px, -50%) rotate(2deg);
-  }
-  35% {
-    transform: translateY(-50%) rotate(0deg);
-  }
-  57% {
-    transform: translateY(-50%) rotate(0deg);
-  }
-  60% {
-    transform: translate(-5px, -50%) rotate(-2deg);
-  }
-  63% {
-    transform: translate(2px, -50%) rotate(1deg);
-  }
-  66% {
     transform: translateY(-50%) rotate(0deg);
   }
 }
