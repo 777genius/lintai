@@ -13,7 +13,7 @@ const AGENT_PLUGINS_SCHEMA: &str = "https://agent-plugins.org/schemas/1.0.0/plug
 const MAX_MANIFEST_BYTES: u64 = 1 << 20;
 
 pub(crate) const AGENT_PLUGIN_POLICY_ID: &str = "agent-plugin-install";
-pub(crate) const AGENT_PLUGIN_POLICY_VERSION: u32 = 1;
+pub(crate) const AGENT_PLUGIN_POLICY_VERSION: u32 = 2;
 pub(crate) const AGENT_PLUGIN_PRESETS: &[&str] = &[
     "recommended",
     "preview",
@@ -183,7 +183,7 @@ mod tests {
     #[test]
     fn installation_policy_is_fixed_and_unambiguous() {
         assert_eq!(AGENT_PLUGIN_POLICY_ID, "agent-plugin-install");
-        assert_eq!(AGENT_PLUGIN_POLICY_VERSION, 1);
+        assert_eq!(AGENT_PLUGIN_POLICY_VERSION, 2);
         assert_eq!(
             AGENT_PLUGIN_PRESETS,
             [
