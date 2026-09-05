@@ -62,6 +62,9 @@ detect_target() {
             printf 'x86_64-unknown-linux-gnu\n'
           fi
           ;;
+        arm64|aarch64)
+          printf 'aarch64-unknown-linux-gnu\n'
+          ;;
         *)
           die "unsupported Linux architecture: $arch_name"
           ;;
@@ -72,8 +75,11 @@ detect_target() {
         arm64|aarch64)
           printf 'aarch64-apple-darwin\n'
           ;;
+        x86_64|amd64)
+          printf 'x86_64-apple-darwin\n'
+          ;;
         *)
-          die "unsupported macOS architecture: $arch_name (supported: arm64)"
+          die "unsupported macOS architecture: $arch_name"
           ;;
       esac
       ;;
@@ -134,7 +140,7 @@ if [ -z "$TARGET" ]; then
 fi
 
 case "$TARGET" in
-  x86_64-unknown-linux-gnu|x86_64-unknown-linux-musl|aarch64-apple-darwin) ;;
+  x86_64-unknown-linux-gnu|x86_64-unknown-linux-musl|aarch64-unknown-linux-gnu|aarch64-apple-darwin|x86_64-apple-darwin) ;;
   *)
     die "unsupported target: $TARGET"
     ;;

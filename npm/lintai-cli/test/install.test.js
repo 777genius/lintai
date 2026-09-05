@@ -15,6 +15,14 @@ test('resolvePlatformAsset maps macOS arm64', () => {
   });
 });
 
+test('resolvePlatformAsset maps macOS x64', () => {
+  assert.deepEqual(resolvePlatformAsset('darwin', 'x64'), {
+    target: 'x86_64-apple-darwin',
+    archiveExt: 'tar.gz',
+    binaryName: 'lintai',
+  });
+});
+
 test('resolvePlatformAsset maps windows x64', () => {
   assert.deepEqual(resolvePlatformAsset('win32', 'x64'), {
     target: 'x86_64-pc-windows-msvc',
@@ -23,11 +31,20 @@ test('resolvePlatformAsset maps windows x64', () => {
   });
 });
 
-test('resolvePlatformAsset rejects unsupported platforms', () => {
-  assert.throws(
-    () => resolvePlatformAsset('linux', 'arm64'),
-    /unsupported platform/,
-  );
+test('resolvePlatformAsset maps windows arm64', () => {
+  assert.deepEqual(resolvePlatformAsset('win32', 'arm64'), {
+    target: 'aarch64-pc-windows-msvc',
+    archiveExt: 'zip',
+    binaryName: 'lintai.exe',
+  });
+});
+
+test('resolvePlatformAsset maps Linux arm64 glibc', () => {
+  assert.deepEqual(resolvePlatformAsset('linux', 'arm64'), {
+    target: 'aarch64-unknown-linux-gnu',
+    archiveExt: 'tar.gz',
+    binaryName: 'lintai',
+  });
 });
 
 test('getReleaseTag prefixes package version', () => {

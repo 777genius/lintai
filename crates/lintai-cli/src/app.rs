@@ -17,6 +17,9 @@ pub fn run() -> Result<ExitCode, String> {
         "scan" => dispatch_command("scan", args, |args| {
             commands::scan::run(&current_dir, args.into_iter())
         }),
+        "scan-agent-plugin" => dispatch_command("scan-agent-plugin", args, |args| {
+            commands::scan_agent_plugin::run(&current_dir, args.into_iter())
+        }),
         "scan-known" => dispatch_command("scan-known", args, |args| {
             commands::scan_known::run(&current_dir, args.into_iter())
         }),
@@ -38,6 +41,13 @@ pub fn run() -> Result<ExitCode, String> {
         "__provider-runner" => run_provider_runner(args.into_iter()),
         "config-schema" => {
             println!("{}", lintai_engine::config_schema_pretty());
+            Ok(ExitCode::SUCCESS)
+        }
+        "version" | "--version" | "-V" => {
+            if !args.is_empty() {
+                return Err("version does not accept arguments".to_owned());
+            }
+            println!("lintai {}", env!("CARGO_PKG_VERSION"));
             Ok(ExitCode::SUCCESS)
         }
         "help" | "--help" | "-h" => {
@@ -72,6 +82,7 @@ fn dispatch_command(
 fn print_usage() {
     println!("{}", usage_line("scan"));
     println!("                    [--format=sarif]");
+    println!("{}", usage_line("scan-agent-plugin"));
     println!("{}", usage_line("scan-known"));
     println!("                    [--color=auto|always|never]");
     println!("                    [--format=text|json|sarif]");
@@ -87,6 +98,7 @@ fn print_usage() {
     println!("{}", usage_line("fix"));
     println!("{}", usage_line("explain-config"));
     println!("{}", usage_line("config-schema"));
+    println!("{}", usage_line("version"));
 }
 
 fn print_command_usage(command: &str) -> bool {
@@ -137,6 +149,8 @@ fn usage_line_opt(command: &str) -> Option<&'static str> {
         "fix" => Some("lintai fix [path] [--apply] [--rule CODE]"),
         "explain-config" => Some("lintai explain-config <file>"),
         "config-schema" => Some("lintai config-schema"),
+        "scan-agent-plugin" => Some("lintai scan-agent-plugin <package-dir>"),
+        "version" => Some("lintai version"),
         _ => None,
     }
 }
