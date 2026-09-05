@@ -1,6 +1,6 @@
 {
   "name": "lintai-cli",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Offline-first security linter for AI agent config surfaces",
   "type": "module",
   "bin": {

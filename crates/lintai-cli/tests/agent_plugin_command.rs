@@ -38,9 +38,9 @@ fn fixed_agent_plugin_policy_ignores_package_controlled_config() {
     let report: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
     assert_eq!(report["schema_version"], 1);
     assert_eq!(report["tool"]["name"], "lintai");
-    assert_eq!(report["tool"]["version"], "0.1.2");
+    assert_eq!(report["tool"]["version"], "0.1.3");
     assert_eq!(report["policy"]["id"], "agent-plugin-install");
-    assert_eq!(report["policy"]["version"], 1);
+    assert_eq!(report["policy"]["version"], 2);
     assert!(report["findings"].as_array().is_some_and(|items| !items.is_empty()));
     assert!(output.stderr.is_empty());
 
@@ -54,5 +54,5 @@ fn version_command_reports_release_identity() {
         .output()
         .unwrap();
     assert!(output.status.success());
-    assert_eq!(String::from_utf8(output.stdout).unwrap(), "lintai 0.1.2\n");
+    assert_eq!(String::from_utf8(output.stdout).unwrap(), "lintai 0.1.3\n");
 }
