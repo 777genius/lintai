@@ -45,6 +45,7 @@ pub enum ArtifactKind {
     ServerRegistryConfig,
     ToolDescriptorJson,
     GitHubWorkflow,
+    AgentPluginManifest,
     CursorPluginManifest,
     CursorPluginHooks,
     CursorHookScript,
