@@ -33,6 +33,14 @@ export function resolvePlatformAsset(platform = process.platform, arch = process
     };
   }
 
+  if (platform === 'darwin' && arch === 'x64') {
+    return {
+      target: 'x86_64-apple-darwin',
+      archiveExt: 'tar.gz',
+      binaryName: 'lintai',
+    };
+  }
+
   if (platform === 'win32' && arch === 'x64') {
     return {
       target: 'x86_64-pc-windows-msvc',
@@ -41,9 +49,28 @@ export function resolvePlatformAsset(platform = process.platform, arch = process
     };
   }
 
+  if (platform === 'win32' && arch === 'arm64') {
+    return {
+      target: 'aarch64-pc-windows-msvc',
+      archiveExt: 'zip',
+      binaryName: 'lintai.exe',
+    };
+  }
+
   if (platform === 'linux' && arch === 'x64') {
     return {
       target: isMuslLinux() ? 'x86_64-unknown-linux-musl' : 'x86_64-unknown-linux-gnu',
+      archiveExt: 'tar.gz',
+      binaryName: 'lintai',
+    };
+  }
+
+  if (platform === 'linux' && arch === 'arm64') {
+    if (isMuslLinux()) {
+      throw new Error('unsupported platform for lintai-cli npm wrapper: linux/arm64 (musl)');
+    }
+    return {
+      target: 'aarch64-unknown-linux-gnu',
       archiveExt: 'tar.gz',
       binaryName: 'lintai',
     };

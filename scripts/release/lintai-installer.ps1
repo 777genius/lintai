@@ -34,6 +34,7 @@ function Resolve-Target {
 
     switch ($env:PROCESSOR_ARCHITECTURE) {
         "AMD64" { return "x86_64-pc-windows-msvc" }
+        "ARM64" { return "aarch64-pc-windows-msvc" }
         default { Fail "Unsupported Windows architecture: $($env:PROCESSOR_ARCHITECTURE)" }
     }
 }
@@ -54,7 +55,7 @@ if ([string]::IsNullOrWhiteSpace($Target)) {
     $Target = Resolve-Target
 }
 
-if ($Target -ne "x86_64-pc-windows-msvc") {
+if ($Target -ne "x86_64-pc-windows-msvc" -and $Target -ne "aarch64-pc-windows-msvc") {
     Fail "Unsupported target: $Target"
 }
 

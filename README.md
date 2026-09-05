@@ -175,6 +175,17 @@ lintai scan . --format json
 lintai scan . --format sarif
 ```
 
+Agent Plugins installers and registries can use a fixed, non-configurable scan
+policy that ignores package-controlled `lintai.toml` files:
+
+```bash
+lintai scan-agent-plugin ./path/to/package
+```
+
+The command accepts only a root Agent Plugins 1.0 package and always emits its
+versioned integration report as JSON. A clean report is evidence that automated
+checks ran against those package bytes, not a guarantee that the plugin is safe.
+
 ## Preset Policy
 
 `lintai` now resolves findings through builtin policy presets declared in `lintai.toml`.
