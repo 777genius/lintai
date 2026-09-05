@@ -1,3 +1,5 @@
+#[path = "dynamic_detection/agent_plugin.rs"]
+mod agent_plugin;
 #[path = "dynamic_detection/gemini.rs"]
 mod gemini;
 #[path = "dynamic_detection/glob.rs"]
@@ -23,11 +25,15 @@ pub(crate) fn dynamic_detection_overrides(
     base_path: &Path,
     files: &[PathBuf],
 ) -> Vec<DynamicDetectionOverride> {
-    let mut overrides =
+    let mut overrides = agent_plugin::agent_plugin_detection_patterns(base_path, files)
+        .into_iter()
+        .map(|override_spec| (override_spec.normalized_path.clone(), override_spec))
+        .collect::<BTreeMap<_, _>>();
+    for override_spec in
         plugin_manifest::manifest_backed_plugin_detection_patterns(base_path, files)
-            .into_iter()
-            .map(|override_spec| (override_spec.normalized_path.clone(), override_spec))
-            .collect::<BTreeMap<_, _>>();
+    {
+        overrides.insert(override_spec.normalized_path.clone(), override_spec);
+    }
     for override_spec in gemini::gemini_mcp_detection_patterns(base_path, files) {
         overrides.insert(override_spec.normalized_path.clone(), override_spec);
     }

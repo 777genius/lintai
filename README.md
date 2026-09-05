@@ -65,6 +65,7 @@ Current `v0.1` supported surfaces focus on files that steer agent behavior or la
 
 ### Plugin and hook surfaces
 
+- Agent Plugins 1.0 `plugin.json`, plus fixed `skills/**/SKILL.md` and `mcp.json` components
 - `.cursor-plugin/plugin.json`
 - `.cursor-plugin/hooks.json`
 - `.cursor-plugin/hooks/**/*.sh`

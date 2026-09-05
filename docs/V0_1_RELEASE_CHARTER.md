@@ -19,6 +19,7 @@ This file is the canonical source of truth for what counts as `v0.1`.
 - `.mdc`
 - `.cursorrules`
 - `mcp.json`
+- Agent Plugins 1.0 `plugin.json`
 - `.cursor-plugin/plugin.json`
 - `.cursor-plugin/hooks.json`
 - `.cursor-plugin/hooks/**/*.sh`

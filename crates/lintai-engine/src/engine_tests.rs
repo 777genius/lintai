@@ -1302,6 +1302,68 @@ fn manifest_backed_plugin_targets_are_scanned() {
 }
 
 #[test]
+fn agent_plugins_v1_manifest_and_fixed_components_are_scanned() {
+    let temp_dir = unique_temp_dir("lintai-agent-plugin-v1");
+    std::fs::create_dir_all(temp_dir.join("plugin/skills/review")).unwrap();
+    std::fs::write(
+        temp_dir.join("plugin/plugin.json"),
+        r#"{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "demo-plugin"
+}"#,
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("plugin/mcp.json"),
+        r#"{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {}
+}"#,
+    )
+    .unwrap();
+    std::fs::write(
+        temp_dir.join("plugin/skills/review/SKILL.md"),
+        "---\nname: review\ndescription: Review a change.\n---\n\n# Review\n",
+    )
+    .unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_backend(backend(EmitFindingProvider))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    let paths = summary
+        .findings
+        .iter()
+        .map(|finding| finding.location.normalized_path.as_str())
+        .collect::<Vec<_>>();
+    assert!(paths.contains(&"plugin/plugin.json"));
+    assert!(paths.contains(&"plugin/mcp.json"));
+    assert!(paths.contains(&"plugin/skills/review/SKILL.md"));
+}
+
+#[test]
+fn unrelated_plugin_json_is_not_treated_as_agent_plugins_manifest() {
+    let temp_dir = unique_temp_dir("lintai-unrelated-plugin-json");
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    std::fs::write(
+        temp_dir.join("plugin.json"),
+        r#"{"name":"editor-extension","main":"index.js"}"#,
+    )
+    .unwrap();
+
+    let summary = EngineBuilder::default()
+        .with_backend(backend(EmitFindingProvider))
+        .build()
+        .scan_path(&temp_dir)
+        .unwrap();
+
+    assert!(summary.findings.is_empty());
+    assert_eq!(summary.scanned_files, 0);
+}
+
+#[test]
 fn manifest_backed_plugin_targets_ignore_missing_or_escaping_paths() {
     let temp_dir = unique_temp_dir("lintai-plugin-manifest-missing");
     std::fs::create_dir_all(temp_dir.join("plugin/.cursor-plugin")).unwrap();

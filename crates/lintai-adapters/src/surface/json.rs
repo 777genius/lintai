@@ -197,6 +197,11 @@ const CURSOR_PLUGIN_MANIFEST_RULES: &[DetectionRuleSpec] = &[DetectionRuleSpec {
     format: SourceFormat::Json,
 }];
 
+// Agent Plugins manifests are selected dynamically by their canonical schema URI.
+// A bare `plugin.json` is used by several unrelated ecosystems, so matching only
+// the filename would create noisy false positives in ordinary repositories.
+const AGENT_PLUGIN_MANIFEST_RULES: &[DetectionRuleSpec] = &[];
+
 const CURSOR_PLUGIN_HOOKS_RULES: &[DetectionRuleSpec] = &[DetectionRuleSpec {
     priority: 1,
     file_name: Some("hooks.json"),
@@ -251,7 +256,7 @@ const TOOL_DESCRIPTOR_RULES: &[DetectionRuleSpec] = &[
     },
 ];
 
-pub(super) const SURFACE_SPECS: [SurfaceSpec; 10] = [
+pub(super) const SURFACE_SPECS: [SurfaceSpec; 11] = [
     SurfaceSpec {
         id: "mcp_config_json",
         artifact_kind: ArtifactKind::McpConfig,
@@ -299,6 +304,13 @@ pub(super) const SURFACE_SPECS: [SurfaceSpec; 10] = [
         artifact_kind: ArtifactKind::ClaudeSettings,
         format: SourceFormat::Json,
         detection_rules: CLAUDE_SETTINGS_RULES,
+        parse_fn: parse_json_surface,
+    },
+    SurfaceSpec {
+        id: "agent_plugin_manifest_json",
+        artifact_kind: ArtifactKind::AgentPluginManifest,
+        format: SourceFormat::Json,
+        detection_rules: AGENT_PLUGIN_MANIFEST_RULES,
         parse_fn: parse_json_surface,
     },
     SurfaceSpec {
