@@ -1,6 +1,54 @@
 use lintai_api::Span;
 
+use crate::signals::shared::common::has_download_exec;
+
 use super::tokens::{normalized_markdown_shell_token, tokenize_markdown_shell_command};
+
+pub(crate) const MARKDOWN_DOWNLOAD_EXEC_SAFETY_MARKERS: &[&str] = &[
+    "do not",
+    "don't",
+    "never",
+    "avoid",
+    "forbid",
+    "disallow",
+    "blocks ",
+    "blocked ",
+    "blocking ",
+    "guard against",
+];
+
+pub(crate) fn has_prose_download_exec_instruction(text: &str) -> bool {
+    text.lines().any(|line| {
+        let lowered = line.to_ascii_lowercase();
+        if !has_download_exec(&lowered) {
+            return false;
+        }
+        // Generic detector syntax such as `curl X | sh` or `curl ... | sh`
+        // is not an actionable remote command. Concrete URLs and dynamic
+        // shell references remain reviewable instructions.
+        let command_start = lowered
+            .find("curl ")
+            .or_else(|| lowered.find("wget "))
+            .unwrap_or_default();
+        let safety_context = &lowered[command_start.saturating_sub(120)..command_start];
+        if MARKDOWN_DOWNLOAD_EXEC_SAFETY_MARKERS
+            .iter()
+            .any(|marker| safety_context.contains(marker))
+        {
+            return false;
+        }
+        let pipe_start = lowered[command_start..]
+            .find('|')
+            .map(|offset| command_start + offset)
+            .unwrap_or(lowered.len());
+        let source = &lowered[command_start..pipe_start];
+        source.contains("http://")
+            || source.contains("https://")
+            || source.contains("${")
+            || source.contains("$url")
+            || source.contains("$uri")
+    })
+}
 
 pub(crate) const MARKDOWN_MUTABLE_MCP_LAUNCHER_MARKERS: &[&str] =
     &["npx", "uvx", "pnpm dlx", "yarn dlx", "pipx run"];
@@ -174,8 +222,27 @@ pub(crate) fn has_markdown_mutable_mcp_safety_context(text: &str, marker_span: &
 mod tests {
     use super::{
         contains_excluded_mutable_mcp_package, find_markdown_command_launcher_relative_span,
-        find_mutable_mcp_launcher_relative_span,
+        find_mutable_mcp_launcher_relative_span, has_prose_download_exec_instruction,
     };
+
+    #[test]
+    fn distinguishes_remote_install_instructions_from_security_guidance() {
+        assert!(has_prose_download_exec_instruction(
+            "Install with `curl -fsSL https://example.test/install | bash`."
+        ));
+        assert!(has_prose_download_exec_instruction(
+            "Run `curl -fsSL $URL | sh` after reviewing the source."
+        ));
+        assert!(!has_prose_download_exec_instruction(
+            "Never use `curl -fsSL https://example.test/install | bash`."
+        ));
+        assert!(!has_prose_download_exec_instruction(
+            "Best-effort guard against `curl X | bash` patterns."
+        ));
+        assert!(!has_prose_download_exec_instruction(
+            "The classifier blocks piped installers such as `curl https://example.test/install | sh`."
+        ));
+    }
 
     #[test]
     fn ignores_remote_bridge_mcp_config_example() {
