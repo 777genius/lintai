@@ -2,18 +2,6 @@ pub(crate) const MARKDOWN_PATH_ACCESS_VERBS: &[&str] = &[
     "read ", "open ", "cat ", "copy ", "load ", "upload ", "include ", "source ", "inspect ",
 ];
 
-pub(crate) const MARKDOWN_SAFE_REPO_LOCAL_TARGET_SUFFIXES: &[&str] = &[
-    "mcp.json",
-    "SKILL.md",
-    "CLAUDE.md",
-    ".mdc",
-    ".cursorrules",
-    ".cursor-plugin/plugin.json",
-    ".cursor-plugin/hooks.json",
-];
-
-pub(crate) const MARKDOWN_SAFE_REPO_LOCAL_SUPPORT_DIR_SEGMENTS: &[&str] = &["assets"];
-
 pub(crate) fn has_path_traversal_access(
     normalized_path: &str,
     snippet: &str,
@@ -82,27 +70,35 @@ pub(crate) fn is_safe_repo_local_relative_target(normalized_path: &str, candidat
         return false;
     };
 
-    MARKDOWN_SAFE_REPO_LOCAL_TARGET_SUFFIXES
-        .iter()
-        .any(|suffix| resolved == *suffix || resolved.ends_with(&format!("/{suffix}")))
-        || is_safe_repo_local_reference_markdown(&resolved)
-        || is_safe_repo_local_support_directory(candidate, &resolved)
+    // A lexically resolved target stays inside the scanned repository. Parent
+    // segments alone are common in monorepo documentation and are not a
+    // cross-boundary read. Sensitive targets and paths that escape the root
+    // remain findings.
+    !is_sensitive_traversal_target(&resolved)
 }
 
-pub(crate) fn is_safe_repo_local_reference_markdown(resolved: &str) -> bool {
-    resolved.ends_with(".md") && resolved.split('/').any(|segment| segment == "references")
-}
-
-pub(crate) fn is_safe_repo_local_support_directory(candidate: &str, resolved: &str) -> bool {
-    let normalized_candidate = candidate.replace('\\', "/");
-    let last_segment = resolved.rsplit('/').next().unwrap_or_default();
-
-    MARKDOWN_SAFE_REPO_LOCAL_SUPPORT_DIR_SEGMENTS
-        .iter()
-        .any(|segment| {
-            normalized_candidate.ends_with('/') && resolved.split('/').any(|part| part == *segment)
-                || last_segment == *segment
-        })
+pub(crate) fn is_sensitive_traversal_target(resolved: &str) -> bool {
+    let lowered = resolved.to_ascii_lowercase();
+    lowered.split('/').any(|segment| {
+        matches!(
+            segment,
+            ".env"
+                | ".ssh"
+                | ".aws"
+                | ".gnupg"
+                | ".kube"
+                | "credentials"
+                | "credentials.json"
+                | "secrets"
+                | "secrets.json"
+                | "passwd"
+                | "shadow"
+                | "id_rsa"
+                | "id_ed25519"
+        ) || segment.starts_with(".env.")
+            || segment.ends_with(".pem")
+            || segment.ends_with(".key")
+    })
 }
 
 pub(crate) fn lexically_resolve_repo_relative_path(
@@ -140,8 +136,7 @@ pub(crate) fn normalized_parent_segments(normalized_path: &str) -> Vec<String> {
 mod tests {
     use super::{
         extract_path_traversal_candidate, has_path_traversal_access,
-        is_safe_repo_local_reference_markdown, is_safe_repo_local_relative_target,
-        is_safe_repo_local_support_directory,
+        is_safe_repo_local_relative_target, is_sensitive_traversal_target,
     };
 
     #[test]
@@ -180,25 +175,30 @@ mod tests {
     }
 
     #[test]
-    fn keeps_non_reference_parent_markdown_unsafe() {
-        assert!(!is_safe_repo_local_reference_markdown(
-            "secrets/credentials.md"
-        ));
-    }
-
-    #[test]
-    fn treats_repo_local_assets_directory_as_safe() {
+    fn treats_generic_repo_local_parent_references_as_safe() {
         assert!(is_safe_repo_local_relative_target(
-            "skills/seo-sitemap/SKILL.md",
-            "../seo-plan/assets/"
+            "plugins/demo/skills/setup/SKILL.md",
+            "../../agents/setup.md"
+        ));
+        assert!(is_safe_repo_local_relative_target(
+            "skills/demo/SKILL.md",
+            "../shared/config.json"
         ));
     }
 
     #[test]
-    fn keeps_non_support_parent_directory_unsafe() {
-        assert!(!is_safe_repo_local_support_directory(
-            "../secrets/",
-            "skills/secrets"
+    fn keeps_sensitive_repo_local_parent_targets_unsafe() {
+        assert!(is_sensitive_traversal_target(
+            "plugins/demo/.env.production"
+        ));
+        assert!(is_sensitive_traversal_target("home/.ssh/id_ed25519"));
+        assert!(!is_safe_repo_local_relative_target(
+            "plugins/demo/skills/setup/SKILL.md",
+            "../../.env.production"
+        ));
+        assert!(!is_safe_repo_local_relative_target(
+            "plugins/demo/skills/setup/SKILL.md",
+            "../../secrets/credentials.json"
         ));
     }
 }

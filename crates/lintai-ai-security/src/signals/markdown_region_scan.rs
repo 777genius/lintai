@@ -2,7 +2,7 @@ use lintai_api::Span;
 
 use crate::signals::MarkdownSignals;
 
-use super::shared::{common::*, hook::has_base64_exec, markdown::*};
+use super::shared::{hook::has_base64_exec, markdown::*};
 
 fn push_relative_span(target: &mut Vec<Span>, region_start: usize, relative: Span) {
     target.push(Span::new(
@@ -202,7 +202,7 @@ pub(super) fn scan_prose_region(
     has_uv_preference: bool,
 ) {
     let lowered = snippet.to_ascii_lowercase();
-    if has_download_exec(&lowered) {
+    if has_prose_download_exec_instruction(snippet) {
         signals
             .prose_download_exec_spans
             .push(Span::new(region_start, region_start + snippet.len()));
