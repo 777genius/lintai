@@ -19,6 +19,14 @@ type PageSeoOptions = {
   translate?: boolean;
 };
 
+const faqAnswerToPlainText = (answer: string) => {
+  const plainText = answer.replaceAll('<code>', '').replaceAll('</code>', '');
+  if (plainText.includes('<') || plainText.includes('>')) {
+    throw new Error('FAQ structured data contains unsupported markup');
+  }
+  return plainText;
+};
+
 export const usePageSeo = (
   titleSource: MaybeRefOrGetter<string>,
   descriptionSource: MaybeRefOrGetter<string>,
@@ -161,7 +169,7 @@ export const usePageSeo = (
             name: item.question,
             acceptedAnswer: {
               '@type': 'Answer',
-              text: item.answer.replace(/<[^>]*>/g, ''),
+              text: faqAnswerToPlainText(item.answer),
             },
           })),
         });
