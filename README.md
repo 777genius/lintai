@@ -23,6 +23,28 @@ Skills, MCP configs, agent rules, hooks, and plugin manifests are not just docs 
 
 Think of it as a Ruff/Biome-style workflow for agent artifact review: fast, deterministic, and meant to run often.
 
+## lintai vs. SkillSpector
+
+**Offline by default. No Python runtime. No model setup.**
+
+For local scans after installation:
+
+| Capability | lintai | [SkillSpector](https://github.com/NVIDIA/SkillSpector) |
+|---|:---:|:---:|
+| Network-free local scans by default | ✅ | ❌¹ |
+| Single native binary | ✅ | ❌ Python / Docker |
+| Scan without an LLM or model API key | ✅ | ✅ `--no-llm` |
+| Deterministic static checks | ✅ | ✅ |
+| JSON and SARIF reports | ✅ | ✅ |
+| Python AST / taint analysis | ❌ | ✅ |
+| Optional LLM semantic review | ❌ | ✅ |
+
+¹ SkillSpector's [dependency checks](https://github.com/NVIDIA/SkillSpector/blob/d3f2e973e58640cb2ea5c196221ae42e7725bbd7/README.md#trust-model-and-data-egress) can query OSV even with `--no-llm`; a limited static fallback supports offline operation.
+
+Choose **lintai** for repeatable offline agent-policy checks in local workflows and CI, with [presets](#preset-policy) for deeper review. Choose **SkillSpector** for deeper Python code analysis and optional LLM review.
+
+Comparison checked on 2026-10-27 against [SkillSpector's source and runtime requirements](https://github.com/NVIDIA/SkillSpector/blob/d3f2e973e58640cb2ea5c196221ae42e7725bbd7/pyproject.toml).
+
 ## Quick Start
 
 ```bash
