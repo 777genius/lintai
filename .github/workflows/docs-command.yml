@@ -7,9 +7,11 @@ on:
       - main
   workflow_dispatch:
 
+# PR checks are replaceable. Main pushes retain exact-candidate release evidence;
+# each manual qualification remains independent.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read
@@ -30,7 +32,7 @@ jobs:
 
   docs_gate:
     name: Docs Gate
-    if: ${{ always() }}
+    if: ${{ always() && !cancelled() }}
     needs:
       - docs_command_suite
     runs-on: ubuntu-latest

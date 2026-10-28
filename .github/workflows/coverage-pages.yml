@@ -6,9 +6,10 @@ on:
       - main
   workflow_dispatch:
 
+# Preserve latest-push Pages behavior; manual publications do not supersede other runs.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event_name == 'push' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
 
 permissions:
   contents: read
@@ -101,6 +102,11 @@ jobs:
 
   deploy:
     name: Deploy Pages
+    # Both artifact producers publish the same site; retain operations without racing.
+    concurrency:
+      group: lintai-pages-deploy
+      cancel-in-progress: false
+      queue: max
     needs:
       - build
     runs-on: ubuntu-latest
@@ -108,5 +114,20 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Require current main before publication
+        id: current
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          current_main="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/main" --jq .object.sha)"
+          if [[ "${GITHUB_SHA}" == "${current_main}" ]]; then
+            echo "deploy=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "::notice::Skipping stale Pages artifact; main has advanced beyond ${GITHUB_SHA}"
+            echo "deploy=false" >> "${GITHUB_OUTPUT}"
+          fi
       - id: deployment
+        if: steps.current.outputs.deploy == 'true'
         uses: actions/deploy-pages@v4
