@@ -30,3 +30,20 @@ Public release shipping is tag-driven:
   - `lintai-<tag>-sbom.tar.gz`
   - `lintai-<tag>-provenance.intoto.jsonl`
   - `SHA256SUMS`
+
+## Cancellation policy
+
+Ordinary PR checks supersede earlier checks of the same PR within each workflow.
+CodeQL also replaces ordinary pushes on the same full ref. Manual runs and scheduled
+security scans use independent groups. Status-only aggregate jobs preserve failure
+reporting while stopping after workflow cancellation.
+
+The three shipping gates retain every main push as exact-candidate release evidence
+required by `docs/PUBLIC_RELEASE_SHIPPING_CHECKLIST.md`. Pages keeps its existing
+latest-push behavior, while manual publications remain independent. Public Release
+serializes operations by the actual target tag with `queue: max`: waiting manual
+releases are retained even when selected from the same main ref. The npm publisher
+keeps its existing independent manual operations and immutable-version checks.
+
+Rollback is a revert of the scoped workflow change; no runner, required-check name,
+release payload, or branch-protection setting is changed.
